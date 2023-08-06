@@ -1,240 +1,265 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <th:block th:fragment="asideFragment">
-  <aside id="sidebar" class="sidebar">
-
-    <ul class="sidebar-nav" id="sidebar-nav">
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="index.html">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="components-alerts.html">
-              <i class="bi bi-circle"></i><span>Alerts</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-accordion.html">
-              <i class="bi bi-circle"></i><span>Accordion</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-badges.html">
-              <i class="bi bi-circle"></i><span>Badges</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-breadcrumbs.html">
-              <i class="bi bi-circle"></i><span>Breadcrumbs</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-buttons.html">
-              <i class="bi bi-circle"></i><span>Buttons</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-cards.html">
-              <i class="bi bi-circle"></i><span>Cards</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-carousel.html">
-              <i class="bi bi-circle"></i><span>Carousel</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-list-group.html">
-              <i class="bi bi-circle"></i><span>List group</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-modal.html">
-              <i class="bi bi-circle"></i><span>Modal</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-tabs.html">
-              <i class="bi bi-circle"></i><span>Tabs</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-pagination.html">
-              <i class="bi bi-circle"></i><span>Pagination</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-progress.html">
-              <i class="bi bi-circle"></i><span>Progress</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-spinners.html">
-              <i class="bi bi-circle"></i><span>Spinners</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-tooltips.html">
-              <i class="bi bi-circle"></i><span>Tooltips</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Components Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link " data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i><span>Forms</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="forms-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="forms-elements.html">
-              <i class="bi bi-circle"></i><span>Form Elements</span>
-            </a>
-          </li>
-          <li>
-            <a href="forms-layouts.html" class="active">
-              <i class="bi bi-circle"></i><span>Form Layouts</span>
-            </a>
-          </li>
-          <li>
-            <a href="forms-editors.html">
-              <i class="bi bi-circle"></i><span>Form Editors</span>
-            </a>
-          </li>
-          <li>
-            <a href="forms-validation.html">
-              <i class="bi bi-circle"></i><span>Form Validation</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Forms Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Tables</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="tables-general.html">
-              <i class="bi bi-circle"></i><span>General Tables</span>
-            </a>
-          </li>
-          <li>
-            <a href="tables-data.html">
-              <i class="bi bi-circle"></i><span>Data Tables</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Tables Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-bar-chart"></i><span>Charts</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="charts-chartjs.html">
-              <i class="bi bi-circle"></i><span>Chart.js</span>
-            </a>
-          </li>
-          <li>
-            <a href="charts-apexcharts.html">
-              <i class="bi bi-circle"></i><span>ApexCharts</span>
-            </a>
-          </li>
-          <li>
-            <a href="charts-echarts.html">
-              <i class="bi bi-circle"></i><span>ECharts</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Charts Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-gem"></i><span>Icons</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="icons-bootstrap.html">
-              <i class="bi bi-circle"></i><span>Bootstrap Icons</span>
-            </a>
-          </li>
-          <li>
-            <a href="icons-remix.html">
-              <i class="bi bi-circle"></i><span>Remix Icons</span>
-            </a>
-          </li>
-          <li>
-            <a href="icons-boxicons.html">
-              <i class="bi bi-circle"></i><span>Boxicons</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End Icons Nav -->
-
-      <li class="nav-heading">Pages</li>
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="users-profile.html">
-          <i class="bi bi-person"></i>
-          <span>Profile</span>
-        </a>
-      </li><!-- End Profile Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-faq.html">
-          <i class="bi bi-question-circle"></i>
-          <span>F.A.Q</span>
-        </a>
-      </li><!-- End F.A.Q Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-contact.html">
-          <i class="bi bi-envelope"></i>
-          <span>Contact</span>
-        </a>
-      </li><!-- End Contact Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-register.html">
-          <i class="bi bi-card-list"></i>
-          <span>Register</span>
-        </a>
-      </li><!-- End Register Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-login.html">
-          <i class="bi bi-box-arrow-in-right"></i>
-          <span>Login</span>
-        </a>
-      </li><!-- End Login Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-error-404.html">
-          <i class="bi bi-dash-circle"></i>
-          <span>Error 404</span>
-        </a>
-      </li><!-- End Error 404 Page Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-blank.html">
-          <i class="bi bi-file-earmark"></i>
-          <span>Blank</span>
-        </a>
-      </li><!-- End Blank Page Nav -->
-
-    </ul>
-
-  </aside><!-- End Sidebar-->
+    <section class="property-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="property-sidebar">
+                        <h4>Search Property</h4>
+                        <form action="#" class="sidebar-search">
+                            <div class="sidebar-btn">
+                                <div class="bt-item">
+                                    <input type="radio" name="s-type" id="st-buy" checked>
+                                    <label for="st-buy">Buy</label>
+                                </div>
+                                <div class="bt-item">
+                                    <input type="radio" name="s-type" id="st-rent">
+                                    <label for="st-rent">Rent</label>
+                                </div>
+                            </div>
+                            <select>
+                                <option value="">Locations</option>
+                            </select>
+                            <select>
+                                <option value="">Status</option>
+                            </select>
+                            <select>
+                                <option value="">No of Bedroom</option>
+                            </select>
+                            <select>
+                                <option value="">No of Bathrooms</option>
+                            </select>
+                            <select>
+                                <option value="">No of Guest</option>
+                            </select>
+                            <div class="room-size-range">
+                                <div class="price-text">
+                                    <label for="roomsizeRangeP">Size:</label>
+                                    <input type="text" id="roomsizeRangeP" readonly>
+                                </div>
+                                <div id="roomsize-range-P" class="slider"></div>
+                            </div>
+                            <div class="price-range-wrap">
+                                <div class="price-text">
+                                    <label for="priceRangeP">Price:</label>
+                                    <input type="text" id="priceRangeP" readonly>
+                                </div>
+                                <div id="price-range-P" class="slider"></div>
+                            </div>
+                            <button type="submit" class="search-btn">Search Property</button>
+                        </form>
+                        <div class="best-agents">
+                            <h4>Best Agents</h4>
+                            <a href="#" class="ba-item">
+                                <div class="ba-pic">
+                                    <img src="img/properties/best-agent-1.jpg" alt="">
+                                </div>
+                                <div class="ba-text">
+                                    <h5>Lester Bradley</h5>
+                                    <span>Company Agents</span>
+                                    <p class="property-items">6 property </p>
+                                </div>
+                            </a>
+                            <a href="#" class="ba-item">
+                                <div class="ba-pic">
+                                    <img src="img/properties/best-agent-2.jpg" alt="">
+                                </div>
+                                <div class="ba-text">
+                                    <h5>Janie Blair</h5>
+                                    <span>Company Agents</span>
+                                    <p class="property-items">6 property </p>
+                                </div>
+                            </a>
+                            <a href="#" class="ba-item">
+                                <div class="ba-pic">
+                                    <img src="img/properties/best-agent-3.jpg" alt="">
+                                </div>
+                                <div class="ba-text">
+                                    <h5>Sophia Cole</h5>
+                                    <span>Marketing & Ceo</span>
+                                    <p class="property-items">6 property </p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <h4 class="property-title">Property</h4>
+                    <div class="property-list">
+                        <div class="single-property-item">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="property-pic">
+                                        <img src="img/properties/property-1.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="property-text">
+                                        <div class="s-text">For Sale</div>
+                                        <h5 class="r-title">Villa 9721 Glen Creek</h5>
+                                        <div class="room-price">
+                                            <span>Start From:</span>
+                                            <h5>$3.000.000</h5>
+                                        </div>
+                                        <div class="properties-location"><i class="icon_pin"></i> 9721 Glen Creek Ave.
+                                            Ballston Spa, NY</div>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                            incididunt ut labore.</p>
+                                        <ul class="room-features">
+                                            <li>
+                                                <i class="fa fa-arrows"></i>
+                                                <p>5201 sqft</p>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-bed"></i>
+                                                <p>8 Bed Room</p>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-bath"></i>
+                                                <p>7 Baths Bed</p>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-car"></i>
+                                                <p>1 Garage</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="single-property-item">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="property-pic">
+                                        <img src="img/properties/property-2.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="property-text">
+                                        <div class="s-text">For Sale</div>
+                                        <h5 class="r-title">Villa 9721 Glen Creek</h5>
+                                        <div class="room-price">
+                                            <span>Start From:</span>
+                                            <h5>$3.000.000</h5>
+                                        </div>
+                                        <div class="properties-location"><i class="icon_pin"></i> 9721 Glen Creek Ave.
+                                            Ballston Spa, NY</div>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                            incididunt ut labore.</p>
+                                        <ul class="room-features">
+                                            <li>
+                                                <i class="fa fa-arrows"></i>
+                                                <p>5201 sqft</p>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-bed"></i>
+                                                <p>8 Bed Room</p>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-bath"></i>
+                                                <p>7 Baths Bed</p>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-car"></i>
+                                                <p>1 Garage</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="single-property-item">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="property-pic">
+                                        <img src="img/properties/property-3.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="property-text">
+                                        <div class="s-text">For Sale</div>
+                                        <h5 class="r-title">Villa 9721 Glen Creek</h5>
+                                        <div class="room-price">
+                                            <span>Start From:</span>
+                                            <h5>$3.000.000</h5>
+                                        </div>
+                                        <div class="properties-location"><i class="icon_pin"></i> 9721 Glen Creek Ave.
+                                            Ballston Spa, NY</div>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                            incididunt ut labore.</p>
+                                        <ul class="room-features">
+                                            <li>
+                                                <i class="fa fa-arrows"></i>
+                                                <p>5201 sqft</p>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-bed"></i>
+                                                <p>8 Bed Room</p>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-bath"></i>
+                                                <p>7 Baths Bed</p>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-car"></i>
+                                                <p>1 Garage</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="single-property-item">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="property-pic">
+                                        <img src="img/properties/property-4.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="property-text">
+                                        <div class="s-text">For Sale</div>
+                                        <h5 class="r-title">Villa 9721 Glen Creek</h5>
+                                        <div class="room-price">
+                                            <span>Start From:</span>
+                                            <h5>$3.000.000</h5>
+                                        </div>
+                                        <div class="properties-location"><i class="icon_pin"></i> 9721 Glen Creek Ave.
+                                            Ballston Spa, NY</div>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                            incididunt ut labore.</p>
+                                        <ul class="room-features">
+                                            <li>
+                                                <i class="fa fa-arrows"></i>
+                                                <p>5201 sqft</p>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-bed"></i>
+                                                <p>8 Bed Room</p>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-bath"></i>
+                                                <p>7 Baths Bed</p>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-car"></i>
+                                                <p>1 Garage</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="property-pagination">
+                        <a href="#">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </th:block>
 </html>
