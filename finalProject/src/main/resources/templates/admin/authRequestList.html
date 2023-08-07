@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/aside_layout}">
+
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+	<!--    <link rel="stylesheet" th:href="@{/css/page/home.css}" >-->
+</th:block>
+<!-- index.html 고유 스크립트 추가 -->
+<th:block layout:fragment="script">
+	<!--    <script th:src="@{/js/page/home.js}"></script>-->
+</th:block>
+<!-- Content -->
+<div layout:fragment="content">
+	<div class="container">
+		<h2 align="center">권한 승인 요청 조회</h2>
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th width="100" align="center">신청자ID</th>
+						<th width="150" align="center">신청자명</th>
+						<th width="300" align="center">신청자 사진</th>
+						<th width="200" align="center">사기 내역 조회</th>
+						<th width="200" align="center">요청 처리</th>
+					</tr>
+				</thead>
+				<th:block th:if="${list != null}">
+					<tbody>
+						<th:block th:each="l : ${list}">
+							<tr>
+								<td align="center">[[${l.memberId}]]</td>
+								<td align="center">[[${l.memberName}]]</td>
+								<td align="center">[[<img src="${l.saveProfile}">]]</td>
+								<td align="center">[[${l.accountNumber}]]</td>
+								<td align="center">
+								<button type="button" id="approveButton" name="approveButton" onclick="approve('${l.memberId}', '${l.memberAuth}')">승인</button>  
+								<button type="button" id="rejectButton" name="rejectButton" onclick="reject('${l.memberId}', '${l.memberAuth}')">반려</button>
+								</td>
+							</tr>
+						</th:block>
+					</tbody>
+				</th:block>
+			</table>
+			<th:block th:if="${list == null}">
+				<div align="center">
+					<span>새로운 권한 승인 요청이 없습니다.</span>
+				</div>
+			</th:block>
+		</div>
+		<div>
+			<form id="form" method="post">
+				<input type="hidden" id="memberId" name="memberId">
+				<input type="hidden" id="memberAuth" name="memberAuth">
+			</form>
+		</div>
+	</div>
+</div>
+<div></div>
+<script type="text/javascript">
+	// 수정 필요
+	function approve(id, auth){
+		let form = document.getElementById("form")
+		form.memberId.value = id
+		form.memberAuth.value = auth
+		form.action = "approveAuthRequest.do"
+		form.submit();
+		alert("권한 요청이 승인되었습니다.");
+	}
+	function reject(id, auth){
+		let form = document.getElementById("form")
+		form.memberId.value = id
+		form.memberAuth.value = auth
+		form.action = "rejectAuthRequest.do"
+		form.submit();
+		alert("권한 요청이 거절되었습니다.");
+	}
+</script>
+</html>
