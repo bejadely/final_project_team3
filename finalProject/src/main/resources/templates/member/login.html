@@ -74,7 +74,7 @@
     text-align: center;
 }
 .social-icons img {
- /*    width: 30px ; */
+ width: 150px;
     cursor: pointer;
 }
 .input-group {
@@ -130,8 +130,8 @@ span {
                     <button type="button" class="togglebtn" onclick="register()">가이드 로그인</button>
                 </div>
                 <div class="social-icons">
-                    <img src="/img/login/카카오로그인.png" height="40" alt="kakao">
-                    <img src="/img/login/네이버로그인.png" height="40" alt="naver">
+                    <img src="/img/login/카카오로그인.png" height="40" alt="kakao" th:href="@{https://kauth.kakao.com/oauth/authorize?client_id=7a2faaf15ad43d8157f12b22e12d694d&redirect_uri=http://localhost/member/kakaologin&response_type=code}">
+                    <img src="/img/login/네이버로그인.png" height="40" alt="naver" th:href="@{/member/naverlogin}">
               <!--       <img src="img/gl.png" alt="google"> -->
                 </div>
                 <form id="login" action="" class="input-group">
