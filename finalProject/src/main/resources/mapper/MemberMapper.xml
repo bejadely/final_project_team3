@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip.finalProject.mapper.MemberMapper"><!-- 구현! 메서드 명 만들어 놓은 것을 여기서 만들겠다. -->
+
+<!-- namespace와 MemberRepository가 일치하면 됨 -->
+    <!--insert는 성공시 1, 실패시 -1을 반환한다  -->
+    
+    <insert id="insertMember" parameterType="MemberVO">
+        insert into 
+        member_table(id,
+        			 memberEmail,
+        			 memberPassword, 
+        			 memberName,
+        			 memberAge, 
+        			 memberMobile)<!--sql칼럼그대로  -->
+        values 
+			        (  #{id}, 
+			        #{memberEmail}, <!-- VO변수 -->
+			        #{memberPassword}, 
+			        #{memberName}, 
+			        #{memberAge}, 
+			        #{memberMobile})
+    </insert>
+    
+    
+    
+    
+    <!-- 로그인 처리 -->
+    <!--select는 실패시 빈 결과나 null을 반환한다.  -->
+    <!--  만약에 select문에 id만 담으면 나중에 session에서 name 안담김. -->
+    <!--  별개로 마이페이지에서 내 정보 조회할 때 또 select문 쓸 것임 이때는 갖고오고 싶은 정보들만 select하면 됨. 이때 폰넘버 필요하면 폰넘버도 가져오기 -->
+    <select id="login" resultType="MemberVO"> <!-- MemberVO? -->
+    SELECT 				id,
+        		 	 memberEmail,
+        			 memberPassword, 
+        			 memberName,
+        			 memberAge, 
+        			 memberMobile  
+         FROM 		member_table 
+        WHERE       id = #{id}
+      	 AND		memberPassword = #{memberPassword}
+    </select>
+    
+    <!--로그인 멤버 정보확인  -->
+	<select id= "memberSelect" resultType="boolean">
+	SELECT * FROM member_table 
+	WHERE id =#{Id}
+	<if test="memberPassword !=null">
+		AND memberPassword =#{memberPassword}
+	</if>	
+	<if test="memberMobile !=null">
+		AND memberMobile =#{memberMobile}
+	</if>
+	
+	</select>
+    
+    
+   <!-- 비밀번호 일치 여부 확인 -->
+    <!--  
+	<select id="checkPassword" parameterType="co.shop.member.service.MemberVO" resultType="java.lang.Integer">
+	  SELECT COUNT(*) FROM member_table
+	  WHERE id = #{id} AND memberPassword = #{memberPassword}
+	</select>  -->
+<!--     <select id="login" parameterType="member" resultType="member">
+        select * 
+        from member_table 
+        where 
+        	memberEmail=#{memberEmail} and memberPassword=#{memberPassword}
+    </select>
+    <select id="findAll" resultType="member">
+        select * from member_table
+    </select>
+    <select id="findById" parameterType="Long" resultType="member">
+        select * from member_table where id=#{id}
+    </select>
+    <delete id="delete" parameterType="Long">
+        delete from member_table where id=#{id}
+    </delete>
+    <select id="findByMemberEmail" parameterType="String" resultType="member">
+        select * 
+        from member_table 
+        where memberEmail=#{loginEmail}
+    </select>
+    <update id="update" parameterType="member">
+        update member_table 
+        set 
+	        memberAge=#{memberAge}, 
+	        memberMobile=#{memberMobile}
+        where id=#{id}
+    </update> -->
+</mapper>
