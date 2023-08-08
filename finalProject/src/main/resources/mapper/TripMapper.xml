@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip.finalProject.trip.mapper.TripMapper">
+	<!-- 여행기록 전체 조회 -->
+	<select id="selectAllTrip" resultType="TripVO">
+		SELECT trip_title, 
+			   tmain_saved_img, 
+			   writer_id,
+			   regist_day
+		FROM trip_record 
+		ORDER BY regist_day || post_id
+	</select>
+	
+	<!-- 여행기록 등록 -->
+	<insert id="insertTripInfo" parameterType="TripVO">
+		<selectKey keyProperty="postId" resultType="String" order="BEFORE">
+			SELECT 'trr' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM trip_record
+			WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+			insert into trip_record
+						(
+							post_id
+							, writer_id
+							, trip_title
+							, start_day
+							, end_day
+							, trip_disclose
+							, trip_save
+							, regist_day
+							, trip_share
+						)
+				   values
+				        (
+							#{postId}
+							, #{writerId}
+							, #{tripTitle}
+							, #{startDay}
+							, #{endDay}
+							, #{tripDisclose}
+							, #{tripSave}
+							, sysdate
+							, #{tripShare}				        
+				        )
+	</insert>
+	<!-- 여행기록 등록 - 여행 경로-->
+	
+	<!-- 여행기록 등록 - 여행 메모-->
+</mapper>
