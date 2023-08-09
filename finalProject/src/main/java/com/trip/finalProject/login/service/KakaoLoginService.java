@@ -1,8 +1,4 @@
-package com.trip.finalProject.kakaologin.service;
-
-
-
-import com.trip.finalProject.member.service.MemberVO;
+package com.trip.finalProject.login.service;
 
 public interface KakaoLoginService {
 	

@@ -1,4 +1,4 @@
-package com.trip.finalProject.member.web;
+package com.trip.finalProject.login.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.trip.finalProject.member.service.MemberService;
-import com.trip.finalProject.member.service.MemberVO;
+import com.trip.finalProject.login.service.MemberService;
+import com.trip.finalProject.login.service.MemberVO;
 
 //빈 자동생성 +컨트롤러 사용가능 등
-  @Controller
+ @Controller
+ @RequestMapping("/")
 public class MemberController {
 	  
 		//로그인화면 호출
@@ -47,7 +48,7 @@ public class MemberController {
 		return"member/memberInsert";//등록페이지의 뷰를 반환함.(Get방식)(실제 jsp파일 경로)
 	}
 	
-	//등록처리:URI- memberInsert, RETURN- 홈화면
+	//회원등록처리:URI- memberInsert, RETURN- 홈화면
 	@PostMapping("memberInsert")//url에 접근하면 핸들러메서드를 실행
 	public String memberInsertProcess(MemberVO memberVO) { //memberVO빈값x(input에 타이핑한게 request객체에 담겨서 이쪽으로 옴. controller에서 MemberVO에 담김) 
 		memberService.insertMemberInfo(memberVO);//등록처리 insertMemberInfo 호출해서sql처리 . MemberService에 있는insertMemberInfo 메서드
@@ -56,18 +57,28 @@ public class MemberController {
 	}
 	
 	//로그인화면 호출
-	@GetMapping("member/login")//url에 접근하면 메서드 실행
-	public String loginForm() {
+	
+	@GetMapping("/member/login")//url에 접근하면 메서드 실행
+	public String loginMainForm() {
 		
 		return"member/login"; //로그인페이지 호출
 	}
 	
+	
+	
+	/*
+	 * @GetMapping("login") public String loginForm() { return"member/login"; }
+	 */
+	
+	
 	//로그인 처리
-	@PostMapping("member/login")//url접근하면 메서드 실행
+	@PostMapping("member/star")//url접근하면 메서드 실행
 	public String login(@ModelAttribute MemberVO memberVO, Model model, HttpServletRequest request) {
 		
 		// DB와의 작업은 처리완료
-		MemberVO result = memberService.login(memberVO); //result에는 serviceImple에서의 메서의 login의 return값인 vo가 있을듯?
+		MemberVO result = memberService.login(memberVO);
+		System.out.println(result);
+		//result에는 serviceImple에서의 메서의 login의 return값인 vo가 있을듯?
 		
 		// 매개변수로 집어넣은 HttpServlettRequest request 매개변수를 활용해, 거기 있는 *session을 끄집어 내서 활용
 		//HttpSession은 session을 관리하기위한 인터페이스
@@ -85,18 +96,18 @@ public class MemberController {
 		
 		if(result != null) {
 			HttpSession session = request.getSession();
-			session.setAttribute("sessionId", result.getId());
+			session.setAttribute("sessionId", result.getMemberId());
 			session.setAttribute("sessionName", result.getMemberName());
 			
 			
 			model.addAttribute("message", result.getMemberName() + "님 @환영합니다.");
 			
-			return "home";
+			return "redirect:/";
 			
 		}else {
 	        model.addAttribute("message", "아이디 또는 비밀번호가 올바르지 않습니다.");
 
-			return "member/login";
+			return "member/login"; //"member/login"
 			
 		}
 	}

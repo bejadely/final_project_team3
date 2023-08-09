@@ -1,4 +1,4 @@
-package com.trip.finalProject.naverlogin.service.Impl;
+package com.trip.finalProject.login.service.Impl;
 
 
 import com.github.scribejava.core.builder.api.DefaultApi20;
