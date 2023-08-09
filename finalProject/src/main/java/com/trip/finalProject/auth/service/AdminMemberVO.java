@@ -1,4 +1,4 @@
-package com.trip.finalProject.admin.service;
+package com.trip.finalProject.auth.service;
 
 
 import lombok.Data;
@@ -15,8 +15,8 @@ public class AdminMemberVO {
 	private String addressDetail; // 도로명주소 - 상세
 	private String phoneNumber; // 연락처
 	private String authority; // 권한
-	private String originProfile; // 원본 프로필 사진명
-	private String saveProfile; // 저장 프로필 사진명
+	private String originProfileImg; // 원본 프로필 사진명
+	private String savedProfileImg; // 저장 프로필 사진명
 	private String bankName; // 은행이름
 	private String accountNumber; // 계좌번호
 	private String loginType; // 로그인타입 (카카오, 네이버, 일반 등)
