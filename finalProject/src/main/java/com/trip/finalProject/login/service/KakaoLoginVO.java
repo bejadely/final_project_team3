@@ -1,4 +1,4 @@
-package com.trip.finalProject.kakaologin.service;
+package com.trip.finalProject.login.service;
 //package com.yedam.web.kakaologin.service;
 //
 //import lombok.Data;

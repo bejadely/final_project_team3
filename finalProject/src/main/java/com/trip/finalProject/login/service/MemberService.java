@@ -1,5 +1,5 @@
 
-package com.trip.finalProject.member.service;
+package com.trip.finalProject.login.service;
 
 import javax.servlet.http.HttpSession;
 

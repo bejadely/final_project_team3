@@ -1,4 +1,4 @@
-package com.trip.finalProject.kakaologin.web;
+package com.trip.finalProject.login.web;
 
 
 import javax.servlet.http.HttpSession;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.trip.finalProject.kakaologin.service.KakaoLoginService;
-import com.trip.finalProject.member.service.MemberVO;
+import com.trip.finalProject.login.service.KakaoLoginService;
+import com.trip.finalProject.login.service.MemberVO;
 
 
 
@@ -37,7 +37,7 @@ public class KakaoLoginController {
      System.out.println("================================ ");
       System.out.println("###access_Token#### : " + access_Token);
       System.out.println("###nickname#### : " + userInfo.getMemberName());
-    System.out.println("###email#### : " + userInfo.getMemberEmail());
+    System.out.println("###email#### : " + userInfo.getEmail());
     System.out.println("================================ ");
 //      System.out.println("###nickname#### : " + userInfo.get("nickname"));
 //      System.out.println("###email#### : " + userInfo.get("email"));
@@ -45,13 +45,13 @@ public class KakaoLoginController {
     session.invalidate();
   	// 위 코드는 session객체에 담긴 정보를 초기화 하는 코드.
   	session.setAttribute("kakaoN", userInfo.getMemberName());
-  	session.setAttribute("kakaoE", userInfo.getMemberEmail());
+  	session.setAttribute("kakaoE", userInfo.getEmail());
   	// 위 2개의 코드는 닉네임과 이메일을 session객체에 담는 코드
   	// jsp에서 ${sessionScope.kakaoN} 이런 형식으로 사용할 수 있다.
-  	session.setAttribute("kakaoProfile", userInfo.getProfileImage());
+  	session.setAttribute("kakaoProfile", userInfo.getSavedProfileImg());
   	
 	
-  	System.out.println("프로필사진:" + userInfo.getProfileImage() );
+  	System.out.println("프로필사진:" + userInfo.getSavedProfileImg() );
   	
       
 //      return "member/testPage";

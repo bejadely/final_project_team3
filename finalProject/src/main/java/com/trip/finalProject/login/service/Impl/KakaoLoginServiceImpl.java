@@ -1,4 +1,4 @@
-package com.trip.finalProject.kakaologin.service.Impl;
+package com.trip.finalProject.login.service.Impl;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.trip.finalProject.kakaologin.mapper.KakaoLoginMapper;
-import com.trip.finalProject.kakaologin.service.KakaoLoginService;
-import com.trip.finalProject.member.service.MemberVO;
+import com.trip.finalProject.login.mapper.KakaoLoginMapper;
+import com.trip.finalProject.login.service.KakaoLoginService;
+import com.trip.finalProject.login.service.MemberVO;
 
 
 @Service
@@ -47,7 +47,7 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
          sb.append("grant_type=authorization_code");
             
          sb.append("&client_id=7a2faaf15ad43d8157f12b22e12d694d"); //본인이 발급받은 key
-         sb.append("&redirect_uri=http://localhost/web/kakaologin"); // 본인이 설정한 주소
+         sb.append("&redirect_uri=http://localhost/member/kakaologin"); // 본인이 설정한 주소
             
          sb.append("&code=" + authorize_code);
          bw.write(sb.toString());

@@ -1,4 +1,4 @@
-package com.trip.finalProject.naverlogin.web;
+package com.trip.finalProject.login.web;
 
 import java.io.IOException;
 
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.github.scribejava.core.model.OAuth2AccessToken;
-import com.trip.finalProject.member.service.MemberVO;
-import com.trip.finalProject.naverlogin.mapper.NaverLoginMapper;
-import com.trip.finalProject.naverlogin.service.NaverLoginVO;
+import com.trip.finalProject.login.mapper.NaverLoginMapper;
+import com.trip.finalProject.login.service.MemberVO;
+import com.trip.finalProject.login.service.NaverLoginVO;
  
 /**
  * Handles requests for the application home page.

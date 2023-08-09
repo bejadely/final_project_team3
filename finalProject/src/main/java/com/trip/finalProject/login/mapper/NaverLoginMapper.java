@@ -1,10 +1,10 @@
-package com.trip.finalProject.naverlogin.mapper;
+package com.trip.finalProject.login.mapper;
 
 
 
 import org.json.simple.JSONObject;
 
-import com.trip.finalProject.member.service.MemberVO;
+import com.trip.finalProject.login.service.MemberVO;
 
 public interface NaverLoginMapper {
 	

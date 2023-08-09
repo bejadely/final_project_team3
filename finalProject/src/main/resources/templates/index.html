@@ -15,6 +15,10 @@
 <!-- Content -->
 <div layout:fragment="content">
     <h1>Content</h1>
+ 	<!-- <p th:text="${model.message}">Default Message</p>
+ 	 -->
+    <p th:text="${session.sessionId}">Session ID</p>
+    <p th:text="${session.sessionName}">Session Name</p>
     <br>
     <br>
     <br>
@@ -24,6 +28,7 @@
     <br>
     <br>
     <br>
+    
 	<p>테스트</p>
 </div>
 <div>

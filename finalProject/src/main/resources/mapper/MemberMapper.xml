@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.trip.finalProject.mapper.MemberMapper"><!-- 구현! 메서드 명 만들어 놓은 것을 여기서 만들겠다. -->
+<mapper namespace="com.trip.finalProject.login.mapper.MemberMapper"><!-- 구현! 메서드 명 만들어 놓은 것을 여기서 만들겠다. -->
 
 <!-- namespace와 MemberRepository가 일치하면 됨 -->
     <!--insert는 성공시 1, 실패시 -1을 반환한다  -->
@@ -32,20 +32,15 @@
     <!--  만약에 select문에 id만 담으면 나중에 session에서 name 안담김. -->
     <!--  별개로 마이페이지에서 내 정보 조회할 때 또 select문 쓸 것임 이때는 갖고오고 싶은 정보들만 select하면 됨. 이때 폰넘버 필요하면 폰넘버도 가져오기 -->
     <select id="login" resultType="MemberVO"> <!-- MemberVO? -->
-    SELECT 				id,
-        		 	 memberEmail,
-        			 memberPassword, 
-        			 memberName,
-        			 memberAge, 
-        			 memberMobile  
-         FROM 		member_table 
-        WHERE       id = #{id}
-      	 AND		memberPassword = #{memberPassword}
+       SELECT 		*
+         FROM 		member
+        WHERE       member_id = #{memberId}
+      	 AND		password = #{password}
     </select>
     
     <!--로그인 멤버 정보확인  -->
 	<select id= "memberSelect" resultType="boolean">
-	SELECT * FROM member_table 
+	SELECT * FROM member
 	WHERE id =#{Id}
 	<if test="memberPassword !=null">
 		AND memberPassword =#{memberPassword}

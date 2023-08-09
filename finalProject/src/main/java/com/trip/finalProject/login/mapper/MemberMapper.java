@@ -1,6 +1,6 @@
-package com.trip.finalProject.member.mapper;
+package com.trip.finalProject.login.mapper;
 
-import com.trip.finalProject.member.service.MemberVO;
+import com.trip.finalProject.login.service.MemberVO;
 
 public interface MemberMapper {
 

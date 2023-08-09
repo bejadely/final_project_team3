@@ -1,10 +1,8 @@
-package com.trip.finalProject.kakaologin.mapper;
+package com.trip.finalProject.login.mapper;
 
 import java.util.HashMap;
 
-
-
-import com.trip.finalProject.member.service.MemberVO;
+import com.trip.finalProject.login.service.MemberVO;
 
 
 

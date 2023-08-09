@@ -1,13 +1,13 @@
-package com.trip.finalProject.member.service.Impl;
+package com.trip.finalProject.login.service.Impl;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.trip.finalProject.member.mapper.MemberMapper;
-import com.trip.finalProject.member.service.MemberService;
-import com.trip.finalProject.member.service.MemberVO;
+import com.trip.finalProject.login.mapper.MemberMapper;
+import com.trip.finalProject.login.service.MemberService;
+import com.trip.finalProject.login.service.MemberVO;
 
 
 @Service //해당 클래스를 스프링의 서비스 빈으로 등록하
@@ -21,7 +21,7 @@ public class MemberServiceImpl implements MemberService {
 
 		int result = memberMapper.insertMember(memberVO);
 		if(result ==1) {
-			return memberVO.getId();
+			return memberVO.getMemberId();
 		}else {
 			return null;
 		}

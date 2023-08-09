@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper namespace="com.yedam.web.naverlogin.mapper.NaverLoginMapper">
+  <mapper namespace="com.trip.finalProject.login.mapper.NaverLoginMapper">
   <!--JSONObject 타입의 id="findNaver"  -->
   <select id="findNaver" parameterType="java.util.HashMap" resultType="MemberVO">
 		select * 

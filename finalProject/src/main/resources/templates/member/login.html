@@ -129,23 +129,35 @@ span {
                     <button type="button" class="togglebtn" onclick="login()">회원 로그인</button>
                     <button type="button" class="togglebtn" onclick="register()">가이드 로그인</button>
                 </div>
+                <!--  SNS로그인 -->
                 <div class="social-icons">
-                    <img src="/img/login/카카오로그인.png" height="40" alt="kakao" th:href="@{https://kauth.kakao.com/oauth/authorize?client_id=7a2faaf15ad43d8157f12b22e12d694d&redirect_uri=http://localhost/member/kakaologin&response_type=code}">
+<!-- <img src="/img/login/카카오로그인.png" height="40" alt="kakao" th:href="@{https://kauth.kakao.com/oauth/authorize(client_id=${kakaoClientId}, redirect_uri=${kakaoRedirectUri}, response_type='code')}"> -->
+<img src="/img/login/카카오로그인.png" height="40" alt="kakao"
+ th:href="@{/member/kakaologin}">
+  
+    <!--  <img src="/img/login/카카오로그인.png" height="40" alt="kakao"
+     th:href="@{https://kauth.kakao.com/oauth/authorize?client_id=7a2faaf15ad43d8157f12b22e12d694d&redirect_uri=http://localhost/member/kakaologin&response_type=code>카카오로그인</a>
+     }">   --> 
                     <img src="/img/login/네이버로그인.png" height="40" alt="naver" th:href="@{/member/naverlogin}">
               <!--       <img src="img/gl.png" alt="google"> -->
                 </div>
-                <form id="login" action="" class="input-group">
-                    <input type="text" class="input-field" placeholder="User name or Email" required>
-                    <input type="password" class="input-field" placeholder="Enter Password" required>
+                
+                
+                <!-- 일반 로그인 -->
+                <form id="login" action="star" method="post" class="input-group">
+                    <input type="text" class="input-field" name="memberId" placeholder="아이디" ><!-- required -->
+                    <input type="password"  class="input-field"name="password" placeholder="비밀번호"><!-- required  -->
                     <input type="checkbox" class="checkbox"><span>Remember Password</span>
-                    <button class="submit">Login</button>
+                    <button type="submit" class="submit">로그인</button>
+           			<button type="button" onclick="location.href='memberInsert'">회원가입</button>
                 </form>
                 <form id="register" action="" class="input-group">
                     <input type="text" class="input-field" placeholder="User name or Email" required>
                     <input type="email" class="input-field" placeholder="Your Email" required>
                     <input type="password" class="input-field" placeholder="Enter Password" required>
                     <input type="checkbox" class="checkbox"><span>Terms and conditions</span>
-                    <button class="submit">REGISTER</button>
+               <button class="submit">로그인</button>
+            <button type="button" onclick="location.href='memberInsert'">회원가입</button>
                 </form>
                
             </div>
