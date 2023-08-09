@@ -2,16 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="@{layouts/aside_layout}">
-
-<!-- index.html 고유 CSS 추가 -->
-<th:block layout:fragment="css">
-	<!--    <link rel="stylesheet" th:href="@{/css/page/home.css}" >-->
-</th:block>
-<!-- index.html 고유 스크립트 추가 -->
-<th:block layout:fragment="script">
-	<!--    <script th:src="@{/js/page/home.js}"></script>-->
-</th:block>
+	layout:decorate="@{layouts/admin_layout}">
+	
 <!-- Content -->
 <div layout:fragment="content">
 	<div class="container">
@@ -27,24 +19,25 @@
 						<th width="200" align="center">요청 처리</th>
 					</tr>
 				</thead>
-				<th:block th:if="${list != null}">
+				<th:block th:if="${!#lists.isEmpty(list)}">
 					<tbody>
 						<th:block th:each="l : ${list}">
 							<tr>
-								<td align="center">[[${l.memberId}]]</td>
-								<td align="center">[[${l.memberName}]]</td>
-								<td align="center">[[<img src="${l.saveProfile}">]]</td>
-								<td align="center">[[${l.accountNumber}]]</td>
+								<td align="center" th:text="${l.memberId}"></td>
+								<td align="center" th:text="${l.memberName}"></td>
+								<!-- 사진 저장할 경로 정해야함 -->
+								<td align="center"><img th:src="${l.savedProfileImg}"></td>
+								<td align="center" th:text="${l.accountNumber}"></td>
 								<td align="center">
-								<button type="button" id="approveButton" name="approveButton" onclick="approve('${l.memberId}', '${l.memberAuth}')">승인</button>  
-								<button type="button" id="rejectButton" name="rejectButton" onclick="reject('${l.memberId}', '${l.memberAuth}')">반려</button>
+								<button type="button" class="approveButton" name="approveButton">승인</button>  
+								<button type="button" class="rejectButton" name="rejectButton">반려</button>
 								</td>
 							</tr>
 						</th:block>
 					</tbody>
 				</th:block>
 			</table>
-			<th:block th:if="${list == null}">
+			<th:block th:if="${#lists.isEmpty(list)}">
 				<div align="center">
 					<span>새로운 권한 승인 요청이 없습니다.</span>
 				</div>
@@ -53,29 +46,125 @@
 		<div>
 			<form id="form" method="post">
 				<input type="hidden" id="memberId" name="memberId">
-				<input type="hidden" id="memberAuth" name="memberAuth">
 			</form>
 		</div>
 	</div>
+	<!-- 작업중 : 아래는 css 실험을 하기 위해 남겨놓은 부분 -->
+	<h4 class="property-title">Property</h4>
+                    <div class="property-list">
+                        <div class="single-property-item">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="property-pic">
+                                        <img src="img/properties/property-1.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="property-text">
+                                        <div class="s-text">For Sale</div>
+                                        <h5 class="r-title">Villa 9721 Glen Creek</h5>
+                                        <div class="room-price">
+                                            <span>Start From:</span>
+                                            <h5>$3.000.000</h5>
+                                        </div>
+                                        <div class="properties-location"><i class="icon_pin"></i> 9721 Glen Creek Ave.
+                                            Ballston Spa, NY</div>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                            incididunt ut labore.</p>
+                                        <ul class="room-features">
+                                            <li>
+                                                <i class="fa fa-arrows"></i>
+                                                <p>5201 sqft</p>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-bed"></i>
+                                                <p>8 Bed Room</p>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-bath"></i>
+                                                <p>7 Baths Bed</p>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-car"></i>
+                                                <p>1 Garage</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="single-property-item">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="property-pic">
+                                        <img src="img/properties/property-2.jpg" alt="">
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="property-text">
+                                        <div class="s-text">For Sale</div>
+                                        <h5 class="r-title">Villa 9721 Glen Creek</h5>
+                                        <div class="room-price">
+                                            <span>Start From:</span>
+                                            <h5>$3.000.000</h5>
+                                        </div>
+                                        <div class="properties-location"><i class="icon_pin"></i> 9721 Glen Creek Ave.
+                                            Ballston Spa, NY</div>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                            incididunt ut labore.</p>
+                                        <ul class="room-features">
+                                            <li>
+                                                <i class="fa fa-arrows"></i>
+                                                <p>5201 sqft</p>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-bed"></i>
+                                                <p>8 Bed Room</p>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-bath"></i>
+                                                <p>7 Baths Bed</p>
+                                            </li>
+                                            <li>
+                                                <i class="fa fa-car"></i>
+                                                <p>1 Garage</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- 작업중 : 아래는 property-list /div임 -->
+                    </div>
+	
+	<script type="text/javascript">
+	
+	// 동적으로 버튼이 다 만들어지고 문서가 다 로드 된 후 해당 코드가 실행되게 하기위해 콜백함수 사용 
+	
+	$(document).ready(function() {
+		// 승인 버튼 클릭 시 발생 이벤트 설정
+		$('.approveButton').on('click', authApprove);
+		$('.rejectButton').on('click', authApprove);
+	});
+	
+	// 승인 버튼 클릭 시 발생 이벤트
+	function authApprove(e){
+		
+		let form = document.getElementById("form")
+		form.memberId.value = e.currentTarget.closest('tr').firstElementChild.textContent;
+		form.action = "approveAuthRequest"
+		form.submit();
+	}
+	
+	// 
+	function authReject(e){
+		let form = document.getElementById("form")
+		form.memberId.value = id
+		form.action = "rejectAuthRequest"
+		form.submit();
+	}
+	
+	</script>
 </div>
-<div></div>
-<script type="text/javascript">
-	// 수정 필요
-	function approve(id, auth){
-		let form = document.getElementById("form")
-		form.memberId.value = id
-		form.memberAuth.value = auth
-		form.action = "approveAuthRequest.do"
-		form.submit();
-		alert("권한 요청이 승인되었습니다.");
-	}
-	function reject(id, auth){
-		let form = document.getElementById("form")
-		form.memberId.value = id
-		form.memberAuth.value = auth
-		form.action = "rejectAuthRequest.do"
-		form.submit();
-		alert("권한 요청이 거절되었습니다.");
-	}
-</script>
+
 </html>
