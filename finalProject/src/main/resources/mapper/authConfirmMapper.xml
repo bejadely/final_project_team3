@@ -31,4 +31,26 @@
 		</insert>
   		
   		<!-- 권한승인내역 테이블에 거절 내역 추가 -->
+  		<insert id="insertRejectData" parameterType="AuthConfirmVO">
+  			<selectKey keyProperty="confirmId" resultType="int" order="BEFORE">
+			SELECT NVL(MAX(confirm_id),0) + 1
+			FROM auth_confirm
+			</selectKey>
+			INSERT INTO auth_confirm
+						(
+						 confirm_id
+	  			       , confirm_date
+	  			       , status
+	  			       , requester_id
+	  			       , reject_reason
+					     ) 
+					     VALUES
+					     (
+					      #{confirmId}
+					      , sysdate
+					      , 'A1'
+					      , #{requesterId}
+					      , null
+					     )
+		</insert>
   </mapper>

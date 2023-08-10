@@ -54,11 +54,32 @@ public class AdminController {
 		authConfirmService.insertApproveData(authVO);
 		
 		// 처리결과 (Success / Fail) 값 담아서 보내기
-		rtt.addFlashAttribute("result", map.get("result"));
+		rtt.addFlashAttribute("approveResult", map.get("result"));
 		rtt.addFlashAttribute("memberId", adminVO.getMemberId());
 		
 		return "redirect:authRequestList";
 	}
+	
+	// 권한 승인 신청 반려 + 반려 내역 저장
+	@Transactional
+	@PostMapping("/rejectAuthRequest")
+	public String rejectAuthRequest(AdminMemberVO adminVO, RedirectAttributes rtt) {
+		
+		// 권한승인요청 반려 처리
+		Map<String, String> map = adminMemberService.rejectAuthRequest(adminVO.getMemberId());
+		
+		// 반려내역 저장을 위한 작업
+		AuthConfirmVO authVO = new AuthConfirmVO();
+		authVO.setRequesterId(adminVO.getMemberId());
+		authConfirmService.insertRejectData(authVO);
+		
+		// 처리결과 (Success / Fail) 값 담아서 보내기
+		rtt.addFlashAttribute("rejectResult", map.get("result"));
+		rtt.addFlashAttribute("memberId", adminVO.getMemberId());
+		
+		return "redirect:authRequestList";
+	}
+	
 	
 	
 }

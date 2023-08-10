@@ -47,7 +47,7 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		
 		map.put("memberId", memberId);
 		
-		int result = amm.approveAuthRequest(memberId);
+		int result = amm.rejectAuthRequest(memberId);
 		if(result > 0) {
 			map.put("result", "Success");
 		} else {
