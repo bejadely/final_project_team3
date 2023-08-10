@@ -40,4 +40,21 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		return map;
 	}
 
+	@Override
+	public Map<String, String> rejectAuthRequest(String memberId) {
+		// 권한 승인 요청 반려 처리
+		Map<String, String> map = new HashMap<>();
+		
+		map.put("memberId", memberId);
+		
+		int result = amm.approveAuthRequest(memberId);
+		if(result > 0) {
+			map.put("result", "Success");
+		} else {
+			map.put("result", "Fail");
+		}
+		
+		return map;
+	}
+
 }

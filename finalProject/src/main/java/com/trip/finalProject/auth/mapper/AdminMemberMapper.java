@@ -12,4 +12,7 @@ public interface AdminMemberMapper {
 	// 권한 승인 요청 승인 처리
 	public int approveAuthRequest(String memberId);
 	
+	// 권한 승인 요청 반려 처리
+	public int rejectAuthRequest(String memberId);
+
 }

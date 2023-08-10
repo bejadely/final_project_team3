@@ -1,0 +1,45 @@
+<html lagn="ko" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+    <!--headFragment 선언-->
+    <th:block th:fragment="headFragment">
+		<!-- 왠지 추가해야할 것 같아서 -->
+		<title>Insert title here</title>
+		<meta charset="UTF-8">
+	    <meta name="description" content="Azenta Template">
+	    <meta name="keywords" content="Azenta, unica, creative, html">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	    <title>Azenta | Template</title>
+				
+		<!-- jQuery -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+		
+		<!-- googleFont -->
+		<link th:href="@{https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap}" rel="stylesheet">
+          
+        <!-- 이 영역에 공통으로 사용할 css, js library를 선언한다. -->
+        <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" >
+        <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" type="text/css">
+	    <link rel="stylesheet" th:href="@{/css/elegant-icons.css}" type="text/css">
+	    <link rel="stylesheet" th:href="@{/css/themify-icons.css}" type="text/css">
+	    <link rel="stylesheet" th:href="@{/css/nice-select.css}" type="text/css">
+	    <link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}" type="text/css">
+	    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}" type="text/css">
+	    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}" type="text/css">
+	    <link rel="stylesheet" th:href="@{/css/slicknav.min.css}" type="text/css">
+	    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
+
+	    
+	    <!-- fontawesome -->
+	    <script th:src="@{https://kit.fontawesome.com/d58c3728d1.js}" crossorigin="anonymous"></script>
+
+        <!-- Content Page의 CSS fragment 삽입 -->
+        <th:block layout:fragment="css"></th:block>
+
+        <!-- Content Page의 script fragment 삽입 -->
+        <th:block layout:fragment="script"></th:block>
+        
+    </th:block>
+</html>

@@ -23,4 +23,11 @@
 			SET authority = 'A2'
 			WHERE member_id = #{memberId}
   		</update>
+  		
+  		<!-- 권한 승인 요청 반려 처리 -->
+  		<update id="rejectAuthRequest">
+  			UPDATE member
+			SET authority = 'A1'
+			WHERE member_id = #{memberId}
+  		</update>
   </mapper>
