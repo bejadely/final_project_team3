@@ -29,8 +29,8 @@ public class AuthConfirmServiceImpl implements AuthConfirmService {
 
 	@Override
 	public int insertRejectData(AuthConfirmVO vo) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		return authConfirmMapper.insertRejectData(vo);
 	}
 
 }

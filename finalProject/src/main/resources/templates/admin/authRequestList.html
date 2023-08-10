@@ -144,24 +144,28 @@
 	$(document).ready(function() {
 		// 승인 버튼 클릭 시 발생 이벤트 설정
 		$('.approveButton').on('click', authApprove);
-		$('.rejectButton').on('click', authApprove);
+		$('.rejectButton').on('click', authReject);
 	});
 	
 	// 승인 버튼 클릭 시 발생 이벤트
 	function authApprove(e){
 		
-		let form = document.getElementById("form")
+		e.stopPropagation();
+		
+		let form = document.getElementById("form");
 		form.memberId.value = e.currentTarget.closest('tr').firstElementChild.textContent;
-		form.action = "approveAuthRequest"
+		form.action = "approveAuthRequest";
 		form.submit();
 	}
 	
 	// 반려 버튼 클릭 시 발생 이벤트
 	function authReject(e){
 		// 작업중 : 모달창 띄워야함
-		let form = document.getElementById("form")
-		form.memberId.value = id
-		form.action = "rejectAuthRequest"
+		e.stopPropagation();
+	
+		let form = document.getElementById("form");
+		form.memberId.value = e.currentTarget.closest('tr').firstElementChild.textContent;
+		form.action = "rejectAuthRequest";
 		form.submit();
 	}
 	
