@@ -33,7 +33,7 @@ public class MemberServiceImpl implements MemberService {
 	// 로그인 기능 수행
 	 @Override	
 	    public MemberVO login(MemberVO memberVO) {
-		 //Mapper.xml의 select문인 login의 결과가 없으면  빈값이나 null을 가져
+		 //Mapper.xml의 select문인 login의 결과가 없으면  빈값이나 null을 가져옴
 		 MemberVO result = memberMapper.login(memberVO); 
 		 
 		 return result;

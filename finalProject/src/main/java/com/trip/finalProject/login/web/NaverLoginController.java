@@ -33,13 +33,10 @@ public class NaverLoginController {
 	@Autowired
 	NaverLoginMapper nm;
 	
-	/*
-	 * @Autowired private void setNaverLoginVO(NaverLoginVO naverLoginVO) {
-	 * this.naverLoginVO = naverLoginVO; }
-	 */
+	
  
 	//로그인 첫 화면 요청 메소드
-	@RequestMapping(value = "/naverlogin", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "member/naverlogin", method = { RequestMethod.GET, RequestMethod.POST })
 	public String login(Model model, HttpSession session) {
 		
 		
@@ -53,7 +50,7 @@ public class NaverLoginController {
 		//네이버 
 		model.addAttribute("url", naverAuthUrl);
  
-		return "naverlogin";  //여기를 home으로 하면 System.out.println("네이버:" + naverAuthUrl);이거 콘솔에 띄우고 home화면은 보이면서 url은 http://localhost/web/naverlogin
+		return "member/naverlogin";  //여기를 home으로 하면 System.out.println("네이버:" + naverAuthUrl);이거 콘솔에 띄우고 home화면은 보이면서 url은 http://localhost/web/naverlogin
 	}
  
 	//네이버 로그인 성공시 callback호출 메소드 -> 왜??
@@ -105,7 +102,7 @@ public class NaverLoginController {
 		session.setAttribute("id",id);
 		model.addAttribute("result", apiResult);
 	
-		return "naverlogin";  //naverlogin -> 로그아웃 가능 화면 나옴 or home
+		return "member/naverlogin";  //naverlogin -> 로그아웃 가능 화면 나옴 or home
 	}
 	
 	
@@ -117,16 +114,16 @@ public class NaverLoginController {
 			session.invalidate();
  
 	        
-			return "home";// "redirect:index.jsp";
+			return "redirect:/";// "redirect:index.jsp";
 		}
 		
 	//art shift a 하면 같은 열 삭제 가능
 	
 	// 네이버 Login Form에서 하단의 '홈' 클릭했을 때 세션은 그대로인 상태로 홈으로 가게됨
-		@RequestMapping(value = "/home", method = { RequestMethod.GET,
+		@RequestMapping(value = "member/naver", method = { RequestMethod.GET,
 		RequestMethod.POST }) public String gotohome(HttpSession session)throws IOException { 
 		System.out.println("고투홈!");
-		return "home";// "redirect:index.jsp"; 
+		return "redirect:/";// "redirect:index.jsp"; 
 		}
 		
 	

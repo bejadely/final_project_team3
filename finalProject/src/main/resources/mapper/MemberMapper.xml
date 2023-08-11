@@ -8,20 +8,32 @@
     <!--insert는 성공시 1, 실패시 -1을 반환한다  -->
     
     <insert id="insertMember" parameterType="MemberVO">
-        insert into 
-        member_table(id,
-        			 memberEmail,
-        			 memberPassword, 
-        			 memberName,
-        			 memberAge, 
-        			 memberMobile)<!--sql칼럼그대로  -->
+        insert into member
+        			(member_id,
+       				 member_Name,
+       				 password,      			        			         			 
+        			 nationality,
+        			 email,
+        			 ZIP_CODE,
+        			 ADDRESS,
+        			 ADDRESS_DETAIL,
+        			 PHONE_NUMBER,      			  
+        			 birth_date,
+        			 gender
+        			 )<!--sql칼럼그대로  -->
         values 
-			        (  #{id}, 
-			        #{memberEmail}, <!-- VO변수 -->
-			        #{memberPassword}, 
-			        #{memberName}, 
-			        #{memberAge}, 
-			        #{memberMobile})
+			        (  #{id} 
+			        ,#{memberName}
+			        ,#{password}	    
+			        ,#{nationality}
+			        ,#{email}	   		       
+			        ,#{zipCode} 
+			        ,#{address}
+			        ,#{addressDetail}
+			        ,#{phoneNumber}	
+			        ,#{birthDate}		            			        
+			        ,#{gender})
+			      
     </insert>
     
     
@@ -34,8 +46,10 @@
     <select id="login" resultType="MemberVO"> <!-- MemberVO? -->
        SELECT 		*
          FROM 		member
-        WHERE       member_id = #{memberId}
-      	 AND		password = #{password}
+         WHERE       member_id = #{memberId}
+         AND		password = #{password}  
+     <!--    WHERE       member_id = #{memberId}
+      	 AND		password = #{password} -->
     </select>
     
     <!--로그인 멤버 정보확인  -->
@@ -52,6 +66,8 @@
 	</select>
     
     
+    
+       <!--  TO_DATE('#{birthDate}','YYYY-MM-DD') -->
    <!-- 비밀번호 일치 여부 확인 -->
     <!--  
 	<select id="checkPassword" parameterType="co.shop.member.service.MemberVO" resultType="java.lang.Integer">
