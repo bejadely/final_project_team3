@@ -48,6 +48,13 @@ public class TripController {
 		return "redirect:/tripRecordList";
 	}
 	
+	//여행기록 임시저장 - 처리
+	@PostMapping("tsTripRecordInsert")
+	public String tsTripRecordInsertProcess(TripVO tripVO) {
+		tripService.TsInsertTripInfo(tripVO);
+		return "redirect:/tripRecordList";
+	}
+	
 	//여행기록 지도 등록
 	
 	//여행기록 메모 등록
