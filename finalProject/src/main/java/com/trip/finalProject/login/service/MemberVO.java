@@ -1,15 +1,27 @@
 package com.trip.finalProject.login.service;
 
-import java.util.Date;
+
+
+
+
+
+
+
+
+
+
 
 import lombok.Data;
 
 @Data
 public class MemberVO {
+	private String id;
+	
+	
 	private String memberId;
 	private String memberName;
 	private String password;
-	private String nationailty;
+	private String nationality;
 	private String email;
 	private String zipCode;
 	private String address;
@@ -22,7 +34,7 @@ public class MemberVO {
 	private String loginType;
 	private String accessToken;
 	private String refreshToken;
-	private Date birthDate;
+	private String birthDate;
 	private String gender;
 	private String punishCount;
 	//로그인 성공 여부를 나타내는 필드

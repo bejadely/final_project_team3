@@ -6,13 +6,13 @@
   <!--JSONObject 타입의 id="findNaver"  -->
   <select id="findNaver" parameterType="java.util.HashMap" resultType="MemberVO">
 		select * 
-		from member_table 
+		from member 
 		where  id=#{id}
 </select>
 
 <insert id="insertNaverLogin" parameterType="java.util.HashMap">
 		insert into 
-		member_table(id )
+		member(id )
 			values
 			(#{id})
 	</insert>

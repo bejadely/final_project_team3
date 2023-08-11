@@ -13,8 +13,8 @@
  -->
 <select id="findKakao" parameterType="java.util.HashMap" resultType="MemberVO">
 		select * 
-		from member_table 
-		where  memberEmail=#{email}
+		from member 
+		where  Email=#{email}
 </select>
 	
 <!-- 정보 저장 --><!-- 동적으로 변하는 매개변수를 필요로 한다면, parameterType 속성을 사용하여 매개변수의 타입을 지정해주어야 합니다.  -->
@@ -26,10 +26,22 @@
 	</insert> --> 
 	
 	<insert id="insertKakaoLogin" parameterType="java.util.HashMap">
-		insert into 
-		member_table(id, memberName, memberEmail, profileImage )
-			values
-			(#{id},#{nickname}, #{email}, #{profileImage})
+		insert into member
+					(member_id,
+					password,
+					member_Name,
+					Email,
+					saved_profile_img,
+					birth_date,
+					gender)
+		values
+					(#{id},
+					#{password},
+					#{nickname},
+					#{email},
+					#{profileImage},
+					'940426',
+					'1')
 	</insert>
 		
 	

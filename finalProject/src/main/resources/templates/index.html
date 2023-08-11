@@ -15,10 +15,19 @@
 <!-- Content -->
 <div layout:fragment="content">
     <h1>Content</h1>
- 	<!-- <p th:text="${model.message}">Default Message</p>
- 	 -->
+ 	
+ 	
+ 	
+ 	<!-- 일반 로그인 -->
     <p th:text="${session.sessionId}">Session ID</p>
     <p th:text="${session.sessionName}">Session Name</p>
+    
+    <!--  카카오 로그인 -->
+    <p th:text="${session.kakaoN}">카카오이름</p>     
+    <img th:src="${session.kakaoProfile}" style="width:100px; height:100px;"/>
+   
+
+   
     <br>
     <br>
     <br>
