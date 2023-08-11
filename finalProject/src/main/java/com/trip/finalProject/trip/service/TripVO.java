@@ -31,6 +31,8 @@ public class TripVO {
 	private String originImg;
 	private String savedImg;
 	private int fileNo;
+	private String imgType;
+	
 	
 	//trip_record
 	private String writerId;
@@ -45,8 +47,7 @@ public class TripVO {
 	private Date registDay;
 	private String tripReview;
 	private String tripShare;
-	private String tmainOriginImg;
-	private String tmainSavedImg;
+
 	
 	
 }

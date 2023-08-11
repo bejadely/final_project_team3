@@ -1,11 +1,16 @@
 package com.trip.finalProject.trip.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.trip.service.TripService;
 import com.trip.finalProject.trip.service.TripVO;
 
@@ -16,8 +21,16 @@ public class TripController {
 	
 	//여행기록 전체 조회
 	@GetMapping("tripRecordList")
-	public String tirpRecordList(Model model) {
-		model.addAttribute("tripRecordList", tripService.getTripAll());
+	public String tirpRecordList(Model model
+			  ,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
+			  ,@RequestParam(value = "cntPerPage", defaultValue = "12") Integer cntPerPage) {
+		int total = tripService.tripRecordCount();
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		List<TripVO> tripRecordList = tripService.getTripAll(pagingVO);
+		
+		model.addAttribute("tripRecordList", tripRecordList);
+		model.addAttribute("paging", pagingVO);
+		
 		return "trip/tripRecordList";
 	}
 	

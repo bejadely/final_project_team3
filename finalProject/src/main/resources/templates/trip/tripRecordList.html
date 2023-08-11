@@ -42,7 +42,7 @@
 						<div class="col-lg-4 col-md-6">
 							<div class="single-blog-item">
 								<div class="sb-pic">
-									<img th:src="${tripInfo.tmainSavedImg}" alt="이미지">
+									<img th:src="${tripInfo.writerId}" alt="이미지">
 								</div>
 								<div class="sb-text"
 									style="width: 290px; margin-right: 70px; margin-left: 30xp">
@@ -61,6 +61,36 @@
 					</div>
 				</div>
 			</div>
+			<!-- 여행기록 페이징 -->
+			<div class="container" style="text-align: center">
+			<th:block th:if="${paging.startPage != 1}">
+				<a th:href="@{tripRecordList(nowPage=1, cntPerPage=${paging.cntPerPage})}" ><<</a>
+			</th:block>
+			<th:block th:if="${paging.startPage != 1}">
+				<a
+					th:href="@{tripRecordList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+			</th:block>
+			<th:block
+				th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+				<th:block th:if="${p eq paging.nowPage}">
+					<b th:text="${p}"></b>
+				</th:block>
+				<th:block th:if="${p ne paging.nowPage}">
+					<a
+						th:href="@{tripRecordList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
+						th:text="${p}"></a>
+				</th:block>
+			</th:block>
+			<th:block
+				th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 10}">
+				<a
+					th:href="@{tripRecordList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+			</th:block>
+			<th:block th:if="${paging.endPage != paging.lastPage}">
+				<a
+					th:href="@{tripRecordList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
+			</th:block>
+		</div>
 		</section>
 		<!-- 여행기록 section end -->
 	</div>
