@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip.finalProject.trip.mapper.TripMapper">
+	 <!-- 여행기록 전체조회 페이징 -->
+ 	<select id="getTotalCount" resultType="int">
+ 		SELECT COUNT(*)
+ 		FROM trip_record
+ 	</select>
+	
+	<!-- 여행기록 전체 조회 -->
+	<select id="selectAllTrip" resultType="TripVO">		
+		SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			 FROM(SELECT *
+				  FROM trip_record
+				  WHERE trip_save = 'T2'
+				  ORDER BY regist_day DESC) a)
+		WHERE rn BETWEEN #{start } AND #{end }
+	</select>
+	
+	<!-- 여행기록 등록 -->
+	<insert id="insertTripInfo" parameterType="TripVO">
+		<selectKey keyProperty="postId" resultType="String" order="BEFORE">
+			SELECT 'trr' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM trip_record
+			WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+			insert into trip_record
+						(
+							post_id
+							, writer_id
+							, trip_title
+							, start_day
+							, end_day
+							, trip_disclose
+							, trip_save
+							, regist_day
+							, trip_share
+						)
+				   values
+				        (
+							#{postId}
+							, #{writerId}
+							, #{tripTitle}
+							, #{startDay}
+							, #{endDay}
+							, #{tripDisclose}
+							, 'T2'
+							, sysdate
+							, #{tripShare}				        
+				        )
+	</insert>
+	
+	<!-- 여행기록 임시저장 -->
+	<insert id="tsInsertTripInfo" parameterType="TripVO">
+		<selectKey keyProperty="postId" resultType="String" order="BEFORE">
+			SELECT 'trr' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM trip_record
+			WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+		insert into trip_record
+						(
+							post_id
+							, writer_id
+							<if test="tripTitle != null and !tripTitle.equals('')">
+							, trip_title
+							</if>
+							<if test="startDay != null and !startDay.equals('')">
+							, start_day
+							</if>
+							<if test="endDay != null and !startDay.equals('')">
+							, end_day
+							</if>
+							, trip_disclose
+							, trip_save
+							, regist_day
+							, trip_share
+						)
+				   values
+				        (
+							#{postId}
+							, #{writerId}
+							<if test="tripTitle != null and !tripTitle.equals('')">
+							, #{tripTitle}
+							</if>
+							<if test="startDay != null and !startDay.equals('')">
+							, #{startDay}
+							</if>
+							<if test="endDay != null and !startDay.equals('')">
+							, #{endDay}
+							</if>
+							, #{tripDisclose}
+							, 'T1'
+							, sysdate
+							, #{tripShare}				        
+				        )
+	</insert>
+	
+	<!-- 여행기록 등록 - 여행 경로-->
+	
+	<!-- 여행기록 등록 - 여행 메모-->
+</mapper>
