@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.trip.finalProject.cart.mapper.CartMapper">
+ 	<!-- 페이징 -->
+ 	<select id="getTotalCount" resultType="int">
+ 		SELECT COUNT(*)
+ 		FROM cart
+ 	</select>
+ 	<!-- 전체조회 -->
+ 	<select id="selectAllCart" resultType="CartVO">
+ 		SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			 FROM(SELECT *
+				  FROM cart
+				  ORDER BY reg_date) a)
+		WHERE rn BETWEEN #{start } AND #{end }
+ 	</select>
+ 	<!-- 등록 -->
+ 	<insert id="insertCartInfo" parameterType="CartVO">
+ 	INSERT INTO cart
+ 				(
+ 				cart_id
+ 				,post_id
+ 				,option_id
+ 				,quantity
+ 				,price
+ 				,member_id
+ 				,reg_date
+ 				)
+ 				VALUES
+ 				(
+ 				#{cartId}
+ 				,#{postId}
+ 				,#{optionId}
+ 				,#{quantity}
+ 				,#{price}
+ 				,#{member_id}
+ 				,#{reg_date}
+ 				)
+ 	</insert>
+ 	<!-- 삭제 -->
+ 	<delete id="deleteCartInfo" parameterType="CartVO">
+ 		DELETE FROM cart
+ 		WHERE cart_id = ${cartId}
+ 	</delete>
+ 
+ 
+ </mapper>
