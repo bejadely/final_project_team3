@@ -13,4 +13,7 @@ public interface TripService {
 	
 	//여행기록 등록
 	public int InsertTripInfo(TripVO tripVO);
+	
+	//여행기록 임시저장
+	public int TsInsertTripInfo(TripVO tripVO);
 }

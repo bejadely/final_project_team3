@@ -34,5 +34,11 @@ public class TripServiceImpl implements TripService {
 		return tripMapper.insertTripInfo(tripVO);
 	}
 
+	//여행기록 임시저장
+	@Override
+	public int TsInsertTripInfo(TripVO tripVO) {
+		return tripMapper.tsInsertTripInfo(tripVO);
+	}
+
 
 }
