@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/default_layout}">
+<head>
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<meta charset="UTF-8">
+<title>장바구니</title>
+<style type="text/css">
+
+table, th, td {
+	border: 1px solid black;
+	text-align: center;
+	margin: 0 auto;
+}
+</style>
+<script>
+$(document).ready(function() {
+    // 체크박스 전체 선택/해제 기능
+    $("#cbx_chkAll").click(function() {
+        if ($(this).is(":checked")) {
+            $("input[name=chk]").prop("checked", true);
+        } else {
+            $("input[name=chk]").prop("checked", false);
+        }
+    });
+
+    // 각 체크박스의 클릭 이벤트 처리
+    $("input[name=chk]").click(function() {
+        var total = $("input[name=chk]").length;
+        var checked = $("input[name=chk]:checked").length;
+
+        if (total !== checked) {
+            $("#cbx_chkAll").prop("checked", false);
+        } else {
+            $("#cbx_chkAll").prop("checked", true);
+        }
+    });
+    
+    // 삭제 버튼 클릭 시 선택된 항목 삭제
+    $(".delete-btn").click(function() {
+        let row = $(this).closest("tr");
+        let cartId = row.find("input[name='chk']").data("cartid");
+        let url = "/cartDelete?cartId=" + cartId;
+
+        fetch(url)
+            .then(response => response.text())
+            .then(text => {
+                row.remove();
+                top.document.location.reload();
+            });
+    });
+
+    // 삭제 버튼 클릭 시 선택된 항목 삭제
+    $("#delBtn").click(function() {
+    let ckb = $('tbody input[type=checkbox]:checked');
+    //let sum2 = $("#sum2");
+
+    ckb.each(function() {
+        let check = $(this);
+        let id = check.val();
+        let cartId = check.data("cartid"); // Retrieve cartId
+        let url = "/cartDelete?cartId=" + cartId; // Use 'cartId'
+
+        //sum2.text(Number(sum2.text()) - parseInt(check.parent().parent().find("td:last-child").html().replace(",", "")));
+
+        fetch(url)
+            .then(response => response.text())
+            .then(text => {
+                check.parent().parent().remove();
+                top.document.location.reload();     
+            });
+    });
+  });
+    
+    $(document).ready(function() {
+    	var nowPage = [[${paging.nowPage}]];
+        $('#cntPerPage').on('change', function() {
+            let selected = $('#cntPerPage').val();
+             // 이 부분은 서버에서 렌더링된 값을 가져와야 합니다.
+            location.href = 'cartList?nowPage=' + nowPage + '&cntPerPage=' + selected;
+        });
+    });
+    
+    /* document.addEventListener('DOMContentLoaded', function(e){
+		document.getElementById('cntPerPage')
+				.addEventListener('change', changeHandler);	
+	});
+	
+	function changeHandler(e){
+		let selected = document.getElementById('cntPerPage').value; 
+		location.href='empList?nowPage=${paging.nowPage}&cntPerPage='+selected;
+	} */
+});
+
+</script>
+</head>
+<body>
+	<th:block layout:fragment="css">
+		<!--    <link rel="stylesheet" th:href="@{/css/page/home.css}" >-->
+	</th:block>
+	<!-- index.html 고유 스크립트 추가 -->
+	<th:block layout:fragment="script">
+		<!--    <script th:src="@{/js/page/home.js}"></script>-->
+	</th:block>
+	<div layout:fragment="content" id="cartAllList" style="text-align: center;">
+		<select id="cntPerPage">
+			    <option th:value="5" th:text="|5줄 보기|" th:selected="${paging.cntPerPage == 5}" ></option>
+			    <option th:value="10" th:text="|10줄 보기|" th:selected="${paging.cntPerPage == 10}" ></option>
+			    <option th:value="15" th:text="|15줄 보기|" th:selected="${paging.cntPerPage == 15}" ></option>
+			    <option th:value="20" th:text="|20줄 보기|" th:selected="${paging.cntPerPage == 20}" ></option>
+		</select>
+	
+		<table>
+			<thead>
+				<tr>
+					<th><input type="checkbox" id="cbx_chkAll" /></th>
+					<th>상품사진</th>
+					<th>상품 명</th>
+					<th>상품수량</th>
+					<th>상품가격</th>
+					<th>삭제</th>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="cartList:${cartList}">
+					<tr>
+						<td><input type="checkbox" name="chk" th:attr="data-cartid=${cartList.cartId}"></td>
+						<td th:text="${cartList.cartName}" />
+						<td th:text="${cartList.cartName}" />
+						<td th:text="${cartList.quantity}" />
+						<td th:text="${cartList.price}" />
+						<td><button class="delete-btn">삭제</button>
+						</td>
+					</tr>
+				</th:block>
+			</tbody>
+		</table>
+		<button type="button">구매</button>
+		<button type="button" id="delBtn">삭제</button>
+		<div>
+			<th:block th:if="${paging.startPage != 1}">
+				<a th:href="@{cartList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
+			</th:block>
+			<th:block th:if="${paging.startPage != 1}">
+				<a th:href="@{cartList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+			</th:block>
+			<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+				<th:block th:if="${p eq paging.nowPage}">
+					<b th:text="${p}"></b>
+				</th:block>
+				<th:block th:if="${p ne paging.nowPage}">
+					<a th:href="@{cartList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+				</th:block>
+			</th:block>
+			<th:block
+				th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+				<a th:href="@{cartList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+			</th:block>
+			<th:block th:if="${paging.endPage != paging.lastPage}">
+				<a th:href="@{cartList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
+			</th:block>
+		</div>
+	</div>
+</body>
+</html>
