@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @MapperScan(basePackages = "com.trip.finalProject.**.mapper")
-
 public class FinalProjectApplication {
 
 	public static void main(String[] args) {
