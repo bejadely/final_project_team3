@@ -30,7 +30,7 @@
         </div>
         <div class="language-bar">
             <div class="language-option">
-                <img src="img/flag.png" alt="">
+                <img src="/img/flag.png" alt="">
                 <span>English</span>
                 <i class="fa fa-angle-down"></i>
                 <div class="flag-dropdown">
@@ -42,7 +42,8 @@
                 </div>
             </div>
             <div class="property-btn">
-                <a href="#" class="property-sub">로그인</a>
+             <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a>
+             <a th:href="@{/member/login}"class="property-sub">로그인</a>
             </div>
             <div>
             	<i class="fa-regular fa-heart fa-xs"></i>
@@ -110,7 +111,7 @@
                     <div class="col-lg-5">
                         <div class="top-right">
                             <div class="language-option">
-                                <img src="img/flag.png" alt="">
+                                <img src="/img/flag.png" alt="">
                                 <span>English</span>
                                 <i class="fa fa-angle-down"></i>
                                 <div class="flag-dropdown">
@@ -121,7 +122,8 @@
                                     </ul>
                                 </div>
                             </div>
-                            <a href="#" class="property-sub">로그인</a>
+                         <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a>
+                        <a th:href="@{/member/login}"class="property-sub">로그인</a>
                         </div>
                     </div>
                 </div>
@@ -132,7 +134,7 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="logo">
-                            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                            <a href="./index.html"><img src="/img/logo.png" alt=""></a>
                         </div>
                     </div>
                     <div class="col-lg-9">
@@ -167,7 +169,6 @@
         </div>
     </header>
     <!-- Header End -->
-
 </th:block>
 </body>
 </html>
