@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div id="data-container">
+    <!-- 여기에 데이터가 출력될 부분 -->
+</div>
+
+<script>
+    // Ajax 요청 및 데이터 처리 코드를 작성합니다.
+    $(document).ready(function() {
+    // 버튼 클릭 시 Ajax 요청 보내기
+    $('#load-data-button').click(function() {
+        $.ajax({
+            url: 'http://apis.data.go.kr/B551011/KorWithService1/detailInfo1',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                ServiceKey: 'SgpQI9OLDRYcTC13sHnzaFNafSGG1B3BPsdYE2JJoilJrPFXOJ5E0pPE%2FRfLYRoPx75dcdfbs7kKvxYFYxioSg%3D%3D',
+                contentTypeId: 32,
+                numOfRows: 10,
+                pageNo: 1,
+                MobileOS: 'ETC',
+                MobileApp: 'AppTest',
+                _type: 'json'
+            },
+            success: function(response) {
+                // 데이터를 받아와서 처리하는 코드
+                displayData(response);
+            },
+            error: function(error) {
+                console.log('Error:', error);
+            }
+        });
+    });
+
+    // 데이터 출력 함수
+    function displayData(data) {
+        var dataContainer = $('#data-container');
+        dataContainer.empty();
+
+        // 데이터를 순회하면서 출력
+        var items = data.response.body.item.items;
+        for (var i = 0; i < item.length; i++) {
+            var item = items[i];
+            var title = item.title;
+            var imageUrl = item.firstimage;
+
+            var dataItem = $('<div></div>').addClass('data-item');
+            var titleElement = $('<h3></h3>').text(title);
+            var imageElement = $('<img>').attr('src', imageUrl).attr('alt', title);
+
+            dataItem.append(titleElement);
+            dataItem.append(imageElement);
+            dataContainer.append(dataItem);
+        }
+    }
+});
+</script>
+</body>
+</html>
