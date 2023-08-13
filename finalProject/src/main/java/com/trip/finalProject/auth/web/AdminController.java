@@ -53,7 +53,7 @@ public class AdminController {
 		authVO.setRequesterId(adminVO.getMemberId());
 		authConfirmService.insertApproveData(authVO);
 		
-		// 처리결과 (Success / Fail) 값 담아서 보내기
+		// 처리결과 (success / fail) 값 담아서 보내기
 		rtt.addFlashAttribute("approveResult", map.get("result"));
 		rtt.addFlashAttribute("memberId", adminVO.getMemberId());
 		
