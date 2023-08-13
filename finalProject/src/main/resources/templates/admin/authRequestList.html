@@ -7,7 +7,9 @@
 <!-- Content -->
 <div layout:fragment="content">
 	<div class="container">
-		<h2 align="center">권한 승인 요청 조회</h2>
+		<h5><b>권한 승인 요청 조회</b></h5>
+		<p>권한 승인 요청을 한 목록을 조회할 수 있는 페이지입니다.</p>
+		<br>
 		<div class="table-responsive">
 			<table class="table">
 				<thead>
@@ -31,6 +33,8 @@
 								<td align="center">
 								<button type="button" class="approveButton" name="approveButton">승인</button>  
 								<button type="button" class="rejectButton" name="rejectButton">반려</button>
+								<!-- 모달 부분 -->
+								
 								</td>
 							</tr>
 						</th:block>
@@ -49,95 +53,8 @@
 			</form>
 		</div>
 	</div>
-	<!-- 작업중 : 아래는 css 실험을 하기 위해 남겨놓은 부분 -->
-	<h4 class="property-title">Property</h4>
-                    <div class="property-list">
-                        <div class="single-property-item">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="property-pic">
-                                        <img src="img/properties/property-1.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="property-text">
-                                        <div class="s-text">For Sale</div>
-                                        <h5 class="r-title">Villa 9721 Glen Creek</h5>
-                                        <div class="room-price">
-                                            <span>Start From:</span>
-                                            <h5>$3.000.000</h5>
-                                        </div>
-                                        <div class="properties-location"><i class="icon_pin"></i> 9721 Glen Creek Ave.
-                                            Ballston Spa, NY</div>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                            incididunt ut labore.</p>
-                                        <ul class="room-features">
-                                            <li>
-                                                <i class="fa fa-arrows"></i>
-                                                <p>5201 sqft</p>
-                                            </li>
-                                            <li>
-                                                <i class="fa fa-bed"></i>
-                                                <p>8 Bed Room</p>
-                                            </li>
-                                            <li>
-                                                <i class="fa fa-bath"></i>
-                                                <p>7 Baths Bed</p>
-                                            </li>
-                                            <li>
-                                                <i class="fa fa-car"></i>
-                                                <p>1 Garage</p>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single-property-item">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="property-pic">
-                                        <img src="img/properties/property-2.jpg" alt="">
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="property-text">
-                                        <div class="s-text">For Sale</div>
-                                        <h5 class="r-title">Villa 9721 Glen Creek</h5>
-                                        <div class="room-price">
-                                            <span>Start From:</span>
-                                            <h5>$3.000.000</h5>
-                                        </div>
-                                        <div class="properties-location"><i class="icon_pin"></i> 9721 Glen Creek Ave.
-                                            Ballston Spa, NY</div>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                            incididunt ut labore.</p>
-                                        <ul class="room-features">
-                                            <li>
-                                                <i class="fa fa-arrows"></i>
-                                                <p>5201 sqft</p>
-                                            </li>
-                                            <li>
-                                                <i class="fa fa-bed"></i>
-                                                <p>8 Bed Room</p>
-                                            </li>
-                                            <li>
-                                                <i class="fa fa-bath"></i>
-                                                <p>7 Baths Bed</p>
-                                            </li>
-                                            <li>
-                                                <i class="fa fa-car"></i>
-                                                <p>1 Garage</p>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <!-- 작업중 : 아래는 property-list /div임 -->
-                    </div>
 	
-	<script type="text/javascript">
+	<script th:inline="javascript" type="text/javascript">
 	
 	// 동적으로 버튼이 다 만들어지고 문서가 다 로드 된 후 이벤트가 정의되게 하기 위해 콜백함수 사용 
 	
@@ -152,10 +69,25 @@
 		
 		e.stopPropagation();
 		
-		let form = document.getElementById("form");
-		form.memberId.value = e.currentTarget.closest('tr').firstElementChild.textContent;
-		form.action = "approveAuthRequest";
-		form.submit();
+		Swal.fire({
+		      title: '해당 회원의 권한 신청 요청을 \n승인하시겠습니까?',
+		      icon: 'warning',
+		      showCancelButton: true,
+		      confirmButtonColor: '#3085d6',
+		      cancelButtonColor: '#d33',
+		      confirmButtonText: '승인',
+		      cancelButtonText: '취소',
+		      reverseButtons: true, // 버튼 순서 거꾸로
+		      
+		    }).then((result) => {
+		      if (result.isConfirmed) {
+				let form = document.getElementById("form");
+				form.memberId.value = e.currentTarget.closest('tr').firstElementChild.textContent;
+				form.action = "approveAuthRequest";
+				form.submit();
+		      }
+		    })
+		
 	}
 	
 	// 반려 버튼 클릭 시 발생 이벤트
@@ -163,11 +95,38 @@
 		// 작업중 : 모달창 띄워야함
 		e.stopPropagation();
 	
+		 
+	
 		let form = document.getElementById("form");
 		form.memberId.value = e.currentTarget.closest('tr').firstElementChild.textContent;
 		form.action = "rejectAuthRequest";
 		form.submit();
 	}
+	
+	// 권한 요청 처리 결과 표출
+	printApproveResult([[${approveResult}]]);
+	//printRejectResult(`${rejectResult}`);
+		
+	
+	function printApproveResult(message){
+		
+		if(message == "success"){
+			Swal.fire({
+				  icon: 'success',
+			      title: '승인이 완료되었습니다.',
+			      text: '여기다 뭘 넣어볼까?',
+			    })	
+		}
+		else if (message == "fail") {
+			Swal.fire({
+				  icon: 'error',
+			      title: '권한 처리에 실패했습니다.\n다시 시도해주십시오.',
+			    })	
+		}
+		
+		
+	}
+	
 	
 	</script>
 </div>

@@ -32,9 +32,9 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		
 		int result = amm.approveAuthRequest(memberId);
 		if(result > 0) {
-			map.put("result", "Success");
+			map.put("result", "success");
 		} else {
-			map.put("result", "Fail");
+			map.put("result", "fail");
 		}
 		
 		return map;
@@ -49,9 +49,9 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		
 		int result = amm.rejectAuthRequest(memberId);
 		if(result > 0) {
-			map.put("result", "Success");
+			map.put("result", "success");
 		} else {
-			map.put("result", "Fail");
+			map.put("result", "fail");
 		}
 		
 		return map;
