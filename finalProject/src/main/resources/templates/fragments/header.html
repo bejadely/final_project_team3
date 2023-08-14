@@ -42,8 +42,20 @@
                 </div>
             </div>
             <div class="property-btn">
-             <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a>
+       <!--        <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a>
              <a th:href="@{/member/login}"class="property-sub">로그인</a>
+             <a th:href="@{/member/logout}"class="property-sub">로그아웃</a> -->
+             
+             <!--  로그인 안되어 있다면 '로그인 버튼' 표시 -->
+               	<div th:if="${ session.kakaoN == null and session.sessionId == null}">
+                      <a th:href="@{/member/login}"class="property-sub">로그인</a>
+                </div>   
+                 
+                  <!--  로그인 되어 있다면 '로그아웃 버튼' 표시 -->
+			  	<div th:if="${ session.kakaoN != null or session.sessionId != null}">
+				    <a th:href="@{/member/logout}" class="property-sub">로그아웃</a>
+				</div>  
+	
             </div>
             <div>
             	<i class="fa-regular fa-heart fa-xs"></i>
@@ -122,8 +134,18 @@
                                     </ul>
                                 </div>
                             </div>
-                         <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a>
-                        <a th:href="@{/member/login}"class="property-sub">로그인</a>
+               <!--           <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a> -->
+               
+               <!--  로그인 안되어 있다면 '로그인 버튼' 표시 -->
+               	<div th:if="${ session.kakaoN == null  and session.sessionId == null}">
+                      <a th:href="@{/member/login}"class="property-sub">로그인</a>
+                </div>    
+                
+		                  <!--  로그인 되어 있다면 '로그아웃 버튼' 표시 -->
+				 	<div th:if="${ session.kakaoN != null or session.sessionId != null}">
+						    <a th:href="@{/member/logout}" class="property-sub">로그아웃</a>
+						</div>  
+					
                         </div>
                     </div>
                 </div>

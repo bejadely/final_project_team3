@@ -135,7 +135,7 @@ span {
                 <!--  카카오 API를 사용하여 OAuth 2.0 인증을 위한 URL -->
  <a th:href="@{https://kauth.kakao.com/oauth/authorize?client_id=7a2faaf15ad43d8157f12b22e12d694d&redirect_uri=http://localhost:8787/member/kakaologin&response_type=code}"><img src="/img/login/카카오로그인.png" height="40" alt="kakao"></a>
   
- <a th:href="@{/member/naverlogin}"><img src="/img/login/네이버로그인.png" height="40" alt="naver"></a>
+ <a th:href="@{/member/naverlogin1}"><img src="/img/login/네이버로그인.png" height="40" alt="naver"></a>
 
                    
              
@@ -148,6 +148,7 @@ span {
                     <input type="password"  class="input-field"name="password" placeholder="비밀번호"><!-- required  -->
                     <input type="checkbox" class="checkbox"><span>Remember Password</span>
                     <button type="submit" class="submit">로그인</button>
+                    <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a>
 <!--            			<button  type="submit" class="submit" onclick="location.href='memberInsert'">회원가입</button>
  -->                </form>
                 
