@@ -24,5 +24,9 @@ public class AdminMemberVO {
 	private String refreshToken; // 리프레쉬 토큰(카카오 로그인용)
 	private String BirthDate; // 생년월일
 	private String gender; // 성별 G1 남자 / G2 여자
-	private Integer punishCount; // 제재 횟수 default = 0 
+	private Integer punishCount; // 제재 횟수 default = 0
+	
+	// auth_confirm 내용 처리를 위한 필드 추가
+	
+	private String rejectReasonDetail;
 }

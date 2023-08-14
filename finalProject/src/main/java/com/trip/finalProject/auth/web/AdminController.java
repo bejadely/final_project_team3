@@ -71,6 +71,7 @@ public class AdminController {
 		// 반려내역 저장을 위한 작업
 		AuthConfirmVO authVO = new AuthConfirmVO();
 		authVO.setRequesterId(adminVO.getMemberId());
+		authVO.setRejectReasonDetail(adminVO.getRejectReasonDetail());
 		authConfirmService.insertRejectData(authVO);
 		
 		// 처리결과 (Success / Fail) 값 담아서 보내기
