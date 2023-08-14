@@ -30,7 +30,7 @@ public class SmsController {
 	public String sendSms(MessageDTO messageDto, Model model) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		SmsResponseDTO response = smsService.sendSms(messageDto);
 		model.addAttribute("response", response);
-		return "result";
+		return "sms/result";
 	}
  
 	
