@@ -27,14 +27,12 @@
 							<tr>
 								<td align="center" th:text="${l.memberId}"></td>
 								<td align="center" th:text="${l.memberName}"></td>
-								<!-- 사진 저장할 경로 정해야함 -->
+								<!-- 작업중 : 사진 저장할 경로 정해야함 -->
 								<td align="center"><img th:src="${l.savedProfileImg}"></td>
 								<td align="center" th:text="${l.accountNumber}"></td>
 								<td align="center">
 								<button type="button" class="approveButton" name="approveButton">승인</button>  
 								<button type="button" class="rejectButton" name="rejectButton">반려</button>
-								<!-- 모달 부분 -->
-								
 								</td>
 							</tr>
 						</th:block>

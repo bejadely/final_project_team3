@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.trip.finalProject.adminMember.service.AdminMemberService;
@@ -42,6 +43,30 @@ public class AdminMemberController {
 		
 		return "admin/seeAllMemberList";
 	}
+	
+	// 특정 조건으로 회원 상세 검색
+	@GetMapping("/searchAdminMember")
+	public String searchAdminMember(@RequestParam( name = "searchBy" ) String searchBy, @RequestParam( name = "keyword" ) String keyword, Model model, AdminMemberVO adminMemberVO) {
+		
+		// 조건 파악
+		if(searchBy.equals("name")) {
+			
+			// 이름으로 검색기능 수행
+			adminMemberVO.setMemberName(keyword);
+			List<AdminMemberVO> list = adminMemberService.searchMemberByName(adminMemberVO);
+			model.addAttribute("list", list);
+			
+		} else if(searchBy.equals("id")) {
+			
+			// 아이디로 검색기능 수행
+			adminMemberVO.setMemberId(keyword);
+			List<AdminMemberVO> list = adminMemberService.searchMemberById(adminMemberVO);
+			model.addAttribute("list", list);
+
+		}
+		
+		return "admin/seeAllMemberList";
+	}  
 	
 	// 권한 승인 요청 전체 조회
 	@GetMapping("/authRequestList")

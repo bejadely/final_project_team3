@@ -34,5 +34,8 @@ public class AdminMemberVO {
 	// 내용 처리를 위한 필드 추가
 	
 	private String rejectReasonDetail;
+	
+	// 조건 검색을 위한 필드 추가
+	private String searchBy;
 
 }
