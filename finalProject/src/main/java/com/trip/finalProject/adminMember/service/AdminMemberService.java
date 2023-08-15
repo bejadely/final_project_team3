@@ -1,11 +1,12 @@
-package com.trip.finalProject.auth.service;
+package com.trip.finalProject.adminMember.service;
 
 import java.util.List;
 import java.util.Map;
 
 public interface AdminMemberService {
 	
-	// 관리자용 Service
+	// 회원전체 조회
+	public List<AdminMemberVO> selectAllMember();
 	
 	// 권한 승인 요청 회원 전체 조회
 	public List<AdminMemberVO> selectAllAuthRequest();
