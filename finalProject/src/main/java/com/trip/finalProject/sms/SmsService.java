@@ -84,6 +84,9 @@ public class SmsService {
     		headers.set("x-ncp-iam-access-key", accessKey);
     		headers.set("x-ncp-apigw-signature-v2", makeSignature(time));
     		
+    		//난수 생성
+    		int randomNumber = (int)((Math.random()* (9999 - 1000 + 1)) + 1000);//난수 생성
+    		
     		List<MessageDTO> messages = new ArrayList<>();
     		messages.add(messageDto);
     		
@@ -92,9 +95,12 @@ public class SmsService {
     				.contentType("COMM")
     				.countryCode("82")
     				.from(phone)
-    				.content(messageDto.getContent())
+					/* .content(messageDto.getContent()) */
+    				.content( "[TEST] 인증번호는" + randomNumber + "입니다.")
     				.messages(messages)
     				.build();
+    		
+  
     		
     		ObjectMapper objectMapper = new ObjectMapper();
     		String body = objectMapper.writeValueAsString(request);
