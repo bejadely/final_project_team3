@@ -23,7 +23,7 @@
 			     , nationality
 			     , authority
 			  FROM member
-			 WHERE member_name = #{memberName}
+			 WHERE member_name LIKE '%${memberName}%'
           ORDER BY sign_up_date
   		</select>
   		
@@ -36,7 +36,7 @@
 			     , nationality
 			     , authority
 			  FROM member
-			 WHERE member_id = #{memberId}
+			 WHERE member_id LIKE '%${memberId}%'
           ORDER BY sign_up_date
   		</select>
   		
