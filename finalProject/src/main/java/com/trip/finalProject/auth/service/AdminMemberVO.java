@@ -5,6 +5,9 @@ import lombok.Data;
 
 @Data
 public class AdminMemberVO {
+	
+	// 기본 필드
+	
 	private String memberId; // 회원 아이디
 	private String memberName; // 회원명
 	private String password; // 비밀번호 - 암호화
@@ -26,7 +29,8 @@ public class AdminMemberVO {
 	private String gender; // 성별 G1 남자 / G2 여자
 	private Integer punishCount; // 제재 횟수 default = 0
 	
-	// auth_confirm 내용 처리를 위한 필드 추가
+	// 내용 처리를 위한 필드 추가
 	
 	private String rejectReasonDetail;
+
 }

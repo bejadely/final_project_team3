@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.trip.finalProject.alert.service.AlertService;
 import com.trip.finalProject.auth.service.AdminMemberService;
 import com.trip.finalProject.auth.service.AdminMemberVO;
 import com.trip.finalProject.authConfirm.service.AuthConfirmService;
@@ -24,6 +25,10 @@ public class AdminController {
 	
 	@Autowired
 	AuthConfirmService authConfirmService;
+	
+	@Autowired
+	AlertService alertService;
+	
 	
 	// 권한 승인 요청 전체 조회
 	@GetMapping("/authRequestList")
@@ -52,6 +57,8 @@ public class AdminController {
 		AuthConfirmVO authVO = new AuthConfirmVO();
 		authVO.setRequesterId(adminVO.getMemberId());
 		authConfirmService.insertApproveData(authVO);
+		
+		// 해당 멤버에게 알림 발송
 		
 		// 처리결과 (success / fail) 값 담아서 보내기
 		rtt.addFlashAttribute("approveResult", map.get("result"));
