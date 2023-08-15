@@ -24,6 +24,18 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	}
 	
 	@Override
+	public List<AdminMemberVO> searchMemberByName(AdminMemberVO vo) {
+		// 이름으로 회원 검색
+		return amm.searchMemberByName(vo);
+	}
+	
+	@Override
+	public List<AdminMemberVO> searchMemberById(AdminMemberVO vo) {
+		// 아이디로 회원 검색
+		return amm.searchMemberById(vo);
+	}
+	
+	@Override
 	public List<AdminMemberVO> selectAllAuthRequest() {
 		// 권한 승인 요청 내역 전체 조회
 		return amm.selectAllAuthRequest();
@@ -62,6 +74,10 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		
 		return map;
 	}
+
+	
+
+	
 
 	
 

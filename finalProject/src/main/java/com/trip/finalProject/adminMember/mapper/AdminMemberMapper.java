@@ -9,6 +9,12 @@ public interface AdminMemberMapper {
 	// 회원정보 전체 조회
 	public List<AdminMemberVO> selectAllMemeber();
 	
+	// 이름으로 회원 검색
+	public List<AdminMemberVO> searchMemberByName(AdminMemberVO vo);
+	
+	// 아이디로 회원 검색
+	public List<AdminMemberVO> searchMemberById(AdminMemberVO vo);
+	
 	// 권한 승인 신청 회원 전체 조회
 	public List<AdminMemberVO> selectAllAuthRequest();
 	
