@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.trip.finalProject.alert.service.AlertService;
+import com.trip.finalProject.alert.service.AlertVO;
 import com.trip.finalProject.auth.service.AdminMemberService;
 import com.trip.finalProject.auth.service.AdminMemberVO;
 import com.trip.finalProject.authConfirm.service.AuthConfirmService;
@@ -48,17 +49,18 @@ public class AdminController {
 	// 권한 승인 + 승인 내역 저장
 	@Transactional
 	@PostMapping("/approveAuthRequest")
-	public String approveAuthRequest(AdminMemberVO adminVO, RedirectAttributes rtt) {
+	public String approveAuthRequest(AdminMemberVO adminVO, AuthConfirmVO authVO, AlertVO alertVO, RedirectAttributes rtt) {
 		
 		// 권한승인 처리
 		Map<String, String> map = adminMemberService.approveAuthRequest(adminVO.getMemberId());
 		
 		// 승인내역 저장을 위한 작업
-		AuthConfirmVO authVO = new AuthConfirmVO();
 		authVO.setRequesterId(adminVO.getMemberId());
 		authConfirmService.insertApproveData(authVO);
 		
-		// 해당 멤버에게 알림 발송
+		// 해당 멤버에게 요청결과 알림 발송
+		alertVO.setContent("권한승인 요청이 승인되었습니다.");
+		alertService.insertAlert(alertVO);
 		
 		// 처리결과 (success / fail) 값 담아서 보내기
 		rtt.addFlashAttribute("approveResult", map.get("result"));
@@ -70,16 +72,19 @@ public class AdminController {
 	// 권한 승인 신청 반려 + 반려 내역 저장
 	@Transactional
 	@PostMapping("/rejectAuthRequest")
-	public String rejectAuthRequest(AdminMemberVO adminVO, RedirectAttributes rtt) {
+	public String rejectAuthRequest(AdminMemberVO adminVO, AuthConfirmVO authVO, AlertVO alertVO, RedirectAttributes rtt) {
 		
 		// 권한승인요청 반려 처리
 		Map<String, String> map = adminMemberService.rejectAuthRequest(adminVO.getMemberId());
 		
 		// 반려내역 저장을 위한 작업
-		AuthConfirmVO authVO = new AuthConfirmVO();
 		authVO.setRequesterId(adminVO.getMemberId());
 		authVO.setRejectReasonDetail(adminVO.getRejectReasonDetail());
 		authConfirmService.insertRejectData(authVO);
+		
+		// 해당 멤버에게 요청결과 알림 발송
+		alertVO.setContent("권한승인 요청이 반려되었습니다.");
+		alertService.insertAlert(alertVO);
 		
 		// 처리결과 (Success / Fail) 값 담아서 보내기
 		rtt.addFlashAttribute("rejectResult", map.get("result"));
