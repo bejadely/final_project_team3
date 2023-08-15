@@ -15,7 +15,7 @@
 			FROM alert
 			WHERE SUBSTR(alert_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
 			</selectKey>
-  			INSERT INTO auth_confirm
+  			INSERT INTO alert
 						(
 						 alert_id
 	  			       , alert_date
