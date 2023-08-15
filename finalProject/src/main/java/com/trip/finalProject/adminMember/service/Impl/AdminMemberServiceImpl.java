@@ -1,4 +1,4 @@
-package com.trip.finalProject.auth.service.Impl;
+package com.trip.finalProject.adminMember.service.Impl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,15 +7,21 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.trip.finalProject.auth.mapper.AdminMemberMapper;
-import com.trip.finalProject.auth.service.AdminMemberService;
-import com.trip.finalProject.auth.service.AdminMemberVO;
+import com.trip.finalProject.adminMember.mapper.AdminMemberMapper;
+import com.trip.finalProject.adminMember.service.AdminMemberService;
+import com.trip.finalProject.adminMember.service.AdminMemberVO;
 
 @Service
 public class AdminMemberServiceImpl implements AdminMemberService {
 	
 	@Autowired
 	AdminMemberMapper amm;
+	
+	@Override
+	public List<AdminMemberVO> selectAllMember() {
+		// 회원 전체 조회
+		return amm.selectAllMemeber();
+	}
 	
 	@Override
 	public List<AdminMemberVO> selectAllAuthRequest() {
@@ -56,5 +62,7 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		
 		return map;
 	}
+
+	
 
 }

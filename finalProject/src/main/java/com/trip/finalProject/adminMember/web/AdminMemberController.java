@@ -1,4 +1,4 @@
-package com.trip.finalProject.auth.web;
+package com.trip.finalProject.adminMember.web;
 
 import java.util.List;
 import java.util.Map;
@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.trip.finalProject.adminMember.service.AdminMemberService;
+import com.trip.finalProject.adminMember.service.AdminMemberVO;
 import com.trip.finalProject.alert.service.AlertService;
 import com.trip.finalProject.alert.service.AlertVO;
-import com.trip.finalProject.auth.service.AdminMemberService;
-import com.trip.finalProject.auth.service.AdminMemberVO;
 import com.trip.finalProject.authConfirm.service.AuthConfirmService;
 import com.trip.finalProject.authConfirm.service.AuthConfirmVO;
 
 @Controller
-public class AdminController {
+public class AdminMemberController {
 	
 	@Autowired
 	AdminMemberService adminMemberService;
@@ -30,6 +30,18 @@ public class AdminController {
 	@Autowired
 	AlertService alertService;
 	
+	// 회원정보 전체 조회
+	@GetMapping("/seeAllMemberList")
+	public String seeAllMember(Model model){
+		
+		// 회원 전체 조회
+		List<AdminMemberVO> list = adminMemberService.selectAllMember();
+		
+		// 모든 회원 정보 모델에 담기
+		model.addAttribute("list", list);
+		
+		return "admin/seeAllMemberList";
+	}
 	
 	// 권한 승인 요청 전체 조회
 	@GetMapping("/authRequestList")
