@@ -20,6 +20,15 @@
 		WHERE rn BETWEEN #{start } AND #{end }
 	</select>
 	
+	<!-- 여행기록 상세조회 -->
+	<select id="selectTripInfo" resultType="TripVO">
+		SELECT trip_title,
+			   start_day,
+			   end_day
+		FROM trip_record
+		WHERE post_id = #{postId}
+	</select>
+	
 	<!-- 여행기록 등록 -->
 	<insert id="insertTripInfo" parameterType="TripVO">
 		<selectKey keyProperty="postId" resultType="String" order="BEFORE">

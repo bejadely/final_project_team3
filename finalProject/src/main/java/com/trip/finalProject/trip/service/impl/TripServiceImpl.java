@@ -28,6 +28,12 @@ public class TripServiceImpl implements TripService {
 		return tripMapper.selectAllTrip(pagingVO);
 	}
 
+	//여행기록 상세조회
+	@Override
+	public TripVO getTripInfo(TripVO tripVO) {
+		return tripMapper.selectTripInfo(tripVO);
+	}
+	
 	//여행기록 등록
 	@Override
 	public int InsertTripInfo(TripVO tripVO) {
@@ -39,6 +45,7 @@ public class TripServiceImpl implements TripService {
 	public int TsInsertTripInfo(TripVO tripVO) {
 		return tripMapper.tsInsertTripInfo(tripVO);
 	}
+
 
 
 }

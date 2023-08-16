@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.trip.finalProject.common.PagingVO;
@@ -34,6 +33,15 @@ public class TripController {
 		return "trip/tripRecordList";
 	}
 	
+	//여행기록 상세조회
+	@GetMapping("tripRecordInfo")
+	public String tripRecordInfo(TripVO tripVO, Model model) {
+		TripVO findVO = tripService.getTripInfo(tripVO);
+		model.addAttribute("tripInfo", findVO);
+		return "trip/tripRecordInfo";
+	}
+	
+	
 	//여행기록 등록 - form
 	@GetMapping("tripRecordInsert")
 	public String tripRecordInsertForm(Model model) {
@@ -54,6 +62,7 @@ public class TripController {
 		tripService.TsInsertTripInfo(tripVO);
 		return "redirect:/tripRecordList";
 	}
+	
 	
 	//여행기록 지도 등록
 	
