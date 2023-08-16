@@ -10,9 +10,10 @@ import javax.mail.internet.MimeMessage;
 @Service
 @RequiredArgsConstructor
 public class MailService {
-
+	
+	//JavaMailSender 인터페이스의 객체를 선언
     private final JavaMailSender javaMailSender;
-    private static final String senderEmail= "???@gmail.com";
+    private static final String senderEmail= "leekleek9494@gmail.com";
     private static int number;
 
     public static void createNumber(){
@@ -31,6 +32,7 @@ public class MailService {
             body += "<h3>" + "요청하신 인증 번호입니다." + "</h3>";
             body += "<h1>" + number + "</h1>";
             body += "<h3>" + "감사합니다." + "</h3>";
+            //body =내용
             message.setText(body,"UTF-8", "html");
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -42,7 +44,7 @@ public class MailService {
     public int sendMail(String mail){
 
         MimeMessage message = CreateMail(mail);
-
+        //실제 이메일 전송
         javaMailSender.send(message);
 
         return number;
