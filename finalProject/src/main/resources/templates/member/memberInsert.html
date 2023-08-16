@@ -102,24 +102,104 @@
 		</div>
 	</div>
 	
-	
+<a th:href="@{/send1}">sms</a>
 
-	<form th:action="@{/sms/send}" method="post">
+	<form th:action="@{/Sms}" method="post">
 		<table>
 			<tr class="form-group">
 				<td>발송할 전화번호</td>
-				<td><input type="text" class="form-control" name="to"
+				<td><input type="text" class="form-control" name="phone"
 					placeholder="전화번호를 입력하세요"></td>
 			</tr>
-
 		</table>
 		<button class="btn btn-default">발송</button>
 	</form>
-	
+
+
+
 	<a th:href="@{/sendemail}">이메일전송</a>
 
 
+	<form th:action="@{/check1}">
+
+		<table>
+			<!-- 	<tr class="form-group">
+				<td>은행코드</td>
+				<td><input type="text" class="form-control"  name="bank_code"
+					placeholder="은행코드 입력하세요"></td>
+			</tr> -->
+			<tr>
+				
+					<td>은행코드 <select class="form-select" id="bank_code"
+						name="bank_code" aria-label="Default select example">
+							<option value="">은행선택</option>
+							<option value="004">국민은행</option>
+							<option value="020">우리은행</option>
+							<option value="088">신한은행</option>
+							<option value="003">기업은행</option>
+							<option value="023">SC제일은행</option>
+							<option value="011">농협은행</option>
+							<option value="005">외환은행</option>
+							<option value="090">카카오뱅크</option>
+							<option value="032">부산은행</option>
+							<option value="071">우체국</option>
+							<option value="031">대구은행</option>
+							<option value="037">전북은행</option>
+							<option value="035">제주은행</option>
+							<option value="007">수협은행</option>
+							<option value="027">씨티은행</option>
+							<option value="039">경남은행</option>
+					</select>
+					</td>
+			
+			</tr>
+
+
+			<tr class="form-group">
+				<td>계좌번호</td>
+				<td><input type="text" class="form-control" id="bank_num"
+					name="bank_num" placeholder="계좌번호 입력하세요"></td>
+			</tr>
+			<tr class="form-group">
+				<td>예금주</td>
+				<td><input type="text" class="form-control" id="bankHolderInfo"
+					name="bankHolderInfo" placeholder="이름" readonly></td>
+			</tr>
+
+		</table>
+		<button class="btn btn-default">확인</button>
+	</form>
+
+	<div>
+		<button id="check_button">Check Account</button>
+	</div>
+
 	<script>
+		$(document).ready(function() {
+			$("#check_button").click(function() {
+				var bank_code = $("#bank_code").val();
+				var bank_num = $("#bank_num").val();
+
+				$.get("/check1", {
+					bank_code : bank_code,
+					bank_num : bank_num
+				}, function(data) {
+					if (data.bankHolderInfo) {
+						// Update the input field value
+						$("#bankHolderInfo").val(data.bankHolderInfo);
+					} else if (data.errormsg) {
+						alert("Error: " + data.errormsg);
+					}
+				});
+			});
+		});
+	</script>
+
+
+
+
+
+	<!-- 	<script>
 		//휴대폰 인증번호 대조
 		$("#phoneChk2").click(function() {
 			if ($("#phone2").val() == code2) {
@@ -134,6 +214,8 @@
 				$(this).attr("autofocus", true);
 			}
 		});
-	</script>
+	</script> -->
+
+
 </body>
 </html>
