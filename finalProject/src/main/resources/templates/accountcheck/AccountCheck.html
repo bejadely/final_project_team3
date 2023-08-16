@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+     <html lang="en" xmlns:th="http://www.thymeleaf.org"
+				xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      			layout:decorate="@{layouts/default_layout}"
+      			layout:fragment="content"> 
+    
+        
+<head>
+<meta charset="UTF-8">
+<title>로그인 / 회원가입 폼 템플릿</title>
+</head>
+<body>
+<div class="black-bg" v-if="refundModal == true">
+            <div class="refund-bg">
+                
+
+                <div class="inputbox">
+
+                    <input class="numberform" type="text" :placeholder="isPlaceholderVisible ? '인출 할 금액을 입력해 주세요' : ''"
+                        v-model="formattedPrice" @focus="isPlaceholderVisible = false" @blur="handleBlur"
+                        @input="formatPrice">
+                </div>
+
+                <div class="bankselect">
+                    <select class="form-select" id="bankselect" v-model="bankname" aria-label="Default select example">
+                        <option value="">은행선택</option>
+                        <option value="004">국민은행</option>
+                        <option value="020">우리은행</option>
+                        <option value="088">신한은행</option>
+                        <option value="003">기업은행</option>
+                        <option value="023">SC제일은행</option>
+                        <option value="011">농협은행</option>
+                        <option value="005">외환은행</option>
+                        <option value="090">카카오뱅크</option>
+                        <option value="032">부산은행</option>
+                        <option value="071">우체국</option>
+                        <option value="031">대구은행</option>
+                        <option value="037">전북은행</option>
+                        <option value="035">제주은행</option>
+                        <option value="007">수협은행</option>
+                        <option value="027">씨티은행</option>
+                        <option value="039">경남은행</option>
+                    </select>
+                    <input class="inputname" id="accountname" type="text" v-model="name" placeholder="예금주명">
+                    <br />
+                </div>
+                <br />
+                <div class="account">
+                    <input class="inputaccount" id="accountnum" maxlength="14" :value="accountnum" @input="handleInput"
+                        placeholder="계좌번호">
+                </div>
+
+                <br /><span v-if="outcontractformcheck == false" @click="outcontractform">이용약관 동의</span><br />
+
+                <div class="button-wrapper">
+                    <button @click="checkmyinfo()">인출</button>
+                    <button @click="close">닫기</button>
+                </div>
+            </div>
+        </div>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script type="text/javascript">
+checkmyinfo {
+    const self = this;
+    const bankselect = document.getElementById('bankselect');
+    const accountname = document.getElementById('accountname');
+    const accountnum = document.getElementById('accountnum');
+const data = {
+bank_code: this.bankname,
+bank_num: this.accountnum
+       };
+self.$axios.get("http://localhost:8181/members/certifications/checkAccount", { params: data })
+.then(function (res) {
+if (res.status == 200) {
+console.log(res.data.bankHolderInfo);
+console.log(accountname.name); 
+}
+});
+}
+</script>
+</body>
+</html>

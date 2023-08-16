@@ -21,9 +21,9 @@ public class SmsController {
 	
 	private final SmsService smsService;
 	
-	@GetMapping("/send")
+	@GetMapping("/send1")
 	public String getSmsPage() {
-		return "sms/sendSms";
+		return "/sms/sendSms";
 	}
 	
 	@PostMapping("/sms/send")
@@ -31,7 +31,7 @@ public class SmsController {
 		SmsResponseDTO response = smsService.sendSms(messageDto);
 		model.addAttribute("response", response);
 		
-		return "member/memberInsert";
+		return "/sms/result";
 	}
  
 	
