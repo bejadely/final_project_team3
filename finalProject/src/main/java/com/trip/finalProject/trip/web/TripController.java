@@ -18,6 +18,7 @@ import com.trip.finalProject.trip.service.TripVO;
 public class TripController {
 	@Autowired
 	TripService tripService;
+	
 	@Value("${kakao.map.key}")
 	String kakaoMap;
 	
@@ -66,7 +67,18 @@ public class TripController {
 	}
 	
 	
-	//여행기록 지도 등록
+	//여행기록 지도 맵핑 - form
+	@GetMapping("tripMappingForm")
+	public String tripMappingForm(){
+		return "trip/tripMappingForm";
+	}
+	
+	//여행기록 지도 맵핑 - 처리
+	@PostMapping("tripMappingInsert")
+	public String tripMappingInsertProcess(TripVO tripVO) {
+		tripService.TsInsertTripInfo(tripVO);
+		return "redirect:/tripInsertForm";
+	}
 	
 	//여행기록 메모 등록
 }

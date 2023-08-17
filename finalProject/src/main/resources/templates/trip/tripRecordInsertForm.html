@@ -28,13 +28,7 @@
 	 			</div>
 				<hr>
 				<div id="wrapper">
-				<script type="text/javascript">
-        var tripVO = {
-            kakaoMap: [[${tripVO.kakaoMap}]]
-        };
-    </script>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${tripVO.kakaoMap}"></script>
-					<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=${tripVO.kakaoMap}"></script>
+					<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d37c7ea721a01188dd47b9d069964fe4&libraries=services"></script>
 				</div>
 				 		<!-- 지도 확대, 축소 컨트롤 div 입니다 -->
     			<div class="custom_zoomcontrol radius_border"> 
@@ -51,6 +45,7 @@
 					<tr>
 						<th>여행 타이틀</th>
 						<td>
+							[[${tripVO.kakaoMap}]]
 							<input type="text" name="tripTitle">
 						</td>
 					</tr>
