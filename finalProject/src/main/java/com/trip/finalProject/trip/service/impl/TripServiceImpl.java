@@ -46,6 +46,12 @@ public class TripServiceImpl implements TripService {
 		return tripMapper.tsInsertTripInfo(tripVO);
 	}
 
+	//여행기록 지도 맵핑
+	@Override
+	public int InsertTripMapping(TripVO tripVO) {
+		return tripMapper.insertTripMapping(tripVO);
+	}
+
 
 
 }

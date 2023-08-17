@@ -33,7 +33,6 @@ public class TripVO {
 	private int fileNo;
 	private String imgType;
 	
-	
 	//trip_record
 	private String writerId;
 	private String tripTitle;
@@ -48,6 +47,10 @@ public class TripVO {
 	private String tripReview;
 	private String tripShare;
 
+	//선택한 여행 지역을 최초로 지도에 표시하기 위한 위도,경도 값
+	private String tripArea;
+	
+	private String kakaoMap;
 	
 	
 }
