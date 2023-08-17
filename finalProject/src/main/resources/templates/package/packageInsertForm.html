@@ -26,33 +26,87 @@
 form {
 	text-align: center;
 }
+
+
 </style>
+<!-- CKEditor -->
+	<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 </head>
 <body>
 <div layout:fragment="content">
 
-	<form action="/publishing">
-		<div id="editor"></div>
-		<input type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" />
-		<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" />
+	<form action="insertImg" method="post" id="editorForm">
+		<div id="editor">
+		</div>
+		<input type="button" class="btn btn-primary mt-3 mx-2" value="작성완료" id="uploadBtn" />
+		<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>
 	</form>
 
 
-	<!-- CKEditor -->
-	<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
+	
 	<script>		
+	
+	
 	ClassicEditor
 	.create(document.querySelector('#editor'), {
+		
 		ckfinder: {
 			uploadUrl : 'upload'
+			
 		}
+	
+		
 	})
 	.then(editor => {
 		console.log('Editor was initialized');
+		
+		document.getElementById("cancelBtn").addEventListener("click",function(){
+			const data = editor.getData();
+			//Data 변수에 저장된 데이터를 파싱하여 이미지 태크를 찾음
+			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
+			
+			const filenames = imgTags.map(img=> {
+				const src = img.getAttribute('src');
+				return src.substring(src.lastIndexOf('/')+1);
+			});
+			
+			fetch(`/deleteImg`,{
+				method: 'POST',
+				headers:{
+					'Content-Type':'application/json'
+				},
+				body: JSON.stringify({ filenames })
+			})
+			.then(response => response.text())
+			.then(message => {
+				console.log(message);
+				editor.setData('');
+			})
+			
+		})
+		document.getElementById("uploadBtn").addEventListener("click",function(){
+			const data = editor.getData();
+			
+			console.log(data);
+			
+			var xhr = new XMLHttpRequest();
+			
+			xhr.onreadystatechange = function(){
+				if(xhr.readyState==4&&xhr.status==200){
+					
+				}
+			}
+			xhr.open("post","insertPackage",true);
+			xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+			xhr.send("editorData="+data);
+		})
 	})
 	.catch(error => {
 		console.error(error);
 	});
+	
+
+
 	</script>
 </div>
 </body>
