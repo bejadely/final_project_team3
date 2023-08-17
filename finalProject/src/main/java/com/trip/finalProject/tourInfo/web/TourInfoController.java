@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -58,10 +57,12 @@ public class TourInfoController {
     
     //해당 지역에 해당하는 각 spot별 더보기창으로 이동
     @GetMapping("/spotDetail")
-    public String getTourSpot(String contentId, String areaCode, Model model) {
+    public String getTourSpot(String contentId, String areaCode, String sigunguCode, Model model) {
     	
     	model.addAttribute("contentId",contentId);
     	model.addAttribute("areaCode", areaCode);
+    	model.addAttribute("sigunguCode",sigunguCode);
+    	
     	
     	
     	
