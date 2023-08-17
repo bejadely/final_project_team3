@@ -22,7 +22,8 @@
 	
 	<!-- 여행기록 상세조회 -->
 	<select id="selectTripInfo" resultType="TripVO">
-		SELECT trip_title,
+		SELECT writer_id,
+			   trip_title,
 			   start_day,
 			   end_day
 		FROM trip_record
@@ -36,7 +37,7 @@
 			FROM trip_record
 			WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
 		</selectKey>
-			insert into trip_record
+			INSERT INTO trip_record
 						(
 							post_id
 							, writer_id
@@ -48,7 +49,7 @@
 							, regist_day
 							, trip_share
 						)
-				   values
+				   VALUES
 				        (
 							#{postId}
 							, #{writerId}
@@ -69,7 +70,7 @@
 			FROM trip_record
 			WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
 		</selectKey>
-		insert into trip_record
+		INSERT INTO trip_record
 						(
 							post_id
 							, writer_id
@@ -87,7 +88,7 @@
 							, regist_day
 							, trip_share
 						)
-				   values
+				   VALUES
 				        (
 							#{postId}
 							, #{writerId}
@@ -107,7 +108,45 @@
 				        )
 	</insert>
 	
-	<!-- 여행기록 등록 - 여행 경로-->
+	<!-- 여행기록 등록 - 여행 경로 맵핑-->
+	<insert id="insertTripMapping" parameterType="TripVO">
+		<selectKey keyProperty="mapId" resultType="String" order="BEFORE">
+			SELECT 'map' || (TO_NUMBER(NVL((SUBSTR(MAX(map_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM map
+			WHERE SUBSTR(map_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+		INSERT INTO map
+					  (
+						map_id
+						, map_no
+						, map_name
+						, map_lat
+						, map_lng
+						, post_id
+						, upload_date
+						, trip_date
+					  )
+				VALUES
+					  (
+					  	#{mapId}
+					  	, #{mapNo}
+					  	, #{mapName}
+					  	, #{mapLat}
+					  	, #{mapLng}
+					  	, #{postId}
+					  	, sysdate
+					  	, #{tripDate}
+					  )
+	</insert>
+	
+<!-- 	VARCHAR2(13 BYTE)	MAP_ID	No		1	지도ID
+		NUMBER(38,0)	MAP_NO	Yes		2	순번
+		VARCHAR2(60 BYTE)	MAP_NAME	Yes		3	지도명
+		NUMBER(2,14)	MAP_LAT	Yes		4	위도
+		NUMBER(3,14)	MAP_LNG	Yes		5	경도
+		VARCHAR2(13 BYTE)	POST_ID	Yes		6	게시글ID
+		DATE	UPLOAD_DATE	Yes		7	등록일자
+		DATE	TRIP_DATE	Yes		8	여행일자 -->
 	
 	<!-- 여행기록 등록 - 여행 메모-->
 </mapper>

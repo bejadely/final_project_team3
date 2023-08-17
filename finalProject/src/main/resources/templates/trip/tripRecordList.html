@@ -34,23 +34,23 @@
 								<div class="loadmore">								
 									<!-- modal에 띄우고자하는 코드 -->
 									<div id="test" class="modal" style="height: 400px; text-align: center;">
-										<form name="sendData" action="tripRecordInsert" method="get">
+										<form name="sendData" action="tripRecordInsertForm" method="post">
   											<div style="margin-top: 40px;">
   												<h3>여행지역 선택</h3>
   												<select id="tripArea" name="tripArea">
-  													<option value="대구" selected>대구
-  													<option value="부산">부산
-  													<option value="포항">포항
-  													<option value="안동">안동
-  													<option value="경주">경주
-  													<option value="울산">울산
-  													<option value="통영">통영
-  													<option value="거제">거제
+  													<option value="35.871159972672, 128.60183648521" selected>대구
+  													<option value="35.1798269951885, 129.075103035027">부산
+  													<option value="36.01889392625669, 129.34319484447613">포항
+  													<option value="36.5684065570509, 128.7295973406168">안동
+  													<option value="35.85619885284879, 129.22477009676797">경주
+  													<option value="35.539464253228324, 129.31158865378814">울산
+  													<option value="34.85442687930827, 128.43314233985606">통영
+  													<option value="34.880381383213354, 128.62132760543582">거제
   												</select><br>
   											</div><br>
   											<div>
   												<h3>여행일정 선택</h3>
-  												<input type="date" name="startDay"> ~ <input type="date" name="endDay">
+  												<input type="date" name="startDay" value="startDay"> ~ <input type="date" name="endDay" value="endDay">
   											</div><br>
   											<div style ="margin-top: 30px;"> 
   												<a href="#" rel="modal:close" class="primary-btn">닫기</a>
@@ -125,35 +125,21 @@
 		</section>
 		<!-- 여행기록 section end -->
 	</div>
-	<script type="text/javascript">
-/* 	//모달창 여행지역 데이터 넘기기
-	$(document).ready(function(){
-		$("#tripArea").change(function(){
-			console.log("값변경테스트: " + $(this).val());
-			$("#tripArea").val($(this).val());
-
-		});
-	 });
-	
-	//
-
-	document.querySelector('form[name="sendForm"]').addEventListener('submit', function(e) {
+	<script>
+	document.querySelector('form[name="sendData"]').addEventListener('submit', function(e) {
 		e.preventDefault();
-		let startDay = document.getElementsByName('startDay')[0];
-		let endDay = document.getElementsByName('endDay')[0];
-		if (startDay.value == '') {
-			alert('여행 일자를 선택해주세요.')
-			startDay.focus();
+		let date1 = document.getElementsByName('startDay')[0];
+		let date2 = document.getElementsByName('endDay')[0];
+		if (date1.value == '') {
+			alert('여행일정이 입력되지 않았습니다.')
 			return;
 		}
-		if (endDay.value == '') {
-			alert('여행 일자를 선택해주세요.')
-			endDay.focus();
+		if (date2.value == '') {
+			alert('여행일정이 입력되지 않았습니다.')
 			return;
 		}
-		sendForm.submit();
-	});	 */
-	
+		sendData.submit();
+	});	
 	</script>
 </body>
 </html>

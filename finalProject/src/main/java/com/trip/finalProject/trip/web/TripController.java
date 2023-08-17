@@ -3,6 +3,7 @@ package com.trip.finalProject.trip.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,8 @@ import com.trip.finalProject.trip.service.TripVO;
 public class TripController {
 	@Autowired
 	TripService tripService;
+	@Value("${kakao.map.key}")
+	String kakaoMap;
 	
 	//여행기록 전체 조회
 	@GetMapping("tripRecordList")
@@ -41,12 +44,11 @@ public class TripController {
 		return "trip/tripRecordInfo";
 	}
 	
-	
 	//여행기록 등록 - form
-	@GetMapping("tripRecordInsert")
-	public String tripRecordInsertForm(Model model) {
-		model.addAttribute("tripVO", new TripVO());
-		return "trip/tripRecordInsert";
+	@PostMapping("tripRecordInsertForm")
+	public String tripRecordInsertForm(TripVO tripVO, Model model) {
+		model.addAttribute("tripVO", tripVO);
+		return "trip/tripRecordInsertForm";
 	}
 	
 	//여행기록 등록 - 처리

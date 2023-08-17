@@ -19,4 +19,7 @@ public interface TripService {
 	
 	//여행기록 임시저장
 	public int TsInsertTripInfo(TripVO tripVO);
+	
+	//여행기록 지도 맵핑
+	public int InsertTripMapping(TripVO tripVO);
 }

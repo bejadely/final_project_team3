@@ -18,6 +18,10 @@
 <body>
 	<div layout:fragment="content">
 		<div>
+			<label id="writerId">작성자아이디</label>
+			<input type="text" id="writerId" th:value="${tripInfo.writerId}">
+		</div>
+		<div>
 			<label id="tripTitle">여행타이틀</label>
 			<input type="text" id="tripTitle" th:value="${tripInfo.tripTitle}">
 		</div>
