@@ -40,6 +40,11 @@
           ORDER BY sign_up_date
   		</select>
   		
+  		<!-- 회원 단건 조회 -->
+  		<select id="selectMemberInfo" resultType="AdminMemberVO">
+  			
+  		</select>
+  		
   		<!-- 권한 승인 요청 회원 전체 조회 -->
   		<select id="selectAllAuthRequest" resultType="AdminMemberVO">
   			SELECT member_id

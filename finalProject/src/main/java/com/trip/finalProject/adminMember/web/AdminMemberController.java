@@ -41,7 +41,7 @@ public class AdminMemberController {
 		// 모든 회원 정보 모델에 담기
 		model.addAttribute("list", list);
 		
-		return "admin/seeAllMemberList";
+		return "admin/manageMember/seeAllMemberList";
 	}
 	
 	// 특정 조건으로 회원 상세 검색
@@ -65,8 +65,17 @@ public class AdminMemberController {
 
 		}
 		
-		return "admin/seeAllMemberList";
-	}  
+		return "admin/manageMember/seeAllMemberList";
+	}
+	
+	// 회원상세정보 조회
+	@GetMapping("/seeMemberDetail")
+	public String seeMemberDetail(AdminMemberVO memberVO) {
+
+		
+		
+		return "admin/manageMember/memberDetail";
+	}
 	
 	// 권한 승인 요청 전체 조회
 	@GetMapping("/authRequestList")
@@ -80,19 +89,19 @@ public class AdminMemberController {
 		
 		System.out.println(model.getAttribute("list"));
 		
-		return "admin/authRequestList";
+		return "admin/auth/authRequestList";
 	}
 	
 	// 권한 승인 + 승인 내역 저장
 	@Transactional
 	@PostMapping("/approveAuthRequest")
-	public String approveAuthRequest(AdminMemberVO adminVO, AuthConfirmVO authVO, AlertVO alertVO, RedirectAttributes rtt) {
+	public String approveAuthRequest(AdminMemberVO memberVO, AuthConfirmVO authVO, AlertVO alertVO, RedirectAttributes rtt) {
 		
 		// 권한승인 처리
-		Map<String, String> map = adminMemberService.approveAuthRequest(adminVO.getMemberId());
+		Map<String, String> map = adminMemberService.approveAuthRequest(memberVO.getMemberId());
 		
 		// 승인내역 저장을 위한 작업
-		authVO.setRequesterId(adminVO.getMemberId());
+		authVO.setRequesterId(memberVO.getMemberId());
 		authConfirmService.insertApproveData(authVO);
 		
 		// 해당 멤버에게 요청결과 알림 발송
@@ -101,7 +110,7 @@ public class AdminMemberController {
 		
 		// 처리결과 (success / fail) 값 담아서 보내기
 		rtt.addFlashAttribute("approveResult", map.get("result"));
-		rtt.addFlashAttribute("memberId", adminVO.getMemberId());
+		rtt.addFlashAttribute("memberId", memberVO.getMemberId());
 		
 		return "redirect:authRequestList";
 	}
@@ -109,14 +118,14 @@ public class AdminMemberController {
 	// 권한 승인 신청 반려 + 반려 내역 저장
 	@Transactional
 	@PostMapping("/rejectAuthRequest")
-	public String rejectAuthRequest(AdminMemberVO adminVO, AuthConfirmVO authVO, AlertVO alertVO, RedirectAttributes rtt) {
+	public String rejectAuthRequest(AdminMemberVO memberVO, AuthConfirmVO authVO, AlertVO alertVO, RedirectAttributes rtt) {
 		
 		// 권한승인요청 반려 처리
-		Map<String, String> map = adminMemberService.rejectAuthRequest(adminVO.getMemberId());
+		Map<String, String> map = adminMemberService.rejectAuthRequest(memberVO.getMemberId());
 		
 		// 반려내역 저장을 위한 작업
-		authVO.setRequesterId(adminVO.getMemberId());
-		authVO.setRejectReasonDetail(adminVO.getRejectReasonDetail());
+		authVO.setRequesterId(memberVO.getMemberId());
+		authVO.setRejectReasonDetail(memberVO.getRejectReasonDetail());
 		authConfirmService.insertRejectData(authVO);
 		
 		// 해당 멤버에게 요청결과 알림 발송
@@ -125,7 +134,7 @@ public class AdminMemberController {
 		
 		// 처리결과 (Success / Fail) 값 담아서 보내기
 		rtt.addFlashAttribute("rejectResult", map.get("result"));
-		rtt.addFlashAttribute("memberId", adminVO.getMemberId());
+		rtt.addFlashAttribute("memberId", memberVO.getMemberId());
 		
 		return "redirect:authRequestList";
 	}

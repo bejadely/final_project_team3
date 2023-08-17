@@ -48,12 +48,6 @@
 				</div>
 			</th:block>
 		</div>
-		<div>
-			<form id="form" method="post">
-				<input type="hidden" id="memberId" name="memberId">
-				<input type="hidden" id="rejectReasonDetail" name="rejectReasonDetail">
-			</form>
-		</div>
 	</div>
 	
 	<script th:inline="javascript" type="text/javascript">
@@ -63,8 +57,13 @@
 	$(document).ready(function() {
 		// 승인 버튼 클릭 시 발생 이벤트 설정
 		$('#searchButton').on('click', search);
+		$('.memberInfo').on('mouseover', colorDarker)
+						.on('mouseleave', colorReset)
+						.on('click')
+						.on('mouseup', moveToMemberDetail)
 	});
 	
+	// 조건검색기능
 	function search(event){
 		
 		let value = $('#searchBy').val();
@@ -72,7 +71,29 @@
 		console.log('searchAdminMember?searchBy='+value+'&keyword='+keyword);
 		location.href='searchAdminMember?searchBy='+value+'&keyword='+keyword;
 		
-	}		
+	}
+	
+	// 마우스 오버 : 색상 어둡게
+	function colorDarker(event){
+		$(event.currentTarget).css({background: '#f2f4f5'})
+							  .css({cursor: 'pointer'});		
+	}
+	
+	// 마우스릴리브 : 색상 원상복귀
+	function colorReset(event){
+		$(event.currentTarget).css({background: '#ffffff'});
+	}
+	
+	// 회원상세정보 조회페이지로 이동
+	function moveToMemberDetail(event){
+		
+		// 상세보기 할 member의 id값 가져오기
+		let memberId = $(event.currentTarget).find('td:eq(0)').text();
+		
+		// 페이지 전환 실행
+		location.href=`seeMemberDetail?employeeId=${memberId}`;
+	}
+	
 	</script>
 </div>
 
