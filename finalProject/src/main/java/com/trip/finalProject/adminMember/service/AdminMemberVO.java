@@ -25,14 +25,13 @@ public class AdminMemberVO {
 	private String loginType; // 로그인타입 (카카오, 네이버, 일반 등)
 	private String accessToken; // 엑세스 토큰(카카오 로그인용)
 	private String refreshToken; // 리프레쉬 토큰(카카오 로그인용)
-	private String BirthDate; // 생년월일
+	private String birthDate; // 생년월일
 	private String gender; // 성별 G1 남자 / G2 여자
 	private Integer punishCount; // 제재 횟수 default = 0
 	private String signUpDate; // 가입일자
 	private String withdrawalDate; // 탈퇴처리일자
 	
 	// 내용 처리를 위한 필드 추가
-	
 	private String rejectReasonDetail;
 	
 	// 조건 검색을 위한 필드 추가

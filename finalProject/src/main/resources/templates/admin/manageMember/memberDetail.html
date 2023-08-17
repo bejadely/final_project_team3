@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/admin_layout}">
+	
+<!-- Content -->
+<div layout:fragment="content">
+		<div class="container">
+			<form action="#" th:object="${memberVO}">
+				<h5><b>회원정보 상세 조회</b></h5>
+				<br><br>
+				<div class="table-responsive">
+					<h6>기본정보</h6>
+					<br>
+					<table id="defaultInfo" class="table">
+						<tbody>
+							<tr>
+								<th width="150" align="center">아이디</th>
+								<td width="400" align="center">*{memberId}</td>
+								<th width="150" align="center">가입일자</th>
+								<td width="400" align="center">*{signUpDate}</td>
+							</tr>
+							<tr>
+								<th width="150" align="center">이름</th>
+								<td width="400" align="center">*{memberName}</td>
+								<th width="150" align="center">권한분류</th>
+								<td width="400" align="center">*{authority}</td>
+							</tr>
+							<tr>
+								<th width="150" align="center">성별</th>
+								<td width="400" align="center">*{gender}</td>
+								<th width="150" align="center">생년월일</th>
+								<td width="400" align="center">*{birthDate}</td>
+							</tr>
+							<tr>
+								<th width="150" align="center">국적</th>
+								<td colspan="3" width="400" align="center">
+									<select>
+										<option>*{nationality}</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<th width="150" align="center">주소</th>
+								<td colspan="3" width="400" align="center" th:text="|(*{zipCode})\n*{address} *{addressDetail}|"></td>
+							</tr>
+							<tr>
+								<th width="150" align="center">이메일</th>
+								<td width="400" align="center">*{email}</td>
+								<th width="150" align="center">연락처</th>
+								<td width="400" align="center">*{phoneNumber}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<br><br>
+				<div class="table-responsive">
+					<h6>계좌정보</h6>
+					<br>
+					<table id="accountInfo" class="table">
+						<tbody>
+							<tr>
+								<th width="150" align="center">은행명</th>
+								<td width="400" align="center">bankName</td>
+								<th width="150" align="center">예금주</th>
+								<td width="400" align="center">memberName</td>
+							</tr>
+							<tr>
+								<th width="150" align="center">계좌번호</th>
+								<td colspan="3" width="400" align="center">accountNumber</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div align="center">
+					<button type="submit" class="feature-btn">수정하기</button>
+					<button type="button" class="feature-btn">탈퇴처리</button>
+				</div>
+			</form>
+		</div>
+	
+	<script th:inline="javascript" type="text/javascript">
+	
+	// 동적으로 버튼이 다 만들어지고 문서가 다 로드 된 후 이벤트가 정의되게 하기 위해 콜백함수 사용 
+	
+	$(document).ready(function() {
+		// 승인 버튼 클릭 시 발생 이벤트 설정
+		$('#searchButton').on('click', search);
+		$('.memberInfo').on('mouseover', colorDarker)
+						.on('mouseleave', colorReset)
+						.on('click')
+						.on('mouseup', moveToMemberDetail)
+	});
+	
+	// 조건검색기능
+	function search(event){
+		
+		let value = $('#searchBy').val();
+		let keyword = $('#keyword').val();
+		console.log('searchAdminMember?searchBy='+value+'&keyword='+keyword);
+		location.href='searchAdminMember?searchBy='+value+'&keyword='+keyword;
+		
+	}
+	
+	// 마우스 오버 : 색상 어둡게
+	function colorDarker(event){
+		$(event.currentTarget).css({background: '#f2f4f5'})
+							  .css({cursor: 'pointer'});		
+	}
+	
+	// 마우스릴리브 : 색상 원상복귀
+	function colorReset(event){
+		$(event.currentTarget).css({background: '#ffffff'});
+	}
+	
+	// 회원상세정보 조회페이지로 이동
+	function moveToMemberDetail(event){
+		
+		// 상세보기 할 member의 id값 가져오기
+		let memberId = $(event.currentTarget).find('td:eq(0)').text();
+		
+		// 페이지 전환 실행
+		location.href=`seeMemberDetail?employeeId=${memberId}`;
+	}
+	
+	</script>
+</div>
+
+</html>
