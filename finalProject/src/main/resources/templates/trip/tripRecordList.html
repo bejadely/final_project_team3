@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/default_layout}">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Azenta Template">
+<meta name="keywords" content="Azenta, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>여행기록 전체 조회</title>
+<!-- Google Font -->
+<link
+	href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap"
+	rel="stylesheet">
+</head>
+<body>
+	<div layout:fragment="content">
+		<!-- 페이지 제목 부분 -->
+		<section class="breadcrumb-section">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="breadcrumb-text">
+							<h2>여행 기록</h2>
+							<div class="col-lg-12">
+								<div class="loadmore">
+									<a href="./tripRecordInsert" class="primary-btn">여행기록 등록</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- 여행기록 section-->
+		<section class="blog-section blog-page spad">
+			<div class="container">
+				<div class="row">
+					<div th:each="tripInfo : ${tripRecordList}">
+						<div class="col-lg-4 col-md-6">
+							<div class="single-blog-item">
+								<div class="sb-pic">
+									<img th:src="${tripInfo.writerId}" alt="이미지">
+								</div>
+								<div class="sb-text"
+									style="width: 290px; margin-right: 70px; margin-left: 30xp">
+									<ul>
+										<li><i class="fa fa-user"></i><span
+											th:text="${tripInfo.writerId}"></span></li>
+										<li><i class="fa fa-clock-o"></i><span
+											th:text="${#dates.format(tripInfo.registDay, 'yy년 MM월 dd일')}"></span></li>
+									</ul>
+									<h5>
+										<a th:text="${tripInfo.tripTitle}"></a>
+									</h5>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 여행기록 페이징 -->
+			<div class="container" style="text-align: center">
+			<th:block th:if="${paging.startPage != 1}">
+				<a th:href="@{tripRecordList(nowPage=1, cntPerPage=${paging.cntPerPage})}" ><<</a>
+			</th:block>
+			<th:block th:if="${paging.startPage != 1}">
+				<a
+					th:href="@{tripRecordList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+			</th:block>
+			<th:block
+				th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+				<th:block th:if="${p eq paging.nowPage}">
+					<b th:text="${p}"></b>
+				</th:block>
+				<th:block th:if="${p ne paging.nowPage}">
+					<a
+						th:href="@{tripRecordList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
+						th:text="${p}"></a>
+				</th:block>
+			</th:block>
+			<th:block
+				th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+				<a
+					th:href="@{tripRecordList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+			</th:block>
+			<th:block th:if="${paging.endPage != paging.lastPage}">
+				<a
+					th:href="@{tripRecordList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
+			</th:block>
+		</div>
+		</section>
+		<!-- 여행기록 section end -->
+	</div>
+</body>
+</html>
