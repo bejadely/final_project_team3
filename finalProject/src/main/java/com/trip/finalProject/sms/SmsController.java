@@ -22,16 +22,17 @@ public class SmsController {
 	private final SmsService smsService;
 	
 	@GetMapping("/send1")
-	public String getSmsPage() {
+		public String getSmsPage() {
 		return "/sms/sendSms";
 	}
 	
 	@PostMapping("/sms/send")
-	public String sendSms(MessageDTO messageDto, Model model) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
+		public String sendSms(MessageDTO messageDto, Model model) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
+		// System.out.println(messageDto.to);
 		SmsResponseDTO response = smsService.sendSms(messageDto);
 		model.addAttribute("response", response);
 		
-		return "/sms/result";
+		return null;
 	}
  
 	
