@@ -33,8 +33,12 @@
 							<div class="col-lg-12">
 								<div class="loadmore">								
 									<!-- modal에 띄우고자하는 코드 -->
-									<div id="test" class="modal" style="height: 400px; text-align: center;">
+									<div id="test" class="modal" style="height: 600px;  width: 500px; text-align: center;">
 										<form name="sendData" action="tripRecordInsertForm" method="post">
+  											<div style="margin-top: 40px;"> 
+  												<h3>여행 타이틀</h3>
+  												<input type="text" name="tripTitle" placeholder="타이틀을 입력 해주세요." >
+  											</div>
   											<div style="margin-top: 40px;">
   												<h3>여행지역 선택</h3>
   												<select id="tripArea" name="tripArea">
@@ -51,6 +55,18 @@
   											<div>
   												<h3>여행일정 선택</h3>
   												<input type="date" name="startDay" value="startDay"> ~ <input type="date" name="endDay" value="endDay">
+  											</div><br>
+  											<div>
+  												<input type="radio" value="01" id="tripDisclose" name="tripDisclose" checked="checked"> 
+												<label for="tripDisclose">공개</label> 
+												<input type="radio" value="02" id="tripDisclose" name="tripDisclose"> 
+												<label for="tripDisclose">비공개</label>
+  											</div><br>
+  											<div>
+  												<input type="radio" value="01" id="tripShare" name="tripShare" checked="checked"> 
+  												<label for="tripShare">가능</label>
+												<input type="radio" value="02" id="tripShare" name="tripShare">
+												<label for="tripShare">불가능</label>
   											</div><br>
   											<div style ="margin-top: 30px;"> 
   												<a href="#" rel="modal:close" class="primary-btn">닫기</a>

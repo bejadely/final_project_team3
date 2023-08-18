@@ -15,7 +15,8 @@
 		FROM(SELECT ROWNUM rn, a.*
 			 FROM(SELECT *
 				  FROM trip_record
-				  WHERE trip_save = 'T2'
+				  WHERE trip_save = 'T2' 
+				  	AND trip_disclose = '01'
 				  ORDER BY regist_day DESC) a)
 		WHERE rn BETWEEN #{start } AND #{end }
 	</select>
@@ -124,7 +125,6 @@
 						, map_lng
 						, post_id
 						, upload_date
-						, trip_date
 					  )
 				VALUES
 					  (
@@ -139,14 +139,5 @@
 					  )
 	</insert>
 	
-<!-- 	VARCHAR2(13 BYTE)	MAP_ID	No		1	지도ID
-		NUMBER(38,0)	MAP_NO	Yes		2	순번
-		VARCHAR2(60 BYTE)	MAP_NAME	Yes		3	지도명
-		NUMBER(2,14)	MAP_LAT	Yes		4	위도
-		NUMBER(3,14)	MAP_LNG	Yes		5	경도
-		VARCHAR2(13 BYTE)	POST_ID	Yes		6	게시글ID
-		DATE	UPLOAD_DATE	Yes		7	등록일자
-		DATE	TRIP_DATE	Yes		8	여행일자 -->
-	
-	<!-- 여행기록 등록 - 여행 메모-->
+
 </mapper>

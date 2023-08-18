@@ -40,60 +40,27 @@
 		<section class="blog-section blog-page spad" style="margin-left: 100px;">
 			<div>
 				<form name="insertForm" method="post" th:object="${tripVO}" enctype="multipart/form-data">
-				<input type="hidden" name="writerId" th:value="${session.sessionId}">
-				<table>
-					<tr>
-						<th>여행 타이틀</th>
-						<td>
-							[[${tripVO.kakaoMap}]]
-							<input type="text" name="tripTitle">
-						</td>
-					</tr>
-					<tr>
-						<th>여행 일정</th>
-						<td>
-							<input type="hidden" th:value="${#dates.format(tripVO.startDay, 'yyyy-MM-dd')}" id="startDay" name="startDay">
-							<label>[[ ${#dates.format(tripVO.startDay, 'yyyy년 MM월 dd일 EEE요일')} ]] ~ </label>
-							<input type="hidden" th:value="${#dates.format(tripVO.endDay, 'yyyy-MM-dd')}" id="endDay" name="endDay">
-							<label>[[ ${#dates.format(tripVO.endDay, 'yyyy년 MM월 dd일 EEE요일')} ]]</label>
-						</td>
-					</tr>
-					<tr>
-						<th>여행기록 메인 사진 등록</th>
-						<td>
-							<input type="file" name="file">
-						</td>
-					</tr>
-					<tr>
-						<th>여행 경로</th>
-						<td>
-							<label></label>
-						</td>
-					</tr>
-					<tr>
-						<th>공개여부</th>
-						<td>
-							<input type="radio" value="01" id="tripDisclose" name="tripDisclose" checked="checked"> 
-							<label for="tripDisclose">공개</label> 
-							<input type="radio" value="02" id="tripDisclose" name="tripDisclose"> 
-							<label for="tripDisclose">비공개</label>
-						</td>
-					</tr>
-					<tr>
-						<th>공유여부</th>
-						<td><input type="radio" value="01" id="tripShare"
-							name="tripShare" checked="checked"> <label for="tripShare">가능</label>
-							<input type="radio" value="02" id="tripShare" name="tripShare">
-							<label for="tripShare">불가능</label></td>
-					</tr>
-				</table>
+					<input type="hidden" name="writerId" th:value="${session.sessionId}">
+					<input type="hidden" name="tripTitle" th:value="${tripVO.tripTitle}">
+					<input type="hidden" name="tripDisclose" th:value="${tripVO.tripDisclose}">
+					<input type="hidden" name="tripShare" th:value="${tripVO.tripShare}">
+					<input type="hidden" th:value="${#dates.format(tripVO.startDay, 'yyyy-MM-dd')}" id="startDay" name="startDay">
+					<input type="hidden" th:value="${#dates.format(tripVO.endDay, 'yyyy-MM-dd')}" id="endDay" name="endDay">
+					
+							<h3>[[${session.sessionId}]]님의 [[${tripVO.tripTitle}]] 여행일정</h3>
+								<label>[[ ${#dates.format(tripVO.startDay, 'yyyy년 MM월 dd일 EEE요일')} ]] ~ </label>
+								<label>[[ ${#dates.format(tripVO.endDay, 'yyyy년 MM월 dd일 EEE요일')} ]]</label>
+							<h3>여행기록 메인 사진 등록</h3>
+								<input type="file" name="file">
+							<h3>여행 경로</h3>
+								<button type="button" onclick="location.href='tripMappingInsertForm'">여행경로 선택</button>
 				<div>
 					<button type="submit" id="tsTripInsert">임시저장</button>
 					<button type="submit" id="tripInsert">등록</button>
 					<button type="reset">취소</button>
 					<button type="button" onclick="location.href='tripRecordList'">목록으로</button>
 				</div>
-			</form>		
+				</form>		
 			</div>
 		</section>
 		<script>
