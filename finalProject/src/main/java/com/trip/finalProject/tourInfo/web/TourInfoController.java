@@ -55,18 +55,27 @@ public class TourInfoController {
         return spotDetailInfo;
     }
     
-    //해당 지역에 해당하는 각 spot별 더보기창으로 이동
+    
     @GetMapping("/spotDetail")
-    public String getTourSpot(String contentId, String areaCode, String sigunguCode, Model model) {
+    public String getSpotDetail(String contentId, String areaCode, String sigunguCode, Model model) {
     	
-    	model.addAttribute("contentId",contentId);
-    	model.addAttribute("areaCode", areaCode);
-    	model.addAttribute("sigunguCode",sigunguCode);
+    	System.out.println("컨트"+contentId);
+    	System.out.println("컨트"+areaCode);
+    	System.out.println("컨트"+sigunguCode);
+    	//더보기 창 정보 받아오기
+    	Map<String, Object> spotDetailMap = tourInfoService.getSpotDetail(contentId, areaCode, sigunguCode);
     	
+    	model.addAttribute("spotDetail", spotDetailMap.get("spotDetail"));
     	
+    	//더보기 창으로 누른 지역, 콘텐츠코드를 이름으로 받기
+    	String contentName=tourInfoService.getContentNameDetail(contentId);
+    	String locationName=tourInfoService.getLocationNameDetail(areaCode, sigunguCode);
     	
+    	model.addAttribute("contentName",contentName);
+    	model.addAttribute("locationName", locationName);
     	
     	return "tourInfo/spotDetail";
     }
 
+    
 }
