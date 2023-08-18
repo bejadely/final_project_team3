@@ -35,7 +35,7 @@ form {
 <body>
 <div layout:fragment="content">
 
-	<form action="insertImg" method="post" id="editorForm">
+	<form action="insertEditor" method="post" id="editorForm">
 		<div id="editor">
 		</div>
 		<input type="button" class="btn btn-primary mt-3 mx-2" value="작성완료" id="uploadBtn" />
@@ -51,8 +51,7 @@ form {
 	.create(document.querySelector('#editor'), {
 		
 		ckfinder: {
-			uploadUrl : 'upload'
-			
+			uploadUrl : 'upload'	
 		}
 	
 		
@@ -67,6 +66,7 @@ form {
 			
 			const filenames = imgTags.map(img=> {
 				const src = img.getAttribute('src');
+				
 				return src.substring(src.lastIndexOf('/')+1);
 			});
 			
@@ -96,9 +96,9 @@ form {
 					
 				}
 			}
-			xhr.open("post","insertPackage",true);
+			xhr.open("post","insertEditor",true);
 			xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-			xhr.send("editorData="+data);
+			xhr.send(data);
 		})
 	})
 	.catch(error => {
