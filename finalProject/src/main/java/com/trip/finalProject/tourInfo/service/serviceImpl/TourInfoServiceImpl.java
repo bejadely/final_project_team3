@@ -26,11 +26,14 @@ public class TourInfoServiceImpl implements TourInfoService {
     private String API_KEY;
 
     private final int NUM_OF_ROWS = 99;
+    
+    private final int NUM_OF_ROWS_SPOT = 12;
 
     private final int ONE_NUM_OF_ROWS = 1;
 
     private final int FIRST_PAGE = 1;
 
+    //관광, 맛집, 쇼핑, 문화, 레포츠 장소에 대한 api 요청 후 정보 가져와서 map에 넣어줌
     @Override
     public Map<String, Object> getTourInfoMap(int areaCode, int sigunguCode) {
 
@@ -45,6 +48,7 @@ public class TourInfoServiceImpl implements TourInfoService {
         return tourInfoMap;
     }
 
+    //모달 클릭시 표출되어야 하는 정보를 api 요청을 통해 가져옴
     @Override
     public Map<String, String> getDetailInfoMap(int contentId, int contentTypeId) {
 
@@ -95,6 +99,7 @@ public class TourInfoServiceImpl implements TourInfoService {
         return leportsSpotMap;
     }
 
+    //지역기반정보 API 요청하는 공통 메서드
     private List<List<Map<String, String>>> getLocalBaseTourInfo(int page, int areaCode, int sigunguCode, int CONTENT_TYPE_ID) {
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -180,18 +185,21 @@ public class TourInfoServiceImpl implements TourInfoService {
         }
     }
 
+    //공통 정보 API
     private Map<String, String> getCommonApiMap(int contentId) {
         Map<String, String> commonApiMap = getCommonApiData(contentId);
 
         return commonApiMap;
     }
 
+    //소개 정보 API
     private Map<String, String> getIntroApiMap(int contentId, int contentTypeId) {
         Map<String, String> introApiMap = getIntroApiData(contentId, contentTypeId);
 
         return introApiMap;
     }
 
+    //공통 정보 API
     private Map<String, String> getCommonApiData(int contentId) {
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -250,6 +258,7 @@ public class TourInfoServiceImpl implements TourInfoService {
         }
     }
 
+    //소개 정보 API
     private Map<String, String> getIntroApiData(int contentId, int contentTypeId) {
 
         StringBuilder stringBuilder = new StringBuilder();
@@ -334,4 +343,182 @@ public class TourInfoServiceImpl implements TourInfoService {
             return null;
         }
     }
+
+    //areaCode코드로 상세 이름 받기
+	@Override
+	public String getLocationNameDetail(String areaCode, String sigunguCode) {
+		String locationName="";
+		
+		switch(areaCode) {
+		case "4" :
+			locationName="대구 ";
+			break;
+		case "6" :
+			locationName="부산 ";
+			break;
+		case "7" :
+			locationName="울산 ";
+			break;
+		case "35" :
+			switch(sigunguCode) {
+			case "2":
+				locationName = "경주 ";
+				break;
+			case "23":
+				locationName = "포항 ";
+				break;
+			case "11":
+				locationName = "안동 ";
+				break;
+			default:
+				break;
+		}
+		case "36" :
+			switch(sigunguCode) {
+			case "1":
+				locationName = "거제 ";
+				break;
+			case "17":
+				locationName = "통영 ";
+				break;
+			default:
+				break;
+		}
+			break;
+		default :
+			break;
+	}
+		
+		return locationName;
+	}
+
+	//contentId코드로 상세 이름 받기
+	@Override
+	public String getContentNameDetail(String contentId) {
+		String contentName="";
+		
+		switch(contentId) {
+		case "12" :
+			contentName="여행지";
+			break;
+		case "14" :
+			contentName="문화시설";
+			break;
+		case "38" :
+			contentName="쇼핑";
+			break;
+		case "39" :
+			contentName="맛집";
+			break;
+		case "28" :
+			contentName="레포츠";
+			break;
+	}
+		return contentName;
+	}
+
+	//더보기 창 
+	 @Override
+	   public Map<String, Object> getSpotDetail(String contentId, String areaCode, String sigunguCode) {
+	      
+	      Map<String, Object> spotDetailMap = new HashMap<>();
+	      
+	      spotDetailMap.put("spotDetail", getSpotDetailInfo(FIRST_PAGE, contentId, areaCode, sigunguCode));
+	      
+	      return spotDetailMap;
+	   }
+
+	   private List<Map<String,Object>> getSpotDetailInfo(int page, String contentId, String areaCode, String sigunguCode) {
+	           
+	         StringBuilder stringBuilder = new StringBuilder();
+	           
+	           stringBuilder.append("http://apis.data.go.kr/B551011/KorService1/areaBasedList1");
+	           stringBuilder.append("?serviceKey=" + API_KEY);
+	           stringBuilder.append("&pageNo=" + page);
+	           stringBuilder.append("&numOfRows=" + NUM_OF_ROWS_SPOT);
+	           stringBuilder.append("&MobileApp=" + "AppTest");    //  고정값
+	           stringBuilder.append("&MobileOS=" + "ETC"); //  고정값
+	           stringBuilder.append("&arrange=" + "Q");    //  A:제목순, C:수정일순, D:생성일순, 대표이미지가 반드시 있는 정렬 - O:제목순, Q:수정일순, R:생성일순
+	           stringBuilder.append("&contentTypeId=" + contentId);
+	           stringBuilder.append("&_type=" + "json");
+	           stringBuilder.append("&areaCode=" + areaCode);
+	           if(!sigunguCode.equals("0")) {
+	               stringBuilder.append("&sigunguCode=" + sigunguCode);
+	           }
+	           System.out.println("page = " + page);
+	           System.out.println("areaCode = " + areaCode);
+	           System.out.println("sigunguCode = " + sigunguCode);
+	           System.out.println("contentId = " + contentId);
+	           String apiUrl = stringBuilder.toString();
+	           System.out.println("apiUrl = " + apiUrl);
+	           
+	           try {
+	               URL url = new URL(apiUrl);
+	               HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+	               httpURLConnection.setRequestMethod("GET");
+	               BufferedReader bufferedReader;
+	               bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+	               String inputLine;
+	               stringBuilder.setLength(0); //  위에서 쓴 StringBuilder를 초기화 시킨 후 다시 쓰기 위한 코드
+	               while ((inputLine = bufferedReader.readLine()) != null) {
+	                   stringBuilder.append(inputLine);
+	               }
+	               bufferedReader.close();
+
+	               String jsonString = stringBuilder.toString();
+	               System.out.println("jsonString = " + jsonString);
+	               
+	               // Gson 객체 생성
+	               Gson gson = new Gson();
+
+	               // JSON 문자열을 JsonObject로 파싱
+	               JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+
+	               // 필요한 데이터 추출
+	               JsonObject response = jsonObject.getAsJsonObject("response");
+	               JsonObject body = response.getAsJsonObject("body");
+	               JsonObject items = body.getAsJsonObject("items");
+	               JsonArray itemsArray = items.getAsJsonArray("item");
+	           
+	               //  각 데이터를 담을 리스트 생성
+	               List<Map<String,Object>> itemList = new ArrayList<>();
+
+	               // 아이템별로 데이터 추출
+	               for (JsonElement itemElement : itemsArray) {
+	                   JsonObject itemObject = itemElement.getAsJsonObject();
+	                   
+	                   String contentIdSpotDetailPage = itemObject.get("contentid").getAsString();
+	                   String contentTypeId = itemObject.get("contenttypeid").getAsString();
+	                   String firstImage = itemObject.get("firstimage").getAsString();
+	                   String title = itemObject.get("title").getAsString();
+	                   String address = itemObject.get("addr1").getAsString();
+
+	                   // Map에 데이터 추가
+	                   Map<String, Object> getSpotDetailInfoMap = new HashMap<>();
+	                   getSpotDetailInfoMap.put("contentId", contentIdSpotDetailPage);
+	                   getSpotDetailInfoMap.put("contentTypeId", contentTypeId);
+	                   getSpotDetailInfoMap.put("firstImage", firstImage);
+	                   getSpotDetailInfoMap.put("title", title);
+	                   getSpotDetailInfoMap.put("address", address);
+
+	                   itemList.add(getSpotDetailInfoMap);
+	                   
+	               }
+	               
+	               for(int i=0; i<itemList.size(); i++) {
+	                  for(String key : itemList.get(i).keySet()) {
+	                      System.out.println(key + " = " + itemList.get(i).get(key));
+	                  }
+	                
+	             }
+	               
+	               return itemList;
+	               
+	           } catch (Exception e) {
+	               e.printStackTrace();
+
+	               return null;
+	           }
+
+	}
 }

@@ -7,6 +7,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+.sb-text {
+ 		text-align: center;
+}
+</style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -16,10 +21,10 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb-text">
-                        <h2 th:text="${areaCode}"></h2>
+                        <h2 th:text="|${locationName} ${contentName}|"></h2>
                         <div class="breadcrumb-option">
                             <a href="/localTourInfo"><i class="fa fa-home"></i>TOURINFO</a>
-                            <span>여행지 정보</span>
+                            <span th:text="|${locationName} ${contentName} 정보|"> </span>
                         </div>
                     </div>
                 </div>
@@ -32,34 +37,37 @@
     <section class="blog-section blog-page spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-blog-item">
-                        <div class="sb-pic">
-                            <img src="img/blog/latest-1.jpg" alt="">
-                        </div>
-                        <div class="sb-text">
-                            <ul>
-                                <li><i class="fa fa-user"></i> Adam Smith</li>
-                                <li><i class="fa fa-clock-o"></i> 18th Jan, 2019</li>
-                            </ul>
-                            <h4><a href="./blog-details.html">Enhance Your Brand Potential With Giant.</a></h4>
-                        </div>
-                    </div>
+            	<div th:each="spotdetail:${spotdetail}">
+	                <div class="col-lg-4 col-md-6">
+	                    <div class="single-blog-item">
+	                        <div class="sb-pic">
+	                            <img th:src="${spotdetail.firstImage}" alt="" loading="lazy">
+	                        </div>
+	                        <div class="sb-text" >
+	                            <ul>
+	                                <li><i class="fa-solid fa-location-dot" style="color: #2cbdb8;" ></i><span th:text="| ${locationName}|"></span></li>
+	                                <li><i class="fa-regular fa-comment-dots" style="color: #2cbdb8;"></i> 10개의 리뷰</li>
+	                            </ul>
+	                            <h4 th:text="${spotdetail.title}"><a href="#"></a></h4>
+	                        </div>
+	                    </div>
+	                </div>
                 </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-blog-item">
-                        <div class="sb-pic">
-                            <img src="img/blog/latest-2.jpg" alt="">
-                        </div>
-                        <div class="sb-text">
-                            <ul>
-                                <li><i class="fa fa-user"></i> Adam Smith</li>
-                                <li><i class="fa fa-clock-o"></i> 18th Jan, 2019</li>
-                            </ul>
-                            <h4><a href="./blog-details.html">Illustration In Marketing Materials</a></h4>
-                        </div>
-                    </div>
-                </div>
+	                <div class="col-lg-4 col-md-6">
+	                    <div class="single-blog-item">
+	                        <div class="sb-pic">
+	                            <img src="img/blog/latest-2.jpg" alt="">
+	                        </div>
+	                        <div class="sb-text">
+	                            <ul>
+	                                <li><i class="fa fa-user"></i> Adam Smith</li>
+	                                <li><i class="fa fa-clock-o"></i> 18th Jan, 2019</li>
+	                            </ul>
+	                            <h4><a href="./blog-details.html">Illustration In Marketing Materials</a></h4>
+	                        </div>
+	                    </div>
+	                </div>
+                
                 <div class="col-lg-4 col-md-6">
                     <div class="single-blog-item">
                         <div class="sb-pic">
