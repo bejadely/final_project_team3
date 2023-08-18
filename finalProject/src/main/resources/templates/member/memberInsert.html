@@ -231,17 +231,20 @@ $(document).on('click', '클래스명 혹은 id', function(){
 		  
 	      // memberId 정의
 	 	let receiverId = document.getElementById("phonenumber").value;
+	    // document.getElememtById("test").value(receiverId);
+	    
 
 	      $.ajax({
 	         url : "/sms/send", 
 	         type : 'post',
-	         data: { to : receiverId }
+	         data: { to : receiverId },
+	      /* 	 contentType : application/json */
 	      })
 	      .done( data => {
 	         console.log("data : ", data);
 	         console.log("통신은 성공");
 	         if(data != null && data == 'Success'){
-	            alert(`${phonenumber}문자발송했습니다`);
+	            alert(`${receiverId} 문자발송했습니다`);  // = receiverId + "문자발송했습니다.";
 	         } else {
 	            alert(`문자 발송 안됐습니다.`);
 	         }
@@ -293,7 +296,7 @@ $(document).on('click', '클래스명 혹은 id', function(){
 	
 	</script>
 	
-	<!--  눈알 비밀번호 가리기  -->
+	<!--  눈알 비밀번호 보이거나 말거나  -->
 	<script>
 	$(document).ready(function(){
 	    $('.main i').on('click',function(){
