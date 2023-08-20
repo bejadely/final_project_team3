@@ -12,10 +12,11 @@
         $.ajax({
             url:"/mail",
             type:"post",
+            //받아오는 데이터 형식
             dataType:"json",
             data:{"mail" : $("#mail").val()},
             success: function(data){
-                alert("인증번호 발송");
+                alert("인증번호 발송했습니다.");
                 $("#Confirm").attr("value",data);
             }
         });
@@ -34,7 +35,8 @@
 </script>
 <body>
   <div id="mail_input" name="mail_input">
-      <input type="text" name="mail" id="mail" placeholder="이메일 입력">
+  		<!--서버로 보낼 데이터 (input에 넣은 이메일을 서버로 보냄)  -->
+      <input type="text" name="mail" id="mail"  value="" placeholder="이메일 입력">
       <button type="button" id="sendBtn" name="sendBtn" onclick="sendNumber()">인증번호</button>
   </div>
       <br>

@@ -18,4 +18,5 @@ public class SmsResponseDTO {
 	LocalDateTime requestTime;
 	String statusCode;
 	String statusName;
+
 }
