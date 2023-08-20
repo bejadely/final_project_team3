@@ -8,169 +8,145 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
 </head>
 <style>
-
 </style>
 <body>
-	<script src="https://kit.fontawesome.com/d58c3728d1.js" crossorigin="anonymous"></script>
-	
-<div class="wrap">
-	<div class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
-		<div class="d-flex align-items-center justify-content-center w-100">
-			<div class="row justify-content-center w-100">
-				<div class="col-md-8 col-lg-6 col-xxl-3">
-					<div class="card mb-0">
-						<div class="card-body">
-							<a href="./index.html"
-								class="text-nowrap logo-img text-center d-block py-3 w-100">
-								<img src="../assets/images/logos/dark-logo.svg" width="180"
-								alt="">
-							</a>
-							<p class="text-center">회원가입</p>
+	<script src="https://kit.fontawesome.com/d58c3728d1.js"
+		crossorigin="anonymous"></script>
 
-							<form name="insertForm" action="memberInsert1" method="post">
-								<div class="mb-3">
-									<label for="exampleInputtext1" class="form-label">아이디</label> 
-									<button class="btn btn-default">중복체크</button><input
-										type="text" name="id" placeholder="아이디" class="form-control"
-										id="exampleInputtext1" aria-describedby="textHelp">
-								</div>
-								<div class="mb-3">
-									<div class="main">
-									<label for="exampleInputEmail1" class="form-label">비밀번호</label>
-										<i class="fa-solid fa-eye fa-xs"></i>	
-									<input type = "password" name="password" placeholder="비밀번호"
-										class="form-control" id="pw1"
-										aria-describedby="emailHelp">
-								</div>
-								</div>
-										
-						<div class="mb-3">
-						<div class="main">
-									<label for="exampleInputPassword1" class="form-label">비밀번호 확인</label>
-										<i class="fa-solid fa-eye fa-xs"></i>	
-										<!-- <input type='hidden' class="error_box" id="pw_error" > -->
-									<input type = "password" name="nationality" placeholder="비밀번호 확인"
-										class="form-control" id="pw2">
+	<div class="wrap">
+		<div
+			class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+			<div class="d-flex align-items-center justify-content-center w-100">
+				<div class="row justify-content-center w-100">
+					<div class="col-md-8 col-lg-6 col-xxl-3">
+						<div class="card mb-0">
+							<div class="card-body">
+								<a href="./index.html"
+									class="text-nowrap logo-img text-center d-block py-3 w-100">
+<!-- 									<img src="../assets/images/logos/dark-logo.svg" width="180" alt="">-->								</a>
+								<p class="text-center">회원가입</p>
+
+								<form name="insertForm" action="memberInsert1" method="post">
+									<div class="mb-3">
+										<label for="exampleInputtext1" class="form-label">아이디</label>
+										<button class="btn btn-default">중복체크</button>
+										<input type="text" name="id" placeholder="아이디" class="form-control" id="exampleInputtext1" aria-describedby="textHelp">
+									</div>
+									<div class="mb-3">
+										<div class="main">
+											<label for="exampleInputEmail1" class="form-label">비밀번호</label>
+											<i class="fa-solid fa-eye fa-xs"></i> <input type="password" name="password" placeholder="비밀번호" class="form-control" id="pw1" aria-describedby="emailHelp">
 										</div>
-								</div>
+									</div>
+
+										<div class="mb-3">
+											<div class="main">
+												<label for="exampleInputPassword1" class="form-label">비밀번호 확인</label> <i class="fa-solid fa-eye fa-xs"></i>								
+												<input type="password" name="nationality" placeholder="비밀번호 확인" class="form-control" id="pw2">
+											</div>
+										</div>
+
+										<div>
+											<button class="btn btn-default" type="button" name="confirmBtn" id="confirmBtn" onclick="confirmNumber()">비밀번호 확인</button>
+										</div>
+										<div class="mb-3">
+											<label for="exampleInputEmail1" class="form-label">이름</label>
+											<input type="text" name="memberName" placeholder="이름" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+										</div>
+
+										<a>국적</a>
+
+										<div class="mb-3">
+											<select class="" id="nationality" name="nationality"
+												aria-label="Default select example">
+												<option value="">국가선택</option>
+												<option value="004">한국</option>
+												<option value="020">일본</option>
+												<option value="088">중국</option>
+												<option value="003">미국</option>
+												<option value="023">캐나다</option>
+												<option value="023">필리핀</option>
+
+											</select> <br /> <br />
+
+										</div>
+
+
+
+										<div class="mb-3">
+											<label for="example" class="form-label">이메일</label> <input type="email" name="email" placeholder="이메일" class="form-control" id="example">
+										</div>
+									
+
+
+										<label for="example" class="form-label">주소</label> <input type="text" id="zip_code" name="zip_code" readonly="readonly" class="form-control" placeholder="우편번호" style="width: 250px;">
 								
-								<div>
-								    <button class="btn btn-default" type="button" name="confirmBtn" id="confirmBtn" onclick="confirmNumber()">비밀번호 확인</button>
-								</div>
-								<div class="mb-3">
-									<label for="exampleInputEmail1" class="form-label">이름</label> <input
-										type="text" name="memberName" placeholder="이름"
-										class="form-control" id="exampleInputEmail1"
-										aria-describedby="emailHelp">
-								</div>	
-								
-								<a>국적</a>
+										
+										<div class="mb-3">
+											<input type="text" id="addr" name="addr" onclick="openZipSearch();" readonly="readonly" class="form-control" placeholder="기본주소"> 
+											<input type="text" id="addr_dtl" name="addr_dtl" class="form-control" placeholder="상세주소" style="width: 250px;">
+										</div>
+
+										<div class="mb-3">
+											<label for="" class="form-label">전화번호 &nbsp;  </label><button type="button" id="approveButton" class="btn btn-default" >코드 발송</button>
+											 <input type="text" class="form-control" name="to" id="phonenumber" placeholder="전화번호를 입력하세요">
 											
-								<div class="mb-3">
-								<select class="" id="bank_code"
-										name="bank_code" aria-label="Default select example">
-											<option value="">국가선택</option>
-											<option value="004">한국</option>
-											<option value="020">일본</option>
-											<option value="088">중국</option>
-											<option value="003">미국</option>
-											<option value="023">캐나다</option>
-											<option value="023">필리핀</option>
-											
-								</select>
-								<br/>
-								<br/>
-			
-								</div>
-								
-								
-							
-								<div class="mb-3">
-									<label for="exampleInputPassword1" class="form-label">이메일</label>
-									<input type="text" name="email" placeholder="이메일"
-										class="form-control" id="exampleInputPassword1">
-								</div>
-								<div class="mb-3">
-									<label for="exampleInputPassword1" class="form-label">우편번호</label>
-									<input type="text" name="zipCode" placeholder="우편번호"
-										class="form-control" id="exampleInputPassword1">
-								</div>
-								<div class="mb-3">
-									<label for="exampleInputPassword1" class="form-label">도로주소</label>
-									<input type="text" name="address" placeholder="도로주소"
-										class="form-control" id="address_kakao" readonly >
-								</div>
-								
+										</div>
+										
+										<div id="codeCheck" class="mb-3"  style="display: none">
+										 <input type="text" class="form-control" name="smsCode" id="smsCode" placeholder="코드 입력하세요">
+											<button type="button" id="code" name="codeConfirmBtn" class="btn btn-default" onclick="confirmCode()" value="">코드 확인</button>
+											<input type="text" name="name" value="${num}">
+										</div>
+										 <br>
+   										 <input type="text" id="codeConfirm" name="Confirm" style="display: none" value="">
+										
 
-								<div class="mb-3">
-									<label for="" class="form-label">상세주소</label> <input
-										type="text" name="address_detail"  placeholder="상세주소"
-										class="form-control" id="exampleInputPassword1">
-								</div>
 
-								<div class="mb-3">
-									<label  for="" class="form-label">전화번호</label> <input
-										type="text" class="form-control" name="to" id="phonenumber"
-										placeholder="전화번호를 입력하세요">
-									<button  type="button" class="approveButton">발송</button>
-								</div>
-								<!--class="btn btn-default"   -->
-								
-																						   							  																    
-							    
-								<div class="mb-3">
-									<label for="" class="form-label">생일</label> <input type="date"
-										name="birthDate" placeholder="생일" class="form-control"
-										id="exampleInputPassword1">
-								</div>
-								<div class="mb-3">
-									<label for="" class="form-label">성별</label> <input type="text"
-										name="gender" placeholder="성별" class="form-control"
-										id="exampleInputPassword1">
-								</div>
 
-								<input type="submit" value="회원가입"
-									class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">
-								<div class="d-flex align-items-center justify-content-center">
-									<p class="fs-4 mb-0 fw-bold">Already have an Account?</p>
-									<a class="text-primary fw-bold ms-2"
-										href="./authentication-login.html">Sign In</a>
-								</div>
-							</form>
+
+										<div class="mb-3">
+											<label for="" class="form-label">생년월일</label> <input
+												type="date" name="birthDate" placeholder="생일"
+												class="form-control" id="birthday">
+										</div>
+										<div class="mb-3">
+											<label for="" class="form-label">성별</label> <input type="text" name="gender" placeholder="성별" class="form-control" id="gender">
+										</div>
+
+										<input type="submit" value="회원가입" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">
+										<div class="d-flex align-items-center justify-content-center">
+											<p class="fs-4 mb-0 fw-bold">Already have an Account?</p>
+											<a class="text-primary fw-bold ms-2" href="./authentication-login.html">Sign In</a>
+										</div>
+								</form>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	</div>
 
-	<!--  sms전송 -->
-<a th:href="@{/send1}">sms</a>
-
+    <p th:text="${num}">난수</p>
+		<!--  sms전송 -->
+		<a th:href="@{/send1}">sms</a> <a th:href="@{/sendemail}">이메일전송</a>
 
 
+		<form th:action="@{/check1}">
 
-
-	<a th:href="@{/sendemail}">이메일전송</a>
-
-
-	<form th:action="@{/check1}">
-
-		<table>
-			<!-- 	<tr class="form-group">
+			<table>
+				<!-- 	<tr class="form-group">
 				<td>은행코드</td>
 				<td><input type="text" class="form-control"  name="bank_code"
 					placeholder="은행코드 입력하세요"></td>
 			</tr> -->
-			<tr>
-				
-					<td>은행코드 <select class="" id="bank_code"
-						name="bank_code" aria-label="Default select example">
+				<tr>
+
+					<td>은행코드 <select class="" id="bank_code" name="bank_code" aria-label="Default select example">
 							<option value="">은행선택</option>
 							<option value="004">국민은행</option>
 							<option value="020">우리은행</option>
@@ -190,42 +166,38 @@
 							<option value="039">경남은행</option>
 					</select>
 					</td>
-			
-			</tr>
+
+				</tr>
 
 
-			<tr class="form-group">
-				<td>계좌번호</td>
-				<td><input type="text" class="form-control" id="bank_num"
-					name="bank_num" placeholder="계좌번호 입력하세요"></td>
-			</tr>
-			<tr class="form-group">
-				<td>예금주</td>
-				<td><input type="text" class="form-control" id="bankHolderInfo"
-					name="bankHolderInfo" placeholder="이름" readonly></td>
-			</tr>
+				<tr class="form-group">
+					<td>계좌번호</td>
+					<td><input type="text" class="form-control" id="bank_num" name="bank_num" placeholder="계좌번호 입력하세요"></td>
+				</tr>
+				<tr class="form-group">
+					<td>예금주</td>
+					<td><input type="text" class="form-control" id="bankHolderInfo" name="bankHolderInfo" placeholder="이름" readonly></td>
+				</tr>
 
-		</table>
-		<button class="btn btn-default">확인</button>
-	</form>
-
+			</table>
+			<button class="btn btn-default">확인</button>
+		</form>
+	</div>
 
 
-<!-- 
-$(document).on('click', '클래스명 혹은 id', function(){
 
-  이벤트 내용.
 
-}); -->
 
 	<!--  sms 아작스 -->
 	<script th:inline="javascript">
 	$(document).ready(function() {
 	      // 승인 버튼 클릭 시 발생 이벤트 설정
-	      $('.approveButton').on('click', ajaxApprove);
+	      $('#approveButton').on('click', ajaxApprove);
+	      $('#approveButton').on('click', sendCode);
 	   });
 	
 	  // 함수 정의
+	  
 	   function ajaxApprove(event){
 		   console.log("sms 버튼 눌렀다.");
 		  
@@ -234,23 +206,42 @@ $(document).on('click', '클래스명 혹은 id', function(){
 	    // document.getElememtById("test").value(receiverId);
 	    
 
-	      $.ajax({
+	     $.ajax({
 	         url : "/sms/send", 
 	         type : 'post',
 	         data: { to : receiverId },
 	      /* 	 contentType : application/json */
 	      })
 	      .done( data => {
-	         console.log("data : ", data);
+	         console.log("data :", data);
 	         console.log("통신은 성공");
 	         if(data != null && data == 'Success'){
-	            alert(`${receiverId} 문자발송했습니다`);  // = receiverId + "문자발송했습니다.";
+	            alert(`${receiverId} 문자발송했습니다`); 
+	            $("#smsCode").attr("value",data);
+	            
+	            //$("#Confirm").attr("value",${num});
 	         } else {
 	            alert(`문자 발송 안됐습니다.`);
 	         }
 	      })
 	      .fail( reject => console.log(reject));
 	   };
+	   
+	   function sendCode(){
+		    $("#codeCheck").css("display","block");}
+	   
+	   /* var numValue = [[${num}]]; */
+	   
+	   function confirmCode(){
+	        var number1 = $("#smsCode").val();
+	       /*  var number2 = ${num}; */
+
+	        if(number1 !=null){
+	            alert("인증되었습니다.");
+	        }else{
+	            alert("번호가 다릅니다.");
+	        }
+	    }
 
 	</script>
 
@@ -281,22 +272,22 @@ $(document).on('click', '클래스명 혹은 id', function(){
 			});
 		});
 	</script>
-<!--  비밀번호 확인 -->
+	<!--  비밀번호 확인 -->
 	<script>
 	function confirmNumber(){
         var number1 = $("#pw1").val();
         var number2 = $("#pw2").val();
 
         if(number1 == number2){
-            alert("인증되었습니다.");
+            alert("번호가 같습니다.");
         }else{
             alert("번호가 다릅니다.");
         }
     }
 	
 	</script>
-	
-	<!--  눈알 비밀번호 보이거나 말거나  -->
+
+	<!--  비밀번호 on/off  -->
 	<script>
 	$(document).ready(function(){
 	    $('.main i').on('click',function(){
@@ -316,54 +307,37 @@ $(document).on('click', '클래스명 혹은 id', function(){
 
 
 
-	<!-- 	<script>
-		//휴대폰 인증번호 대조
-		$("#phoneChk2").click(function() {
-			if ($("#phone2").val() == code2) {
-				$(".successPhoneChk").text("인증번호가 일치합니다.");
-				$(".successPhoneChk").css("color", "green");
-				$("#phoneDoubleChk").val("true");
-				$("#phone2").attr("disabled", true);
-			} else {
-				$(".successPhoneChk").text("인증번호가 일치하지 않습니다. 확인해주시기 바랍니다.");
-				$(".successPhoneChk").css("color", "red");
-				$("#phoneDoubleChk").val("false");
-				$(this).attr("autofocus", true);
-			}
-		});
-	</script> -->
-	
+
+
 	<!-- 주소 -->
-	
-	 <table>
-        <tr>
-            <th>이름</th>
-            <td><input type="text" name="user_name"></td>
-        </tr>
-        <tr>
-            <th>주소</th>
-            <td><input type="text" id="address_kakao" name="address" readonly /></td>
-        </tr>
-        <tr>
-            <th>상세 주소</th>
-            <td><input type="text" name="address_detail" /></td>
-        </tr>
-    </table>
-    
-	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
-window.onload = function(){
-    document.getElementById("address_kakao").addEventListener("click", function(){ //주소입력칸을 클릭하면
-        //카카오 지도 발생
-        new daum.Postcode({
-            oncomplete: function(data) { //선택시 입력값 세팅
-                document.getElementById("address_kakao").value = data.address; // 주소 넣기
-                document.querySelector("input[name=address_detail]").focus(); //상세입력 포커싱
-            }
-        }).open();
-    });
+
+
+
+	<!--   주소 다음api -->
+	<script type="text/javascript"
+		src="https://code.jquery.com/jquery-1.10.2.min.js" /></script>
+	<script
+		src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script>
+function openZipSearch() {
+    new daum.Postcode({
+    	oncomplete: function(data) {     
+		var addr = ''; 
+		if (data.userSelectedType === 'R') { 
+			addr = data.roadAddress;
+		} else {
+			addr = data.jibunAddress;
+		}
+
+		$("#zip_code").val(data.zonecode);
+		$("#addr").val(addr);
+		$("#addr_dtl").val("");
+		$("#addr_dtl").focus();
+        }
+    }).open();
 }
 </script>
+
 
 
 </body>

@@ -20,5 +20,6 @@ public class SmsRequestDTO {
 	private String from;
 	private String content;
 	private List<MessageDTO> messages;
+	private String randomNumber;
 	
 }
