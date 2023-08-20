@@ -5,13 +5,82 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="@{layouts/default_layout}">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<style>
-.sb-text {
- 		text-align: center;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1, user-scalable=yes,initial-scale=1.0" />
+    <title>Insert title here</title>
+    <!-- getbootstrap cdn -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+            crossorigin="anonymous">
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
+
+    <!-- jquery cdn -->
+    <script
+            src="https://code.jquery.com/jquery-3.7.0.js"
+            integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+            crossorigin="anonymous"></script>
+    <style>
+        .sb-text {
+            text-align: center;
+        }
+
+        @media (min-width: 1400px) {
+            .single-blog-item .sb-pic img {
+                height: 277px;
+            }
+        }
+
+        @media (min-width: 1200px) and (max-width: 1399px) {
+            .single-blog-item .sb-pic img {
+                height: 237px;
+            }
+        }
+
+        @media (min-width: 992px) and (max-width: 1199px) {
+            .single-blog-item .sb-pic img {
+                height: 197px;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 991px) {
+            .single-blog-item .sb-pic img {
+                height: 224px;
+            }
+        }
+
+        @media (min-width: 576px) and (max-width: 767px) {
+            .single-blog-item .sb-pic img {
+                height: 344px;
+            }
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+        .review-content {
+            position: relative;
+            margin-bottom: 10px; /* 조절 가능한 여백 */
+        }
+
+        .review-content .writeDate {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+
+        .review-content .btn {
+            position: relative;
+            float: right;
+        }
+
+
+
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -23,7 +92,7 @@
                     <div class="breadcrumb-text">
                         <h2 th:text="|${locationName} ${contentName}|"></h2>
                         <div class="breadcrumb-option">
-                            <a href="/localTourInfo"><i class="fa fa-home"></i>TOURINFO</a>
+                            <a href="/localTourInfo"><i class="fa fa-home"></i>TOURINFO </a>
                             <span th:text="|${locationName} ${contentName} 정보|"> </span>
                         </div>
                     </div>
@@ -37,151 +106,410 @@
     <section class="blog-section blog-page spad">
         <div class="container">
             <div class="row">
-            	<div th:each="spotdetail:${spotdetail}">
-	                <div class="col-lg-4 col-md-6">
-	                    <div class="single-blog-item">
-	                        <div class="sb-pic">
-	                            <img th:src="${spotdetail.firstImage}" alt="" loading="lazy">
-	                        </div>
-	                        <div class="sb-text" >
-	                            <ul>
-	                                <li><i class="fa-solid fa-location-dot" style="color: #2cbdb8;" ></i><span th:text="| ${locationName}|"></span></li>
-	                                <li><i class="fa-regular fa-comment-dots" style="color: #2cbdb8;"></i> 10개의 리뷰</li>
-	                            </ul>
-	                            <h4 th:text="${spotdetail.title}"><a href="#"></a></h4>
-	                        </div>
-	                    </div>
-	                </div>
-                </div>
-	                <div class="col-lg-4 col-md-6">
-	                    <div class="single-blog-item">
-	                        <div class="sb-pic">
-	                            <img src="img/blog/latest-2.jpg" alt="">
-	                        </div>
-	                        <div class="sb-text">
-	                            <ul>
-	                                <li><i class="fa fa-user"></i> Adam Smith</li>
-	                                <li><i class="fa fa-clock-o"></i> 18th Jan, 2019</li>
-	                            </ul>
-	                            <h4><a href="./blog-details.html">Illustration In Marketing Materials</a></h4>
-	                        </div>
-	                    </div>
-	                </div>
-                
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-blog-item">
+                <div class="col-lg-4 col-md-6" th:each="spotDetail:${spotDetails}" data-bs-toggle="modal" data-bs-target="#spotDetailInfoModal">
+                    <div class="single-blog-item" th:attr="data-content-id=${spotDetail.contentId}, data-content-type-id=${spotDetail.contentTypeId}, data-address=${spotDetail.address}">
                         <div class="sb-pic">
-                            <img src="img/blog/latest-3.jpg" alt="">
+                            <img th:if="${not #strings.isEmpty(spotDetail.firstImage)}" th:src="${spotDetail.firstImage}" alt="" loading="lazy">
+                            <img th:unless="${not #strings.isEmpty(spotDetail.firstImage)}" th:src="@{/img/no-image.png}" alt="" loading="lazy">
                         </div>
                         <div class="sb-text">
                             <ul>
-                                <li><i class="fa fa-user"></i> Adam Smith</li>
-                                <li><i class="fa fa-clock-o"></i> 22th Jan, 2019</li>
+                                <li><i class="fa-solid fa-location-dot" style="color: #2cbdb8;"></i><span
+                                        th:text="| ${locationName}|"></span></li>
+                                <li><i class="fa-regular fa-comment-dots" style="color: #2cbdb8;"></i> 개의 리뷰</li>
                             </ul>
-                            <h4><a href="./blog-details.html">Branding Do You Know Who You Are</a></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-blog-item">
-                        <div class="sb-pic">
-                            <img src="img/blog/latest-4.jpg" alt="">
-                        </div>
-                        <div class="sb-text">
-                            <ul>
-                                <li><i class="fa fa-user"></i> Adam Smith</li>
-                                <li><i class="fa fa-clock-o"></i> 24th Jan, 2019</li>
-                            </ul>
-                            <h4><a href="./blog-details.html">Looking For Your Dvd Printing Solution</a></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-blog-item">
-                        <div class="sb-pic">
-                            <img src="img/blog/latest-5.jpg" alt="">
-                        </div>
-                        <div class="sb-text">
-                            <ul>
-                                <li><i class="fa fa-user"></i> Adam Smith</li>
-                                <li><i class="fa fa-clock-o"></i> 29th Jan, 2019</li>
-                            </ul>
-                            <h4><a href="./blog-details.html">How To Set Intentions That Energize You</a></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-blog-item">
-                        <div class="sb-pic">
-                            <img src="img/blog/latest-6.jpg" alt="">
-                        </div>
-                        <div class="sb-text">
-                            <ul>
-                                <li><i class="fa fa-user"></i> Adam Smith</li>
-                                <li><i class="fa fa-clock-o"></i> 30th Jan, 2019</li>
-                            </ul>
-                            <h4><a href="./blog-details.html">Do Your Self Realizations Quickly Fade</a></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-blog-item">
-                        <div class="sb-pic">
-                            <img src="img/blog/latest-3.jpg" alt="">
-                        </div>
-                        <div class="sb-text">
-                            <ul>
-                                <li><i class="fa fa-user"></i> Adam Smith</li>
-                                <li><i class="fa fa-clock-o"></i> 02th Feb, 2019</li>
-                            </ul>
-                            <h4><a href="./blog-details.html">Motivation How To Build Trust At Work</a></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-blog-item">
-                        <div class="sb-pic">
-                            <img src="img/blog/latest-7.jpg" alt="">
-                        </div>
-                        <div class="sb-text">
-                            <ul>
-                                <li><i class="fa fa-user"></i> Adam Smith</li>
-                                <li><i class="fa fa-clock-o"></i> 09th Feb, 2019</li>
-                            </ul>
-                            <h4><a href="./blog-details.html">Not All Blank Cassettes Are Created Equal</a></h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="single-blog-item">
-                        <div class="sb-pic">
-                            <img src="img/blog/latest-8.jpg" alt="">
-                        </div>
-                        <div class="sb-text">
-                            <ul>
-                                <li><i class="fa fa-user"></i> Adam Smith</li>
-                                <li><i class="fa fa-clock-o"></i> 12th Feb, 2019</li>
-                            </ul>
-                            <h4><a href="./blog-details.html">The Small Change That Creates Massive Results</a></h4>
+                            <h4 th:text="${spotDetail.title}"><a href="#"></a></h4>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!--모달창-->
+            <div class="modal fade" id="spotDetailInfoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 modalText" id="exampleModalLabel"></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <td colspan="3"><img id="modalImage" src="" style="width: 100%;"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">주소</th>
+                                    <td colspan="2" id="modalAddress" class="modalText"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">전화번호</th>
+                                    <td colspan="2" id="modalPhone" class="modalText"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">주차</th>
+                                    <td colspan="2" id="modalParking" class="modalText"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">홈페이지</th>
+                                    <td colspan="2" id="modalHomepage" class="modalText"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="review">
+                                <h7 id="reviewCount"></h7>
+                                <hr>
+                                <hr id="afterReview">
+                                <div class="d-grid gap-2 col-6 mx-auto">
+                                    <button class="btn btn-outline-info justify-content-center" id="moreReview" type="button"
+                                            data-page="1" >
+                                        더보기
+                                    </button>
+                                </div>
+                                <hr>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1">
+                                    <label class="form-check-label" for="inlineRadio1">1점</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2">
+                                    <label class="form-check-label" for="inlineRadio2">2점</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="3">
+                                    <label class="form-check-label" for="inlineRadio3">3점</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="4">
+                                    <label class="form-check-label" for="inlineRadio4">4점</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="5" th:checked="true">
+                                    <label class="form-check-label" for="inlineRadio5">5점</label>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <input id="reviewInput" type="text" class="form-control" placeholder="추억을 남겨보세요!" aria-label="추억을 남겨보세요!" aria-describedby="button-addon2">
+                                    <button class="btn btn-outline-secondary" type="button" id="addReview">리뷰 등록</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <br>
             <nav aria-label="Page navigation">
-			  <ul class="pagination justify-content-center">
-			    <li class="page-item"><a class="page-link" href="#"><</a></li>
-			    <li class="page-item"><a class="page-link" href="#">1</a></li>
-			    <li class="page-item"><a class="page-link" href="#">2</a></li>
-			    <li class="page-item"><a class="page-link" href="#">3</a></li>
-			    <li class="page-item"><a class="page-link" href="#">4</a></li>
-			    <li class="page-item"><a class="page-link" href="#">5</a></li>
-			    <li class="page-item"><a class="page-link" href="#">></a></li>
-			  </ul>
-			</nav>
+                <ul class="pagination justify-content-center" th:attr="data-content-type-id=${contentTypeId}, data-area-code=${areaCode}, data-sigungu-code=${sigunguCode}">
+
+                    <!-- pagingVo에 cntPage보다 현재 페이지가 작거나 같으면 < 버튼 disabled 처리 아니면 활성화 -->
+                    <li class="page-item" th:if="${pagingVo.nowPage <= pagingVo.cntPage}">
+                        <a class="page-link disabled"><</a>
+                    </li>
+                    <li class="page-item" th:unless="${pagingVo.nowPage <= pagingVo.cntPage}" th:attr="data-page=${pagingVo.startPage - 1}">
+                        <a class="page-link pointer"><</a>
+                    </li>
+
+                    <!-- startPage, endPage 범위 -->
+                    <li class="page-item"
+                        th:each="pageNumber : ${#numbers.sequence(pagingVo.startPage, pagingVo.endPage)}" th:attr="data-page=${pageNumber}">
+                        <a class="page-link" th:classappend="${pageNumber == pagingVo.nowPage} ? 'active' : 'pointer'" th:text="${pageNumber}"></a>
+                    </li>
+
+                    <!-- pagingVo에 lastPage의 값이 startPage 이상 endPage 이하이면 > 버튼 disabled 처리 아니면 활성화 -->
+                    <li class="page-item"
+                        th:if="${pagingVo.lastPage >= pagingVo.startPage && pagingVo.lastPage <= pagingVo.endPage}">
+                        <a class="page-link disabled">></a>
+                    </li>
+                    <li class="page-item"
+                        th:unless="${pagingVo.lastPage >= pagingVo.startPage && pagingVo.lastPage <= pagingVo.endPage}" th:attr="data-page=${pagingVo.endPage + 1}">
+                        <a class="page-link pointer">></a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </section>
     <!-- Blog Section End -->
+
+
+
+    <script>
+
+        $(function() {
+            let contentTypeId = $('.pagination').data('contentTypeId');
+            let areaCode = $('.pagination').data('areaCode');
+            let sigunguCode = $('.pagination').data('sigunguCode');
+
+            $('.page-item').on('click', function() {
+                let page = $(this).data('page');
+
+                window.location.href = "/localTourInfo/spotDetail" +
+                    "?page=" + page +
+                    "&contentTypeId=" + contentTypeId +
+                    "&areaCode=" + areaCode +
+                    "&sigunguCode=" + sigunguCode;
+            })
+        })
+
+        //	카드 눌렀을 시 모달창 띄우는 함수
+        $(document).on('click', '.single-blog-item', function() {
+
+            let contentId = $(this).data('contentId');
+            let contentTypeId = $(this).data('contentTypeId');
+            let address = $(this).data('address');
+            let title = $(this).find('h4').text();
+            let image = $(this).find('img').attr('src');
+
+            getSpotDetailInfoReview(contentId, contentTypeId, function(data) {
+                if(data) {
+                    clearModal(); // 기존 데이터 삭제
+                    appendSpotDetailInfoReview(data, address, title, image, contentId);
+                }
+            });
+        })
+
+        function clearModal() {
+            $('.modalText').text('');
+            $('#modalImage').attr('src', '');
+            $('#reviewCount').text('');
+            $('.review-content').remove();
+            $('#moreReview').removeClass('disabled');
+            $('#moreReview').data('contentId', '');
+            $('#moreReview').data('page', '1');
+        }
+
+        function getSpotDetailInfoReview(contentId, contentTypeId, callback) {
+            $.ajax({
+                type: 'GET',
+                url: '/localTourInfo/infoReview',
+                data: {
+                    'contentId': contentId,
+                    'contentTypeId': contentTypeId
+                }
+            })
+            .done(function (data, textStatus, jqXHR){
+                console.log('done');
+
+                callback(data);
+            })
+            .fail(function (jqXHR, textStatus, errorThrown){
+                console.log('fail');
+
+                callback(null);
+            })
+        }
+
+        function appendSpotDetailInfoReview(data, address, title, image, contentId) {
+            $('#exampleModalLabel').text(title);
+            $('#modalImage').attr('src', image);
+            $('#modalAddress').text(address);
+            $('#reviewCount').text(data.totalCount + '개의 리뷰');
+            $('#reviewCount').data('totalCount', data.totalCount);
+            if(data.totalCount == 0) {
+                $('#moreReview').addClass('disabled');
+            }
+            $('#moreReview').data('contentId', contentId);
+
+            if(data.detailInfoMap.phone == null || data.detailInfoMap.phone.replaceAll(' ', '') == '') {
+                $('#modalPhone').text('-');
+            } else {
+                $('#modalPhone').text(data.detailInfoMap.phone);
+            }
+            if(data.detailInfoMap.parking == null || data.detailInfoMap.parking.replaceAll(' ', '') == '') {
+                $('#modalParking').text('-');
+            } else {
+                $('#modalParking').html(data.detailInfoMap.parking);
+            }
+            if(data.detailInfoMap.homepage == null || data.detailInfoMap.homepage.replaceAll(' ', '') == '') {
+                $('#modalHomepage').text('-');
+            } else {
+                $('#modalHomepage').html(data.detailInfoMap.homepage);
+            }
+
+            if(data.spotDetailReviewVoList.length > 0) {
+                appendReview(data.spotDetailReviewVoList, contentId);
+            }
+        }
+
+        //모달창 리뷰 페이징
+        $(document).on('click', '#moreReview', function () {
+            let contentId = $(this).data('contentId');
+            let page = $(this).data('page');
+
+            page = Number(page)+1;
+
+            $.ajax({
+                type: 'GET',
+                url: '/localTourInfo/review',
+                data: {
+                    'contentId' : contentId,
+                    'page' : page
+                }
+            })
+            .done(function(data, textStatus, jqXHR) {
+                console.log('done');
+
+                appendReview(data, contentId);
+                changeInfoMoreReviewButton(page);
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                console.log('fail');
+
+            })
+        });
+
+        const myModalEl = document.getElementById('spotDetailInfoModal')
+        myModalEl.addEventListener('hidden.bs.modal', event => {
+            // 모달창이 닫히면 무조건 모달 내부 데이터를 삭제해줌
+            clearModal();
+        })
+
+        function appendReview(data, contentId) {
+            let node = ``;
+            for(let i = 0; i < data.length; i++) {
+                let stars = '';
+                for(let j = 1; j <= 5; j++) {
+                    if(j <= data[i].grade) {
+                        stars += '★';
+                    } else {
+                        stars += '☆';
+                    }
+                }
+
+                let date = data[i].writeDate.substring(0,10);
+
+                node += `
+                    <div class="review-content">
+                        <p>
+                            <span class="writerId">${data[i].writerId}</span>
+                            <span class="grade">${stars}</span>
+                            <span class="writeDate" style="float: right;">${date}&emsp;
+                                <button type="button" class="btn btn-secondary btn-sm deleteReview" data-content-id="${contentId}" data-review-id="${data[i].reviewId}">삭제</button>
+                            </span>
+                            <br>
+                            <span class="content">${data[i].content}</span>
+                        </p>
+                    </div>
+                `;
+            }
+            $('#afterReview').before(node);
+        }
+
+        function changeInfoMoreReviewButton(page) {
+            $('#moreReview').data('page', page);
+
+            let totalCount = $('#reviewCount').data('totalCount');
+            let reviewCount = $('.review-content').length;
+
+            if(totalCount == reviewCount) {
+                $('#moreReview').addClass('disabled');
+            }
+        }
+
+        //리뷰 등록
+        $(document).on('click', '#addReview', function() {
+            let contentId = $('#moreReview').data('contentId');
+
+            let checkedgrade = $('input[name=inlineRadioOptions]:checked').val();
+            if(checkedgrade == null) {
+                alert("점수를 체크해주세요.");
+            }
+
+            let reviewContent = $('#reviewInput').val();
+            if(reviewContent == null) {
+                alert("내용을 입력해주세요.");
+            }
+            //  ajax 들어가서 로그인 되어있는지 먼저 확인 - 안되면 바로 fail 갈기기 throw new Exception(); 예외 일부러 발생시켜주기
+            $.ajax({
+                type: 'POST',
+                url: '/localTourInfo/review',
+                data : {
+                    'grade' : checkedgrade,
+                    'content' : reviewContent,
+                    'originPostId' : contentId
+                }
+            })
+            .done(function (data, textStatus, jqXHR){
+                console.log('done');
+
+                //  data는 totalCount이고, x개의 리뷰를 바꿔야함
+                $('#reviewCount').text(data.totalCount + '개의 리뷰');
+                $('#reviewCount').data('totalCount', data.totalCount);
+
+                $('.review-content').remove();
+                appendReview(data.recentReviewList, contentId);
+
+                changeInfoMoreReviewButton(1);
+                clearInput();
+
+                alert('리뷰가 등록되었습니다.');
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                console.log('fail');
+
+                let errorMessage = JSON.parse(jqXHR.responseText).message;
+                if(errorMessage == 'no login') {
+                    alert('로그인을 해주세요.');
+                } else if(errorMessage == 'not insert') {
+                    alert('리뷰가 등록되지 않았습니다.');
+                }
+            })
+
+        })
+
+        //리뷰 삭제
+        $(document).on('click', '.deleteReview', function() {
+
+            let contentId = $(this).data('contentId');
+            let writerId = $(this).parent().siblings('.writerId').text();
+            let reviewId = $(this).data('reviewId');
+
+            //  ajax로 가서 session에 저장된 아이디랑 writerId랑 같은지 확인 - 같지 않다면 fail 갈기기
+            $.ajax({
+                type: 'DELETE',
+                url: "/localTourInfo/review",
+                data: {
+                    'contentId' : contentId,
+                    'writerId' : writerId,
+                    'reviewId' : reviewId
+                }
+            })
+            .done(function (data, textStatus, jqXHR){
+                console.log('done');
+
+                $('#reviewCount').text(data.totalCount + '개의 리뷰');
+                $('#reviewCount').data('totalCount', data.totalCount);
+
+                $('.review-content').remove();
+                appendReview(data.recentReviewList, contentId);
+
+                changeInfoMoreReviewButton(1);
+
+                alert('리뷰가 삭제되었습니다.');
+            })
+            .fail(function (data, textStatus, jqXHR) {
+                console.log('fail');
+
+                let errorMessage = JSON.parse(jqXHR.responseText).message;
+                if(errorMessage == 'no login') {
+                    alert('로그인을 해주세요.');
+                } else if(errorMessage == 'not same') {
+                    alert('본인의 리뷰만 삭제할 수 있습니다.');
+                } else if(errorMessage == 'not delete') {
+                    alert('리뷰가 삭제되지 않았습니다.');
+                }
+            })
+
+        })
+
+        function clearInput() {
+            $('#reviewInput').val('');
+            $('#inlineRadio5').prop('checked', true);
+        }
+
+    </script>
 </div>
 </body>
 </html>

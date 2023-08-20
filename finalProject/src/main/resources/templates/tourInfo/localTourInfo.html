@@ -108,6 +108,10 @@
 	transform: translate(-50%, -50%);
 }
 
+.fa-square-plus {
+	cursor: pointer;
+}
+
 </style>
 </head>
 <body>
@@ -158,7 +162,7 @@
 		<!-- 정보 케러셀 -->
 		<div class="row">
 			<h5 class="tourSpotTitle locationName col-11">대구 여행지</h5>
-			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-id="12"></i></h5>
+			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-type-id="12"></i></h5>
 		</div>
 		<hr>
 		<div id="carouselExample" class="carousel carousel-dark slide">
@@ -188,7 +192,7 @@
 		<br>
 		<div class="row">
 			<h5 class="foodSpotTitle locationName col-11">대구 맛집</h5>
-			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-id="39"></i></h5>
+			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-type-id="39"></i></h5>
 		</div>
 		<hr>
 		<div id="carouselExample2" class="carousel carousel-dark slide">
@@ -220,7 +224,7 @@
 		<br>
 		<div class="row">
 			<h5 class="shoppingSpotTitle locationName col-11">대구 쇼핑</h5>
-			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-id="38"></i></h5>
+			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-type-id="38"></i></h5>
 		</div>
 		<hr>
 		<div id="carouselExample3" class="carousel carousel-dark slide">
@@ -252,7 +256,7 @@
 		<br>
 		<div class="row">
 			<h5 class="cultureSpotTitle locationName col-11">대구 문화시설</h5>
-			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-id="14"></i></h5>
+			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-type-id="14"></i></h5>
 		</div>
 		<hr>
 		<div id="carouselExample4" class="carousel carousel-dark slide">
@@ -284,7 +288,7 @@
 		<br>
 		<div class="row">
 			<h5 class="leportsSpotTitle locationName col-11">대구 레포츠</h5>
-			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-id="28"></i></h5>
+			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-type-id="28"></i></h5>
 		</div>
 		<hr>
 		<div id="carouselExample5" class="carousel carousel-dark slide">
@@ -696,7 +700,7 @@
 		if(data.parking == null || data.parking.replaceAll(' ', '') == '') {
 			$('#modalParking').text('-');
 		} else {
-			$('#modalParking').text(data.parking);
+			$('#modalParking').html(data.parking);
 		}
 		if(data.homepage == null || data.homepage.replaceAll(' ', '') == '') {
 			$('#modalHomepage').text('-');
@@ -716,11 +720,11 @@
 		e.preventDefault();
 		let areaCode=$('.nav-link.active').data('areaCode');
 		let sigunguCode='0';
-		let contentId=$(this).data('contentId');
+		let contentTypeId=$(this).data('contentTypeId');
 		if(areaCode == '35' || areaCode == '36') {
 			sigunguCode = $('.nav-link.active').data('sigunguCode');
 		}
-		window.location.href=window.location.origin + "/localTourInfo/spotDetail?areaCode="+areaCode+"&contentId="+contentId+"&sigunguCode="+sigunguCode;
+		window.location.href=window.location.origin + "/localTourInfo/spotDetail?page=1&areaCode="+areaCode+"&contentTypeId="+contentTypeId+"&sigunguCode="+sigunguCode;
 		
 	})
 	

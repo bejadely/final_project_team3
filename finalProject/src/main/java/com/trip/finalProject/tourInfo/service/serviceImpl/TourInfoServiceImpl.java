@@ -4,7 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.trip.finalProject.common.PagingVO;
+import com.trip.finalProject.tourInfo.mapper.TourInfoMapper;
+import com.trip.finalProject.tourInfo.service.SpotDetailReviewVO;
 import com.trip.finalProject.tourInfo.service.TourInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -22,16 +26,21 @@ import java.util.Map;
 @Service
 public class TourInfoServiceImpl implements TourInfoService {
 
+    @Autowired
+    TourInfoMapper tourInfoMapper;
+
     @Value("${tourInfoApi.auth.key}")
     private String API_KEY;
 
     private final int NUM_OF_ROWS = 99;
-    
+
     private final int NUM_OF_ROWS_SPOT = 12;
 
     private final int ONE_NUM_OF_ROWS = 1;
 
     private final int FIRST_PAGE = 1;
+
+    private final int SPOT_DETAIL_CNT_PER_PAGE = 12;
 
     //관광, 맛집, 쇼핑, 문화, 레포츠 장소에 대한 api 요청 후 정보 가져와서 map에 넣어줌
     @Override
@@ -113,7 +122,7 @@ public class TourInfoServiceImpl implements TourInfoService {
         stringBuilder.append("&contentTypeId=" + CONTENT_TYPE_ID);
         stringBuilder.append("&_type=" + "json");
         stringBuilder.append("&areaCode=" + areaCode);
-        if(sigunguCode != 0) {
+        if (sigunguCode != 0) {
             stringBuilder.append("&sigunguCode=" + sigunguCode);
         }
 
@@ -168,8 +177,8 @@ public class TourInfoServiceImpl implements TourInfoService {
                 localBaseTourInfoMap.put("address", address);
 
                 itemList.add(localBaseTourInfoMap);
-                if(index % 3 == 0) {
-                    List<Map<String,String>> copiedList = new ArrayList<>(itemList);
+                if (index % 3 == 0) {
+                    List<Map<String, String>> copiedList = new ArrayList<>(itemList);
                     chunkedItemList.add(copiedList);
                     itemList.clear();
                 }
@@ -307,7 +316,7 @@ public class TourInfoServiceImpl implements TourInfoService {
             String phone = "";
             String parking = "";
 
-            switch(contentTypeId) {
+            switch (contentTypeId) {
                 case 12:
                     phone = itemObject.get("infocenter").getAsString();
                     parking = itemObject.get("parking").getAsString();
@@ -345,180 +354,255 @@ public class TourInfoServiceImpl implements TourInfoService {
     }
 
     //areaCode코드로 상세 이름 받기
-	@Override
-	public String getLocationNameDetail(String areaCode, String sigunguCode) {
-		String locationName="";
-		
-		switch(areaCode) {
-		case "4" :
-			locationName="대구 ";
-			break;
-		case "6" :
-			locationName="부산 ";
-			break;
-		case "7" :
-			locationName="울산 ";
-			break;
-		case "35" :
-			switch(sigunguCode) {
-			case "2":
-				locationName = "경주 ";
-				break;
-			case "23":
-				locationName = "포항 ";
-				break;
-			case "11":
-				locationName = "안동 ";
-				break;
-			default:
-				break;
-		}
-		case "36" :
-			switch(sigunguCode) {
-			case "1":
-				locationName = "거제 ";
-				break;
-			case "17":
-				locationName = "통영 ";
-				break;
-			default:
-				break;
-		}
-			break;
-		default :
-			break;
-	}
-		
-		return locationName;
-	}
+    @Override
+    public String getLocationNameDetail(String areaCode, String sigunguCode) {
+        String locationName = "";
 
-	//contentId코드로 상세 이름 받기
-	@Override
-	public String getContentNameDetail(String contentId) {
-		String contentName="";
-		
-		switch(contentId) {
-		case "12" :
-			contentName="여행지";
-			break;
-		case "14" :
-			contentName="문화시설";
-			break;
-		case "38" :
-			contentName="쇼핑";
-			break;
-		case "39" :
-			contentName="맛집";
-			break;
-		case "28" :
-			contentName="레포츠";
-			break;
-	}
-		return contentName;
-	}
+        switch (areaCode) {
+            case "4":
+                locationName = "대구 ";
+                break;
+            case "6":
+                locationName = "부산 ";
+                break;
+            case "7":
+                locationName = "울산 ";
+                break;
+            case "35":
+                switch (sigunguCode) {
+                    case "2":
+                        locationName = "경주 ";
+                        break;
+                    case "23":
+                        locationName = "포항 ";
+                        break;
+                    case "11":
+                        locationName = "안동 ";
+                        break;
+                    default:
+                        break;
+                }
+            case "36":
+                switch (sigunguCode) {
+                    case "1":
+                        locationName = "거제 ";
+                        break;
+                    case "17":
+                        locationName = "통영 ";
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
 
-	//더보기 창 
-	 @Override
-	   public Map<String, Object> getSpotDetail(String contentId, String areaCode, String sigunguCode) {
-	      
-	      Map<String, Object> spotDetailMap = new HashMap<>();
-	      
-	      spotDetailMap.put("spotDetail", getSpotDetailInfo(FIRST_PAGE, contentId, areaCode, sigunguCode));
-	      
-	      return spotDetailMap;
-	   }
+        return locationName;
+    }
 
-	   private List<Map<String,Object>> getSpotDetailInfo(int page, String contentId, String areaCode, String sigunguCode) {
-	           
-	         StringBuilder stringBuilder = new StringBuilder();
-	           
-	           stringBuilder.append("http://apis.data.go.kr/B551011/KorService1/areaBasedList1");
-	           stringBuilder.append("?serviceKey=" + API_KEY);
-	           stringBuilder.append("&pageNo=" + page);
-	           stringBuilder.append("&numOfRows=" + NUM_OF_ROWS_SPOT);
-	           stringBuilder.append("&MobileApp=" + "AppTest");    //  고정값
-	           stringBuilder.append("&MobileOS=" + "ETC"); //  고정값
-	           stringBuilder.append("&arrange=" + "Q");    //  A:제목순, C:수정일순, D:생성일순, 대표이미지가 반드시 있는 정렬 - O:제목순, Q:수정일순, R:생성일순
-	           stringBuilder.append("&contentTypeId=" + contentId);
-	           stringBuilder.append("&_type=" + "json");
-	           stringBuilder.append("&areaCode=" + areaCode);
-	           if(!sigunguCode.equals("0")) {
-	               stringBuilder.append("&sigunguCode=" + sigunguCode);
-	           }
-	           System.out.println("page = " + page);
-	           System.out.println("areaCode = " + areaCode);
-	           System.out.println("sigunguCode = " + sigunguCode);
-	           System.out.println("contentId = " + contentId);
-	           String apiUrl = stringBuilder.toString();
-	           System.out.println("apiUrl = " + apiUrl);
-	           
-	           try {
-	               URL url = new URL(apiUrl);
-	               HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-	               httpURLConnection.setRequestMethod("GET");
-	               BufferedReader bufferedReader;
-	               bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
-	               String inputLine;
-	               stringBuilder.setLength(0); //  위에서 쓴 StringBuilder를 초기화 시킨 후 다시 쓰기 위한 코드
-	               while ((inputLine = bufferedReader.readLine()) != null) {
-	                   stringBuilder.append(inputLine);
-	               }
-	               bufferedReader.close();
+    //contentId코드로 상세 이름 받기
+    @Override
+    public String getContentNameDetail(String contentId) {
+        String contentName = "";
 
-	               String jsonString = stringBuilder.toString();
-	               System.out.println("jsonString = " + jsonString);
-	               
-	               // Gson 객체 생성
-	               Gson gson = new Gson();
+        switch (contentId) {
+            case "12":
+                contentName = "여행지";
+                break;
+            case "14":
+                contentName = "문화시설";
+                break;
+            case "38":
+                contentName = "쇼핑";
+                break;
+            case "39":
+                contentName = "맛집";
+                break;
+            case "28":
+                contentName = "레포츠";
+                break;
+        }
+        return contentName;
+    }
 
-	               // JSON 문자열을 JsonObject로 파싱
-	               JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+    //더보기 창
+    @Override
+    public Map<String, Object> getSpotDetail(String page, String contentTypeId, String areaCode, String sigunguCode) {
 
-	               // 필요한 데이터 추출
-	               JsonObject response = jsonObject.getAsJsonObject("response");
-	               JsonObject body = response.getAsJsonObject("body");
-	               JsonObject items = body.getAsJsonObject("items");
-	               JsonArray itemsArray = items.getAsJsonArray("item");
-	           
-	               //  각 데이터를 담을 리스트 생성
-	               List<Map<String,Object>> itemList = new ArrayList<>();
+        Map<String, Object> spotDetailMap = new HashMap<>();
 
-	               // 아이템별로 데이터 추출
-	               for (JsonElement itemElement : itemsArray) {
-	                   JsonObject itemObject = itemElement.getAsJsonObject();
-	                   
-	                   String contentIdSpotDetailPage = itemObject.get("contentid").getAsString();
-	                   String contentTypeId = itemObject.get("contenttypeid").getAsString();
-	                   String firstImage = itemObject.get("firstimage").getAsString();
-	                   String title = itemObject.get("title").getAsString();
-	                   String address = itemObject.get("addr1").getAsString();
+        spotDetailMap.put("spotDetail", getSpotDetailInfo(Integer.parseInt(page), contentTypeId, areaCode, sigunguCode));
 
-	                   // Map에 데이터 추가
-	                   Map<String, Object> getSpotDetailInfoMap = new HashMap<>();
-	                   getSpotDetailInfoMap.put("contentId", contentIdSpotDetailPage);
-	                   getSpotDetailInfoMap.put("contentTypeId", contentTypeId);
-	                   getSpotDetailInfoMap.put("firstImage", firstImage);
-	                   getSpotDetailInfoMap.put("title", title);
-	                   getSpotDetailInfoMap.put("address", address);
+        return spotDetailMap;
+    }
 
-	                   itemList.add(getSpotDetailInfoMap);
-	                   
-	               }
-	               
-	               for(int i=0; i<itemList.size(); i++) {
-	                  for(String key : itemList.get(i).keySet()) {
-	                      System.out.println(key + " = " + itemList.get(i).get(key));
-	                  }
-	                
-	             }
-	               
-	               return itemList;
-	               
-	           } catch (Exception e) {
-	               e.printStackTrace();
+    @Override
+    public PagingVO getSpotDetailPagingVo(String page, Map<String, Object> spotDetailMap) {
+        //PagingVO를 쓰기 위한 전체 게시글 개수 세팅
+        //오브젝트 -> 원래 리스트 타입 -> totalCount 값 추출 -> int타입
+        int totalCount = 0;
+        for (int i = 0; i < 1; i++) {
+            totalCount = Integer.parseInt(((List<Map<String, String>>) spotDetailMap.get("spotDetail")).get(i).get("totalCount"));
+        }
 
-	               return null;
-	           }
+        PagingVO pagingVO = new PagingVO(totalCount, Integer.parseInt(page), SPOT_DETAIL_CNT_PER_PAGE);
 
-	}
+        return pagingVO;
+    }
+
+    //spotDetail 모달창
+    @Override
+    public Map<String, Object> getDetailInfoReviewList(String contentId, String contentTypeId) {
+
+        Map<String, Object> detailInfoReviewMap = new HashMap<>();
+
+        //  장소 정보
+        Map<String, String> detailInfoMap = new HashMap<>();
+        detailInfoMap.putAll(getCommonApiMap(Integer.parseInt(contentId)));
+        detailInfoMap.putAll(getIntroApiMap(Integer.parseInt(contentId), Integer.parseInt(contentTypeId)));
+        detailInfoReviewMap.put("detailInfoMap", detailInfoMap);
+
+        //  리뷰 정보
+        List<SpotDetailReviewVO> spotDetailReviewVoList = tourInfoMapper.selectSpotDetailReview(contentId, FIRST_PAGE);
+        detailInfoReviewMap.put("spotDetailReviewVoList", spotDetailReviewVoList);
+
+        //  리뷰 총 개수 정보
+        int totalCount = tourInfoMapper.selectSpotDetailReviewTotalCount(contentId);
+        detailInfoReviewMap.put("totalCount", totalCount);
+
+        return detailInfoReviewMap;
+    }
+
+    //spotDetail 모달창 내 리뷰 더하기
+    @Override
+    public List<SpotDetailReviewVO> getDetailReviewList(String contentId, int page) {
+
+        return tourInfoMapper.selectSpotDetailReview(contentId, page);
+    }
+
+    //spotDetail 모달창 내 리뷰 등록하기
+    @Override
+    public Map<String,Object> insertReviewInfo(SpotDetailReviewVO spotDetailReviewVO) throws Exception {
+        Map<String, Object> recentReviewInfo = new HashMap<>();
+
+        int returnValue = tourInfoMapper.insertReviewInfo(spotDetailReviewVO);
+        if(returnValue == 0) {
+            throw new Exception("not insert");
+        }
+
+        List<SpotDetailReviewVO> recentReviewList = tourInfoMapper.selectSpotDetailReview(spotDetailReviewVO.getOriginPostId(), FIRST_PAGE);
+        recentReviewInfo.put("recentReviewList", recentReviewList);
+
+        int totalCount = tourInfoMapper.selectSpotDetailReviewTotalCount(spotDetailReviewVO.getOriginPostId());
+        recentReviewInfo.put("totalCount", totalCount);
+
+        return recentReviewInfo;
+    }
+
+    //spotDetail 모달창 내 리뷰 삭제하기
+    @Override
+    public Map<String, Object> deleteReviewInfo(int contentId, int reviewId) throws Exception {
+        Map<String, Object> recentReviewInfo = new HashMap<>();
+
+        int returnValue = tourInfoMapper.deleteReview(reviewId);
+        if(returnValue != 1 ){
+            throw new Exception("not delete");
+        }
+
+        List<SpotDetailReviewVO> recentReviewList = tourInfoMapper.selectSpotDetailReview(String.valueOf(contentId), FIRST_PAGE);
+        recentReviewInfo.put("recentReviewList", recentReviewList);
+
+        int totalCount = tourInfoMapper.selectSpotDetailReviewTotalCount(String.valueOf(contentId));
+        recentReviewInfo.put("totalCount", totalCount);
+
+        return recentReviewInfo;
+    }
+
+    private List<Map<String, String>> getSpotDetailInfo(int page, String contentTypeId, String areaCode, String sigunguCode) {
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("http://apis.data.go.kr/B551011/KorService1/areaBasedList1");
+        stringBuilder.append("?serviceKey=" + API_KEY);
+        stringBuilder.append("&pageNo=" + page);
+        stringBuilder.append("&numOfRows=" + NUM_OF_ROWS_SPOT);
+        stringBuilder.append("&MobileApp=" + "AppTest");    //  고정값
+        stringBuilder.append("&MobileOS=" + "ETC"); //  고정값
+        stringBuilder.append("&arrange=" + "Q");    //  A:제목순, C:수정일순, D:생성일순, 대표이미지가 반드시 있는 정렬 - O:제목순, Q:수정일순, R:생성일순
+        stringBuilder.append("&contentTypeId=" + contentTypeId);
+        stringBuilder.append("&_type=" + "json");
+        stringBuilder.append("&areaCode=" + areaCode);
+        if (!sigunguCode.equals("0")) {
+            stringBuilder.append("&sigunguCode=" + sigunguCode);
+        }
+
+        String apiUrl = stringBuilder.toString();
+
+
+        try {
+            URL url = new URL(apiUrl);
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod("GET");
+            BufferedReader bufferedReader;
+            bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+            String inputLine;
+            stringBuilder.setLength(0); //  위에서 쓴 StringBuilder를 초기화 시킨 후 다시 쓰기 위한 코드
+            while ((inputLine = bufferedReader.readLine()) != null) {
+                stringBuilder.append(inputLine);
+            }
+            bufferedReader.close();
+
+            String jsonString = stringBuilder.toString();
+
+            // Gson 객체 생성
+            Gson gson = new Gson();
+
+            // JSON 문자열을 JsonObject로 파싱
+            JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+
+            // 필요한 데이터 추출
+            JsonObject response = jsonObject.getAsJsonObject("response");
+            JsonObject body = response.getAsJsonObject("body");
+            JsonObject items = body.getAsJsonObject("items");
+            JsonArray itemsArray = items.getAsJsonArray("item");
+
+            String totalCount = body.get("totalCount").getAsString();
+
+            //  각 데이터를 담을 리스트 생성
+            List<Map<String, String>> itemList = new ArrayList<>();
+
+            // 아이템별로 데이터 추출
+            for (JsonElement itemElement : itemsArray) {
+                JsonObject itemObject = itemElement.getAsJsonObject();
+
+                String contentIdSpotDetailPage = itemObject.get("contentid").getAsString();
+                String contentTypeIdSpotDetailPage = itemObject.get("contenttypeid").getAsString();
+                String firstImage = itemObject.get("firstimage").getAsString();
+                String title = itemObject.get("title").getAsString();
+                String address = itemObject.get("addr1").getAsString();
+
+                // Map에 데이터 추가
+                Map<String, String> getSpotDetailInfoMap = new HashMap<>();
+                getSpotDetailInfoMap.put("contentId", contentIdSpotDetailPage);
+                getSpotDetailInfoMap.put("contentTypeId", contentTypeIdSpotDetailPage);
+                getSpotDetailInfoMap.put("firstImage", firstImage);
+                getSpotDetailInfoMap.put("title", title);
+                getSpotDetailInfoMap.put("address", address);
+                getSpotDetailInfoMap.put("totalCount", totalCount);
+
+                itemList.add(getSpotDetailInfoMap);
+
+            }
+
+            return itemList;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return null;
+        }
+
+    }
+
 }

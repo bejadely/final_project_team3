@@ -1,14 +1,14 @@
 package com.trip.finalProject.tourInfo.web;
 
+import com.trip.finalProject.common.PagingVO;
+import com.trip.finalProject.tourInfo.service.SpotDetailReviewVO;
 import com.trip.finalProject.tourInfo.service.TourInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +18,9 @@ public class TourInfoController {
 
     @Autowired
     TourInfoService tourInfoService;
+
+    @Autowired
+    HttpSession session;
 
     //  메인이 아닌 관광정보 페이지
     @GetMapping("")
@@ -40,9 +43,7 @@ public class TourInfoController {
     @ResponseBody
     public Map<String, Object> getTourInfoByLocation(@PathVariable("areaCode") int areaCode, int sigunguCode) {
 
-        Map<String, Object> tourInfoMap = tourInfoService.getTourInfoMap(areaCode, sigunguCode);
-
-        return tourInfoMap;
+        return tourInfoService.getTourInfoMap(areaCode, sigunguCode);
     }
 
     //  관광정보 페이지 각 지역별 정보를 ajax로 가져옴
@@ -50,32 +51,70 @@ public class TourInfoController {
     @ResponseBody
     public Map<String, String> getSpotDetailInfo(int contentId, int contentTypeId) {
 
-        Map<String, String> spotDetailInfo = tourInfoService.getDetailInfoMap(contentId, contentTypeId);
-
-        return spotDetailInfo;
+        return tourInfoService.getDetailInfoMap(contentId, contentTypeId);
     }
     
     
     @GetMapping("/spotDetail")
-    public String getSpotDetail(String contentId, String areaCode, String sigunguCode, Model model) {
-    	
-    	System.out.println("컨트"+contentId);
-    	System.out.println("컨트"+areaCode);
-    	System.out.println("컨트"+sigunguCode);
+    public String getSpotDetail(@RequestParam(value = "page", defaultValue = "1") String page, String contentTypeId, String areaCode, String sigunguCode, Model model) {
+
     	//더보기 창 정보 받아오기
-    	Map<String, Object> spotDetailMap = tourInfoService.getSpotDetail(contentId, areaCode, sigunguCode);
-    	
-    	model.addAttribute("spotDetail", spotDetailMap.get("spotDetail"));
+    	Map<String, Object> spotDetailMap = tourInfoService.getSpotDetail(page, contentTypeId, areaCode, sigunguCode);
+        model.addAttribute("spotDetails", spotDetailMap.get("spotDetail"));
     	
     	//더보기 창으로 누른 지역, 콘텐츠코드를 이름으로 받기
-    	String contentName=tourInfoService.getContentNameDetail(contentId);
-    	String locationName=tourInfoService.getLocationNameDetail(areaCode, sigunguCode);
-    	
-    	model.addAttribute("contentName",contentName);
-    	model.addAttribute("locationName", locationName);
-    	
+    	model.addAttribute("contentName",tourInfoService.getContentNameDetail(contentTypeId));
+    	model.addAttribute("locationName", tourInfoService.getLocationNameDetail(areaCode, sigunguCode));
+
+        //페이징 정보
+        model.addAttribute("pagingVo", tourInfoService.getSpotDetailPagingVo(page, spotDetailMap));
+        model.addAttribute("contentTypeId", contentTypeId);
+        model.addAttribute("areaCode", areaCode);
+        model.addAttribute("sigunguCode", sigunguCode);
+
     	return "tourInfo/spotDetail";
     }
 
-    
+    @GetMapping("/infoReview")
+    @ResponseBody
+    public Map<String,Object> getSpotDetailInfoReview(String contentId, String contentTypeId) {
+
+        return tourInfoService.getDetailInfoReviewList(contentId, contentTypeId);
+    }
+
+    @GetMapping("/review")
+    @ResponseBody
+    public List<SpotDetailReviewVO> getSpotDetailReview(String contentId, int page) {
+
+        return tourInfoService.getDetailReviewList(contentId, page);
+    }
+
+    @PostMapping("/review")
+    @ResponseBody
+    public Map<String,Object> reviewInsert(SpotDetailReviewVO spotDetailReviewVO) throws Exception {
+        if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().equals("")) {
+            spotDetailReviewVO.setWriterId(session.getAttribute("sessionId").toString());
+        } else {
+            throw new Exception("no login");
+        }
+
+        return tourInfoService.insertReviewInfo(spotDetailReviewVO);
+    }
+
+    @DeleteMapping("/review")
+    @ResponseBody
+    public Map<String,Object> reviewDelete(int contentId, String writerId, int reviewId) throws Exception {
+        String sessionId = "";
+        if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().equals("")) {
+            sessionId =  session.getAttribute("sessionId").toString();
+        } else {
+            throw new Exception("no login");
+        }
+
+        if(!sessionId.equals(writerId)){
+            throw new Exception("not same");
+        }
+
+        return tourInfoService.deleteReviewInfo(contentId, reviewId);
+    }
 }
