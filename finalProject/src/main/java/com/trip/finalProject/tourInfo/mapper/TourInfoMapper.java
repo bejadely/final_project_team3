@@ -15,6 +15,6 @@ public interface TourInfoMapper {
     int insertReviewInfo(SpotDetailReviewVO spotDetailReviewVO);
 
     //리뷰 삭제
-    int deleteReview(int reviewId);
+    int deleteReview(String reviewId);
 
 }

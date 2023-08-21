@@ -6,8 +6,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.tourInfo.mapper.TourInfoMapper;
+import com.trip.finalProject.tourInfo.service.SearchInfoDTO;
 import com.trip.finalProject.tourInfo.service.SpotDetailReviewVO;
 import com.trip.finalProject.tourInfo.service.TourInfoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -15,8 +17,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +32,7 @@ public class TourInfoServiceImpl implements TourInfoService {
 
     @Autowired
     TourInfoMapper tourInfoMapper;
+    
 
     @Value("${tourInfoApi.auth.key}")
     private String API_KEY;
@@ -502,7 +507,7 @@ public class TourInfoServiceImpl implements TourInfoService {
 
     //spotDetail 모달창 내 리뷰 삭제하기
     @Override
-    public Map<String, Object> deleteReviewInfo(int contentId, int reviewId) throws Exception {
+    public Map<String, Object> deleteReviewInfo(int contentId, String reviewId) throws Exception {
         Map<String, Object> recentReviewInfo = new HashMap<>();
 
         int returnValue = tourInfoMapper.deleteReview(reviewId);
@@ -604,5 +609,98 @@ public class TourInfoServiceImpl implements TourInfoService {
         }
 
     }
+
+    //searchDetail페이지 정보 가져오기
+	@Override
+	public List<SearchInfoDTO> getsearchInfo(String searchKeyWord) {
+		
+		//인코딩
+		String encodedSearchKeyWord="";
+		try {
+			encodedSearchKeyWord = URLEncoder.encode(searchKeyWord, "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			
+			e1.printStackTrace();
+		}
+		
+		StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("http://apis.data.go.kr/B551011/KorService1/searchKeyword1");
+        stringBuilder.append("?serviceKey=" + API_KEY);
+        stringBuilder.append("&MobileApp=" + "AppTest");    //  고정값
+        stringBuilder.append("&MobileOS=" + "ETC"); //  고정값
+        stringBuilder.append("&arrange=" + "Q");    //  A:제목순, C:수정일순, D:생성일순, 대표이미지가 반드시 있는 정렬 - O:제목순, Q:수정일순, R:생성일순
+        stringBuilder.append("&_type=" + "json");
+        stringBuilder.append("&keyword=" + encodedSearchKeyWord);
+        
+        String apiUrl = stringBuilder.toString();
+
+        
+        try {
+            URL url = new URL(apiUrl);
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod("GET");
+            BufferedReader bufferedReader;
+            bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+            String inputLine;
+            stringBuilder.setLength(0); //  위에서 쓴 StringBuilder를 초기화 시킨 후 다시 쓰기 위한 코드
+            while ((inputLine = bufferedReader.readLine()) != null) {
+                stringBuilder.append(inputLine);
+            }
+            bufferedReader.close();
+
+            String jsonString = stringBuilder.toString();
+            System.out.println("jsonString = " + jsonString);
+
+            // Gson 객체 생성
+            Gson gson = new Gson();
+
+            // JSON 문자열을 JsonObject로 파싱
+            JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+
+            // 필요한 데이터 추출
+            JsonObject responseBody = jsonObject.getAsJsonObject("response").getAsJsonObject("body");
+            JsonArray itemsArray = responseBody.getAsJsonObject("items").getAsJsonArray("item");
+
+            
+            //  각 데이터를 담을 리스트 생성
+            List<SearchInfoDTO> itemList = new ArrayList<>();
+            
+
+            // 아이템별로 데이터 추출
+            for (JsonElement itemElement : itemsArray) {
+            	SearchInfoDTO searchInfoDTO = new SearchInfoDTO();
+                JsonObject itemObject = itemElement.getAsJsonObject();
+                String contentId = itemObject.get("contentid").getAsString();
+                String contentTypeId = itemObject.get("contenttypeid").getAsString();
+                String firstImage = itemObject.get("firstimage").getAsString();
+                String title = itemObject.get("title").getAsString();
+                String address = itemObject.get("addr1").getAsString();
+                String areaCode = itemObject.get("areacode").getAsString();
+                String sigunguCode = "0";
+                if(areaCode.equals("35")  || areaCode.equals("36")) {
+                	sigunguCode=itemObject.get("sigungucode").getAsString();
+                }
+                
+                searchInfoDTO.setContentId(contentId);
+                searchInfoDTO.setContentTypeId(contentTypeId);
+                searchInfoDTO.setFirstImage(firstImage);
+                searchInfoDTO.setAddress(address);
+                searchInfoDTO.setTitle(title);
+                searchInfoDTO.setAreaCode(areaCode);
+                searchInfoDTO.setSigunguCode(sigunguCode);
+
+                itemList.add(searchInfoDTO);
+           
+            }
+
+            return itemList;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return null;
+        }
+        
+	}
 
 }

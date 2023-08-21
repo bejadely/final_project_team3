@@ -75,6 +75,7 @@ public class TourInfoController {
     	return "tourInfo/spotDetail";
     }
 
+    //모달창 내 정보+리뷰 가져오기
     @GetMapping("/infoReview")
     @ResponseBody
     public Map<String,Object> getSpotDetailInfoReview(String contentId, String contentTypeId) {
@@ -82,6 +83,7 @@ public class TourInfoController {
         return tourInfoService.getDetailInfoReviewList(contentId, contentTypeId);
     }
 
+    //모달창 내 리뷰 가져오기
     @GetMapping("/review")
     @ResponseBody
     public List<SpotDetailReviewVO> getSpotDetailReview(String contentId, int page) {
@@ -89,6 +91,7 @@ public class TourInfoController {
         return tourInfoService.getDetailReviewList(contentId, page);
     }
 
+    //모달창 내 리뷰 등록
     @PostMapping("/review")
     @ResponseBody
     public Map<String,Object> reviewInsert(SpotDetailReviewVO spotDetailReviewVO) throws Exception {
@@ -101,9 +104,10 @@ public class TourInfoController {
         return tourInfoService.insertReviewInfo(spotDetailReviewVO);
     }
 
+    //모달창 내 리뷰 삭제
     @DeleteMapping("/review")
     @ResponseBody
-    public Map<String,Object> reviewDelete(int contentId, String writerId, int reviewId) throws Exception {
+    public Map<String,Object> reviewDelete(int contentId, String writerId, String reviewId) throws Exception {
         String sessionId = "";
         if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().equals("")) {
             sessionId =  session.getAttribute("sessionId").toString();
@@ -116,5 +120,15 @@ public class TourInfoController {
         }
 
         return tourInfoService.deleteReviewInfo(contentId, reviewId);
+    }
+    
+    //관광정보 검색 페이지
+    @GetMapping("/search")
+    public String searchDetail(String searchKeyWord, Model model) {
+    
+    	model.addAttribute("searchInfoList", tourInfoService.getsearchInfo(searchKeyWord));
+    	model.addAttribute("searchKeyWord", searchKeyWord);
+    	
+    	return "tourInfo/searchDetail";
     }
 }

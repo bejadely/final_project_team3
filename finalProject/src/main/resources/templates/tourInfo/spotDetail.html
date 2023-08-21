@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1, user-scalable=yes,initial-scale=1.0" />
-    <title>Insert title here</title>
+    <title>관광정보 지역, 콘텐츠별 페이지</title>
     <!-- getbootstrap cdn -->
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
@@ -84,7 +84,7 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <!-- Breadcrumb Section Begin -->
+    <!-- 제목란 -->
     <section class="breadcrumb-section">
         <div class="container">
             <div class="row">
@@ -100,11 +100,23 @@
             </div>
         </div>
     </section>
-    <!-- Breadcrumb Section Begin -->
-
-    <!-- Blog Section Begin -->
+   
+    <!-- 내용란 -->
     <section class="blog-section blog-page spad">
         <div class="container">
+         	<!-- 검색창 -->
+			<div class="search row">
+				<div class="col-8"></div>
+					<div class="searchbox col-4">
+						<div class="input-group input-group-sm mb-3">
+							<input type="text" class="form-control" aria-label="search"
+								aria-describedby="button-addon2" id="search-input">
+							<button class="btn btn-outline-secondary" type="button"
+								id="button-addon2" >검색</button>
+						</div>
+					</div>
+			</div>
+			<!-- 관광정보 -->
             <div class="row">
                 <div class="col-lg-4 col-md-6" th:each="spotDetail:${spotDetails}" data-bs-toggle="modal" data-bs-target="#spotDetailInfoModal">
                     <div class="single-blog-item" th:attr="data-content-id=${spotDetail.contentId}, data-content-type-id=${spotDetail.contentTypeId}, data-address=${spotDetail.address}">
@@ -156,6 +168,7 @@
                                 </tr>
                                 </tbody>
                             </table>
+                            <!-- 모달창 내 리뷰 -->
                             <div class="review">
                                 <h7 id="reviewCount"></h7>
                                 <hr>
@@ -196,6 +209,14 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                         </div>
+                        <!--로딩창-->
+						<div class="modal-overlay" id="modal-loadingOverlay">
+							<div class="d-flex justify-content-center">
+								<div class="spinner-border text-primary" role="status">
+									<span class="visually-hidden">Loading...</span>
+								</div>
+							</div>
+						</div>
                     </div>
                 </div>
             </div>
@@ -252,10 +273,17 @@
                     "&sigunguCode=" + sigunguCode;
             })
         })
+        
+        //	모달창 : 로딩창 오버레이 none, block 처리 함수
+		function toggleOverlayModal(display) {
+			display == 'block' ? $('.modal-overlay').attr('style','display: block;') : $('.modal-overlay').attr('style','display: none;');
+		}
 
         //	카드 눌렀을 시 모달창 띄우는 함수
         $(document).on('click', '.single-blog-item', function() {
 
+        	toggleOverlayModal('block');
+        	
             let contentId = $(this).data('contentId');
             let contentTypeId = $(this).data('contentTypeId');
             let address = $(this).data('address');
@@ -266,6 +294,7 @@
                 if(data) {
                     clearModal(); // 기존 데이터 삭제
                     appendSpotDetailInfoReview(data, address, title, image, contentId);
+                    toggleOverlayModal('none');
                 }
             });
         })
@@ -421,7 +450,7 @@
             if(reviewContent == null) {
                 alert("내용을 입력해주세요.");
             }
-            //  ajax 들어가서 로그인 되어있는지 먼저 확인 - 안되면 바로 fail 갈기기 throw new Exception(); 예외 일부러 발생시켜주기
+            //  ajax 들어가서 로그인 되어있는지 먼저 확인 - 안되면 바로 fail throw new Exception(); 예외 일부러 발생시켜주기
             $.ajax({
                 type: 'POST',
                 url: '/localTourInfo/review',
@@ -466,7 +495,7 @@
             let writerId = $(this).parent().siblings('.writerId').text();
             let reviewId = $(this).data('reviewId');
 
-            //  ajax로 가서 session에 저장된 아이디랑 writerId랑 같은지 확인 - 같지 않다면 fail 갈기기
+            //  ajax로 가서 session에 저장된 아이디랑 writerId랑 같은지 확인 - 같지 않다면 fail 
             $.ajax({
                 type: 'DELETE',
                 url: "/localTourInfo/review",
@@ -509,6 +538,13 @@
             $('#inlineRadio5').prop('checked', true);
         }
 
+        //검색정보 보내기
+        $('#button-addon2').on('click', function(e){
+        	e.preventDefault();
+        	let searchKeyWord = $('#search-input').val();
+        	
+        	window.location.href=window.location.origin + "/localTourInfo/search?searchKeyWord="+searchKeyWord;
+        })
     </script>
 </div>
 </body>
