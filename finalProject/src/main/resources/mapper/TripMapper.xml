@@ -14,7 +14,8 @@
 		SELECT *
 		FROM(SELECT ROWNUM rn, a.*
 			 FROM(SELECT *
-				  FROM trip_record
+				  FROM trip_record t LEFT OUTER JOIN 
+				  	   attached_file a ON t.post_id = a.post_id
 				  WHERE trip_save = 'T2' 
 				  	AND trip_disclose = '01'
 				  ORDER BY regist_day DESC) a)
