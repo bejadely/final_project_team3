@@ -51,6 +51,15 @@ public class MemberServiceImpl implements MemberService {
 	 session.invalidate(); // 세션 초기화
 	 }
 	
+	//회원가입시 아이디 중복체크
+	 @Override
+		public Integer checkId(MemberVO vo) {
+		
+		 Integer result = memberMapper.checkId(vo);
+		return result; 
+			
+		}
+	
 
 
 }

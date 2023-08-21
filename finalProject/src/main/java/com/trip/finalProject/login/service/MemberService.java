@@ -16,6 +16,10 @@ public interface MemberService {
 
 	void logout(HttpSession session);
 
+	Integer checkId(MemberVO memberVO);
+	
+	/* idCheck(id) */
+
 	
 	
 
