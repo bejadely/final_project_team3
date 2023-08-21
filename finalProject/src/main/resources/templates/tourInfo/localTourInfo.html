@@ -25,6 +25,10 @@
 		crossorigin="anonymous"></script>
 <!-- icon cdn -->
 <script src="https://kit.fontawesome.com/d58c3728d1.js" crossorigin="anonymous"></script>
+
+<!-- slick.js cdn -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 <style>
 .card {
 	border: none;
@@ -32,23 +36,34 @@
 	box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
 }
 
-.carousel-inner {
-	padding: 1em;
+.next{
+	position: absolute;
+	top: 50%; /* 부모의 50% 위치에 배치됩니다. */
+	transform: translateY(-50%); /* 위로 절반만 이동하여 중앙 정렬됩니다. */
+	right:-40px;
+	font-size:0.5em;
+	cursor: pointer;
+}
+.prev{
+	position: absolute;
+	top: 50%; /* 부모의 50% 위치에 배치됩니다. */
+	transform: translateY(-50%); /* 위로 절반만 이동하여 중앙 정렬됩니다. */
+	left:-40px;
+	font-size:0.5em;
+	cursor: pointer;
+}
+.slick-arrow.slick-hidden {
+	display: block !important;
+}
+.outer {
+	position: relative;
+	overflow: visible;
+}
+.inner1 {
+	position: relative;
+	height: 100%; /* 높이를 100%로 설정하여 부모의 높이와 같게 합니다. */
 }
 
-.carousel-control-prev, .carousel-control-next {
-	background-color: #e1e1e1;
-	width: 6vh;
-	height: 6vh;
-	border-radius: 50%;
-	top: 50%;
-	transform: translateY(-50%);
-}
-
-.carousel-control-prev span, .carousel-control-next span {
-	width: 1.5rem;
-	height: 1.5rem;
-}
 
 @media screen and (min-width: 568px) {
 	.cards-wrapper {
@@ -165,13 +180,15 @@
 			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-type-id="12"></i></h5>
 		</div>
 		<hr>
-		<div id="carouselExample" class="carousel carousel-dark slide">
-			<div class="carousel-inner inner1">
-				<div th:each="chunk, chunkStat : ${tourSpot}" th:classappend="${chunkStat.first} ? 'carousel-item active' : 'carousel-item'">
-					<div class="cards-wrapper">
-						<div th:each="item : ${chunk}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+		<div id="" class="">
+			<div class="outer">
+				<div class="inner1">
+					<button type="button" class="btn btn-primary btn-lg prev prev1"><</button>
+					<button type="button" class="btn btn-primary btn-lg next next1">></button>
+					<div class="cards-wrapper1">
+						<div th:each="item : ${tourSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 							<div class="image-wrapper">
-								<img th:src="${item.firstImage}" alt="..." loading="lazy">
+								<img th:src="${item.firstImage}" alt="...">
 							</div>
 							<div class="card-body">
 								<h5 class="card-title" th:text="${item.title}" th:title="${item.title}"></h5>
@@ -180,14 +197,6 @@
 					</div>
 				</div>
 			</div>
-			<button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Previous</span>
-			</button>
-			<button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-				<span class="carousel-control-next-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Next</span>
-			</button>
 		</div>
 		<br>
 		<div class="row">
@@ -195,13 +204,15 @@
 			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-type-id="39"></i></h5>
 		</div>
 		<hr>
-		<div id="carouselExample2" class="carousel carousel-dark slide">
-			<div class="carousel-inner inner2">
-				<div th:each="chunk, chunkStat : ${foodSpot}" th:classappend="${chunkStat.first} ? 'carousel-item active' : 'carousel-item'">
-					<div class="cards-wrapper">
-						<div th:each="item : ${chunk}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+		<div id="" class="">
+			<div class="outer">
+				<div class="inner2">
+					<button type="button" class="btn btn-primary btn-lg prev prev2"><</button>
+					<button type="button" class="btn btn-primary btn-lg next next2">></button>
+					<div class="cards-wrapper2">
+						<div th:each="item : ${foodSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 							<div class="image-wrapper">
-								<img th:src="${item.firstImage}" alt="..." loading="lazy">
+								<img th:src="${item.firstImage}" alt="...">
 							</div>
 							<div class="card-body">
 								<h5 class="card-title" th:text="${item.title}" th:title="${item.title}"></h5>
@@ -210,16 +221,6 @@
 					</div>
 				</div>
 			</div>
-			<button class="carousel-control-prev" type="button"
-				data-bs-target="#carouselExample2" data-bs-slide="prev">
-				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Previous</span>
-			</button>
-			<button class="carousel-control-next" type="button"
-				data-bs-target="#carouselExample2" data-bs-slide="next">
-				<span class="carousel-control-next-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Next</span>
-			</button>
 		</div>
 		<br>
 		<div class="row">
@@ -227,13 +228,15 @@
 			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-type-id="38"></i></h5>
 		</div>
 		<hr>
-		<div id="carouselExample3" class="carousel carousel-dark slide">
-			<div class="carousel-inner inner3">
-				<div th:each="chunk, chunkStat : ${shoppingSpot}" th:classappend="${chunkStat.first} ? 'carousel-item active' : 'carousel-item'">
-					<div class="cards-wrapper">
-						<div th:each="item : ${chunk}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+		<div id="" class="">
+			<div class="outer">
+				<div class="inner3">
+					<button type="button" class="btn btn-primary btn-lg prev prev3"><</button>
+					<button type="button" class="btn btn-primary btn-lg next next3">></button>
+					<div class="cards-wrapper3">
+						<div th:each="item : ${shoppingSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 							<div class="image-wrapper">
-								<img th:src="${item.firstImage}" alt="..." loading="lazy">
+								<img th:src="${item.firstImage}" alt="...">
 							</div>
 							<div class="card-body">
 								<h5 class="card-title" th:text="${item.title}" th:title="${item.title}"></h5>
@@ -242,16 +245,6 @@
 					</div>
 				</div>
 			</div>
-			<button class="carousel-control-prev" type="button"
-				data-bs-target="#carouselExample3" data-bs-slide="prev">
-				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Previous</span>
-			</button>
-			<button class="carousel-control-next" type="button"
-				data-bs-target="#carouselExample3" data-bs-slide="next">
-				<span class="carousel-control-next-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Next</span>
-			</button>
 		</div>
 		<br>
 		<div class="row">
@@ -259,13 +252,15 @@
 			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-type-id="14"></i></h5>
 		</div>
 		<hr>
-		<div id="carouselExample4" class="carousel carousel-dark slide">
-			<div class="carousel-inner inner4">
-				<div th:each="chunk, chunkStat : ${cultureSpot}" th:classappend="${chunkStat.first} ? 'carousel-item active' : 'carousel-item'">
-					<div class="cards-wrapper">
-						<div th:each="item : ${chunk}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+		<div id="" class="">
+			<div class="outer">
+				<div class="inner4">
+					<button type="button" class="btn btn-primary btn-lg prev prev4"><</button>
+					<button type="button" class="btn btn-primary btn-lg next next4">></button>
+					<div class="cards-wrapper4">
+						<div th:each="item : ${cultureSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 							<div class="image-wrapper">
-								<img th:src="${item.firstImage}" alt="..." loading="lazy">
+								<img th:src="${item.firstImage}" alt="...">
 							</div>
 							<div class="card-body">
 								<h5 class="card-title" th:text="${item.title}" th:title="${item.title}"></h5>
@@ -274,16 +269,6 @@
 					</div>
 				</div>
 			</div>
-			<button class="carousel-control-prev" type="button"
-				data-bs-target="#carouselExample4" data-bs-slide="prev">
-				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Previous</span>
-			</button>
-			<button class="carousel-control-next" type="button"
-				data-bs-target="#carouselExample4" data-bs-slide="next">
-				<span class="carousel-control-next-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Next</span>
-			</button>
 		</div>
 		<br>
 		<div class="row">
@@ -291,13 +276,15 @@
 			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-type-id="28"></i></h5>
 		</div>
 		<hr>
-		<div id="carouselExample5" class="carousel carousel-dark slide">
-			<div class="carousel-inner inner5">
-				<div th:each="chunk, chunkStat : ${leportsSpot}" th:classappend="${chunkStat.first} ? 'carousel-item active' : 'carousel-item'">
-					<div class="cards-wrapper">
-						<div th:each="item : ${chunk}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+		<div id="" class="">
+			<div class="outer">
+				<div class="inner5">
+					<button type="button" class="btn btn-primary btn-lg prev prev5"><</button>
+					<button type="button" class="btn btn-primary btn-lg next next5">></button>
+					<div class="cards-wrapper5">
+						<div th:each="item : ${leportsSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 							<div class="image-wrapper">
-								<img th:src="${item.firstImage}" alt="..." loading="lazy">
+								<img th:src="${item.firstImage}" alt="...">
 							</div>
 							<div class="card-body">
 								<h5 class="card-title" th:text="${item.title}" th:title="${item.title}"></h5>
@@ -306,16 +293,6 @@
 					</div>
 				</div>
 			</div>
-			<button class="carousel-control-prev" type="button"
-				data-bs-target="#carouselExample5" data-bs-slide="prev">
-				<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Previous</span>
-			</button>
-			<button class="carousel-control-next" type="button"
-				data-bs-target="#carouselExample5" data-bs-slide="next">
-				<span class="carousel-control-next-icon" aria-hidden="true"></span>
-				<span class="visually-hidden">Next</span>
-			</button>
 		</div>
 	</div>
 	<!--로딩창-->
@@ -745,12 +722,44 @@
 	})
 	
 	//검색정보 보내기
-        $('#button-addon2').on('click', function(e){
-        	e.preventDefault();
-        	let searchKeyWord = $('#search-input').val();
-        	
-        	window.location.href=window.location.origin + "/localTourInfo/search?searchKeyWord="+searchKeyWord;
-        })
+	$('#button-addon2').on('click', function(e){
+		e.preventDefault();
+		let searchKeyWord = $('#search-input').val();
+
+		window.location.href=window.location.origin + "/localTourInfo/search?searchKeyWord="+searchKeyWord;
+	})
+
+	//slick.js 설정
+	$('.cards-wrapper1').slick({
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		nextArrow:$('.next1'),
+		prevArrow:$('.prev1')
+	});
+	$('.cards-wrapper2').slick({
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		nextArrow:$('.next2'),
+		prevArrow:$('.prev2')
+	});
+	$('.cards-wrapper3').slick({
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		nextArrow:$('.next3'),
+		prevArrow:$('.prev3')
+	});
+	$('.cards-wrapper4').slick({
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		nextArrow:$('.next4'),
+		prevArrow:$('.prev4')
+	});
+	$('.cards-wrapper5').slick({
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		nextArrow:$('.next5'),
+		prevArrow:$('.prev5')
+	});
 	
 </script>
 

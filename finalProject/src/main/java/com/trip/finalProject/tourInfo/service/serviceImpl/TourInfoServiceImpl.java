@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.tourInfo.mapper.TourInfoMapper;
+import com.trip.finalProject.tourInfo.service.LocalTourInfoDTO;
 import com.trip.finalProject.tourInfo.service.SearchInfoDTO;
 import com.trip.finalProject.tourInfo.service.SpotDetailReviewVO;
 import com.trip.finalProject.tourInfo.service.TourInfoService;
@@ -37,7 +38,7 @@ public class TourInfoServiceImpl implements TourInfoService {
     @Value("${tourInfoApi.auth.key}")
     private String API_KEY;
 
-    private final int NUM_OF_ROWS = 99;
+    private final int NUM_OF_ROWS = 10;
 
     private final int NUM_OF_ROWS_SPOT = 12;
 
@@ -73,48 +74,48 @@ public class TourInfoServiceImpl implements TourInfoService {
         return detailInfoMap;
     }
 
-    private List<List<Map<String, String>>> getTourSpot(int page, int areaCode, int sigunguCode) {
+    private List<LocalTourInfoDTO> getTourSpot(int page, int areaCode, int sigunguCode) {
         final int CONTENT_TYPE_ID = 12;
 
-        List<List<Map<String, String>>> tourSpotList = getLocalBaseTourInfo(page, areaCode, sigunguCode, CONTENT_TYPE_ID);
+        List<LocalTourInfoDTO> tourSpotList = getLocalBaseTourInfo(page, areaCode, sigunguCode, CONTENT_TYPE_ID);
 
         return tourSpotList;
     }
 
-    private List<List<Map<String, String>>> getFoodSpot(int page, int areaCode, int sigunguCode) {
+    private List<LocalTourInfoDTO> getFoodSpot(int page, int areaCode, int sigunguCode) {
         final int CONTENT_TYPE_ID = 39;
 
-        List<List<Map<String, String>>> foodSpotMap = getLocalBaseTourInfo(page, areaCode, sigunguCode, CONTENT_TYPE_ID);
+        List<LocalTourInfoDTO> foodSpotList = getLocalBaseTourInfo(page, areaCode, sigunguCode, CONTENT_TYPE_ID);
 
-        return foodSpotMap;
+        return foodSpotList;
     }
 
-    private List<List<Map<String, String>>> getShoppingSpot(int page, int areaCode, int sigunguCode) {
+    private List<LocalTourInfoDTO> getShoppingSpot(int page, int areaCode, int sigunguCode) {
         final int CONTENT_TYPE_ID = 38;
 
-        List<List<Map<String, String>>> shoppingSpotMap = getLocalBaseTourInfo(page, areaCode, sigunguCode, CONTENT_TYPE_ID);
+        List<LocalTourInfoDTO> shoppingSpotList = getLocalBaseTourInfo(page, areaCode, sigunguCode, CONTENT_TYPE_ID);
 
-        return shoppingSpotMap;
+        return shoppingSpotList;
     }
 
-    private List<List<Map<String, String>>> getCultureSpot(int page, int areaCode, int sigunguCode) {
+    private List<LocalTourInfoDTO> getCultureSpot(int page, int areaCode, int sigunguCode) {
         final int CONTENT_TYPE_ID = 14;
 
-        List<List<Map<String, String>>> cultureSpotMap = getLocalBaseTourInfo(page, areaCode, sigunguCode, CONTENT_TYPE_ID);
+        List<LocalTourInfoDTO> cultureSpotList = getLocalBaseTourInfo(page, areaCode, sigunguCode, CONTENT_TYPE_ID);
 
-        return cultureSpotMap;
+        return cultureSpotList;
     }
 
-    private List<List<Map<String, String>>> getLeportsSpot(int page, int areaCode, int sigunguCode) {
+    private List<LocalTourInfoDTO> getLeportsSpot(int page, int areaCode, int sigunguCode) {
         final int CONTENT_TYPE_ID = 28;
 
-        List<List<Map<String, String>>> leportsSpotMap = getLocalBaseTourInfo(page, areaCode, sigunguCode, CONTENT_TYPE_ID);
+        List<LocalTourInfoDTO> leportsSpotList = getLocalBaseTourInfo(page, areaCode, sigunguCode, CONTENT_TYPE_ID);
 
-        return leportsSpotMap;
+        return leportsSpotList;
     }
 
     //지역기반정보 API 요청하는 공통 메서드
-    private List<List<Map<String, String>>> getLocalBaseTourInfo(int page, int areaCode, int sigunguCode, int CONTENT_TYPE_ID) {
+    private List<LocalTourInfoDTO> getLocalBaseTourInfo(int page, int areaCode, int sigunguCode, int CONTENT_TYPE_ID) {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("http://apis.data.go.kr/B551011/KorService1/areaBasedList1");
@@ -158,13 +159,10 @@ public class TourInfoServiceImpl implements TourInfoService {
             JsonObject responseBody = jsonObject.getAsJsonObject("response").getAsJsonObject("body");
             JsonArray itemsArray = responseBody.getAsJsonObject("items").getAsJsonArray("item");
 
-            //  3개씩 잘라줄 리스트
-            List<List<Map<String, String>>> chunkedItemList = new ArrayList<>();
             //  각 데이터를 담을 리스트 생성
-            List<Map<String, String>> itemList = new ArrayList<>();
+            List<LocalTourInfoDTO> itemList = new ArrayList<>();
 
             // 아이템별로 데이터 추출
-            int index = 1;
             for (JsonElement itemElement : itemsArray) {
                 JsonObject itemObject = itemElement.getAsJsonObject();
                 String contentId = itemObject.get("contentid").getAsString();
@@ -173,24 +171,18 @@ public class TourInfoServiceImpl implements TourInfoService {
                 String title = itemObject.get("title").getAsString();
                 String address = itemObject.get("addr1").getAsString();
 
-                // Map에 데이터 추가
-                Map<String, String> localBaseTourInfoMap = new HashMap<>();
-                localBaseTourInfoMap.put("contentId", contentId);
-                localBaseTourInfoMap.put("contentTypeId", contentTypeId);
-                localBaseTourInfoMap.put("firstImage", firstImage);
-                localBaseTourInfoMap.put("title", title);
-                localBaseTourInfoMap.put("address", address);
+                // LocalTourInfoDTO에 데이터 추가
+                LocalTourInfoDTO localTourInfoDTO = new LocalTourInfoDTO();
+                localTourInfoDTO.setContentId(contentId);
+                localTourInfoDTO.setContentTypeId(contentTypeId);
+                localTourInfoDTO.setFirstImage(firstImage);
+                localTourInfoDTO.setTitle(title);
+                localTourInfoDTO.setAddress(address);
 
-                itemList.add(localBaseTourInfoMap);
-                if (index % 3 == 0) {
-                    List<Map<String, String>> copiedList = new ArrayList<>(itemList);
-                    chunkedItemList.add(copiedList);
-                    itemList.clear();
-                }
-                index++;
+                itemList.add(localTourInfoDTO);
             }
 
-            return chunkedItemList;
+            return itemList;
 
         } catch (Exception e) {
             e.printStackTrace();
