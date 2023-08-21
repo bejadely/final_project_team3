@@ -23,11 +23,14 @@
             
             $(document).ready(function() {
 				// 승인 버튼 클릭 시 발생 이벤트 설정
-				 function initMap() {
-               	 	// 해당 페이지 실행 시 키워드 검색이 바로 실행되지 않도록 함수를 하나 추가
-               		searchPlaces();
-           		 }
+				initMap; 
 			});
+			
+			function initMap() {
+           	 	// 해당 페이지 실행 시 키워드 검색이 바로 실행되지 않도록 함수를 하나 추가
+           		searchPlaces();
+           	}
+			
 
             // 키워드 검색을 요청하는 함수
             function searchPlaces() {
