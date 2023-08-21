@@ -1,15 +1,17 @@
 package com.trip.finalProject.login.web;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.trip.finalProject.login.service.MemberService;
 import com.trip.finalProject.login.service.MemberVO;
@@ -23,30 +25,34 @@ public class MemberController {
 	MemberService memberService;
 	
 	//회원가입
+	//넘겨주고 받을게 없어서 매개변수 x 
+	//그냥 등록페이지의 뷰를 반환함.(Get방식)(return: 실제 경로)
 	@GetMapping("member/memberInsert") 
-	public String memberInsertForm() {//넘겨주고 받을게 없어서 매개변수 x 
-		return"member/memberInsert";//그냥 등록페이지의 뷰를 반환함.(Get방식)(실제 경로)
+	public String memberInsertForm() {
+		return"member/memberInsert";
 	}
 	
 	//form의 action에 따른 회원등록처리:URI RETURN- 홈화면
-	@PostMapping("member/memberInsert1")//url에 접근하면 핸들러메서드를 실행
-	public String memberInsertProcess(MemberVO memberVO) { //memberVO빈값x(input에 타이핑한게 request객체에 담겨서 이쪽으로 옴. controller에서 MemberVO에 담김) 
-		memberService.insertMemberInfo(memberVO);//등록처리 insertMemberInfo 호출해서sql처리 . MemberService에 있는insertMemberInfo 메서드
+	 //memberVO빈값x(input에 타이핑한게 request객체에 담겨서 이쪽으로 옴. controller에서 MemberVO에 담김)
+	@PostMapping("member/memberInsert1")
+	public String memberInsertProcess(MemberVO memberVO) { 
+		
+		memberService.insertMemberInfo(memberVO);
 		return "redirect:/";
 	}
 	
 	
 	
 	//로그인화면 호출
-	@GetMapping("/member/login")//url에 접근하면 메서드 실행
+	@GetMapping("/member/login")
 	public String loginMainForm() {
 		
-		return"member/login"; //로그인페이지 호출
+		return"member/login";
 	}
 	
 
 	//form의 action에 따른 로그인 처리
-	@PostMapping("member/star")//url접근하면 메서드 실행.
+	@PostMapping("member/star")
 	public String login(@ModelAttribute MemberVO memberVO, Model model, HttpServletRequest request) {
 		
 		// DB와의 작업은 처리완료
@@ -81,6 +87,28 @@ public class MemberController {
 		
 	}
 	
+
 	
+	//회원가입 시 아이디 중복체크	  
+	  @PostMapping("/idCheck") 
+	  @ResponseBody 
+	  public int idCheck(MemberVO memberVO) {
+		
+	
+		Integer  result = memberService.checkId(memberVO);
+		
+		if (result == null) {
+		    return 0;
+		} else {
+		    return result;
+		}
+	 
+	  }
+	  
+	  
+	  
+	 
+	
+ 
 
 }

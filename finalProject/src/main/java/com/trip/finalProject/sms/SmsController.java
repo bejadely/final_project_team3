@@ -4,11 +4,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
-import org.springframework.data.domain.jaxb.SpringDataJaxb.PageRequestDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,28 +34,35 @@ public class SmsController {
 	 
 	@PostMapping("/sms/send")
 	@ResponseBody	
-		public String sendSms(MessageDTO messageDto, Model model,HttpServletRequest request) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
+		public HashMap<String, Object> sendSms(MessageDTO messageDto, Model model,HttpServletRequest request) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
+		HashMap<String,Object> smsMap = new HashMap<String,Object>();
 		// System.out.println(messageDto.to);
 		SmsResponseDTO response = smsService.sendSms(messageDto);
 		//System.out.println(SmsRequestDTO.builder().randomNumber(getSmsPage()));
+		
+		
 		int num = smsService.getRandomNumber();
 	
-		/* model.addAttribute("num", num); */
+		 model.addAttribute("num", num); 
 		System.out.println(num);
 		model.addAttribute("response", response);
+		
 		
 		
 		/*
 		 * HttpSession session = request.getSession(); session.invalidate();
 		 * session.setAttribute("num", num);
 		 */
-		 
+		
+		smsMap.put("num", num);
+		smsMap.put("reponse", response);
+		
 		 
 		
 		
 
 		
-		return "Success";
+		return smsMap;
 	}
  
 	

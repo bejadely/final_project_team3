@@ -16,23 +16,29 @@
         			 email,
         			 ZIP_CODE,
         			 ADDRESS,
-        			 ADDRESS_DETAIL,
-        			 PHONE_NUMBER,      			  
+        			 ADDRESS_DETAIL, 
+        			 PHONE_NUMBER,
+        			 AUTHORITY,  
+        			 LOGIN_TYPE    			  
         			 birth_date,
-        			 gender
+        			 gender,
+        			 SIGN_UP_DATE
         			 )<!--sql칼럼그대로  -->
         values 
-			        (  #{id} 
+			        (  #{memberId} 
 			        ,#{memberName}
 			        ,#{password}	    
 			        ,#{nationality}
 			        ,#{email}	   		       
 			        ,#{zipCode} 
-			        ,#{address}
-			        ,#{addressDetail}
-			        ,#{phoneNumber}	
+			        ,#{addr}
+			        ,#{addressDetail} 
+			        ,#{to}	
+			        , 'G1'	
+			        , 'L1'
 			        ,#{birthDate}		            			        
-			        ,#{gender})
+			        ,#{gender}			     
+			        ,sysdate)
 			      
     </insert>
     
@@ -65,40 +71,11 @@
 	
 	</select>
     
+    <!--  회원가입시 아이디 중복체크 -->
+    <select id= "checkId" resultType="int">
+    select * from member where member_id = #{memberId}
     
+    </select>
     
-       <!--  TO_DATE('#{birthDate}','YYYY-MM-DD') -->
-   <!-- 비밀번호 일치 여부 확인 -->
-    <!--  
-	<select id="checkPassword" parameterType="co.shop.member.service.MemberVO" resultType="java.lang.Integer">
-	  SELECT COUNT(*) FROM member_table
-	  WHERE id = #{id} AND memberPassword = #{memberPassword}
-	</select>  -->
-<!--     <select id="login" parameterType="member" resultType="member">
-        select * 
-        from member_table 
-        where 
-        	memberEmail=#{memberEmail} and memberPassword=#{memberPassword}
-    </select>
-    <select id="findAll" resultType="member">
-        select * from member_table
-    </select>
-    <select id="findById" parameterType="Long" resultType="member">
-        select * from member_table where id=#{id}
-    </select>
-    <delete id="delete" parameterType="Long">
-        delete from member_table where id=#{id}
-    </delete>
-    <select id="findByMemberEmail" parameterType="String" resultType="member">
-        select * 
-        from member_table 
-        where memberEmail=#{loginEmail}
-    </select>
-    <update id="update" parameterType="member">
-        update member_table 
-        set 
-	        memberAge=#{memberAge}, 
-	        memberMobile=#{memberMobile}
-        where id=#{id}
-    </update> -->
+     
 </mapper>
