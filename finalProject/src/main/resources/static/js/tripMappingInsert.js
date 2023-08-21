@@ -1,47 +1,3 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="@{layouts/default_layout}">
-<head>
-<meta charset="UTF-8">
-<meta name="description" content="Azenta Template">
-<meta name="keywords" content="Azenta, unica, creative, html">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>여행경로 선택</title>
-<!-- Google Font -->
-<link
-	href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap"
-	rel="stylesheet">
-<!-- 고유 CSS 추가 -->
-<th:block layout:fragment="css">
-	<link rel="stylesheet" th:href="@{/css/map.css}">
-</th:block>
-</head>
-<body>
-	<div layout:fragment="content">
-		<div class="map_wrap" style="height: 800px; width: 700px; border: solid 1px;">
-			<div id="map" style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
-			<hr>
-			<!-- 클릭 시 마커 생성 -->
-			<div id="clickLatlng"></div>
-		</div>
-		<!-- 키워드 검색 -->
-		<div class="option">
-			<div>
-				<input type="text" value="" id="keyword" size="50" placeholder="키워드를 입력 해주세요.">
-				<button onclick="initMap(); return false;">검색하기</button>
-			</div>
-		</div>
-		<!-- 키워드 검색 결과를 나타냄 -->
-		<div id="menu_wrap" class="bg_white" style="margin-left: 710px; margin-top: 250px; height: 800px; width: 700px; border: solid 1px;">
-			<ul id="placesList"></ul>
-			<div id="pagination"></div>
-		</div>
-		<div id="wrapper">
-			<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d37c7ea721a01188dd47b9d069964fe4&libraries=services"></script>
-			<script>
 			// 마커를 담는 배열
             var markers = [];
             // 지도를 표시할 div
@@ -64,11 +20,14 @@
             var infowindow = new kakao.maps.InfoWindow({
                zIndex : 1
             });
-
-            function initMap() {
-               // 해당 페이지 실행 시 키워드 검색이 바로 실행되지 않도록 함수를 하나 추가
-               searchPlaces();
-            }
+            
+            $(document).ready(function() {
+				// 승인 버튼 클릭 시 발생 이벤트 설정
+				 function initMap() {
+               	 	// 해당 페이지 실행 시 키워드 검색이 바로 실행되지 않도록 함수를 하나 추가
+               		searchPlaces();
+           		 }
+			});
 
             // 키워드 검색을 요청하는 함수
             function searchPlaces() {
@@ -402,18 +361,3 @@
 
             // 지도에 마커를 표시합니다
             marker.setMap(map);
-			</script>
-
-			<div>
-				<!-- 위도 및 경도 좌표 및 위치정보 -->
-				<input type="text" id="fulladdress" name="fulladdress"
-					style="width: 90%;" disabled> <input type="text" id="pname"
-					name="pname" value=""> <input type="text" id="paddress"
-					name="paddress" value=""> <input type="text" id="latclick"
-					name="latclick" value=""> <input type="text" id="lngclick"
-					name="lngclick" value="">
-			</div>
-		</div>
-	</div>
-</body>
-</html>
