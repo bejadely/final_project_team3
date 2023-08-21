@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1, user-scalable=yes,initial-scale=1.0" />
-<title>Insert title here</title>
+<title>관광정보 페이지</title>
 <!-- getbootstrap cdn -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
@@ -124,7 +124,7 @@
 			<div class="searchbox col-4">
 				<div class="input-group input-group-sm mb-3">
 					<input type="text" class="form-control" aria-label="search"
-						aria-describedby="button-addon2">
+						aria-describedby="button-addon2" id="search-input">
 					<button class="btn btn-outline-secondary" type="button"
 						id="button-addon2">검색</button>
 				</div>
@@ -361,6 +361,14 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+				</div>
+				<!--로딩창-->
+				<div class="modal-overlay" id="modal-loadingOverlay">
+					<div class="d-flex justify-content-center">
+						<div class="spinner-border text-primary" role="status">
+							<span class="visually-hidden">Loading...</span>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -640,14 +648,21 @@
 		$('.inner5').append(node);
 	}
 
-	//	로딩창 오버레이 none, block 처리 함수
+	//	일반창 : 로딩창 오버레이 none, block 처리 함수
 	function toggleOverlay(display) {
 		display == 'block' ? $('.overlay').attr('style','display: block;') : $('.overlay').attr('style','display: none;');
+	}
+	
+	//	모달창 : 로딩창 오버레이 none, block 처리 함수
+	function toggleOverlayModal(display) {
+		display == 'block' ? $('.modal-overlay').attr('style','display: block;') : $('.modal-overlay').attr('style','display: none;');
 	}
 
 	//	카드 눌렀을 시 모달창 띄우는 함수
 	$(document).on('click', '.card', function() {
 
+		toggleOverlayModal('block');
+		
 		let contentId = $(this).data('contentId');
 		let contentTypeId = $(this).data('contentTypeId');
 		let address = $(this).data('address');
@@ -658,6 +673,7 @@
 			if (data) {
 				clearModal(); // 기존 데이터 삭제
 				appendSpotDetailInfo(data, address, title, image); // 받아온 데이터 append
+				toggleOverlayModal('none');
 			}
 		});
 	})
@@ -728,6 +744,13 @@
 		
 	})
 	
+	//검색정보 보내기
+        $('#button-addon2').on('click', function(e){
+        	e.preventDefault();
+        	let searchKeyWord = $('#search-input').val();
+        	
+        	window.location.href=window.location.origin + "/localTourInfo/search?searchKeyWord="+searchKeyWord;
+        })
 	
 </script>
 

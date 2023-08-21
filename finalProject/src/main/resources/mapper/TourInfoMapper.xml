@@ -21,9 +21,10 @@
     </select>
 
     <insert id="insertReviewInfo" parameterType="SpotDetailReviewVO">
-        <selectKey keyProperty="reviewId" resultType="int" order="BEFORE">
-            SELECT NVL(MAX(review_id),0) + 1
-            FROM review
+        <selectKey keyProperty="reviewId" resultType="String" order="BEFORE">
+            SELECT 'RIV' || (TO_NUMBER(NVL((SUBSTR(MAX(review_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM review
+			WHERE SUBSTR(review_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
         </selectKey>
         INSERT INTO review
         (review_id, writer_id, review_type, origin_post_id, grade, content, write_date)

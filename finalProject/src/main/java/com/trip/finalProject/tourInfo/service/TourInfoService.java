@@ -25,5 +25,7 @@ public interface TourInfoService {
 
     Map<String,Object> insertReviewInfo(SpotDetailReviewVO spotDetailReviewVO) throws Exception;
 
-    Map<String,Object> deleteReviewInfo(int contentId, int reviewId) throws Exception;
+    Map<String,Object> deleteReviewInfo(int contentId, String reviewId) throws Exception;
+
+	public List<SearchInfoDTO> getsearchInfo(String searchKeyWord);
 }
