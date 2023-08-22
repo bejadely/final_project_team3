@@ -14,6 +14,7 @@ import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.trip.service.TripService;
 import com.trip.finalProject.trip.service.TripVO;
 
+// 23.08.22 이승우 : 여행기록 전체조회
 @Controller
 public class TripController {
 	@Autowired

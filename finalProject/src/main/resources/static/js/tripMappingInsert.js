@@ -337,16 +337,13 @@
             }
             // 마커와 연결된 선을 삭제하는 함수
             function removeMarkerAndLine(marker) {
-                // Remove the marker from the markers array
                 var index = markers.indexOf(marker);
                 if (index !== -1) {
                     markers.splice(index, 1);
                 }
 
-                // Remove the marker from the map
                 marker.setMap(null);
 
-                // Remove the line if it exists
                 if (markers.length > 0) {
                     var lastMarker = markers[markers.length - 1];
                     var linePath = [lastMarker.getPosition(), marker.getPosition()];
