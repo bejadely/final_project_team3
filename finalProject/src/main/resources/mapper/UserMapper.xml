@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip.finalProject.security.mapper.UserMapper">
+  		<!-- 회원 인가 처리 -->
+  		<select id="getMember" resultType="MemberVO">
+		SELECT member_id, 
+		       '{noop}' || password password,
+		       authority 
+		FROM member
+		WHERE member_id = #{memberId}
+	</select>
+  </mapper>
