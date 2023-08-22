@@ -14,7 +14,7 @@ public class TripVO {
 	private int mapNo;
 	private String mapName;
 	private double mapLat;
-	private double mapIng;
+	private double mapLng;
 	private String postId;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date uploadDate;
