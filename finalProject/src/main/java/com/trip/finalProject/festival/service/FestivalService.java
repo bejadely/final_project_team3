@@ -4,6 +4,6 @@ import java.util.Map;
 
 public interface FestivalService {
 
-	Map<String, Object> getfestivalInfoApi();
+	void getFestivalInfoAndSave() throws Exception;
 
 }
