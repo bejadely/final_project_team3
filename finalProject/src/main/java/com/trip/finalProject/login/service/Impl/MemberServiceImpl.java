@@ -59,6 +59,15 @@ public class MemberServiceImpl implements MemberService {
 		return result; 
 			
 		}
+	 
+		//로그인시 계정 유무 체크
+	 @Override
+		public Integer loginAccountCheck(MemberVO vo) {
+		
+		 Integer result = memberMapper.checkId(vo);
+		return result; 
+			
+		}
 	
 
 

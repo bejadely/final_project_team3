@@ -73,7 +73,7 @@ public class MemberController {
 	
 
 	//form의 action에 따른 로그인 처리
-	@PostMapping("member/star")
+	@PostMapping("/star")
 	public String login(@ModelAttribute MemberVO memberVO, Model model, HttpServletRequest request) {
 		
 		// DB와의 작업은 처리완료
@@ -117,6 +117,22 @@ public class MemberController {
 		
 	
 		Integer  result = memberService.checkId(memberVO);
+		
+		if (result == null) {
+		    return 0;
+		} else {
+		    return result;
+		}
+	 
+	  }
+	  
+	 //로그인 시 계정 DB확인 
+	  @PostMapping("/loginAccountCheck") 
+	  @ResponseBody 
+	  public int loginAccountCheck(MemberVO memberVO) {
+		
+	
+		Integer  result = memberService.loginAccountCheck(memberVO);
 		
 		if (result == null) {
 		    return 0;

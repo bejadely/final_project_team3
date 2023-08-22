@@ -18,6 +18,9 @@ public interface MemberMapper {
 	// 비밀번호 일치 여부 확인
 	// public MemberVO checkPassword(MemberVO vo);
 	 
-	 //기존 DB에 아이디 있는지 확인 
+	 //기존 DB에 아이디 있는지 확인 (회원가입 시)
 	 public Integer checkId(MemberVO vo);
+	 
+	 //기존 DB에 계정 있는지 확인 (로그인 시)
+	 public MemberVO checkLoginAccount(MemberVO member);
 }

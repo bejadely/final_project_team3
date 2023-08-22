@@ -141,15 +141,16 @@ span {
                 
            
                 <!-- 일반 로그인 -->
-                <form id="member" action="star" method="post" class="input-group">
+                <form id="member" action="/star" method="post" class="input-group">
        
-                    <input type="text" class="input-field" name="memberId" placeholder="아이디" ><!-- required -->
-                    <input type="password"  class="input-field"name="password" placeholder="비밀번호"><!-- required  -->
+                    <input type="text" class="input-field" name="memberId" placeholder="아이디"  id="id" ><!-- required -->
+                    <input type="password"  class="input-field"name="password" placeholder="비밀번호" id="pw" ><!-- required  -->
              <!--        <input type="checkbox" class="checkbox"><span>Remember Password</span> -->
+             					<font id="checkId" size="2"></font>
              
              <div id="find">
-              <a th:href="@{/member/memberInsert}"class="property-sub">아이디 찾기</a>
-              <span>&nbsp;|&nbsp;</span>
+             	<a th:href="@{/member/memberInsert}"class="property-sub">아이디 찾기</a>
+              	<span>&nbsp;|&nbsp;</span>
  			 <a th:href="@{/member/memberInsert}"class="property-sub">비밀번호 찾기</a>
  			 </div>
 	             <br/>
@@ -209,5 +210,65 @@ span {
                 z.style.left = "110px";
             }
         </script>
+        
+        <!-- 아이디 비밀번호 DB에 있는지 확인 -->
+          
+        <script>
+        
+        $(document).ready(function(){
+	        $('#member').on('submit', loginAccountcheck);
+        });
+        
+        
+        function loginAccountcheck(event){		
+        event.preventDefault();         	
+        let userId = $('#id').val(); // input_id에 입력되는 값
+		let userPassword = $('#pw').val();
+		$.ajax({
+			/* url : "IdCheckService", */
+			url : "/loginAccountCheck", 
+			type : "post",
+			data :  {memberId :userId , password:userPassword},
+			dataType : 'json',
+			
+			success : function(result){
+				if(result == 0){
+					
+					$("#checkId").html('아이디 또는 비밀번호가 틀렸습니다.');
+					$("#checkId").attr('color','red');//멈춰야함
+					
+				
+				} else{	
+					//event.unbind();
+					//$("#checkId").html('사용할 수 있는 아이디입니다.');
+					//$("#checkId").attr('color','green');
+					$('#member')[0].submit();
+				}  
+			},
+			error : function(){
+				alert("서버요청실패");
+			}
+		});
+		//$('#member').submit();
+		 
+	}
+ </script>
+ 
+ 	
+ 	<div>
+ 		<div></div>
+ 		<button>
+ 		<div>
+	 		<div>
+	 		</div>
+	 		<p>
+	 			<br>
+	 		</p>
+ 		</div>
+ 		</button>
+ 	</div>
+ 	
     </body>
 </html> 
+
+
