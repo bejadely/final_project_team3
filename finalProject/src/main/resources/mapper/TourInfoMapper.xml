@@ -5,13 +5,12 @@
 
   <mapper namespace="com.trip.finalProject.tourInfo.mapper.TourInfoMapper">
     <select id="selectSpotDetailReview" resultType="SpotDetailReviewVO">
-        SELECT *
-        FROM(SELECT ROWNUM rn, a.*
-        FROM(SELECT *
+   SELECT *       FROM(SELECT ROWNUM rn, a.*             FROM(
+      SELECT *
         FROM review
-        WHERE origin_post_id = #{contentId}
-        ORDER BY review_id DESC) a)
-        WHERE rn BETWEEN (#{page }*5-4) AND (#{page }*5)
+       WHERE origin_post_id = #{contentId}
+       ORDER BY review_id DESC
+   ) a			 )        WHERE rn BETWEEN (#{page }*5-4) AND (#{page }*5)
     </select>
 
     <select id="selectSpotDetailReviewTotalCount" resultType="int">
@@ -26,9 +25,20 @@
 			FROM review
 			WHERE SUBSTR(review_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
         </selectKey>
-        INSERT INTO review
-        (review_id, writer_id, review_type, origin_post_id, grade, content, write_date)
-        VALUES (#{reviewId}, #{writerId}, 'E1', #{originPostId}, #{grade}, #{content}, sysdate)
+        INSERT INTO review (review_id, 
+                            writer_id, 
+                            review_type, 
+                            origin_post_id, 
+                            grade, 
+                            content, 
+                            write_date)
+              VALUES (#{reviewId},
+                      #{writerId}, 
+                      'E1', 
+                      #{originPostId}, 
+                      #{grade}, 
+                      #{content}, 
+                      sysdate)
     </insert>
 
     <delete id="deleteReview" parameterType="SpotDetailReviewVO">

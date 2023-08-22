@@ -1,4 +1,4 @@
-package com.trip.finalProject.tourInfo.service.serviceImpl;
+package com.trip.finalProject.tourInfo.service.Impl;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -622,6 +622,7 @@ public class TourInfoServiceImpl implements TourInfoService {
         stringBuilder.append("&MobileOS=" + "ETC"); //  고정값
         stringBuilder.append("&arrange=" + "Q");    //  A:제목순, C:수정일순, D:생성일순, 대표이미지가 반드시 있는 정렬 - O:제목순, Q:수정일순, R:생성일순
         stringBuilder.append("&_type=" + "json");
+        stringBuilder.append("&numOfRows=" + "30"); //한번에 가져올 데이터 갯수
         stringBuilder.append("&keyword=" + encodedSearchKeyWord);
         
         String apiUrl = stringBuilder.toString();

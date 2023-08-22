@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
+//오유리, 2023년 08월 : 관광정보페이지 관련 컨트롤러
 @Controller
 @RequestMapping("localTourInfo")
 public class TourInfoController {

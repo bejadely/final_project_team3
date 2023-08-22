@@ -112,6 +112,7 @@
 	                                <span th:if="${searchInfo.sigunguCode=='11'}" th:text="안동"></span>
 	                                <span th:if="${searchInfo.sigunguCode=='1'}" th:text="거제"></span>
 	                                <span th:if="${searchInfo.sigunguCode=='17'}" th:text="통영"></span>
+	                                
                                 </li>
                                 <li>
                                 	<i class="fa-regular fa-comment-dots" style="color: #2cbdb8;"></i> 개의 리뷰
@@ -154,6 +155,14 @@
 	                                </tr>
 	                                </tbody>
 	                            </table>
+	                            <!--로딩창-->
+								<div class="modal-overlay" id="modal-loadingOverlay">
+									<div class="d-flex justify-content-center">
+										<div class="spinner-border text-primary" role="status">
+											<span class="visually-hidden">Loading...</span>
+										</div>
+									</div>
+								</div>
 	                            <!-- 모달창 내 리뷰 -->
 	                            <div class="review">
 	                                <h7 id="reviewCount"></h7>
@@ -195,14 +204,7 @@
 	                        <div class="modal-footer">
 	                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 	                        </div>
-	                        <!--로딩창-->
-							<div class="modal-overlay" id="modal-loadingOverlay">
-								<div class="d-flex justify-content-center">
-									<div class="spinner-border text-primary" role="status">
-										<span class="visually-hidden">Loading...</span>
-									</div>
-								</div>
-							</div>
+	                        
 	                    </div>
 	                </div>
 	            </div>
