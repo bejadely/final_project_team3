@@ -12,8 +12,6 @@ public class FestivalInfoVO {
 	private String areaCode;
 	private String sigunguCode;
 	private String festivalName;
-	private String content;
-	private String festivalUrl;
 	private String startDate;
 	private String endDate;
 	private String festivalImg;

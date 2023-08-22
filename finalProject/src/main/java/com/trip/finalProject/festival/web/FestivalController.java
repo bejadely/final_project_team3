@@ -22,12 +22,13 @@ public class FestivalController {
 		
 		return "festival/festivalInfo"; 
 	}
-	
-	//축제정보 api로 받아와서 db등록 
-	public void getfestivalInfo(Model model) {
-		
-		Map<String, Object> festivalInfoMap = festivalService.getfestivalInfoApi();
-		
+
+	//축제정보 api로 받아와서 db등록
+	@GetMapping("/test")
+	public void getfestivalInfoAndSave(Model model) throws Exception {
+
+		festivalService.getFestivalInfoAndSave();
+
 	}
 	
 	//축제정보 수정
