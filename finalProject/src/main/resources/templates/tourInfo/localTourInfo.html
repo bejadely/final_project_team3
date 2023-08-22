@@ -132,8 +132,21 @@
 <body>
 <!-- 콘텐츠 내용부분은 반드시 아래 div으로 감쌀 것, script까지 함께 감싸야함. -->
 <div layout:fragment="content">
+<!-- 제목란 -->
+    <section class="breadcrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <h2>관광 정보</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 	<div class="container-lg">
 		<!-- 검색창 -->
+		<br>
 		<div class="search row">
 			<div class="col-8"></div>
 			<div class="searchbox col-4">
@@ -725,8 +738,13 @@
 	$('#button-addon2').on('click', function(e){
 		e.preventDefault();
 		let searchKeyWord = $('#search-input').val();
-
-		window.location.href=window.location.origin + "/localTourInfo/search?searchKeyWord="+searchKeyWord;
+		if(searchKeyWord.length<1){
+			 alert('1글자 이상 검색해주세요.');
+			
+		}else{
+			window.location.href=window.location.origin + "/localTourInfo/search?searchKeyWord="+searchKeyWord;
+		}
+		
 	})
 
 	//slick.js 설정
