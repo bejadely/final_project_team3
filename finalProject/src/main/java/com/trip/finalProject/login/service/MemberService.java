@@ -18,6 +18,9 @@ public interface MemberService {
 
 	Integer checkId(MemberVO memberVO);
 	
+	
+	//로그인시 아이디 비밀번호 DB유무 체크
+	public Integer loginAccountCheck(MemberVO vo);
 	/* idCheck(id) */
 
 	

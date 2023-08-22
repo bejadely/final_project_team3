@@ -59,15 +59,17 @@
     </select>
     
     <!--로그인 멤버 정보확인  -->
-	<select id= "memberSelect" resultType="MemberVO">
+	<select id= "checkLoginAccount" resultType="MemberVO">
 	SELECT * FROM member
-	WHERE id =#{Id}
-	<if test="memberPassword !=null">
+	WHERE id =#{memberId} AND Password =#{password}
+<!-- 	<if test="memberPassword !=null">
 		AND memberPassword =#{memberPassword}
 	</if>	
 	<if test="memberMobile !=null">
 		AND memberMobile =#{memberMobile}
-	</if>
+	</if> -->
+	
+	
 	
 	</select>
     
