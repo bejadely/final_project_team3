@@ -48,7 +48,7 @@
              
              <!--  로그인 안되어 있다면 '로그인 버튼' 표시 -->
                	<div th:if="${ session.kakaoN == null and session.sessionId == null}">
-                      <a th:href="@{/member/login}"class="property-sub">로그인</a>
+                      <a th:href="@{/member/login}"  method='post' class="property-sub">로그인</a>
                 </div>   
                  
                   <!--  로그인 되어 있다면 '로그아웃 버튼' 표시 -->
@@ -138,7 +138,7 @@
                
                <!--  로그인 안되어 있다면 '로그인 버튼' 표시 -->
                	<div th:if="${ session.kakaoN == null  and session.sessionId == null}">
-                      <a th:href="@{/member/login}"class="property-sub">로그인</a>
+                      <a th:href="@{/member/login}"  method='post' class="property-sub">로그인</a>
                 </div>    
                 
 		                  <!--  로그인 되어 있다면 '로그아웃 버튼' 표시 -->

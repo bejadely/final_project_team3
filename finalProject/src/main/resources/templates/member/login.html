@@ -23,7 +23,6 @@
   align-items: center;
   height: 100%;
 
-    height: 100%;
     width: 100%;
     background-image: url(/img/login/background.jpg);
     background-position: center;
@@ -70,15 +69,16 @@
     transition: .5s;
 }
 .social-icons {
-    margin: 30px auto;
+  
     text-align: center;
 }
 .social-icons img {
- width: 150px;
+padding:5px;
+ width: 300px;
     cursor: pointer;
 }
 .input-group {
-    top: 180px;
+    top: 150px;
     position: absolute;
     width: 280px;
     transition: .5s;
@@ -93,7 +93,7 @@
     background: transparent;
 }
 .submit {
-    width: 85%;
+    width: 100%;
     padding: 5px 5px;
     cursor: pointer;
     display: block;
@@ -101,7 +101,7 @@
     background: linear-gradient(to right, #ff105f, #ffad06);
     border: 0;
     outline: none;
-    border-radius: 30px;
+/*     border-radius: 30px; */
 }
 .checkbox {
     margin: 30px 10px 30px 0;
@@ -112,12 +112,20 @@ span {
     bottom: 68px;
     /* position: absolute; */
 }
-#login {
+#member {
     left: 50px;
 }
-#register {
+#guide {
     left: 450px;
 } 
+
+#find {
+  text-align: center;
+}
+
+#find a.property-sub {
+  display: inline-block;
+}
 </style> 
 </head>
     <body>
@@ -127,52 +135,75 @@ span {
             <div class="form-wrap">
                 <div class="button-wrap">
                     <div id="btn"></div>
-                    <button type="button" class="togglebtn" onclick="login()">회원 로그인</button>
-                    <button type="button" class="togglebtn" onclick="register()">가이드 로그인</button>
+                    <button type="button" class="togglebtn" onclick="member()">회원 로그인</button>
+                    <button type="button" class="togglebtn" onclick="guide()">가이드 로그인</button>
                 </div>
                 
-                <!--  SNS로그인 -->
-                <div class="social-icons">
-                <!--  카카오 API를 사용하여 OAuth 2.0 인증을 위한 URL -->
-				 <a th:href="@{https://kauth.kakao.com/oauth/authorize?client_id=7a2faaf15ad43d8157f12b22e12d694d&redirect_uri=http://localhost:8787/member/kakaologin&response_type=code}"><img src="/img/login/카카오로그인.png" height="40" alt="kakao"></a>
-  
- 					<a th:href="@{/member/naverlogin1}"><img src="/img/login/네이버로그인.png" height="40" alt="naver"></a>                     
-               </div>
-                
-                
+           
                 <!-- 일반 로그인 -->
-                <form id="login" action="star" method="post" class="input-group">
+                <form id="member" action="star" method="post" class="input-group">
+       
                     <input type="text" class="input-field" name="memberId" placeholder="아이디" ><!-- required -->
                     <input type="password"  class="input-field"name="password" placeholder="비밀번호"><!-- required  -->
-                    <input type="checkbox" class="checkbox"><span>Remember Password</span>
-                    <button type="submit" class="submit">로그인</button>
-                    <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a>
+             <!--        <input type="checkbox" class="checkbox"><span>Remember Password</span> -->
+             
+             <div id="find">
+              <a th:href="@{/member/memberInsert}"class="property-sub">아이디 찾기</a>
+              <span>&nbsp;|&nbsp;</span>
+ 			 <a th:href="@{/member/memberInsert}"class="property-sub">비밀번호 찾기</a>
+ 			 </div>
+	             <br/>
+	             <br/>
+                    <button type="submit" class="submit">일반 로그인</button>
+                         <!--  SNS로그인 -->
+                      <div class="sns">
+			                <div class="social-icons">
+				                <!--  카카오 API를 사용하여 OAuth 2.0 인증을 위한 URL -->				 
+								 <a  th:href="@{https://kauth.kakao.com/oauth/authorize?client_id=7a2faaf15ad43d8157f12b22e12d694d&redirect_uri=http://localhost:8787/member/kakaologin&response_type=code}">
+								 <img  id="kakao" src="/img/login/카카오로그인.png" height="50" alt="kakao"    ></a>
+				 				 <!-- 네이버 API로그인  -->
+				 				 <a  th:href="@{${url}}"><img id="naver" src="/img/login/네이버로그인.png" height="50" alt="naver"   ></a>                     
+			               </div>
+			          </div>
+         					 <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a>
 <!--            			<button  type="submit" class="submit" onclick="location.href='memberInsert'">회원가입</button>
  -->                </form>
                 
                 
-                <form id="register" action="" class="input-group">
-                    <input type="text" class="input-field" placeholder="User name or Email" required>
-                    <input type="email" class="input-field" placeholder="Your Email" required>
-                    <input type="password" class="input-field" placeholder="Enter Password" required>
-                    <input type="checkbox" class="checkbox"><span>Terms and conditions</span>
-               <button class="submit">로그인</button>
-            <button type="submit" class="submit" onclick="location.href='memberInsert'">회원가입</button>
+                <form id="guide" action="" class="input-group">
+                    
+                    <input type="text" class="input-field" name="memberId" placeholder="아이디" ><!-- required -->
+                    <input type="password"  class="input-field"name="password" placeholder="비밀번호"><!-- required  -->
+             <!--        <input type="checkbox" class="checkbox"><span>Remember Password</span> -->
+             
+             <div id="find">
+              <a th:href="@{/member/memberInsert}"class="property-sub">아이디 찾기</a>
+              <span>&nbsp;|&nbsp;</span>
+ 			 <a th:href="@{/member/memberInsert}"class="property-sub">비밀번호 찾기</a>
+ 			 </div>
+	             <br/>
+	             <br/>
+                    <button type="submit" class="submit"> 로그인</button>
+     		 <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a>
                 </form>
                
             </div>
         </div>
 
         <script>
-            var x = document.getElementById("login");
-            var y = document.getElementById("register");
+	        var v = document.getElementById("kakao");
+	        var w = document.getElementById("naver");
+            var x = document.getElementById("member");
+            var y = document.getElementById("guide");
             var z = document.getElementById("btn");
-            function login(){
+            function member(){
+         /*    	v.style.left = "500px";
+            	w.style.left = "500px"; */
                 x.style.left = "50px";
                 y.style.left = "450px";
                 z.style.left = "0";
             }
-            function register(){
+            function guide(){
                 x.style.left = "-400px";
                 y.style.left = "50px";
                 z.style.left = "110px";

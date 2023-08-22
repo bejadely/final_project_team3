@@ -37,7 +37,7 @@ public class NaverLoginController {
 		this.naverLoginVO = naverLoginVO;
 	}
 	
-	//로그인 첫 화면 요청 메소드
+	//로그인 첫 화면 요청 메소드(1)
 	@RequestMapping(value ="/member/naverlogin1", method = { RequestMethod.GET, RequestMethod.POST })
 	public String login(Model model, HttpSession session) {
 		
@@ -46,7 +46,7 @@ public class NaverLoginController {
 		String naverAuthUrl = naverLoginVO.getAuthorizationUrl(session);
 		
 		
-		System.out.println("네이버:" + naverAuthUrl);
+		// System.out.println("네이버:" + naverAuthUrl);
 		
 		//네이버 
 		model.addAttribute("url", naverAuthUrl);
@@ -55,9 +55,11 @@ public class NaverLoginController {
 		return "member/naverlogin";  //실제로 보여주는 파일 경로
 	}
  
-	//네이버 로그인 성공시 callback호출 메소드 
-	@RequestMapping(value = "/member/callback", method = { RequestMethod.GET, RequestMethod.POST })
+	//네이버 로그인 성공시 callback호출 메소드(2)
+	@RequestMapping(value ="/member/callback", method = { RequestMethod.GET, RequestMethod.POST })
 	public String callback(Model model, @RequestParam String code, @RequestParam String state, HttpSession session) throws IOException, ParseException {
+		
+		/* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginVO클래스의 getAuthorizationUrl메소드 호출 */
 		
 		System.out.println("여기는 callback");
 		OAuth2AccessToken oauthToken;
@@ -101,7 +103,7 @@ public class NaverLoginController {
 		session.setAttribute("id",id);
 		model.addAttribute("result", apiResult);
 	
-		return "member/naverlogin";  //naverlogin -> 로그아웃 가능 화면 나옴 or home
+		return "redirect:/";  //naverlogin -> 로그아웃 가능 화면 나옴 or home
 	}
 	
 	
