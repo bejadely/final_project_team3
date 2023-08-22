@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.trip.finalProject.login.service.MemberService;
 import com.trip.finalProject.login.service.MemberVO;
+import com.trip.finalProject.login.service.NaverLoginVO;
+
+//23.08.22 이경환 회원관리
 
 //빈 자동생성 +컨트롤러 사용가능 등
  @Controller
@@ -23,6 +26,10 @@ public class MemberController {
 	  
 	@Autowired
 	MemberService memberService;
+	
+	@Autowired
+	NaverLoginVO naverLoginVO;
+//	private String apiResult = null;
 	
 	//회원가입
 	//넘겨주고 받을게 없어서 매개변수 x 
@@ -34,7 +41,7 @@ public class MemberController {
 	
 	//form의 action에 따른 회원등록처리:URI RETURN- 홈화면
 	 //memberVO빈값x(input에 타이핑한게 request객체에 담겨서 이쪽으로 옴. controller에서 MemberVO에 담김)
-	@PostMapping("member/memberInsert1")
+	@PostMapping("member/memberInsert")
 	public String memberInsertProcess(MemberVO memberVO) { 
 		
 		memberService.insertMemberInfo(memberVO);
@@ -43,12 +50,26 @@ public class MemberController {
 	
 	
 	
-	//로그인화면 호출
+	//멤버 로그인화면 호출
 	@GetMapping("/member/login")
-	public String loginMainForm() {
+	public void loginMainForm(HttpSession session, Model model) {
 		
-		return"member/login";
+		/* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginVO클래스의 getAuthorizationUrl메소드 호출 */
+		String naverAuthUrl = naverLoginVO.getAuthorizationUrl(session);
+		
+		
+		// System.out.println("네이버:" + naverAuthUrl);
+		
+		//네이버 
+		model.addAttribute("url", naverAuthUrl);
+		
+		//return"member/login";
 	}
+	
+	
+	
+	
+	
 	
 
 	//form의 action에 따른 로그인 처리
@@ -70,7 +91,7 @@ public class MemberController {
 			
 			return "redirect:/";
 			
-		}else {
+		}else {			
 	        model.addAttribute("message", "아이디 또는 비밀번호가 올바르지 않습니다.");
 
 			return "member/login"; //"member/login"

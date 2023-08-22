@@ -59,7 +59,7 @@
     </select>
     
     <!--로그인 멤버 정보확인  -->
-	<select id= "memberSelect" resultType="boolean">
+	<select id= "memberSelect" resultType="MemberVO">
 	SELECT * FROM member
 	WHERE id =#{Id}
 	<if test="memberPassword !=null">
@@ -73,7 +73,7 @@
     
     <!--  회원가입시 아이디 중복체크 -->
     <select id= "checkId" resultType="int">
-    select * from member where member_id = #{memberId}
+    select count(*) from member where member_id = #{memberId}
     
     </select>
     
