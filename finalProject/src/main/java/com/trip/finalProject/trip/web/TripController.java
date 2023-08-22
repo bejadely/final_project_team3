@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.trip.service.TripService;
@@ -81,4 +83,19 @@ public class TripController {
 	}
 
 	// 여행기록 메모 등록
+	
+	
+	// 맵핑 배열 등록 테스트용
+    @PostMapping("mappingInsert")
+    @ResponseBody
+    public String receiveMappingData(@RequestBody TripVO[] mappingData) {
+        // Process the received data (mappingData) here
+        // YourMappingObject is the class representing the structure of your data
+        
+        // Example: Print received data
+        for (TripVO item : mappingData) {
+            System.out.println("위도: " + item.getMapLat() + ", 경도: " + item.getMapLng());
+        }
+        return "trip/tripRecordList";
+    }
 }
