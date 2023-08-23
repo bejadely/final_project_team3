@@ -27,5 +27,5 @@ public interface NoticeMapper {
 	
 	public int boardReple(NoticeVO vo);
 	
-	public int boardRepleN(NoticeVO vo);
+	
 }

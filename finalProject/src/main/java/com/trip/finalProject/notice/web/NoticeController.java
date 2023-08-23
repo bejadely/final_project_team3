@@ -25,7 +25,7 @@ public class NoticeController {
 	};
 	@GetMapping("/boardWrite")
 	public String boardWrite() {
-		return"notice/BoardList";
+		return"notice/noticeWriteForm";
 	};
 	@GetMapping("/boardInsert")
 	public String boardInsert() {
