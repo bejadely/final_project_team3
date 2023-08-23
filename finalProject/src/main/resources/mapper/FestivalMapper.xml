@@ -43,46 +43,13 @@
             );
         </foreach>
     </insert>
-<!--    <insert id="getFestivalInfoAndSave" parameterType="java.util.List">-->
-<!--        MERGE INTO festival f-->
-<!--        USING dual-->
-<!--        <foreach collection="list" item="festival" separator="," open="(" close=")">-->
-<!--            <selectKey keyProperty="festivalId" resultType="String" order="BEFORE">-->
-<!--                SELECT 'FES' || (TO_NUMBER(NVL((SUBSTR(MAX(festival_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)-->
-<!--                FROM festival_info-->
-<!--                WHERE SUBSTR(festival_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')-->
-<!--            </selectKey>-->
-<!--            ON (f.content_id = #{festival.contentId})-->
-<!--            WHEN MATCHED THEN-->
-<!--            UPDATE SET festival-->
-<!--                f.area_code = ${festival.areaCode},-->
-<!--                f.sigungu_code = ${festival.sigunguCode},-->
-<!--                f.festival_name = #{festival.festivalName},-->
-<!--                f.start_date = #{festival.startDate},-->
-<!--                f.endDate = #{festival.endDate},-->
-<!--                f.festival_img = #{festival.festivalImg},-->
-<!--                f.save_date = SYSDATE-->
-<!--            WHEN NOT MATCHED THEN-->
-<!--            INSERT INTO festival (festival_id, area_code, sigungu_code, festival_name, start_date, end_date, festival_img, content_id, save_date)-->
-<!--            VALUES (-->
-<!--                #{festivalId},-->
-<!--                #{festival.areaCode},-->
-<!--                #{festival.sigunguCode},-->
-<!--                #{festival.festivalName},-->
-<!--                #{festival.startDate},-->
-<!--                #{festival.endDate},-->
-<!--                #{festival.festivalImg},-->
-<!--                #{festival.contentId},-->
-<!--                SYSDATE-->
-<!--            )-->
-<!--        </foreach>-->
-<!--    </insert>-->
+
+	<select id="getFestivalCalendarInfo" resultType="FestivalInfoVO">
+        SELECT *
+       	FROM festival_info
+   </select>
 
 
-
-
-
-    <!--    -->
 <!--    <select id="selectSpotDetailReview" resultType="SpotDetailReviewVO">-->
 <!--   SELECT *       FROM(SELECT ROWNUM rn, a.*             FROM(-->
 <!--      SELECT *-->
@@ -92,12 +59,7 @@
 <!--   ) a			 )        WHERE rn BETWEEN (#{page }*5-4) AND (#{page }*5)-->
 <!--    </select>-->
 
-<!--    <select id="selectSpotDetailReviewTotalCount" resultType="int">-->
-<!--        SELECT count(*)-->
-<!--        FROM review-->
-<!--        WHERE origin_post_id = #{contentId}-->
-<!--    </select>-->
-
+   
 <!--    <insert id="insertReviewInfo" parameterType="SpotDetailReviewVO">-->
 <!--        <selectKey keyProperty="reviewId" resultType="String" order="BEFORE">-->
 <!--            SELECT 'RIV' || (TO_NUMBER(NVL((SUBSTR(MAX(review_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)-->
