@@ -1,6 +1,7 @@
 package com.trip.finalProject.question.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.trip.finalProject.common.PagingVO;
 
@@ -9,11 +10,9 @@ public interface QuestionService {
 	public int Count();
 	//전체조회
 	public List<QuestionVO> getQueAll(PagingVO pagingvo);
-	//단건조회
-	public QuestionVO getQueInfo(String questionId);
 	//등록
-	public int insertQueInfo(QuestionVO questionVO);
+	public Map<String, String> insertQueInfo(QuestionVO questionVO);
 	//수정
-	public int updateQueInfo(QuestionVO questionVO);
+	public Map<String, String> updateQueInfo(QuestionVO questionVO);
 
 }

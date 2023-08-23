@@ -30,7 +30,7 @@
         </div>
         <div class="language-bar">
             <div class="language-option">
-                <img src="img/flag.png" alt="">
+                <img src="/img/flag.png" alt="">
                 <span>English</span>
                 <i class="fa fa-angle-down"></i>
                 <div class="flag-dropdown">
@@ -42,7 +42,8 @@
                 </div>
             </div>
             <div class="property-btn">
-                <a href="#" class="property-sub">로그인</a>
+             <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a>
+             <a th:href="@{/member/login}"class="property-sub">로그인</a>
             </div>
             <div>
             	<i class="fa-regular fa-heart fa-xs"></i>
@@ -50,7 +51,9 @@
         </div>
         <nav class="main-menu">
             <ul>
-                <li><a href="./index.html">Home</a></li>
+                <li><a href="./index">Home</a></li>
+                <li><a href="./tripRecordList">여행기록</a></li>
+                <li><a href="./about-us.html">여행메이트</a></li>
                 <li><a href="./cartList">cart</a></li>
                 <li><a href="./guideQue">guideQue</a></li>
                 <li><a href="./blog.html">News</a></li>
@@ -94,7 +97,9 @@
                     <div class="col-lg-7">
                         <nav class="main-menu">
                             <ul>
-                                <li class="active"><a href="./index.html">Home</a></li>
+                                <li class="active"><a href="./index">Home</a></li>
+                                <li><a href="./tripRecordList">여행기록</a></li>
+                                <li><a href="./about-us.html">여행메이트</a></li>
                                 <li><a href="./cartList">cart</a></li>
               					<li><a href="./guideQue">guideQue</a></li>
                                 <li><a href="./blog.html">News</a></li>
@@ -106,7 +111,7 @@
                     <div class="col-lg-5">
                         <div class="top-right">
                             <div class="language-option">
-                                <img src="img/flag.png" alt="">
+                                <img src="/img/flag.png" alt="">
                                 <span>English</span>
                                 <i class="fa fa-angle-down"></i>
                                 <div class="flag-dropdown">
@@ -117,7 +122,8 @@
                                     </ul>
                                 </div>
                             </div>
-                            <a href="#" class="property-sub">로그인</a>
+                         <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a>
+                        <a th:href="@{/member/login}"class="property-sub">로그인</a>
                         </div>
                     </div>
                 </div>
@@ -128,7 +134,7 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="logo">
-                            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                            <a href="./index.html"><img src="/img/logo.png" alt=""></a>
                         </div>
                     </div>
                     <div class="col-lg-9">
