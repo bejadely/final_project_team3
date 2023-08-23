@@ -1,0 +1,21 @@
+<html lagn="ko" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+    <!--headFragment 선언-->
+    <th:block th:fragment="bottomConfigFragment">
+		
+		<link th:href="@{https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap}" rel="stylesheet">
+          
+        <!-- 이 영역에 공통으로 사용할 css, js library를 선언한다. -->
+        <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+	    <script th:src="@{/js/bootstrap.min.js}"></script>
+	    <script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+	    <script th:src="@{/js/jquery.nice-select.min.js}"></script>
+	    <script th:src="@{/js/jquery.slicknav.js}"></script>
+	    <script th:src="@{/js/jquery-ui.min.js}"></script>
+	    <script th:src="@{/js/owl.carousel.min.js}"></script>
+	    <script th:src="@{/js/main.js}"></script>
+
+    </th:block>
+</html>
