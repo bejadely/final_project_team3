@@ -24,22 +24,23 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/member/**").hasAnyAuthority("A1", "A4") // 일반회원, 권한대기중 회원만 접근 가능한 경로(마이페이지옹)
+                    .antMatchers("/common/**").hasAnyAuthority("A1", "A4") // 일반회원, 권한대기중 회원만 접근 가능한 경로(마이페이지옹)
                     .antMatchers("/guide/**").hasAuthority("A2") // 가이드 회원만 접근가능한 경로(가이드 - 마이페이지용)
                     .antMatchers("/admin/**").hasAuthority("A3") // 관리자 페이지
                     .anyRequest().permitAll()
-                    // .anyRequest().authenticated() // 나머지는 접근 제어
                 .and()
                     .formLogin()
-                    //.loginPage("/member/login") // 여기에 로그인 폼 설정
-                    //.loginProcessingUrl("/loginProc")
-//                    .usernameParameter("memberId")
-//                    .passwordParameter("password")
+                    .loginPage("/member/login") // 여기에 로그인 폼 설정
+                    .loginProcessingUrl("/loginProc")
+                    .usernameParameter("memberId")
+                    .passwordParameter("password")
                     .defaultSuccessUrl("/", true) // 성공 시 반환하는 페이지
                     .permitAll()
                 .and()
                     .logout()
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logoutProc"));
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logoutProc"))
+                .and()
+               		.csrf().disable();
     }
 
     @Override
