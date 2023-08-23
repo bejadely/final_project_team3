@@ -34,6 +34,7 @@ public class MemberServiceImpl implements MemberService {
 	 @Override	
 	    public MemberVO login(MemberVO memberVO) {
 		 //Mapper.xml의 select문인 login의 결과가 없으면  빈값이나 null을 가져옴
+		 //MemberVO 타입으로 반환
 		 MemberVO result = memberMapper.login(memberVO); 
 		 
 		 return result;
@@ -49,6 +50,24 @@ public class MemberServiceImpl implements MemberService {
 	public void logout(HttpSession session) {
 	 session.invalidate(); // 세션 초기화
 	 }
+	
+	//회원가입시 아이디 중복체크
+	 @Override
+		public Integer checkId(MemberVO vo) {
+		
+		 Integer result = memberMapper.checkId(vo);
+		return result; 
+			
+		}
+	 
+		//로그인시 계정 유무 체크
+	 @Override
+		public Integer loginAccountCheck(MemberVO vo) {
+		
+		 Integer result = memberMapper.checkId(vo);
+		return result; 
+			
+		}
 	
 
 
