@@ -3,6 +3,7 @@ package com.trip.finalProject.login.service.Impl;
 
 import com.github.scribejava.core.builder.api.DefaultApi20;
  
+
 public class NaverLoginServiceImpl extends DefaultApi20{
  
     protected NaverLoginServiceImpl(){
