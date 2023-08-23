@@ -1,4 +1,4 @@
-package com.trip.finalProject.AccountCheck;
+package com.trip.finalProject.accountCheck;
 
 import java.util.HashMap;
 import java.util.Map;

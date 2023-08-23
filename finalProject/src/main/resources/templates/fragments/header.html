@@ -71,6 +71,7 @@
                 <li><a href="./blog.html">News</a></li>
                 <li><a href="./property-details.html">Pages</a></li>
                 <li><a href="./contact.html">Contact</a></li>
+                  <li><a th:href="@{/notice}"  class="property-sub">공지사항</a><li> 
             </ul>
         </nav>
         <div class="nav-logo-right">
@@ -117,6 +118,7 @@
                                 <li><a href="./blog.html">News</a></li>
                                 <li><a href="./property-details.html">Pages</a></li>
                                 <li><a href="./contact.html">Contact</a></li>
+                        <!--         <li><a th:href="/notice/noticeBoard"  class="property-sub">공지사항</a><li> -->
                             </ul>
                         </nav>
                     </div>
@@ -134,8 +136,7 @@
                                     </ul>
                                 </div>
                             </div>
-               <!--           <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a> -->
-               
+    						<li><a th:href="@{/notice}"  class="property-sub">공지사항</a><li>               
                <!--  로그인 안되어 있다면 '로그인 버튼' 표시 -->
                	<div th:if="${ session.kakaoN == null  and session.sessionId == null}">
                       <a th:href="@{/member/login}"  method='post' class="property-sub">로그인</a>
