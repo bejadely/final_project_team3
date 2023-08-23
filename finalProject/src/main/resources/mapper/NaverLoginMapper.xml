@@ -7,14 +7,14 @@
   <select id="findNaver" parameterType="java.util.HashMap" resultType="MemberVO">
 		select * 
 		from member 
-		where  id=#{id}
+		where  member_id=#{id}
 </select>
 
 <insert id="insertNaverLogin" parameterType="java.util.HashMap">
 		insert into 
-		member(id )
+		member(member_id, member_name , BIRTH_DATE,GENDER )
 			values
-			(#{id})
+			(#{id}, '1', '940426','1')
 	</insert>
   
   </mapper>
