@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/default_layout}">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Azenta Template">
+<meta name="keywords" content="Azenta, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>여행기록 등록</title>
+<!-- Google Font -->
+<link
+	href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap"
+	rel="stylesheet">
+<!-- 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+	<link rel="stylesheet" th:href="@{/css/map.css}" >
+</th:block>
+</head>
+<body>
+	<div layout:fragment="content">
+		<section class="blog-section blog-page spad" style="margin-left: 100px;">
+			<div class="map_wrap" style="height:1000px; width:700px; border: solid 1px;">
+				<div id="map" style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
+				<div class="option">
+	 			</div>
+				<hr>
+    			<div class="custom_zoomcontrol radius_border"> 
+       		 		<span onclick="zoomIn()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대"></span>  
+    	   	 		<span onclick="zoomOut()"><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소"></span>
+    			</div>
+			</div>
+		</section>
+		<section class="blog-section blog-page spad" style="margin-left: 100px;">
+			<div>
+				<form name="insertForm" method="post" th:object="${tripVO}" enctype="multipart/form-data">
+					<input type="hidden" name="writerId" th:value="${session.sessionId}">
+					<input type="hidden" name="tripTitle" th:value="${tripVO.tripTitle}">
+					<input type="hidden" name="tripDisclose" th:value="${tripVO.tripDisclose}">
+					<input type="hidden" name="tripShare" th:value="${tripVO.tripShare}">
+					<input type="hidden" th:value="${#dates.format(tripVO.startDay, 'yyyy-MM-dd')}" id="startDay" name="startDay">
+					<input type="hidden" th:value="${#dates.format(tripVO.endDay, 'yyyy-MM-dd')}" id="endDay" name="endDay">
+					
+							<h3>[[${session.sessionId}]]님의 [[${tripVO.tripTitle}]] 여행일정</h3>
+								<label>[[ ${#dates.format(tripVO.startDay, 'yyyy년 MM월 dd일 EEE요일')} ]] ~ </label>
+								<label>[[ ${#dates.format(tripVO.endDay, 'yyyy년 MM월 dd일 EEE요일')} ]]</label>
+							<h3>여행기록 메인 사진 등록</h3>
+								<input type="file" name="file">
+							<h3>여행 경로</h3>
+								<button type="button" onclick="location.href='tripMappingInsertForm'">여행경로 선택</button>
+				<div>
+					<button type="submit" id="tsTripInsert">임시저장</button>
+					<button type="submit" id="tripInsert">등록</button>
+					<button type="reset">취소</button>
+					<button type="button" onclick="location.href='tripRecordList'">목록으로</button>
+				</div>
+				</form>		
+			</div>
+		</section>
+		<script>
+			// 지도를 표시할 div id 
+			var mapContainer = document.getElementById('map'),
+			mapOption = {
+				// 지도의 중심좌표
+				center : new kakao.maps.LatLng([[${tripVO.tripArea}]]),
+				// 지도의 확대 레벨
+				level : 6
+			};
+			
+			// 지도를 생성    
+			var map = new kakao.maps.Map(mapContainer, mapOption);
+		
+			// 지도 확대, 축소 컨트롤에서 확대 버튼을 누르면 호출되어 지도를 확대하는 함수입니다
+			function zoomIn() {
+		    	map.setLevel(map.getLevel() - 1);
+			}
+
+			// 지도 확대, 축소 컨트롤에서 축소 버튼을 누르면 호출되어 지도를 확대하는 함수입니다
+			function zoomOut() {
+		    	map.setLevel(map.getLevel() + 1);
+			}
+		
+			//여행기록 임시저장
+			$("#tsTripInsert").click(function() {
+				$("form").attr("action", "tsTripRecordInsert");
+			});
+			
+			//여행기록 저장
+			$("#tripInsert").click(function() {
+				$("form").attr("action", "/tripRecordInsert");
+			});
+			
+			//여행기록 저장시 예외처리
+			document.querySelector('form[name="insertForm"]').addEventListener('submit', function(e) {
+				//이벤트 버블링 제어
+				e.preventDefault();
+				let title = document.getElementsByName('tripTitle')[0];
+				if (title.value == '') {
+					alert('여행제목이 입력되지 않았습니다.')
+					title.focus();
+					return;
+				}
+				insertForm.submit();
+			});	
+		</script>
+	</div>
+</body>
+</html>
