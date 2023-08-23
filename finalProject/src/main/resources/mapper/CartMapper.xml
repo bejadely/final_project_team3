@@ -8,15 +8,34 @@
  		SELECT COUNT(*)
  		FROM cart
  	</select>
+ 	 <!-- 페이징 -->
+ 	<select id="getPostIdCount" resultType="int" parameterType="string">
+	    SELECT COUNT(*)
+	    FROM cart
+	    WHERE post_id LIKE '%${postId}%'
+	</select>
  	<!-- 전체조회 -->
  	<select id="selectAllCart" resultType="CartVO">
  		SELECT *
 		FROM(SELECT ROWNUM rn, a.*
 			 FROM(SELECT *
 				  FROM cart
-				  ORDER BY reg_date) a)
+				  ORDER BY reg_date DESC) a)
 		WHERE rn BETWEEN #{start } AND #{end }
  	</select>
+ 	
+ 	 <!-- 버튼조회 -->
+ 	<select id="ajaxCart" resultType="CartVO">
+ 		SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			 FROM(SELECT *
+				  FROM cart
+				  WHERE post_id LIKE '%${postId}%'
+				  ORDER BY reg_date DESC) a)
+		WHERE rn BETWEEN #{start } AND #{end }
+ 	</select>
+ 	
+ 	
  	<!-- 등록 -->
  	<insert id="insertCartInfo" parameterType="CartVO">
  	INSERT INTO cart
@@ -37,13 +56,13 @@
  				,#{quantity}
  				,#{price}
  				,#{member_id}
- 				,#{reg_date}
+ 				,sysdate
  				)
  	</insert>
  	<!-- 삭제 -->
  	<delete id="deleteCartInfo" parameterType="CartVO">
  		DELETE FROM cart
- 		WHERE cart_id = ${cartId}
+ 		WHERE cart_id = #{cartId}
  	</delete>
  
  

@@ -14,6 +14,7 @@
 					,tel
 					,title
 					,area_code
+					,sigungu_code
 				
 				)
 				VALUES
@@ -26,6 +27,7 @@
 					,#{tel}
 					,#{title}
 					,#{areacode}
+					,#{sigungucode
 					
 				)
 	</insert>

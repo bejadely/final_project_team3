@@ -1,5 +1,9 @@
 package com.trip.finalProject.login.service.Impl;
 
+
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +72,31 @@ public class MemberServiceImpl implements MemberService {
 		return result; 
 			
 		}
+	 
+		
+		//회원정보 불러이기
+		@Override
+		public MemberVO memberInfo(MemberVO memberVO) {
+			return memberMapper.memebrInfo(memberVO);
+		}
+
+		//회원정보 수정
+		@Override
+		public Map<String, String> updateMember(MemberVO memberVO) {
+			Map<String, String> map = new HashMap<>();
+			
+			map.put("회원 정보", String.valueOf(memberVO.getMemberId()));
+			
+			int result  = memberMapper.updateMember(memberVO);
+			if(result > 0) {
+				map.put("결과", "Success");
+			}else {
+				map.put("결과", "fail");
+			}		
+			
+			return map;
+		}
+		
 	
 
 

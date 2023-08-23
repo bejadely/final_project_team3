@@ -1,6 +1,8 @@
 package com.trip.finalProject.question.service.Impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,23 +24,25 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public QuestionVO getQueInfo(String questionId) {
-		return queMapper.selectQueInfo(questionId);
-	}
-
-	@Override
 	public List<QuestionVO> getQueAll(PagingVO pagingvo) {
 		return queMapper.selectAllQue(pagingvo);
 	}
-
+	//답글 입력
 	@Override
-	public int insertQueInfo(QuestionVO questionVO) {
-		return queMapper.insertQue(questionVO);
+	public Map<String, String> insertQueInfo(QuestionVO questionVO) {
+		Map<String, String> map = new HashMap<>();
+		map.put("회원 정보", String.valueOf(questionVO.getMemberId()));
+		queMapper.insertQue(questionVO);
+		return map;
 	}
 
+	//답글 수정
 	@Override
-	public int updateQueInfo(QuestionVO questionVO) {
-		return queMapper.updateQue(questionVO);
+	public Map<String, String> updateQueInfo(QuestionVO questionVO) {
+		Map<String, String> map = new HashMap<>();
+		map.put("회원 정보", String.valueOf(questionVO.getMemberId()));
+		queMapper.updateQue(questionVO);
+		return map;
 	}
 
 }
