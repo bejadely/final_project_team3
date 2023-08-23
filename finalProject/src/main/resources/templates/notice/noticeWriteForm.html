@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="@{layouts/default_layout}"
+      	layout:fragment="content"> 
+
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+</th:block>
+<!-- index.html 고유 스크립트 추가 -->
+<th:block layout:fragment="script">
+</th:block>
+<!-- Content -->
+
+
+
+
+
+
+
+
+   <style>
+        body {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0069d9;
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="text-center">
+        <br>
+            <h1>공지사항 등록</h1>
+        <br>
+        </div>
+        <div id="ls" class="text-center">
+            <form id="frm" action="boardInsert.do" method="post">
+                <div>
+                    <table class="table">
+                        <tr>
+                            <th width="150">작성일자</th>
+                            <td width="150">
+                                <input type="date" id="boardDate" name="boardDate" readOnly class="form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>제목</th>
+                            <td colspan="3">
+                                <input type="text" id="boardTitle" name="boardTitle" size="70" class="form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>내용</th>
+                            <td colspan="3">
+                                <textarea rows="10" cols="=50" id="boardContent" name="boardContent" placeholder="내용을 입력해주세요." required class="form-control"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <br>
+
+                <div>
+                    <input type="hidden" name="boardS" id="boardS">
+                </div>
+                <div>
+                    <div align="left">
+                    <input type='checkbox' name="boardSecret" id="boardSecret" onclick="settingSecret()" value="N" class="form-check-input">
+                    
+                    </div>
+                    <div align="right">
+                    <input type="submit" value="등록" class="btn btn-primary">&nbsp;&nbsp;
+                    <input type="reset" value="취소" class="btn btn-secondary">&nbsp;&nbsp;
+                    <input type="button" value="목록" onclick="location.href='boardList.do?page=1'" class="btn btn-secondary">
+                    </div>
+                    <br><br>
+                </div>
+            </form>
+        </div>
+    </div>
+	<script>
+        document.getElementById('boardDate').value = new Date().toISOString().substring(0, 10);
+   	</script>
+</body>
+
+
+
+
+
+
+
+</html>
