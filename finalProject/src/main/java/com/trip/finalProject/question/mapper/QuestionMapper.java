@@ -10,9 +10,6 @@ public interface QuestionMapper {
 	public int getTotalCount();
 	//전체조회
 	public List<QuestionVO> selectAllQue(PagingVO pagingVO);
-	//단건조회
-	public QuestionVO selectQueInfo(String questionId);
-	
 	//등록
 	public int insertQue(QuestionVO qeustionVO);
 	//수정

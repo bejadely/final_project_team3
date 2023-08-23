@@ -20,7 +20,6 @@ import com.trip.finalProject.login.mapper.NaverLoginMapper;
 import com.trip.finalProject.login.service.MemberVO;
 import com.trip.finalProject.login.service.NaverLoginVO;
  
-
 @Controller
 public class NaverLoginController {
  

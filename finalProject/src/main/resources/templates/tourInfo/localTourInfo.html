@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<!-- 타임리프 구역, 레이아웃 설정 -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="@{layouts/default_layout}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1, user-scalable=yes,initial-scale=1.0" />
+<title>관광정보 페이지</title>
+<!-- getbootstrap cdn -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+	crossorigin="anonymous"></script>
+<!-- jquery cdn -->
+<script
+		src="https://code.jquery.com/jquery-3.7.0.js"
+		integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+		crossorigin="anonymous"></script>
+<!-- icon cdn -->
+<script src="https://kit.fontawesome.com/d58c3728d1.js" crossorigin="anonymous"></script>
+
+<!-- slick.js cdn -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<style>
+.card {
+	border: none;
+	border-radius: 0;
+	box-shadow: 2px 6px 8px 0 rgba(22, 22, 26, 0.18);
+}
+
+.next{
+	position: absolute;
+	top: 50%; /* 부모의 50% 위치에 배치됩니다. */
+	transform: translateY(-50%); /* 위로 절반만 이동하여 중앙 정렬됩니다. */
+	right:-40px;
+	font-size:0.5em;
+	cursor: pointer;
+}
+.prev{
+	position: absolute;
+	top: 50%; /* 부모의 50% 위치에 배치됩니다. */
+	transform: translateY(-50%); /* 위로 절반만 이동하여 중앙 정렬됩니다. */
+	left:-40px;
+	font-size:0.5em;
+	cursor: pointer;
+}
+.slick-arrow.slick-hidden {
+	display: block !important;
+}
+.outer {
+	position: relative;
+	overflow: visible;
+}
+.inner1 {
+	position: relative;
+	height: 100%; /* 높이를 100%로 설정하여 부모의 높이와 같게 합니다. */
+}
+
+
+@media screen and (min-width: 568px) {
+	.cards-wrapper {
+		display: flex;
+	}
+	.card {
+		margin: 0 .5em;
+		width: calc(100%/ 3);
+	}
+	.image-wrapper {
+		height: 15vw;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+}
+
+/*
+	아래를 주석처리하면 반응형 화면에서 3개씩 세로로 보이고
+ 	주석처리 하지 않으면 3개중에 제일 첫번째 요소만 하나씩 보여줌
+ */
+@media screen and (max-width: 567px) {
+	.card:not(:first-child) {
+		display: none;
+	}
+}
+
+.image-wrapper img {
+	/*max-width: 100%;
+	max-height: 100%;*/
+	width: 100%;
+	height: 100%;
+}
+
+.card-title {
+	text-align: center;
+	white-space: nowrap; /* 텍스트가 한 줄에 나타나도록 설정 */
+	overflow: hidden; /* 오버플로우된 텍스트를 숨김 */
+	text-overflow: ellipsis; /* 텍스트가 오버플로우되었을 때 생략 표시 (...) */
+}
+
+/* 오버레이 스타일 */
+.overlay {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6); /* 불투명한 배경 색상 */
+	z-index: 1000; /* 다른 요소들보다 위에 표시 */
+}
+.d-flex {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.fa-square-plus {
+	cursor: pointer;
+}
+
+</style>
+</head>
+<body>
+<!-- 콘텐츠 내용부분은 반드시 아래 div으로 감쌀 것, script까지 함께 감싸야함. -->
+<div layout:fragment="content">
+<!-- 제목란 -->
+    <section class="breadcrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb-text">
+                        <h2>관광 정보</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+	<div class="container-lg">
+		<!-- 검색창 -->
+		<br>
+		<div class="search row">
+			<div class="col-8"></div>
+			<div class="searchbox col-4">
+				<div class="input-group input-group-sm mb-3">
+					<input type="text" class="form-control" aria-label="search"
+						aria-describedby="button-addon2" id="search-input">
+					<button class="btn btn-outline-secondary" type="button"
+						id="button-addon2">검색</button>
+				</div>
+			</div>
+		</div>
+		<!--지역 네비게이션-->
+		<ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
+			<li class="nav-item" role="presentation">
+				<button class="nav-link active link-info" id="daegu-tab" data-bs-toggle="tab" data-bs-target="#daegu-tab-pane" type="button" role="tab" aria-controls="daegu-tab-pane" aria-selected="true" data-area-code="4">대구</button>
+			</li>
+			<li class="nav-item" role="presentation">
+				<button class="nav-link link-info" id="busan-tab" data-bs-toggle="tab" data-bs-target="#busan-tab-pane" type="button" role="tab" aria-controls="busan-tab-pane" aria-selected="false" data-area-code="6">부산</button>
+			</li>
+			<li class="nav-item" role="presentation">
+				<button class="nav-link link-info" id="ulsan-tab" data-bs-toggle="tab" data-bs-target="#ulsan-tab-pane" type="button" role="tab" aria-controls="ulsan-tab-pane" aria-selected="false" data-area-code="7">울산</button>
+			</li>
+			<li class="nav-item" role="presentation">
+				<button class="nav-link link-info" id="gyeongju-tab" data-bs-toggle="tab" data-bs-target="#gyeongju-tab-pane" type="button" role="tab" aria-controls="gyeongju-tab-pane" aria-selected="true" data-area-code="35" data-sigungu-code="2">경주</button>
+			</li>
+			<li class="nav-item" role="presentation">
+				<button class="nav-link link-info" id="pohang-tab" data-bs-toggle="tab" data-bs-target="#pohang-tab-pane" type="button" role="tab" aria-controls="pohang-tab-pane" aria-selected="false" data-area-code="35" data-sigungu-code="23">포항</button>
+			</li>
+			<li class="nav-item" role="presentation">
+				<button class="nav-link link-info" id="andong-tab" data-bs-toggle="tab" data-bs-target="#andong-tab-pane" type="button" role="tab" aria-controls="andong-tab-pane" aria-selected="false" data-area-code="35" data-sigungu-code="11">안동</button>
+			</li>
+			<li class="nav-item" role="presentation">
+				<button class="nav-link link-info" id="tongyoung-tab" data-bs-toggle="tab" data-bs-target="#tongyoung-tab-pane" type="button" role="tab" aria-controls="tongyoung-tab-pane" aria-selected="false" data-area-code="36" data-sigungu-code="17">통영</button>
+			</li>
+			<li class="nav-item" role="presentation">
+				<button class="nav-link link-info" id="geoje-tab" data-bs-toggle="tab" data-bs-target="#geoje-tab-pane" type="button" role="tab" aria-controls="geoje-tab-pane" aria-selected="false" data-area-code="36" data-sigungu-code="1">거제</button>
+			</li>
+		</ul>
+		<br>
+		<br>
+		<!-- 정보 케러셀 -->
+		<div class="row">
+			<h5 class="tourSpotTitle locationName col-11">대구 여행지</h5>
+			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-type-id="12"></i></h5>
+		</div>
+		<hr>
+		<div id="" class="">
+			<div class="outer">
+				<div class="inner1">
+					<button type="button" class="btn btn-primary btn-lg prev prev1"><</button>
+					<button type="button" class="btn btn-primary btn-lg next next1">></button>
+					<div class="cards-wrapper1">
+						<div th:each="item : ${tourSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+							<div class="image-wrapper">
+								<img th:src="${item.firstImage}" alt="...">
+							</div>
+							<div class="card-body">
+								<h5 class="card-title" th:text="${item.title}" th:title="${item.title}"></h5>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<h5 class="foodSpotTitle locationName col-11">대구 맛집</h5>
+			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-type-id="39"></i></h5>
+		</div>
+		<hr>
+		<div id="" class="">
+			<div class="outer">
+				<div class="inner2">
+					<button type="button" class="btn btn-primary btn-lg prev prev2"><</button>
+					<button type="button" class="btn btn-primary btn-lg next next2">></button>
+					<div class="cards-wrapper2">
+						<div th:each="item : ${foodSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+							<div class="image-wrapper">
+								<img th:src="${item.firstImage}" alt="...">
+							</div>
+							<div class="card-body">
+								<h5 class="card-title" th:text="${item.title}" th:title="${item.title}"></h5>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<h5 class="shoppingSpotTitle locationName col-11">대구 쇼핑</h5>
+			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-type-id="38"></i></h5>
+		</div>
+		<hr>
+		<div id="" class="">
+			<div class="outer">
+				<div class="inner3">
+					<button type="button" class="btn btn-primary btn-lg prev prev3"><</button>
+					<button type="button" class="btn btn-primary btn-lg next next3">></button>
+					<div class="cards-wrapper3">
+						<div th:each="item : ${shoppingSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+							<div class="image-wrapper">
+								<img th:src="${item.firstImage}" alt="...">
+							</div>
+							<div class="card-body">
+								<h5 class="card-title" th:text="${item.title}" th:title="${item.title}"></h5>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<h5 class="cultureSpotTitle locationName col-11">대구 문화시설</h5>
+			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-type-id="14"></i></h5>
+		</div>
+		<hr>
+		<div id="" class="">
+			<div class="outer">
+				<div class="inner4">
+					<button type="button" class="btn btn-primary btn-lg prev prev4"><</button>
+					<button type="button" class="btn btn-primary btn-lg next next4">></button>
+					<div class="cards-wrapper4">
+						<div th:each="item : ${cultureSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+							<div class="image-wrapper">
+								<img th:src="${item.firstImage}" alt="...">
+							</div>
+							<div class="card-body">
+								<h5 class="card-title" th:text="${item.title}" th:title="${item.title}"></h5>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<h5 class="leportsSpotTitle locationName col-11">대구 레포츠</h5>
+			<h5 class="col-1"><i class="fa-regular fa-square-plus" style="color: #2cbdb8;" data-content-type-id="28"></i></h5>
+		</div>
+		<hr>
+		<div id="" class="">
+			<div class="outer">
+				<div class="inner5">
+					<button type="button" class="btn btn-primary btn-lg prev prev5"><</button>
+					<button type="button" class="btn btn-primary btn-lg next next5">></button>
+					<div class="cards-wrapper5">
+						<div th:each="item : ${leportsSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+							<div class="image-wrapper">
+								<img th:src="${item.firstImage}" alt="...">
+							</div>
+							<div class="card-body">
+								<h5 class="card-title" th:text="${item.title}" th:title="${item.title}"></h5>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--로딩창-->
+	<div class="overlay" id="loadingOverlay">
+		<div class="d-flex justify-content-center">
+			<div class="spinner-border text-primary" role="status">
+				<span class="visually-hidden">Loading...</span>
+			</div>
+		</div>
+	</div>
+	<!--모달창-->
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5 modalText" id="exampleModalLabel"></h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<table class="table">
+						<tbody>
+						<tr>
+							<td colspan="3"><img id="modalImage" src="" style="width: 100%;"></td>
+						</tr>
+						<tr>
+							<th scope="row">주소</th>
+							<td colspan="2" id="modalAddress" class="modalText"></td>
+						</tr>
+						<tr>
+							<th scope="row">전화번호</th>
+							<td colspan="2" id="modalPhone" class="modalText"></td>
+						</tr>
+						<tr>
+							<th scope="row">주차</th>
+							<td colspan="2" id="modalParking" class="modalText"></td>
+						</tr>
+						<tr>
+							<th scope="row">홈페이지</th>
+							<td colspan="2" id="modalHomepage" class="modalText"></td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+				</div>
+				<!--로딩창-->
+				<div class="modal-overlay" id="modal-loadingOverlay">
+					<div class="d-flex justify-content-center">
+						<div class="spinner-border text-primary" role="status">
+							<span class="visually-hidden">Loading...</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+	$(document).on('click', '.nav-link', function() {
+		//	로딩화면 시작 코드
+		toggleOverlay('block');
+
+		let areaCode = $(this).data('areaCode');
+		let sigunguCode = 0;
+		if(areaCode == '35' || areaCode == '36') {
+			sigunguCode = $(this).data('sigunguCode');
+		}
+
+		getTourInfoByLocation(areaCode, sigunguCode, function(data) {
+			if (data) {
+				clearAllTourInfo(); // 기존 데이터 삭제
+				appendAllTourInfo(data); // 받아온 데이터 append
+				changeLocationName(areaCode, sigunguCode); // 지역명 변경
+			}
+
+			//로딩화면 종료 코드
+			toggleOverlay('none');
+		});
+	})
+	//지역 이름 변경 코드
+	function changeLocationName(areaCode, sigunguCode) {
+		let locationName;
+
+		switch(areaCode) {
+			case 4:
+				locationName = '대구';
+				break;
+			case 6:
+				locationName = '부산';
+				break;
+			case 7:
+				locationName = '울산';
+				break;
+			case 35:
+				switch(sigunguCode) {
+					case 2:
+						locationName = '경주';
+						break;
+					case 23:
+						locationName = '포항';
+						break;
+					case 11:
+						locationName = '안동';
+						break;
+					default:
+						break;
+				}
+			case 36:
+				switch(sigunguCode) {
+					case 17:
+						locationName = '통영';
+						break;
+					case 1:
+						locationName = '거제';
+						break;
+					default:
+						break;
+				}
+			default:
+				break;
+		}
+
+		$('.locationName').text('');
+		$('.tourSpotTitle').text(locationName + ' 여행지');
+		$('.foodSpotTitle').text(locationName + ' 맛집');
+		$('.shoppingSpotTitle').text(locationName + ' 쇼핑');
+		$('.cultureSpotTitle').text(locationName + ' 문화시설');
+		$('.leportsSpotTitle').text(locationName + ' 레포츠');
+	}
+
+	function getTourInfoByLocation(areaCode, sigunguCode, callback) {
+		$.ajax({
+			type: 'GET',
+			url: '/localTourInfo/' + areaCode,
+			data: {
+				'sigunguCode': sigunguCode
+			}
+		})
+		.done(function(data, textStatus, jqXHR) {
+			console.log('done');
+			callback(data);
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) {
+			console.log('fail');
+			callback(null);
+		})
+	}
+
+	function clearAllTourInfo() {
+		$('.carousel-inner').empty();
+	}
+
+	function appendAllTourInfo(data) {
+		let tourSpot = data.tourSpot;
+		let foodSpot = data.foodSpot;
+		let shoppingSpot = data.shoppingSpot;
+		let cultureSpot = data.cultureSpot;
+		let leportsSpot = data.leportsSpot;
+
+		appendTourSpot(tourSpot);
+		appendFoodSpot(foodSpot);
+		appendShoppingSpot(shoppingSpot);
+		appendCultureSpot(cultureSpot);
+		appendLeportsSpot(leportsSpot);
+	}
+
+	function appendTourSpot(tourSpot) {
+		let node = ``;
+
+		for(let i = 0; i < tourSpot.length; i++) {
+			if(i == 0) {
+				node += `<div class="carousel-item active">`;
+			} else {
+				node += `<div class="carousel-item">`;
+			}
+			node += `<div class="cards-wrapper">`;
+
+			for(let j = 0; j < tourSpot[i].length; j++) {
+				node += `
+					<div class="card" data-content-id="${tourSpot[i][j].contentId}" data-content-type-id="${tourSpot[i][j].contentTypeId}" data-address="${tourSpot[i][j].address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+						<div class="image-wrapper">
+							<img src="${tourSpot[i][j].firstImage}" loading="lazy">
+						</div>
+						<div class="card-body">
+							<h5 class="card-title" title="${tourSpot[i][j].title}">${tourSpot[i][j].title}</h5>
+						</div>
+					</div>
+				`;
+			}
+
+			node += `
+					</div>
+				</div>
+			`;
+		}
+
+		$('.inner1').append(node);
+	}
+
+	function appendFoodSpot(foodSpot) {
+		let node = ``;
+
+		for(let i = 0; i < foodSpot.length; i++) {
+			if(i == 0){
+				node += `<div class="carousel-item active">`;
+			} else {
+				node += `<div class="carousel-item">`;
+			}
+			node += `<div class="cards-wrapper">`;
+
+			for(let j = 0; j < foodSpot[i].length; j++) {
+				node +=`
+					<div class="card" data-content-id="${foodSpot[i][j].contentId}" data-content-type-id="${foodSpot[i][j].contentTypeId}" data-address="${foodSpot[i][j].address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+						<div class="image-wrapper">
+							<img src="${foodSpot[i][j].firstImage}" loading="lazy">
+						</div>
+						<div class="card-body">
+							<h5 class="card-title" title="${foodSpot[i][j].title}">${foodSpot[i][j].title}</h5>
+						</div>
+					</div>
+				`;
+			}
+
+			node += `
+					</div>
+				</div>
+			`;
+		}
+
+		$('.inner2').append(node);
+	}
+
+	function appendShoppingSpot(shoppingSpot) {
+		let node = ``;
+
+		for(let i = 0; i < shoppingSpot.length; i++) {
+			if(i == 0){
+				node += `<div class="carousel-item active">`;
+			} else {
+				node += `<div class="carousel-item">`;
+			}
+			node += `<div class="cards-wrapper">`;
+
+			for(let j = 0; j < shoppingSpot[i].length; j++) {
+				node += `
+					<div class="card" data-cotent-id="${shoppingSpot[i][j].contentId}" data-content-type-id="${shoppingSpot[i][j].contentTypeId}" data-address="${shoppingSpot[i][j].address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+						<div class="image-wrapper">
+							<img src="${shoppingSpot[i][j].firstImage}" loading="lazy">
+						</div>
+						<div class="card-body">
+							<h5 class="card-title" title="${shoppingSpot[i][j].title}">${shoppingSpot[i][j].title}</h5>
+						</div>
+					</div>
+				`;
+			}
+
+			node +=`
+					</div>
+				</div>
+			`;
+		}
+
+		$('.inner3').append(node);
+	}
+
+	function appendCultureSpot(cultureSpot) {
+		let node = ``;
+
+		for(let i = 0; i < cultureSpot.length; i++) {
+			if(i == 0){
+				node += `<div class="carousel-item active">`;
+			} else {
+				node += `<div class="carousel-item">`;
+			}
+			node += `<div class="cards-wrapper">`;
+
+			for(let j = 0; j < cultureSpot[i].length; j++) {
+				node +=`
+					<div class="card" data-content-id="${cultureSpot[i][j].contentId}" data-content-type-id="${cultureSpot[i][j].contentTypeId}" data-address="${cultureSpot[i][j].address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+						<div class="image-wrapper">
+							<img src="${cultureSpot[i][j].firstImage}" loading="lazy">
+						</div>
+						<div class="card-body">
+							<h5 class="card-title" title="${cultureSpot[i][j].title}">${cultureSpot[i][j].title}</h5>
+						</div>
+					</div>
+				`;
+			}
+			node += `
+					</div>
+				</div>
+			`;
+
+		}
+
+		$('.inner4').append(node);
+	}
+
+	function appendLeportsSpot(leportsSpot) {
+		let node = ``;
+
+		for(let i = 0; i < leportsSpot.length; i++) {
+			if(i == 0){
+				node += `<div class="carousel-item active">`;
+			} else {
+				node += `<div class="carousel-item">`;
+			}
+			node += `<div class="cards-wrapper">`;
+
+			for(let j = 0; j < leportsSpot[i].length; j++) {
+				node +=`
+					<div class="card" data-content-id="${leportsSpot[i][j].contentId}" data-content-type-id="${leportsSpot[i][j].contentTypeId}" data-address="${leportsSpot[i][j].address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+						<div class="image-wrapper">
+							<img src="${leportsSpot[i][j].firstImage}" loading="lazy">
+						</div>
+						<div class="card-body">
+							<h5 class="card-title" title="${leportsSpot[i][j].title}">${leportsSpot[i][j].title}</h5>
+						</div>
+					</div>
+				`;
+			}
+			node += `
+					</div>
+				</div>
+			`;
+
+		}
+
+		$('.inner5').append(node);
+	}
+
+	//	일반창 : 로딩창 오버레이 none, block 처리 함수
+	function toggleOverlay(display) {
+		display == 'block' ? $('.overlay').attr('style','display: block;') : $('.overlay').attr('style','display: none;');
+	}
+	
+	//	모달창 : 로딩창 오버레이 none, block 처리 함수
+	function toggleOverlayModal(display) {
+		display == 'block' ? $('.modal-overlay').attr('style','display: block;') : $('.modal-overlay').attr('style','display: none;');
+	}
+
+	//	카드 눌렀을 시 모달창 띄우는 함수
+	$(document).on('click', '.card', function() {
+
+		toggleOverlayModal('block');
+		
+		let contentId = $(this).data('contentId');
+		let contentTypeId = $(this).data('contentTypeId');
+		let address = $(this).data('address');
+		let title = $(this).find('h5').text();
+		let image = $(this).find('img').attr('src');
+
+		getSpotDetailInfo(contentId, contentTypeId, function(data) {
+			if (data) {
+				clearModal(); // 기존 데이터 삭제
+				appendSpotDetailInfo(data, address, title, image); // 받아온 데이터 append
+				toggleOverlayModal('none');
+			}
+		});
+	})
+
+	function clearModal() {
+		$('.modalText').text('');
+		$('#modalImage').attr('src', '');
+	}
+
+	function getSpotDetailInfo(contentId, contentTypeId, callback) {
+		$.ajax({
+			type: 'GET',
+			url: '/localTourInfo/detail',
+			data: {
+				'contentId': contentId,
+				'contentTypeId': contentTypeId
+			}
+		})
+		.done(function(data, textStatus, jqXHR) {
+			console.log('done');
+
+			callback(data);
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) {
+			console.log('fail');
+
+			callback(null);
+		})
+	}
+
+	function appendSpotDetailInfo(data, address, title, image) {
+		$('#exampleModalLabel').text(title);
+		$('#modalImage').attr('src', image);
+		$('#modalAddress').text(address);
+		if(data.phone == null || data.phone.replaceAll(' ', '') == '') {
+			$('#modalPhone').text('-');
+		} else {
+			$('#modalPhone').text(data.phone);
+		}
+		if(data.parking == null || data.parking.replaceAll(' ', '') == '') {
+			$('#modalParking').text('-');
+		} else {
+			$('#modalParking').html(data.parking);
+		}
+		if(data.homepage == null || data.homepage.replaceAll(' ', '') == '') {
+			$('#modalHomepage').text('-');
+		} else {
+			$('#modalHomepage').html(data.homepage);
+		}
+	}
+
+	const myModalEl = document.getElementById('exampleModal')
+	myModalEl.addEventListener('hidden.bs.modal', event => {
+		// 모달창이 닫히면 무조건 모달 내부 데이터를 삭제해줌
+		clearModal();
+	})
+
+	// 지역별 상세 더보기를 위한 location, spot 정보 전송
+	$('.fa-square-plus').on('click', function(e){
+		e.preventDefault();
+		let areaCode=$('.nav-link.active').data('areaCode');
+		let sigunguCode='0';
+		let contentTypeId=$(this).data('contentTypeId');
+		if(areaCode == '35' || areaCode == '36') {
+			sigunguCode = $('.nav-link.active').data('sigunguCode');
+		}
+		window.location.href=window.location.origin + "/localTourInfo/spotDetail?page=1&areaCode="+areaCode+"&contentTypeId="+contentTypeId+"&sigunguCode="+sigunguCode;
+		
+	})
+	
+	//검색정보 보내기
+	$('#button-addon2').on('click', function(e){
+		e.preventDefault();
+		let searchKeyWord = $('#search-input').val();
+		if(searchKeyWord.length<1){
+			 alert('1글자 이상 검색해주세요.');
+			
+		}else{
+			window.location.href=window.location.origin + "/localTourInfo/search?searchKeyWord="+searchKeyWord;
+		}
+		
+	})
+
+	//slick.js 설정
+	$('.cards-wrapper1').slick({
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		nextArrow:$('.next1'),
+		prevArrow:$('.prev1')
+	});
+	$('.cards-wrapper2').slick({
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		nextArrow:$('.next2'),
+		prevArrow:$('.prev2')
+	});
+	$('.cards-wrapper3').slick({
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		nextArrow:$('.next3'),
+		prevArrow:$('.prev3')
+	});
+	$('.cards-wrapper4').slick({
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		nextArrow:$('.next4'),
+		prevArrow:$('.prev4')
+	});
+	$('.cards-wrapper5').slick({
+		slidesToShow: 3,
+		slidesToScroll: 3,
+		nextArrow:$('.next5'),
+		prevArrow:$('.prev5')
+	});
+	
+</script>
+
+</div>
+</body>
+</html>
+
