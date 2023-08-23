@@ -14,6 +14,12 @@
 <link
 	href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap"
 	rel="stylesheet">
+<!-- include jQuery :) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+
+<!-- jQuery Modal -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.2/jquery.modal.min.css" />
 </head>
 <body>
 	<div layout:fragment="content">
@@ -25,8 +31,54 @@
 						<div class="breadcrumb-text">
 							<h2>여행 기록</h2>
 							<div class="col-lg-12">
-								<div class="loadmore">
-									<a href="./tripRecordInsert" class="primary-btn">여행기록 등록</a>
+								<div class="loadmore">								
+									<!-- modal에 띄우고자하는 코드 -->
+									<div id="test" class="modal" style="height: 600px;  width: 500px; text-align: center;">
+										<form name="sendData" action="tripRecordInsertForm" method="post">
+  											<div style="margin-top: 40px;"> 
+  												<h3>여행 타이틀</h3>
+  												<input type="text" name="tripTitle" placeholder="타이틀을 입력 해주세요." >
+  											</div>
+  											<div style="margin-top: 40px;">
+  												<h3>여행지역 선택</h3>
+  												<select id="tripArea" name="tripArea">
+  													<option value="35.871159972672, 128.60183648521" selected>대구
+  													<option value="35.1798269951885, 129.075103035027">부산
+  													<option value="36.01889392625669, 129.34319484447613">포항
+  													<option value="36.5684065570509, 128.7295973406168">안동
+  													<option value="35.85619885284879, 129.22477009676797">경주
+  													<option value="35.539464253228324, 129.31158865378814">울산
+  													<option value="34.85442687930827, 128.43314233985606">통영
+  													<option value="34.880381383213354, 128.62132760543582">거제
+  												</select><br>
+  											</div><br>
+  											<div>
+  												<h3>여행일정 선택</h3>
+  												<input type="date" name="startDay" value="startDay"> ~ <input type="date" name="endDay" value="endDay">
+  											</div><br>
+  											<div>
+  												<input type="radio" value="01" id="tripDisclose" name="tripDisclose" checked="checked"> 
+												<label for="tripDisclose">공개</label> 
+												<input type="radio" value="02" id="tripDisclose" name="tripDisclose"> 
+												<label for="tripDisclose">비공개</label>
+  											</div><br>
+  											<div>
+  												<input type="radio" value="01" id="tripShare" name="tripShare" checked="checked"> 
+  												<label for="tripShare">가능</label>
+												<input type="radio" value="02" id="tripShare" name="tripShare">
+												<label for="tripShare">불가능</label>
+  											</div><br>
+  											<div style ="margin-top: 30px;"> 
+  												<a href="#" rel="modal:close" class="primary-btn">닫기</a>
+  												<button type="submit" class="primary-btn">여행일정 작성</button> 
+  												<!-- <button type="button" onclick="location.href='tripRecordInsert'" class="primary-btn">여행일정 작성</button> -->
+  												<!-- <a href="./tripRecordInsert" class="primary-btn">여행일정 작성</a> -->
+											</div>
+										</form>
+									</div>
+									<!-- href 속성값을 사용하여 modal을 띄워주는 링크 -->
+									<a href="#test" rel="modal:open" class="primary-btn">여행기록 등록</a>
+									<!-- <a href="./tripRecordInsert" class="primary-btn">여행기록 등록</a> -->
 								</div>
 							</div>
 						</div>
@@ -38,24 +90,26 @@
 		<section class="blog-section blog-page spad">
 			<div class="container">
 				<div class="row">
-					<div th:each="tripInfo : ${tripRecordList}">
-						<div class="col-lg-4 col-md-6">
-							<div class="single-blog-item">
-								<div class="sb-pic">
-									<img th:src="${tripInfo.writerId}" alt="이미지">
-								</div>
-								<div class="sb-text"
-									style="width: 290px; margin-right: 70px; margin-left: 30xp">
-									<ul>
-										<li><i class="fa fa-user"></i><span
-											th:text="${tripInfo.writerId}"></span></li>
-										<li><i class="fa fa-clock-o"></i><span
-											th:text="${#dates.format(tripInfo.registDay, 'yy년 MM월 dd일')}"></span></li>
-									</ul>
-									<h5>
-										<a th:text="${tripInfo.tripTitle}"></a>
-									</h5>
-								</div>
+					<div th:each="tripInfo : ${tripRecordList}" th:onclick="|location.href='@{/tripRecordInfo(postId=${tripInfo.postId})}'|"
+						class="col-lg-4 col-md-6">
+						<div class="single-blog-item">
+							<div class="sb-pic">
+								<img th:src="${tripInfo.writerId}" alt="이미지">
+							</div>
+							<div class="sb-text">
+								<ul>
+									<li>
+										<i class="fa fa-user"></i>
+										<span th:text="${tripInfo.writerId}"></span>
+									</li>
+									<li>
+										<i class="fa fa-clock-o"></i>
+										<span th:text="${#dates.format(tripInfo.registDay, 'yy년 MM월 dd일')}"></span>
+									</li>
+								</ul>
+								<h5>
+									<a th:text="${tripInfo.tripTitle}"></a>
+								</h5>
 							</div>
 						</div>
 					</div>
@@ -63,36 +117,45 @@
 			</div>
 			<!-- 여행기록 페이징 -->
 			<div class="container" style="text-align: center">
-			<th:block th:if="${paging.startPage != 1}">
-				<a th:href="@{tripRecordList(nowPage=1, cntPerPage=${paging.cntPerPage})}" ><<</a>
-			</th:block>
-			<th:block th:if="${paging.startPage != 1}">
-				<a
-					th:href="@{tripRecordList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
-			</th:block>
-			<th:block
-				th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
-				<th:block th:if="${p eq paging.nowPage}">
-					<b th:text="${p}"></b>
+				<th:block th:if="${paging.startPage != 1}">
+					<a th:href="@{tripRecordList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
 				</th:block>
-				<th:block th:if="${p ne paging.nowPage}">
-					<a
-						th:href="@{tripRecordList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
-						th:text="${p}"></a>
+				<th:block th:if="${paging.startPage != 1}">
+					<a th:href="@{tripRecordList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 				</th:block>
-			</th:block>
-			<th:block
-				th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-				<a
-					th:href="@{tripRecordList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
-			</th:block>
-			<th:block th:if="${paging.endPage != paging.lastPage}">
-				<a
-					th:href="@{tripRecordList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
-			</th:block>
-		</div>
+				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+					<th:block th:if="${p eq paging.nowPage}">
+						<b th:text="${p}"></b>
+					</th:block>
+					<th:block th:if="${p ne paging.nowPage}">
+						<a th:href="@{tripRecordList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}" th:text="${p}"></a>
+					</th:block>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+					<a th:href="@{tripRecordList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+				</th:block>
+				<th:block th:if="${paging.endPage != paging.lastPage}">
+					<a th:href="@{tripRecordList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
+				</th:block>
+			</div>
 		</section>
 		<!-- 여행기록 section end -->
 	</div>
+	<script>
+	document.querySelector('form[name="sendData"]').addEventListener('submit', function(e) {
+		e.preventDefault();
+		let date1 = document.getElementsByName('startDay')[0];
+		let date2 = document.getElementsByName('endDay')[0];
+		if (date1.value == '') {
+			alert('여행일정이 입력되지 않았습니다.')
+			return;
+		}
+		if (date2.value == '') {
+			alert('여행일정이 입력되지 않았습니다.')
+			return;
+		}
+		sendData.submit();
+	});	
+	</script>
 </body>
 </html>
