@@ -26,7 +26,7 @@ public class MemberVO {
 	private String zipCode;
 	private String addr;
 	private String addressDetail;
-	
+	//추가된 부분 23.08.23(김재운)
 	private String phoneNumber;
 	private String authority;
 	private String originProfileImg;

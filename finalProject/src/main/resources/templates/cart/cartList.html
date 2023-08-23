@@ -17,6 +17,63 @@ table, th, td {
 </style>
 <script>
 $(document).ready(function() {
+	
+	
+		
+	function handleClick(postId) {
+    	
+        $.ajax({
+            url: 'ajaxCartList',
+            type: 'get',
+            data: {
+                postId: postId,
+                nowPage: 1,
+                cntPerPage: 10
+            }
+        
+        }).done(data => {
+            console.log(data);
+            displayData(data);
+        }).fail(reject => console.log(reject));
+    }
+
+    // 클릭 이벤트 핸들러 자동 실행
+    $('#pakage').click(function() {
+        handleClick('3');
+    });
+
+    $('#jam').click(function() {
+        handleClick('4');
+    });
+
+    $('#mul').click(function() {
+        handleClick('5');
+    });
+
+	    // 데이터를 표시하는 함수
+	function displayData(data) {
+	    var html = ""; // 빈 문자열로 초기화
+	    var tbody = $("tbody");
+	    tbody.empty(); // tbody 내용 초기화
+	
+	    // 가져온 데이터를 순회하면서 처리	
+	    $.each(data, (index, cartItem) => {
+	        html += "<tr>" +
+	            "<td><input type='checkbox' name='chk' data-cartid='" + cartItem.cartId + "' /></td>" +
+	            "<td>" + cartItem.cartName + "</td>" +
+	            "<td>" + cartItem.cartName + "</td>" +
+	            "<td>" + cartItem.quantity + "</td>" +
+	            "<td>" + cartItem.price + "</td>" +
+	            "<td><button class='delete-btn'>삭제</button></td>" +
+	            "</tr>";
+	    });
+	    
+	    // tbody 내용을 업데이트
+	    tbody.html(html);
+	}
+	    
+	$("#pakage").trigger('click');
+	
     // 체크박스 전체 선택/해제 기능
     $("#cbx_chkAll").click(function() {
         if ($(this).is(":checked")) {
@@ -39,7 +96,7 @@ $(document).ready(function() {
     });
     
     // 삭제 버튼 클릭 시 선택된 항목 삭제
-    $(".delete-btn").click(function() {
+    $("body").on("click", ".delete-btn", function() {
         let row = $(this).closest("tr");
         let cartId = row.find("input[name='chk']").data("cartid");
         let url = "/cartDelete?cartId=" + cartId;
@@ -55,7 +112,6 @@ $(document).ready(function() {
     // 삭제 버튼 클릭 시 선택된 항목 삭제
     $("#delBtn").click(function() {
     let ckb = $('tbody input[type=checkbox]:checked');
-    //let sum2 = $("#sum2");
 
     ckb.each(function() {
         let check = $(this);
@@ -63,7 +119,6 @@ $(document).ready(function() {
         let cartId = check.data("cartid"); // Retrieve cartId
         let url = "/cartDelete?cartId=" + cartId; // Use 'cartId'
 
-        //sum2.text(Number(sum2.text()) - parseInt(check.parent().parent().find("td:last-child").html().replace(",", "")));
 
         fetch(url)
             .then(response => response.text())
@@ -78,20 +133,24 @@ $(document).ready(function() {
     	var nowPage = [[${paging.nowPage}]];
         $('#cntPerPage').on('change', function() {
             let selected = $('#cntPerPage').val();
-             // 이 부분은 서버에서 렌더링된 값을 가져와야 합니다.
             location.href = 'cartList?nowPage=' + nowPage + '&cntPerPage=' + selected;
         });
     });
     
-    /* document.addEventListener('DOMContentLoaded', function(e){
-		document.getElementById('cntPerPage')
-				.addEventListener('change', changeHandler);	
-	});
-	
-	function changeHandler(e){
-		let selected = document.getElementById('cntPerPage').value; 
-		location.href='empList?nowPage=${paging.nowPage}&cntPerPage='+selected;
-	} */
+    //현재 페이지에 데이터가 없으면 이전 페이지로 이동하는 구문
+    var hasContent = [[${paging.end}]]-[[${paging.start}]] ;
+    var currentPage = [[${paging.nowPage}]];
+    
+    console.log(hasContent);
+
+    // 데이터가 없고 현재 페이지가 1보다 큰 경우 이전 페이지로 자동 이동
+    if (hasContent == '-1' && currentPage > 1) {
+    	let selected = $('#cntPerPage').val();
+    	var prevPage = currentPage - 1;
+        var prevPageUrl = location.href = 'cartList?nowPage=' + prevPage + '&cntPerPage=' + selected;
+        window.location.href = prevPageUrl; // 자동으로 이동
+    }
+   
 });
 
 </script>
@@ -111,6 +170,11 @@ $(document).ready(function() {
 			    <option th:value="15" th:text="|15줄 보기|" th:selected="${paging.cntPerPage == 15}" ></option>
 			    <option th:value="20" th:text="|20줄 보기|" th:selected="${paging.cntPerPage == 20}" ></option>
 		</select>
+		<div>
+			<button type="button" id="pakage">패키지</button>
+			<button type="button" id="jam">숙소</button>
+			<button type="button" id="mul">특산물</button>
+		</div>
 	
 		<table>
 			<thead>
@@ -124,17 +188,8 @@ $(document).ready(function() {
 				</tr>
 			</thead>
 			<tbody>
-				<th:block th:each="cartList:${cartList}">
-					<tr>
-						<td><input type="checkbox" name="chk" th:attr="data-cartid=${cartList.cartId}"></td>
-						<td th:text="${cartList.cartName}" />
-						<td th:text="${cartList.cartName}" />
-						<td th:text="${cartList.quantity}" />
-						<td th:text="${cartList.price}" />
-						<td><button class="delete-btn">삭제</button>
-						</td>
-					</tr>
-				</th:block>
+			
+				
 			</tbody>
 		</table>
 		<button type="button">구매</button>

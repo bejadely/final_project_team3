@@ -27,6 +27,12 @@ public class TripServiceImpl implements TripService {
 	public List<TripVO> getTripAll(PagingVO pagingVO) {
 		return tripMapper.selectAllTrip(pagingVO);
 	}
+	
+	//여행기록 회원별 조회
+	@Override
+	public List<TripVO> getTripPer(PagingVO pagingVO) {
+		return tripMapper.selectPerTrip(pagingVO);
+	}
 
 	//여행기록 상세조회
 	@Override

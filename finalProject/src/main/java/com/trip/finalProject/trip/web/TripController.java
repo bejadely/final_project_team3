@@ -38,7 +38,28 @@ public class TripController {
 
 		return "trip/tripRecordList";
 	}
-
+	
+	//여행기록 개인 조회
+	@GetMapping("myPageTrip")
+	public String maPageTrip(Model model
+			  ,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
+			  ,@RequestParam(value = "cntPerPage", defaultValue = "12") Integer cntPerPage) {
+		int total = tripService.tripRecordCount();
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		List<TripVO> tripList = tripService.getTripPer(pagingVO);
+		
+		model.addAttribute("tripList", tripList);
+		model.addAttribute("paging", pagingVO);
+		
+		return "myPage/myPageTrip";
+	}
+	
+	//여행기록 등록 - form
+	@GetMapping("tripRecordInsert")
+	public String tripRecordInsertForm(Model model) {
+		model.addAttribute("tripVO", new TripVO());
+		return "trip/tripRecordInsert";
+	}
 	// 여행기록 상세조회
 	@GetMapping("tripRecordInfo")
 	public String tripRecordInfo(TripVO tripVO, Model model) {

@@ -1,15 +1,15 @@
 package com.trip.finalProject.common;
 
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
-public class PagingVO {
-	private final static int defaultVal = 10;
+@Data
+public class ButtonVO {
+private final static int defaultVal = 10;
 	
 	private int totalData;		//현재 총 데이터 수
 	
 	private int nowPage; 		//현재 페이지
-	private int cntPage = 5;	//view 안에서 보여줄 페이지 수(<1/2/3/4/5>)
+	private int cntPage = 5;	//view 안에서 보여줄 페이지 수
 	private int startPage;		//시작 페이지
 	private int endPage;		//끝 페이지
 	
@@ -18,23 +18,23 @@ public class PagingVO {
 	private int start;			//현재 페이지 안에 보여줄 첫번째 데이터
 	private int end;			//현재 페이지 안에 보여줄 마지막 데이터
 	
-	public PagingVO(int totalData, int nowPage, int cntPerPage) {
-		this.totalData = totalData;
-		this.nowPage = nowPage;
-		this.cntPerPage = cntPerPage;
-		calcLastPage();
-		calcStartEndPage();
-		calcStartEnd();
-		this.startPage = ((nowPage - 1) / cntPage) * cntPage + 1 ;
-		this.endPage = startPage + (cntPage-1);
-		if(this.endPage > this.lastPage) {
-			this.endPage = this.lastPage;
-		}
-	}
+	private String postId;
+		
+		public ButtonVO() {}
 	
-	public PagingVO(int totalData, int nowPage) {
-		this(totalData, nowPage, defaultVal);
-	}
+		public ButtonVO(int totalData, int nowPage, int cntPerPage, String postId) {
+	        this.totalData = totalData;
+	        this.nowPage = nowPage;
+	        this.cntPerPage = cntPerPage;
+	        this.postId = postId;  // postId 추가
+	        calcLastPage();
+	        calcStartEndPage();
+	        calcStartEnd();
+	    }
+	
+	  public ButtonVO(int totalData, int nowPage, String postId) {
+	        this(totalData, nowPage, defaultVal, postId);
+	    }
 	
 	//제일 마지막  페이지 계산
 	private void calcLastPage() {
@@ -62,4 +62,5 @@ public class PagingVO {
 			this.end = this.totalData;
 		}
 	}
+
 }
