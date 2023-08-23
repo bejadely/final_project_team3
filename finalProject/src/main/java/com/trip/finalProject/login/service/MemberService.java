@@ -1,0 +1,30 @@
+
+package com.trip.finalProject.login.service;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+public interface MemberService {
+	
+	//회원등록(가입)
+	public String insertMemberInfo(MemberVO memberVO);
+	
+	//int login(MemberVO memberVO);
+
+	MemberVO login(MemberVO memberVO);
+	
+	MemberVO memberSelect(MemberVO memberVO);
+
+	void logout(HttpSession session);
+	
+	//회원정보 불러오기
+	public MemberVO memberInfo(MemberVO memberVO);
+	
+	//회원정보 수정
+	public Map<String, String> updateMember(MemberVO memberVO);
+
+	
+	
+
+}
