@@ -11,9 +11,19 @@ public interface TripService {
 	//여행기록 전체 조회
 	public List<TripVO> getTripAll(PagingVO pagingVO);
 	
+	//여행기록 회원 조회
+	public List<TripVO> getTripPer(PagingVO pagingVO);
+	
+	//여행기록 상세조회
+	public TripVO getTripInfo(TripVO tripVO);
+	
 	//여행기록 등록
 	public int InsertTripInfo(TripVO tripVO);
 	
 	//여행기록 임시저장
 	public int TsInsertTripInfo(TripVO tripVO);
+	
+	//여행기록 지도 맵핑
+	public int InsertTripMapping(TripVO tripVO);
+	
 }

@@ -1,62 +1,81 @@
 package com.trip.finalProject.login.web;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+	
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.trip.finalProject.login.service.MemberService;
 import com.trip.finalProject.login.service.MemberVO;
+import com.trip.finalProject.login.service.NaverLoginVO;
+
+//23.08.22 이경환 회원관리
 
 //빈 자동생성 +컨트롤러 사용가능 등
  @Controller
  @RequestMapping("/")
 public class MemberController {
 	  
-		//로그인화면 호출
-	
-	
 	@Autowired
 	MemberService memberService;
 	
-		//회원가입
+	@Autowired
+	NaverLoginVO naverLoginVO;
+//	private String apiResult = null;
+	
+	//회원가입
+	//넘겨주고 받을게 없어서 매개변수 x 
+	//그냥 등록페이지의 뷰를 반환함.(Get방식)(return: 실제 경로)
 	@GetMapping("member/memberInsert") 
-	public String memberInsertForm() {//넘겨주고 받을게 없어서 매개변수 x 
-		return"member/memberInsert";//등록페이지의 뷰를 반환함.(Get방식)(실제 jsp파일 경로)
+	public String memberInsertForm() {
+		return"member/memberInsert";
 	}
 	
-	//회원등록처리:URI- memberInsert, RETURN- 홈화면
-	@PostMapping("member/memberInsert1")//url에 접근하면 핸들러메서드를 실행
-	public String memberInsertProcess(MemberVO memberVO) { //memberVO빈값x(input에 타이핑한게 request객체에 담겨서 이쪽으로 옴. controller에서 MemberVO에 담김) 
-		memberService.insertMemberInfo(memberVO);//등록처리 insertMemberInfo 호출해서sql처리 . MemberService에 있는insertMemberInfo 메서드
+	//form의 action에 따른 회원등록처리:URI RETURN- 홈화면
+	 //memberVO빈값x(input에 타이핑한게 request객체에 담겨서 이쪽으로 옴. controller에서 MemberVO에 담김)
+	@PostMapping("member/memberInsert")
+	public String memberInsertProcess(MemberVO memberVO) { 
+		
+		memberService.insertMemberInfo(memberVO);
 		return "redirect:/";
 	}
 	
 	
 	
-	//로그인화면 호출
-	
-	@GetMapping("/member/login")//url에 접근하면 메서드 실행
-	public String loginMainForm() {
+	//멤버 로그인화면 호출
+	@GetMapping("/member/login")
+	public void loginMainForm(HttpSession session, Model model) {
 		
-		return"member/login"; //로그인페이지 호출
+		/* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginVO클래스의 getAuthorizationUrl메소드 호출 */
+		String naverAuthUrl = naverLoginVO.getAuthorizationUrl(session);
+		
+		
+		// System.out.println("네이버:" + naverAuthUrl);
+		
+		//네이버 
+		model.addAttribute("url", naverAuthUrl);
+		
+		//return"member/login";
 	}
 	
 	
 	
-	/*
-	 * @GetMapping("login") public String loginForm() { return"member/login"; }
-	 */
 	
 	
-	//로그인 처리
-	@PostMapping("member/star")//url접근하면 메서드 실행
+	
+
+	//form의 action에 따른 로그인 처리
+	@PostMapping("/star")
 	public String login(@ModelAttribute MemberVO memberVO, Model model, HttpServletRequest request) {
 		
 		// DB와의 작업은 처리완료
@@ -74,30 +93,87 @@ public class MemberController {
 			
 			return "redirect:/";
 			
-		}else {
+		}else {			
 	        model.addAttribute("message", "아이디 또는 비밀번호가 올바르지 않습니다.");
 
 			return "/"; //"member/login"
 			
 		}
 	}
-	
-	// 로그인시 예외처리
-//	@GetMapping("login")//url에 접근하면 메서드 실행
-//	public String loginException() {
-//		memberService.login();
-//		return"member/login"; //로그인페이지 호출
-//	}
-	
+
 	
 
-	@RequestMapping("logout")
+	@RequestMapping("member/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "home";
+		return "redirect:/";
 		
 	}
 	
+
 	
+	//회원가입 시 아이디 중복체크	  
+	  @PostMapping("/idCheck") 
+	  @ResponseBody 
+	  public int idCheck(MemberVO memberVO) {
+		
+	
+		Integer  result = memberService.checkId(memberVO);
+		
+		if (result == null) {
+		    return 0;
+		} else {
+		    return result;
+		}
+	 
+	  }
+	  
+	 //로그인 시 계정 DB확인 
+	  @PostMapping("/loginAccountCheck") 
+	  @ResponseBody 
+	  public int loginAccountCheck(MemberVO memberVO) {
+		
+	
+		Integer  result = memberService.loginAccountCheck(memberVO);
+		
+		if (result == null) {
+		    return 0;
+		} else {
+		    return result;
+		}
+	 
+	  }
+	  
+	  
+		//회원정보 가져오기
+		@GetMapping("myPage")
+		public String memberInfo(MemberVO memberVO, Model model) {
+			memberVO.setMemberId("kimnana");  //to do 
+			MemberVO findVO = memberService.memberInfo(memberVO);
+			model.addAttribute("memberInfo", findVO);
+			return "myPage/myPage";
+		}
+		
+		//회원수정 폼 호출
+		@GetMapping("myPageUpdate")
+		public String memberUpdate(MemberVO memberVO, Model model) {
+			memberVO.setMemberId("kimnana");
+			MemberVO findVO = memberService.memberInfo(memberVO);
+			model.addAttribute("memberInfo", findVO);
+			return "myPage/myPageUpdate";
+		}
+		
+		//회원수정 프로세서
+		@PostMapping("myPageUpdate")
+		@ResponseBody
+		public Map<String, String> memberUpdatePro(@RequestBody MemberVO memberVO){
+			memberVO.setMemberId("kimnana");
+			return memberService.updateMember(memberVO);
+		}
+	  
+	  
+	 
+	
+ 
 
 }

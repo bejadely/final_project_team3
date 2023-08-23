@@ -35,8 +35,13 @@
 	    ) a
 	) WHERE rn BETWEEN #{start} AND #{end}
  	</select>
- 	
+ 	<!-- 입력 -->
  	<insert id="insertQue" parameterType="QuestionVO">
+ 		<selectKey keyProperty="answerId" resultType="String" order="BEFORE">
+			SELECT 'ANS' || (TO_NUMBER(NVL((SUBSTR(MAX(answer_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM question_answer
+			WHERE SUBSTR(answer_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
 		INSERT INTO question_answer
 					(
 					answer_id,
@@ -50,9 +55,15 @@
 					#{answerId},
 					#{answerContexts},
 					sysdate,
-					#{memberId},
-					#{questionId},
+					'kimnana',
+					#{questionId}
 					)
  	</insert>
+ 	<!-- 수정 -->
+ 	<update id="updateQue" parameterType="QuestionVO">
+	 	update question_answer 
+		set answer_contexts = #{answerContexts}
+		where answer_id = #{answerId}
+ 	</update>
   
   </mapper>

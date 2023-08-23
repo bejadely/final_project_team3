@@ -42,8 +42,20 @@
                 </div>
             </div>
             <div class="property-btn">
-             <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a>
+       <!--        <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a>
              <a th:href="@{/member/login}"class="property-sub">로그인</a>
+             <a th:href="@{/member/logout}"class="property-sub">로그아웃</a> -->
+             
+             <!--  로그인 안되어 있다면 '로그인 버튼' 표시 -->
+               	<div th:if="${ session.kakaoN == null and session.sessionId == null}">
+                      <a th:href="@{/member/login}"  method='post' class="property-sub">로그인</a>
+                </div>   
+                 
+                  <!--  로그인 되어 있다면 '로그아웃 버튼' 표시 -->
+			  	<div th:if="${ session.kakaoN != null or session.sessionId != null}">
+				    <a th:href="@{/member/logout}" class="property-sub">로그아웃</a>
+				</div>  
+	
             </div>
             <div>
             	<i class="fa-regular fa-heart fa-xs"></i>
@@ -56,9 +68,10 @@
                 <li><a href="./about-us.html">여행메이트</a></li>
                 <li><a href="./cartList">cart</a></li>
                 <li><a href="./guideQue">guideQue</a></li>
-                <li><a href="./blog.html">News</a></li>
+                <li><a href="./localTourInfo">TOURINFO</a></li>
                 <li><a href="./property-details.html">Pages</a></li>
                 <li><a href="./contact.html">Contact</a></li>
+                  <li><a th:href="@{/notice}"  class="property-sub">공지사항</a><li> 
             </ul>
         </nav>
         <div class="nav-logo-right">
@@ -89,8 +102,8 @@
     </div>
     <!-- Offcanvas Menu Section End -->
 
-    <!-- Header Section Begin -->
-    <header class="header-section">
+		<!-- Header Section Begin -->
+		<header class="header-section">
         <div class="top-nav">
             <div class="container">
                 <div class="row">
@@ -102,9 +115,10 @@
                                 <li><a href="./about-us.html">여행메이트</a></li>
                                 <li><a href="./cartList">cart</a></li>
               					<li><a href="./guideQue">guideQue</a></li>
-                                <li><a href="./blog.html">News</a></li>
+                                <li><a href="./localTourInfo">TOURINFO</a></li>
                                 <li><a href="./property-details.html">Pages</a></li>
                                 <li><a href="./contact.html">Contact</a></li>
+                        <!--         <li><a th:href="/notice/noticeBoard"  class="property-sub">공지사항</a><li> -->
                             </ul>
                         </nav>
                     </div>
@@ -122,8 +136,17 @@
                                     </ul>
                                 </div>
                             </div>
-                         <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a>
-                        <a th:href="@{/member/login}"class="property-sub">로그인</a>
+    						<li><a th:href="@{/notice}"  class="property-sub">공지사항</a><li>               
+               <!--  로그인 안되어 있다면 '로그인 버튼' 표시 -->
+               	<div th:if="${ session.kakaoN == null  and session.sessionId == null}">
+                      <a th:href="@{/member/login}"  method='post' class="property-sub">로그인</a>
+                </div>    
+                
+		                  <!--  로그인 되어 있다면 '로그아웃 버튼' 표시 -->
+				 	<div th:if="${ session.kakaoN != null or session.sessionId != null}">
+						    <a th:href="@{/member/logout}" class="property-sub">로그아웃</a>
+						</div>  
+					
                         </div>
                     </div>
                 </div>

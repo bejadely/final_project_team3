@@ -9,7 +9,7 @@ public class PagingVO {
 	private int totalData;		//현재 총 데이터 수
 	
 	private int nowPage; 		//현재 페이지
-	private int cntPage = 5;	//view 안에서 보여줄 페이지 수
+	private int cntPage = 5;	//view 안에서 보여줄 페이지 수(<1/2/3/4/5>)
 	private int startPage;		//시작 페이지
 	private int endPage;		//끝 페이지
 	

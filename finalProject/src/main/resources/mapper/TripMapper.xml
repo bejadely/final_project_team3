@@ -7,6 +7,8 @@
  	<select id="getTotalCount" resultType="int">
  		SELECT COUNT(*)
  		FROM trip_record
+ 		WHERE trip_save = 'T2' 
+			AND trip_disclose = '01'
  	</select>
 	
 	<!-- 여행기록 전체 조회 -->
@@ -14,10 +16,32 @@
 		SELECT *
 		FROM(SELECT ROWNUM rn, a.*
 			 FROM(SELECT *
+				  FROM trip_record t LEFT OUTER JOIN 
+				  	   attached_file a ON t.post_id = a.post_id
+				  WHERE trip_save = 'T2' 
+				  	AND trip_disclose = '01'
+				  ORDER BY t.post_id DESC) a)
+		WHERE rn BETWEEN #{start } AND #{end }
+	</select>
+	<!-- 마이페이지 여행 기록 불러오기 -->
+	<select id="selectPerTrip" resultType="TripVO">		
+		SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			 FROM(SELECT *
 				  FROM trip_record
-				  WHERE trip_save = 'T2'
+				  WHERE writer_id = 'test01'
 				  ORDER BY regist_day DESC) a)
 		WHERE rn BETWEEN #{start } AND #{end }
+	</select>
+	
+	<!-- 여행기록 상세조회 -->
+	<select id="selectTripInfo" resultType="TripVO">
+		SELECT writer_id,
+			   trip_title,
+			   start_day,
+			   end_day
+		FROM trip_record
+		WHERE post_id = #{postId}
 	</select>
 	
 	<!-- 여행기록 등록 -->
@@ -27,7 +51,7 @@
 			FROM trip_record
 			WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
 		</selectKey>
-			insert into trip_record
+			INSERT INTO trip_record
 						(
 							post_id
 							, writer_id
@@ -39,7 +63,7 @@
 							, regist_day
 							, trip_share
 						)
-				   values
+				   VALUES
 				        (
 							#{postId}
 							, #{writerId}
@@ -60,7 +84,7 @@
 			FROM trip_record
 			WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
 		</selectKey>
-		insert into trip_record
+		INSERT INTO trip_record
 						(
 							post_id
 							, writer_id
@@ -78,7 +102,7 @@
 							, regist_day
 							, trip_share
 						)
-				   values
+				   VALUES
 				        (
 							#{postId}
 							, #{writerId}
@@ -98,7 +122,36 @@
 				        )
 	</insert>
 	
-	<!-- 여행기록 등록 - 여행 경로-->
+	<!-- 여행기록 등록 - 여행 경로 맵핑-->
+	<insert id="insertTripMapping" parameterType="TripVO">
+		<selectKey keyProperty="mapId" resultType="String" order="BEFORE">
+			SELECT 'map' || (TO_NUMBER(NVL((SUBSTR(MAX(map_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM map
+			WHERE SUBSTR(map_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+		INSERT INTO map
+					  (
+						map_id
+						, map_no
+						, map_name
+						, map_lat
+						, map_lng
+						, post_id
+						, upload_date
+						, trip_date
+					  )
+				VALUES
+					  (
+					  	#{mapId}
+					  	, #{mapNo}
+					  	, #{mapName}
+					  	, #{mapLat}
+					  	, #{mapLng}
+					  	, #{postId}
+					  	, sysdate
+					  	, #{tripDate}
+					  )
+	</insert>
 	
-	<!-- 여행기록 등록 - 여행 메모-->
+
 </mapper>
