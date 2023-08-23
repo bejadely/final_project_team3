@@ -15,9 +15,16 @@ public interface TripMapper {
 	//여행기록 회원 조회
 	public List<TripVO> selectPerTrip(PagingVO pagingVO);
 	
+	//여행기록 상세조회
+	public TripVO selectTripInfo(TripVO tripVO);
+	
 	//여행기록 등록
 	public int insertTripInfo(TripVO tripVO);
 	
 	//여행기록 임시저장
 	public int tsInsertTripInfo(TripVO tripVO);
+	
+	//여행기록 지도 맵핑
+	public int insertTripMapping(TripVO tripVO);
+	
 }
