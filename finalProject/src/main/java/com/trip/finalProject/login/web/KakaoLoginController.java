@@ -26,13 +26,13 @@ public class KakaoLoginController {
 //사용자가 로그인을 성공적으로 수행한 후에 리디렉션될 URL
    @GetMapping("/member/kakaologin") 
    public String kakaoLogin(@RequestParam(value = "code", required = false) String code) throws Exception {
-      System.out.println("#########" + code);
-      //접근 토큰
+      System.out.println("##Controller#######" + code);
+      //접근 토큰을 받아옴 
       String access_Token = ks.getAccessToken(code);
         
-         
+       //다시 서비스에 있는 메서드 실행함 그리고 DB에 정보 없으면 insert .xml실행 
       MemberVO userInfo = ks.getUserInfo(access_Token); //getUserInfo 메서드 호출해서 시행함.
-     System.out.println("================================ ");
+     System.out.println("====Controller================================ ");
       System.out.println("###access_Token#### : " + access_Token);
       System.out.println("###nickname#### : " + userInfo.getMemberName());
     System.out.println("###email#### : " + userInfo.getEmail());
