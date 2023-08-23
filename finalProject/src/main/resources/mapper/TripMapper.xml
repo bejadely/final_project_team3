@@ -61,7 +61,6 @@
 							, trip_disclose
 							, trip_save
 							, regist_day
-							, trip_share
 						)
 				   VALUES
 				        (
@@ -73,7 +72,6 @@
 							, #{tripDisclose}
 							, 'T2'
 							, sysdate
-							, #{tripShare}				        
 				        )
 	</insert>
 	
@@ -100,7 +98,6 @@
 							, trip_disclose
 							, trip_save
 							, regist_day
-							, trip_share
 						)
 				   VALUES
 				        (
@@ -118,7 +115,6 @@
 							, #{tripDisclose}
 							, 'T1'
 							, sysdate
-							, #{tripShare}				        
 				        )
 	</insert>
 	
