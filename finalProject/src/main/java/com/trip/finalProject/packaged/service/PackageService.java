@@ -12,4 +12,6 @@ public interface PackageService {
 	
 	//패키지 리스트
 	public List<PackageVO> getPackageList();
+
+	String register(PackageVO vo);
 }
