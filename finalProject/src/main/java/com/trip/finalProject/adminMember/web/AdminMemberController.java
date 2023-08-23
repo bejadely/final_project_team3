@@ -78,7 +78,7 @@ public class AdminMemberController {
 	}
 	
 	// 권한 승인 요청 전체 조회
-	@GetMapping("/authRequestList")
+	@GetMapping("authRequestList")
 	public String authRequestList(Model model) {
 		
 		// 권한승인 요청한 모든 내역 조회
