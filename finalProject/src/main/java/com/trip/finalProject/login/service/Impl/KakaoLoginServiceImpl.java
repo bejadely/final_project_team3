@@ -26,7 +26,7 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
 	KakaoLoginMapper km;
 	
 	
-
+	//로그인 성공하면 authorize_code 받아옴
    public String getAccessToken (String authorize_code) {
       String access_Token = "";
       String refresh_Token = "";
@@ -71,9 +71,9 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
          }
          System.out.println("response body'토큰.' : " + result);
             
-         // Gson 라이브러리에 포함된 클래스로 //JSON파싱 객체 생성
+ 
         
-         
+       //JSON파싱 객체 생성
          // Gson 라이브러리의 JsonParser와 JsonElement 대신 Jackson 라이브러리의 ObjectMapper와 JsonNode를 사용
          ObjectMapper objectMapper = new ObjectMapper();
          JsonNode jsonNode = objectMapper.readTree(result);
@@ -162,12 +162,11 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
    		System.out.println("S:" + result);
    		
    		if(result==null) {
-   		// result가 null이면 정보가 저장이 안되있는 것.-> 정보를 저장.
+   		// result가 null이면 DB에 정보가 없다는 것-> 정보를 저장.
    			km.insertKakaoLogin(userInfo);
-   			// 위 코드가 정보를 저장하기 위해 매퍼로 보내는 코드임.
+   			
    			return km.findKakao(userInfo);
-   			// 위 코드는 정보 저장 후 컨트롤러에 정보를 보내는 코드임.
-   			//  result를 리턴으로 보내면 null이 리턴되므로 위 코드를 사용.
+   		
    		} else {
    			return result;
    			// 정보가 이미 있기 때문에 result를 리턴함. 이미 회원가입이 되어있으므로 S가  null이 아님. insert실행 안함.

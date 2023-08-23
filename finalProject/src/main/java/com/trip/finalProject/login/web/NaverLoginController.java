@@ -20,42 +20,46 @@ import com.trip.finalProject.login.mapper.NaverLoginMapper;
 import com.trip.finalProject.login.service.MemberVO;
 import com.trip.finalProject.login.service.NaverLoginVO;
  
-/**
- * Handles requests for the application home page.
- */
+
 @Controller
 public class NaverLoginController {
  
+	
+	@Autowired
+	NaverLoginMapper nm;
+	
 	/* NaverLoginVO */
 	private NaverLoginVO naverLoginVO;
 	private String apiResult = null;
 	
 	@Autowired
-	NaverLoginMapper nm;
+	private void setNaverLoginVO(NaverLoginVO naverLoginVO) {
+		this.naverLoginVO = naverLoginVO;
+	}
 	
-	
- 
-	//로그인 첫 화면 요청 메소드
-	@RequestMapping(value = "member/naverlogin", method = { RequestMethod.GET, RequestMethod.POST })
+	//로그인 첫 화면 요청 메소드(1)
+	@RequestMapping(value ="/member/naverlogin1", method = { RequestMethod.GET, RequestMethod.POST })
 	public String login(Model model, HttpSession session) {
 		
 		
 		/* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginVO클래스의 getAuthorizationUrl메소드 호출 */
 		String naverAuthUrl = naverLoginVO.getAuthorizationUrl(session);
 		
-		//https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=sE***************&
-		//redirect_uri=http%3A%2F%2F211.63.89.90%3A8090%2Flogin_project%2Fcallback&state=e68c269c-5ba9-4c31-85da-54c16c658125
-		System.out.println("네이버:" + naverAuthUrl);
+		
+		// System.out.println("네이버:" + naverAuthUrl);
 		
 		//네이버 
 		model.addAttribute("url", naverAuthUrl);
+		
  
-		return "member/naverlogin";  //여기를 home으로 하면 System.out.println("네이버:" + naverAuthUrl);이거 콘솔에 띄우고 home화면은 보이면서 url은 http://localhost/web/naverlogin
+		return "member/naverlogin";  //실제로 보여주는 파일 경로
 	}
  
-	//네이버 로그인 성공시 callback호출 메소드 -> 왜??
-	@RequestMapping(value = "/callback", method = { RequestMethod.GET, RequestMethod.POST })
+	//네이버 로그인 성공시 callback호출 메소드(2)
+	@RequestMapping(value ="/member/callback", method = { RequestMethod.GET, RequestMethod.POST })
 	public String callback(Model model, @RequestParam String code, @RequestParam String state, HttpSession session) throws IOException, ParseException {
+		
+		/* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginVO클래스의 getAuthorizationUrl메소드 호출 */
 		
 		System.out.println("여기는 callback");
 		OAuth2AccessToken oauthToken;
@@ -64,11 +68,8 @@ public class NaverLoginController {
         //1. 로그인 사용자 정보를 읽어온다.
 		apiResult = naverLoginVO.getUserProfile(oauthToken);  //String형식의 json데이터
 		
-		/** apiResult json 구조
-		{"resultcode":"00",
-		 "message":"success",
-		 "response":{"id":"33666449","nickname":"shinn****","age":"20-29","gender":"M","email":"sh@naver.com","name":"\uc2e0\ubc94\ud638"}}
-		**/
+		// json 구조
+	
 		
 		//2. String형식인 apiResult를 json형태로 바꿈
 		JSONParser parser = new JSONParser();
@@ -102,7 +103,7 @@ public class NaverLoginController {
 		session.setAttribute("id",id);
 		model.addAttribute("result", apiResult);
 	
-		return "member/naverlogin";  //naverlogin -> 로그아웃 가능 화면 나옴 or home
+		return "redirect:/";  //naverlogin -> 로그아웃 가능 화면 나옴 or home
 	}
 	
 	

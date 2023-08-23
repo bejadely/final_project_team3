@@ -16,7 +16,7 @@ import lombok.Data;
 @Data
 public class MemberVO {
 	private String id;
-	
+	private String to;
 	
 	private String memberId;
 	private String memberName;
@@ -24,8 +24,9 @@ public class MemberVO {
 	private String nationality;
 	private String email;
 	private String zipCode;
-	private String address;
+	private String addr;
 	private String addressDetail;
+	
 	private String phoneNumber;
 	private String authority;
 	private String originProfileImg;
