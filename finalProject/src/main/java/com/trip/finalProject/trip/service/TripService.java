@@ -11,6 +11,9 @@ public interface TripService {
 	//여행기록 전체 조회
 	public List<TripVO> getTripAll(PagingVO pagingVO);
 	
+	//여행기록 회원 조회
+	public List<TripVO> getTripPer(PagingVO pagingVO);
+	
 	//여행기록 상세조회
 	public TripVO getTripInfo(TripVO tripVO);
 	

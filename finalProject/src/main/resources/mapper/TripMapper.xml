@@ -23,6 +23,16 @@
 				  ORDER BY t.post_id DESC) a)
 		WHERE rn BETWEEN #{start } AND #{end }
 	</select>
+	<!-- 마이페이지 여행 기록 불러오기 -->
+	<select id="selectPerTrip" resultType="TripVO">		
+		SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			 FROM(SELECT *
+				  FROM trip_record
+				  WHERE writer_id = 'test01'
+				  ORDER BY regist_day DESC) a)
+		WHERE rn BETWEEN #{start } AND #{end }
+	</select>
 	
 	<!-- 여행기록 상세조회 -->
 	<select id="selectTripInfo" resultType="TripVO">

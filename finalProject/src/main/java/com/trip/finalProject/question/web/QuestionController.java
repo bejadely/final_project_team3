@@ -1,13 +1,17 @@
 package com.trip.finalProject.question.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.question.service.QuestionService;
@@ -33,11 +37,18 @@ public class QuestionController {
 				
 		return"guide/question";
 	}
-	//단건조회
-	@GetMapping("selectQue")
-	public String selectQue(@RequestParam("questionId") String questionId, Model model) {
-	    QuestionVO findVO = queService.getQueInfo(questionId); 
-	    model.addAttribute("select", findVO);
-	    return "redirect:/guideQue";
-	}
+	//등록 - process
+		@PostMapping("queInsert")
+		@ResponseBody
+		public Map<String, String> empInsertProcess(@RequestBody QuestionVO queVO) {
+			return queService.insertQueInfo(queVO);
+		}
+		
+		//수정 - process
+		@PostMapping("queUpdate")
+		@ResponseBody
+		public Map<String, String> empUpdateProcess(@RequestBody QuestionVO queVO) {
+			return queService.updateQueInfo(queVO);
+		}
+		
 }

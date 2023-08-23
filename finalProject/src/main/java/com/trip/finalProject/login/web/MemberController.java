@@ -1,4 +1,6 @@
 package com.trip.finalProject.login.web;
+	
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -141,6 +144,32 @@ public class MemberController {
 	 
 	  }
 	  
+	  
+		//회원정보 가져오기
+		@GetMapping("myPage")
+		public String memberInfo(MemberVO memberVO, Model model) {
+			memberVO.setMemberId("kimnana");  //to do 
+			MemberVO findVO = memberService.memberInfo(memberVO);
+			model.addAttribute("memberInfo", findVO);
+			return "myPage/myPage";
+		}
+		
+		//회원수정 폼 호출
+		@GetMapping("myPageUpdate")
+		public String memberUpdate(MemberVO memberVO, Model model) {
+			memberVO.setMemberId("kimnana");
+			MemberVO findVO = memberService.memberInfo(memberVO);
+			model.addAttribute("memberInfo", findVO);
+			return "myPage/myPageUpdate";
+		}
+		
+		//회원수정 프로세서
+		@PostMapping("myPageUpdate")
+		@ResponseBody
+		public Map<String, String> memberUpdatePro(@RequestBody MemberVO memberVO){
+			memberVO.setMemberId("kimnana");
+			return memberService.updateMember(memberVO);
+		}
 	  
 	  
 	 
