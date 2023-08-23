@@ -92,7 +92,7 @@ public class NoticeServiceImpl implements NoticeService {
 	@Override
 	public int boardRepleN(NoticeVO vo) {
 	
-		return noticeMapper.boardRepleN(vo);
+		return noticeMapper.boardReple(vo);
 	}
     
     
