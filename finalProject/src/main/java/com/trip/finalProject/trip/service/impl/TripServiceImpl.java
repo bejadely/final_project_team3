@@ -50,6 +50,7 @@ public class TripServiceImpl implements TripService {
 	@Override
 	public int InsertTripMapping(TripVO tripVO) {
 		return tripMapper.insertTripMapping(tripVO);
+		
 	}
 
 
