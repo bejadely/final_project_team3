@@ -38,6 +38,9 @@
  	max-width: 80%;
     text-align: center; 
 }
+.bold-event {
+    font-weight: bold;  /* 글자 굵기를 굵게 설정 */
+}
 </style>
 </head>
 <body>
@@ -67,7 +70,6 @@
 		  		<th scope="col">축제이름</th>
 		  		<th scope="col">지역</th>
 		  		<th scope="col">기간</th>
-		  		<th scope="col">사이트주소</th>
 		  	</tr>
 		  </thead>
 		  <tbody class="table-group-divider">
@@ -75,19 +77,36 @@
 			    <th scope="row">대구사과축제</th>
 			    <td>대구</td>
 			    <td>8월20일~8월24일</td>
-			    <td>www.appple.com</td>
 			 </tr>
 		  </tbody>
 		</table><br>
 		<!-- 페이징 -->
 		<!-- 모달 -->
 	</div>
-<script>
+<script th:inline="javascript">
+		let calendarData =  [[${festivalCalendar}]];
+		let event = [];  // 추가할 값을 넣을 배열 생성
+		
+		
+		for (let i = 0; i < calendarData.length; i++) {
+		    event.push({
+		        title: calendarData[i].festivalName,
+		        start: calendarData[i].startDate,
+		        end: calendarData[i].endDate,
+		        color: 'rgba(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',0.5)',
+		        textColor: '#333333',
+		        classNames: ['bold-event']
+		    
+		        
+		    });
+		}
+	
 document.addEventListener('DOMContentLoaded', function() {
 	var calendarEl = document.getElementById('calendar');
 	var calendar = new FullCalendar.Calendar(calendarEl, {
 		initialView : 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
-		headerToolbar : { // 헤더에 표시할 툴 바
+		locale: 'ko', // 한국어 설정
+	headerToolbar : { // 헤더에 표시할 툴 바
 			start : 'prev',
 			center : 'title',
 			end : 'next'
@@ -100,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		droppable : true,
 		editable : true,
 		nowIndicator: true, // 현재 시간 마크
-		locale: 'ko' // 한국어 설정
+		events : event
 	});
 	calendar.render();
 });

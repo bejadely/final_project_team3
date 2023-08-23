@@ -213,4 +213,11 @@ public class FestivalServiceImpl implements FestivalService {
 		return festivalInfoVOList;
 	}
 
+	//페이지 내 캘린더에 정보 조회
+	@Override
+	public List<FestivalInfoVO> getFestivalCalendarInfo() {
+		
+		return festivalMapper.getFestivalCalendarInfo();
+	}
+
 }

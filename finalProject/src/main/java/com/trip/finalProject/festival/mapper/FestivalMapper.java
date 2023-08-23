@@ -7,4 +7,6 @@ import java.util.List;
 public interface FestivalMapper {
 
     int getFestivalInfoAndSave(List<FestivalInfoVO> festivalInfoVOList);
+
+	List<FestivalInfoVO> getFestivalCalendarInfo();
 }
