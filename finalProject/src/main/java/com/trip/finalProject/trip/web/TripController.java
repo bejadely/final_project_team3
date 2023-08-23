@@ -89,13 +89,9 @@ public class TripController {
     @PostMapping("mappingInsert")
     @ResponseBody
     public String receiveMappingData(@RequestBody TripVO[] mappingData) {
-        // Process the received data (mappingData) here
-        // YourMappingObject is the class representing the structure of your data
-        
-        // Example: Print received data
         for (TripVO item : mappingData) {
-            System.out.println("위도: " + item.getMapLat() + ", 경도: " + item.getMapLng());
+            tripService.InsertTripMapping(item);
         }
-        return "trip/tripRecordList";
+        return null;
     }
 }

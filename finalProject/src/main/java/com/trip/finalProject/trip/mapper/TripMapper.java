@@ -23,4 +23,5 @@ public interface TripMapper {
 	
 	//여행기록 지도 맵핑
 	public int insertTripMapping(TripVO tripVO);
+	
 }

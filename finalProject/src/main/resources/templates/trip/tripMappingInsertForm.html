@@ -21,10 +21,8 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<div class="map_wrap"
-			style="height: 800px; width: 700px; border: solid 1px;">
-			<div id="map"
-				style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
+		<div class="map_wrap" style="height: 800px; width: 700px; border: solid 1px;">
+			<div id="map" style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
 			<hr>
 			<!-- 클릭 시 마커 생성 -->
 			<div id="clickLatlng"></div>
@@ -32,8 +30,7 @@
 		<!-- 키워드 검색 -->
 		<div class="option">
 			<div>
-				<input type="text" value="" id="keyword" size="50"
-					placeholder="키워드를 입력 해주세요.">
+				<input type="text" value="" id="keyword" size="50" placeholder="키워드를 입력 해주세요.">
 				<button onclick="initMap(); return false;">검색하기</button>
 			</div>
 		</div>
@@ -71,6 +68,11 @@
 				// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성
 				var infowindow = new kakao.maps.InfoWindow({
 					zIndex : 1
+				});
+				
+				$(document).ready(function() {
+					// 승인 버튼 클릭 시 발생 이벤트 설정
+					initMap; 
 				});
 
 			    function initMap() {
@@ -215,7 +217,7 @@
 								drawConnectingLines();
 								
 								mapping.push({
-						            mapLat: plat, mapLng: plng, name: pname
+						            mapLat: plat, mapLng: plng, mapName: pname
 						        });
 							};
 
@@ -412,18 +414,27 @@
     				}
 				}
 				
+				
+				$(document).ready(function() {
+					$("#mapping").click(function() {
+						mappingMarker();
+						location.href="tripRecordList";
+					});
+				});
+				
 				// mapping 배열에 넣은 값이 제대로 들어갔는지 확인하기 위한 함수
 				function mappingMarker() {
 				    var mappingCoordinates = document.getElementById('mapping');
 				    mappingCoordinates.innerHTML = '';
 
 				    for (var i = 0; i < mapping.length; i++) {
-				        var mappingArry = mapping[i];
-				        var mappingString = '순번 ' + (i + 1) + ' 장소명 : ' + mappingArry.name + ', 위도 ' + mappingArry.mapLat + ', 경도 ' + mappingArry.mapLng + '<br>';
+				    	var mappingArry = mapping[i];
+				        var mappingString = '순번 ' + (i + 1) + ' 장소명 : ' + mappingArry.mapName + ', 위도 ' + mappingArry.mapLat + ', 경도 ' + mappingArry.mapLng + '<br>';
 				        mappingCoordinates.innerHTML += mappingString;
 				    }
 				    sendMappingData(mapping);
 				}
+				
 				
 				//맵핑 배열을 json을 통해서 서버로 보내줌
 				function sendMappingData(data) {
@@ -436,28 +447,26 @@
 				    })
 				    .then(response => response.json())
 				    .then(result => {
-				        // 서버 응답 처리
 				    })
 				    .catch(error => {
 				        // 응답 실패 처리
 				    });
 				}
-
 				
 			</script>
 
 			<div>
 				<!-- 위도 및 경도 좌표 및 위치정보 -->
-				<input type="text" id="fulladdress" name="fulladdress"
-					style="width: 90%;" disabled> <input type="text" id="pname"
-					name="pname" value=""> <input type="text" id="paddress"
-					name="paddress" value=""> <input type="text" id="latclick"
-					name="latclick" value=""> <input type="text" id="lngclick"
-					name="lngclick" value="">
+				<!-- 등록 완료되면 삭제예정 -->
+				<input type="text" id="fulladdress" name="fulladdress" style="width: 90%;" disabled> 
+				<input type="text" id="pname" name="pname" value=""> 
+				<input type="text" id="paddress" name="paddress" value=""> 
+				<input type="text" id="latclick" name="latclick" value=""> 
+				<input type="text" id="lngclick" name="lngclick" value="">
 			</div>
 			<div>
-    			<button type="button" onclick="mappingMarker()">저장된 배열 출력</button>
-    			<div id="mapping"></div>
+    			<button type="submit" id="mapping">경로 선택 완료</button>
+    			<button type="button" onclick="location.href=''">이전으로 이동</button>
 			</div>
 		</div>
 	</div>
