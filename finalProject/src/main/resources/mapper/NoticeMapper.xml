@@ -23,4 +23,63 @@
 				BoardPromoter_tbl
   
    </insert>
+   
+   
+   <!--  게시글 확인 -->
+   <select id="boardSelectList" resultType="NoticeVO">
+		SELECT *
+		FROM (SELECT ROWNUM rn, b.*
+			FROM(SELECT * FROM board order by board_id desc) b )
+		WHERE rn BETWEEN ((#{page}-1) * 10) + 1 
+			AND (#{page} * 10)	
+	</select>
+	
+	<!--  -->
+	<select id="boardSelectMax">
+		SELECT count(*)
+		FROM board
+		<if test="boardContent != null">
+			WHERE board_content LIKE '%${boardContent}%' 
+		</if>
+	</select>
+	<select id="boardSelect" resultType="NoticeVO">
+		SELECT *
+		FROM (SELECT ROWNUM rn, b.*
+			FROM(SELECT * FROM board WHERE board_content LIKE '%${boardContent}%' order by board_id desc) b )
+		WHERE rn BETWEEN (#{page}-1) * 10
+			AND (#{page} * 10)	
+	</select>
+	<select id="boardDetail" resultType="NoticeVO">
+		SELECT *
+		FROM board
+		WHERE board_id = #{boardId}
+	</select>
+	<insert id="boardInsert">
+		<selectKey keyProperty="boardId" resultType = "int" order="BEFORE">
+			select NVL(max(board_id),0) +1 as boardId FROM board
+		</selectKey>
+		INSERT INTO board
+		VALUES(#{boardId},#{memberId},#{boardTitle},#{boardContent}, sysdate, 0, #{boardSecret}, 'N', null)
+	</insert>
+	<update id="boardUpdate">
+	UPDATE board 
+		<set>
+		<!-- if문 -> test에는 실려오는 VO객체명 그대로 쓴다. 값이 실려오면 동일한 값이든 아니든 그값으로 변경해라 -->
+			<if test="boardContent != null">board_content = #{boardContent} </if>
+		</set>
+	WHERE board_id = #{boardId}
+	</update>
+	<update id="boardView">
+		UPDATE board SET board_hit = board_hit+1 WHERE board_id = #{boardId}
+	</update>
+	<update id="boardReple">
+		UPDATE board SET board_reple_state = 'Y' WHERE board_id = #{boardId}
+	</update>
+	<update id="boardRepleN">
+		UPDATE board SET board_reple_state = 'N' WHERE board_id = #{boardId}
+	</update>
+	<delete id="boardDelete">
+		DELETE FROM board WHERE board_id = #{boardId}
+	</delete>
 </mapper>
+

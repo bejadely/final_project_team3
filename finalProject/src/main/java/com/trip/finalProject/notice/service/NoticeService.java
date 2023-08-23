@@ -8,7 +8,7 @@ public interface NoticeService {
 	
 	public NoticeVO insertpost(NoticeVO noticeVO) throws Exception; 
 	public List<NoticeVO> boardSelectList(NoticeVO vo);
-	public List<NoticeVO> NoticeVO(NoticeVO vo);
+	public List<NoticeVO> boardSelect(NoticeVO vo);
 	public int boardInsert(NoticeVO vo);
 	public int boardUpdate(NoticeVO vo);
 	public int boardDelete(NoticeVO vo);

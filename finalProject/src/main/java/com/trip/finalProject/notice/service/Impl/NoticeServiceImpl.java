@@ -40,7 +40,7 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public List<NoticeVO> NoticeVO(NoticeVO vo) {
+	public List<NoticeVO> boardSelect(NoticeVO vo) {
 	
 		return noticeMapper.boardSelect(vo);
 	}
