@@ -18,6 +18,7 @@ public class PackageServiceImpl implements PackageService {
 	@Override
 	public int insertEdirotInfo(PackageVO packageVO) {
 		// TODO Auto-generated method stub
+		
 		return packageMapper.insertEditor(packageVO);
 	}
 

@@ -11,7 +11,6 @@ import lombok.Data;
 public class PackageVO {
 	private String postId;
 	private String content;
-	private String mainImage;
 	private String name;
 	private int price;
 	private Date startDate;
