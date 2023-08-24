@@ -140,7 +140,7 @@ span {
                 </div>
                 
            
-                <!-- 일반 로그인 -->
+             <!-- 일반 로그인 -->
                 <form id="member" action="/star" method="post" class="input-group">
        
                     <input type="text" class="input-field" name="memberId" placeholder="아이디"  id="id" ><!-- required -->
@@ -170,7 +170,7 @@ span {
 <!--            			<button  type="submit" class="submit" onclick="location.href='memberInsert'">회원가입</button>
  -->                </form>
                 
-                
+            <!--  가이드 로그인 -->
                 <form id="guide" action="" class="input-group">
                     
                     <input type="text" class="input-field" name="memberId" placeholder="아이디" ><!-- required -->
@@ -184,8 +184,8 @@ span {
  			 </div>
 	             <br/>
 	             <br/>
-                    <button type="submit" class="submit"> 로그인</button>
-     		 <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a>
+                    <button type="submit" class="submit" > 로그인</button>
+     		 <a th:href="@{/member/guideInsert}"class="property-sub">회원가입</a>
                 </form>
                
             </div>
@@ -211,10 +211,10 @@ span {
             }
         </script>
         
-        <!-- 아이디 비밀번호 DB에 있는지 확인 -->
-          
-        <script>
+        <!-- 로그인시 아이디 비밀번호 DB에 있는지 확인 -->         
+        <script>       
         
+		//이벤트 핸들링 등록. HTML 요소가 모두 로딩된 이후에 이루어져야 하므로.
         $(document).ready(function(){
 	        $('#member').on('submit', loginAccountcheck);
         });
@@ -254,19 +254,7 @@ span {
 	}
  </script>
  
- 	
- 	<div>
- 		<div></div>
- 		<button>
- 		<div>
-	 		<div>
-	 		</div>
-	 		<p>
-	 			<br>
-	 		</p>
- 		</div>
- 		</button>
- 	</div>
+	
  	
     </body>
 </html> 

@@ -14,23 +14,31 @@ public class NoticeController {
 	@Autowired
 	private NoticeService noticeService;
 
-   
-	@GetMapping("/boardList")
+   //공지사항 리스트 조회
+	@GetMapping("/noticeList")
 	public String selectBoardList() {
-		return"notice/BoardList";
+		return"notice/NoticeList";
 	};
 	@GetMapping("/boardSearch")
 	public String boardSearch() {
 		return"notice/BoardList";
 	};
-	@GetMapping("/boardWrite")
-	public String boardWrite() {
-		return"notice/noticeWriteForm";
+
+	
+	//공지사항 작성 폼 불러옴
+	  @GetMapping("/noticeWrite")
+	  public String boardWrite() {
+		  return"notice/noticeWriteForm"; 
+	  };
+	 
+	//공지사항 작성후 DB저장
+	@PostMapping("/noticeInsert")
+	public String boardInsert(NoticeVO noticeVO) {
+		noticeService.noticeInsert(noticeVO);
+		return"notice/NoticeList";
 	};
-	@GetMapping("/boardInsert")
-	public String boardInsert() {
-		return"notice/BoardList";
-	};
+	
+	
 	@GetMapping("/boardSelect")
 	public String boardSelect() {
 		return"notice/BoardList";

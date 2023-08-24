@@ -75,25 +75,25 @@
         <br>
         </div>
         <div id="ls" class="text-center">
-            <form id="frm" action="boardInsert.do" method="post">
+            <form id="frm" action="/noticeInsert" method="post">
                 <div>
                     <table class="table">
                         <tr>
                             <th width="150">작성일자</th>
                             <td width="150">
-                                <input type="date" id="boardDate" name="boardDate" readOnly class="form-control">
+                                <input type="date" id="boardDate" name="registDate" readOnly class="form-control">
                             </td>
                         </tr>
                         <tr>
                             <th>제목</th>
                             <td colspan="3">
-                                <input type="text" id="boardTitle" name="boardTitle" size="70" class="form-control">
+                                <input type="text" id="boardTitle" name="TITLE" size="70" class="form-control">
                             </td>
                         </tr>
                         <tr>
                             <th>내용</th>
                             <td colspan="3">
-                                <textarea rows="10" cols="=50" id="boardContent" name="boardContent" placeholder="내용을 입력해주세요." required class="form-control"></textarea>
+                                <textarea rows="10" cols="=50" id="boardContent" name="CONTENT" placeholder="내용을 입력해주세요." required class="form-control"></textarea>
                             </td>
                         </tr>
                     </table>

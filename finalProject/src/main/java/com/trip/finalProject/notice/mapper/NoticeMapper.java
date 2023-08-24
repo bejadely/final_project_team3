@@ -13,7 +13,7 @@ public interface NoticeMapper {
 	
 	public List<NoticeVO> boardSelect(NoticeVO vo);
 	
-	public int boardInsert(NoticeVO vo);
+	public int noticeInsert(NoticeVO vo);
 	
 	public int boardUpdate(NoticeVO vo);
 	
@@ -26,6 +26,8 @@ public interface NoticeMapper {
 	public int boardView(NoticeVO vo);
 	
 	public int boardReple(NoticeVO vo);
+
+
 	
 	
 }

@@ -46,9 +46,9 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override
-	public int boardInsert(NoticeVO vo) {
+	public int noticeInsert(NoticeVO vo) {
 
-		return noticeMapper.boardInsert(vo);
+		return noticeMapper.noticeInsert(vo);
 	}
 
 	@Override
