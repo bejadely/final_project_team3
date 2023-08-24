@@ -96,7 +96,7 @@ public class MemberController {
 		}else {			
 	        model.addAttribute("message", "아이디 또는 비밀번호가 올바르지 않습니다.");
 
-			return "member/login"; //"member/login"
+			return "/"; //"member/login"
 			
 		}
 	}

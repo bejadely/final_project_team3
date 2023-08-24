@@ -111,6 +111,12 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.5</version>
 		</dependency>
+		
+		<!-- spring security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
 		<!-- email -->
 		<dependency>
@@ -119,15 +125,12 @@
 		</dependency>
 
 		<!--sms  -->
-	<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
-	<dependency>
-    <groupId>org.apache.httpcomponents</groupId>
-    <artifactId>httpclient</artifactId>	 
-	</dependency>	
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>	 
+		</dependency>	
 	</dependencies>
-
-
-
 
 	<build>
 		<plugins>

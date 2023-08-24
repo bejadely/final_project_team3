@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/admin_layout}">
+	
+<!-- Content -->
+<div layout:fragment="content">
+	<div class="container">
+		<h5><b>회원조회</b></h5>
+		<br>
+		<div>
+			<select id="searchBy" name="searchBy">
+				<option value="name">이름으로 검색</option>
+				<option value="id">아이디로 검색</option>
+			</select>
+			<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
+			<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+		</div>
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th width="100" align="center">회원ID</th>
+						<th width="250" align="center">이름</th>
+						<th width="500" align="center">연락처</th>
+						<th width="300" align="center">국적</th>
+						<th width="350" align="center">권한분류</th>
+					</tr>
+				</thead>
+				<th:block th:if="${!#lists.isEmpty(list)}">
+					<tbody>
+						<th:block th:each="l : ${list}">
+							<tr class="memberInfo">
+								<td align="center" th:text="${l.memberId}"></td>
+								<td align="center" th:text="${l.memberName}"></td>
+								<td align="center" th:text="${l.phoneNumber}"></td>
+								<td align="center" th:text="${l.nationality}"></td>
+								<td align="center" th:text="${l.authority}"></td>
+							</tr>
+						</th:block>
+					</tbody>
+				</th:block>
+			</table>
+			<th:block th:if="${#lists.isEmpty(list)}">
+				<div align="center">
+					<span>조회된 회원이 없습니다.</span>
+				</div>
+			</th:block>
+		</div>
+	</div>
+	
+	<script th:inline="javascript" type="text/javascript">
+	
+	// 동적으로 버튼이 다 만들어지고 문서가 다 로드 된 후 이벤트가 정의되게 하기 위해 콜백함수 사용 
+	
+	$(document).ready(function() {
+		// 승인 버튼 클릭 시 발생 이벤트 설정
+		$('#searchButton').on('click', search);
+		$('.memberInfo').on('mouseover', colorDarker)
+						.on('mouseleave', colorReset)
+						.on('click')
+						.on('mouseup', moveToMemberDetail)
+	});
+	
+	// 조건검색기능
+	function search(event){
+		
+		let value = $('#searchBy').val();
+		let keyword = $('#keyword').val();
+		console.log('searchAdminMember?searchBy='+value+'&keyword='+keyword);
+		location.href='searchAdminMember?searchBy='+value+'&keyword='+keyword;
+		
+	}
+	
+	// 마우스 오버 : 색상 어둡게
+	function colorDarker(event){
+		$(event.currentTarget).css({background: '#f2f4f5'})
+							  .css({cursor: 'pointer'});		
+	}
+	
+	// 마우스릴리브 : 색상 원상복귀
+	function colorReset(event){
+		$(event.currentTarget).css({background: '#ffffff'});
+	}
+	
+	// 회원상세정보 조회페이지로 이동
+	function moveToMemberDetail(event){
+		
+		// 상세보기 할 member의 id값 가져오기
+		let memberId = $(event.currentTarget).find('td:eq(0)').text();
+		
+		// 페이지 전환 실행
+		location.href=`seeMemberDetail?employeeId=${memberId}`;
+	}
+	
+	</script>
+</div>
+
+</html>

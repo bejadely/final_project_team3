@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  <mapper namespace="com.trip.finalProject.adminMember.mapper.AdminMemberMapper">
+  		<!-- 회원 전체 조회 -->
+  		<select id="selectAllMemeber">
+  			SELECT member_id
+                 , member_name
+                 , phone_number
+                 , nationality
+                 , authority
+              FROM member
+          ORDER BY sign_up_date
+  		</select>
+  		
+  		<!-- 이름으로 회원 검색 -->
+  		<select id="searchMemberByName" resultType="AdminMemberVO">
+  			SELECT member_id
+			     , member_name
+			     , phone_number
+			     , nationality
+			     , authority
+			  FROM member
+			 WHERE member_name LIKE '%${memberName}%'
+          ORDER BY sign_up_date
+  		</select>
+  		
+  		
+  		<!-- 아이디로 회원 검색 -->
+  		<select id="searchMemberById" resultType="AdminMemberVO">
+  		  	SELECT member_id
+			     , member_name
+			     , phone_number
+			     , nationality
+			     , authority
+			  FROM member
+			 WHERE member_id LIKE '%${memberId}%'
+          ORDER BY sign_up_date
+  		</select>
+  		
+  		<!-- 회원 단건 조회 -->
+  		<select id="selectMemberInfo" resultType="AdminMemberVO">
+  			
+  		</select>
+  		
+  		<!-- 권한 승인 요청 회원 전체 조회 -->
+  		<select id="selectAllAuthRequest" resultType="AdminMemberVO">
+  			SELECT member_id
+  			     , member_name
+  			     , origin_profile_img
+  			     , saved_profile_img
+  			     , bank_name
+  			     , account_number
+  			  FROM member
+  			 WHERE authority = 'A4'
+  		  ORDER BY member_id DESC
+  		</select>
+  		
+  		<!-- 권한 승인 요청 승인 처리 -->
+  		<update id="approveAuthRequest">
+  			UPDATE member
+			SET authority = 'A2'
+			WHERE member_id = #{memberId}
+  		</update>
+  		
+  		<!-- 권한 승인 요청 반려 처리 -->
+  		<update id="rejectAuthRequest">
+  			UPDATE member
+			SET authority = 'A1'
+			WHERE member_id = #{memberId}
+  		</update>
+  </mapper>
