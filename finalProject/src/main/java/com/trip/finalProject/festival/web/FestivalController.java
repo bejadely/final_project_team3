@@ -1,5 +1,6 @@
 package com.trip.finalProject.festival.web;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 
 import java.util.List;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.trip.finalProject.festival.service.FestivalInfoVO;
 import com.trip.finalProject.festival.service.FestivalService;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 //오유리, 2023년 08월, 축제정보페이지
 @Controller
@@ -43,6 +46,7 @@ public class FestivalController {
 	
 	//축제정보 api로 받아와서 db등록 : 테스트용(없어도 됨)
 	@GetMapping("/test")
+	@ResponseBody
 	public void getfestivalInfoAndSave(Model model) throws Exception {
 
 		festivalService.getFestivalInfoAndSave();

@@ -17,4 +17,8 @@ public class FestivalInfoVO {
 	private String festivalImg;
 	private String contentId;
 	private Date saveDate;
+//	private Date updateDate;	//	업데이트 날짜
+	private String address;
+//	private String infotext;	//	축제정보
+//	private String deleteYN;	//	삭제유무
 }

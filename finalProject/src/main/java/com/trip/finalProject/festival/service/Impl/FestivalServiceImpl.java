@@ -113,6 +113,7 @@ public class FestivalServiceImpl implements FestivalService {
 		 stringBuilder.append("&eventStartDate=" + fomattedNow);
 		 stringBuilder.append("&areaCode=" + areaCode);
 		 stringBuilder.append("&numOfRows=" + MANY_NUM_OF_ROWS);
+//		 stringBuilder.append("&modifiedtime=" + fomattedNow);	//	오늘 날짜로 스케쥴러 돌리기 위함
 		 if(sigunguCode!=0) {
 			 stringBuilder.append("&sigunguCode=" + sigunguCode);
 		 }
@@ -161,6 +162,7 @@ public class FestivalServiceImpl implements FestivalService {
 				 String areaCodeData = itemObject.get("areacode").getAsString();
 				 String sigunguCodeData = itemObject.get("sigungucode").getAsString();
 				 String festivalId = "FES" + contentId;
+				 String address = itemObject.get("addr1").getAsString();
 
 				 FestivalInfoVO festivalInfoVO = new FestivalInfoVO();
 				 festivalInfoVO.setFestivalName(festivalName);
@@ -171,6 +173,7 @@ public class FestivalServiceImpl implements FestivalService {
 				 festivalInfoVO.setAreaCode(areaCodeData);
 				 festivalInfoVO.setSigunguCode(sigunguCodeData);
 				 festivalInfoVO.setFestivalId(festivalId);
+				 festivalInfoVO.setAddress(address);
 
 				 itemList.add(festivalInfoVO);
 			 }
@@ -198,7 +201,6 @@ public class FestivalServiceImpl implements FestivalService {
 
 			if(tempList.size() >= 0) {		//	tempList가 0보다 크거나 같으면 api 요청이 정상적이었다는 뜻
 				if(tempList.size() > 0) {
-					System.out.println("tempList = " + tempList);
 					festivalInfoVOList.addAll(tempList);
 				}
 				isRequestSucceed = true;

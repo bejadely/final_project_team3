@@ -17,6 +17,7 @@
             f.start_date = #{festival.startDate},
             f.end_date = #{festival.endDate},
             f.festival_img = #{festival.festivalImg},
+            f.address = #{festival.address},
             f.save_date = SYSDATE
             WHEN NOT MATCHED THEN
             INSERT (
@@ -28,6 +29,7 @@
             end_date,
             festival_img,
             content_id,
+            address,
             save_date
             )
             VALUES (
@@ -39,16 +41,19 @@
             #{festival.endDate},
             #{festival.festivalImg},
             #{festival.contentId},
+            #{festival.address},
             SYSDATE
             );
         </foreach>
     </insert>
 
+    <!-- where 절로 deleteYN이 N인 것만 받기 -->
 	<select id="getFestivalCalendarInfo" resultType="FestivalInfoVO">
         SELECT *
        	FROM festival_info
    </select>
 
+    <!-- 매일 오후 11시 50분쯤에 스케쥴러 돌리고, updateDate는 SYSDATE로 -->
 
 <!--    <select id="selectSpotDetailReview" resultType="SpotDetailReviewVO">-->
 <!--   SELECT *       FROM(SELECT ROWNUM rn, a.*             FROM(-->
