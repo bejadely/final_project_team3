@@ -35,6 +35,7 @@
 									<!-- modal에 띄우고자하는 코드 -->
 									<div id="test" class="modal" style="height: 600px;  width: 500px; text-align: center;">
 										<form name="sendData" action="tripRecordInsertForm" method="post">
+											<input type="hidden" name="writerId" value="${session.sessionId}">
   											<div style="margin-top: 40px;"> 
   												<h3>여행 타이틀</h3>
   												<input type="text" name="tripTitle" placeholder="타이틀을 입력 해주세요." >
@@ -64,8 +65,9 @@
 												<label for="tripDisclose">비공개</label>
   											</div><br>
   											<div style ="margin-top: 30px;"> 
+  												<button type="reset" class="primary-btn">취소</button>
   												<a href="#" rel="modal:close" class="primary-btn">닫기</a>
-  												<button type="submit" class="primary-btn">여행일정 작성</button> 
+  												<button type="submit" class="primary-btn" id="tripInsert">여행일정 작성</button> 
   												<!-- <button type="button" onclick="location.href='tripRecordInsert'" class="primary-btn">여행일정 작성</button> -->
   												<!-- <a href="./tripRecordInsert" class="primary-btn">여행일정 작성</a> -->
 											</div>
@@ -150,6 +152,7 @@
 			return;
 		}
 		sendData.submit();
+		
 	});	
 	</script>
 </body>

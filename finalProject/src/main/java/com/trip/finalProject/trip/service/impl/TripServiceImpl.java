@@ -48,8 +48,20 @@ public class TripServiceImpl implements TripService {
 
 	//여행기록 임시저장
 	@Override
-	public int TsInsertTripInfo(TripVO tripVO) {
-		return tripMapper.tsInsertTripInfo(tripVO);
+	public TripVO TsInsertTripInfo(TripVO tripVO) {
+		TripVO result = tripMapper.tsInsertTripInfo(tripVO);
+		if(result != null) {
+			// 성공 시 insert한 정보를 반환
+			tripVO.getPostId();
+			tripVO.getTripTitle();
+			tripVO.getStartDay();
+			tripVO.getEndDay();
+			
+			return tripVO;
+			
+		}else {
+			return null;
+		}
 	}
 
 	//여행기록 지도 맵핑

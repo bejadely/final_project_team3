@@ -22,7 +22,7 @@ public interface TripMapper {
 	public int insertTripInfo(TripVO tripVO);
 	
 	//여행기록 임시저장
-	public int tsInsertTripInfo(TripVO tripVO);
+	public TripVO tsInsertTripInfo(TripVO tripVO);
 	
 	//여행기록 지도 맵핑
 	public int insertTripMapping(TripVO tripVO);
