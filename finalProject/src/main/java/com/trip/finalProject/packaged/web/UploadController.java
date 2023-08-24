@@ -23,9 +23,10 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -140,7 +141,7 @@ public class UploadController {
 				//System.out.println(ext);
 				String newFileName = UUID.randomUUID() + ext;
 				//System.out.println(newFileName);
-
+				String imgType = "U2";
 				// 날짜 폴더 생성
 				String folderPath = makeFolder();
 				
@@ -165,6 +166,7 @@ public class UploadController {
 				AttachedFileVO attachedFileVO = new AttachedFileVO();
 				attachedFileVO.setOriginImg(originalFileName);
 				attachedFileVO.setSavedImg(saveName);
+				attachedFileVO.setImgType(imgType);
 				imageList.add(attachedFileVO);
 				//imageList.add(setImagePath(savePath));
 				
@@ -274,13 +276,24 @@ public class UploadController {
 	}
 	
 	@PostMapping("insertEditor")
-	public String insertEditor(@RequestBody String data, PackageVO packageVO) {
-		//System.out.println(data);
+	public String insertEditor(@RequestBody String data) {
+		PackageVO packageVO = new PackageVO();
+		System.out.println(data);
+		
 		packageVO.setContent(data);
 		packageService.insertEdirotInfo(packageVO);
 		return data;
 	}
 	
-
+	@PostMapping("insertFormData")
+	public String methodName( PackageVO objData) {
+		
+		packageService.insertEdirotInfo(objData);
+		
+		System.out.println(objData.getPrice());
+		System.out.println(objData.getName());
+		
+		return "package/packageList";
+	}
 
 }

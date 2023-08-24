@@ -1,5 +1,5 @@
-package com.trip.finalProject.packaged.service;
 
+package com.trip.finalProject.packaged.service;
 import java.util.List;
 
 public interface PackageService {
