@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import com.trip.finalProject.attachedFile.service.AttachedFileVO;
@@ -148,6 +149,7 @@ public class UploadController {
 				String savePath = folderPath + "/" + newFileName;
 				// 파일을 저장할 경로
 				saveName = uploadPath + "/" +setImagePath(savePath);
+				
 
 				//System.out.println("savePath: " + savePath);
 
@@ -275,25 +277,35 @@ public class UploadController {
 		return folderPath;
 	}
 	
-	@PostMapping("insertEditor")
-	public String insertEditor(@RequestBody String data) {
-		PackageVO packageVO = new PackageVO();
-		System.out.println(data);
-		
-		packageVO.setContent(data);
-		packageService.insertEdirotInfo(packageVO);
-		return data;
-	}
+//	@PostMapping("insertEditor")
+//	public String insertEditor(@RequestBody String data) {
+//		//System.out.println(data);
+//		PackageVO packageVO = new PackageVO();
+//		packageVO.setContent(data);
+//		//System.out.println(objData.getName());
+//		packageService.insertEdirotInfo(packageVO);
+//		return data;
+//	}
 	
 	@PostMapping("insertFormData")
-	public String methodName( PackageVO objData) {
-		
-		packageService.insertEdirotInfo(objData);
-		
-		System.out.println(objData.getPrice());
-		System.out.println(objData.getName());
-		
-		return "package/packageList";
+	@ResponseBody
+	public int insertFormData(@RequestBody PackageVO combinedData) {
+		System.out.println(combinedData.getPrice());
+		System.out.println(combinedData.getContent());
+		return packageService.insertEdirotInfo(combinedData);
 	}
+	
+
+	@PostMapping("register")
+	public String register(PackageVO vo, RedirectAttributes rttr) {
+		if(vo.getAttachList() != null) {
+			vo.getAttachList();
+			System.out.println(vo.getAttachList());
+		}
+		
+		return packageService.register(vo);
+	}
+	
+
 
 }

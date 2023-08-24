@@ -47,13 +47,19 @@
 					(
 						post_id
 						,content
-					
+						,name
+						,price
+						,tour_theme
+
 					)
 				values
 					(
 						#{postId}
 						,#{content}
-						
+						,#{name}
+						,#{price}
+						,#{tourTheme}
+
 					)
 	</insert>
 	<select id="listPackage" resultType="PackageVO">
