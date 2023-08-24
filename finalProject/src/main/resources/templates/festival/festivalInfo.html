@@ -74,7 +74,7 @@
 #festivalInfo td {
     font-size: 13px;
 }
-.form-control-plaintext{
+.modalText{
 	font-size: 13px;
 }
 
@@ -133,40 +133,39 @@
                     <tbody>
 	                    <tr>
 	                        <td colspan="3">
-		                        <img id="modalImage" src="" style="width: 100%;">
-		                        <img th:src="@{/img/no-image.png}" alt="" >
+		                        <img id="modalImage" style="width: 100%;">
 	                        </td>
 	                    </tr>
 	                    <tr>
 	                        <th scope="row" style="width: 25%">축&ensp;제&ensp;명</th>
-	                        <td colspan="2" id="title" class="modalText " >
-	                        	<input id="title" type="text" value="대구사과축제" style="width: 100%;" readonly class="form-control-plaintext">
+	                        <td colspan="2" id="title">
+	                        	<input id="titleInput" type="text" style="width: 100%;" class="modalText">
 	                        </td>
 	                    </tr>
 	                    <tr>
 	                        <th scope="row" style="width: 25%">일&emsp;&emsp;정</th>
-	                        <td colspan="2" id="startDate" class="modalText " >
-	                        	<input id="startDatepicker" type="text" value="" style="width: 100%;" readonly class="form-control-plaintext">
+	                        <td colspan="2" id="date">
+	                        	<input id="dateInput" type="text" style="width: 100%;" class="modalText">
 	                        </td>
 	                    </tr>
 	                    <tr>
-	                        <th scope="row" style="width: 25%">홈페이지</th>
-	                        <td colspan="2" id="url" class="modalText ">
-	                        	<input id="url" type="text" value="www.apple.co.kr" style="width: 100%;" readonly class="form-control-plaintext">
+	                        <th scope="row" style="width: 25%">주소</th>
+	                        <td colspan="2" id="address">
+	                        	<input id="addressInput" type="text" style="width: 100%;" class="modalText">
 	                        </td>
 	                    </tr>
 	                    <tr>
 	                        <th scope="row" style="width: 25%">행사소개</th>
-	                        <td colspan="2" id="content" class="modalText ">
-	                        	<input id="content" type="text" value="맛있는사과" style="width: 100%;" readonly class="form-control-plaintext">
+	                        <td colspan="2" id="content">
+	                        	<input id="contentInput" type="text" style="width: 100%;" class="modalText">
 	                         </td>
 	                    </tr>
                     </tbody>
                 </table>
 			  </div>
 		      <div class="modal-footer">
-		      	<button type="button" class="btn btn-primary">수정</button>
-		        <button type="button" class="btn btn-primary">삭제</button>
+		      	<button type="button" id="modifyButton" class="btn btn-primary">수정</button>
+		        <button type="button" id="deleteButton" class="btn btn-primary">삭제</button>
 		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 		      </div>
 		    </div>
@@ -174,10 +173,13 @@
 		</div>
 	</div>
 <script th:inline="javascript">
-	let calendarData =  [[${festivalCalendar}]];
+	const calendarData =  [[${festivalCalendar}]];
 	let event = [];  // 추가할 값을 넣을 배열 생성
-	
-	
+
+	// const isAdminLogin = [[${isAdminLogin}]];	//	관리자 로그인 여부를 model로 보내준 값
+	const isAdminLogin = true;	//	테스트용 관리자 로그인
+	// const isAdminLogin = false;	//	테스트용 일반 유저 로그인
+
 	for (let i = 0; i < calendarData.length; i++) {
 	    event.push({
 	        title: calendarData[i].festivalName,
@@ -187,6 +189,8 @@
 	        textColor: '#333333',
 	        contentId : calendarData[i].contentId,
 			festivalImg: calendarData[i].festivalImg,
+			address: calendarData[i].address,
+			// infotext: calendarData[i].infotext,
 	        classNames: ['bold-event']
 	    });
 	}
@@ -194,9 +198,9 @@
 	document.addEventListener('DOMContentLoaded', function() {
 		var calendarEl = document.getElementById('calendar');
 		var calendar = new FullCalendar.Calendar(calendarEl, {
-			initialView : 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
-			locale: 'ko', // 한국어 설정
-		headerToolbar : { // 헤더에 표시할 툴 바
+				initialView : 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
+				locale: 'ko', // 한국어 설정
+				headerToolbar : { // 헤더에 표시할 툴 바
 				start : 'prev',
 				center : 'title',
 				end : 'next'
@@ -213,35 +217,91 @@
 			moreLinkText: 'more',
 			events : event,
 			eventClick: function(arg) {
-					$(".datepicker-div").appendTo($());
+					clearModal();
+					addModalInfo(arg);
 					$('#staticBackdrop').modal('show');
-			      }
+		  	}
 		});
 		calendar.render();
+		$('.fc-prev-button').on('click', function() {
+			let thisYear = $('#fc-dom-1').text().substr(0, 4);
+			let thisMonth = $('#fc-dom-1').text().substr(6, 8).replaceAll('월', '');
+			thisMonth = thisMonth.length == 1 ? '0' + thisMonth : thisMonth;
+		})
+
+		$('.fc-next-button').on('click', function() {
+			let thisYear = $('#fc-dom-1').text().substr(0, 4);
+			let thisMonth = $('#fc-dom-1').text().substr(6, 8).replaceAll('월', '');
+			thisMonth = thisMonth.length == 1 ? '0' + thisMonth : thisMonth;
+		})
 	});
 
-	function openModal(arg) {
+	function getFormattedDate(dateString) {
+		let date = new Date(dateString);
+
+		// 년, 월, 일 추출
+		let year = date.getFullYear();
+		let month = (date.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더함
+		let day = date.getDate().toString().padStart(2, '0');
+
+		// 결과 출력 (yyyyMMdd 형식)
+		let formattedDate = year + '-' + month + '-' + day;
+
+		return formattedDate;
+	}
+
+	//Flatpickr로 Datepicker로 설정
+	let fp = flatpickr(document.getElementById("dateInput"), {
+		'monthSelectorType' : 'static',
+		"locale": "ko",
+		"mode" : "range"
+	});
+
+	function addModalInfo(arg) {
 		let title = arg.event.title;
 		let start = getFormattedDate(arg.event.start);
 		let end = getFormattedDate(arg.event.end);
 		let contentId = arg.event.extendedProps.contentId;
 		let festivalImg = arg.event.extendedProps.festivalImg;
-	
-		console.log('title = ' + title);
-		console.log('start = ' + start);
-		console.log('end = ' + end);
-		console.log('contentId = ' + contentId);
-		console.log('festivalImg = ' + festivalImg);
+		let address = arg.event.extendedProps.address;
+
+		$('#titleInput').val(title);
+		if(festivalImg == null) {
+			$('#modalImage').attr('src', '/img/no-image.png');
+		} else {
+			$('#modalImage').attr('src', festivalImg);
+		}
+		$('#dateInput').val(start + ' ~ ' + end);
+		$('#addressInput').val(address);
+
+		//	관리자 로그인 여부에 따른 readonly 및 display none 처리
+		if(isAdminLogin) {
+			$('.modalText').removeClass('form-control-plaintext');
+			$('.modalText').removeAttr('readonly');
+			$('#dateInput').addClass('form-control-plaintext');
+			$('#dateInput').attr('readonly', 'true');
+			$('#modifyButton').attr('style', 'display:block;');
+			$('#deleteButton').attr('style', 'display:block;');
+		} else {
+			$('.modalText').addClass('form-control-plaintext');
+			$('.modalText').attr('readonly', 'true');
+			$('#modifyButton').attr('style', 'display:none;');
+			$('#deleteButton').attr('style', 'display:none;');
+			fp.destroy();
+		}
 	}
-	
-	//Flatpickr로 Datepicker로 설정
-	var fp = flatpickr(document.getElementById("startDatepicker"), {
-		'monthSelectorType' : 'static',
-		"locale": "ko",
-		"mode" : "range"
-	});
-	
-	
+
+	function clearModal() {
+		$('.modalText').val('');
+		$('#modalImage').attr('src', '');
+	}
+
+	const myModalEl = document.getElementById('staticBackdrop')
+	myModalEl.addEventListener('hidden.bs.modal', event => {
+		// 모달창이 닫히면 무조건 모달 내부 데이터를 삭제해줌
+		clearModal();
+	})
+
 </script>	
 </div>
 </body>
