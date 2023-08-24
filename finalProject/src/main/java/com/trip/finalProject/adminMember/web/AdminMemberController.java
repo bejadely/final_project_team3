@@ -18,6 +18,7 @@ import com.trip.finalProject.alert.service.AlertService;
 import com.trip.finalProject.alert.service.AlertVO;
 import com.trip.finalProject.authConfirm.service.AuthConfirmService;
 import com.trip.finalProject.authConfirm.service.AuthConfirmVO;
+import com.trip.finalProject.common.PagingVO;
 
 @Controller
 public class AdminMemberController {
@@ -33,10 +34,16 @@ public class AdminMemberController {
 	
 	// 회원정보 전체 조회
 	@GetMapping("/seeAllMemberList")
-	public String seeAllMember(Model model){
+	public String seeAllMember(Model model
+			                 , @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
+			                 , @RequestParam(value = "cntPerPage", defaultValue = "10")Integer cntPerPage ){
+		
+		// 전체 조회될 회원 수 카운트
+		int total = adminMemberService.memberCount();
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 		
 		// 회원 전체 조회
-		List<AdminMemberVO> list = adminMemberService.selectAllMember();
+		List<AdminMemberVO> list = adminMemberService.selectAllMember(pagingVO);
 		
 		// 모든 회원 정보 모델에 담기
 		model.addAttribute("list", list);

@@ -15,6 +15,12 @@
           ORDER BY sign_up_date
   		</select>
   		
+  		<!-- 전체 회원 수 카운트 -->
+  		<select id="getAllMemberCount">
+  			SELECT COUNT(*)
+  			  FROM member
+  		</select>
+  		
   		<!-- 이름으로 회원 검색 -->
   		<select id="searchMemberByName" resultType="AdminMemberVO">
   			SELECT member_id
