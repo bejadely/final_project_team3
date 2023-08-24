@@ -71,6 +71,11 @@ public class TripController {
 	// 여행기록 등록 - form
 	@PostMapping("tripRecordInsertForm")
 	public String tripRecordInsertForm(TripVO tripVO, Model model) {
+		
+		// 여행기록 테이블에 데이터 삽입
+		TripVO result = tripService.TsInsertTripInfo(tripVO);
+		
+		
 		model.addAttribute("tripVO", tripVO);
 		return "trip/tripRecordInsertForm";
 	}
@@ -95,6 +100,9 @@ public class TripController {
 		model.addAttribute("tripVO", tripVO);
 		return "trip/tripMappingInsertForm";
 	}
+
+	//
+	
 
 	// 여행기록 지도 맵핑 - 처리
 	@PostMapping("tripMappingInsert")
