@@ -93,14 +93,49 @@ display: none;
 											<label for="example" class="form-label">이메일</label> <input type="email" name="email" placeholder="이메일" class="form-control" id="email" required>
 										</div>
 									
+										
+												<div style="float:left; width:33%;">
+										 		<label>은행코드</label>
+										 		<br>
+											<select class="" id="bank_code" name="bank_code" aria-label="Default select example">
+										
+													<option value="">은행선택</option>
+													<option value="004">국민은행</option>
+													<option value="020">우리은행</option>
+													<option value="088">신한은행</option>
+													<option value="003">기업은행</option>
+													<option value="023">SC제일은행</option>
+													<option value="011">농협은행</option>
+													<option value="005">외환은행</option>
+													<option value="090">카카오뱅크</option>
+													<option value="032">부산은행</option>
+													<option value="071">우체국</option>
+													<option value="031">대구은행</option>
+													<option value="037">전북은행</option>
+													<option value="035">제주은행</option>
+													<option value="007">수협은행</option>
+													<option value="027">씨티은행</option>
+													<option value="039">경남은행</option>
+											</select>
+										
+										</div>
+											
+										<div class="mb-3" style="float:left; width:33%;">
+											<label for="" class="form-label">계좌번호</label>
+											<input type="text" class="form-control" id="bank_num" name="bank_num" placeholder="계좌번호 입력하세요" >
+										</div>
+										<div class="mb-3" style="float:left; width:33%;">
+											<label for="" class="form-label">예금주</label>
+											<input type="text" class="form-control" id="bankHolderInfo" name="bankHolderInfo" placeholder="이름" readonly >
+										</div>
 
 
-										<label for="example" class="form-label">주소</label> <input type="text" id="zipCode" name="zipCode" readonly="readonly" class="form-control" placeholder="우편번호" style="width: 250px;">
+										<label for="example" class="form-label">주소</label> <input type="text" id="zipCode" name="zipCode" readonly="readonly" class="form-control" placeholder="우편번호" style="width: 33%;">
 								
 										
 										<div class="mb-3">
-											<input type="text" id="addr" name="addr" onclick="openZipSearch();" readonly="readonly" class="form-control" placeholder="기본주소"> 
-											<input type="text" id="addressDetail" name="addressDetail" class="form-control" placeholder="상세주소" style="width: 250px;">
+											<input type="text" id="address" name="address" onclick="openZipSearch();" readonly="readonly" class="form-control" placeholder="기본주소" style="width: 50%;"> 
+											<input type="text" id="addressDetail" name="addressDetail" class="form-control" placeholder="상세주소" style="width: 50%;">
 										</div>
 
 										<div class="mb-3">
@@ -136,10 +171,10 @@ display: none;
 											<input type="radio" name="gender" value="G2">여
 										</div>
 										<input type="submit" value="회원가입" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">
-										<div class="d-flex align-items-center justify-content-center">
-											<p class="fs-4 mb-0 fw-bold">Already have an Account?</p>
-											<a class="text-primary fw-bold ms-2" href="./authentication-login.html">Sign In</a>
+										<div class="d-flex align-items-center justify-content-center">																				
+
 										</div>
+										
 								</form>
 							</div>
 						</div>
@@ -155,14 +190,14 @@ display: none;
 		<a th:href="@{/send1}">sms</a> <a th:href="@{/sendemail}">이메일전송</a>
 
 
-		<form th:action="@{/check1}">
+		<form th:action="@{/check1}"
 
 			<table>
-				<!-- 	<tr class="form-group">
+					<tr class="form-group">
 				<td>은행코드</td>
 				<td><input type="text" class="form-control"  name="bank_code"
 					placeholder="은행코드 입력하세요"></td>
-			</tr> -->
+			</tr>
 				<tr>
 
 					<td>은행코드 <select class="" id="bank_code" name="bank_code" aria-label="Default select example">
@@ -200,7 +235,7 @@ display: none;
 
 			</table>
 			<button class="btn btn-default">확인</button>
-		</form>
+		</form> 
 	</div>
 
 
@@ -348,15 +383,15 @@ console.log(hi);
 function openZipSearch() {
     new daum.Postcode({
     	oncomplete: function(data) {     
-		var addr = ''; 
+		var address = ''; 
 		if (data.userSelectedType === 'R') { 
-			addr = data.roadAddress;
+			address = data.roadAddress;
 		} else {
-			addr = data.jibunAddress;
+			address = data.jibunAddress;
 		}
 
 		$("#zipCode").val(data.zonecode);
-		$("#addr").val(addr);
+		$("#address").val(address);
 		$("#addressDetail").val("");
 		$("#addressDetail").focus();
         }
@@ -411,7 +446,7 @@ function joinform_check() {
   var mobile = document.getElementById("mobile");
   var email_id = document.getElementById("email_id");
   var agree = document.getElementById("agree");
-  
+}
   
   </script>
 

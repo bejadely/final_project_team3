@@ -6,7 +6,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -15,10 +14,7 @@ public class CheckAccountController {
 	@Autowired
 	CheckAccountService checkAccountService;
 	
-	/*
-	 * @GetMapping("/Account1") public String goAccount() { return
-	 * "accountcheck/AccountCheck"; }
-	 */
+	
 	
 	@GetMapping("/check1")
 	public Map<Object, Object> CheckAccount(@RequestParam("bank_code") String bank_code, @RequestParam("bank_num") String bank_num) {

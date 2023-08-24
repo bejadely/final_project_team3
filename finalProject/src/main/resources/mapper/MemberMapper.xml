@@ -6,8 +6,46 @@
 
 <!-- namespace와 MemberRepository가 일치하면 됨 -->
     <!--insert는 성공시 1, 실패시 -1을 반환한다  -->
-    
+ <!-- 일반회원 회원가입 -->   
     <insert id="insertMember" parameterType="MemberVO">
+        insert into member
+        			(member_id,
+       				 member_Name,
+       				 password,      			        			         			 
+        			 nationality,
+        			 email,
+        			 ZIP_CODE,
+        			 ADDRESS,
+        			 ADDRESS_DETAIL, 
+        			 PHONE_NUMBER,
+        			 AUTHORITY,  
+        			 LOGIN_TYPE,    			  
+        			 birth_date,
+        			 gender,
+        			 SIGN_UP_DATE
+        			 )<!--sql칼럼그대로  -->
+        values 
+			        (  #{memberId} 
+			        ,#{memberName}
+			        ,#{password}	    
+			        ,#{nationality}
+			        ,#{email}	   		       
+			        ,#{zipCode} 
+			        ,#{address}
+			        ,#{addressDetail} 
+			        ,#{to}	
+			        , 'G1'	
+			        , 'L1'
+			        ,#{birthDate}		            			        
+			        ,#{gender}			     
+			        ,sysdate
+			        )
+			      
+    </insert>
+    
+    
+     <!-- 가이드 희망 회원 회원가입 -->   
+    <insert id="insertGuide" parameterType="MemberVO">
         insert into member
         			(member_id,
        				 member_Name,
@@ -45,6 +83,9 @@
     
     
     
+    
+    
+    
     <!-- 로그인 처리 -->
     <!--select는 실패시 빈 결과나 null을 반환한다.  -->
     <!--  만약에 select문에 id만 담으면 나중에 session에서 name 안담김. -->
@@ -62,6 +103,7 @@
 	<select id= "checkLoginAccount" resultType="MemberVO">
 	SELECT * FROM member
 	WHERE id =#{memberId} AND Password =#{password}
+	
 <!-- 	<if test="memberPassword !=null">
 		AND memberPassword =#{memberPassword}
 	</if>	

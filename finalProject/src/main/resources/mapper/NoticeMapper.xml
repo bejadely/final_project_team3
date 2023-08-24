@@ -65,12 +65,12 @@
 	</select>
 	
 <!-- 새로운 게시글을 삽입하는 쿼리. 게시글 번호는 자동생성됨-->	
-	<insert id="boardInsert">
-		<selectKey keyProperty="boardId" resultType = "int" order="BEFORE">
-			select NVL(max(board_id),0) +1 as boardId FROM board
+	<insert id="noticeInsert" parameterType="NoticeVO" >
+		<selectKey keyProperty="notice_number" resultType = "int" order="BEFORE">
+			select NVL(max(noticeNumber),0) +1 as noticeNumber FROM notice
 		</selectKey>
-		INSERT INTO board
-		VALUES(#{boardId},#{memberId},#{boardTitle},#{boardContent}, sysdate, 0, #{boardSecret}, 'N', null)
+		INSERT INTO notice
+		VALUES(#{noticeNumber},#{title},#{content}, sysdate,'null', 'STATUS = 'T1'', 'RELEASE=N1', 'N','관리자', 0)
 	</insert>
 	
 <!-- 특정 게시글의 내용을 업데이트하는 쿼리 -->	
