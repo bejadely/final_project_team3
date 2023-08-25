@@ -26,12 +26,15 @@ public class MemberVO {
 	private String zipCode;
 	private String address;
 	private String addressDetail;
+	private String signUpDate;
+	private String	withDrawalDate;			
 	//추가된 부분 23.08.23(김재운)
 	private String phoneNumber;
 	private String authority;
 	private String originProfileImg;
 	private String savedProfileImg;
 	private String bankName;
+	private String accountNumber;
 	private String loginType;
 	private String accessToken;
 	private String refreshToken;

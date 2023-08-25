@@ -25,43 +25,27 @@ public class SmsController {
 	
 	private final SmsService smsService;
 	
-	
+		
 	   @GetMapping("/send1")  
 	   public String getSmsPage() { 
 		   
 		   return"/sms/sendSms"; 
 	   }
-	 
+	
+	   //주소로 POST 요청
 	@PostMapping("/sms/send")
 	@ResponseBody	
-		public HashMap<String, Object> sendSms(MessageDTO messageDto, Model model,HttpServletRequest request) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
-		HashMap<String,Object> smsMap = new HashMap<String,Object>();
-		// System.out.println(messageDto.to);
+		public HashMap<String, Object> sendSms(MessageDTO messageDto, Model model) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {		
+		HashMap<String,Object> smsMap = new HashMap<String,Object>();		
 		SmsResponseDTO response = smsService.sendSms(messageDto);
-		//System.out.println(SmsRequestDTO.builder().randomNumber(getSmsPage()));
-		
-		
+
 		int num = smsService.getRandomNumber();
-	
-		 model.addAttribute("num", num); 
+		model.addAttribute("num", num); 
 		System.out.println(num);
 		model.addAttribute("response", response);
-		
-		
-		
-		/*
-		 * HttpSession session = request.getSession(); session.invalidate();
-		 * session.setAttribute("num", num);
-		 */
-		
 		smsMap.put("num", num);
 		smsMap.put("reponse", response);
-		
-		 
-		
-		
-
-		
+	
 		return smsMap;
 	}
  

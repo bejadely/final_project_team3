@@ -8,8 +8,7 @@
 		<link th:href="@{https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap}" rel="stylesheet">
           
         <!-- 이 영역에 공통으로 사용할 css, js library를 선언한다. -->
-        <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
-	    <script th:src="@{/js/bootstrap.min.js}"></script>
+
 	    <script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
 	    <script th:src="@{/js/jquery.nice-select.min.js}"></script>
 	    <script th:src="@{/js/jquery.slicknav.js}"></script>
@@ -22,6 +21,13 @@
 
         <!-- Content Page의 script fragment 삽입 -->
         <th:block layout:fragment="script"></th:block>
+        
+        <!-- google translate api 를 사용하기 위한 스크립트 삽입 -->
+        <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+		<!-- google translate selectbox 커스텀 -->
+		<script type="text/javascript">
+			function googleTranslateElementInit() {new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');}
+		</script>
         
     </th:block>
 </html>
