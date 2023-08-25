@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.trip.finalProject.adminMember.mapper.AdminMemberMapper;
 import com.trip.finalProject.adminMember.service.AdminMemberService;
 import com.trip.finalProject.adminMember.service.AdminMemberVO;
+import com.trip.finalProject.common.PagingVO;
 
 @Service
 public class AdminMemberServiceImpl implements AdminMemberService {
@@ -18,9 +19,15 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	AdminMemberMapper amm;
 	
 	@Override
-	public List<AdminMemberVO> selectAllMember() {
+	public List<AdminMemberVO> selectAllMember(PagingVO pagingVO) {
 		// 회원 전체 조회
-		return amm.selectAllMemeber();
+		return amm.selectAllMemeber(pagingVO);
+	}
+	
+	@Override
+	public int memberCount() {
+		// 전체 회원 수 카운트
+		return amm.getAllMemberCount();
 	}
 	
 	@Override
@@ -74,6 +81,8 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		
 		return map;
 	}
+
+	
 
 	
 

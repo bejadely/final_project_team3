@@ -3,10 +3,15 @@ package com.trip.finalProject.adminMember.service;
 import java.util.List;
 import java.util.Map;
 
+import com.trip.finalProject.common.PagingVO;
+
 public interface AdminMemberService {
 	
 	// 회원전체 조회
-	public List<AdminMemberVO> selectAllMember();
+	public List<AdminMemberVO> selectAllMember(PagingVO pagingVO);
+	
+	// 전체 회원 수 카운트
+	public int memberCount();
 	
 	// 이름으로 회원 검색
 	public List<AdminMemberVO> searchMemberByName(AdminMemberVO vo);
