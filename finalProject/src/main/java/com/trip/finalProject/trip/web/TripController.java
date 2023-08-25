@@ -102,23 +102,25 @@ public class TripController {
 		return "trip/tripMappingInsertForm";
 	}
 
-	// 여행기록 지도 맵핑 - 처리
-	@PostMapping("tripMappingInsert")
-	public String tripMappingInsertProcess(TripVO tripVO) {
-		tripService.TsInsertTripInfo(tripVO);
-		return "redirect:/tripInsertForm";
-	}
+//	// 여행기록 지도 맵핑 - 처리
+//	@PostMapping("tripMappingInsert")
+//	public String tripMappingInsertProcess(TripVO tripVO) {
+//		tripService.TsInsertTripInfo(tripVO);
+//		return "redirect:/tripInsertForm";
+//	}
 
 	// 여행기록 메모 등록
 	
 	
-	// 맵핑 배열 등록 테스트용
-    @PostMapping("mappingInsert")
-    @ResponseBody
-    public String receiveMappingData(@RequestBody TripVO[] mappingData) {
-        for (TripVO item : mappingData) {
-            tripService.InsertTripMapping(item);
-        }
-        return "redirect:/tripInsertForm";
-    }
+//	// 여행 경로 저장 (ajax)
+//    @PostMapping("mappingInsert")
+//    @ResponseBody
+//    public String receiveMappingData(@RequestBody TripVO[] mappingData) {
+//        for (TripVO item : mappingData) {
+//            tripService.InsertTripMapping(item);
+//        }
+//        return "redirect:/tripInsertForm";
+//    }
+	
+	
 }
