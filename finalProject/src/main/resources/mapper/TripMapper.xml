@@ -44,7 +44,16 @@
 		WHERE post_id = #{postId}
 	</select>
 	
-	<!-- 여행기록 등록 -->
+	
+	<!-- 여행기록 등록(임시저장에서 저장상태로 업데이트) -->
+	<update id="insertTripInfo" parameterType="TripVO">
+		UPDATE trip_record
+		<set>
+			trip_save = 'T2'
+		</set>
+		WHERE post_id = #{postId}
+	</update>
+	<!--
 	<insert id="insertTripInfo" parameterType="TripVO">
 		<selectKey keyProperty="postId" resultType="String" order="BEFORE">
 			SELECT 'trr' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
@@ -61,7 +70,6 @@
 							, trip_disclose
 							, trip_save
 							, regist_day
-							, trip_share
 						)
 				   VALUES
 				        (
@@ -73,11 +81,20 @@
 							, #{tripDisclose}
 							, 'T2'
 							, sysdate
-							, #{tripShare}				        
 				        )
 	</insert>
-	
-	<!-- 여행기록 임시저장 -->
+	  -->
+	  
+	<!-- 여행기록 임시저장(임시저장에서 임시저장 상태로 업데이트) -->
+	<update id="tsTripInfo" parameterType="TripVO">
+		UPDATE trip_record
+		<set>
+			trip_save = 'T1'
+		</set>
+		WHERE post_id = #{postId}
+	</update>
+		
+	<!-- 여행기록 등록(등록시 임시저장 상태로 페이지 이동) -->
 	<insert id="tsInsertTripInfo" parameterType="TripVO">
 		<selectKey keyProperty="postId" resultType="String" order="BEFORE">
 			SELECT 'trr' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
@@ -100,7 +117,6 @@
 							, trip_disclose
 							, trip_save
 							, regist_day
-							, trip_share
 						)
 				   VALUES
 				        (
@@ -118,7 +134,6 @@
 							, #{tripDisclose}
 							, 'T1'
 							, sysdate
-							, #{tripShare}				        
 				        )
 	</insert>
 	

@@ -34,4 +34,7 @@ public interface MemberMapper {
 	 
 	 //시큐어리티 활용 세션 값 담기위한 select
 	 public MemberVO singleLogin(MemberVO member);
+	 
+	 //관리자 회원가입
+	 public int insertGuide(MemberVO member);
 }
