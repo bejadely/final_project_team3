@@ -100,6 +100,12 @@
 		</set>
 		WHERE member_id = #{memberId}	
 	</update>
+	
+	<select id="singleLogin" resultType="MemberVO">
+		SELECT *
+		FROM member
+		WHERE member_id = #{memberId}
+	</select>
     
      
 </mapper>
