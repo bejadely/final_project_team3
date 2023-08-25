@@ -21,7 +21,7 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	@Override
 	public List<AdminMemberVO> selectAllMember(PagingVO pagingVO) {
 		// 회원 전체 조회
-		return amm.selectAllMemeber();
+		return amm.selectAllMemeber(pagingVO);
 	}
 	
 	@Override

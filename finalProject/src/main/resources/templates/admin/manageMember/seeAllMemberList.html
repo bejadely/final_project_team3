@@ -50,6 +50,27 @@
 		</div>
 		<div style="text-align : center;">
 			<!-- 페이징 구현중 -->
+			<th:block th:if="${paging.nowPage != 1}">
+				<a th:href="@{seeAllMemberList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+			</th:block>
+			<th:block th:if="${paging.startPage != 1}">
+				<a th:href="@{seeAllMemberList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+			</th:block>
+			<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+				<th:block th:if="${p eq paging.nowPage}">
+					<b th:text="${p}"></b>
+				</th:block>
+				<th:block th:if="${p ne paging.nowPage}">
+					<a th:href="@{seeAllMemberList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+				</th:block>
+			</th:block>
+			<th:block
+				th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+				<a th:href="@{seeAllMemberList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+			</th:block>
+			<th:block th:if="${paging.nowPage != paging.lastPage}">
+				<a th:href="@{seeAllMemberList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+			</th:block>
 		</div>
 	</div>
 	
