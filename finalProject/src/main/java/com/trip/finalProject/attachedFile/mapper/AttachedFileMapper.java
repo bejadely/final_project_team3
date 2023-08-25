@@ -6,6 +6,6 @@ import com.trip.finalProject.attachedFile.service.AttachedFileVO;
 
 public interface AttachedFileMapper {
 	public void insertAttachedFile(AttachedFileVO attachedFileVO);
-	
-	public List<AttachedFileVO> findByPostId(String postId);
+
+	public List<AttachedFileVO> findByPostId(AttachedFileVO vo);
 }
