@@ -40,28 +40,33 @@ public class TripServiceImpl implements TripService {
 		return tripMapper.selectTripInfo(tripVO);
 	}
 	
-	//여행기록 등록
+	//여행기록 등록(임시저장에서 저장으로 update)
 	@Override
 	public int InsertTripInfo(TripVO tripVO) {
-		return tripMapper.insertTripInfo(tripVO);
+		
+		int result = tripMapper.insertTripInfo(tripVO);
+		
+		return result;
 	}
+	
+	//여행기록 임시저장(임시저장 상태로 최초로 등록된 게시글을 다시 임시저장함)
+	@Override
+	public int TsTripInfo(TripVO tripVO) {
+		
+		int result = tripMapper.tsTripInfo(tripVO);
+		
+		return result;
+	}
+	
 
-	//여행기록 임시저장
+	//여행기록 등록 버튼 클릭시 실행(임시저장 상태)
 	@Override
 	public TripVO TsInsertTripInfo(TripVO tripVO) {
-		TripVO result = tripMapper.tsInsertTripInfo(tripVO);
-		if(result != null) {
-			// 성공 시 insert한 정보를 반환
-			tripVO.getPostId();
-			tripVO.getTripTitle();
-			tripVO.getStartDay();
-			tripVO.getEndDay();
-			
-			return tripVO;
-			
-		}else {
-			return null;
-		}
+		
+		// sql 실행
+		tripMapper.tsInsertTripInfo(tripVO);
+	
+		return tripVO;
 	}
 
 	//여행기록 지도 맵핑
@@ -70,7 +75,6 @@ public class TripServiceImpl implements TripService {
 		return tripMapper.insertTripMapping(tripVO);
 		
 	}
-
-
+	
 
 }

@@ -27,32 +27,39 @@
          <!-- 클릭 시 마커 생성 -->
          <div id="clickLatlng"></div>
       </div>
-      <!-- 키워드 검색 결과를 나타냄 -->
-      <div id="menu_wrap" class="map_wrap"
-         style="margin-left: 710px; margin-top: 280px; height: 800px; width: 700px; border: solid 1px;">
-         <div>
-            <input type="text" value="" id="keyword" size="50" placeholder="키워드를 입력 해주세요.">
-            <button onclick="initMap(); return false;">검색하기</button>
-         </div>
-         <ul id="placesList"></ul>
-         <div id="pagination"></div>
+      <div>
+      	<!-- 키워드 검색 결과를 나타냄 -->
+        <div style="height: 50px; width: 700px; border: solid 1px; margin-top: 10px;">
+        	<div style="margin-top: 10px; margin-left: 25px;">
+            	<input type="text" value="" id="keyword" size="50" placeholder="키워드를 입력 해주세요.">
+           		<button onclick="initMap(); return false;">검색하기</button>
+           		<button type="submit" id="mapping">경로 선택/수정</button>
+         	</div>
+       <div id="menu_wrap" class="map_wrap" style="margin-left: 710px; margin-top: 280px; height: 400px; width: 700px; border: solid 1px;">
+       <ul id="placesList"></ul>
+        <div id="pagination"></div>
       </div>
       
+         </div>
+      <div id="showMapping">
+      	<input type="hidden" name="postId" th:value="${tripVO.postId}">
+      </div>
       <div id="wrapper">
+      </div>
          <script>
             // 마커를 담는 배열
             var markers = [];
-
+            // 최종적으로 저장된 위도, 경도위 정보를 담아주는 배열
             var mapping = [];
-            
-                var polyline = null;
-
-                var markerPosition ;
+            // 지도상의 선을 초기화
+            var polyline = null;
+			// 생성된 마커의 위도, 경도를 담아줄 변수
+            var markerPosition ;
             // 지도를 표시할 div
             var mapContainer = document.getElementById('map'), mapOption = {
                // 최초로 생성된 지도의 중심좌표 
                //지금은 대구로 되어있지만 맵핑 등록기능 구현 완료 시 여행계획 등록시 선택한 지역의 시청 좌표값으로 변경할 예정
-               center : new kakao.maps.LatLng([[${tripVO.tripArea}]]),
+               center : new kakao.maps.LatLng(35.871159972672, 128.60183648521),
                // 지도의 확대 레벨
                level : 7
             };
@@ -82,7 +89,8 @@
             function searchPlaces() {
 
                var keyword = document.getElementById('keyword').value;
-
+				
+               //
                if (!keyword.replace(/^\s+|\s+$/g, '')) {
                   alert('키워드를 입력해주세요!');
                   return false;
@@ -144,20 +152,6 @@
 
                      // 리스트의 아이템을 클릭하면 정보들을 text 영역으로 전송 (hidden 사용가능)
                      itemEl.onclick = function() {
-                        if (praddress) {
-                           document.getElementById('fulladdress').value = "[" + pname + "]" + praddress;
-                        } else {
-                           document.getElementById('fulladdress').value = "[" + pname + "]" + paddress;
-                        }
-
-                        document.getElementById('pname').value = pname;
-                        if (praddress) {
-                           document.getElementById('paddress').value = praddress;
-                        } else {
-                           document.getElementById('paddress').value = paddress;
-                        }
-                        document.getElementById('latclick').value = plat;
-                        document.getElementById('lngclick').value = plng;
                                 
                         //여행경로에 추가할지 여부를 확인하는 함수
                         function addTripMarker(){
@@ -415,57 +409,37 @@
             
             $(document).ready(function() {
                $("#mapping").click(function() {
-                  mappingMarker();
-                  location.href="tripRecordList";
+            	   
+                   if(confirm("경로 선택을 완료하시겠습니까?")){
+                       // 마커 클릭 시 해당 마커와 그에 따른 선을 지우는 함수 호출
+                   mappingMarker();
+                   alert("완료 되었습니다.");
+                 //location.href="tripRecordList";
+                   return;
+                    }else{
+                          return;
+                    }
                });
             });
             
-            // mapping 배열에 넣은 값이 제대로 들어갔는지 확인하기 위한 함수
+            // 동적으로 html에 맵핑 되어있는 정보를 나타냄
             function mappingMarker() {
-                var mappingCoordinates = document.getElementById('mapping');
-                mappingCoordinates.innerHTML = '';
-
+                var mappingCoordinates = document.getElementById('showMapping');
+                mappingCoordinates.innerHTML ="";
                 for (var i = 0; i < mapping.length; i++) {
                    var mappingArry = mapping[i];
-                    var mappingString = '순번 ' + (i + 1) + ' 장소명 : ' + mappingArry.mapName + ', 위도 ' + mappingArry.mapLat + ', 경도 ' + mappingArry.mapLng + '<br>';
+                    var mappingString = "<input type='text' name='mapNo' value = '순번 " + (i + 1) + "'>" 
+                    					+ "<input type='text' name='mapName' value = '" + mappingArry.mapName + "'>" 
+                    					+ "<input type='hidden' name='mapLat' value = '" + mappingArry.mapLat + "'>"
+                    					+ "<input type='hidden' name='mapLng' value = '" + mappingArry.mapLng + "'>"
+                    					+ '<br>';
                     mappingCoordinates.innerHTML += mappingString;
+                    
                 }
-                sendMappingData(mapping);
-            }
-            
-            
-            //맵핑 배열을 json을 통해서 서버로 보내줌
-            function sendMappingData(data) {
-                fetch('mappingInsert', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data),
-                })
-                .then(response => response.json())
-                .then(result => {
-                })
-                .catch(error => {
-                    // 응답 실패 처리
-                });
+                //sendMappingData(mapping);
             }
             
          </script>
-
-         <div>
-            <!-- 위도 및 경도 좌표 및 위치정보 -->
-            <!-- 등록 완료되면 삭제예정 -->
-            <input type="text" id="fulladdress" name="fulladdress" style="width: 90%;" disabled> 
-            <input type="text" id="pname" name="pname" value=""> 
-            <input type="text" id="paddress" name="paddress" value=""> 
-            <input type="text" id="latclick" name="latclick" value=""> 
-            <input type="text" id="lngclick" name="lngclick" value="">
-         </div>
-         <div>
-             <button type="submit" id="mapping">경로 선택 완료</button>
-             <button type="button" onclick="location.href=''">이전으로 이동</button>
-         </div>
       </div>
    </div>
 </body>

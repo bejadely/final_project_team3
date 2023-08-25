@@ -35,7 +35,7 @@
 									<!-- modal에 띄우고자하는 코드 -->
 									<div id="test" class="modal" style="height: 600px;  width: 500px; text-align: center;">
 										<form name="sendData" action="tripRecordInsertForm" method="post">
-											<input type="hidden" name="writerId" value="${session.sessionId}">
+											<input type="hidden" name="writerId" th:value="${session.sessionId}">
   											<div style="margin-top: 40px;"> 
   												<h3>여행 타이틀</h3>
   												<input type="text" name="tripTitle" placeholder="타이틀을 입력 해주세요." >
