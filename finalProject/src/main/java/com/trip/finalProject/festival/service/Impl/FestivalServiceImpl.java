@@ -285,11 +285,18 @@ public class FestivalServiceImpl implements FestivalService {
         
 	}
 
-	//페이지 내 리스트로 관광정보 받아오기
+	//페이지 내 리스트 관광정보 받아오기
 	@Override
 	public List<FestivalInfoVO> getFestivalListInfo() {
 		
 		return festivalMapper.getFestivalListInfo();
+	}
+
+	//버튼 동작에 따라 현재달 축제 리스트 조회
+	@Override
+	public List<FestivalInfoVO> getFestivalNewList(int year, int month) {
+		
+		return festivalMapper.getFestivalNewList(year, month);
 	}
 
 }

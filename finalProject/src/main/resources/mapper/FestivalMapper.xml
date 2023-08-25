@@ -57,13 +57,23 @@
 	<select id="getFestivalListInfo" resultType="FestivalInfoVO">
 		 <![CDATA[
 			SELECT festival_name, start_date, end_date, area_code, sigungu_code, content_id
-			FROM festival_info
-			WHERE TO_DATE(start_date, 'YYYYMMDD') >= TRUNC(SYSDATE, 'MM')
-			  AND TO_DATE(start_date, 'YYYYMMDD') < ADD_MONTHS(TRUNC(SYSDATE, 'MM'), 1)
-			ORDER BY start_date
+			  FROM festival_info
+			 WHERE TO_DATE(start_date, 'YYYYMMDD') <= LAST_DAY(TRUNC(SYSDATE))
+			   AND TO_DATE(end_date, 'YYYYMMDD') >= TRUNC(SYSDATE, 'MM')
+	 	  ORDER BY TO_DATE(start_date, 'YYYYMMDD') DESC
 		]]> 
 	</select>
 	
+	<!-- 버튼 동작에 따라 현재달 축제 리스트 조회  -->
+	<select id = "getFestivalNewList" resultType="FestivalInfoVO">
+		<![CDATA[ 
+			SELECT festival_name, start_date, end_date, area_code, sigungu_code, content_id
+	  		  FROM festival_info
+	  		 WHERE TO_DATE(start_date, 'YYYYMMDD') <= LAST_DAY(TO_DATE(#{year} || #{month} || '01', 'YYYYMMDD'))
+	    	   AND TO_DATE(end_date, 'YYYYMMDD') >= TO_DATE(#{year} || #{month} || '01', 'YYYYMMDD')
+	   	  ORDER BY TO_DATE(start_date, 'YYYYMMDD') DESC
+		 ]]>
+	</select>
     <!-- 매일 오후 11시 50분쯤에 스케쥴러 돌리고, updateDate는 SYSDATE로 -->
 
 
