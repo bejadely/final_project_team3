@@ -109,17 +109,17 @@
 		  	</tr>
 		  </thead>
 		  <tbody class="table-group-divider">
-		    <tr th:each="festivalInfo : ${festivalList}" th:attr="data-content-id=${festivalInfo.contentId}">
+		    <tr id="tableContentId" th:each="festivalInfo : ${festivalList}" th:attr="data-content-id=${festivalInfo.contentId}">
 			    <th scope="row" th:text="${festivalInfo.festivalName}"></th>
-			    <td th:if="${festivalInfo.areaCode=='4'}" th:text="대구"></td>
-                <td th:if="${festivalInfo.areaCode=='6'}" th:text="부산"></td>
-                <td th:if="${festivalInfo.areaCode=='7'}" th:text="울산"></td>
-                <td th:if="${festivalInfo.areaCode =='35' and festivalInfo.sigunguCode=='2'}" th:text="경주"></td>
-                <td th:if="${festivalInfo.areaCode =='35' and festivalInfo.sigunguCode=='23'}" th:text="포항"></td>
-                <td th:if="${festivalInfo.areaCode =='35' and festivalInfo.sigunguCode=='11'}" th:text="안동"></td>
-                <td th:if="${festivalInfo.areaCode =='36' and festivalInfo.sigunguCode=='1'}" th:text="거제"></td>
-                <td th:if="${festivalInfo.areaCode =='36' and festivalInfo.sigunguCode=='17'}" th:text="통영"></td>
-			    <td th:text="|${festivalInfo.startDate} ~ ${festivalInfo.endDate}|"></td>
+			    <td id="tableText" th:if="${festivalInfo.areaCode=='4'}" th:text="대구"></td>
+                <td id="tableText" th:if="${festivalInfo.areaCode=='6'}" th:text="부산"></td>
+                <td id="tableText" th:if="${festivalInfo.areaCode=='7'}" th:text="울산"></td>
+                <td id="tableText" th:if="${festivalInfo.areaCode =='35' and festivalInfo.sigunguCode=='2'}" th:text="경주"></td>
+                <td id="tableText" th:if="${festivalInfo.areaCode =='35' and festivalInfo.sigunguCode=='23'}" th:text="포항"></td>
+                <td id="tableText" th:if="${festivalInfo.areaCode =='35' and festivalInfo.sigunguCode=='11'}" th:text="안동"></td>
+                <td id="tableText" th:if="${festivalInfo.areaCode =='36' and festivalInfo.sigunguCode=='1'}" th:text="거제"></td>
+                <td id="tableText" th:if="${festivalInfo.areaCode =='36' and festivalInfo.sigunguCode=='17'}" th:text="통영"></td>
+			    <td id="tableText" th:text="|${festivalInfo.startDate} ~ ${festivalInfo.endDate}|"></td>
 			</tr>
 		  </tbody>
 		</table><br>
@@ -230,16 +230,22 @@
 		  	}
 		});
 		calendar.render();
+		//이전달 버튼 누르면 새정보 조회
 		$('.fc-prev-button').on('click', function() {
 			let thisYear = $('#fc-dom-1').text().substr(0, 4);
 			let thisMonth = $('#fc-dom-1').text().substr(6, 8).replaceAll('월', '');
 			thisMonth = thisMonth.length == 1 ? '0' + thisMonth : thisMonth;
+			let festivalNewData = getFestivalNewList(thisYear, thisMonth);
+			
 		})
 
+		//다음달 버튼 누르면 새정보 조회
 		$('.fc-next-button').on('click', function() {
 			let thisYear = $('#fc-dom-1').text().substr(0, 4);
 			let thisMonth = $('#fc-dom-1').text().substr(6, 8).replaceAll('월', '');
 			thisMonth = thisMonth.length == 1 ? '0' + thisMonth : thisMonth;
+			let festivalNewData = getFestivalNewList(thisYear, thisMonth);
+			
 		})
 	});
 
@@ -339,8 +345,35 @@
 		// 모달창이 닫히면 무조건 모달 내부 데이터를 삭제해줌
 		clearModal();
 	})
-
 	
+	//축제정보리스트 fc-prev-button, fc-next-button에 따라 해당 달 정보 조회
+	function getFestivalNewList(thisYear, thisMonth){
+		$.ajax({
+			type: 'GET',
+			url: '/festivalList',
+			data: {
+				year : thisYear,
+				month : thisMonth
+			}
+		})
+		.done(function(data, textStatus, jqXHR){
+			console.log('done');
+		})
+		.fail(function(jqXHR, textStatus, errorThrown){
+			console.log('fail');
+		})
+	}
+
+	//축제정보리스트 기존 데이터 삭제
+	function clearTable() {
+		$('#tableContentId').text('');
+		$('#tableContentId').removeAttr();
+	}
+	//축제정보리스트 새로운 데이터 삽입
+	function appendFestivalNewList(){
+		
+		
+	}
 </script>	
 </div>
 </body>

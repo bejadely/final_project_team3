@@ -13,4 +13,6 @@ public interface FestivalService {
 
 	List<FestivalInfoVO> getFestivalListInfo();
 
+	List<FestivalInfoVO> getFestivalNewList(int year, int month);
+
 }

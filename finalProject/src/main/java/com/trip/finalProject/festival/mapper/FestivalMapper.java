@@ -11,6 +11,8 @@ public interface FestivalMapper {
 	List<FestivalInfoVO> getFestivalCalendarInfo();
 
 	List<FestivalInfoVO> getFestivalListInfo();
+
+	List<FestivalInfoVO> getFestivalNewList(int year, int month);
 	
 	
 }
