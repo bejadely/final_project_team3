@@ -56,7 +56,7 @@
   			     , member_name
   			     , origin_profile_img
   			     , saved_profile_img
-  			     , bank_name
+  			     , bank_code
   			     , account_number
   			  FROM member
   			 WHERE authority = 'A4'
