@@ -19,6 +19,9 @@ public interface MemberService {
 	public String insertMemberInfo(MemberVO memberVO);
 	
 	//int login(MemberVO memberVO);
+	
+	//가이드 회원가입
+	public String insertGuide(MemberVO memberVO);
 
 	MemberVO login(MemberVO memberVO);
 	
