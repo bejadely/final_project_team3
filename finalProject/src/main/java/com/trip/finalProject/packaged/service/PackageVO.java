@@ -23,7 +23,10 @@ public class PackageVO {
 	private Date deadlineDate;
 	private int maxReservation;
 	private String tourTheme;
-	
+	private String savedImg;
+	private String imgType;
+	private String loadingImg;
 	
 	private List<AttachedFileVO> attachList;
+	private List<AttachedFileVO> editorAttachList;
 }

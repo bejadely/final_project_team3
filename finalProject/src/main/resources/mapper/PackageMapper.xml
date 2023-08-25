@@ -2,8 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.trip.finalProject.packaged.mapper.PackageMapper">
-	<!-- 
+<mapper namespace="com.trip.finalProject.packaged.mapper.PackageMapper"> 
 	
 	 <insert id="insertEditor" parameterType="PackageVO">
 		<selectKey keyProperty="postId" resultType="String" order="BEFORE">
@@ -21,7 +20,7 @@
 						,end_date
 						,deadline_date
 						,max_reservation
-						,reg_date
+						,tour_theme
 					)
 				values
 					(
@@ -36,38 +35,16 @@
 						,#{tourTheme}
 					)
 	</insert>
-	 -->
-	<insert id="insertEditor" parameterType="PackageVO">
-		<selectKey keyProperty="postId" resultType="String" order="BEFORE">
-			SELECT 'pkg' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
-			FROM packaged
-			WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
-		</selectKey>
-		insert into packaged
-					(
-						post_id
-						,content
-						,name
-						,price
-						,tour_theme
+	 
 
-					)
-				values
-					(
-						#{postId}
-						,#{content}
-						,#{name}
-						,#{price}
-						,#{tourTheme}
-
-					)
-	</insert>
 	<select id="listPackage" resultType="PackageVO">
-		select post_id
-		from package_regist
+		select p.name, p.tour_theme, p.price, a.saved_img, p.post_id, a.loading_img
+		from package_regist p JOIN attached_file a ON p.post_id = a.post_id
+		WHERE a.img_type = 'U2'
 	</select>
+	
 	<select id="packageInfo" resultType="PackageVO">
-		SELECT content
+		SELECT content, name, price, start_date, end_date, deadline_date, max_reservation, tour_theme,post_id
 		FROM package_regist
 		WHERE post_id=#{postId}
 	</select>

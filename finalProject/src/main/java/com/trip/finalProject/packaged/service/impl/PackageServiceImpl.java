@@ -27,27 +27,25 @@ public class PackageServiceImpl implements PackageService {
 	
 	@Transactional
 	@Override
-	public String register(PackageVO vo) {
+	public void register(PackageVO vo) {
 		mapper.insertEditor(vo);
-		if (vo.getAttachList() == null || vo.getAttachList().size() <= 0) {
-			String err= "에러";
-			return err;
+		if (vo.getAttachList() == null || vo.getAttachList().size() <= 0) {			
+			return ;
+		}
+		if(vo.getEditorAttachList()==null || vo.getEditorAttachList().size()<=0) {
+			return;
 		}
 			vo.getAttachList().forEach(attach->{
 				attach.setPostId(vo.getPostId());
 				attachedFileMapper.insertAttachedFile(attach);
 			});
-		
-		return "package/packageList";
+			vo.getEditorAttachList().forEach(attach->{
+				attach.setPostId(vo.getPostId());
+				attachedFileMapper.insertAttachedFile(attach);
+			});
+				
 	}
 	
-	@Override
-	public int insertEdirotInfo(PackageVO packageVO) {
-		// TODO Auto-generated method stub
-		
-		return packageMapper.insertEditor(packageVO);
-	}
-
 	@Override
 	public PackageVO packageInfo(PackageVO packageVO) {
 		// TODO Auto-generated method stub

@@ -36,7 +36,6 @@ form {
 <!-- <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script> -->
 <script>
 $(document).ready(function() {	
-	
 
 ClassicEditor
 	.create(document.querySelector('#editor'), {
@@ -60,7 +59,7 @@ ClassicEditor
 				
 				return src.substring(src.lastIndexOf('/')+1);
 			});
-			
+			console.log(filenames);
 			fetch(`/deleteImg`,{
 				method: 'POST',
 				headers:{
@@ -75,25 +74,32 @@ ClassicEditor
 			})
 			
 		})
+		
+		
 		var formObj = $("#editorForm");
 		
-		document.getElementById("editorForm").addEventListener("submit",function(event){
+		//document.getElementById("editorForm").addEventListener("submit",function(event){
+		$("button[type='submit']").on("click",function(event){
+				
 			event.preventDefault();
+	
 			const data = editor.getData();
 			
 			let objData = serializeObject();
-			//console.log(objData);
+			
 			//sconsole.log(data);
-			const { tourTheme, name, price, startDate, endDate } = objData;
+			const { tourTheme, name, price, startDate, endDate, deadlineDate, maxReservation } = objData;
 			var combinedData={
 				content: data,
 				tourTheme: tourTheme,
 		        name: name,
 		        price: price,
 		        startDate: startDate,
-		        endDate: endDate
+		        endDate: endDate,
+		        deadlineDate: deadlineDate,
+		        maxReservation: maxReservation
 			};
-			//console.log(combinedData);
+			console.log(combinedData);
 		/* 	var xhr = new XMLHttpRequest();
 			
 			
@@ -104,11 +110,10 @@ ClassicEditor
 			}
 			xhr.open("post","insertEditor",true);
 			xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-
 			xhr.send(data); */
 			
 			
-			$.ajax({
+			/*$.ajax({
 				url:'insertFormData',
 				data: JSON.stringify(combinedData),
 				type: 'POST',
@@ -120,26 +125,52 @@ ClassicEditor
 				error : function(error){
 					console.log(error)
 				}
-			});
+			});*/
 			
 			var str="";
-			console.log($(".uploadResult ul li"));
 			$(".uploadResult ul li").each(function(i,obj){
 				var jobj = $(obj);
-				console.log(obj.originImg);
-				str += "<input type ='text' name='attachList["+i+"].originImg' value='"+jobj.data("filename")+"'>";
-				str += "<input type ='text' name='attachList["+i+"].savedImg' value='"+jobj.data("path")+"'>";
-				str += "<input type ='text' name='attachList["+i+"].imgType' value='"+jobj.data("type")+"'>";
+				str += "<input type ='hidden' name='attachList["+i+"].originImg' value='"+jobj.data("filename")+"'>";
+				str += "<input type ='hidden' name='attachList["+i+"].savedImg' value='"+jobj.data("path")+"'>";
+				str += "<input type ='hidden' name='attachList["+i+"].imgType' value='"+jobj.data("type")+"'>";
+				str += "<input type ='hidden' name='attachList["+i+"].loadingImg' value='"+jobj.data("loadingpath")+"'>";
 				
 			});
-			//location.href="packageInsertForm";
+			str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";
 			
-			formObj.append(str).submit();
 			
-
+			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
+			
+			const filenames = imgTags.map(img=> {
+				const src = img.getAttribute('src');
+				
+				return src;
+			});		
+			$.each(filenames,function(i,obj){
+				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
+			});
+			
+			
+			//filenames.forEach(function(src, i) {
+			   // var jobj = $(imgTags[i]);
+			    //console.log(jobj);
+			    //str += "<input type ='text' name='attachList[" + i + "].originImg' value='" + jobj. + "'>";
+			    //str += "<input type ='text' name='attachList[" + i + "].savedImg' value='" + jobj.data("path") + "'>";
+			    //str += "<input type ='text' name='attachList[" + i + "].imgType' value='" + jobj.data("type") + "'>";
+			//});
+			
+			
+			
+			
+			formObj.append(str);
+			document.getElementById('editorForm').action = "register";
+			document.getElementById('editorForm').submit();
+			
+			
+			
+			
 		})
-		
-		
+		//////////////////////////////////////////////////////////////////////
 	})
 	.catch(error => {
 		console.error(error);
@@ -169,7 +200,7 @@ ClassicEditor
 			let files = inputTag.files;
 			
 			for(let i=0; i<files.length; i++){
-				
+				console.log(files[i]);
 				imageData.append("mainImage",files[i]);
 			}
 		
@@ -234,7 +265,8 @@ ClassicEditor
 			//str += "<li><img src='display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"<li>";
 			
 			str += "<li data-path='"+obj.savedImg+"'";
-			str +=" data-filename='"+obj.originImg+"' data-type='"+obj.imgType+"'"+"><div>";
+			str +=" data-filename='"+obj.originImg+"' data-type='"+obj.imgType+"'";
+			str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div>";
 			str +="<span> " + obj.originImg +"</span>";
 			str +="<img src='display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
 		});
@@ -247,17 +279,15 @@ ClassicEditor
 </head>
 <body>
 <div layout:fragment="content">
-
-	<form  action="register" method="post" id="editorForm" enctype="multipart/form-data" >
-
+	<form method="post" id="editorForm" enctype="multipart/form-data" >
 		<div id="packageInfo">	
 			<div>
 				<label>테마</label>
 				<select name="tourTheme" id="tourTheme">
-					<option value="restaurant">맛집 투어</option>
-					<option value="Attractions">관광 명소 투어</option>
-					<option value="shopping">쇼핑 여행</option>
-					<option value="city">도시 여행</option>
+					<option value="맛집 투어">맛집 투어</option>
+					<option value="관광 명소 투어">관광 명소 투어</option>
+					<option value="쇼핑 여행">쇼핑 여행</option>
+					<option value="도시 여행">도시 여행</option>
 				</select>	
 			</div>	
 			<div class="uploadDiv">
@@ -303,7 +333,7 @@ ClassicEditor
 		<div id="editor">
 		
 		</div>
-		<input type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료"  />
+		<button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>
 		<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>
 	</form>
 
