@@ -9,4 +9,8 @@ public interface FestivalMapper {
     int getFestivalInfoAndSave(List<FestivalInfoVO> festivalInfoVOList);
 
 	List<FestivalInfoVO> getFestivalCalendarInfo();
+
+	List<FestivalInfoVO> getFestivalListInfo();
+	
+	
 }

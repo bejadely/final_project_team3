@@ -18,13 +18,14 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
 	crossorigin="anonymous"></script>
+<!-- icon cdn -->
+<script src="https://kit.fontawesome.com/d58c3728d1.js" crossorigin="anonymous"></script>
+
 <!-- jquery cdn -->
 <script
 		src="https://code.jquery.com/jquery-3.7.0.js"
 		integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
 		crossorigin="anonymous"></script>
-<!-- icon cdn -->
-<script src="https://kit.fontawesome.com/d58c3728d1.js" crossorigin="anonymous"></script>
 
 <!-- slick.js cdn -->
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
@@ -198,7 +199,7 @@
 				<div class="inner1">
 					<button type="button" class="btn btn-primary btn-lg prev prev1"><</button>
 					<button type="button" class="btn btn-primary btn-lg next next1">></button>
-					<div class="cards-wrapper1">
+					<div class="cards-wrapper cards-wrapper1">
 						<div th:each="item : ${tourSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 							<div class="image-wrapper">
 								<img th:src="${item.firstImage}" alt="...">
@@ -222,7 +223,7 @@
 				<div class="inner2">
 					<button type="button" class="btn btn-primary btn-lg prev prev2"><</button>
 					<button type="button" class="btn btn-primary btn-lg next next2">></button>
-					<div class="cards-wrapper2">
+					<div class="cards-wrapper cards-wrapper2">
 						<div th:each="item : ${foodSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 							<div class="image-wrapper">
 								<img th:src="${item.firstImage}" alt="...">
@@ -246,7 +247,7 @@
 				<div class="inner3">
 					<button type="button" class="btn btn-primary btn-lg prev prev3"><</button>
 					<button type="button" class="btn btn-primary btn-lg next next3">></button>
-					<div class="cards-wrapper3">
+					<div class="cards-wrapper cards-wrapper3">
 						<div th:each="item : ${shoppingSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 							<div class="image-wrapper">
 								<img th:src="${item.firstImage}" alt="...">
@@ -270,7 +271,7 @@
 				<div class="inner4">
 					<button type="button" class="btn btn-primary btn-lg prev prev4"><</button>
 					<button type="button" class="btn btn-primary btn-lg next next4">></button>
-					<div class="cards-wrapper4">
+					<div class="cards-wrapper cards-wrapper4">
 						<div th:each="item : ${cultureSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 							<div class="image-wrapper">
 								<img th:src="${item.firstImage}" alt="...">
@@ -294,7 +295,7 @@
 				<div class="inner5">
 					<button type="button" class="btn btn-primary btn-lg prev prev5"><</button>
 					<button type="button" class="btn btn-primary btn-lg next next5">></button>
-					<div class="cards-wrapper5">
+					<div class="cards-wrapper cards-wrapper5">
 						<div th:each="item : ${leportsSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 							<div class="image-wrapper">
 								<img th:src="${item.firstImage}" alt="...">
@@ -303,7 +304,7 @@
 								<h5 class="card-title" th:text="${item.title}" th:title="${item.title}"></h5>
 							</div>
 						</div>
-					</div>
+					</div><br>
 				</div>
 			</div>
 		</div>
@@ -331,19 +332,19 @@
 							<td colspan="3"><img id="modalImage" src="" style="width: 100%;"></td>
 						</tr>
 						<tr>
-							<th scope="row">주소</th>
+							<th scope="row" style="width: 25%">주소</th>
 							<td colspan="2" id="modalAddress" class="modalText"></td>
 						</tr>
 						<tr>
-							<th scope="row">전화번호</th>
+							<th scope="row" style="width: 25%">전화번호</th>
 							<td colspan="2" id="modalPhone" class="modalText"></td>
 						</tr>
 						<tr>
-							<th scope="row">주차</th>
+							<th scope="row" style="width: 25%">주차</th>
 							<td colspan="2" id="modalParking" class="modalText"></td>
 						</tr>
 						<tr>
-							<th scope="row">홈페이지</th>
+							<th scope="row" style="width: 25%">홈페이지</th>
 							<td colspan="2" id="modalHomepage" class="modalText"></td>
 						</tr>
 						</tbody>
@@ -365,27 +366,30 @@
 	</div>
 	
 	<script>
-	$(document).on('click', '.nav-link', function() {
-		//	로딩화면 시작 코드
-		toggleOverlay('block');
-
-		let areaCode = $(this).data('areaCode');
-		let sigunguCode = 0;
-		if(areaCode == '35' || areaCode == '36') {
-			sigunguCode = $(this).data('sigunguCode');
-		}
-
-		getTourInfoByLocation(areaCode, sigunguCode, function(data) {
-			if (data) {
-				clearAllTourInfo(); // 기존 데이터 삭제
-				appendAllTourInfo(data); // 받아온 데이터 append
-				changeLocationName(areaCode, sigunguCode); // 지역명 변경
+	$(document).ready(function() {
+		$.noConflict();	//	jquery 충돌 방지 코드
+	
+		$(document).on('click', '.nav-link', function() {
+			//	로딩화면 시작 코드
+			toggleOverlay('block');
+	
+			let areaCode = $(this).data('areaCode');
+			let sigunguCode = 0;
+			if(areaCode == '35' || areaCode == '36') {
+				sigunguCode = $(this).data('sigunguCode');
 			}
-
-			//로딩화면 종료 코드
-			toggleOverlay('none');
-		});
-	})
+	
+			getTourInfoByLocation(areaCode, sigunguCode, function(data) {
+				if (data) {
+					clearAllTourInfo(); // 기존 데이터 삭제
+					appendAllTourInfo(data); // 받아온 데이터 append
+					changeLocationName(areaCode, sigunguCode); // 지역명 변경
+				}
+	
+				//로딩화면 종료 코드
+				toggleOverlay('none');
+			});
+		})
 	//지역 이름 변경 코드
 	function changeLocationName(areaCode, sigunguCode) {
 		let locationName;
@@ -445,18 +449,18 @@
 				'sigunguCode': sigunguCode
 			}
 		})
-		.done(function(data, textStatus, jqXHR) {
-			console.log('done');
-			callback(data);
-		})
-		.fail(function(jqXHR, textStatus, errorThrown) {
-			console.log('fail');
-			callback(null);
-		})
+				.done(function(data, textStatus, jqXHR) {
+					console.log('done');
+					callback(data);
+				})
+				.fail(function(jqXHR, textStatus, errorThrown) {
+					console.log('fail');
+					callback(null);
+				})
 	}
 
 	function clearAllTourInfo() {
-		$('.carousel-inner').empty();
+		$('.cards-wrapper').empty();
 	}
 
 	function appendAllTourInfo(data) {
@@ -477,172 +481,147 @@
 		let node = ``;
 
 		for(let i = 0; i < tourSpot.length; i++) {
-			if(i == 0) {
-				node += `<div class="carousel-item active">`;
-			} else {
-				node += `<div class="carousel-item">`;
-			}
-			node += `<div class="cards-wrapper">`;
-
-			for(let j = 0; j < tourSpot[i].length; j++) {
-				node += `
-					<div class="card" data-content-id="${tourSpot[i][j].contentId}" data-content-type-id="${tourSpot[i][j].contentTypeId}" data-address="${tourSpot[i][j].address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
-						<div class="image-wrapper">
-							<img src="${tourSpot[i][j].firstImage}" loading="lazy">
-						</div>
-						<div class="card-body">
-							<h5 class="card-title" title="${tourSpot[i][j].title}">${tourSpot[i][j].title}</h5>
-						</div>
-					</div>
-				`;
-			}
 
 			node += `
+					<div class="card" data-content-id="${tourSpot[i].contentId}" data-content-type-id="${tourSpot[i].contentTypeId}" data-address="${tourSpot[i].address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+						<div class="image-wrapper">
+							<img src="${tourSpot[i].firstImage}" >
+						</div>
+						<div class="card-body">
+							<h5 class="card-title" title="${tourSpot[i].title}">${tourSpot[i].title}</h5>
+						</div>
 					</div>
-				</div>
 			`;
 		}
 
-		$('.inner1').append(node);
+		$('.cards-wrapper1').append(node);
+
+		$('.cards-wrapper1').slick('unslick');
+		$('.cards-wrapper1').slick({
+			slidesToShow: 3,
+			slidesToScroll: 3,
+			nextArrow:$('.next1'),
+			prevArrow:$('.prev1')
+		});
 	}
 
 	function appendFoodSpot(foodSpot) {
 		let node = ``;
 
 		for(let i = 0; i < foodSpot.length; i++) {
-			if(i == 0){
-				node += `<div class="carousel-item active">`;
-			} else {
-				node += `<div class="carousel-item">`;
-			}
-			node += `<div class="cards-wrapper">`;
 
-			for(let j = 0; j < foodSpot[i].length; j++) {
-				node +=`
-					<div class="card" data-content-id="${foodSpot[i][j].contentId}" data-content-type-id="${foodSpot[i][j].contentTypeId}" data-address="${foodSpot[i][j].address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+			node +=`
+					<div class="card" data-content-id="${foodSpot[i].contentId}" data-content-type-id="${foodSpot[i].contentTypeId}" data-address="${foodSpot[i].address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 						<div class="image-wrapper">
-							<img src="${foodSpot[i][j].firstImage}" loading="lazy">
+							<img src="${foodSpot[i].firstImage}" >
 						</div>
 						<div class="card-body">
-							<h5 class="card-title" title="${foodSpot[i][j].title}">${foodSpot[i][j].title}</h5>
+							<h5 class="card-title" title="${foodSpot[i].title}">${foodSpot[i].title}</h5>
 						</div>
 					</div>
-				`;
-			}
-
-			node += `
-					</div>
-				</div>
-			`;
+		`;
 		}
 
-		$('.inner2').append(node);
+		$('.cards-wrapper2').append(node);
+
+		$('.cards-wrapper2').slick('unslick');
+		$('.cards-wrapper2').slick({
+			slidesToShow: 3,
+			slidesToScroll: 3,
+			nextArrow:$('.next2'),
+			prevArrow:$('.prev2')
+		});
 	}
 
 	function appendShoppingSpot(shoppingSpot) {
 		let node = ``;
 
 		for(let i = 0; i < shoppingSpot.length; i++) {
-			if(i == 0){
-				node += `<div class="carousel-item active">`;
-			} else {
-				node += `<div class="carousel-item">`;
-			}
-			node += `<div class="cards-wrapper">`;
 
-			for(let j = 0; j < shoppingSpot[i].length; j++) {
-				node += `
-					<div class="card" data-cotent-id="${shoppingSpot[i][j].contentId}" data-content-type-id="${shoppingSpot[i][j].contentTypeId}" data-address="${shoppingSpot[i][j].address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+			node += `
+					<div class="card" data-cotent-id="${shoppingSpot[i].contentId}" data-content-type-id="${shoppingSpot[i].contentTypeId}" data-address="${shoppingSpot[i].address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 						<div class="image-wrapper">
-							<img src="${shoppingSpot[i][j].firstImage}" loading="lazy">
+							<img src="${shoppingSpot[i].firstImage}" >
 						</div>
 						<div class="card-body">
-							<h5 class="card-title" title="${shoppingSpot[i][j].title}">${shoppingSpot[i][j].title}</h5>
+							<h5 class="card-title" title="${shoppingSpot[i].title}">${shoppingSpot[i].title}</h5>
 						</div>
 					</div>
 				`;
-			}
-
-			node +=`
-					</div>
-				</div>
-			`;
 		}
 
-		$('.inner3').append(node);
+		$('.cards-wrapper3').append(node);
+
+		$('.cards-wrapper3').slick('unslick');
+		$('.cards-wrapper3').slick({
+			slidesToShow: 3,
+			slidesToScroll: 3,
+			nextArrow:$('.next3'),
+			prevArrow:$('.prev3')
+		});
 	}
 
 	function appendCultureSpot(cultureSpot) {
 		let node = ``;
 
 		for(let i = 0; i < cultureSpot.length; i++) {
-			if(i == 0){
-				node += `<div class="carousel-item active">`;
-			} else {
-				node += `<div class="carousel-item">`;
-			}
-			node += `<div class="cards-wrapper">`;
 
-			for(let j = 0; j < cultureSpot[i].length; j++) {
-				node +=`
-					<div class="card" data-content-id="${cultureSpot[i][j].contentId}" data-content-type-id="${cultureSpot[i][j].contentTypeId}" data-address="${cultureSpot[i][j].address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+			node +=`
+					<div class="card" data-content-id="${cultureSpot[i].contentId}" data-content-type-id="${cultureSpot[i].contentTypeId}" data-address="${cultureSpot[i].address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 						<div class="image-wrapper">
-							<img src="${cultureSpot[i][j].firstImage}" loading="lazy">
+							<img src="${cultureSpot[i].firstImage}" >
 						</div>
 						<div class="card-body">
-							<h5 class="card-title" title="${cultureSpot[i][j].title}">${cultureSpot[i][j].title}</h5>
+							<h5 class="card-title" title="${cultureSpot[i].title}">${cultureSpot[i].title}</h5>
 						</div>
 					</div>
 				`;
-			}
-			node += `
-					</div>
-				</div>
-			`;
-
 		}
 
-		$('.inner4').append(node);
+		$('.cards-wrapper4').append(node);
+
+		$('.cards-wrapper4').slick('unslick');
+		$('.cards-wrapper4').slick({
+			slidesToShow: 3,
+			slidesToScroll: 3,
+			nextArrow:$('.next4'),
+			prevArrow:$('.prev4')
+		});
 	}
 
 	function appendLeportsSpot(leportsSpot) {
 		let node = ``;
 
 		for(let i = 0; i < leportsSpot.length; i++) {
-			if(i == 0){
-				node += `<div class="carousel-item active">`;
-			} else {
-				node += `<div class="carousel-item">`;
-			}
-			node += `<div class="cards-wrapper">`;
 
-			for(let j = 0; j < leportsSpot[i].length; j++) {
-				node +=`
-					<div class="card" data-content-id="${leportsSpot[i][j].contentId}" data-content-type-id="${leportsSpot[i][j].contentTypeId}" data-address="${leportsSpot[i][j].address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+			node +=`
+					<div class="card" data-content-id="${leportsSpot[i].contentId}" data-content-type-id="${leportsSpot[i].contentTypeId}" data-address="${leportsSpot[i].address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 						<div class="image-wrapper">
-							<img src="${leportsSpot[i][j].firstImage}" loading="lazy">
+							<img src="${leportsSpot[i].firstImage}" >
 						</div>
 						<div class="card-body">
-							<h5 class="card-title" title="${leportsSpot[i][j].title}">${leportsSpot[i][j].title}</h5>
+							<h5 class="card-title" title="${leportsSpot[i].title}">${leportsSpot[i].title}</h5>
 						</div>
 					</div>
 				`;
-			}
-			node += `
-					</div>
-				</div>
-			`;
-
 		}
 
-		$('.inner5').append(node);
+		$('.cards-wrapper5').append(node);
+
+		$('.cards-wrapper5').slick('unslick');
+		$('.cards-wrapper5').slick({
+			slidesToShow: 3,
+			slidesToScroll: 3,
+			nextArrow:$('.next5'),
+			prevArrow:$('.prev5')
+		});
 	}
 
 	//	일반창 : 로딩창 오버레이 none, block 처리 함수
 	function toggleOverlay(display) {
 		display == 'block' ? $('.overlay').attr('style','display: block;') : $('.overlay').attr('style','display: none;');
 	}
-	
+
 	//	모달창 : 로딩창 오버레이 none, block 처리 함수
 	function toggleOverlayModal(display) {
 		display == 'block' ? $('.modal-overlay').attr('style','display: block;') : $('.modal-overlay').attr('style','display: none;');
@@ -652,7 +631,7 @@
 	$(document).on('click', '.card', function() {
 
 		toggleOverlayModal('block');
-		
+
 		let contentId = $(this).data('contentId');
 		let contentTypeId = $(this).data('contentTypeId');
 		let address = $(this).data('address');
@@ -682,16 +661,16 @@
 				'contentTypeId': contentTypeId
 			}
 		})
-		.done(function(data, textStatus, jqXHR) {
-			console.log('done');
+				.done(function(data, textStatus, jqXHR) {
+					console.log('done');
 
-			callback(data);
-		})
-		.fail(function(jqXHR, textStatus, errorThrown) {
-			console.log('fail');
+					callback(data);
+				})
+				.fail(function(jqXHR, textStatus, errorThrown) {
+					console.log('fail');
 
-			callback(null);
-		})
+					callback(null);
+				})
 	}
 
 	function appendSpotDetailInfo(data, address, title, image) {
@@ -731,53 +710,56 @@
 			sigunguCode = $('.nav-link.active').data('sigunguCode');
 		}
 		window.location.href=window.location.origin + "/localTourInfo/spotDetail?page=1&areaCode="+areaCode+"&contentTypeId="+contentTypeId+"&sigunguCode="+sigunguCode;
-		
+
 	})
-	
+
 	//검색정보 보내기
 	$('#button-addon2').on('click', function(e){
 		e.preventDefault();
 		let searchKeyWord = $('#search-input').val();
 		if(searchKeyWord.length<1){
-			 alert('1글자 이상 검색해주세요.');
-			
+			alert('1글자 이상 검색해주세요.');
+
 		}else{
 			window.location.href=window.location.origin + "/localTourInfo/search?searchKeyWord="+searchKeyWord;
 		}
-		
+
 	})
 
-	//slick.js 설정
-	$('.cards-wrapper1').slick({
-		slidesToShow: 3,
-		slidesToScroll: 3,
-		nextArrow:$('.next1'),
-		prevArrow:$('.prev1')
-	});
-	$('.cards-wrapper2').slick({
-		slidesToShow: 3,
-		slidesToScroll: 3,
-		nextArrow:$('.next2'),
-		prevArrow:$('.prev2')
-	});
-	$('.cards-wrapper3').slick({
-		slidesToShow: 3,
-		slidesToScroll: 3,
-		nextArrow:$('.next3'),
-		prevArrow:$('.prev3')
-	});
-	$('.cards-wrapper4').slick({
-		slidesToShow: 3,
-		slidesToScroll: 3,
-		nextArrow:$('.next4'),
-		prevArrow:$('.prev4')
-	});
-	$('.cards-wrapper5').slick({
-		slidesToShow: 3,
-		slidesToScroll: 3,
-		nextArrow:$('.next5'),
-		prevArrow:$('.prev5')
-	});
+		//slick.js 설정
+		$('.cards-wrapper1').slick({
+			slidesToShow: 3,
+			slidesToScroll: 3,
+			nextArrow:$('.next1'),
+			prevArrow:$('.prev1')
+		});
+		$('.cards-wrapper2').slick({
+			slidesToShow: 3,
+			slidesToScroll: 3,
+			nextArrow:$('.next2'),
+			prevArrow:$('.prev2')
+		});
+		$('.cards-wrapper3').slick({
+			slidesToShow: 3,
+			slidesToScroll: 3,
+			nextArrow:$('.next3'),
+			prevArrow:$('.prev3')
+		});
+		$('.cards-wrapper4').slick({
+			slidesToShow: 3,
+			slidesToScroll: 3,
+			nextArrow:$('.next4'),
+			prevArrow:$('.prev4')
+		});
+		$('.cards-wrapper5').slick({
+			slidesToShow: 3,
+			slidesToScroll: 3,
+			nextArrow:$('.next5'),
+			prevArrow:$('.prev5')
+		});
+	})
+
+
 	
 </script>
 
