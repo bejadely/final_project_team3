@@ -7,9 +7,15 @@ import com.google.gson.JsonObject;
 import com.trip.finalProject.festival.mapper.FestivalMapper;
 import com.trip.finalProject.festival.service.FestivalInfoVO;
 import com.trip.finalProject.festival.service.FestivalService;
+
+import groovyjarjarantlr4.v4.parse.ANTLRParser.finallyClause_return;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+
+import static org.hamcrest.CoreMatchers.nullValue;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -19,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 
 @Service
 public class FestivalServiceImpl implements FestivalService {
@@ -31,6 +38,8 @@ public class FestivalServiceImpl implements FestivalService {
     private String API_KEY;
 
 	private final int MANY_NUM_OF_ROWS = 999;
+	
+	private final int FESTIVAL_TYPE_ID = 15;
 	
 	//각 지역별 축제정보를 api요청 후 정보를 가져와서 map에 넣어줌
 	@Override
@@ -215,11 +224,72 @@ public class FestivalServiceImpl implements FestivalService {
 		return festivalInfoVOList;
 	}
 
-	//페이지 내 캘린더에 정보 조회
+	//페이지 내 캘린더에 필요한 정보 조회
 	@Override
 	public List<FestivalInfoVO> getFestivalCalendarInfo() {
 		
 		return festivalMapper.getFestivalCalendarInfo();
+	}
+
+	//모달창 내 소개정보 api로 받아오기
+	@Override
+	public String getFestivalContent(String contentId) {
+		
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("http://apis.data.go.kr/B551011/KorService1/detailInfo1");
+		stringBuilder.append("?serviceKey=" + API_KEY);
+		stringBuilder.append("&MobileApp=" + "AppTest");    //  고정값
+        stringBuilder.append("&MobileOS=" + "ETC"); //  고정값
+        stringBuilder.append("&_type=" + "json");
+        stringBuilder.append("&contentTypeId=" + FESTIVAL_TYPE_ID);
+        stringBuilder.append("&contentId=" + contentId);
+        
+        String apiUrl = stringBuilder.toString();
+        
+        try {
+        	URL url = new URL(apiUrl);
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod("GET");
+            BufferedReader bufferedReader;
+            bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+            String inputLine;
+            stringBuilder.setLength(0); //  위에서 쓴 StringBuilder를 초기화 시킨 후 다시 쓰기 위한 코드
+            while ((inputLine = bufferedReader.readLine()) != null) {
+                stringBuilder.append(inputLine);
+            }
+            bufferedReader.close();
+
+            String jsonString = stringBuilder.toString();
+
+            // Gson 객체 생성
+            Gson gson = new Gson();
+
+            // JSON 문자열을 JsonObject로 파싱
+            JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+
+            // 필요한 데이터 추출
+            JsonObject response = jsonObject.getAsJsonObject("response");
+            JsonObject body = response.getAsJsonObject("body");
+            JsonObject items = body.getAsJsonObject("items");
+            JsonArray itemsArray = items.getAsJsonArray("item");
+
+            JsonObject itemObject = itemsArray.get(0).getAsJsonObject();
+            String content = itemObject.get("infotext").getAsString();
+            
+        	return content;
+        }catch (Exception e) {
+			e.printStackTrace();
+			
+			return null;
+		}
+        
+	}
+
+	//페이지 내 리스트로 관광정보 받아오기
+	@Override
+	public List<FestivalInfoVO> getFestivalListInfo() {
+		
+		return festivalMapper.getFestivalListInfo();
 	}
 
 }
