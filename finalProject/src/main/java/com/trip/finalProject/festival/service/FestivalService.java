@@ -9,4 +9,8 @@ public interface FestivalService {
 
 	List<FestivalInfoVO> getFestivalCalendarInfo();
 
+	String getFestivalContent(String contentId);
+
+	List<FestivalInfoVO> getFestivalListInfo();
+
 }
