@@ -20,13 +20,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -53,7 +52,9 @@ public class UploadController {
 	
 	@Autowired
 	PackageService packageService;
-
+    
+	
+	//에디터 이미지 업로드
 	@PostMapping("upload")
 	public ModelAndView image(MultipartHttpServletRequest request)
 			throws Exception {
@@ -62,15 +63,12 @@ public class UploadController {
 		//System.out.println(map.get("mainImage"));
 		String saveName = null;
 		String loadingPathUrl = null;
-		
+		String originalFileName = null;
 		MappingJackson2JsonView jsonView = new MappingJackson2JsonView();
 
 		ModelAndView mav = new ModelAndView(jsonView);
 
 		List<MultipartFile> uploadFile = request.getFiles("upload");
-		
-		
-		
 		for (MultipartFile mf : uploadFile) {
 		
 			if (mf.getContentType().startsWith("image") == false) {
@@ -78,7 +76,7 @@ public class UploadController {
 				return null;
 			}
 			if (mf.getSize() > 0) {
-				String originalFileName = mf.getOriginalFilename();
+				originalFileName = mf.getOriginalFilename();
 				//System.out.println(originalFileName);
 				String ext = originalFileName.substring(originalFileName.indexOf("."));
 				//System.out.println(ext);
@@ -90,16 +88,16 @@ public class UploadController {
 				
 				String savePath = folderPath + "/" + newFileName;
 				// 파일을 저장할 경로
-				saveName = uploadPath + "/" + savePath;
+				saveName = uploadPath + "/" + setImagePath(savePath);
 				
 	
-				loadingPathUrl = "/upload/" + savePath;
+				loadingPathUrl = "/upload/" + setImagePath(savePath);
 				
 				//System.out.println(loadingPathUrl);
 
 				//System.out.println("savePath: " + savePath);
 
-				System.out.println("saveName: " + saveName);
+				//System.out.println("saveName: " + saveName);
 
 				// 업로드된 파일을 실제 경로로 복사
 				File file = new File(saveName);
@@ -117,18 +115,21 @@ public class UploadController {
 		//mav.addObject("path",saveName);
 		mav.addObject("uploaded", true);
 		mav.addObject("url",loadingPathUrl);
+		mav.addObject("filename",originalFileName);
 
 
 		return mav;
 	}
 	
 	
+	//첨부파일 이미지 업로드
 	@PostMapping("mainImageUpload")
 	@ResponseBody
 	public List<AttachedFileVO> uploadMainFile(MultipartFile[] mainImage){
 		
 		List<AttachedFileVO> imageList = new ArrayList<>();
 		String saveName = null;
+		String loadingPathUrl = null;
 		for (MultipartFile mf : mainImage) {
 			
 			if (mf.getContentType().startsWith("image") == false) {
@@ -142,15 +143,19 @@ public class UploadController {
 				//System.out.println(ext);
 				String newFileName = UUID.randomUUID() + ext;
 				//System.out.println(newFileName);
-				String imgType = "U2";
+
 				// 날짜 폴더 생성
 				String folderPath = makeFolder();
+				
+				
 				
 				String savePath = folderPath + "/" + newFileName;
 				// 파일을 저장할 경로
 				saveName = uploadPath + "/" +setImagePath(savePath);
 				
-
+				loadingPathUrl = "/upload/" + setImagePath(savePath);
+				
+				String imgType = "U2";
 				//System.out.println("savePath: " + savePath);
 
 				//System.out.println("saveName: " + saveName);
@@ -169,6 +174,8 @@ public class UploadController {
 				attachedFileVO.setOriginImg(originalFileName);
 				attachedFileVO.setSavedImg(saveName);
 				attachedFileVO.setImgType(imgType);
+				//실제 화면에 이미지 뿌려주는 url
+				attachedFileVO.setLoadingImg(loadingPathUrl);
 				imageList.add(attachedFileVO);
 				//imageList.add(setImagePath(savePath));
 				
@@ -287,25 +294,14 @@ public class UploadController {
 //		return data;
 //	}
 	
-	@PostMapping("insertFormData")
-	@ResponseBody
-	public int insertFormData(@RequestBody PackageVO combinedData) {
-		System.out.println(combinedData.getPrice());
-		System.out.println(combinedData.getContent());
-		return packageService.insertEdirotInfo(combinedData);
-	}
+	//@PostMapping("insertFormData")
+	//@ResponseBody
+	//public int insertFormData(@RequestBody PackageVO combinedData) {
+	//	System.out.println(combinedData.getPrice());
+	//	System.out.println(combinedData.getContent());
+	//	return packageService.insertEdirotInfo(combinedData);
+	//}
 	
-
-	@PostMapping("register")
-	public String register(PackageVO vo, RedirectAttributes rttr) {
-		if(vo.getAttachList() != null) {
-			vo.getAttachList();
-			System.out.println(vo.getAttachList());
-		}
-		
-		return packageService.register(vo);
-	}
 	
-
 
 }
