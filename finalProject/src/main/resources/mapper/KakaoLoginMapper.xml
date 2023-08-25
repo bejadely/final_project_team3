@@ -34,7 +34,7 @@
 					saved_profile_img,
 					birth_date,
 					gender,
-					SIGN_UP_DATE)
+					sign_up_date)
 		values
 					(#{id},
 					#{password},
@@ -42,8 +42,8 @@
 					#{email},
 					#{profileImage},
 					'940426',
-					'1'
-					,sysdate)
+					'G1',
+					sysdate)
 	</insert>
 		
 	

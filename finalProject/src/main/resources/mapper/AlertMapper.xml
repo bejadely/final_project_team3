@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  <mapper namespace="com.trip.finalProject.alert.mapper.AlertMapper">
+  		<!-- 알람 전체 조회 -->
+  		<select id="selectAllAlert" resultType="AlertVO">
+  		</select>
+  		
+  		<!-- 새로운 알람 내역 추가 -->
+  		<insert id="insertAlert">
+  			<selectKey keyProperty="alertId" resultType="String" order="BEFORE">
+			SELECT 'ALT' || (TO_NUMBER(NVL((SUBSTR(MAX(alert_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM alert
+			WHERE SUBSTR(alert_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+			</selectKey>
+  			INSERT INTO alert
+						(
+						 alert_id
+	  			       , alert_date
+	  			       , content
+	  			       , confirmation
+	  			       , member_id
+					   ) 
+					     VALUES
+					    (
+					     #{alertId}
+					   , sysdate
+					   , #{content}
+					   , 'W2'
+					   , #{memberId}
+					   )
+  		</insert>
+  		
+  		
+  		
+  </mapper>
