@@ -17,27 +17,27 @@
 						<tbody>
 							<tr>
 								<th width="150" align="center">아이디</th>
-								<td width="400" align="center">*{memberId}</td>
+								<td width="400" align="center" th:text="*{memberId}"></td>
 								<th width="150" align="center">가입일자</th>
-								<td width="400" align="center">*{signUpDate}</td>
+								<td width="400" align="center" th:text="*{signUpDate}"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">이름</th>
-								<td width="400" align="center">*{memberName}</td>
+								<td width="400" align="center" th:text="*{memberName}"></td>
 								<th width="150" align="center">권한분류</th>
-								<td width="400" align="center">*{authority}</td>
+								<td width="400" align="center" th:text="*{authority}"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">성별</th>
-								<td width="400" align="center">*{gender}</td>
+								<td width="400" align="center" th:text="*{gender}"></td>
 								<th width="150" align="center">생년월일</th>
-								<td width="400" align="center">*{birthDate}</td>
+								<td width="400" align="center" th:text="*{birthDate}"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">국적</th>
 								<td colspan="3" width="400" align="center">
 									<select>
-										<option>*{nationality}</option>
+										<option>[[*{nationality}]]</option>
 									</select>
 								</td>
 							</tr>
@@ -47,9 +47,9 @@
 							</tr>
 							<tr>
 								<th width="150" align="center">이메일</th>
-								<td width="400" align="center">*{email}</td>
+								<td width="400" align="center" th:text="*{email}"></td>
 								<th width="150" align="center">연락처</th>
-								<td width="400" align="center">*{phoneNumber}</td>
+								<td width="400" align="center" th:text="*{phoneNumber}"></td>
 							</tr>
 						</tbody>
 					</table>
@@ -62,13 +62,13 @@
 						<tbody>
 							<tr>
 								<th width="150" align="center">은행명</th>
-								<td width="400" align="center">bankName</td>
+								<td width="400" align="center" th:text="*{bankCode}"></td>
 								<th width="150" align="center">예금주</th>
-								<td width="400" align="center">memberName</td>
+								<td width="400" align="center" th:text="*{memberName}"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">계좌번호</th>
-								<td colspan="3" width="400" align="center">accountNumber</td>
+								<td colspan="3" width="400" align="center" th:text="*{accountNumber}"></td>
 							</tr>
 						</tbody>
 					</table>
