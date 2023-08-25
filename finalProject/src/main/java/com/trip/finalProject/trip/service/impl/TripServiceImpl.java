@@ -69,11 +69,19 @@ public class TripServiceImpl implements TripService {
 		return tripVO;
 	}
 
-	//여행기록 지도 맵핑
+	//여행경로 저장
 	@Override
 	public int InsertTripMapping(TripVO tripVO) {
 		return tripMapper.insertTripMapping(tripVO);
 		
+	}
+
+	//여행기록 삭제
+	@Override
+	public int DeleteTripInfo(int postId) {
+		int result = tripMapper.deleteTripInfo(postId);
+		
+		return result;
 	}
 	
 

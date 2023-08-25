@@ -27,7 +27,10 @@ public interface TripMapper {
 	//여행기록 등록 시 일단 게시글을 임시저장 상태로 등록해버림(임시저장 상태로 저장)
 	public int tsInsertTripInfo(TripVO tripVO);
 	
-	//여행기록 지도 맵핑
+	//여행경로 저장
 	public int insertTripMapping(TripVO tripVO);
+	
+	//여행기록 삭제
+	public int deleteTripInfo(int postId);
 	
 }

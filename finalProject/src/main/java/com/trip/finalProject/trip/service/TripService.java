@@ -27,9 +27,9 @@ public interface TripService {
 	public TripVO TsInsertTripInfo(TripVO tripVO);
 	
 	//여행기록 삭제
+	public int DeleteTripInfo(int postId);
 	
-	
-	//여행기록 지도 맵핑
+	//여행경로 저장
 	public int InsertTripMapping(TripVO tripVO);
 	
 }

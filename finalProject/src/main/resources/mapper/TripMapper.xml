@@ -168,5 +168,9 @@
 					  )
 	</insert>
 	
+	<!-- 여행기록 삭제 -->
+	<delete id="deleteTripInfo" parameterType="String">
+	
+	</delete>
 
 </mapper>
