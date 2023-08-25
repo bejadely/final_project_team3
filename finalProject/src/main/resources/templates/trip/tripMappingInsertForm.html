@@ -45,6 +45,16 @@
       <div id="showMapping">
       	<input type="hidden" name="postId" th:value="${tripVO.postId}">
       </div>
+      
+      <div id="div1">
+   <input type="text" id="div1-keyword" size="50" placeholder="키워드를 입력 해주세요.">
+   <button id="searchButton1">검색하기</button>
+</div>
+
+<div id="div2">
+   <input type="text" id="div2-keyword" size="50" placeholder="키워드를 입력 해주세요.">
+   <button id="searchButton2">검색하기</button>
+</div>
       <div id="wrapper">
       </div>
          <script>
@@ -80,7 +90,37 @@
                // 승인 버튼 클릭 시 발생 이벤트 설정
                initMap; 
                inMap;
+               $("#searchButton1").click(function() {
+                   performSearch('div1');
+               });
+
+               $("#searchButton2").click(function() {
+                   performSearch('div2');
+               });
             });
+            
+
+            function performSearch(divId) {
+                var keywordInput = document.getElementById(divId + '-keyword');
+                var keyword = keywordInput.value;
+
+                if (!keyword.replace(/^\s+|\s+$/g, '')) {
+                    alert('키워드를 입력해주세요!');
+                    return false;
+                }
+
+                ps.keywordSearch(keyword, function(data, status, pagination) {
+                    if (status === kakao.maps.services.Status.OK) {
+                        displayPlaces(data, divId);
+                        displayPagination(pagination, divId);
+                    } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+                        alert('검색 결과가 존재하지 않습니다.');
+                    } else if (status === kakao.maps.services.Status.ERROR) {
+                        alert('검색 결과 중 오류가 발생했습니다.');
+                    }
+                });
+            }
+            
 
              function initMap() {
                  // Call searchPlaces() when you want to initiate the search
