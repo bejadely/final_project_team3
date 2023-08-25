@@ -17,5 +17,6 @@ public class AuthConfirmVO {
 	public String status;
 	public String requesterId;
 	public String rejectReason;
+	public String rejectReasonDetail;
 	
 }

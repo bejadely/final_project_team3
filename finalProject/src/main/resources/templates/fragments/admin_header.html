@@ -45,6 +45,7 @@
                 <a href="#" class="property-sub">Submit Property</a>
             </div>
         </div>
+        
         <nav class="main-menu">
             <ul>
                 <li><a href="./index.html">Home</a></li>
@@ -105,12 +106,18 @@
                                 <img src="img/flag.png" alt="">
                                 <span>English</span>
                                 <i class="fa fa-angle-down"></i>
-                                <div class="flag-dropdown">
-                                    <ul>
+                                <!-- google api 기능 추가 -->
+                                <div id="google_translate_element" class="flag-dropdown">
+                                    <ul class="translation-links">
+										<li><a href="javascript:void(0)" class="english" data-lang="en">English</a></li>
+										<li><a href="javascript:void(0)" class="spanish" data-lang="es">Spanish</a></li>
+										<li><a href="javascript:void(0)" class="japanese" data-lang="ja">Japanese</a></li>
+									</ul>
+                                    <!-- <ul>
                                         <li><a href="#">English</a></li>
                                         <li><a href="#">Germany</a></li>
                                         <li><a href="#">China</a></li>
-                                    </ul>
+                                    </ul> -->
                                 </div>
                             </div>
                             <a href="#" class="property-sub">로그인</a>

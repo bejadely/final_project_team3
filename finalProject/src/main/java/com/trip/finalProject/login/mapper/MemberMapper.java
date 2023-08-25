@@ -31,4 +31,7 @@ public interface MemberMapper {
 	 
 	 //기존 DB에 계정 있는지 확인 (로그인 시)
 	 public MemberVO checkLoginAccount(MemberVO member);
+	 
+	 //관리자 회원가입
+	 public int insertGuide(MemberVO member);
 }
