@@ -47,6 +47,7 @@ public class AdminMemberController {
 		
 		// 모든 회원 정보 모델에 담기
 		model.addAttribute("list", list);
+		model.addAttribute("paging", pagingVO);
 		
 		return "admin/manageMember/seeAllMemberList";
 	}

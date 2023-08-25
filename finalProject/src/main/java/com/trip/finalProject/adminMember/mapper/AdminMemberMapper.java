@@ -3,11 +3,12 @@ package com.trip.finalProject.adminMember.mapper;
 import java.util.List;
 
 import com.trip.finalProject.adminMember.service.AdminMemberVO;
+import com.trip.finalProject.common.PagingVO;
 
 public interface AdminMemberMapper {
 	
 	// 회원정보 전체 조회
-	public List<AdminMemberVO> selectAllMemeber();
+	public List<AdminMemberVO> selectAllMemeber(PagingVO vo);
 	
 	// 전체 회원 수 카운트
 	public int getAllMemberCount();

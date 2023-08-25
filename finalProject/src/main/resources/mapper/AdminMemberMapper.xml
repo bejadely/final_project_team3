@@ -6,13 +6,12 @@
   <mapper namespace="com.trip.finalProject.adminMember.mapper.AdminMemberMapper">
   		<!-- 회원 전체 조회 -->
   		<select id="selectAllMemeber">
-  			SELECT member_id
-                 , member_name
-                 , phone_number
-                 , nationality
-                 , authority
-              FROM member
-          ORDER BY sign_up_date
+  			SELECT *
+			  FROM (SELECT ROWNUM rn, a.*
+			        FROM(SELECT *
+				         FROM member
+				         ORDER BY sign_up_date DESC) a )
+			  WHERE rn BETWEEN #{start} AND #{end}
   		</select>
   		
   		<!-- 전체 회원 수 카운트 -->
