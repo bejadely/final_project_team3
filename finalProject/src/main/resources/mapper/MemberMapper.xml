@@ -34,11 +34,11 @@
 			        ,#{address}
 			        ,#{addressDetail} 
 			        ,#{to}	
-			        , 'G1'	
+			        , 'A1'	
 			        , 'L1'
 			        ,#{birthDate}		            			        
 			        ,#{gender}			     
-			        ,sysdate
+			        , sysdate
 			        )
 			      
     </insert>
@@ -56,6 +56,8 @@
         			 ADDRESS,
         			 ADDRESS_DETAIL, 
         			 PHONE_NUMBER,
+        			 bankCode,
+        			 accountNumber,
         			 AUTHORITY,  
         			 LOGIN_TYPE    			  
         			 birth_date,
@@ -69,10 +71,12 @@
 			        ,#{nationality}
 			        ,#{email}	   		       
 			        ,#{zipCode} 
-			        ,#{addr}
+			        ,#{address}
 			        ,#{addressDetail} 
-			        ,#{to}	
-			        , 'G1'	
+			        ,#{to}				        
+			         ,#{bankCode}
+        			 ,#{accountNumber}
+			        , 'G2'	
 			        , 'L1'
 			        ,#{birthDate}		            			        
 			        ,#{gender}			     
