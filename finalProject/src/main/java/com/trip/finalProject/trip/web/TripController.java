@@ -39,12 +39,12 @@ public class TripController {
 		return "trip/tripRecordList";
 	}
 	
-	//여행기록 개인 조회
+	//여행기록 개인 조회/계획중 여행 - myPgae(재운)
 	@GetMapping("myPageTrip")
 	public String maPageTrip(Model model
 			  ,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
-			  ,@RequestParam(value = "cntPerPage", defaultValue = "12") Integer cntPerPage) {
-		int total = tripService.tripRecordCount();
+			  ,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
+		int total = tripService.tripPerCount();
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 		List<TripVO> tripList = tripService.getTripPer(pagingVO);
 		
@@ -52,6 +52,36 @@ public class TripController {
 		model.addAttribute("paging", pagingVO);
 		
 		return "myPage/myPageTrip";
+	}
+	
+	//여행기록 개인 조회/임시저장 - myPgae(재운)
+	@GetMapping("myPageNotTrip")
+	public String maPageNotTrip(Model model
+			,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
+			,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
+		int total = tripService.tripPerNotCount();
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		List<TripVO> tripList = tripService.getTripPerNot(pagingVO);
+		
+		model.addAttribute("tripList", tripList);
+		model.addAttribute("paging", pagingVO);
+		
+		return "myPage/myPageNotTrip";
+	}
+	
+	//여행기록 개인 조회/완료된 여행 - myPgae(재운)
+	@GetMapping("myPageComTrip")
+	public String maPageComTrip(Model model
+			,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
+			,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
+		int total = tripService.tripPerComCount();
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		List<TripVO> tripList = tripService.getTripPerCom(pagingVO);
+		
+		model.addAttribute("tripList", tripList);
+		model.addAttribute("paging", pagingVO);
+		
+		return "myPage/myPageComTrip";
 	}
 	
 	//여행기록 등록 - form
