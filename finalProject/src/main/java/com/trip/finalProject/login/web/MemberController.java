@@ -31,6 +31,9 @@ public class MemberController {
 	
 	@Autowired
 	NaverLoginVO naverLoginVO;
+	
+    @Autowired
+    HttpSession session;
 //	private String apiResult = null;
 	
 	//회원가입
@@ -52,15 +55,26 @@ public class MemberController {
 	
 	
 	
+	//가이드 회원가입
+	@GetMapping("member/guideInsert")
+	public String guideInsertForm(MemberVO memberVO) { 
+		
+		/* memberService.insertMemberInfo(memberVO); */
+		 
+		return "member/guideInsert";
+	}
+	
+	
 	//멤버 로그인화면 호출
 	@GetMapping("/member/login")
-	public void loginMainForm(HttpSession session, Model model) {
-		
+	public void loginMainForm( Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession(true);
+		System.out.println(session.getId());
 		/* 네이버아이디로 인증 URL을 생성하기 위하여 naverLoginVO클래스의 getAuthorizationUrl메소드 호출 */
 		String naverAuthUrl = naverLoginVO.getAuthorizationUrl(session);
 		
 		
-		// System.out.println("네이버:" + naverAuthUrl);
+		System.out.println("네이버:" + naverAuthUrl);
 		
 		//네이버 
 		model.addAttribute("url", naverAuthUrl);
@@ -74,7 +88,7 @@ public class MemberController {
 	
 	
 
-	//form의 action에 따른 로그인 처리
+	//form의 action에 따른 일반로그인 처리
 	@PostMapping("/star")
 	public String login(@ModelAttribute MemberVO memberVO, Model model, HttpServletRequest request) {
 		
@@ -112,7 +126,7 @@ public class MemberController {
 	
 
 	
-	//회원가입 시 아이디 중복체크	  
+	//회원 가입시 아이디 중복체크	  
 	  @PostMapping("/idCheck") 
 	  @ResponseBody 
 	  public int idCheck(MemberVO memberVO) {
@@ -128,7 +142,7 @@ public class MemberController {
 	 
 	  }
 	  
-	 //로그인 시 계정 DB확인 
+	 //로그인시  회원계정 DB확인 
 	  @PostMapping("/loginAccountCheck") 
 	  @ResponseBody 
 	  public int loginAccountCheck(MemberVO memberVO) {
@@ -147,8 +161,8 @@ public class MemberController {
 	  
 		//회원정보 가져오기
 		@GetMapping("myPage")
-		public String memberInfo(MemberVO memberVO, Model model) {
-			memberVO.setMemberId("kimnana");  //to do 
+		public String memberInfo(MemberVO memberVO, Model model,HttpServletRequest request) {
+			memberVO.setMemberId(session.getAttribute("sessionId").toString());  //to do 
 			MemberVO findVO = memberService.memberInfo(memberVO);
 			model.addAttribute("memberInfo", findVO);
 			return "myPage/myPage";
@@ -157,7 +171,7 @@ public class MemberController {
 		//회원수정 폼 호출
 		@GetMapping("myPageUpdate")
 		public String memberUpdate(MemberVO memberVO, Model model) {
-			memberVO.setMemberId("kimnana");
+			memberVO.setMemberId(session.getAttribute("sessionId").toString());
 			MemberVO findVO = memberService.memberInfo(memberVO);
 			model.addAttribute("memberInfo", findVO);
 			return "myPage/myPageUpdate";
@@ -167,7 +181,7 @@ public class MemberController {
 		@PostMapping("myPageUpdate")
 		@ResponseBody
 		public Map<String, String> memberUpdatePro(@RequestBody MemberVO memberVO){
-			memberVO.setMemberId("kimnana");
+			memberVO.setMemberId(session.getAttribute("sessionId").toString());
 			return memberService.updateMember(memberVO);
 		}
 	  
