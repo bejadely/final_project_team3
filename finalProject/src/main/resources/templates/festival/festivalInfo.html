@@ -22,12 +22,17 @@
 		src="https://code.jquery.com/jquery-3.7.0.js"
 		integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
 		crossorigin="anonymous"></script>
-<!-- fullcalendar cdn-->
+ <!-- fullcalendar cdn-->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 <!-- fullcalendar 언어 설정관련 script -->
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
+<!-- Flatpickr cdn -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_green.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
 <style>
  #calendar {
  		margin: 0 auto;
@@ -39,8 +44,39 @@
     text-align: center; 
 }
 .bold-event {
-    font-weight: bold;  /* 글자 굵기를 굵게 설정 */
+    font-weight: bold;  
 }
+.fc-event {
+    height: 16px; 
+    font-size: 10px; 
+}
+.fc-more-link {
+    font-size: 8px; 
+}
+.fc-day {
+    font-size: 12px; 
+    
+}
+.fc-daygrid-day {
+    height: 100px; 
+    text-align: left; 
+}
+#festivalInfo th {
+	vertical-align: middle;
+	font-size: 13px;
+	text-align: left;
+}
+#festivalInfo td {
+    font-size: 13px;
+    text-align: left;
+}
+.modalText{
+	font-size: 13px;
+}
+.table-sm td, .table-sm th {
+    font-size: 12px; /* 원하는 글자 크기로 조정하세요 */
+}
+
 </style>
 </head>
 <body>
@@ -73,56 +109,238 @@
 		  	</tr>
 		  </thead>
 		  <tbody class="table-group-divider">
-		    <tr>
-			    <th scope="row">대구사과축제</th>
-			    <td>대구</td>
-			    <td>8월20일~8월24일</td>
-			 </tr>
+		    <tr th:each="festivalInfo : ${festivalList}" th:attr="data-content-id=${festivalInfo.contentId}">
+			    <th scope="row" th:text="${festivalInfo.festivalName}"></th>
+			    <td th:if="${festivalInfo.areaCode=='4'}" th:text="대구"></td>
+                <td th:if="${festivalInfo.areaCode=='6'}" th:text="부산"></td>
+                <td th:if="${festivalInfo.areaCode=='7'}" th:text="울산"></td>
+                <td th:if="${festivalInfo.areaCode =='35' and festivalInfo.sigunguCode=='2'}" th:text="경주"></td>
+                <td th:if="${festivalInfo.areaCode =='35' and festivalInfo.sigunguCode=='23'}" th:text="포항"></td>
+                <td th:if="${festivalInfo.areaCode =='35' and festivalInfo.sigunguCode=='11'}" th:text="안동"></td>
+                <td th:if="${festivalInfo.areaCode =='36' and festivalInfo.sigunguCode=='1'}" th:text="거제"></td>
+                <td th:if="${festivalInfo.areaCode =='36' and festivalInfo.sigunguCode=='17'}" th:text="통영"></td>
+			    <td th:text="|${festivalInfo.startDate} ~ ${festivalInfo.endDate}|"></td>
+			</tr>
 		  </tbody>
 		</table><br>
 		<!-- 페이징 -->
 		<!-- 모달 -->
+		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h1 class="modal-title fs-5" id="staticBackdropLabel">축제 정보</h1>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		      	
+		        <table class="table table-sm" id="festivalInfo">
+                    <tbody>
+	                    <tr>
+	                        <td colspan="3">
+		                        <img id="modalImage" style="width: 100%;">
+	                        </td>
+	                    </tr>
+	                    <tr>
+	                        <th scope="row" style="width: 25%">축&ensp;제&ensp;명</th>
+	                        <td colspan="2" id="title">
+	                        	<input id="titleInput" type="text" style="width: 100%;" class="modalText">
+	                        </td>
+	                    </tr>
+	                    <tr>
+	                        <th scope="row" style="width: 25%">일&emsp;&emsp;정</th>
+	                        <td colspan="2" id="date">
+	                        	<input id="dateInput" type="text" style="width: 100%;" class="modalText">
+	                        </td>
+	                    </tr>
+	                    <tr>
+	                        <th scope="row" style="width: 25%">주&emsp;&emsp;소</th>
+	                        <td colspan="2" id="address">
+	                        <div class="input-wrapper">
+		                        <textarea id="addressInput" style="width: 100%;" class="modalText"></textarea>
+	                        </div>
+	                        </td>
+	                    </tr>
+	                    <tr>
+	                        <th scope="row" style="width: 25%">행사소개</th>
+	                        <td colspan="2" id="content">
+	                        	<textarea id="contentInput"  style="width: 100%;" class="modalText"></textarea>
+	                         </td>
+	                    </tr>
+                    </tbody>
+                </table>
+			  </div>
+		      <div class="modal-footer">
+		      	<button type="button" id="modifyButton" class="btn btn-primary">수정</button>
+		        <button type="button" id="deleteButton" class="btn btn-primary">삭제</button>
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 	</div>
 <script th:inline="javascript">
-		let calendarData =  [[${festivalCalendar}]];
-		let event = [];  // 추가할 값을 넣을 배열 생성
-		
-		
-		for (let i = 0; i < calendarData.length; i++) {
-		    event.push({
-		        title: calendarData[i].festivalName,
-		        start: calendarData[i].startDate,
-		        end: calendarData[i].endDate,
-		        color: 'rgba(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',0.5)',
-		        textColor: '#333333',
-		        classNames: ['bold-event']
-		    
-		        
-		    });
-		}
+	const calendarData =  [[${festivalCalendar}]];
+	let event = [];  // 추가할 값을 넣을 배열 생성
+
+	// const isAdminLogin = [[${isAdminLogin}]];	//	관리자 로그인 여부를 model로 보내준 값
+	// const isAdminLogin = true;	//	테스트용 관리자 로그인
+	 const isAdminLogin = false;	//	테스트용 일반 유저 로그인
+
+	for (let i = 0; i < calendarData.length; i++) {
+	    event.push({
+	        title: calendarData[i].festivalName,
+	        start: calendarData[i].startDate,
+	        end: calendarData[i].endDate,
+	        color: 'rgba(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',0.5)',
+	        textColor: '#333333',
+	        contentId : calendarData[i].contentId,
+			festivalImg: calendarData[i].festivalImg,
+			address: calendarData[i].address,
+			// infotext: calendarData[i].infotext,
+	        classNames: ['bold-event']
+	    });
+	}
 	
-document.addEventListener('DOMContentLoaded', function() {
-	var calendarEl = document.getElementById('calendar');
-	var calendar = new FullCalendar.Calendar(calendarEl, {
-		initialView : 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
-		locale: 'ko', // 한국어 설정
-	headerToolbar : { // 헤더에 표시할 툴 바
-			start : 'prev',
-			center : 'title',
-			end : 'next'
-		},
-		titleFormat : function(date) {
-			return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
-		},
-		//initialDate: '2021-07-15', // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
-		selectable : true, // 달력 일자 드래그 설정가능
-		droppable : true,
-		editable : true,
-		nowIndicator: true, // 현재 시간 마크
-		events : event
+	document.addEventListener('DOMContentLoaded', function() {
+		var calendarEl = document.getElementById('calendar');
+		var calendar = new FullCalendar.Calendar(calendarEl, {
+				initialView : 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
+				locale: 'ko', // 한국어 설정
+				headerToolbar : { // 헤더에 표시할 툴 바
+				start : 'prev',
+				center : 'title',
+				end : 'next'
+			},
+			titleFormat : function(date) {
+				return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
+			},
+			//initialDate: '2021-07-15', // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
+			selectable : true, // 달력 일자 드래그 설정가능
+			droppable : true,
+			editable : true,
+			nowIndicator: true, // 현재 시간 마크
+			dayMaxEvents: true, //최대 이벤트 개수를 제한, 더보기링크 추가
+			moreLinkText: 'more',
+			events : event,
+			eventClick: function(arg) {
+					clearModal();
+					addModalInfo(arg);
+					$('#staticBackdrop').modal('show');
+		  	}
+		});
+		calendar.render();
+		$('.fc-prev-button').on('click', function() {
+			let thisYear = $('#fc-dom-1').text().substr(0, 4);
+			let thisMonth = $('#fc-dom-1').text().substr(6, 8).replaceAll('월', '');
+			thisMonth = thisMonth.length == 1 ? '0' + thisMonth : thisMonth;
+		})
+
+		$('.fc-next-button').on('click', function() {
+			let thisYear = $('#fc-dom-1').text().substr(0, 4);
+			let thisMonth = $('#fc-dom-1').text().substr(6, 8).replaceAll('월', '');
+			thisMonth = thisMonth.length == 1 ? '0' + thisMonth : thisMonth;
+		})
 	});
-	calendar.render();
-});
+
+	function getFormattedDate(dateString) {
+		let date = new Date(dateString);
+
+		// 년, 월, 일 추출
+		let year = date.getFullYear();
+		let month = (date.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더함
+		let day = date.getDate().toString().padStart(2, '0');
+
+		// 결과 출력 (yyyyMMdd 형식)
+		let formattedDate = year + '-' + month + '-' + day;
+
+		return formattedDate;
+	}
+
+	//Flatpickr로 Datepicker로 설정
+	let fp = flatpickr(document.getElementById("dateInput"), {
+		'monthSelectorType' : 'static',
+		"locale": "ko",
+		"mode" : "range"
+	});
+
+	function addModalInfo(arg) {
+		//축제정보 db에서 받아 왔던 값 append 부분
+		let title = arg.event.title;
+		let start = getFormattedDate(arg.event.start);
+		let end = getFormattedDate(arg.event.end);
+		let contentId = arg.event.extendedProps.contentId;
+		let festivalImg = arg.event.extendedProps.festivalImg;
+		let address = arg.event.extendedProps.address;
+
+		//api로 소개정보 넣기
+		getfestivalContent(contentId, function(content) {
+	        $('#contentInput').val(content);
+	        
+	    });
+		
+		$('#titleInput').val(title);
+		if(festivalImg == null) {
+			$('#modalImage').attr('src', '/img/no-image.png');
+		} else {
+			$('#modalImage').attr('src', festivalImg);
+		}
+		$('#dateInput').val(start + ' ~ ' + end);
+		$('#addressInput').val(address);
+		$('#contentInput').val(content);
+		
+
+		//	관리자 로그인 여부에 따른 readonly 및 display none 처리
+		if(isAdminLogin) {
+			$('.modalText').removeClass('form-control-plaintext');
+			$('.modalText').removeAttr('readonly');
+			$('#dateInput').addClass('form-control-plaintext');
+			$('#dateInput').attr('readonly', 'true');
+			$('#modifyButton').attr('style', 'display:block;');
+			$('#deleteButton').attr('style', 'display:block;');
+		} else {
+			$('.modalText').addClass('form-control-plaintext');
+			$('.modalText').attr('readonly', 'true');
+			$('#modifyButton').attr('style', 'display:none;');
+			$('#deleteButton').attr('style', 'display:none;');
+			fp.destroy();
+		}
+	}
+
+	//api로 소개정보 넣기
+	function getfestivalContent(contentId,callback){
+		let contentIddata = contentId;
+		 
+		$.ajax({
+			type: 'GET',
+			url: '/content',
+			data: {
+				contentId : contentIddata
+			}
+		})
+		.done(function(data, textStatus, jqXHR){
+			console.log('done');
+			
+			callback(data);
+		})
+		.fail(function(jqXHR, textStatus, errorThrown){
+			console.log('fail');
+		})
+		
+	}
+	
+	function clearModal() {
+		$('.modalText').val('');
+		$('#modalImage').attr('src', '');
+	}
+
+	const myModalEl = document.getElementById('staticBackdrop')
+	myModalEl.addEventListener('hidden.bs.modal', event => {
+		// 모달창이 닫히면 무조건 모달 내부 데이터를 삭제해줌
+		clearModal();
+	})
+
+	
 </script>	
 </div>
 </body>

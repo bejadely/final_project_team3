@@ -42,7 +42,7 @@ public class KakaoLoginController {
     
   //session객체에 담긴 정보를 초기화
     session.invalidate(); 	
-    
+    session.setAttribute("sessionId", userInfo.getMemberId());
   	session.setAttribute("kakaoN", userInfo.getMemberName());
   	session.setAttribute("kakaoE", userInfo.getEmail());
   	session.setAttribute("kakaoProfile", userInfo.getSavedProfileImg()); 	
