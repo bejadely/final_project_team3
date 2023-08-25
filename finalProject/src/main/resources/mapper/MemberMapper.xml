@@ -56,10 +56,10 @@
         			 ADDRESS,
         			 ADDRESS_DETAIL, 
         			 PHONE_NUMBER,
-        			 bankCode,
-        			 accountNumber,
+        			 bank_Code,
+        			 ACCOUNT_NUMBER,
         			 AUTHORITY,  
-        			 LOGIN_TYPE    			  
+        			 LOGIN_TYPE,    			  
         			 birth_date,
         			 gender,
         			 SIGN_UP_DATE
@@ -74,9 +74,9 @@
 			        ,#{address}
 			        ,#{addressDetail} 
 			        ,#{to}				        
-			         ,#{bankCode}
-        			 ,#{accountNumber}
-			        , 'G2'	
+			        ,#{bankCode}
+        			,#{accountNumber}
+			        , 'A4'	
 			        , 'L1'
 			        ,#{birthDate}		            			        
 			        ,#{gender}			     
