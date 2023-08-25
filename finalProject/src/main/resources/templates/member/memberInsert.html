@@ -87,7 +87,7 @@
 								
 										
 										<div class="mb-3">
-											<input type="text" id="addr" name="address" onclick="openZipSearch();" readonly="readonly" class="form-control" placeholder="기본주소" style="width: 50%;"> 
+											<input type="text" id="address" name="address" onclick="openZipSearch();" readonly="readonly" class="form-control" placeholder="기본주소" style="width: 50%;"> 
 											<input type="text" id="addressDetail" name="addressDetail" class="form-control" placeholder="상세주소" style="width: 50%;">
 										</div>
 
@@ -102,7 +102,7 @@
 										</div>
 										 <br>
    										 
-									<!-- 		 <input type="hidden" id="numValue" value="${smsMap.num}"> -->
+									 		 <input type="hidden" id="numValue" value=""> 
 
 
 
@@ -122,10 +122,7 @@
 											<input type="radio" name="gender" value="G2">여
 										</div>
 										<input type="submit" value="회원가입" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">
-										<div class="d-flex align-items-center justify-content-center">
-											<p class="fs-4 mb-0 fw-bold">Already have an Account?</p>
-											<a class="text-primary fw-bold ms-2" href="./authentication-login.html">Sign In</a>
-										</div>
+					
 								</form>
 							</div>
 						</div>
@@ -136,89 +133,38 @@
 
 
 
-		<!-- sms전송 -->
-		<a th:href="@{/send1}">sms</a> <a th:href="@{/sendemail}">이메일전송</a>
-
-
-		<form th:action="@{/check1}">
-
-			<table>
-				<!-- 	<tr class="form-group">
-				<td>은행코드</td>
-				<td><input type="text" class="form-control"  name="bank_code"
-					placeholder="은행코드 입력하세요"></td>
-			</tr> -->
-				<tr>
-
-					<td>은행코드 <select class="" id="bank_code" name="bank_code" aria-label="Default select example">
-							<option value="">은행선택</option>
-							<option value="004">국민은행</option>
-							<option value="020">우리은행</option>
-							<option value="088">신한은행</option>
-							<option value="003">기업은행</option>
-							<option value="023">SC제일은행</option>
-							<option value="011">농협은행</option>
-							<option value="005">외환은행</option>
-							<option value="090">카카오뱅크</option>
-							<option value="032">부산은행</option>
-							<option value="071">우체국</option>
-							<option value="031">대구은행</option>
-							<option value="037">전북은행</option>
-							<option value="035">제주은행</option>
-							<option value="007">수협은행</option>
-							<option value="027">씨티은행</option>
-							<option value="039">경남은행</option>
-					</select>
-					</td>
-
-				</tr>
-
-
-				<tr class="form-group">
-					<td>계좌번호</td>
-					<td><input type="text" class="form-control" id="bank_num" name="bank_num" placeholder="계좌번호 입력하세요"></td>
-				</tr>
-				<tr class="form-group">
-					<td>예금주</td>
-					<td><input type="text" class="form-control" id="bankHolderInfo" name="bankHolderInfo" placeholder="이름" readonly></td>
-				</tr>
-
-			</table>
-			<button class="btn btn-default">확인</button>
-		</form>
-	</div>
-
-			
+		
 
 <!--sms 코드 전송-->	
 	<script th:inline="javascript">
 		$(document).ready(function() {
 		      // 승인 버튼. 클릭(이벤트)발생시  ajaxApprove메서드 실행 설정(핸들러)
-		      $('#approveButton').on('click', ajaxApprove);
-		      $('#approveButton').on('click', sendCode);
-		   });
-		
-		  // 함수 정의
-		  var smsNum; // SMS 코드를 저장하기 위한 변수 선언
-		   function ajaxApprove(){
-			   console.log("sms 버튼 눌렀다.");
+		      $('#approveButton').on('click',function(){
+		    	  ajaxApprove();
+		    	    sendCode();	  
+		      });
+		      
+	
+		   function ajaxApprove(event){
+			  console.log("sms 버튼 눌렀다.");
 			  
 		      // memberId 정의
-		 	let receiverId = document.getElementById("phonenumber").value;
+		 	let phonenumber = document.getElementById("phonenumber").value;
 		
 		     $.ajax({
 		         url : "/sms/send", 
 		         type : 'post',
-		         data: { to : receiverId },
+		         data: { to : phonenumber },
 		      })
 		      .done( data => {
 		         console.log("data :", data);
 		         console.log("통신은 성공");
 		         if(data != null && data.num != null){
-		            alert(`${receiverId} 문자발송했습니다`); 
-	                smsNum = data.num; // SMS 코드를 변수에 저장
+		            alert(`${phonenumber } 문자발송했습니다`); 
+           
 		            
-		            //$("#Confirm").attr("value",${num});
+		            $("#numValue").val(data.num);
+		   
 		         } else {
 		            alert(`문자 발송 안됐습니다.`);
 		         }
@@ -226,43 +172,32 @@
 		      .fail( reject => console.log(reject));
 		   };
 		   
+		   
+		   //코드 보내고 활성화 시킴
 		   function sendCode(){
-			    $("#codeCheck").css("display","block");}
-		   
-		   	    
-		   
-		   function confirmCode(){
-			   var number1 = $("#smsCode").val();
+			    $("#codeCheck").css("display","block");
+			    }
+			
 	
-		        if (number1 == smsNum) { // 저장된 SMS 코드를 사용
+	
+		});
+		
+		function confirmCode(){
+			   
+			   var number1 = $("#smsCode").val();
+			   var number2 = $("#numValue").val();
+			   
+		        if (number1 == number2) { // 저장된 SMS 코드를 사용
 		            alert("인증되었습니다.");
 		        } else {
 		            alert("번호가 다릅니다.");
 		        }
 		    }
+		
+		
 	</script>
 	
-<!--계좌조회-->
-	<script>
-		$(document).ready(function() {
-			$("#check_button").click(function() {
-				var bank_code = $("#bank_code").val();
-				var bank_num = $("#bank_num").val();
 
-				$.get("/check1", {
-					bank_code : bank_code,
-					bank_num : bank_num
-				}, function(data) {
-					if (data.bankHolderInfo) {
-						// Update the input field value
-						$("#bankHolderInfo").val(data.bankHolderInfo);
-					} else if (data.errormsg) {
-						alert("Error: " + data.errormsg);
-					}
-				});
-			});
-		});		
-	</script>
 	
 	
 	<!--  비밀번호 확인 -->
@@ -307,14 +242,14 @@
 function openZipSearch() {
     new daum.Postcode({
     	oncomplete: function(data) {     
-		var addr = ''; 
+		var address = ''; 
 		if (data.userSelectedType === 'R') { 
-			addr = data.roadAddress;
+			address = data.roadAddress;
 		} else {
-			addr = data.jibunAddress;
+			address = data.jibunAddress;
 		}
 		$("#zipCode").val(data.zonecode);
-		$("#addr").val(addr);
+		$("#address").val(address);
 		$("#addressDetail").val("");
 		$("#addressDetail").focus();
         }

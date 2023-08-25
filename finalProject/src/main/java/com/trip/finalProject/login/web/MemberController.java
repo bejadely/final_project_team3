@@ -88,7 +88,7 @@ public class MemberController {
 	
 	
 
-	//form의 action에 따른 로그인 처리
+	//form의 action에 따른 일반로그인 처리
 	@PostMapping("/star")
 	public String login(@ModelAttribute MemberVO memberVO, Model model, HttpServletRequest request) {
 		
