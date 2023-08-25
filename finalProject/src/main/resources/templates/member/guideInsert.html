@@ -131,7 +131,7 @@ display: none;
 											<button type="button" id="accountHolderCheck" class="btn btn-default"  >예금주 조회</button>
 								
 									
-
+										<br>
 										<label for="example" class="form-label">주소</label> <input type="text" id="zipCode" name="zipCode" readonly="readonly" class="form-control" placeholder="우편번호" style="width: 33%;">
 								
 										
@@ -198,7 +198,7 @@ display: none;
 		         data: { to : receiverId },
 		      })
 		      .done( data => {
-		         console.log("data :", data);
+		         //console.log("data :", data);
 		         console.log("통신은 성공");
 		         if(data != null && data.num != null){
 		            alert(`${receiverId} 문자발송했습니다`); 
@@ -255,11 +255,11 @@ display: none;
 				      /* 	 contentType : application/json */
 				      })
 				      .done( data => {
-				         console.log("data :", data);
+				         //console.log("data :", data);
 				         console.log("통신은 성공");
 				         if(data.bankHolderInfo){
 				        	 $("#bankHolderInfo").val(data.bankHolderInfo);
-								console.log("data",data);
+								//console.log("data",data);
 							} else if (data.errormsg) {
 								alert("Error: " + data.errormsg);
 							}
