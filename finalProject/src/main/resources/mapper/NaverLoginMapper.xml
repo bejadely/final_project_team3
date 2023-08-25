@@ -12,9 +12,9 @@
 
 <insert id="insertNaverLogin" parameterType="java.util.HashMap">
 		insert into 
-		member(member_id, member_name , BIRTH_DATE,GENDER )
+		member(member_id, member_name , BIRTH_DATE,GENDER, sign_up_date )
 			values
-			(#{id}, '1', '940426','1')
+			(#{id}, '1', '940426','G1', sysdate)
 	</insert>
   
   </mapper>
