@@ -3,6 +3,9 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip.finalProject.notice.mapper.NoticeMapper"><!-- 구현! 메서드 명 만들어 놓은 것을 여기서 만들겠다. -->
+
+<!--Notice테이블에 새로운 레코드 삽입하는 쿼리  -->
+<!--  xxxxxxxxxxx안쓰는듯?xxxxxxxxxxx -->
    <insert id="insertpost" parameterType="NoticeVO">
    INSERT INTO Notice
 				SELECT IFNULL
@@ -20,7 +23,84 @@
 			 #{bpStatus}, 
 			 #{staff_id}, NOW(), NOW(), null, 'bpIpAddress_temp' 
 			 FROM
-				BoardPromoter_tbl
-  
+				BoardPromoter_tbl  
    </insert>
+ <!--  xxxxxxxxxxx안쓰는듯?xxxxxxxxxxx -->  
+ 
+ 
+ 
+
+<!--  페이지별로 게시글 확인 row 개수에 따라 -->
+   <select id="boardSelectList" resultType="NoticeVO">
+		SELECT *
+		FROM (SELECT ROWNUM rn, b.*
+			FROM(SELECT * FROM board order by board_id desc) b )
+		WHERE rn BETWEEN ((#{page}-1) * 10) + 1 
+			AND (#{page} * 10)	
+	</select>
+	
+<!--  게시글 총 개수를 조회-->
+	<select id="boardSelectMax">
+		SELECT count(*)
+		FROM board
+		<if test="boardContent != null">
+			WHERE board_content LIKE '%${boardContent}%' 
+		</if>
+	</select>
+	
+<!-- 검색어를 포함한 페이지별 게시글 목록을 조회 -->
+	<select id="boardSelect" resultType="NoticeVO">
+		SELECT *
+		FROM (SELECT ROWNUM rn, b.*
+			FROM(SELECT * FROM board WHERE board_content LIKE '%${boardContent}%' order by board_id desc) b )
+		WHERE rn BETWEEN (#{page}-1) * 10
+			AND (#{page} * 10)	
+	</select>
+	
+<!-- 특정 게시글의 상세 정보를 조회하는 쿼리 글의 id를 사용해서 해당 게시글을 가져옴 -->	
+	<select id="boardDetail" resultType="NoticeVO">
+		SELECT *
+		FROM board
+		WHERE board_id = #{boardId}
+	</select>
+	
+<!-- 새로운 게시글을 삽입하는 쿼리. 게시글 번호는 자동생성됨-->	
+	<insert id="noticeInsert" parameterType="NoticeVO" >
+		<selectKey keyProperty="notice_number" resultType = "int" order="BEFORE">
+			select NVL(max(noticeNumber),0) +1 as noticeNumber FROM notice
+		</selectKey>
+		INSERT INTO notice
+		VALUES(#{noticeNumber},#{title},#{content}, sysdate,'null', 'STATUS = 'T1'', 'RELEASE=N1', 'N','관리자', 0)
+	</insert>
+	
+<!-- 특정 게시글의 내용을 업데이트하는 쿼리 -->	
+	<update id="boardUpdate">
+	UPDATE board 
+		<set>
+		<!-- if문 -> test에는 실려오는 VO객체명 그대로 쓴다. 값이 실려오면 동일한 값이든 아니든 그값으로 변경해라 -->
+			<if test="boardContent != null">board_content = #{boardContent} </if>
+		</set>
+	WHERE board_id = #{boardId}
+	</update>
+	
+<!--  게시글 조회수 증가 -->	
+	<update id="boardView">
+		UPDATE board SET board_hit = board_hit+1 WHERE board_id = #{boardId}
+	</update>
+	
+<!--  게시글의 댓글 상태를 Y로 변경 -->	
+	<update id="boardReple">
+		UPDATE board SET board_reple_state = 'Y' WHERE board_id = #{boardId}
+	</update>
+	
+<!--  게시글의 댓글 상태를 N으로 변경 -->	
+	<update id="boardRepleN">
+		UPDATE board SET board_reple_state = 'N' WHERE board_id = #{boardId}
+	</update>
+	
+<!-- 게시글을 삭제하는 쿼리 -->	
+	<delete id="boardDelete">
+		DELETE FROM board WHERE board_id = #{boardId}
+	</delete>
 </mapper>
+
