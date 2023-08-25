@@ -6,7 +6,7 @@
 
 <!-- namespace와 MemberRepository가 일치하면 됨 -->
     <!--insert는 성공시 1, 실패시 -1을 반환한다  -->
-    
+ <!-- 일반회원 회원가입 -->   
     <insert id="insertMember" parameterType="MemberVO">
         insert into member
         			(member_id,
@@ -18,6 +18,46 @@
         			 ADDRESS,
         			 ADDRESS_DETAIL, 
         			 PHONE_NUMBER,
+        			 AUTHORITY,  
+        			 LOGIN_TYPE,    			  
+        			 birth_date,
+        			 gender,
+        			 SIGN_UP_DATE
+        			 )<!--sql칼럼그대로  -->
+        values 
+			        (  #{memberId} 
+			        ,#{memberName}
+			        ,#{password}	    
+			        ,#{nationality}
+			        ,#{email}	   		       
+			        ,#{zipCode} 
+			        ,#{address}
+			        ,#{addressDetail} 
+			        ,#{to}	
+			        , 'A1'	
+			        , 'L1'
+			        ,#{birthDate}		            			        
+			        ,#{gender}			     
+			        , sysdate
+			        )
+			      
+    </insert>
+    
+    
+     <!-- 가이드 희망 회원 회원가입 -->   
+    <insert id="insertGuide" parameterType="MemberVO">
+        insert into member
+        			(member_id,
+       				 member_Name,
+       				 password,      			        			         			 
+        			 nationality,
+        			 email,
+        			 ZIP_CODE,
+        			 ADDRESS,
+        			 ADDRESS_DETAIL, 
+        			 PHONE_NUMBER,
+        			 bankCode,
+        			 accountNumber,
         			 AUTHORITY,  
         			 LOGIN_TYPE    			  
         			 birth_date,
@@ -31,16 +71,21 @@
 			        ,#{nationality}
 			        ,#{email}	   		       
 			        ,#{zipCode} 
-			        ,#{addr}
+			        ,#{address}
 			        ,#{addressDetail} 
-			        ,#{to}	
-			        , 'G1'	
+			        ,#{to}				        
+			         ,#{bankCode}
+        			 ,#{accountNumber}
+			        , 'G2'	
 			        , 'L1'
 			        ,#{birthDate}		            			        
 			        ,#{gender}			     
 			        ,sysdate)
 			      
     </insert>
+    
+    
+    
     
     
     
@@ -62,6 +107,7 @@
 	<select id= "checkLoginAccount" resultType="MemberVO">
 	SELECT * FROM member
 	WHERE id =#{memberId} AND Password =#{password}
+	
 <!-- 	<if test="memberPassword !=null">
 		AND memberPassword =#{memberPassword}
 	</if>	
@@ -100,6 +146,12 @@
 		</set>
 		WHERE member_id = #{memberId}	
 	</update>
+	
+	<select id="singleLogin" resultType="MemberVO">
+		SELECT *
+		FROM member
+		WHERE member_id = #{memberId}
+	</select>
     
      
 </mapper>
