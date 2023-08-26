@@ -80,8 +80,10 @@ public class AdminMemberController {
 	@GetMapping("/seeMemberDetail")
 	public String seeMemberDetail(AdminMemberVO memberVO, Model model) {
 		
+		// 회원 상세조회 실행
+		memberVO = adminMemberService.getMemberDetail(memberVO);
 		
-		//memberVO = adminMemberService.s
+		// 상세 조회 결과값 모델에 담기
 		model.addAttribute("memberVO", memberVO);
 		
 		return "admin/manageMember/memberDetail";
