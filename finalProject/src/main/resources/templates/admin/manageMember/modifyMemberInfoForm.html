@@ -7,7 +7,7 @@
 <!-- Content -->
 <div layout:fragment="content">
 		<div class="container">
-			<form action="admin/modifyMemberInfo" th:object="${memberVO}" method="post">
+			<form action="/admin/modifyMemberInfo" th:object="${memberVO}" method="post">
 				<h5><b>회원정보 수정</b></h5>
 				<br><br>
 				<div class="table-responsive">
@@ -19,7 +19,7 @@
 								<th width="150" align="center">아이디</th>
 								<td width="400" align="center"><input type="text" name="memberId" th:value="*{memberId}"></td>
 								<th width="150" align="center">가입일자</th>
-								<td width="400" align="center"><input type="date" name="memberId" th:value="*{#strings.substring(signUpDate, 0, 10)}"></td>
+								<td width="400" align="center"><input type="date" name="signUpDate" th:value="*{#strings.substring(signUpDate, 0, 10)}"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">이름</th>
@@ -36,17 +36,18 @@
 							<tr>
 								<th width="150" align="center">국적</th>
 								<td colspan="3" width="400" align="center">
-									<select>
+									<select name="nationality">
 										<option>[[*{nationality}]]</option>
 									</select>
 								</td>
 							</tr>
-							<tr>
+							<tr align="left">
 								<th width="150" align="center">주소</th>
 								<td colspan="3" width="400" align="center">
-								<input type="text" name="zipCode" th:value="*{zipCode}">
-								<input type="text" name="address" th:value="*{address}">
-								<input type="text" name="addressDetail" th:value="*{addressDetail}">
+								<input type="text" name="zipCode" class="zip" th:value="*{zipCode}" readonly>
+								<button type="button" id="zip" class="feature-btn">우편번호 찾기</button><br>
+								<input type="text" name="address" class="zip" th:value="*{address}" readonly><br>
+								<input type="text" name="addressDetail" class="zip" th:value="*{addressDetail}" placeholder="상세주소">
 								</td>
 							</tr>
 							<tr>
@@ -69,7 +70,7 @@
 								<!-- 작업중 : selelct로 수정해야함 -->
 								<td width="400" align="center"><input type="text" name="bankCode" th:value="*{bankCode}"></td>
 								<th width="150" align="center">예금주</th>
-								<td width="400" align="center"><input type="text" name="memberName" th:value="*{memberName}"></td>
+								<td width="400" align="center"><input type="text" th:value="*{memberName}"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">계좌번호</th>
@@ -79,56 +80,51 @@
 					</table>
 				</div>
 				<div align="center">
-					<button type="submit" class="feature-btn">수정하기</button>
-					<button type="button" class="feature-btn">탈퇴처리</button>
+					<button type="submit" class="feature-btn">수정완료</button>
+					<button type="button" class="feature-btn">이전으로</button>
 				</div>
 			</form>
 		</div>
 	
+	<!-- Daum 주소 API -->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<!-- 페이지 기능 Script -->
 	<script th:inline="javascript" type="text/javascript">
 	
 	$(document).ready(function() {
 		// 이벤트 설정
-		$('#searchButton').on('click', search);
-		$('.memberInfo').on('mouseover', colorDarker)
-						.on('mouseleave', colorReset)
-						.on('click')
-						.on('mouseup', moveToMemberDetail)
-		$('button[type=button]').on('click', function(){alert("헉");})
+		$('#zip').on('click', openDaumAddrApi);
+		$('.zip').on('click', openDaumAddrApi);
 	});
 	
-	// 조건검색기능
-	function search(event){
+	// daum 주소 api 호출
+	function openDaumAddrApi(){
 		
-		let value = $('#searchBy').val();
-		let keyword = $('#keyword').val();
-		console.log('searchAdminMember?searchBy='+value+'&keyword='+keyword);
-		location.href='searchAdminMember?searchBy='+value+'&keyword='+keyword;
-		
-	}
-	
-	// 마우스 오버 : 색상 어둡게
-	function colorDarker(event){
-		$(event.currentTarget).css({background: '#f2f4f5'})
-							  .css({cursor: 'pointer'});		
-	}
-	
-	// 마우스릴리브 : 색상 원상복귀
-	function colorReset(event){
-		$(event.currentTarget).css({background: '#ffffff'});
-	}
-	
-	// 회원상세정보 조회페이지로 이동
-	function moveToMemberDetail(event){
-		
-		// 상세보기 할 member의 id값 가져오기
-		let memberId = $(event.currentTarget).find('td:eq(0)').text();
-		
-		// 페이지 전환 실행
-		location.href=`seeMemberDetail?employeeId=${memberId}`;
+		// daum api 팝업창을 생성하고 호출
+		new daum.Postcode({
+	        oncomplete: function(data) {
+	            console.log(data)
+	            
+	            // 사용자가 선택한 주소값 넣기
+	            $('input[name=zipCode]').val(data.zonecode);
+	            
+	            if (data.userSelectedType === 'R') { 
+	            	// 사용자가 도로명 주소를 선택했을 경우
+	            	$('input[name=address]').val(data.roadAddress);    
+                } else {
+                	// 사용자가 지번 주소를 선택했을 경우
+                	$('input[name=address]').val(data.jibunAddress);
+                }
+	            
+	            // 상세주소 입력란을 비우고 포커스를 상세주소 입력란으로 옮기기
+	            $('input[name=addressDetail]').val("")
+	            							  .focus();
+	            
+	        }
+	    }).open();
 	}
 	
 	</script>
+	
 </div>
-
 </html>

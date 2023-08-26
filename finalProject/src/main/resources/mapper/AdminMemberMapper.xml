@@ -90,6 +90,56 @@
   			 WHERE member_id = #{memberId}
   		</select>
   		
+  		<!-- 회원 정보 수정 -->
+  		<update id="modifyMemberInfo" parameterType="AdminMemberVO">
+  			UPDATE member
+  			<set>
+  				<if test="memberId != null and !memberId.equals('')">
+					member_id = #{memberId},
+				</if>
+				<if test="signUpDate != null and !signUpDate.equals('')">
+					sign_up_date = #{signUpDate},
+				</if>
+				<if test="memberName != null and !memberName.equals('')">
+					member_name = #{memberName},
+				</if>
+				<if test="authority != null and !authority.equals('')">
+					authority = #{authority},
+				</if>
+				<if test="gender != null and !gender.equals('')">
+					gender = #{gender},			
+				</if>
+				<if test="birthDate != null and !birthDate.equals('')">
+					birth_date = #{birthDate},			
+				</if>
+				<if test="nationality != null and !nationality.equals('')">
+					nationality = #{nationality},
+				</if>
+				<if test="zipCode != null and !zipCode.equals('')">
+					zip_code = #{zipCode},
+				</if>
+				<if test="address != null and !address.equals('')">
+					address = #{address},
+				</if>
+				<if test="addressDetail != null and !addressDetail.equals('')">
+					address_detail = #{addressDetail},
+				</if>
+				<if test="email != null and !email.equals('')">
+					email = #{email},
+				</if>
+				<if test="phoneNumber != null and !phoneNumber.equals('')">
+					phone_number = #{phoneNumber},
+				</if>
+				<if test="bankCode != null and !bankCode.equals('')">
+					bank_code = #{bankCode},
+				</if>
+				<if test="accountNumber != null and !accountNumber.equals('')">
+					account_number = #{accountNumber},
+				</if>
+  			</set>
+  			WHERE member_id = #{memberId}
+  		</update>
+  		
   		<!-- 이름으로 회원 검색 -->
   		<select id="searchMemberByName" resultType="AdminMemberVO">
   			SELECT member_id
