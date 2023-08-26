@@ -13,7 +13,7 @@ public class FestivalScheduler {
 
     //축제정보 api로 받아와서 db등록
     @Scheduled
-    (cron = "0 0 3 ? * MON") // 매주 월요일 오전 3시에 실행
+    (cron = "0 50 23 * * *") // 매일 오후 11시50분에 실행
     public void getFestivalInfoAndSave() throws Exception {
 
         festivalService.getFestivalInfoAndSave();

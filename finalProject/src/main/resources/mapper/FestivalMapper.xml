@@ -18,7 +18,7 @@
             f.end_date = #{festival.endDate},
             f.festival_img = #{festival.festivalImg},
             f.address = #{festival.address},
-            f.save_date = SYSDATE
+            f.update_date = #{festival.updateDate}
             WHEN NOT MATCHED THEN
             INSERT (
             festival_id,
@@ -30,7 +30,8 @@
             festival_img,
             content_id,
             address,
-            save_date
+            save_date,
+            update_date
             )
             VALUES (
             #{festival.festivalId},
@@ -42,7 +43,8 @@
             #{festival.festivalImg},
             #{festival.contentId},
             #{festival.address},
-            SYSDATE
+            SYSDATE,
+            #{festival.updateDate}
             );
         </foreach>
     </insert>
@@ -51,6 +53,7 @@
 	<select id="getFestivalCalendarInfo" resultType="FestivalInfoVO">
         SELECT *
        	FROM festival_info
+        WHERE delete_yn = 'N'
    </select>
    
    <!-- 축제정보리스트 첫페이지 현재달로 조회 -->
@@ -74,8 +77,23 @@
 	   	  ORDER BY TO_DATE(start_date, 'YYYYMMDD') DESC
 		 ]]>
 	</select>
-    <!-- 매일 오후 11시 50분쯤에 스케쥴러 돌리고, updateDate는 SYSDATE로 -->
 
+    <update id="modifyFestivalInfo" parameterType="FestivalInfoVO">
+        UPDATE festival_info
+        SET festival_name = #{festivalName},
+            address = #{address},
+            content = #{content},
+            start_date = #{startDate},
+            end_date = #{endDate},
+            update_date = SYSDATE
+        WHERE content_id = #{contentId}
+    </update>
 
+    <update id="removeFestivalInfo" parameterType="String">
+        UPDATE festival_info
+        SET delete_yn = 'Y',
+            update_date = SYSDATE
+        WHERE content_id = #{contentId}
+    </update>
 
   </mapper>

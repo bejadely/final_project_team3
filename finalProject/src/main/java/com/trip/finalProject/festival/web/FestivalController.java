@@ -7,12 +7,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.trip.finalProject.festival.service.FestivalInfoVO;
 import com.trip.finalProject.festival.service.FestivalService;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 //오유리, 2023년 08월, 축제정보페이지
 @Controller
@@ -43,9 +41,20 @@ public class FestivalController {
 	}
 	
 	//축제정보 수정
-	
+	@PostMapping("/festival")
+	@ResponseBody
+	public Integer modifyFestivalInfo(FestivalInfoVO festivalInfoVO) {
+
+		return festivalService.modifyFestivalInfo(festivalInfoVO);
+	}
 	
 	//축제정보 삭제
+	@DeleteMapping("/festival")
+	@ResponseBody
+	public Integer removeFestivalInfo(String contentId) {
+
+		return festivalService.removeFestivalInfo(contentId);
+	}
 	
 	
 	//모달창 내 소개정보 api로 조회
@@ -57,8 +66,8 @@ public class FestivalController {
 		return festivalService.getFestivalContent(contentId);
 	}
 	
-	//축제정보 api로 받아와서 db등록 : 테스트용(없어도 됨)
-	@GetMapping("/test")
+	//축제정보 api로 받아와서 db등록 : 테스트용으로 강제 insert
+	@GetMapping("/forceInsertFestivalData")
 	@ResponseBody
 	public void getFestivalInfoAndSave(Model model) throws Exception {
 
