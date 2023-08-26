@@ -7,8 +7,50 @@
   		<!-- 회원 전체 조회 -->
   		<select id="selectAllMemeber">
   			SELECT *
-			  FROM (SELECT ROWNUM rn, a.*
-			        FROM(SELECT *
+			  FROM (SELECT ROWNUM rn, a.member_id
+							        , a.member_name
+							        , a.password
+							        , a.nationality
+							        , a.email
+							        , a.zip_code
+							        , a.address
+							        , a.address_detail
+							        , a.phone_number
+							        , code_val(a.authority) authority
+							        , a.origin_profile_img
+							        , a.saved_profile_img
+							        , code_val(a.bank_code) bank_code
+							        , a.account_number
+							        , a.login_type
+							        , a.access_token
+							        , a.refresh_token
+							        , a.birth_date
+							        , a.gender
+							        , a.punish_count
+							        , a.sign_up_date
+							        , a.withdrawal_date
+				        FROM(SELECT member_id
+							      , member_name
+							      , password
+							      , nationality
+							      , email
+							      , zip_code
+							      , address
+							      , address_detail
+							      , phone_number
+							      , authority
+							      , origin_profile_img
+							      , saved_profile_img
+							      , bank_code
+							      , account_number
+							      , login_type
+							      , access_token
+							      , refresh_token
+							      , birth_date
+							      , gender
+							      , punish_count
+							      , sign_up_date
+							      , withdrawal_date
 				         FROM member
 				         ORDER BY sign_up_date DESC) a )
 			  WHERE rn BETWEEN #{start} AND #{end}
@@ -18,6 +60,34 @@
   		<select id="getAllMemberCount">
   			SELECT COUNT(*)
   			  FROM member
+  		</select>
+  		
+  		<!-- 회원 상세 조회 -->
+  		<select id="getMemberDetail">
+  			SELECT member_id
+				 , member_name
+				 , password
+				 , nationality
+				 , email
+				 , zip_code
+				 , address
+				 , address_detail
+				 , phone_number
+				 , authority
+				 , origin_profile_img
+				 , saved_profile_img
+				 , bank_code
+				 , account_number
+				 , login_type
+				 , access_token
+				 , refresh_token
+				 , birth_date
+				 , gender
+				 , punish_count
+				 , sign_up_date
+				 , withdrawal_date
+  			  FROM member
+  			 WHERE member_id = #{memberId}
   		</select>
   		
   		<!-- 이름으로 회원 검색 -->
@@ -47,7 +117,7 @@
   		
   		<!-- 회원 단건 조회 -->
   		<select id="selectMemberInfo" resultType="AdminMemberVO">
-  			
+  			SELECT 
   		</select>
   		
   		<!-- 권한 승인 요청 회원 전체 조회 -->

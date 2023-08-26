@@ -7,7 +7,7 @@
 <!-- Content -->
 <div layout:fragment="content">
 		<div class="container">
-			<form action="#" th:object="${memberVO}">
+			<form action="admin/modifyMemberInfo" th:object="${memberVO}">
 				<h5><b>회원정보 상세 조회</b></h5>
 				<br><br>
 				<div class="table-responsive">
@@ -43,7 +43,7 @@
 							</tr>
 							<tr>
 								<th width="150" align="center">주소</th>
-								<td colspan="3" width="400" align="center" th:text="|(*{zipCode})\n*{address} *{addressDetail}|"></td>
+								<td colspan="3" width="400" align="center" th:utext="|(*{zipCode}) <br> *{address} *{addressDetail}|"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">이메일</th>
@@ -82,15 +82,14 @@
 	
 	<script th:inline="javascript" type="text/javascript">
 	
-	// 동적으로 버튼이 다 만들어지고 문서가 다 로드 된 후 이벤트가 정의되게 하기 위해 콜백함수 사용 
-	
 	$(document).ready(function() {
-		// 승인 버튼 클릭 시 발생 이벤트 설정
+		// 이벤트 설정
 		$('#searchButton').on('click', search);
 		$('.memberInfo').on('mouseover', colorDarker)
 						.on('mouseleave', colorReset)
 						.on('click')
 						.on('mouseup', moveToMemberDetail)
+		$('button[type=button]').on('click', function(){alert("헉");})
 	});
 	
 	// 조건검색기능
@@ -123,6 +122,9 @@
 		// 페이지 전환 실행
 		location.href=`seeMemberDetail?employeeId=${memberId}`;
 	}
+	
+	// 회원정보 수정 페이지로 이동
+	
 	
 	</script>
 </div>

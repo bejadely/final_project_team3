@@ -31,6 +31,12 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	}
 	
 	@Override
+	public AdminMemberVO getMemberDetail(AdminMemberVO vo) {
+		// 회원 상세 조회
+		return amm.getMemberDetail(vo);
+	}
+	
+	@Override
 	public List<AdminMemberVO> searchMemberByName(AdminMemberVO vo) {
 		// 이름으로 회원 검색
 		return amm.searchMemberByName(vo);
@@ -81,6 +87,8 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		
 		return map;
 	}
+
+	
 
 	
 

@@ -26,9 +26,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/common/**").hasAnyAuthority("A1", "A4") // 일반회원, 권한대기중 회원만 접근 가능한 경로(마이페이지옹)
-                    .antMatchers("/guide/**").hasAuthority("A2") // 가이드 회원만 접근가능한 경로(가이드 - 마이페이지용)
-                    .antMatchers("/admin/**").hasAuthority("A3") // 관리자 페이지
+                    .antMatchers("/common/**").hasAnyRole("A1", "A4") // 일반회원, 권한대기중 회원만 접근 가능한 경로(마이페이지옹)
+                    .antMatchers("/guide/**").hasRole("A2") // 가이드 회원만 접근가능한 경로(가이드 - 마이페이지용)
+                    .antMatchers("/admin/**").hasRole("A3") // 관리자 페이지
                     .anyRequest().permitAll()
                 .and()
                     .formLogin()

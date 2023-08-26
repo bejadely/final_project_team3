@@ -13,6 +13,9 @@ public interface AdminMemberMapper {
 	// 전체 회원 수 카운트
 	public int getAllMemberCount();
 	
+	// 회원 상세 조회 
+	public AdminMemberVO getMemberDetail(AdminMemberVO vo);
+	
 	// 이름으로 회원 검색
 	public List<AdminMemberVO> searchMemberByName(AdminMemberVO vo);
 	
