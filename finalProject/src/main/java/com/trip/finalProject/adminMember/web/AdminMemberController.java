@@ -89,6 +89,19 @@ public class AdminMemberController {
 		return "admin/manageMember/memberDetail";
 	}
 	
+	// 회원정보 수정 폼 호출
+	@PostMapping("/admin/modifyMemberInfoForm")
+	public String modifyMemberInfoForm(AdminMemberVO memberVO, Model model) {
+		
+		// 회원 상세조회 실행
+		memberVO = adminMemberService.getMemberDetail(memberVO);
+		
+		// 상세 조회 결과값 모델에 담기
+		model.addAttribute("memberVO", memberVO);
+		
+		return "admin/manageMember/modifyMemberInfoForm";
+	}
+	
 	// 권한 승인 요청 전체 조회
 	@GetMapping("authRequestList")
 	public String authRequestList(Model model) {
