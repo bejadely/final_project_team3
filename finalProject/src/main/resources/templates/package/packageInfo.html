@@ -6,73 +6,213 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src ="ckeditor5-build-classic/ckeditor.js"></script>
 <style>
-.ck.ck-editor {
-	width: 80%;
-	max-width: 800px;
-	margin: 0 auto;
-}
-
-.ck-editor__editable {
-	height: 80vh;
-}
-
 form {
 	text-align: center;
 }
 
-
+.contentStyle{
+	width:400px;
+	height:400px;
+	margin: 0 auto;
+}
 </style>
 
 </head>
 <body>
+
 <div layout:fragment="content">
-	<div id="readEditor"></div>
+ <section class="property-details-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="pd-details-text">
+                    <h4>[[ ${info.name} ]]</h4>
+                        <div class="pd-details-social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-send"></i></a>
+                            <a href="#"><i class="fa fa-star"></i></a>
+                            <a href="#"><i class="fa fa-print"></i></a>
+                            <a href="#"><i class="fa fa-cloud-download"></i></a>
+                        </div>
+                        <div class="property-more-pic">
+                            <div class="product-pic-zoom">
+                                <img class="product-big-img" src="img/properties/property-details-b1.jpg" alt="">
+                            </div>
+                            <div class="product-thumbs">
+                                <div class="product-thumbs-track ps-slider owl-carousel">
+                                    <div class="pt" data-imgbigurl="img/properties/property-details-b2.jpg"><img
+                                            src="img/properties/thumb-1.jpg" alt=""></div>
+                                    <div class="pt active" data-imgbigurl="img/properties/property-details-b1.jpg"><img
+                                            src="img/properties/thumb-2.jpg" alt=""></div>
+                                    <div class="pt" data-imgbigurl="img/properties/property-details-b3.jpg"><img
+                                            src="img/properties/thumb-3.jpg" alt=""></div>
+                                    <div class="pt" data-imgbigurl="img/properties/property-details-b4.jpg"><img
+                                            src="img/properties/thumb-4.jpg" alt=""></div>
+                                    <div class="pt" data-imgbigurl="img/properties/property-details-b5.jpg"><img
+                                            src="img/properties/thumb-5.jpg" alt=""></div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        
+                            <div class="pd-details-tab">
+                            <div class="tab-item">
+                                <ul class="nav" role="tablist">
+                                    <li>
+                                        <a class="active" data-toggle="tab" href="#tab-1" role="tab">패키지 정보</a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#tab-2" role="tab">패키지 내용</a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#tab-3" role="tab">Amenities</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-item-content">
+                                <div class="tab-content">
+                                    <div class="tab-pane fade-in active" id="tab-1" role="tabpanel">
+                                        <div class="property-more-table">
+                                            <table class="left-table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="pt-name">Price</td>
+                                                        <td class="p-value">[[ ${info.price} ]]</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">패키지 테마</td>
+                                                        <td class="p-value">[[ ${info.tourTheme} ]]</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">여행 시작일</td>
+                                                        <td class="p-value">[[ ${#dates.format(info.startDate, 'yyyy년 MM월 dd일')} ]]</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">여행 종료일</td>
+                                                        <td class="p-value">[[ ${#dates.format(info.endDate, 'yyyy년 MM월 dd일')} ]]</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">모집 마감일</td>
+                                                        <td class="p-value">[[ ${#dates.format(info.deadlineDate, 'yyyy년 MM월 dd일')} ]]</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">모집 인원</td>
+                                                        <td class="p-value">[[ ${info.maxReservation} ]]</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">Lot area</td>
+                                                        <td class="p-value">200 spft</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <table class="right-table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="pt-name">Agent</td>
+                                                        <td class="p-value">Adam Smith</td>
+                                                    </tr>
+                                                   <tr>
+                                                        <td class="pt-name">Reference</td>
+                                                        <td class="p-value">#2019</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">Contract type</td>
+                                                        <td class="p-value">Sale</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">Beds</td>
+                                                        <td class="p-value">4</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">Garages</td>
+                                                        <td class="p-value">2</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">Home area</td>
+                                                        <td class="p-value">1200 sqft</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">Gara Size</td>
+                                                        <td class="p-value">200 sqft</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="tab-2" role="tabpanel">
+                                        <div class="pd-table-desc" th:utext="${info.content }" >
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="tab-3" role="tabpanel">
+                                        <div class="pd-table-amenities">
+                                            <p>Learn how to improve your playing quality and even overall understanding
+                                                of online gaming and how you perform while playing online. Gaming online
+                                                is a huge business nowadays and that means that there are millions of
+                                                people worldwide at online game sites all the time. Many are people just
+                                                like you and me that like to play online and have fun doing it. Some of
+                                                these people enjoy it so much, that they often do not even care about
+                                                improving their skill and raising their chances of winning.</p>
+                                            <p>Learn how to improve your playing quality and even overall understanding
+                                                of online gaming and how you perform while playing online. Gaming online
+                                                is a huge business nowadays and that means that there are millions of
+                                                people worldwide at online game sites all the time. Many are people just
+                                                like you and me that like to play online and have fun doing it. Some of
+                                                these people enjoy it so much, that they often do not even care about
+                                                improving their skill and raising their chances of winning.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    <!--<div class="pd-desc">
+                            <h4>패키지 설명</h4>
+                            <div th:utext="${info.content }" class="contentStyle"></div>
+                        </div>-->
+                    </div>
+                </div>
+               <div class="col-lg-3">
+                    <div class="property-sidebar">
+                        <h4>구매하기</h4>
+                            <div class="sidebar-btn">
+                                <div class="bt-item">
+                                    <input type="radio" name="s-type" id="st-buy" checked>
+                                    <label for="st-buy">Buy</label>
+                                </div>
+                                <div class="bt-item">
+                                    <input type="radio" name="s-type" id="st-rent">
+                                    <label for="st-rent">Cart</label>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        		
+    </section>
+    <!-- Property Details Section End -->
+	
 
 	<script>
+	$.noConflict();
+	var content = '[[${info.content }]]';
+	var postId = '[[${info.postId}]]';
 	
-	var content = "[[${info.content }]]";
-	
-	/* content = content.replace("&lt;","<");
-	content = content.replace("&gt;",">");
-	content = content.replace("+"," ");
-	content = content.replace("&amp;lt;","<");
-	content = content.replace("&amp;gt;",">");
-	content = content.replace("&amp;nbsp;"," ");
-	content = content.replace("&amp;amp;","&"); */
-	
-	content = content.replace(/&lt;/g, "<")
-					 .replace(/&gt;/g, ">")
-					 .replace(/\+/g, " ")
-					 .replace(/&amp;lt;/g, "<")
-					 .replace(/&amp;gt;/g, ">")
-					 .replace(/&amp;nbsp;/g, " ")
-					 .replace(/&amp;amp;/g, "&");
-	
-	var decodeContent = decodeURIComponent(content);
-	console.log(decodeContent);
-	ClassicEditor
-		.create( document.querySelector( '#readEditor' ))
-	
-		.then(editor => {
-			window.editor = editor;
-	        // 에디터 초기화 후에 읽기 전용 모드 설정
-	        //editor.isReadOnly = true;   
-	        //'my-feature-id'는 사용자 정의 기능 ID이며, 특정 기능에 대한 읽기 전용 모드를 활성화할 때 사용됩니다.
-	        editor.enableReadOnlyMode( 'my-feature-id' );
-	        const toolbarElement = editor.ui.view.toolbar.element;
-	        toolbarElement.style.display = 'none';
-	        editor.setData(decodeContent);
-		})
-		.catch( error => {
-			console.error( 'Oops, something went wrong!' );
-			console.error( 'Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:' );
-			console.warn( 'Build id: g64ljk55ssvc-goqlohse75uw' );
-			console.error( error );
-		});
-	
-		
+	$(document).ready(function(){
+		(function(){
+			$.getJSON("getAttachList",{postId:postId},function(arr){
+				console.log(arr);
+				var str="";
+				$(arr).each(function(i, attch){
+					str+=`<img class="product-big-img" src=attach.loadingImg alt="">`
+				});
+				${".property-more-pic"}.html(str);
+			});
+		})();
+		   
+	});
 		
 	
 	</script>

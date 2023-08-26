@@ -2,6 +2,8 @@ package com.trip.finalProject.attachedFile.service;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -11,7 +13,8 @@ public class AttachedFileVO {
 	private String memberId;
 	private String originImg;
 	private String savedImg;
-	private int fileNo;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date uploadDate;
 	private String imgType;
+	private String loadingImg;
 }
