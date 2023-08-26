@@ -7,8 +7,8 @@
 <!-- Content -->
 <div layout:fragment="content">
 		<div class="container">
-			<form action="admin/modifyMemberInfoForm" th:object="${memberVO}" method="post">
-				<h5><b>회원정보 상세 조회</b></h5>
+			<form action="admin/modifyMemberInfo" th:object="${memberVO}" method="post">
+				<h5><b>회원정보 수정</b></h5>
 				<br><br>
 				<div class="table-responsive">
 					<h6>기본정보</h6>
@@ -17,21 +17,21 @@
 						<tbody>
 							<tr>
 								<th width="150" align="center">아이디</th>
-								<td width="400" align="center" th:text="*{memberId}"></td>
+								<td width="400" align="center"><input type="text" name="memberId" th:value="*{memberId}"></td>
 								<th width="150" align="center">가입일자</th>
-								<td width="400" align="center" th:text="*{signUpDate}"></td>
+								<td width="400" align="center"><input type="date" name="memberId" th:value="*{#strings.substring(signUpDate, 0, 10)}"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">이름</th>
-								<td width="400" align="center" th:text="*{memberName}"></td>
+								<td width="400" align="center"><input type="text" name="memberName" th:value="*{memberName}"></td>
 								<th width="150" align="center">권한분류</th>
-								<td width="400" align="center" th:text="*{authority}"></td>
+								<td width="400" align="center"><input type="text" name="authority" th:value="*{authority}"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">성별</th>
-								<td width="400" align="center" th:text="*{gender}"></td>
+								<td width="400" align="center"><input type="text" name="gender" th:value="*{gender}"></td>
 								<th width="150" align="center">생년월일</th>
-								<td width="400" align="center" th:text="*{birthDate}"></td>
+								<td width="400" align="center"><input type="date" name="birthDate" th:value="*{#strings.substring(birthDate, 0, 10)}"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">국적</th>
@@ -43,13 +43,17 @@
 							</tr>
 							<tr>
 								<th width="150" align="center">주소</th>
-								<td colspan="3" width="400" align="center" th:utext="|(*{zipCode}) <br> *{address} *{addressDetail}|"></td>
+								<td colspan="3" width="400" align="center">
+								<input type="text" name="zipCode" th:value="*{zipCode}">
+								<input type="text" name="address" th:value="*{address}">
+								<input type="text" name="addressDetail" th:value="*{addressDetail}">
+								</td>
 							</tr>
 							<tr>
 								<th width="150" align="center">이메일</th>
-								<td width="400" align="center" th:text="*{email}"></td>
+								<td width="400" align="center"><input type="email" name="email" th:value="*{email}"></td>
 								<th width="150" align="center">연락처</th>
-								<td width="400" align="center" th:text="*{phoneNumber}"></td>
+								<td width="400" align="center"><input type="text" name="phoneNumber" th:value="*{phoneNumber}"></td>
 							</tr>
 						</tbody>
 					</table>
@@ -62,19 +66,17 @@
 						<tbody>
 							<tr>
 								<th width="150" align="center">은행명</th>
-								<td width="400" align="center" th:text="*{bankCode}"></td>
+								<!-- 작업중 : selelct로 수정해야함 -->
+								<td width="400" align="center"><input type="text" name="bankCode" th:value="*{bankCode}"></td>
 								<th width="150" align="center">예금주</th>
-								<td width="400" align="center" th:text="*{memberName}"></td>
+								<td width="400" align="center"><input type="text" name="memberName" th:value="*{memberName}"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">계좌번호</th>
-								<td colspan="3" width="400" align="center" th:text="*{accountNumber}"></td>
+								<td colspan="3" width="400" align="center"><input type="text" name="accountNumber" th:value="*{accountNumber}"></td>
 							</tr>
 						</tbody>
 					</table>
-				</div>
-				<div>
-					<input type="hidden" name="memberId" th:value="*{memberId}">
 				</div>
 				<div align="center">
 					<button type="submit" class="feature-btn">수정하기</button>

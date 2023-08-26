@@ -32,13 +32,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest().permitAll()
                 .and()
                     .formLogin()
-                    .loginPage("/member/login") // 여기에 로그인 폼 설정
+                    .loginPage("/member/login")
                     .loginProcessingUrl("/loginProc")
                     .usernameParameter("memberId")
                     .passwordParameter("password")
                     .successHandler(loginSuccessHandler())
-//                    .defaultSuccessUrl("/", true) // 성공 시 반환하는 페이지
-//                    .permitAll()
                 .and()
                     .logout()
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logoutProc"))
