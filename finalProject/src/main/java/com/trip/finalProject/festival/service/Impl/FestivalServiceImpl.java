@@ -294,7 +294,7 @@ public class FestivalServiceImpl implements FestivalService {
 
 	//버튼 동작에 따라 현재달 축제 리스트 조회
 	@Override
-	public List<FestivalInfoVO> getFestivalNewList(int year, int month) {
+	public List<FestivalInfoVO> getFestivalNewList(String year, String month) {
 		
 		return festivalMapper.getFestivalNewList(year, month);
 	}

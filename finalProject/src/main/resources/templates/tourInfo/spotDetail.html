@@ -267,11 +267,13 @@
             $('.page-item').on('click', function() {
                 let page = $(this).data('page');
 
-                window.location.href = "/localTourInfo/spotDetail" +
-                    "?page=" + page +
-                    "&contentTypeId=" + contentTypeId +
-                    "&areaCode=" + areaCode +
-                    "&sigunguCode=" + sigunguCode;
+                if(page != null && page != undefined && page != 0) {
+                    window.location.href = "/localTourInfo/spotDetail" +
+                        "?page=" + page +
+                        "&contentTypeId=" + contentTypeId +
+                        "&areaCode=" + areaCode +
+                        "&sigunguCode=" + sigunguCode;
+                }
             })
         })
         
