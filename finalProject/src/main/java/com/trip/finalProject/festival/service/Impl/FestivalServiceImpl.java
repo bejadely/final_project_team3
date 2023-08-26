@@ -61,7 +61,10 @@ public class FestivalServiceImpl implements FestivalService {
 			}
 		}
 
-		festivalMapper.getFestivalInfoAndSave(allLocationFestivalInfoList);
+		if(allLocationFestivalInfoList.size() > 0) {
+			festivalMapper.getFestivalInfoAndSave(allLocationFestivalInfoList);
+		}
+
 	}
 
 	//	기존에 있던 지역별로 나뉘어져 있던 축제 정보 획득 api 요청 함수를 1개의 메서드로 통합
@@ -122,7 +125,7 @@ public class FestivalServiceImpl implements FestivalService {
 		 stringBuilder.append("&eventStartDate=" + fomattedNow);
 		 stringBuilder.append("&areaCode=" + areaCode);
 		 stringBuilder.append("&numOfRows=" + MANY_NUM_OF_ROWS);
-//		 stringBuilder.append("&modifiedtime=" + fomattedNow);	//	오늘 날짜로 스케쥴러 돌리기 위함
+		 stringBuilder.append("&modifiedtime=" + fomattedNow);	//	오늘 날짜로 스케쥴러 돌리기 위함
 		 if(sigunguCode!=0) {
 			 stringBuilder.append("&sigunguCode=" + sigunguCode);
 		 }
@@ -172,6 +175,15 @@ public class FestivalServiceImpl implements FestivalService {
 				 String sigunguCodeData = itemObject.get("sigungucode").getAsString();
 				 String festivalId = "FES" + contentId;
 				 String address = itemObject.get("addr1").getAsString();
+				 String updateDateString = itemObject.get("modifiedtime").getAsString().substring(0,8);
+
+				 SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+				 Date updateDate = new Date();
+				 try {
+					 updateDate = format.parse(updateDateString);
+				 } catch (Exception e) {
+					 e.printStackTrace();
+				 }
 
 				 FestivalInfoVO festivalInfoVO = new FestivalInfoVO();
 				 festivalInfoVO.setFestivalName(festivalName);
@@ -183,6 +195,7 @@ public class FestivalServiceImpl implements FestivalService {
 				 festivalInfoVO.setSigunguCode(sigunguCodeData);
 				 festivalInfoVO.setFestivalId(festivalId);
 				 festivalInfoVO.setAddress(address);
+				 festivalInfoVO.setUpdateDate(updateDate);
 
 				 itemList.add(festivalInfoVO);
 			 }
@@ -206,7 +219,6 @@ public class FestivalServiceImpl implements FestivalService {
 			List<FestivalInfoVO> tempList = new ArrayList<>();
 
 			tempList = getFestivalInfo(location);
-
 
 			if(tempList.size() >= 0) {		//	tempList가 0보다 크거나 같으면 api 요청이 정상적이었다는 뜻
 				if(tempList.size() > 0) {
@@ -297,6 +309,18 @@ public class FestivalServiceImpl implements FestivalService {
 	public List<FestivalInfoVO> getFestivalNewList(String year, String month) {
 		
 		return festivalMapper.getFestivalNewList(year, month);
+	}
+
+	@Override
+	public Integer modifyFestivalInfo(FestivalInfoVO festivalInfoVO) {
+
+		return festivalMapper.modifyFestivalInfo(festivalInfoVO);
+	}
+
+	@Override
+	public Integer removeFestivalInfo(String contentId) {
+
+		return festivalMapper.removeFestivalInfo(contentId);
 	}
 
 }

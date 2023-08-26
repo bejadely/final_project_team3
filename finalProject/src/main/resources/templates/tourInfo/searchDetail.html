@@ -85,6 +85,17 @@
 				<div class="col-8"></div>
 					<div class="searchbox col-4">
 						<div class="input-group input-group-sm mb-3">
+							<button id="locationTypeButton" class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">지역 선택</button>
+							<ul id="locationType" class="dropdown-menu">
+								<li><a class="dropdown-item" th:attr="data-area-code='4', data-sigungu-code='0'">대구</a></li>
+								<li><a class="dropdown-item" th:attr="data-area-code='6', data-sigungu-code='0'">부산</a></li>
+								<li><a class="dropdown-item" th:attr="data-area-code='7', data-sigungu-code='0'">울산</a></li>
+								<li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='2'">경주</a></li>
+								<li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='23'">포항</a></li>
+								<li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='11'">안동</a></li>
+								<li><a class="dropdown-item" th:attr="data-area-code='36', data-sigungu-code='17'">통영</a></li>
+								<li><a class="dropdown-item" th:attr="data-area-code='36', data-sigungu-code='1'">거제</a></li>
+							</ul>
 							<input type="text" class="form-control" aria-label="search"
 								aria-describedby="button-addon2" id="search-input">
 							<button class="btn btn-outline-secondary" type="button"
@@ -328,12 +339,6 @@
 	        })
 	    });
 	
-	    const myModalEl = document.getElementById('seDetailInfoModal')
-	    myModalEl.addEventListener('hidden.bs.modal', event => {
-	        // 모달창이 닫히면 무조건 모달 내부 데이터를 삭제해줌
-	        clearModal();
-	    })
-	
 	    function appendReview(data, contentId) {
 	        let node = ``;
 	        for(let i = 0; i < data.length; i++) {
@@ -479,11 +484,28 @@
     
 	  //검색정보 보내기
 	    $('#button-addon2').on('click', function(e){
-	    	e.preventDefault();
-	    	let searchKeyWord = $('#search-input').val();
-	    	
-	    	window.location.href=window.location.origin + "/localTourInfo/search?searchKeyWord="+searchKeyWord;
+			e.preventDefault();
+			let searchKeyWord = $('#search-input').val();
+			let areaCode = $('#locationTypeButton').data('areaCode');
+			let sigunguCode = $('#locationTypeButton').data('sigunguCode');
+
+			if(searchKeyWord.length<=1){
+				alert('1글자 이상 검색해주세요.');
+				return;
+			} else if($('#locationTypeButton').text() == '지역 선택') {
+				alert('지역을 선택해주세요.');
+				return;
+			}
+
+			window.location.href=window.location.origin + "/localTourInfo/search?searchKeyWord="+searchKeyWord+"&areaCode="+areaCode+"&sigunguCode="+sigunguCode;
 	    })
+
+		$('#locationType li > a').on('click', function() {
+			// 버튼에 선택된 항목 텍스트 넣기
+			$('#locationTypeButton').text($(this).text());
+			$('#locationTypeButton').data('areaCode', $(this).data('areaCode'));
+			$('#locationTypeButton').data('sigunguCode', $(this).data('sigunguCode'));
+		});
     </script>
 </div>
 </body>
