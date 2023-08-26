@@ -109,6 +109,16 @@ public class MemberServiceImpl implements MemberService {
 			
 			return map;
 		}
+
+
+
+
+		@Override
+		public MemberVO singleLogin(MemberVO vo) {
+			// 스프링시큐어리티 session담기 위한 정보 조회
+			
+			return memberMapper.singleLogin(vo);
+		}
 		
 	
 

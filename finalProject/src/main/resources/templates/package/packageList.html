@@ -100,42 +100,40 @@
 					<h4 class="property-title">Property</h4>
 					<div class="property-list">
 						<th:block th:each="pck : ${packageList}">
-							<div class="single-property-item">
-								<div class="row">
-									<div class="col-md-4">
-										<div class="property-pic">
-											<!--<img th:src="${lod.firstimage}" alt="">  -->
+							<div th:onclick="|location.href='@{/packageInfo(postId=${pck.postId})}'|">
+								<div class="single-property-item">
+									<div class="row">
+										<div class="col-md-4">
+											<div class="property-pic">
+												<img th:src="${pck.loadingImg}" alt="">
+											</div>
 										</div>
-									</div>
-									<div class="col-md-8">
-										<div class="property-text">
-											<div class="s-text">For Sale</div>
-											<th:h5 class="r-title" th:onclick="|location.href='@{/packageInfo(postId=${pck.postId})}'|">[[ ${pck.postId} ]]</h5>
-												<div class="room-price">
-													<span>Start From:</span>
-													<h5>$3.000.000</h5>
-												</div>
-												<th:div class="properties-location">
-													<i class="icon_pin"></i>
+										<div class="col-md-8">
+											<div class="property-text">
+												<div class="s-text">For Sale</div>
+												<th:h5 class="r-title" >[[ ${pck.name} ]]</h5>
+													<div class="room-price">
+														<span>Start From:</span>
+														<h5>[[ ${pck.price} ]]</h5>
+													</div>
+											</div>
+											<p>[[ ${pck.tourTheme} ]]</p>
+											<ul class="room-features">
+												<li><i class="fa fa-arrows"></i>
+													<p>5201 sqft</p></li>
+												<li><i class="fa fa-bed"></i>
+													<p>8 Bed Room</p></li>
+												<li><i class="fa fa-bath"></i>
+													<p>7 Baths Bed</p></li>
+												<li><i class="fa fa-car"></i>
+													<p>1 Garage</p></li>
+											</ul>
 										</div>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing
-											elit, sed do eiusmod tempor incididunt ut labore.</p>
-										<ul class="room-features">
-											<li><i class="fa fa-arrows"></i>
-												<p>5201 sqft</p></li>
-											<li><i class="fa fa-bed"></i>
-												<p>8 Bed Room</p></li>
-											<li><i class="fa fa-bath"></i>
-												<p>7 Baths Bed</p></li>
-											<li><i class="fa fa-car"></i>
-												<p>1 Garage</p></li>
-										</ul>
 									</div>
 								</div>
 							</div>
+						</th:block>
 					</div>
-					</th:block>
-
 				</div>
 				<div class="property-pagination">
 					<a href="#">1</a> <a href="#">2</a> <a href="#">3</a>
