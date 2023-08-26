@@ -367,7 +367,7 @@
 	
 	<script>
 	$(document).ready(function() {
-		$.noConflict();	//	jquery 충돌 방지 코드
+		// $.noConflict();	//	jquery 충돌 방지 코드
 	
 		$(document).on('click', '.nav-link', function() {
 			//	로딩화면 시작 코드
@@ -460,7 +460,13 @@
 	}
 
 	function clearAllTourInfo() {
-		$('.cards-wrapper').empty();
+		for(let i = 0; i < 10; i++) {
+			$('.cards-wrapper1').slick('slickRemove', 0);
+			$('.cards-wrapper2').slick('slickRemove', 0);
+			$('.cards-wrapper3').slick('slickRemove', 0);
+			$('.cards-wrapper4').slick('slickRemove', 0);
+			$('.cards-wrapper5').slick('slickRemove', 0);
+		}
 	}
 
 	function appendAllTourInfo(data) {

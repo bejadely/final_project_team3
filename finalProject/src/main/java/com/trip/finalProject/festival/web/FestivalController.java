@@ -37,7 +37,7 @@ public class FestivalController {
 	//월이동에 따른 리스트 정보 조회
 	@GetMapping("/festivalList")
 	@ResponseBody
-	public List<FestivalInfoVO> getFestivalNewList(int year, int month){
+	public List<FestivalInfoVO> getFestivalNewList(String year, String month){
 		
 		return festivalService.getFestivalNewList(year, month);
 	}
