@@ -16,6 +16,9 @@ public interface AdminMemberService {
 	// 회원 상세 조회
 	public AdminMemberVO getMemberDetail(AdminMemberVO vo);
 	
+	// 회원 정보 수정
+	public String modifyMemberInfo(AdminMemberVO vo);
+	
 	// 이름으로 회원 검색
 	public List<AdminMemberVO> searchMemberByName(AdminMemberVO vo);
 	

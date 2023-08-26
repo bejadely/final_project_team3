@@ -33,7 +33,7 @@ public class AdminMemberController {
 	AlertService alertService;
 	
 	// 회원정보 전체 조회
-	@GetMapping("/seeAllMemberList")
+	@GetMapping("/admin/seeAllMemberList")
 	public String seeAllMember(Model model
 			                 , @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 			                 , @RequestParam(value = "cntPerPage", defaultValue = "10")Integer cntPerPage ){
@@ -53,7 +53,7 @@ public class AdminMemberController {
 	}
 	
 	// 특정 조건으로 회원 상세 검색
-	@GetMapping("/searchAdminMember")
+	@GetMapping("/admin/searchAdminMember")
 	public String searchAdminMember(@RequestParam( name = "searchBy" ) String searchBy, @RequestParam( name = "keyword" ) String keyword, Model model, AdminMemberVO adminMemberVO) {
 		
 		// 조건 파악
@@ -77,7 +77,7 @@ public class AdminMemberController {
 	}
 	
 	// 회원상세정보 조회
-	@GetMapping("/seeMemberDetail")
+	@GetMapping("/admin/seeMemberDetail")
 	public String seeMemberDetail(AdminMemberVO memberVO, Model model) {
 		
 		// 회원 상세조회 실행
@@ -100,6 +100,19 @@ public class AdminMemberController {
 		model.addAttribute("memberVO", memberVO);
 		
 		return "admin/manageMember/modifyMemberInfoForm";
+	}
+	
+	// 회원정보 수정 기능 수행
+	@PostMapping("admin/modifyMemberInfo")
+	public String modifyMemberInfo(AdminMemberVO adminVO, RedirectAttributes rtt) {
+		
+		// 회원정보 수정
+		String result = adminMemberService.modifyMemberInfo(adminVO);
+		
+		// 리다이렉트 어트리뷰트에 결과값 담기(성공 : success / 실패 : fail)
+		rtt.addFlashAttribute("result", result);
+		
+		return "redirect:seeMemberDetail?memberId=" + adminVO.getMemberId();
 	}
 	
 	// 권한 승인 요청 전체 조회

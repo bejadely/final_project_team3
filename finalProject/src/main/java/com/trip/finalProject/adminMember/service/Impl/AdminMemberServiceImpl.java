@@ -37,6 +37,18 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	}
 	
 	@Override
+	public String modifyMemberInfo(AdminMemberVO vo) {
+		// 회원 정보 수정
+		int result = amm.modifyMemberInfo(vo);
+		
+		if(result > 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+	
+	@Override
 	public List<AdminMemberVO> searchMemberByName(AdminMemberVO vo) {
 		// 이름으로 회원 검색
 		return amm.searchMemberByName(vo);
@@ -87,15 +99,5 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		
 		return map;
 	}
-
-	
-
-	
-
-	
-
-	
-
-	
 
 }
