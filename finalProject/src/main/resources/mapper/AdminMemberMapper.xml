@@ -140,6 +140,15 @@
   			WHERE member_id = #{memberId}
   		</update>
   		
+  		<!-- 회원 탈퇴 처리 -->
+  		<update id="withdrawMember">
+  			UPDATE member
+  			<set>
+  				authority = 'A5',
+  				withdrawal_date = sysdate,
+  			</set>
+  		</update>
+  		
   		<!-- 이름으로 회원 검색 -->
   		<select id="searchMemberByName" resultType="AdminMemberVO">
   			SELECT member_id

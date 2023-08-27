@@ -35,11 +35,19 @@
 							</tr>
 							<tr>
 								<th width="150" align="center">국적</th>
-								<td colspan="3" width="400" align="center">
+								<td id="nationality" width="400" align="center">
 									<select name="nationality">
-										<option>[[*{nationality}]]</option>
+										<!-- <option>[[*{nationality}]]</option> -->
+										<option value="대한민국">대한민국</option>
+										<option value="일본">일본</option>
+										<option value="중국">중국</option>
+										<option value="미국">미국</option>
+										<option value="캐나다">캐나다</option>
+										<option value="필리핀">필리핀</option>
 									</select>
 								</td>
+								<th width="150" align="center">제재횟수</th>
+								<td width="400" align="center" th:text="*{punishCount}"></td>
 							</tr>
 							<tr align="left">
 								<th width="150" align="center">주소</th>
@@ -81,7 +89,7 @@
 				</div>
 				<div align="center">
 					<button type="submit" class="feature-btn">수정완료</button>
-					<button type="button" class="feature-btn">이전으로</button>
+					<button id="returnPage" type="button" class="feature-btn">이전으로</button>
 				</div>
 			</form>
 		</div>
@@ -95,6 +103,8 @@
 		// 이벤트 설정
 		$('#zip').on('click', openDaumAddrApi);
 		$('.zip').on('click', openDaumAddrApi);
+		$('#returnPage').on('click', returnToBeforePage);
+		setDefaultNationality();
 	});
 	
 	// daum 주소 api 호출
@@ -103,7 +113,6 @@
 		// daum api 팝업창을 생성하고 호출
 		new daum.Postcode({
 	        oncomplete: function(data) {
-	            console.log(data)
 	            
 	            // 사용자가 선택한 주소값 넣기
 	            $('input[name=zipCode]').val(data.zonecode);
@@ -122,6 +131,27 @@
 	            
 	        }
 	    }).open();
+	}
+	
+	// 이전페이지로 이동
+	function returnToBeforePage(){
+		location.href='/admin/seeMemberDetail?memberId='+[[${memberVO.memberId}]];
+	}
+	
+	// 국가 선택 기본설정하기(작업중)
+	function setDefaultNationality(){
+		
+		// 기본으로 설정할 국적 설정(컨트롤러에서 불러온 회원의 기본 국적 설정값)
+		let defaultNationality = [[${memberVO.nationality}]];
+		
+		// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
+		$('#nationality').find('span').text(defaultNationality);
+		
+		// selected 처리되어있던 option을 일반 옵션으로 변경
+		$('#nationality').find('.option.selected').attr("class", "option");
+		
+		// 불러온 국적값에 해당하는 option을 selected 및 focus 처리
+		$('.option[data-value="'+defaultNationality+'"]').attr("class", "option selected focus");
 	}
 	
 	</script>
