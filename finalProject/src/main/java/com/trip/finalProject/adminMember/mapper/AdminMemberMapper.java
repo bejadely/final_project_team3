@@ -22,6 +22,12 @@ public interface AdminMemberMapper {
 	// 회원 탈퇴 처리
 	public int withdrawMember(AdminMemberVO vo);
 	
+	// 이름 검색의 총 결과값 카운트
+	public int countName();
+	
+	// 아이디 검색의 총 결과값 카운트
+	public int countId();
+	
 	// 이름으로 회원 검색
 	public List<AdminMemberVO> searchMemberByName(AdminMemberVO vo);
 	

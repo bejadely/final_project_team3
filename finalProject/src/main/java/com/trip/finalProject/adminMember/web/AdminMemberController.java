@@ -54,10 +54,19 @@ public class AdminMemberController {
 	
 	// 특정 조건으로 회원 상세 검색
 	@GetMapping("/admin/searchAdminMember")
-	public String searchAdminMember(@RequestParam( name = "searchBy" ) String searchBy, @RequestParam( name = "keyword" ) String keyword, Model model, AdminMemberVO adminMemberVO) {
+	public String searchAdminMember(@RequestParam( name = "searchBy" ) String searchBy
+								  , @RequestParam( name = "keyword" ) String keyword
+								  , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
+								  , @RequestParam( name = "cntPerPage", defaultValue = "10") Integer cntPerPage
+								  , Model model
+								  , AdminMemberVO adminMemberVO) {
 		
 		// 조건 파악
 		if(searchBy.equals("name")) {
+			
+			// 전체 조회될 회원 수 카운트
+			int total = adminMemberService.memberCount();
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 			
 			// 이름으로 검색기능 수행
 			adminMemberVO.setMemberName(keyword);
@@ -65,6 +74,10 @@ public class AdminMemberController {
 			model.addAttribute("list", list);
 			
 		} else if(searchBy.equals("id")) {
+			
+			// 전체 조회될 회원 수 카운트
+			int total = adminMemberService.memberCount();
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 			
 			// 아이디로 검색기능 수행
 			adminMemberVO.setMemberId(keyword);
