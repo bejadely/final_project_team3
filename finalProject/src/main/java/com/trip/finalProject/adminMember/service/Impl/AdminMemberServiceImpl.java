@@ -61,15 +61,27 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	}
 	
 	@Override
-	public List<AdminMemberVO> searchMemberByName(AdminMemberVO vo) {
-		// 이름으로 회원 검색
-		return amm.searchMemberByName(vo);
+	public int countName() {
+		// 이름 검색의 총 결과값 카운트
+		return amm.countName();
+	}
+
+	@Override
+	public int countId() {
+		// 아이디 검색의 총 결과값 카운트
+		return amm.countId();
 	}
 	
 	@Override
-	public List<AdminMemberVO> searchMemberById(AdminMemberVO vo) {
+	public List<AdminMemberVO> searchMemberByName(AdminMemberVO adminVO, PagingVO pagingVO) {
+		// 이름으로 회원 검색
+		return amm.searchMemberByName(adminVO, pagingVO);
+	}
+	
+	@Override
+	public List<AdminMemberVO> searchMemberById(AdminMemberVO adminVO, PagingVO pagingVO) {
 		// 아이디로 회원 검색
-		return amm.searchMemberById(vo);
+		return amm.searchMemberById(adminVO, pagingVO);
 	}
 	
 	@Override
