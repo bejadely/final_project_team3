@@ -103,7 +103,7 @@ public class AdminMemberController {
 	}
 	
 	// 회원정보 수정 기능 수행
-	@PostMapping("admin/modifyMemberInfo")
+	@PostMapping("/admin/modifyMemberInfo")
 	public String modifyMemberInfo(AdminMemberVO adminVO, RedirectAttributes rtt) {
 		
 		// 회원정보 수정
@@ -113,6 +113,20 @@ public class AdminMemberController {
 		rtt.addFlashAttribute("result", result);
 		
 		return "redirect:seeMemberDetail?memberId=" + adminVO.getMemberId();
+	}
+	
+	// 회원 삭제
+	@PostMapping("/admin/withdrawMember")
+	public String withdrawMember(AdminMemberVO adminVO, RedirectAttributes rtt) {
+		
+		// 회원 삭제
+		String result = adminMemberService.withdrawMember(adminVO);
+		
+		// 리다이렉트 어트리뷰트에 결과값 담기(성공 : success / 실패 : fail)
+		rtt.addAttribute("result", result);
+		
+		return "redirect:seeMemberDetail?memberId=" + adminVO.getMemberId();
+		
 	}
 	
 	// 권한 승인 요청 전체 조회

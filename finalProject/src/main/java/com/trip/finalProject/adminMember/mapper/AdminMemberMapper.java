@@ -19,6 +19,9 @@ public interface AdminMemberMapper {
 	// 회원 정보 수정
 	public int modifyMemberInfo(AdminMemberVO vo);
 	
+	// 회원 탈퇴 처리
+	public int withdrawMember(AdminMemberVO vo);
+	
 	// 이름으로 회원 검색
 	public List<AdminMemberVO> searchMemberByName(AdminMemberVO vo);
 	

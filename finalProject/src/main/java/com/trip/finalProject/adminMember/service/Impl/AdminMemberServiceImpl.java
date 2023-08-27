@@ -49,6 +49,18 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	}
 	
 	@Override
+	public String withdrawMember(AdminMemberVO vo) {
+		// 회원 삭제
+		int result = amm.withdrawMember(vo);
+		
+		if(result > 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+	
+	@Override
 	public List<AdminMemberVO> searchMemberByName(AdminMemberVO vo) {
 		// 이름으로 회원 검색
 		return amm.searchMemberByName(vo);

@@ -19,27 +19,30 @@
 								<th width="150" align="center">아이디</th>
 								<td width="400" align="center" th:text="*{memberId}"></td>
 								<th width="150" align="center">가입일자</th>
-								<td width="400" align="center" th:text="*{signUpDate}"></td>
+								<td width="400" align="center" th:text="*{#strings.substring(signUpDate,0,10)}"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">이름</th>
 								<td width="400" align="center" th:text="*{memberName}"></td>
 								<th width="150" align="center">권한분류</th>
-								<td width="400" align="center" th:text="*{authority}"></td>
+								<th:block th:if="*{authority} != 'A5'">	
+									<td width="400" align="center" th:text="*{authority}"></td>
+								</th:block>	
+								<th:block th:if="*{authority} == 'A5'">	
+									<td width="400" align="center" th:text="|*{authority} (탈퇴 일자 : *{#strings.substring(withdrawalDate, 0, 10)})|"></td>
+								</th:block>	
 							</tr>
 							<tr>
 								<th width="150" align="center">성별</th>
 								<td width="400" align="center" th:text="*{gender}"></td>
 								<th width="150" align="center">생년월일</th>
-								<td width="400" align="center" th:text="*{birthDate}"></td>
+								<td width="400" align="center" th:text="*{#strings.substring(birthDate,0,10)}"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">국적</th>
-								<td colspan="3" width="400" align="center">
-									<select>
-										<option>[[*{nationality}]]</option>
-									</select>
-								</td>
+								<td width="400" align="center" th:text="*{nationality}"></td>
+								<th width="150" align="center">제재횟수</th>
+								<td width="400" align="center" th:text="*{punishCount}"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">주소</th>
@@ -91,9 +94,9 @@
 		$('.memberInfo').on('mouseover', colorDarker)
 						.on('mouseleave', colorReset)
 						.on('click')
-						.on('mouseup', moveToMemberDetail)
+						.on('mouseup', moveToMemberDetail);
 		// 작업중 : 수정해야함
-		$('button[type=button]').on('click', function(){alert("헉");})
+		$('button[type=button]').on('click', withdrawMember);
 	});
 	
 	// 조건검색기능
@@ -101,7 +104,6 @@
 		
 		let value = $('#searchBy').val();
 		let keyword = $('#keyword').val();
-		console.log('searchAdminMember?searchBy='+value+'&keyword='+keyword);
 		location.href='searchAdminMember?searchBy='+value+'&keyword='+keyword;
 		
 	}
@@ -125,6 +127,51 @@
 		
 		// 페이지 전환 실행
 		location.href=`seeMemberDetail?employeeId=${memberId}`;
+	}
+	
+	// 회원 탈퇴 처리
+	function withdrawMember(){
+		
+		//e.stopPropagation();
+		
+		Swal.fire({
+		      title: '해당 회원을 탈퇴처리하시겠습니까?',
+		      icon: 'warning',
+		      showCancelButton: true,
+		      confirmButtonColor: '#3085d6',
+		      cancelButtonColor: '#d33',
+		      confirmButtonText: '승인',
+		      cancelButtonText: '취소',
+		      reverseButtons: true,
+		      
+	    }).then((result) => {
+	      if (result.isConfirmed) {
+	          
+	    	  //post방식으로 페이지 전환
+			  sendPost();
+	      }
+	    })
+	
+	// post 방식으로 보내기위한 함수 생성
+    function sendPost(){
+	    
+	    // form 생성 
+	  	let form = document.createElement('form');
+	    form.setAttribute('id', 'instantForm')
+	    form.setAttribute('method', 'post');
+	    form.setAttribute('action', '/admin/withdrawMember');
+	    
+	    // input 생성
+	    let input = document.createElement('input');
+	    input.setAttribute('name', 'memberId');
+	    input.setAttribute('value', [[${memberVO.memberId}]]);
+	    
+	    // 동적으로 생성한 태그 본문에 붙이기 및 폼 서브밋
+	    document.body.appendChild(form);
+	    document.getElementById('instantForm').appendChild(input);
+	    document.getElementById('instantForm').submit();
+		
+		}    
 	}
 	
 	</script>
