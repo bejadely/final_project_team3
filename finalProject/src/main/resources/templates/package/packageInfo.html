@@ -174,14 +174,24 @@ form {
                         <h4>구매하기</h4>
                             <div class="sidebar-btn">
                                 <div class="bt-item">
-                                    <input type="radio" name="s-type" id="st-buy" checked>
-                                    <label for="st-buy">Buy</label>
+                                    <input type="radio" name="kakaoPay" id="kakaoPay" >
+                                    <label for="kakaoPay">Buy</label>
                                 </div>
                                 <div class="bt-item">
                                     <input type="radio" name="s-type" id="st-rent">
                                     <label for="st-rent">Cart</label>
                                 </div>
                             </div>
+                            <div>
+							    <label for="numOfBuy">구매 인원</label>
+							    <input type="number" id="quantity" min="1" value="1" >
+							    <button id="calculate">계산</button>
+							</div>
+							
+							<!-- 총 금액 표시 -->
+							<div id="totalPriceDisplay">
+							    총 금액: <span id="totalPrice">0</span> 원
+							</div>
                     </div>
                 </div>
             </div>
@@ -222,8 +232,7 @@ form {
     </div>
     <!-- Partner Carousel Section End -->
 
-	<script>
-	$.noConflict();
+<script>
 	var content = '[[${info.content }]]';
 	var postId = '[[${info.postId}]]';
 	
@@ -251,7 +260,46 @@ form {
 	});
 		
 	
-	</script>
+	 function calculatePrice(pricePerPerson) {
+	        const quantity = parseInt(document.getElementById('quantity').value);
+	        const totalPrice = pricePerPerson * quantity;
+	        return totalPrice;
+	    }
+
+	    // 모집 인원 입력 변경 이벤트 처리
+	    document.getElementById('calculate').addEventListener('click', function() {
+	        const pricePerPerson =[[ ${info.price} ]]; // 가격 가져오기
+	        const totalPrice = calculatePrice(pricePerPerson);
+
+	        // 총 금액 표시 업데이트
+	        document.getElementById('totalPrice').textContent = totalPrice;
+	        
+	    });
+
+	    // 결제 버튼 클릭 이벤트 처리
+	    document.getElementById('kakaoPay').addEventListener('click', function() {
+	        // 여기에 결제 페이지로 이동하는 코드 추가
+	        // 예를 들어, window.location.href = '결제페이지URL';
+	        let totalAmount = parseInt($("#totalPrice").text());
+	        let orderName = "[[ ${info.name} ]]";
+	        let quantity = parseInt(document.getElementById('quantity').value);
+	     
+	        $.ajax({
+	        	type:'post',
+	        	url:'payment/ready',
+	        	data:{
+	        		totalAmount: totalAmount,
+	        		orderName : orderName,
+	        		quantity : quantity
+	        	},
+	        	success:function(response){
+	        		location.href = response.next_redirect_pc_url
+	        	}
+	        	
+	        });
+	    });
+
+</script>
 </div>
 </body>
 </html>
