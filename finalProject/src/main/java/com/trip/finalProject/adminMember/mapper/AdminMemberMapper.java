@@ -29,10 +29,10 @@ public interface AdminMemberMapper {
 	public int countId();
 	
 	// 이름으로 회원 검색
-	public List<AdminMemberVO> searchMemberByName(AdminMemberVO vo);
+	public List<AdminMemberVO> searchMemberByName(AdminMemberVO adminMemberVO, PagingVO pagingVO);
 	
 	// 아이디로 회원 검색
-	public List<AdminMemberVO> searchMemberById(AdminMemberVO vo);
+	public List<AdminMemberVO> searchMemberById(AdminMemberVO adminMemberVO, PagingVO pagingVO);
 	
 	// 회원 단건 조회
 	public AdminMemberVO selectMemberInfo(AdminMemberVO vo);

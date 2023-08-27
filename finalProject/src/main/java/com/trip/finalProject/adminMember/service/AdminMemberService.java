@@ -22,11 +22,17 @@ public interface AdminMemberService {
 	// 회원 삭제
 	public String withdrawMember(AdminMemberVO vo);
 	
+	// 이름 검색의 총 결과값 카운트
+	public int countName();
+	
+	// 아이디 검색의 총 결과값 카운트
+	public int countId();
+	
 	// 이름으로 회원 검색
-	public List<AdminMemberVO> searchMemberByName(AdminMemberVO vo);
+	public List<AdminMemberVO> searchMemberByName(AdminMemberVO adminVO, PagingVO pagingVO);
 	
 	// 아이디로 회원 검색
-	public List<AdminMemberVO> searchMemberById(AdminMemberVO vo);
+	public List<AdminMemberVO> searchMemberById(AdminMemberVO adminVO, PagingVO pagingVO);
 	
 	// 권한 승인 요청 회원 전체 조회
 	public List<AdminMemberVO> selectAllAuthRequest();

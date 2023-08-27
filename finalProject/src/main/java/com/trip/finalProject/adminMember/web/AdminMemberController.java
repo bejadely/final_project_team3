@@ -35,6 +35,8 @@ public class AdminMemberController {
 	// 회원정보 전체 조회
 	@GetMapping("/admin/seeAllMemberList")
 	public String seeAllMember(Model model
+							 , @RequestParam( name = "searchBy", defaultValue = "name" ) String searchBy
+							 , @RequestParam( name = "keyword", defaultValue = "" ) String keyword
 			                 , @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 			                 , @RequestParam(value = "cntPerPage", defaultValue = "10")Integer cntPerPage ){
 		
@@ -48,6 +50,10 @@ public class AdminMemberController {
 		// 모든 회원 정보 모델에 담기
 		model.addAttribute("list", list);
 		model.addAttribute("paging", pagingVO);
+		
+		// 검색어가 없을 경우를 대비한 구문
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("searchBy", searchBy);
 		
 		return "admin/manageMember/seeAllMemberList";
 	}
@@ -65,13 +71,14 @@ public class AdminMemberController {
 		if(searchBy.equals("name")) {
 			
 			// 전체 조회될 회원 수 카운트
-			int total = adminMemberService.memberCount();
+			int total = adminMemberService.countName();
 			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 			
 			// 이름으로 검색기능 수행
 			adminMemberVO.setMemberName(keyword);
-			List<AdminMemberVO> list = adminMemberService.searchMemberByName(adminMemberVO);
+			List<AdminMemberVO> list = adminMemberService.searchMemberByName(adminMemberVO, pagingVO);
 			model.addAttribute("list", list);
+			model.addAttribute("paging", pagingVO);
 			
 		} else if(searchBy.equals("id")) {
 			
@@ -81,10 +88,15 @@ public class AdminMemberController {
 			
 			// 아이디로 검색기능 수행
 			adminMemberVO.setMemberId(keyword);
-			List<AdminMemberVO> list = adminMemberService.searchMemberById(adminMemberVO);
+			List<AdminMemberVO> list = adminMemberService.searchMemberById(adminMemberVO, pagingVO);
 			model.addAttribute("list", list);
-
+			model.addAttribute("paging", pagingVO);
+			
 		}
+		
+		// 검색결과 기억을 위해 keyword와 searchBy 담기
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("searchBy", searchBy);
 		
 		return "admin/manageMember/seeAllMemberList";
 	}

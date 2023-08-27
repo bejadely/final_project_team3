@@ -158,14 +158,21 @@
   		
   		<!-- 이름으로 회원 검색 -->
   		<select id="searchMemberByName" resultType="AdminMemberVO">
-  			SELECT member_id
-			     , member_name
-			     , phone_number
-			     , nationality
-			     , authority
-			  FROM member
-			 WHERE member_name LIKE '%${memberName}%'
-          ORDER BY sign_up_date
+ 		SELECT *
+		FROM(SELECT ROWNUM rn, a.member_id
+						     , a.member_name
+						     , a.phone_number
+						     , a.nationality
+						     , code_val(a.authority) authority
+			 FROM(SELECT member_id
+				       , member_name
+				       , phone_number
+				       , nationality
+				       , authority
+				    FROM member
+				   WHERE member_name LIKE '%${adminMemberVO.memberName}%'
+				ORDER BY sign_up_date DESC) a)
+		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
   		</select>
   		
   		<!-- 아이디 검색의 총 결과값 카운트 -->
@@ -177,14 +184,21 @@
   		
   		<!-- 아이디로 회원 검색 -->
   		<select id="searchMemberById" resultType="AdminMemberVO">
-  		  	SELECT member_id
-			     , member_name
-			     , phone_number
-			     , nationality
-			     , authority
-			  FROM member
-			 WHERE member_id LIKE '%${memberId}%'
-          ORDER BY sign_up_date
+ 		SELECT *
+		FROM(SELECT ROWNUM rn, a.member_id
+						     , a.member_name
+						     , a.phone_number
+						     , a.nationality
+						     , code_val(a.authority) authority
+			 FROM(SELECT member_id
+				       , member_name
+				       , phone_number
+				       , nationality
+				       , authority
+				    FROM member
+				   WHERE member_id LIKE '%${adminMemberVO.memberId}%'
+				ORDER BY sign_up_date DESC) a)
+		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
   		</select>
   		
   		<!-- 회원 단건 조회 -->
