@@ -37,8 +37,8 @@ public class AdminMemberController {
 	public String seeAllMember(Model model
 							 , @RequestParam( name = "searchBy", defaultValue = "name" ) String searchBy
 							 , @RequestParam( name = "keyword", defaultValue = "" ) String keyword
-			                 , @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
-			                 , @RequestParam(value = "cntPerPage", defaultValue = "10")Integer cntPerPage ){
+			                 , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
+			                 , @RequestParam( name = "cntPerPage", defaultValue = "10")Integer cntPerPage ){
 		
 		// 전체 조회될 회원 수 카운트
 		int total = adminMemberService.memberCount();

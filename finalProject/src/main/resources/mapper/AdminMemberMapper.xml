@@ -147,6 +147,7 @@
   				authority = 'A5',
   				withdrawal_date = sysdate,
   			</set>
+  			 WHERE member_id = ${memberId}
   		</update>
   		
   		<!-- 이름 검색의 총 결과값 카운트 -->
