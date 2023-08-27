@@ -106,6 +106,15 @@ public class TripServiceImpl implements TripService {
 		
 	}
 
+	//여행메모 등록
+	@Override
+	public TripVO InsertTripMemo(TripVO tripVO) {
+		
+		tripMapper.insertTripMemo(tripVO);
+		
+		return tripVO;
+	}
+	
 	//여행기록 삭제
 	@Override
 	public int DeleteTripInfo(int postId) {
@@ -113,6 +122,7 @@ public class TripServiceImpl implements TripService {
 		
 		return result;
 	}
+
 	
 
 }
