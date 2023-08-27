@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/default_layout}">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Azenta Template">
+<meta name="keywords" content="Azenta, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>여행메이트 글 전체 조회</title>
+<!-- Google Font -->
+<link
+	href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap"
+	rel="stylesheet">
+<!-- include jQuery :) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+
+<!-- jQuery Modal -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.2/jquery.modal.min.css" />
+</head>
+<body>
+	<div layout:fragment="content">
+		<!-- 페이지 제목 부분 -->
+		<section class="breadcrumb-section">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="breadcrumb-text">
+							<h2>여행 메이트 글</h2>
+							<div class="col-lg-12">
+								<div class="loadmore">								
+									<!-- modal에 띄우고자하는 코드 -->
+									<div id="test" class="modal" style="height: 600px;  width: 500px; text-align: center;">
+										<form name="sendData" action="tripRecordInsertForm" method="post">
+											<input type="hidden" name="writerId" th:value="${session.sessionId}">
+  											<div style="margin-top: 40px;"> 
+  												<h3>여행 타이틀</h3>
+  												<input type="text" name="mateTitle" placeholder="타이틀을 입력 해주세요." >
+  											</div>
+  											<div style="margin-top: 40px;">
+  												<h3>여행지역 선택</h3>
+  												<select id="tripArea" name="tripArea">
+  													<option value="35.871159972672, 128.60183648521" selected>대구
+  													<option value="35.1798269951885, 129.075103035027">부산
+  													<option value="36.01889392625669, 129.34319484447613">포항
+  													<option value="36.5684065570509, 128.7295973406168">안동
+  													<option value="35.85619885284879, 129.22477009676797">경주
+  													<option value="35.539464253228324, 129.31158865378814">울산
+  													<option value="34.85442687930827, 128.43314233985606">통영
+  													<option value="34.880381383213354, 128.62132760543582">거제
+  												</select><br>
+  											</div><br>
+  											<div>
+  												<h3>여행경비</h3>
+  												<input type="text" name="mateExpense" placeholder="여행 경비를 입력해주세요.">
+  											</div><br>
+  											<div>
+  												<h3>여행일정 선택</h3>
+  												<input type="date" name="startDay" value="startDay"> ~ <input type="date" name="endDay" value="endDay">
+  											</div><br>
+  											<div>
+  												<h3>신청 마감일</h3>
+  												<input type="date" name="deadline" value="deadline">
+  											</div><br>
+  											<div style ="margin-top: 30px;"> 
+  												<button type="reset" class="primary-btn">취소</button>
+  												<a href="#" rel="modal:close" class="primary-btn">닫기</a>
+  												<button type="submit" class="primary-btn" id="">여행일정 작성</button> 
+  												<!-- <button type="button" onclick="location.href='tripRecordInsert'" class="primary-btn">여행일정 작성</button> -->
+  												<!-- <a href="./tripRecordInsert" class="primary-btn">여행일정 작성</a> -->
+											</div>
+										</form>
+									</div>
+									<!-- href 속성값을 사용하여 modal을 띄워주는 링크 -->
+									<a href="#test" rel="modal:open" class="primary-btn">여행메이트 글 작성</a>
+									<!-- <a href="./tripRecordInsert" class="primary-btn">여행기록 등록</a> -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- 여행메이트 글 section-->
+		<!-- 여행기간 여행인원 여행타이틀 -->
+		<section class="blog-section blog-page spad">
+			<div class="container">
+				<div class="row">
+					<div th:each="tripMateInfo : ${tripMateList}" th:onclick="|location.href='@{/tripMateInfo(postId=${tripMateInfo.postId})}'|"
+						class="col-lg-4 col-md-6">
+						<div class="single-blog-item">
+							<div class="sb-pic">
+								<img th:src="${tripMateInfo.writerId}" alt="이미지">
+							</div>
+							<div class="sb-text">
+								<ul>
+									<li>
+										<i class="fa fa-user"></i>
+										<span th:text="${tripMateInfo.writerId}"></span>
+									</li>
+									<li>
+										<i class="fa fa-clock-o"></i>
+										<span th:text="${#dates.format(tripMateInfo.writeDate, 'yy년 MM월 dd일')}"></span>
+									</li>
+									<li>
+										<i class="fa"></i>
+										<span th:text="${tripMateInfo.hit}"></span>
+									</li>
+								</ul>
+								<h5>
+									<a th:text="${tripMateInfo.mateTitle}"></a>
+								</h5>
+								<ul>
+									<li>
+										<span class="fa" th:text="${#dates.format(tripMateInfo.startDay, 'yy년 MM월 dd일')}"></span>
+										~ <span class="fa" th:text="${#dates.format(tripMateInfo.endDay, 'yy년 MM월 dd일')}"></span>
+										<br>
+										모집 인원 : <span class="fa" th:text="${tripMateInfo.mateMax}"></span>
+										<br>
+										신청 인원 : <span class="fa" th:text="${tripMateInfo.applyNum}"></span>
+									<li>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- 여행메이트 글 section end -->
+	</div>
+	<script>
+		
+	</script>
+</body>
+</html>

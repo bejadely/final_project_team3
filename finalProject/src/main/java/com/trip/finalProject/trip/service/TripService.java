@@ -44,6 +44,9 @@ public interface TripService {
 	//여행기록 삭제
 	public int DeleteTripInfo(int postId);
 	
+	//여행메모 등록
+	public TripVO InsertTripMemo(TripVO tripVO);
+	
 	//여행경로 저장
 	public int InsertTripMapping(TripVO tripVO);
 	
