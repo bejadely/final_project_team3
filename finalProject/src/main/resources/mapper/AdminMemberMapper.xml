@@ -149,6 +149,13 @@
   			</set>
   		</update>
   		
+  		<!-- 이름 검색의 총 결과값 카운트 -->
+  		<select id="countName">
+  			SELECT COUNT(*)
+  			  FROM member
+  			 WHERE member_name LIKE '%${memberName}%'
+  		</select>
+  		
   		<!-- 이름으로 회원 검색 -->
   		<select id="searchMemberByName" resultType="AdminMemberVO">
   			SELECT member_id
@@ -161,6 +168,12 @@
           ORDER BY sign_up_date
   		</select>
   		
+  		<!-- 아이디 검색의 총 결과값 카운트 -->
+  		<select id="countId">
+  			SELECT COUNT(*)
+  			  FROM member
+  			 WHERE member_id LIKE '%${memberId}%'
+  		</select>
   		
   		<!-- 아이디로 회원 검색 -->
   		<select id="searchMemberById" resultType="AdminMemberVO">
