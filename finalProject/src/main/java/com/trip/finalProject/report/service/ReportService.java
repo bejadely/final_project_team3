@@ -1,9 +1,6 @@
 package com.trip.finalProject.report.service;
 
-import java.util.List;
 import java.util.Map;
-
-import com.trip.finalProject.common.PagingVO;
 
 public interface ReportService {
 	
@@ -11,4 +8,5 @@ public interface ReportService {
 	public Map<String, Object> selectAllNewReport(Integer nowPage, Integer cntPerPage);
 	
 	// 신고 내역 상세 조회
+	public ReportVO getReportDetail(ReportVO reportVO);
 }
