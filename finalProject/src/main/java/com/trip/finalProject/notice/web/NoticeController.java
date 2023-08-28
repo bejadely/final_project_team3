@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.notice.service.NoticeService;
@@ -47,7 +48,8 @@ public class NoticeController {
 	}
 	
 	// 회원정보 수정 폼 호출
-		@GetMapping("/admin/modifyNoticeInfoForm")
+		@PostMapping("/admin/modifyNoticeInfoForm")
+		@ResponseBody
 		public String modifyMemberInfoForm(NoticeVO noticeVO, Model model) {
 			
 			// 회원 상세조회 실행

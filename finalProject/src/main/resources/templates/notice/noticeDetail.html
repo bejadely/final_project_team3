@@ -129,11 +129,11 @@ table {
 			</tr>
 			<tr>
 				<th colspan="2">제목</th>
-				<td colspan="6" th:text="*{title}"></td>
+				<td colspan="6"><textarea rows="1" th:text="*{title}" name="*{title}"  id="title" readonly ></textarea></td>
 			</tr>
 			<tr>
 				<th colspan="2">내용</th>
-				<td colspan="6"><textarea rows="10" cols="97" readonly th:text="*{content}"></textarea>
+				<td colspan="6"><textarea rows="10" cols="97" th:text="*{content}"  id="content" name="*{content}"readonly ></textarea>
 				</td>
 			</tr>
 		</table>
@@ -144,7 +144,8 @@ table {
 
     <div align="center">
     <!--  <div th:if="${id == board.memberId || id == 'manager'}"> -->
-            <button type="button" onclick="callFunction('E')">수정</button>&nbsp;&nbsp;
+    		<!--  <input type="button" onclick="callFunction('E')" value="버튼"/>-->
+            <button type="button" id='modify' class="modify" onclick="callFunction('E')">수정</button>&nbsp;&nbsp;
             <button type="button" onclick="callFunction('D')">삭제</button>&nbsp;&nbsp;
      <!-- </div>-->
      </div>
@@ -199,9 +200,9 @@ table {
 				.then(response => response.text());
 
 		} -->
-		<script>
 		
-	/* 	function callFunction(str){
+		
+	<!--  	function callFunction(str){
 			let frm = document.getElementById("frm");
 			if(str=='E'){
 				frm.action = "/admin/modifyNoticeInfo"; //액션 = 동작되는 것. 폼객체가 가지고 있는 action속성에 noticeEdit을 담아라
@@ -210,23 +211,69 @@ table {
 			}
 			
 			frm.submit(); //이폼이 전송
-		} */
+		}  -->
+		
+		<script th:inline="javascript">
 		 function callFunction(str){
 			let frm = document.getElementById("frm");
 			if(str=='E'){
 
 				// 상세보기 할 member의 id값 가져오기
-				let noticeNumber = $(event.currentTarget).find('td:eq(0)').text();
-				
-				// 페이지 전환 실행
-				location.href=`seeNoticeDetail?noticeNumber=${noticeNumber}`;
-			} else {
-				frm.action = "/admin/deleteNotice";
+				//let noticeNumber = [[${noticeVO.noticeNumber}]];
+				document.getElementById('title').readOnly = false; 
+				document.getElementById('content').readOnly = false; 
+				document.getElementById('modify').textContent = '등록'; 
+				document.getElementById('content').focus();
+			    $(".modify").attr("class","edit");			    		    				
+				//id='modify'
+				/* $("textarea[[${noticeVO.title}]]").attr("readonly",false);
+				$("textarea[[${noticeVO.content}]]").attr("readonly",false); */
+				//[[${noticeVO.title}]]
+				//[[${noticeVO.content}]]
 			}
+		 }
+		 
+			$(document).ready(function() {
+			      // 승인 버튼. 클릭(이벤트)발생시  ajaxApprove메서드 실행 설정(핸들러)
+			      $('.modify').on('click',function(){
+			    	edit(); 
+			      });
+			      
+			});
+			      
+			      
+			      function edit(event){
+			    	  console.log("edit 버튼 눌렀다."); 
+			      }
 			
-			frm.submit(); //이폼이 전송
-		} 
+				// 페이지 전환 실행 
+			/* 	location.href="/admin/modifyNoticeInfoForm?noticeNumber="+noticeNumber;
+				
+				
+				   $.ajax({
+				         url : "/admin/modifyNoticeInfoForm", 
+				         type : 'post',
+				         data: { noticeNumber : noticeNumber },
+				      })
+				      .done( data => {			         
+				         console.log("통신은 성공");
+				         console.log(data)
+				         if(data != null && data.num != null){
+				            alert(); 
+				            $("#numValue").val(data.num);			            
+				    		frm.submit(); //이폼이 전송
+				         } 
+				      })
+				      .fail( reject => console.log(reject));
+				   }; */
+				 
+				
+				
+				
+			
+				
 		
+			
 	</script> 
 
 
