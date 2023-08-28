@@ -96,7 +96,6 @@ public class TripController {
 	    
 	    return map;
 	}
-	
 	//여행기록 등록 - form
 	@GetMapping("tripRecordInsert")
 	public String tripRecordInsertForm(Model model) {

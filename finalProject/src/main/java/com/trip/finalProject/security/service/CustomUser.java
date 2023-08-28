@@ -26,8 +26,9 @@ public class CustomUser implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> auth = new ArrayList<>();
 		// 다른건 아니고, 권한 정보를 유출시키지 않기 위해 이를 위해 미리 만들어진 SimpleGrantedAuthority 라는 객체 안에 감싸서 담아버림
-		// 주의 할 점 : 만약 우리가 부여한 권한이 여러개라면, 반복문을 돌려서 그 객체안에 넣어줘야함 
-		auth.add(new SimpleGrantedAuthority(member.getAuthority()));
+		// 주의 할 점 : 만약 우리가 부여한 권한이 여러개라면, 반복문을 돌려서 그 객체안에 넣어줘야함
+		// 스프링 시큐어리티에서 원하는 형태로 권한 형태를 넣어주기 위해 프로젝트 공통 코드 앞에 ROLE_을 추가
+		auth.add(new SimpleGrantedAuthority("ROLE_" + member.getAuthority()));
 		return auth;
 	}
 
