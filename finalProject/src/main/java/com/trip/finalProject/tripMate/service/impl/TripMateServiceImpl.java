@@ -37,6 +37,12 @@ public class TripMateServiceImpl implements TripMateService {
 	public TripMateVO getTripMateInfo(TripMateVO tripMateVO) {
 		return tripMateMapper.selectTripMateInfo(tripMateVO);
 	}
+	
+	//여행 메이트 글 조회수 카운트
+	@Override
+	public int updateMateRecruitHit(TripMateVO tripMateVO) {
+		return tripMateMapper.updateMateRecruitHit(tripMateVO);
+	}
 
 	//여행 메이트 게시글 등록
 	@Transactional
@@ -75,6 +81,18 @@ public class TripMateServiceImpl implements TripMateService {
 		return tripMateVO;
 	}
 
-	
+	//여행 메이트 신청 시 게시글의 신청자 수 업데이트
+	@Override
+	public int updateMateRecruitApplyNum(TripMateVO tripMateVO) {
+		return tripMateMapper.updateMateRecruitApplyNum(tripMateVO);
+	}
+
+	//여행 메이트 게시글의 현재 신청자 수 카운트
+	@Override
+	public int selectMateRecruitApplyNum(TripMateVO tripMateVO) {
+		int result = tripMateMapper.selectMateRecruitApplyNum(tripMateVO);
+		return result;
+	}
+
 
 }
