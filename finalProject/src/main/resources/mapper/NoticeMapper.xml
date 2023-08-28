@@ -50,10 +50,24 @@
 	</select>
 	
 <!-- 게시글 수정 -->	
-	<select id="modifyNoticeInfo" resultType="NoticeVO">
+	<update id="modifyNoticeInfo" parameterType="NoticeVO">
 	
+  			UPDATE notice
+  			<set>
+  				<if test="title != null and !title.equals('')">
+					title = #{title},
+				</if>
+				<if test="content != null and !content.equals('')">
+				content = #{content},	
+				</if>
+			
+				 update_date= sysdate
+			</set>
+  			WHERE notice_number = #{noticeNumber}
+  		</update>
+		
 	
-	</select>
+
 	
 <!-- 새로운 게시글을 삽입하는 쿼리. 게시글 번호는 자동생성됨-->	
 	<insert id="noticeInsert" parameterType="NoticeVO" >
