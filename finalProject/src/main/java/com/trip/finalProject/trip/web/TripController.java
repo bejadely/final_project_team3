@@ -1,6 +1,7 @@
 package com.trip.finalProject.trip.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -84,6 +85,18 @@ public class TripController {
 		return "myPage/myPageComTrip";
 	}
 	
+	//여행기록 공개 설정 업데이트
+	@PostMapping("/discloseUpdate")
+	@ResponseBody
+	public Map<String, Object> disUpdate(TripVO tripVO){
+	    tripVO.getPostId();
+	    tripVO.getTripDisclose();
+	    	    
+	    Map<String, Object> map = tripService.getUpdateDis(tripVO);
+	    System.out.println("testMap : " + map);
+	    
+	    return map;
+	}
 	//여행기록 등록 - form
 	@GetMapping("tripRecordInsert")
 	public String tripRecordInsertForm(Model model) {

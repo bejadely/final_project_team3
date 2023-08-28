@@ -1,6 +1,7 @@
 package com.trip.finalProject.trip.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.trip.finalProject.common.PagingVO;
 
@@ -22,6 +23,9 @@ public interface TripService {
 	
 	//여행기록 회원 조회 - 미완료 여행
 	public List<TripVO> getTripPer(PagingVO pagingVO);
+	
+	//여행 저장 기록 업데이트
+	public Map<String, Object> getUpdateDis(TripVO tripVO);
 
 	//여행기록 회원 조회 - 임시저장
 	public List<TripVO> getTripPerNot(PagingVO pagingVO);

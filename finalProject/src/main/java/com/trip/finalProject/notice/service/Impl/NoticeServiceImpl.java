@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.notice.mapper.NoticeMapper;
 import com.trip.finalProject.notice.service.NoticeService;
 import com.trip.finalProject.notice.service.NoticeVO;
@@ -33,18 +34,21 @@ public class NoticeServiceImpl implements NoticeService {
 
     }
     
-    @Override
-	public List<NoticeVO> boardSelectList(NoticeVO vo) {
-
-		return noticeMapper.boardSelectList(vo);
-	}
-
-	@Override
-	public List<NoticeVO> boardSelect(NoticeVO vo) {
 	
-		return noticeMapper.boardSelect(vo);
+    //전체 게시글 수 카운트
+    @Override
+	public int listCount() {
+		return noticeMapper.getAllNoticeCount();
+	}
+    
+    //게시글 전체 조회
+	@Override
+	public List<NoticeVO> SelectAllNoticeList(PagingVO pagingVO) {
+		
+		return noticeMapper.SelectAllNoticeList(pagingVO);
 	}
 
+	//게시글 등록
 	@Override
 	public int noticeInsert(NoticeVO vo) {
 
