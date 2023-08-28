@@ -90,6 +90,17 @@
     .total-datail {
         margin-bottom: 0; /* 테이블의 바깥쪽 여백 제거 */
     }
+     .uploadMadalbtn {
+   		 text-align: right;
+ 	 }
+ .upload-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+.dropdown {
+        margin-bottom: 10px; /* 외부 여백 크기를 조절할 수 있습니다. */
+    }
 </style>
 </head>
 <body>
@@ -109,6 +120,61 @@
     <br>
     <!-- 내용창 -->
     <div class="container-lg">
+    	<!-- 파일업로드 버튼 -->
+    	<div class="uploadMadalbtn">
+    		<button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#staticBackdrop">파일업로드</button>&ensp;
+    	</div>
+    	<!-- 파일업로드 모달 -->
+    	<!-- Modal -->
+		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h1 class="modal-title fs-5" id="staticBackdropLabel">통계자료 업로드</h1>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		      <div class="upload-container">
+			      <div class="dropdown">
+				  &nbsp;<button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+				    파일타입
+				  </button>
+				  <ul class="dropdown-menu">
+				    <li><a class="dropdown-item" >동행유형</a></li>
+				    <li><a class="dropdown-item" >여행유형</a></li>
+				    <li><a class="dropdown-item" >맛집방문자</a></li>
+				    <li><a class="dropdown-item" >여행지방문자</a></li>
+				    <li><a class="dropdown-item" >방문자수</a></li>
+				    <li><a class="dropdown-item" >SNS언급량</a></li>
+				  </ul>
+				</div><div class="dropdown">
+				  <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+				    지역선택
+				  </button>
+				  <ul class="dropdown-menu">
+				    <li><a class="dropdown-item" >대구</a></li>
+				    <li><a class="dropdown-item" >부산</a></li>
+				    <li><a class="dropdown-item" >울산</a></li>
+				    <li><a class="dropdown-item" >경주</a></li>
+				    <li><a class="dropdown-item" >포항</a></li>
+				    <li><a class="dropdown-item" >안동</a></li>
+				    <li><a class="dropdown-item" >거제</a></li>
+				    <li><a class="dropdown-item" >통영</a></li>
+				  </ul>
+				</div> 
+		    </div>
+		       <div class="filebox">
+				  <label for="ex_filename"></label> 
+				  <input type="file" id="ex_filename" class="upload-hidden"> 
+				</div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+		        <button type="button" class="btn btn-primary">업로드</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
         <!-- 경상도 지역 통계 -->
         <div class="row">
             <div class="col-md-7">
@@ -116,12 +182,7 @@
                     <!-- 제목 및 통계 자료 전환 버튼 -->
                     <div class="inline">
                         <h6>경상도 지역 주요 관광 현황 지도</h6>
-                        <div class="btn-group btn-group-sm" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="btnradio" id="visitor" autocomplete="off" checked>
-                            <label class="btn btn-outline-secondary" for="visitor">방문자수</label>
-                            <input type="radio" class="btn-check" name="btnradio" id="search" autocomplete="off">
-                            <label class="btn btn-outline-secondary" for="search">목적지검색수</label>
-                        </div>
+                        <button type="button" class="btn btn-secondary btn-sm">방문자수</button>   
                     </div>
                     <div class="local-map">
                         <svg
@@ -2722,6 +2783,7 @@
                     <li><a class="dropdown-item" >거제</a></li>
                 </ul>
                 <h5 style="margin: 0;">&nbsp;별 관광 데이터</h5>
+                &nbsp;<button type="button" class="btn btn-outline-dark btn-sm">조회</button>
             </div>
             <!--지역별 관광 총 집계 -->
             <div class="col-md-6">
