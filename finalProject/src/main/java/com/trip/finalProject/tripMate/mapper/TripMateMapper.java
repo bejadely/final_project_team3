@@ -20,6 +20,9 @@ public interface TripMateMapper {
 	//여행 메이트 게시글 삭제
 	public int deleteTripMateRecruit(TripMateVO tripMateVO);
 	
+	//여행 메이트 게시글 수정
+	public int updateTripMateRecruit(TripMateVO tripMateVO);
+	
 	//여행 메이트 신청 (등록된 게시글에 대한 여행메이트 신청)
 	public int insertTripMateApply(TripMateVO tripMateVO); 
 	

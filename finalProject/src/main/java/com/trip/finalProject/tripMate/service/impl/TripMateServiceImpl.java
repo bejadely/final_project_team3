@@ -73,6 +73,12 @@ public class TripMateServiceImpl implements TripMateService {
 	public int deleteTripMateRecruit(TripMateVO tripMAteVO) {
 		return tripMateMapper.deleteTripMateRecruit(tripMAteVO);
 	}
+
+	//여행 메이트 게시글 수정
+	@Override
+	public int updateTripMateRecruit(TripMateVO tripMateVO) {
+		return tripMateMapper.updateTripMateRecruit(tripMateVO);
+	}
 	
 	//여행 메이트 신청 (등록된 게시글에 대한 여행메이트 신청)
 	@Override
@@ -94,5 +100,5 @@ public class TripMateServiceImpl implements TripMateService {
 		return result;
 	}
 
-
+	
 }
