@@ -7,7 +7,7 @@
 	<insert id="insertPaymentInfo" parameterType="KakaoPayInfoVO">
 		<selectKey keyProperty="paymentId" resultType="String" order="BEFORE">
 			SELECT 'PAY' || (TO_NUMBER(NVL((SUBSTR(MAX(payment_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
-			FROM package_regist
+			FROM payment
 			WHERE SUBSTR(payment_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
 		</selectKey>
 		INSERT INTO payment
@@ -15,17 +15,24 @@
 						payment_id
 						,partner_user_id
 						,order_name
-						,total_amout
+						,total_amount
 						,tid
 						,cid
 						,status
 						,calculate_status
 						,partner_order_id
-						,approved_at
 					)
 					VALUES
 					(
-					
+						#{paymentId}
+						,#{partnerUserId}
+						,#{orderName}
+						,#{totalAmount}
+						,#{tid}
+						,#{cid}
+						,#{status}
+						,#{calculateStatus}
+						,#{partnerOrderId}
 					)
 					
 	</insert>
