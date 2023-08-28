@@ -40,8 +40,6 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		session.setAttribute("sessionId", authentication.getName()); // 인증시 사용한 memberId
 		session.setAttribute("sessionName", result.getMemberName());
 		
-//		session.setAttribute("sessionName", );
-		
 		response.sendRedirect("/");
 	}
 
