@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip.finalProject.attachedFile.mapper.AttachedFileMapper">
+	<insert id="insertAttachedFile" parameterType="AttachedFileVO">
+		<selectKey keyProperty="fileId" resultType="String" order="BEFORE">		
+    		SELECT 'ATF' || (TO_NUMBER(NVL((SUBSTR(MAX(file_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1) 
+    		FROM attached_file
+    		WHERE SUBSTR(file_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+		
+		insert into attached_file
+						(
+						post_id 
+						,origin_img
+						,saved_img 
+						<choose>
+							<when test="imgType != null">
+								,img_type							
+							</when>
+							<otherwise>
+								,img_type
+							</otherwise>
+						</choose>
+						,member_id
+						,file_id
+						,upload_date
+						,loading_img
+						)
+					values
+						(
+						#{postId}
+						,#{originImg}
+						,#{savedImg}
+						<choose>
+							<when test="imgType != null">
+								,#{imgType}							
+							</when>
+							<otherwise>
+								,'U1'
+							</otherwise>
+						</choose>
+						,#{memberId}
+						,#{fileId}
+						,sysdate
+						,#{loadingImg}	
+						)
+	</insert>
+	<select id="findByPostId" resultType="AttachedFileVO">
+		SELECT loading_img 
+		FROM attached_file 
+		WHERE post_id = #{postId} AND img_type ='U2'
+	</select>
+
+</mapper>

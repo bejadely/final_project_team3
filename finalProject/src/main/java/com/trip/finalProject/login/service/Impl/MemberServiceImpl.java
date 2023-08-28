@@ -19,11 +19,24 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Autowired
 	MemberMapper memberMapper;
-
+	
+	//일반회원 회원가입
 	@Override
 	public String insertMemberInfo(MemberVO memberVO) {
 
 		int result = memberMapper.insertMember(memberVO);
+		if(result ==1) {
+			return memberVO.getMemberId();
+		}else {
+			return null;
+		}
+	}
+	
+	//가이드회원 회원가입
+	@Override
+	public String insertGuide(MemberVO memberVO) {
+
+		int result = memberMapper.insertGuide(memberVO);
 		if(result ==1) {
 			return memberVO.getMemberId();
 		}else {
