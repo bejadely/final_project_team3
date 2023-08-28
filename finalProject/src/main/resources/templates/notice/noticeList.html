@@ -471,11 +471,11 @@ $(document).ready(function() {
 	$('.memberInfo')
 					
 					
-					.on('mouseup', moveToMemberDetail)
+					.on('mouseup', moveToNoticeDetail)
 });
 
 //클릭시 공지사항 상세 조회페이지로 이동
-function moveToMemberDetail(event){
+function moveToNoticeDetail(event){
 	
 	// 상세보기 할 member의 id값 가져오기
 	let noticeNumber = $(event.currentTarget).find('td:eq(0)').text();
