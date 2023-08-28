@@ -7,7 +7,6 @@ import lombok.Data;
 public class AdminMemberVO {
 	
 	// 기본 필드
-	
 	private String memberId; // 회원 아이디
 	private String memberName; // 회원명
 	private String password; // 비밀번호 - 암호화

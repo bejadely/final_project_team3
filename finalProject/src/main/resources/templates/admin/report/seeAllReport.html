@@ -7,7 +7,7 @@
 <!-- Content -->
 <div layout:fragment="content">
 	<div class="container">
-		<h5><b>회원조회</b></h5>
+		<h5><b>신고내역 관리</b></h5>
 		<br>
 		<div>
 			<select id="searchBy" name="searchBy">
@@ -21,22 +21,26 @@
 			<table class="table">
 				<thead>
 					<tr>
-						<th width="100" align="center">회원ID</th>
-						<th width="250" align="center">이름</th>
-						<th width="500" align="center">연락처</th>
-						<th width="300" align="center">국적</th>
-						<th width="350" align="center">권한분류</th>
+						<th width="100" align="center">신고접수번호</th>
+						<th width="250" align="center">신고자ID</th>
+						<th width="500" align="center">신고게시글</th>
+						<th width="350" align="center">신고사유</th>
+						<th width="350" align="center">접수일자</th>
+						<th width="350" align="center">처리현황</th>
+						<th width="350" align="center">제재횟수</th>
 					</tr>
 				</thead>
 				<th:block th:if="${!#lists.isEmpty(list)}">
 					<tbody>
 						<th:block th:each="l : ${list}">
-							<tr class="memberInfo">
-								<td align="center" th:text="${l.memberId}"></td>
-								<td align="center" th:text="${l.memberName}"></td>
-								<td align="center" th:text="${l.phoneNumber}"></td>
-								<td align="center" th:text="${l.nationality}"></td>
-								<td align="center" th:text="${l.authority}"></td>
+							<tr class="reportInfo">
+								<td align="center" th:text="${l.reportId}"></td>
+								<td align="center" th:text="${l.reporterId}"></td>
+								<td align="center" th:text="${l.postId}"></td>
+								<td align="center" th:text="${l.reportReason}"></td>
+								<td align="center" th:text="${l.reportDate}"></td>
+								<td align="center" th:text="${l.result}"></td>
+								<td align="center" th:text="${l.punishCount}"></td>
 							</tr>
 						</th:block>
 					</tbody>
@@ -44,7 +48,7 @@
 			</table>
 			<th:block th:if="${#lists.isEmpty(list)}">
 				<div align="center">
-					<span>조회된 회원이 없습니다.</span>
+					<span>새로운 신고 접수 내역이 없습니다.</span>
 				</div>
 			</th:block>
 		</div>
@@ -102,11 +106,11 @@
 	</div>
 	
 	<script th:inline="javascript" type="text/javascript">
-	
+	// 구현중
 	$(document).ready(function() {
 		// 이벤트 설정
 		$('#searchButton').on('click', search);
-		$('.memberInfo').on('mouseover', colorDarker)
+		$('.reportInfo').on('mouseover', colorDarker)
 						.on('mouseleave', colorReset)
 						.on('click')
 						.on('mouseup', moveToMemberDetail)
@@ -132,7 +136,7 @@
 		$(event.currentTarget).css({background: '#ffffff'});
 	}
 	
-	// 클릭시 회원상세정보 조회페이지로 이동
+	// 클릭시 신고상세내역 조회페이지로 이동(구현중)
 	function moveToMemberDetail(event){
 		
 		// 상세보기 할 member의 id값 가져오기
