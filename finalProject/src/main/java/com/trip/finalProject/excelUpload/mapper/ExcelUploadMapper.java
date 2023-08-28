@@ -5,4 +5,6 @@ import java.util.Map;
 
 public interface ExcelUploadMapper {
     Integer uploadRestaurantList(List<Map<String, String>> restaurantList);
+
+	Integer uploadAttractionList(List<Map<String, String>> attractionList);
 }
