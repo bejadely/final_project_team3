@@ -9,7 +9,6 @@ import com.trip.finalProject.common.PagingVO;
 public interface NoticeService {
 	
 	
-	public NoticeVO insertpost(NoticeVO noticeVO) throws Exception; 
 	
 	
 	//public List<NoticeVO> boardSelect(NoticeVO vo);
@@ -28,6 +27,7 @@ public interface NoticeService {
 	public int listCount();
 	//게시글 상세조회 
 	public NoticeVO getNoticeDetail(NoticeVO vo);
-	//게시글 수정
-	//public NoticeVO modifyNoticeInfo(NoticeVO noticeVO);
+	//게시글 수정적용
+	public String modifyNoticeInfo(NoticeVO noticeVO);
+	
 }
