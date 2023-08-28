@@ -2,6 +2,8 @@ package com.trip.finalProject.excelUpload.service.impl;
 
 import com.trip.finalProject.excelUpload.mapper.ExcelUploadMapper;
 import com.trip.finalProject.excelUpload.service.ExcelUploadService;
+
+import org.apache.poi.hssf.record.PageBreakRecord.Break;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -29,7 +31,10 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
             case "restaurant":
                 result = uploadRestaurant(areaCode, sigunguCode, file);
                 break;
-            default:
+            case "attraction" :
+            	result = uploadAttraction(areaCode, sigunguCode, file); 
+            	break;
+            default: 
                 break;
         }
 
@@ -37,7 +42,60 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
         return result;
     }
 
-    private Integer uploadRestaurant(String areaCode, String sigunguCode, MultipartFile file) {
+    private Integer uploadAttraction(String areaCode, String sigunguCode, MultipartFile file) {
+		int result = 0;
+		
+		List<Map<String, String>> attractionList = getAttractionList(areaCode, sigunguCode, file);
+		
+		if(attractionList.size() > 0) {
+            result = excelUploadMapper.uploadAttractionList(attractionList);
+        }
+				
+		return result;
+	}
+
+	private List<Map<String, String>> getAttractionList(String areaCode, String sigunguCode, MultipartFile file) {
+		List<Map<String, String>> attractionList = new ArrayList<>();
+
+        String yearMonth = getThisYearMonth();
+
+        try (InputStream inputStream = file.getInputStream()) {
+
+            // 엑셀 파일로 Workbook instance를 생성한다.
+            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+
+            // workbook의 첫번째 sheet를 가저온다.
+            XSSFSheet sheet = workbook.getSheetAt(0);
+
+            // 모든 행(row)들을 조회한다. 첫줄은 데이터 목록이므로 생략. 1~5위만 가져와야해서 1부터 6까지.
+            for (int i = 1; i < 6; i++) {
+                // 각각의 행에 존재하는 모든 열(cell)을 순회한다.
+                Iterator<Cell> cellIterator = sheet.getRow(i).cellIterator();
+
+                String attractionName = sheet.getRow(i).getCell(1).getStringCellValue(); //  업소명
+                String attractionType = sheet.getRow(i).getCell(3).getStringCellValue(); //  타입
+                String visitorNumber = String.valueOf((int)sheet.getRow(i).getCell(4).getNumericCellValue()); //  방문자수
+
+                Map<String, String> attractionMap = new HashMap<>();
+                attractionMap.put("restaurantName", attractionName);
+                attractionMap.put("restaurantType", attractionType);
+                attractionMap.put("visitorNumber", visitorNumber);
+                attractionMap.put("yearMonth", yearMonth);
+                attractionMap.put("areaCode", areaCode);
+                attractionMap.put("sigunguCode", sigunguCode);
+
+                attractionList.add(attractionMap);
+            }
+            System.out.println("attractionList = " + attractionList);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return attractionList;
+	}
+
+	private Integer uploadRestaurant(String areaCode, String sigunguCode, MultipartFile file) {
 
         int result = 0;
         List<Map<String,String>> restaurantList = getRestaurantList(areaCode, sigunguCode, file);
