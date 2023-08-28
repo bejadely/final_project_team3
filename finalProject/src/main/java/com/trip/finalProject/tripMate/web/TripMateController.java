@@ -35,6 +35,7 @@ public class TripMateController {
 	@GetMapping("tripMateInfo")
 	public String tripMateInfo(TripMateVO tripMateVO, Model model) {
 		TripMateVO findVO = tripMateService.getTripMateInfo(tripMateVO);
+		tripMateService.updateMateRecruitHit(tripMateVO);
 		model.addAttribute("tripMateInfo", findVO);
 		return "tripMate/tripMateInfo";
 	}
@@ -79,8 +80,13 @@ public class TripMateController {
 	//여행 메이트 신청 - process
 	@PostMapping("tripMateApplyInsert")
 	public String tripMateApplyInsert(TripMateVO tripMateVO, Model model) {
+		//최대 인원, 신청 인원 조회
+		//tripMateService.selectMateRecruitApplyNum(tripMateVO);
+		//메이트 신청
 		tripMateService.InsertTripMateApply(tripMateVO);
-		return "redirect:tripMateList";
+		//신청인원 업데이트
+		tripMateService.updateMateRecruitApplyNum(tripMateVO);
+			return "redirect:tripMateList";			
 	}
 	
 }
