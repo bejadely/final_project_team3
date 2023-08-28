@@ -37,8 +37,9 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 		
 		MemberVO result = memberService.singleLogin(memberVO);
 		
-		session.setAttribute("sessionId", authentication.getName()); // 인증시 사용한 memberId
+		session.setAttribute("sessionId", authentication.getName());
 		session.setAttribute("sessionName", result.getMemberName());
+		session.setAttribute("sessionAuthority", result.getAuthority());
 		
 		response.sendRedirect("/");
 	}
