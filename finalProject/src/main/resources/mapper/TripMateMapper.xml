@@ -28,6 +28,51 @@
 		WHERE post_id = #{postId}
 	</select>
 	
+	<!-- 여행메이트 게시글 등록 -->
+	<insert id="insertEditor" parameterType="TripMateVO">
+		<selectKey keyProperty="postId" resultType="String" order="BEFORE">
+			SELECT 'MAT' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM mate_recruit
+			WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+		INSERT INTO mate_recruit
+						(
+							post_id
+							, mate_title
+							, mate_content
+							, mate_expense
+							, start_day
+							, end_day
+							, mate_style
+							, mate_tag
+							, mate_max
+							, complition
+							, write_date
+							, deadline
+							, writer_id
+							, trip_area
+						)
+					VALUES
+						(
+							#{postId}
+							, #{mateTitle}
+							, #{mateContent}
+							, #{mateExpense}
+							, #{startDay}
+							, #{endDay}
+							, #{mateStyle}
+							, #{mateTag}
+							, #{mateMax}
+							, 'C1'
+							, sysdate
+							, #{deadline}
+							, #{writerId}
+							, #{tripArea}						
+						)
+		
+	</insert>
+	
+	
 	<!-- 여행 메이트 신청 (등록된 게시글에 대한 여행메이트 신청) -->
 	<insert id="insertTripMateApply" parameterType="TripMateVO">
 		<selectKey keyProperty="applyId" resultType="String" order="BEFORE">
