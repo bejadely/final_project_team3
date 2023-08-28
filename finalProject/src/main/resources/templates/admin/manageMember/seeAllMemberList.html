@@ -48,38 +48,63 @@
 				</div>
 			</th:block>
 		</div>
-		<div style="text-align : center;">
-			<!-- 페이징 구현중 -->
-			<th:block th:if="${paging.nowPage != 1}">
-				<a th:href="@{seeAllMemberList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
-			</th:block>
-			<th:block th:if="${paging.startPage != 1}">
-				<a th:href="@{seeAllMemberList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
-			</th:block>
-			<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
-				<th:block th:if="${p eq paging.nowPage}">
-					<b th:text="${p}"></b>
+		<!-- 페이징 구문 -->
+		<!-- 검색키워드가 없을때 -->
+		<th:block th:if="${#strings.isEmpty(keyword)}">
+			<div style="text-align : center;">
+				<th:block th:if="${paging.nowPage != 1}">
+					<a th:href="@{seeAllMemberList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
 				</th:block>
-				<th:block th:if="${p ne paging.nowPage}">
-					<a th:href="@{seeAllMemberList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+				<th:block th:if="${paging.startPage != 1}">
+					<a th:href="@{seeAllMemberList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 				</th:block>
-			</th:block>
-			<th:block
-				th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-				<a th:href="@{seeAllMemberList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
-			</th:block>
-			<th:block th:if="${paging.nowPage != paging.lastPage}">
-				<a th:href="@{seeAllMemberList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
-			</th:block>
-		</div>
+				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+					<th:block th:if="${p eq paging.nowPage}">
+						<b th:text="${p}"></b>
+					</th:block>
+					<th:block th:if="${p ne paging.nowPage}">
+						<a th:href="@{seeAllMemberList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+					</th:block>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+					<a th:href="@{seeAllMemberList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage}">
+					<a th:href="@{seeAllMemberList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+				</th:block>
+			</div>
+		</th:block>
+		<!-- 검색키워드가 있을때 -->
+		<th:block th:if="${!#strings.isEmpty(keyword)}">
+			<div style="text-align : center;">
+				<th:block th:if="${paging.nowPage != 1}">
+					<a th:href="@{searchAdminMember(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
+				</th:block>
+				<th:block th:if="${paging.startPage != 1}">
+					<a th:href="@{searchAdminMember(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;</a>
+				</th:block>
+				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+					<th:block th:if="${p eq paging.nowPage}">
+						<b th:text="${p}"></b>
+					</th:block>
+					<th:block th:if="${p ne paging.nowPage}">
+						<a th:href="@{searchAdminMember(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
+					</th:block>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+					<a th:href="@{searchAdminMember(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage}">
+					<a th:href="@{searchAdminMember(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
+				</th:block>
+			</div>
+		</th:block>
 	</div>
 	
 	<script th:inline="javascript" type="text/javascript">
 	
-	// 동적으로 버튼이 다 만들어지고 문서가 다 로드 된 후 이벤트가 정의되게 하기 위해 콜백함수 사용 
-	
 	$(document).ready(function() {
-		// 승인 버튼 클릭 시 발생 이벤트 설정
+		// 이벤트 설정
 		$('#searchButton').on('click', search);
 		$('.memberInfo').on('mouseover', colorDarker)
 						.on('mouseleave', colorReset)
@@ -92,8 +117,7 @@
 		
 		let value = $('#searchBy').val();
 		let keyword = $('#keyword').val();
-		console.log('searchAdminMember?searchBy='+value+'&keyword='+keyword);
-		location.href='searchAdminMember?searchBy='+value+'&keyword='+keyword;
+		location.href='/admin/searchAdminMember?searchBy='+value+'&keyword='+keyword;
 		
 	}
 	
