@@ -47,6 +47,18 @@ public class NoticeServiceImpl implements NoticeService {
 		
 		return noticeMapper.SelectAllNoticeList(pagingVO);
 	}
+	
+	//게시글 상세조회
+	@Override
+	public NoticeVO getNoticeDetail(NoticeVO vo) {
+		
+		return noticeMapper.getNoticeDetail(vo);
+	}
+	
+	/*
+	 * @Override public NoticeVO modifyNoticeInfo(NoticeVO vo) { return
+	 * noticeMapper.modifyNoticeInfo(vo); }
+	 */
 
 	//게시글 등록
 	@Override

@@ -118,14 +118,15 @@ table {
 <!-- 	<form action="/seeNoticeDetail" th:object="${noticeVO}" method="post">
  -->		<table border="1" style="width: 80%;" >
 			<tr>
-				<th width="70">순번</th>
-				<td width="50" align="center" th:text="*{noticeNumber}" ></td>		
-				<th width="100">작성자</th>
-				<td width="150" align="center" th:text="*{writerId}"></td>
-				<th width="100">작성일자</th>
-				<td width="150" align="center" th:text="*{registDate}"></td>
-				<th width="100">조회수</th>
-				<td width="70" align="center" th:text="*{hit}"></td>
+				
+<!-- 순번 -->
+<td width="50" align="center"><input type="text" class="input-field" readonly="readonly" th:value="*{noticeNumber}" /></td>
+<!-- 작성자 -->
+<td width="150" align="center"><input type="text" class="input-field" readonly="readonly" th:value="*{writerId}" /></td>
+<!-- 작성일자 -->
+<td width="150" align="center"><input type="text" class="input-field" readonly="readonly" th:value="*{registDate}" /></td>
+<!-- 조회수 -->
+<td width="70" align="center"><input type="text" class="input-field" readonly="readonly" th:value="*{hit}" /></td>
 			</tr>
 			<tr>
 				<th colspan="2">제목</th>
@@ -211,21 +212,21 @@ table {
 			
 			frm.submit(); //이폼이 전송
 		} */
-		 function callFunction(str){
+		/* function callFunction(str){
 			let frm = document.getElementById("frm");
 			if(str=='E'){
-
-				// 상세보기 할 member의 id값 가져오기
-				let noticeNumber = $(event.currentTarget).find('td:eq(0)').text();
 				
-				// 페이지 전환 실행
-				location.href=`seeNoticeDetail?noticeNumber=${noticeNumber}`;
+				
+				
+				
+				
+				
 			} else {
 				frm.action = "/admin/deleteNotice";
 			}
 			
 			frm.submit(); //이폼이 전송
-		} 
+		} */
 		
 	</script> 
 
