@@ -74,7 +74,7 @@
 	font-size: 13px;
 }
 .table-sm td, .table-sm th {
-    font-size: 12px; /* 원하는 글자 크기로 조정하세요 */
+    font-size: 12px;
 }
 
 </style>
@@ -108,7 +108,7 @@
 		  		<th scope="col">기간</th>
 		  	</tr>
 		  </thead>
-		  <tbody class="table-group-divider">
+		  <tbody class="table-group-divider contentBody">
 		    <tr th:each="festivalInfo : ${festivalList}" th:attr="data-content-id=${festivalInfo.contentId}">
 			    <th scope="row" th:text="${festivalInfo.festivalName}"></th>
 			    <td th:if="${festivalInfo.areaCode=='4'}" th:text="대구"></td>
@@ -124,7 +124,7 @@
 		  </tbody>
 		</table><br>
 		<!-- 페이징 -->
-		<!-- 모달 -->
+		<!-- 모달(유저) -->
 		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
 		    <div class="modal-content">
@@ -138,45 +138,86 @@
                     <tbody>
 	                    <tr>
 	                        <td colspan="3">
-		                        <img id="modalImage" style="width: 100%;">
+		                        <img class="modalImage" style="width: 100%;">
 	                        </td>
 	                    </tr>
 	                    <tr>
 	                        <th scope="row" style="width: 25%">축&ensp;제&ensp;명</th>
-	                        <td colspan="2" id="title">
-	                        	<input id="titleInput" type="text" style="width: 100%;" class="modalText">
-	                        </td>
+	                        <td style="width: 100%;" class="modalText titleInput"></td>
 	                    </tr>
 	                    <tr>
 	                        <th scope="row" style="width: 25%">일&emsp;&emsp;정</th>
-	                        <td colspan="2" id="date">
-	                        	<input id="dateInput" type="text" style="width: 100%;" class="modalText">
-	                        </td>
+							<td style="width: 100%;" class="modalText dateInput"></td>
 	                    </tr>
 	                    <tr>
 	                        <th scope="row" style="width: 25%">주&emsp;&emsp;소</th>
-	                        <td colspan="2" id="address">
-	                        <div class="input-wrapper">
-		                        <textarea id="addressInput" style="width: 100%;" class="modalText"></textarea>
-	                        </div>
-	                        </td>
+							<td style="width: 100%;" class="modalText addressInput"></td>
 	                    </tr>
 	                    <tr>
 	                        <th scope="row" style="width: 25%">행사소개</th>
-	                        <td colspan="2" id="content">
-	                        	<textarea id="contentInput"  style="width: 100%;" class="modalText"></textarea>
-	                         </td>
+							<td style="width: 100%;" class="modalText contentInput"></td>
 	                    </tr>
                     </tbody>
                 </table>
 			  </div>
 		      <div class="modal-footer">
-		      	<button type="button" id="modifyButton" class="btn btn-primary">수정</button>
-		        <button type="button" id="deleteButton" class="btn btn-primary">삭제</button>
 		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 		      </div>
 		    </div>
 		  </div>
+		</div>
+
+		<!-- 모달(관리자) -->
+		<div class="modal fade" id="staticBackdropAdmin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelAdmin" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="staticBackdropLabelAdmin">축제 정보</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+
+						<table class="table table-sm" id="festivalInfoAdmin">
+							<tbody>
+							<tr>
+								<td colspan="3">
+									<img class="modalImage" style="width: 100%;">
+								</td>
+							</tr>
+							<tr>
+								<th scope="row" style="width: 25%">축&ensp;제&ensp;명</th>
+								<td colspan="2" id="titleAdmin">
+									<input id="titleInput" type="text" style="width: 100%;" class="modalText titleInput">
+								</td>
+							</tr>
+							<tr>
+								<th scope="row" style="width: 25%">일&emsp;&emsp;정</th>
+								<td colspan="2" id="dateAdmin">
+									<input id="dateInput" type="text" style="width: 100%;" class="modalText dateInput">
+								</td>
+							</tr>
+							<tr>
+								<th scope="row" style="width: 25%">주&emsp;&emsp;소</th>
+								<td colspan="2" id="address">
+									<textarea id="addressInput" style="width: 100%;" class="modalText addressInput"></textarea>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row" style="width: 25%">행사소개</th>
+								<td colspan="2" id="content">
+									<textarea id="contentInput" style="width: 100%;" class="modalText contentInput h-25" rows="10"></textarea>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="modifyButton" class="btn btn-primary adminButton">수정</button>
+						<button type="button" id="deleteButton" class="btn btn-primary adminButton">삭제</button>
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 <script th:inline="javascript">
@@ -184,8 +225,8 @@
 	let event = [];  // 추가할 값을 넣을 배열 생성
 
 	// const isAdminLogin = [[${isAdminLogin}]];	//	관리자 로그인 여부를 model로 보내준 값
-	// const isAdminLogin = true;	//	테스트용 관리자 로그인
-	 const isAdminLogin = false;	//	테스트용 일반 유저 로그인
+	const isAdminLogin = true;	//	테스트용 관리자 로그인
+	 // const isAdminLogin = false;	//	테스트용 일반 유저 로그인
 
 	for (let i = 0; i < calendarData.length; i++) {
 	    event.push({
@@ -197,7 +238,7 @@
 	        contentId : calendarData[i].contentId,
 			festivalImg: calendarData[i].festivalImg,
 			address: calendarData[i].address,
-			// infotext: calendarData[i].infotext,
+			content: calendarData[i].content,
 	        classNames: ['bold-event']
 	    });
 	}
@@ -224,22 +265,41 @@
 			moreLinkText: 'more',
 			events : event,
 			eventClick: function(arg) {
-					clearModal();
+				clearModal();
+				if(isAdminLogin) {
+					addModalInfo(arg);
+					$('#staticBackdropAdmin').modal('show');
+				} else {
 					addModalInfo(arg);
 					$('#staticBackdrop').modal('show');
+				}
 		  	}
 		});
 		calendar.render();
+		//이전달 버튼 누르면 새정보 조회
 		$('.fc-prev-button').on('click', function() {
 			let thisYear = $('#fc-dom-1').text().substr(0, 4);
 			let thisMonth = $('#fc-dom-1').text().substr(6, 8).replaceAll('월', '');
 			thisMonth = thisMonth.length == 1 ? '0' + thisMonth : thisMonth;
+			getFestivalNewList(thisYear, thisMonth, function(data) {
+				if(data != null && data.length > 0) {
+					clearTable();
+					appendFestivalNewList(data);
+				}
+			});
 		})
 
+		//다음달 버튼 누르면 새정보 조회
 		$('.fc-next-button').on('click', function() {
 			let thisYear = $('#fc-dom-1').text().substr(0, 4);
 			let thisMonth = $('#fc-dom-1').text().substr(6, 8).replaceAll('월', '');
 			thisMonth = thisMonth.length == 1 ? '0' + thisMonth : thisMonth;
+			getFestivalNewList(thisYear, thisMonth, function(data) {
+				if(data != null && data.length > 0) {
+					clearTable();
+					appendFestivalNewList(data);
+				}
+			});
 		})
 	});
 
@@ -258,11 +318,14 @@
 	}
 
 	//Flatpickr로 Datepicker로 설정
-	let fp = flatpickr(document.getElementById("dateInput"), {
-		'monthSelectorType' : 'static',
-		"locale": "ko",
-		"mode" : "range"
-	});
+	let fp;
+	if(isAdminLogin) {
+		fp = flatpickr(document.getElementsByClassName("dateInput"), {
+			'monthSelectorType' : 'static',
+			"locale": "ko",
+			"mode" : "range"
+		});
+	}
 
 	function addModalInfo(arg) {
 		//축제정보 db에서 받아 왔던 값 append 부분
@@ -272,38 +335,50 @@
 		let contentId = arg.event.extendedProps.contentId;
 		let festivalImg = arg.event.extendedProps.festivalImg;
 		let address = arg.event.extendedProps.address;
+		let content = arg.event.extendedProps.content;
+
+		if(content == null || content.replaceAll(' ', '') == '') {
+			content = '';
+		}
+
+		if(isAdminLogin) {
+			$('.titleInput').val(title);
+			if(festivalImg == null) {
+				$('.modalImage').attr('src', '/img/no-image.png');
+			} else {
+				$('.modalImage').attr('src', festivalImg);
+			}
+			$('.dateInput').val(start + ' ~ ' + end);
+			$('.addressInput').val(address);
+			$('#modifyButton').data('contentId', contentId);
+			$('#deleteButton').data('contentId', contentId);
+		} else {
+			$('.titleInput').html(title);
+			if(festivalImg == null) {
+				$('.modalImage').attr('src', '/img/no-image.png');
+			} else {
+				$('.modalImage').attr('src', festivalImg);
+			}
+			$('.dateInput').html(start + ' ~ ' + end);
+			$('.addressInput').html(address);
+		}
 
 		//api로 소개정보 넣기
-		getfestivalContent(contentId, function(content) {
-	        $('#contentInput').val(content);
-	        
-	    });
-		
-		$('#titleInput').val(title);
-		if(festivalImg == null) {
-			$('#modalImage').attr('src', '/img/no-image.png');
+		if(content == '') {
+			getfestivalContent(contentId, function(data) {
+				if(isAdminLogin) {
+					$('.contentInput').val(data.replaceAll('<br>', '\n'));
+				} else {
+					$('.contentInput').html(data);
+				}
+			});
 		} else {
-			$('#modalImage').attr('src', festivalImg);
-		}
-		$('#dateInput').val(start + ' ~ ' + end);
-		$('#addressInput').val(address);
-		$('#contentInput').val(content);
-		
+			if (isAdminLogin) {
+				$('.contentInput').val(content.replaceAll('<br>', '\n'));
+			} else {
+				$('.contentInput').html(content);
+			}
 
-		//	관리자 로그인 여부에 따른 readonly 및 display none 처리
-		if(isAdminLogin) {
-			$('.modalText').removeClass('form-control-plaintext');
-			$('.modalText').removeAttr('readonly');
-			$('#dateInput').addClass('form-control-plaintext');
-			$('#dateInput').attr('readonly', 'true');
-			$('#modifyButton').attr('style', 'display:block;');
-			$('#deleteButton').attr('style', 'display:block;');
-		} else {
-			$('.modalText').addClass('form-control-plaintext');
-			$('.modalText').attr('readonly', 'true');
-			$('#modifyButton').attr('style', 'display:none;');
-			$('#deleteButton').attr('style', 'display:none;');
-			fp.destroy();
 		}
 	}
 
@@ -326,21 +401,184 @@
 		.fail(function(jqXHR, textStatus, errorThrown){
 			console.log('fail');
 		})
-		
 	}
 	
 	function clearModal() {
 		$('.modalText').val('');
-		$('#modalImage').attr('src', '');
+		$('.modalText').html('');
+		$('.modalImage').attr('src', '');
+		$('.adminButton').data('contentId', '');
 	}
 
-	const myModalEl = document.getElementById('staticBackdrop')
-	myModalEl.addEventListener('hidden.bs.modal', event => {
-		// 모달창이 닫히면 무조건 모달 내부 데이터를 삭제해줌
-		clearModal();
+	// const myModalEl = document.getElementsByClassName('modal')
+	// myModalEl.addEventListener('hidden.bs.modal', event => {
+	// 	// 모달창이 닫히면 무조건 모달 내부 데이터를 삭제해줌
+	// 	clearModal();
+	// })
+	
+	//축제정보리스트 fc-prev-button, fc-next-button에 따라 해당 달 정보 조회
+	function getFestivalNewList(thisYear, thisMonth, callback){
+		$.ajax({
+			type: 'GET',
+			url: '/festivalList',
+			data: {
+				year : thisYear,
+				month : thisMonth
+			}
+		})
+		.done(function(data, textStatus, jqXHR){
+			console.log('done');
+
+			callback(data);
+		})
+		.fail(function(jqXHR, textStatus, errorThrown){
+			console.log('fail');
+
+			callback(null);
+		})
+	}
+
+	//축제정보리스트 기존 데이터 삭제
+	function clearTable() {
+		$('.contentBody').empty();
+	}
+	//축제정보리스트 새로운 데이터 삽입
+	function appendFestivalNewList(data){
+		let node = ``;
+
+		for(let i = 0; i < data.length; i++) {
+			node += `
+				<tr data-content-id="${data[i].contentId}">
+					<th scope="row">${data[i].festivalName}</th>
+			`;
+
+			let locationName = '';
+			switch (data[i].areaCode) {
+				case 4:
+					locationName = '대구';
+					break;
+				case 6:
+					locationName = '부산';
+					break;
+				case 7:
+					locationName = '울산';
+					break;
+				case 35:
+					switch (data[i].sigunguCode) {
+						case 2:
+							locationName = '경주';
+							break;
+						case 23:
+							locationName = '포항';
+							break;
+						case 11:
+							locationName = '안동';
+							break;
+						default:
+							break;
+					}
+				case 36:
+					switch (data[i].sigunguCode) {
+						case 17:
+							locationName = '통영';
+							break;
+						case 1:
+							locationName = '거제';
+							break;
+						default:
+							break;
+					}
+				default:
+					break;
+			}
+			node += `
+					<td>${locationName}</td>
+					<td>${data[i].startDate} ~ ${data[i].endDate}</td>
+			`;
+
+			node += `
+				</tr>
+			`;
+		}
+
+		$('.contentBody').append(node);
+	}
+
+	$(document).on('click', '#modifyButton', function() {
+		if(!confirm('수정 하시겠습니까?')) {
+			return;
+		}
+
+		let title = $('#titleInput').val();
+		let date = $('#dateInput').val();
+		let address = $('#addressInput').val();
+		let content = $('#contentInput').val();
+		let splitDate = date.split(' ~ ');
+		let startDate = splitDate[0].replaceAll('-', '');
+		let endDate = splitDate[1].replaceAll('-', '');
+		let contentId = $(this).data('contentId');
+
+		let data = {
+			'festivalName' : title,
+			'address' : address,
+			'content' : content,
+			'startDate' : startDate,
+			'endDate' : endDate,
+			'contentId' : contentId
+		}
+
+		$.ajax({
+			type : 'POST',
+			url : '/festival',
+			data : data
+		})
+		.done(function(data, textStatus, jqXHR) {
+			console.log('done');
+
+			if(data == 1) {
+				alert('수정을 성공했습니다.');
+				location.href = location.href;
+			} else {
+				alert('수정 할 데이터가 없습니다.');
+			}
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) {
+			console.log('fail');
+
+			alert('수정을 실패했습니다.');
+		})
 	})
 
-	
+	$(document).on('click', '#deleteButton', function() {
+		if(!confirm('삭제 하시겠습니까?')) {
+			return;
+		}
+
+		let contentId = $(this).data('contentId');
+
+		$.ajax({
+			type : 'DELETE',
+			url : '/festival',
+			data : {
+				'contentId' : contentId
+			}
+		})
+		.done(function(data, textStatus, jqXHR) {
+			console.log('done');
+
+			if(data == 1) {
+				alert('삭제 성공했습니다.');
+				location.href = location.href;
+			} else {
+				alert('삭제 할 데이터가 없습니다.');
+			}
+		})
+		.fail(function(jqXHR, textStatus, errorThrown) {
+			console.log('fail');
+
+			alert('삭제를 실패했습니다.');
+		})
+	})
 </script>	
 </div>
 </body>

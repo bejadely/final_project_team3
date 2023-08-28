@@ -6,7 +6,7 @@
 	
 	 <insert id="insertEditor" parameterType="PackageVO">
 		<selectKey keyProperty="postId" resultType="String" order="BEFORE">
-			SELECT 'pkg' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			SELECT 'PKG' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
 			FROM package_regist
 			WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
 		</selectKey>
