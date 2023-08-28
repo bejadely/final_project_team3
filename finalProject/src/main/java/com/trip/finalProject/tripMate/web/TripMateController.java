@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.trip.finalProject.attachedFile.service.AttachedFileService;
 import com.trip.finalProject.attachedFile.service.AttachedFileVO;
@@ -52,12 +53,21 @@ public class TripMateController {
 		return mv;
 	}
 	
+	//첨부파일 상세정보(파일 여러개를 보여주기 위해서)
 	@GetMapping("getAttach")
 	@ResponseBody
 	public List<AttachedFileVO> getAttachList(AttachedFileVO vo){
 		System.out.println(vo.getPostId());
 		return attachedFileService.getAttachList(vo);
 	}
+	
+	//여행 메이트 글 삭제
+	@GetMapping("mateRecruitDelete")
+	public String mateRecruitDelete(TripMateVO tripMateVO) {
+		tripMateService.deleteTripMateRecruit(tripMateVO);
+		return "redirect:tripMateList";
+	}
+	
 	
 	//여행 메이트 신청 - form
 	@PostMapping("tripMateApplyForm")

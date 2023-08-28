@@ -101,7 +101,7 @@ ClassicEditor
 				endDay : endDay,
 				deadline : deadline,
 				mateMax : mateMax,
-				mateContent: data,
+				mateContent: data
 			};
 			console.log(combinedData);
 			
@@ -109,6 +109,7 @@ ClassicEditor
 			$(".uploadResult ul li").each(function(i,obj){
 				var jobj = $(obj);
 				str += "<input type ='hidden' name='attachList["+i+"].originImg' value='"+jobj.data("filename")+"'>";
+				str += "<input type ='hidden' name='attachList["+i+"].memberId' value='[[${session.sessionId}]]'>";
 				str += "<input type ='hidden' name='attachList["+i+"].savedImg' value='"+jobj.data("path")+"'>";
 				str += "<input type ='hidden' name='attachList["+i+"].imgType' value='"+jobj.data("type")+"'>";
 				str += "<input type ='hidden' name='attachList["+i+"].loadingImg' value='"+jobj.data("loadingpath")+"'>";
@@ -229,6 +230,7 @@ ClassicEditor
 	<form method="post" id="editorForm" enctype="multipart/form-data">
 		<div id="tripMateRecruitInfo">	
 		<input type="hidden" name="writerId" th:value="${session.sessionId}">
+		<input type="hidden" name="memberId" th:value="${session.sessionId}">
 			<div>
 				<h5>여행 지역</h5>
 				<select name="tripArea" id="tripArea">
