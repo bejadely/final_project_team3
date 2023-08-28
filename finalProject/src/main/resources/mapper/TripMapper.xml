@@ -15,7 +15,6 @@
  	 <select id="getPerCount" resultType="int">
  		SELECT COUNT(*)
  		FROM trip_record
- 		<!-- WHERE end_day > sysdate AND trip_save='T1' -->
  	</select>
  	
  	<!-- 마이페이지 페이징 - 미완료 여행/임시저장-->
@@ -53,7 +52,7 @@
 		FROM(SELECT ROWNUM rn, a.*
 			 FROM(SELECT *
 				  FROM trip_record
-				  <!-- WHERE end_day > sysdate AND trip_save='T1' -->
+				  WHERE end_day > sysdate AND trip_save='T1'
 				  ORDER BY regist_day DESC) a)
 		WHERE rn BETWEEN #{start } AND #{end }
 	</select>

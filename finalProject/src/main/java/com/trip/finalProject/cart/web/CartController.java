@@ -62,6 +62,8 @@ public class CartController {
 	@GetMapping("cartDelete")
 	@ResponseBody
 	public Map<String, Object> cartDelete(String postId) {
+
+		System.out.println("postId : " + postId);
 		int r = cartService.deleteCartInfo(postId);
 		return Collections.singletonMap("result", r==1?true:false);
 	};

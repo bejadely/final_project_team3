@@ -33,7 +33,7 @@ public class MemberVO {
 	private String authority;
 	private String originProfileImg;
 	private String savedProfileImg;
-	private String bankName;
+	private String bankCode;
 	private String accountNumber;
 	private String loginType;
 	private String accessToken;

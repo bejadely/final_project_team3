@@ -31,15 +31,57 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	}
 	
 	@Override
-	public List<AdminMemberVO> searchMemberByName(AdminMemberVO vo) {
-		// 이름으로 회원 검색
-		return amm.searchMemberByName(vo);
+	public AdminMemberVO getMemberDetail(AdminMemberVO vo) {
+		// 회원 상세 조회
+		return amm.getMemberDetail(vo);
 	}
 	
 	@Override
-	public List<AdminMemberVO> searchMemberById(AdminMemberVO vo) {
+	public String modifyMemberInfo(AdminMemberVO vo) {
+		// 회원 정보 수정
+		int result = amm.modifyMemberInfo(vo);
+		
+		if(result > 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+	
+	@Override
+	public String withdrawMember(AdminMemberVO vo) {
+		// 회원 삭제
+		int result = amm.withdrawMember(vo);
+		
+		if(result > 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+	
+	@Override
+	public int countName() {
+		// 이름 검색의 총 결과값 카운트
+		return amm.countName();
+	}
+
+	@Override
+	public int countId() {
+		// 아이디 검색의 총 결과값 카운트
+		return amm.countId();
+	}
+	
+	@Override
+	public List<AdminMemberVO> searchMemberByName(AdminMemberVO adminVO, PagingVO pagingVO) {
+		// 이름으로 회원 검색
+		return amm.searchMemberByName(adminVO, pagingVO);
+	}
+	
+	@Override
+	public List<AdminMemberVO> searchMemberById(AdminMemberVO adminVO, PagingVO pagingVO) {
 		// 아이디로 회원 검색
-		return amm.searchMemberById(vo);
+		return amm.searchMemberById(adminVO, pagingVO);
 	}
 	
 	@Override
@@ -81,13 +123,5 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		
 		return map;
 	}
-
-	
-
-	
-
-	
-
-	
 
 }
