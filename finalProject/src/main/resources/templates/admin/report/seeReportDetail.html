@@ -16,7 +16,7 @@
 					<table id="defaultInfo" class="table">
 						<tbody>
 							<tr>
-								<th width="150" align="center">신고접수번호</th>
+								<th width="150" align="center">신고<br>접수번호</th>
 								<td width="400" align="center" th:text="*{reportId}"></td>
 								<th width="150" align="center">신고한회원</th>
 								<td width="400" align="center" th:text="*{reporterId}"></td>
@@ -25,13 +25,14 @@
 								<th width="150" align="center">신고사유</th>
 								<td width="400" align="center" th:text="*{reportReason}"></td>
 								<th width="150" align="center">신고일자</th>
-								<td width="400" align="center" th:text="*{reportDate}"></td>
+								<td width="400" align="center" th:text="*{#strings.substring(reportDate,0,10)}"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">신고당한글</th>
-								<td width="400" align="center" th:text="*{postId}"></td>
-								<th width="150" align="center">신고당한회원</th>
-								<td width="400" align="center" th:text="*{punishedId}"></td>
+								<!-- 작업중 -->
+								<td width="400" align="center" th:utext="|*{postId}<br><a href='#'>원본글 보러가기</a>|"></td>
+								<th width="150" align="center">신고<br>당한회원</th>
+								<td width="400" align="center" th:utext="|*{punishedId} <br> (제재횟수 : *{punishCount})|"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">신고내용</th>
@@ -40,15 +41,14 @@
 						</tbody>
 					</table>
 				</div>
-				<div>
-					<input type="hidden" name="memberId" th:value="">
-				</div>
 				<div align="center">
-					<button type="submit" class="feature-btn">수정하기</button>
-					<button type="button" class="feature-btn">탈퇴처리</button>
+					<button type="button" class="feature-btn">제재 처리</button>
+					<button type="button" class="feature-btn">제재 미처리</button>
+					<button type="button" class="feature-btn">목록으로</button>
 				</div>
 			</form>
 		</div>
+	
 	
 	<script th:inline="javascript" type="text/javascript">
 	
@@ -63,82 +63,8 @@
 		$('button[type=button]').on('click', withdrawMember);
 	});
 	
-	// 조건검색기능
-	function search(event){
-		
-		let value = $('#searchBy').val();
-		let keyword = $('#keyword').val();
-		location.href='searchAdminMember?searchBy='+value+'&keyword='+keyword;
-		
-	}
-	
-	// 마우스 오버 : 색상 어둡게
-	function colorDarker(event){
-		$(event.currentTarget).css({background: '#f2f4f5'})
-							  .css({cursor: 'pointer'});		
-	}
-	
-	// 마우스릴리브 : 색상 원상복귀
-	function colorReset(event){
-		$(event.currentTarget).css({background: '#ffffff'});
-	}
-	
-	// 회원상세정보 조회페이지로 이동
-	function moveToMemberDetail(event){
-		
-		// 상세보기 할 member의 id값 가져오기
-		let memberId = $(event.currentTarget).find('td:eq(0)').text();
-		
-		// 페이지 전환 실행
-		location.href=`seeMemberDetail?employeeId=${memberId}`;
-	}
-	
-	// 회원 탈퇴 처리
-	function withdrawMember(){
-		
-		//e.stopPropagation();
-		
-		Swal.fire({
-		      title: '해당 회원을 탈퇴처리하시겠습니까?',
-		      icon: 'warning',
-		      showCancelButton: true,
-		      confirmButtonColor: '#3085d6',
-		      cancelButtonColor: '#d33',
-		      confirmButtonText: '승인',
-		      cancelButtonText: '취소',
-		      reverseButtons: true,
-		      
-	    }).then((result) => {
-	      if (result.isConfirmed) {
-	          
-	    	  //post방식으로 페이지 전환
-			  sendPost();
-	      }
-	    })
-	
-	// post 방식으로 보내기위한 함수 생성
-    function sendPost(){
-	    
-	    // form 생성 
-	  	let form = document.createElement('form');
-	    form.setAttribute('id', 'instantForm')
-	    form.setAttribute('method', 'post');
-	    form.setAttribute('action', '/admin/withdrawMember');
-	    
-	    // input 생성
-	    let input = document.createElement('input');
-	    input.setAttribute('name', 'memberId');
-	    input.setAttribute('value', [[${memberVO.memberId}]]);
-	    
-	    // 동적으로 생성한 태그 본문에 붙이기 및 폼 서브밋
-	    document.body.appendChild(form);
-	    document.getElementById('instantForm').appendChild(input);
-	    document.getElementById('instantForm').submit();
-		
-		}    
-	}
-	
 	</script>
+	
 </div>
 
 </html>
