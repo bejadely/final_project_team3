@@ -11,6 +11,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import com.trip.finalProject.kakaoPay.service.KakaoApproveResponseVO;
+import com.trip.finalProject.kakaoPay.service.KakaoPayInfoResponseVO;
 import com.trip.finalProject.kakaoPay.service.KakaoPayResponseVO;
 import com.trip.finalProject.kakaoPay.service.KakaoPayService;
 import com.trip.finalProject.kakaoPay.service.PaymentVO;
@@ -42,9 +43,9 @@ public class KakaoPayServiceImpl implements KakaoPayService {
         parameters.add("quantity", String.valueOf(quantity));
         parameters.add("total_amount", String.valueOf(vo.getTotalAmount()));
         parameters.add("tax_free_amount", String.valueOf(vo.getTotalAmount()));
-        parameters.add("approval_url", "http://localhost:8080/payment/success"); // 성공 시 redirect url
-        parameters.add("cancel_url", "http://localhost:8080/payment/cancel"); // 취소 시 redirect url
-        parameters.add("fail_url", "http://localhost:8080/payment/fail"); // 실패 시 redirect url
+        parameters.add("approval_url", "http://localhost:8787/payment/success"); // 성공 시 redirect url
+        parameters.add("cancel_url", "http://localhost:8787/payment/cancel"); // 취소 시 redirect url
+        parameters.add("fail_url", "http://localhost:8787/payment/fail"); // 실패 시 redirect url
 		
         //파라미터, 헤더
 		HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters,this.getHeaders());
@@ -81,6 +82,37 @@ public class KakaoPayServiceImpl implements KakaoPayService {
                 
         return kakaoApproveResponseVO;
     }
+    
+    //주문조회
+    public KakaoPayInfoResponseVO infoResponse() {
+    	MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+    	parameters.add("cid", cid);
+    	parameters.add("tid", kakaoPayResponseVO.getTid());
+    	// 파라미터, 헤더
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
+        
+        // 외부에 보낼 url
+        RestTemplate restTemplate = new RestTemplate();
+        
+        KakaoPayInfoResponseVO kakaoPayInfoResponseVO = restTemplate.postForObject(
+                "https://kapi.kakao.com/v1/payment/order",
+                requestEntity,
+                KakaoPayInfoResponseVO.class);
+                
+        return kakaoPayInfoResponseVO;
+    }
+    
+    
+    
+    
+    //결제환불
+//    public KakaoCancelResponse kakaoCancel() {
+//    	MultiValueMap<String, String> parameter = new LinkedMultiValueMap<>();
+//    	parameter.add("cid", cid);
+//    	parameter.add("tid", kakaoPayResponseVO.getTid());
+//    	parameter.add("cancel_amount",);
+//    	
+//    }
     
     
   //서버로 요청할 Header
