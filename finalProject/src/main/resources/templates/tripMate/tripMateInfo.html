@@ -37,9 +37,15 @@
 		<!-- <button type="button" class="primary-btn" onclick="location.href='tripMateApplyForm'">신청하기</button> -->
 		<form id="sendData" action="tripMateApplyForm" method="post">
 			<input type="hidden" name="postId" th:value="${tripMateInfo.postId}">
-			<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="submit" class="primary-btn">신청하기</button>
+			<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" 
+			type="submit" class="primary-btn">신청하기</button>
 		</form>
-		<button type="button" class="primary-btn" onclick="">신고하기</button>
+		<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="button" class="primary-btn" 
+		th:onclick="">신고하기</button>
+		<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button" class="primary-btn" 
+		th:onclick="|location.href='@{/mateRecruitDelete(postId=${tripMateInfo.postId})}'|">수정</button>
+		<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button" class="primary-btn" 
+		th:onclick="|location.href='@{/mateRecruitDelete(postId=${tripMateInfo.postId})}'|">삭제</button>
 	</div>
 	<script>
 	</script>

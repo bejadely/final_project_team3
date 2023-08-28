@@ -7,7 +7,7 @@
 	<select id="selectAllTripMate" resultType="TripMateVO">
 		SELECT *
 		FROM mate_recruit m LEFT OUTER JOIN 
-			 attached_file a ON m.post_id = a.post_id
+     		 attached_file a ON m.post_id = a.post_id
 		ORDER BY m.post_id DESC
 	</select>
 	
@@ -72,6 +72,11 @@
 		
 	</insert>
 	
+	<!-- 여행메이트 게시글 삭제 -->
+	<delete id="deleteTripMateRecruit" parameterType="TripMateVO">
+		DELETE FROM mate_recruit
+		WHERE post_id = #{postId}
+	</delete>
 	
 	<!-- 여행 메이트 신청 (등록된 게시글에 대한 여행메이트 신청) -->
 	<insert id="insertTripMateApply" parameterType="TripMateVO">

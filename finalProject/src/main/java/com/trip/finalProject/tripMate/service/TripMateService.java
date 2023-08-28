@@ -12,6 +12,9 @@ public interface TripMateService {
 	//여행 메이트 글 등록
 	public void insertTripMateRecruit(TripMateVO tripMateVO);
 	
+	//여행 메이트 글 삭제
+	public int deleteTripMateRecruit(TripMateVO tripMateVO);
+	
 	//여행 메이트 신청 (등록된 게시글에 대한 여행메이트 신청)
 	public TripMateVO InsertTripMateApply(TripMateVO tripMateVO); 
 }
