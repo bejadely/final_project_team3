@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class NoticeVO {
-	private String noticeNumber;
+	private Integer noticeNumber;
 	private String title;
 	private String content;
 	private String registDate;
@@ -14,5 +14,10 @@ public class NoticeVO {
 	private String noticeType;
 	private String writerId;
 	private String hit;
+	
+	private String page;
+	
+	
+	
 
 }
