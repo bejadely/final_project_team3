@@ -31,18 +31,22 @@ public class PackageServiceImpl implements PackageService {
 		mapper.insertEditor(vo);
 		if (vo.getAttachList() == null || vo.getAttachList().size() <= 0) {			
 			return ;
-		}
-		if(vo.getEditorAttachList()==null || vo.getEditorAttachList().size()<=0) {
-			return;
-		}
+		}else {
 			vo.getAttachList().forEach(attach->{
 				attach.setPostId(vo.getPostId());
 				attachedFileMapper.insertAttachedFile(attach);
 			});
+		}
+		if(vo.getEditorAttachList()==null || vo.getEditorAttachList().size()<=0) {
+			return;
+		}else {
 			vo.getEditorAttachList().forEach(attach->{
 				attach.setPostId(vo.getPostId());
 				attachedFileMapper.insertAttachedFile(attach);
 			});
+		}
+			
+		
 				
 	}
 	
