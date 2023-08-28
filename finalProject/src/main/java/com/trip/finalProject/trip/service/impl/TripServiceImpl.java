@@ -1,6 +1,8 @@
 package com.trip.finalProject.trip.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,7 @@ import com.trip.finalProject.trip.service.TripVO;
 
 @Service
 public class TripServiceImpl implements TripService {
-	
+
 	@Autowired
 	TripMapper tripMapper;
 	
@@ -22,6 +24,24 @@ public class TripServiceImpl implements TripService {
 		return tripMapper.getTotalCount();
 	}
 	
+	//마이페이지 계획 여행
+	@Override
+	public int tripPerCount() {
+		return tripMapper.getPerCount();
+	}
+	
+	//마이페이지 계획 여행
+	@Override
+	public int tripPerNotCount() {
+		return tripMapper.getPerNotCount();
+	}
+	//마이페이지 완료여행
+	@Override
+	public int tripPerComCount() {
+		return tripMapper.getPerComCount();
+	}
+
+
 	//여행기록 전체 리스트 조회
 	@Override
 	public List<TripVO> getTripAll(PagingVO pagingVO) {
@@ -32,6 +52,36 @@ public class TripServiceImpl implements TripService {
 	@Override
 	public List<TripVO> getTripPer(PagingVO pagingVO) {
 		return tripMapper.selectPerTrip(pagingVO);
+	}
+	
+	//여행 저장 데이터 업데이트
+	@Override
+	public Map<String, Object> getUpdateDis(TripVO tripVO) {
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("게시물 번호", String.valueOf(tripVO.getPostId()));
+		map.put("저장 번호", String.valueOf(tripVO.getTripDisclose()));
+		
+		int result  = tripMapper.updateDis(tripVO);
+		if(result > 0) {
+			map.put("결과", "Success");
+		}else {
+			map.put("결과", "fail");
+		}		
+		
+		return map;	
+	}
+	
+	//여행기록 회원별 조회
+	@Override
+	public List<TripVO> getTripPerNot(PagingVO pagingVO) {
+		return tripMapper.selectPerNotTrip(pagingVO);
+	}
+	
+	//여행기록 회원별 조회 - 완료된 여행
+	@Override
+	public List<TripVO> getTripPerCom(PagingVO pagingVO) {
+		return tripMapper.selectPerComTrip(pagingVO);
 	}
 
 	//여행기록 상세조회

@@ -1,6 +1,7 @@
 package com.trip.finalProject.trip.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.trip.service.TripVO;
@@ -8,12 +9,30 @@ import com.trip.finalProject.trip.service.TripVO;
 public interface TripMapper {
 	//여행기록 전체조회 페이징용
 	public int getTotalCount();
+	
+	//마이페이지 페이징
+	public int getPerCount();
+	
+	//마이페이지 페이징 - 임시저장
+	public int getPerNotCount();
+	
+	//마이페이지 페이징
+	public int getPerComCount();
 
 	//여행기록 전체 조회
 	public List<TripVO>	selectAllTrip(PagingVO pagingVO);
 	
-	//여행기록 회원 조회
+	//여행기록 회원 조회 - 미완료 여행
 	public List<TripVO> selectPerTrip(PagingVO pagingVO);
+	
+	//여행기록 업데이트
+	public int updateDis(TripVO tripVO);
+	
+	//여행기록 회원 조회 - 임시저장
+	public List<TripVO> selectPerNotTrip(PagingVO pagingVO);
+	
+	//여행기록 회원 조회 - 완료 여행
+	public List<TripVO> selectPerComTrip(PagingVO pagingVO);
 	
 	//여행기록 상세조회
 	public TripVO selectTripInfo(TripVO tripVO);
