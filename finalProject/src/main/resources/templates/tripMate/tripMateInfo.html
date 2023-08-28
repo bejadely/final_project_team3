@@ -40,13 +40,8 @@
 			<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="submit" class="primary-btn">신청하기</button>
 		</form>
 		<button type="button" class="primary-btn" onclick="">신고하기</button>
-		
 	</div>
 	<script>
-		document.querySelector('form[name="sendData"]').addEventListener('submit', function(e) {
-			e.preventDefault();
-			sendData.submit();
-		)};
 	</script>
 </body>
 </html>

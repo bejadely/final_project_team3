@@ -1,7 +1,6 @@
 package com.trip.finalProject.packaged.web;
 
 import java.io.File;
-
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.file.Files;
@@ -12,31 +11,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import com.trip.finalProject.attachedFile.service.AttachedFileVO;
 import com.trip.finalProject.packaged.service.PackageService;
-import com.trip.finalProject.packaged.service.PackageVO;
+import com.trip.finalProject.tripMate.service.TripMateService;
 
 @RestController
 public class UploadController {
@@ -52,6 +45,9 @@ public class UploadController {
 	
 	@Autowired
 	PackageService packageService;
+	
+	@Autowired
+	TripMateService tripMateService;
     
 	
 	//에디터 이미지 업로드
