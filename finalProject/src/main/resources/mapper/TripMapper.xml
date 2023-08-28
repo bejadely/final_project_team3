@@ -15,7 +15,6 @@
  	 <select id="getPerCount" resultType="int">
  		SELECT COUNT(*)
  		FROM trip_record
- 		WHERE end_day > sysdate AND trip_save='T1'
  	</select>
  	
  	<!-- 마이페이지 페이징 - 미완료 여행/임시저장-->
@@ -58,6 +57,14 @@
 		WHERE rn BETWEEN #{start } AND #{end }
 	</select>
 	
+	<!-- 저장 정보 업데이트 -->
+	<update id="updateDis" parameterType="TripVO">
+		UPDATE trip_record
+		<set>
+			trip_disclose = #{tripDisclose}
+		</set>
+		WHERE post_id = #{postId}
+	</update>
 	<!-- 마이페이지 여행기록 임시저장 -->
 	<select id="selectPerNotTrip" resultType="TripVO">	
 		SELECT *
@@ -215,5 +222,9 @@
 					  )
 	</insert>
 	
+	<!-- 여행기록 삭제 -->
+	<delete id="deleteTripInfo" parameterType="String">
+	
+	</delete>
 
 </mapper>

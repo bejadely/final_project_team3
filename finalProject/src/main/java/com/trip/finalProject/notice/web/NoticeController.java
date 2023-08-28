@@ -1,10 +1,16 @@
 package com.trip.finalProject.notice.web;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.trip.finalProject.adminMember.service.AdminMemberVO;
+import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.notice.service.NoticeService;
 import com.trip.finalProject.notice.service.NoticeVO;
 
@@ -13,13 +19,36 @@ public class NoticeController {
 
 	@Autowired
 	private NoticeService noticeService;
-
-   //공지사항 리스트 조회
+	
+	
+	
+	//공지사항 리스트 조회
 	@GetMapping("/noticeList")
-	public String selectBoardList() {
-		return"notice/NoticeList";
+	public String selectNoticeList(Model model
+									,@RequestParam(value = "nowPage", defaultValue ="1")Integer nowPage
+									,@RequestParam(value= "cntPerPage",defaultValue="10")Integer cntPerPage) {
+	int total = noticeService.listCount();
+	PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+	//전제 공지사항 리스트 조회
+	List<NoticeVO> list = noticeService.SelectAllNoticeList(pagingVO);
+	// 모든 리스트 모델에 담기
+			model.addAttribute("list", list);
+			model.addAttribute("paging", pagingVO);
+	return"notice/NoticeList";
 	};
-	@GetMapping("/boardSearch")
+	
+	//공지사항 게시글 상세보기
+	@GetMapping("/seeNoticeDetail")
+	public String selectNoticeDetail(NoticeVO noticeVO, Model model) {
+		model.addAttribute("noticeVO", noticeVO);
+		return "notice/noticeDetail";
+		
+	}
+	
+	
+	
+	//검색
+	@GetMapping("/noticeSearch")
 	public String boardSearch() {
 		return"notice/BoardList";
 	};
@@ -32,17 +61,18 @@ public class NoticeController {
 	  };
 	 
 	//공지사항 작성후 DB저장
-	@PostMapping("/noticeInsert")
+	@PostMapping("/noticeProc")
 	public String boardInsert(NoticeVO noticeVO) {
 		noticeService.noticeInsert(noticeVO);
 		return"notice/NoticeList";
 	};
 	
-	
-	@GetMapping("/boardSelect")
-	public String boardSelect() {
-		return"notice/BoardList";
-	};
+	/*
+	 * //공지사항 리스트 불러오기 list에 뿌리기
+	 * 
+	 * @GetMapping("/boardSelect") public String boardSelect() {
+	 * return"notice/BoardList"; };
+	 */
 	@GetMapping("/boardEdit")
 	public String boardEdit() {
 		return"notice/BoardList";
@@ -56,16 +86,7 @@ public class NoticeController {
 		return"notice/BoardList";
 	};
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	@GetMapping("/notice") 
 	public String memberInsertForm() {
 		return"notice/noticeBoard";

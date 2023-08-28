@@ -1,6 +1,7 @@
 package com.trip.finalProject.trip.web;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -84,6 +84,18 @@ public class TripController {
 		return "myPage/myPageComTrip";
 	}
 	
+	//여행기록 공개 설정 업데이트
+	@PostMapping("/discloseUpdate")
+	@ResponseBody
+	public Map<String, Object> disUpdate(TripVO tripVO){
+	    tripVO.getPostId();
+	    tripVO.getTripDisclose();
+	    	    
+	    Map<String, Object> map = tripService.getUpdateDis(tripVO);
+	    System.out.println("testMap : " + map);
+	    
+	    return map;
+	}
 	//여행기록 등록 - form
 	@GetMapping("tripRecordInsert")
 	public String tripRecordInsertForm(Model model) {
@@ -132,23 +144,25 @@ public class TripController {
 		return "trip/tripMappingInsertForm";
 	}
 
-	// 여행기록 지도 맵핑 - 처리
-	@PostMapping("tripMappingInsert")
-	public String tripMappingInsertProcess(TripVO tripVO) {
-		tripService.TsInsertTripInfo(tripVO);
-		return "redirect:/tripInsertForm";
-	}
+//	// 여행기록 지도 맵핑 - 처리
+//	@PostMapping("tripMappingInsert")
+//	public String tripMappingInsertProcess(TripVO tripVO) {
+//		tripService.TsInsertTripInfo(tripVO);
+//		return "redirect:/tripInsertForm";
+//	}
 
 	// 여행기록 메모 등록
 	
 	
-	// 맵핑 배열 등록 테스트용
-    @PostMapping("mappingInsert")
-    @ResponseBody
-    public String receiveMappingData(@RequestBody TripVO[] mappingData) {
-        for (TripVO item : mappingData) {
-            tripService.InsertTripMapping(item);
-        }
-        return "redirect:/tripInsertForm";
-    }
+//	// 여행 경로 저장 (ajax)
+//    @PostMapping("mappingInsert")
+//    @ResponseBody
+//    public String receiveMappingData(@RequestBody TripVO[] mappingData) {
+//        for (TripVO item : mappingData) {
+//            tripService.InsertTripMapping(item);
+//        }
+//        return "redirect:/tripInsertForm";
+//    }
+	
+	
 }

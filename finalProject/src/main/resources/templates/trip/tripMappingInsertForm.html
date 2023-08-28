@@ -29,7 +29,7 @@
       </div>
       <div>
       	<!-- 키워드 검색 결과를 나타냄 -->
-        <div style="height: 50px; width: 700px; border: solid 1px; margin-top: 10px;">
+        <div id="searchMap" style="height: 50px; width: 700px; border: solid 1px; margin-top: 10px;">
         	<div style="margin-top: 10px; margin-left: 25px;">
             	<input type="text" value="" id="keyword" size="50" placeholder="키워드를 입력 해주세요.">
            		<button onclick="initMap(); return false;">검색하기</button>
@@ -39,8 +39,9 @@
        <ul id="placesList"></ul>
         <div id="pagination"></div>
       </div>
-      
-         </div>
+      </div>
+      <button type="button" id="fixMap" style="display:none">경로 수정</button>
+      <button type="submit" id="mapping">경로 선택/수정</button>
       <div id="showMapping">
       	<input type="hidden" name="postId" th:value="${tripVO.postId}">
       </div>
@@ -78,9 +79,15 @@
             $(document).ready(function() {
                // 승인 버튼 클릭 시 발생 이벤트 설정
                initMap; 
+               inMap;
             });
 
              function initMap() {
+                 // Call searchPlaces() when you want to initiate the search
+                 searchPlaces();
+             }
+             
+             function inMap() {
                  // Call searchPlaces() when you want to initiate the search
                  searchPlaces();
              }
@@ -414,13 +421,22 @@
                        // 마커 클릭 시 해당 마커와 그에 따른 선을 지우는 함수 호출
                    mappingMarker();
                    alert("완료 되었습니다.");
+                   $('#searchMap').attr('style', 'display:none;');
+                   $('#fixMap').attr('style', 'display:block;');
+                   
                  //location.href="tripRecordList";
                    return;
                     }else{
                           return;
                     }
                });
+               
+               $("#fixMap").click(function() {
+             	   $('#searchMap').attr('style', 'display:block;');
+             	   $('#fixMap').attr('style', 'display:none;');
+                });
             });
+            
             
             // 동적으로 html에 맵핑 되어있는 정보를 나타냄
             function mappingMarker() {
