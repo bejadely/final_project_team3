@@ -25,22 +25,25 @@ public class NoticeController {
 	//공지사항 리스트 조회
 	@GetMapping("/noticeList")
 	public String selectNoticeList(Model model
-									, @RequestParam(value = "nowPage", defaultValue ="1")Integer nowPage
+									,@RequestParam(value = "nowPage", defaultValue ="1")Integer nowPage
 									,@RequestParam(value= "cntPerPage",defaultValue="10")Integer cntPerPage) {
-		
-		
-		int total = noticeService.listCount();
-		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-		
-		//전제 공지사항 리스트 조회
-		List<NoticeVO> list = noticeService.SelectAllNoticeList(pagingVO);
-		
-		// 모든 리스트 모델에 담기
-				model.addAttribute("list", list);
-				model.addAttribute("paging", pagingVO);
-		return"notice/NoticeList";
-
+	int total = noticeService.listCount();
+	PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+	//전제 공지사항 리스트 조회
+	List<NoticeVO> list = noticeService.SelectAllNoticeList(pagingVO);
+	// 모든 리스트 모델에 담기
+			model.addAttribute("list", list);
+			model.addAttribute("paging", pagingVO);
+	return"notice/NoticeList";
 	};
+	
+	//공지사항 게시글 상세보기
+	@GetMapping("/seeNoticeDetail")
+	public String selectNoticeDetail(NoticeVO noticeVO, Model model) {
+		model.addAttribute("noticeVO", noticeVO);
+		return "notice/noticeDetail";
+		
+	}
 	
 	
 	

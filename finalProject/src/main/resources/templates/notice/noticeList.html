@@ -316,7 +316,7 @@
               
                 
                 <th:block th:each="n : ${list}">
-                    <tr th:attr="onmouseover='this.style.background=&quot;#dadada&quot;;', onmouseleave='this.style.background=&quot;#FFFFFF&quot;;', onclick='boardChois(\'' + ${n.noticeNumber} + '\',\'' + ${n.writerId} + '\')'">
+                    <tr class="memberInfo" th:attr="onmouseover='this.style.background=&quot;#dadada&quot;;', onmouseleave='this.style.background=&quot;#FFFFFF&quot;;' ">
                         <td th:text="${n.noticeNumber}"></td>
                         <td th:text="${n.title}"></td>
                         <td th:text="${n.writerId}"></td>
@@ -381,7 +381,8 @@
                 </th:block>  -->
             </div>
         </div>
-    </div>
+
+    
     <div>
         <!-- 히든폼 -->
         <form id="frm2" action="boardSelect.do" method="post">
@@ -462,6 +463,27 @@
 		
 	}
 </script> -->
+
+<script th:inline="javascript" type="text/javascript">
+$(document).ready(function() {
+	// 승인 버튼 클릭 시 발생 이벤트 설정
+	$('#searchButton').on('click', search);
+	$('.memberInfo')
+					
+					
+					.on('mouseup', moveToMemberDetail)
+});
+
+//클릭시 공지사항 상세 조회페이지로 이동
+function moveToMemberDetail(event){
+	
+	// 상세보기 할 member의 id값 가져오기
+	let noticeNumber = $(event.currentTarget).find('td:eq(0)').text();
+	
+	// 페이지 전환 실행
+	location.href=`seeNoticeDetail?noticeNumber=${noticeNumber}`;
+}
+</script>
 
 </body>
 
