@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/default_layout}" layout:fragment="content">
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+</th:block>
+<!-- index.html 고유 스크립트 추가 -->
+<th:block layout:fragment="script">
+</th:block>
+<head>
+<meta charset="UTF-8">
+<title>여행 메이트 신청</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+ <style>
+        body {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0069d9;
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+	<div class="container">
+        <div class="text-center">
+        <br>
+            <h1>메이트 신청</h1>
+        <br>
+        </div>
+        <div id="ls" class="text-center">
+            <form method="post">
+                <div>
+                	<input type="hidden" name="postId" th:value="${tripMateVO.postId}">
+                    <table class="table">
+                    	<tr>
+                            <th width="150">신청자 아이디</th>
+                            <td width="150">
+                                <input type="text" name="memberId" th:value="${session.sessionId}" readOnly class="form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th width="150">신청일자</th>
+                            <td width="150">
+                                <input type="date" id="now_date" name="applyDay" readOnly class="form-control">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>소개글</th>
+                            <td colspan="3">
+                                <textarea rows="10" cols="=50" name="applyInfo" placeholder="내용을 입력해주세요." required class="form-control"></textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <br>
+                <div>
+                    <div align="right">
+                   		<input type="submit" value="등록" class="btn btn-primary" id="insertApply">&nbsp;&nbsp;
+                   		<input type="reset" value="취소" class="btn btn-secondary">&nbsp;&nbsp;
+                    	<input type="button" value="목록" onclick="location.href='tripMateList'" class="btn btn-secondary">
+                    </div>
+                    <br><br>
+                </div>
+            </form>
+        </div>
+    </div>
+	<script th:inline="javascript">
+		//오늘 날짜를 계산
+		document.getElementById('now_date').value = new Date().toISOString().substring(0, 10);
+		
+		$("#insertApply").click(function() {
+            $("form").attr("action", "/tripMateApplyInsert");
+         });
+	</script>
+</body>
+</html>
