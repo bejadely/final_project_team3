@@ -52,4 +52,5 @@
 		FROM attached_file 
 		WHERE post_id = #{postId} AND img_type ='U2'
 	</select>
+
 </mapper>

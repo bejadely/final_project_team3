@@ -1,6 +1,7 @@
 package com.trip.finalProject.trip.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.trip.service.TripVO;
@@ -23,6 +24,9 @@ public interface TripMapper {
 	
 	//여행기록 회원 조회 - 미완료 여행
 	public List<TripVO> selectPerTrip(PagingVO pagingVO);
+	
+	//여행기록 업데이트
+	public int updateDis(TripVO tripVO);
 	
 	//여행기록 회원 조회 - 임시저장
 	public List<TripVO> selectPerNotTrip(PagingVO pagingVO);
