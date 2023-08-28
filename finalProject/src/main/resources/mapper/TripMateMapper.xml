@@ -23,7 +23,8 @@
 			   mate_expense,
 			   mate_max,
 			   apply_num,
-			   hit
+			   hit,
+			   trip_area
 		FROM mate_recruit
 		WHERE post_id = #{postId}
 	</select>

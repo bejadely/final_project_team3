@@ -1,6 +1,8 @@
 package com.trip.finalProject.tripMate.web;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.trip.finalProject.attachedFile.service.AttachedFileService;
 import com.trip.finalProject.attachedFile.service.AttachedFileVO;
@@ -69,6 +70,32 @@ public class TripMateController {
 		return "redirect:tripMateList";
 	}
 	
+	//여행 메이트 글 수정 - form
+	@GetMapping("mateRecruitUpdateForm")
+	public String mateRecruitUpdateForm(TripMateVO tripMateVO, Model model) {
+		TripMateVO findVO = tripMateService.getTripMateInfo(tripMateVO);
+		model.addAttribute("tripMateVO", findVO);
+		return "tripMate/tripMateUpdate";
+	}
+	
+	//여행 메이트 글 수정 - process
+	@PostMapping("mateRecruitUpdate")
+	@ResponseBody
+	public Map<String, Object> mateRecruitUpdateProcess(TripMateVO tripMateVO){
+		boolean result = false;
+		
+		int updateResult = tripMateService.updateTripMateRecruit(tripMateVO);
+		
+		if(updateResult > -1) {
+			result = true;
+		}
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("result", result);
+		map.put("tripMateInfo", tripMateVO);
+		
+		return map;
+	}
 	
 	//여행 메이트 신청 - form
 	@PostMapping("tripMateApplyForm")
