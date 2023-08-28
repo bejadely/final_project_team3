@@ -18,64 +18,155 @@ table, th, td {
 <script>
 $(document).ready(function() {
 	
-	
+	function handleClick(data) {
 		
-	function handleClick(postId) {
+		var postId = data.postId;
+	    var nowPage = data.clickedPage;
+
+		let obj = { postId: postId, 
+					nowPage: nowPage };
+		
     	
-        $.ajax({
+		 $.ajax({
             url: 'ajaxCartList',
-            type: 'get',
-            data: {
-                postId: postId,
-                nowPage: 1,
-                cntPerPage: 10
-            }
-        
+            type: 'post',
+            data:obj
+            
         }).done(data => {
-            console.log(data);
-            displayData(data);
+        	paging(data.paging);
+            displayData(data.cartList);
         }).fail(reject => console.log(reject));
     }
 
     // 클릭 이벤트 핸들러 자동 실행
     $('#pakage').click(function() {
-        handleClick('3');
+    	var postId = 'pkg';
+        var data = { postId: postId }
+        handleClick(data);
+        
     });
 
     $('#jam').click(function() {
-        handleClick('4');
+    	var postId = 'lod';
+        var clickedPage = '1';
+        var data = { postId: postId }
+        handleClick(data);
     });
 
     $('#mul').click(function() {
-        handleClick('5');
+    	var postId = 'spe';
+        var clickedPage = '1';
+        var data = { postId: postId }
+        handleClick(data);
     });
-
-	    // 데이터를 표시하는 함수
+    
+    // 데이터를 표시하는 함수
 	function displayData(data) {
 	    var html = ""; // 빈 문자열로 초기화
+	    var lmth = "";
+	    var thead = $("thead");
 	    var tbody = $("tbody");
+	    thead.empty();
 	    tbody.empty(); // tbody 내용 초기화
+	    lmth += "<tr>" + 
+		"<th><input type='checkbox' id='cbx_chkAll' /></th>" +
+		"<th>상품사진</th>" +
+		"<th>상품 명</th>" +
+		"<th>상품수량</th>" +
+		"<th>상품가격</th>" +
+		"<th>삭제</th>"+
+		"</tr>";
 	
 	    // 가져온 데이터를 순회하면서 처리	
 	    $.each(data, (index, cartItem) => {
-	        html += "<tr>" +
-	            "<td><input type='checkbox' name='chk' data-cartid='" + cartItem.cartId + "' /></td>" +
+	    		html += "<tr>" +
+	            "<td><input type='checkbox' name='chk' data-cartid='" + cartItem.postId + "' /></td>" +
 	            "<td>" + cartItem.cartName + "</td>" +
 	            "<td>" + cartItem.cartName + "</td>" +
 	            "<td>" + cartItem.quantity + "</td>" +
 	            "<td>" + cartItem.price + "</td>" +
 	            "<td><button class='delete-btn'>삭제</button></td>" +
-	            "</tr>";
+	            "</tr>";	        
 	    });
 	    
 	    // tbody 내용을 업데이트
+	    thead.html(lmth);
 	    tbody.html(html);
 	}
-	    
+    
+    function paging(data){
+    	var html = "";
+    	var div = $("#paging");
+    	
+    	div.empty();
+    	
+    	if (data.startPage != 1) {
+            html += '<a><<</a>';
+            html += '<a>&lt;</a>';
+        }
+
+		
+        for(var p = data.startPage ; p <= data.endPage; p ++){
+        	if (p == data.nowPage) {
+                html += '<b>' + p + '</b>';
+            } else {
+                html += '<a>' + p + '</a>';
+            }
+        }
+
+        if (data.endPage != data.lastPage) {
+            html += '<a>&gt;</a>';
+        }
+
+        if (data.endPage != data.lastPage) {
+        	html += '<a><input type="hidden" value="' + data.lastPage + '">>></a>';
+        }
+        
+        div.html(html);
+        
+    }
+    //페이징 버튼 클릭시 동작
+    $("#paging").on("click", "a", function(event) {
+        event.preventDefault(); // 기본 동작 방지 (링크 이동 X)
+        
+        var clickedPage = $(this).text(); // 클릭한 페이지 번호 가져오기
+        var tbody = $("tbody")
+        var second = tbody.children().children();
+        var cartId = second.find("input[name='chk']").data("cartid");
+        var postId = cartId.substring(0, 3); 
+        //다음 페이지
+        if(clickedPage == '>'){
+        	var next = $(this).prev().text();
+        	clickedPage = Number(next) + 1;
+        } 
+        
+        //이전 페이지
+        if(clickedPage == '<'){
+        	var next = $(this).next().text();
+        	clickedPage = Number(next) - 1;
+        }
+        
+        //처음으로
+        if(clickedPage == '<<'){
+        	clickedPage = 1;
+        }
+        
+        //끝으로
+        if(clickedPage == '>>'){
+        	var last = $(this).find('input').val();
+        	clickedPage = last;
+        } 
+        
+        var data = { postId: postId, clickedPage: clickedPage };
+        
+        handleClick(data); // 객체로 데이터를 함께 넘김
+    });
+    
+      
 	$("#pakage").trigger('click');
 	
     // 체크박스 전체 선택/해제 기능
-    $("#cbx_chkAll").click(function() {
+    $("thead").on("click", "input[type=checkbox]", function() {
         if ($(this).is(":checked")) {
             $("input[name=chk]").prop("checked", true);
         } else {
@@ -88,7 +179,7 @@ $(document).ready(function() {
         var total = $("input[name=chk]").length;
         var checked = $("input[name=chk]:checked").length;
 
-        if (total !== checked) {
+        if (total != checked) {
             $("#cbx_chkAll").prop("checked", false);
         } else {
             $("#cbx_chkAll").prop("checked", true);
@@ -99,16 +190,27 @@ $(document).ready(function() {
     $("body").on("click", ".delete-btn", function() {
         let row = $(this).closest("tr");
         let cartId = row.find("input[name='chk']").data("cartid");
-        let url = "/cartDelete?cartId=" + cartId;
+        let url = "/cartDelete?postId=" + cartId;
 
         fetch(url)
             .then(response => response.text())
             .then(text => {
                 row.remove();
-                top.document.location.reload();
+                var page = $('#paging').find('b').text();
+                var postId = cartId.substring(0, 3);
+                var tbody = $("tbody");
+                var length = tbody.children().length
+                
+                if(page != 1){
+                    if(length == 0){
+                    	page = Number(page) -1;
+                    }
+                }
+                var data = { postId: postId, clickedPage: page };
+                handleClick(data);
             });
     });
-
+    
     // 삭제 버튼 클릭 시 선택된 항목 삭제
     $("#delBtn").click(function() {
     let ckb = $('tbody input[type=checkbox]:checked');
@@ -117,40 +219,28 @@ $(document).ready(function() {
         let check = $(this);
         let id = check.val();
         let cartId = check.data("cartid"); // Retrieve cartId
-        let url = "/cartDelete?cartId=" + cartId; // Use 'cartId'
+        let url = "/cartDelete?postId=" + cartId; // Use 'cartId'
 
 
         fetch(url)
             .then(response => response.text())
             .then(text => {
                 check.parent().parent().remove();
-                top.document.location.reload();     
+                var page = $('#paging').find('b').text();
+                var postId = cartId.substring(0, 3);
+                var tbody = $("tbody");
+                var length = tbody.children().length
+                if(page != 1){
+                    if(length == 0){
+                    	page = Number(page) -1;
+                    }
+                }
+                var data = { postId: postId, clickedPage: page };
+                handleClick(data);
+                     
             });
     });
-  });
-    
-    $(document).ready(function() {
-    	var nowPage = [[${paging.nowPage}]];
-        $('#cntPerPage').on('change', function() {
-            let selected = $('#cntPerPage').val();
-            location.href = 'cartList?nowPage=' + nowPage + '&cntPerPage=' + selected;
-        });
-    });
-    
-    //현재 페이지에 데이터가 없으면 이전 페이지로 이동하는 구문
-    var hasContent = [[${paging.end}]]-[[${paging.start}]] ;
-    var currentPage = [[${paging.nowPage}]];
-    
-    console.log(hasContent);
-
-    // 데이터가 없고 현재 페이지가 1보다 큰 경우 이전 페이지로 자동 이동
-    if (hasContent == '-1' && currentPage > 1) {
-    	let selected = $('#cntPerPage').val();
-    	var prevPage = currentPage - 1;
-        var prevPageUrl = location.href = 'cartList?nowPage=' + prevPage + '&cntPerPage=' + selected;
-        window.location.href = prevPageUrl; // 자동으로 이동
-    }
-   
+  }); 
 });
 
 </script>
@@ -164,12 +254,6 @@ $(document).ready(function() {
 		<!--    <script th:src="@{/js/page/home.js}"></script>-->
 	</th:block>
 	<div layout:fragment="content" id="cartAllList" style="text-align: center;">
-		<select id="cntPerPage">
-			    <option th:value="5" th:text="|5줄 보기|" th:selected="${paging.cntPerPage == 5}" ></option>
-			    <option th:value="10" th:text="|10줄 보기|" th:selected="${paging.cntPerPage == 10}" ></option>
-			    <option th:value="15" th:text="|15줄 보기|" th:selected="${paging.cntPerPage == 15}" ></option>
-			    <option th:value="20" th:text="|20줄 보기|" th:selected="${paging.cntPerPage == 20}" ></option>
-		</select>
 		<div>
 			<button type="button" id="pakage">패키지</button>
 			<button type="button" id="jam">숙소</button>
@@ -178,44 +262,16 @@ $(document).ready(function() {
 	
 		<table>
 			<thead>
-				<tr>
-					<th><input type="checkbox" id="cbx_chkAll" /></th>
-					<th>상품사진</th>
-					<th>상품 명</th>
-					<th>상품수량</th>
-					<th>상품가격</th>
-					<th>삭제</th>
-				</tr>
+				
 			</thead>
 			<tbody>
-			
 				
 			</tbody>
 		</table>
 		<button type="button">구매</button>
 		<button type="button" id="delBtn">삭제</button>
-		<div>
-			<th:block th:if="${paging.startPage != 1}">
-				<a th:href="@{cartList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
-			</th:block>
-			<th:block th:if="${paging.startPage != 1}">
-				<a th:href="@{cartList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
-			</th:block>
-			<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
-				<th:block th:if="${p eq paging.nowPage}">
-					<b th:text="${p}"></b>
-				</th:block>
-				<th:block th:if="${p ne paging.nowPage}">
-					<a th:href="@{cartList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
-				</th:block>
-			</th:block>
-			<th:block
-				th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-				<a th:href="@{cartList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
-			</th:block>
-			<th:block th:if="${paging.endPage != paging.lastPage}">
-				<a th:href="@{cartList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
-			</th:block>
+		<div id="paging">
+			
 		</div>
 	</div>
 </body>

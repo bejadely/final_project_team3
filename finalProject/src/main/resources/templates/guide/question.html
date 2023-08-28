@@ -164,7 +164,7 @@ $(document).ready(function() {
 						th:text="${p}"></a>
 				</th:block>
 			</th:block>
-			<th:block th:if="${paging.nowPage != paging.lastPage}">
+			<th:block th:if="${paging.endPage != paging.lastPage}">
 				<a
 					th:href="@{guideQue(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 			</th:block>
