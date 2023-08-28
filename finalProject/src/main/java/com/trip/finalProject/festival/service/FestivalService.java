@@ -13,4 +13,9 @@ public interface FestivalService {
 
 	List<FestivalInfoVO> getFestivalListInfo();
 
+	List<FestivalInfoVO> getFestivalNewList(String year, String month);
+
+    Integer modifyFestivalInfo(FestivalInfoVO festivalInfoVO);
+
+	Integer removeFestivalInfo(String contentId);
 }

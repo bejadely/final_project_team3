@@ -1,165 +1,190 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="@{layouts/default_layout}">
-<head>
-<meta charset="UTF-8">
-<meta name="description" content="Azenta Template">
-<meta name="keywords" content="Azenta, unica, creative, html">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<title>여행기록 전체 조회</title>
-<!-- Google Font -->
-<link
-	href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap"
-	rel="stylesheet">
-<style type="text/css">
-table, th,td {
-	border: 1px solid black;
-	text-align: center;
-	margin: 0 auto;
-}
-.toggle {
-    position: relative;
-    display: inline-block;
-    width: 48px;
-    height: 24px;
-}
-
-.toggle input {
-    display: none;
-}
-
-.toggle label {
-    display: block;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    cursor: pointer;
-    background-color: #dedede;
-    border-radius: 1em;
-    transition: background-color 0.25s ease;
-}
-
-.toggle label::before,
-.toggle label::after {
-    content: "";
-    display: block;
-    position: absolute;
-    cursor: pointer;
-}
-
-.toggle label::before {
-    width: 100%;
-    height: 100%;
-    background-color: inherit;
-    border-radius: inherit;
-}
-
-.toggle label::after {
-    content: "";
-    top: 0;
-    left: 0;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background-color: #fff;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.45);
-    transition: left 0.25s ease;
-}
-
-.toggle input:checked + label::before {
-    background-color: skyblue;
-}
-
-.toggle input:checked + label::after {
-    left: 24px;
-}
-
-</style>
-<script type="text/javascript">
-$(document).ready(function() {
-	   //현재 페이지에 데이터가 없으면 이전 페이지로 이동하는 구문
-	   var hasContent = [[${paging.end}]]-[[${paging.start}]] ;
-	   var currentPage = [[${paging.nowPage}]];
-	   
-	   
-	   // 데이터가 없고 현재 페이지가 1보다 큰 경우 이전 페이지로 자동 이동
-	   if (hasContent < 0 && currentPage > 1) {
-	      let selected = $('#cntPerPage').val();
-	      var prevPage = currentPage - 1;
-	       var prevPageUrl = location.href = 'cartList?nowPage=' + prevPage + '&cntPerPage=' + selected;
-	       window.location.href = prevPageUrl; // 자동으로 이동
-	   }
-	   
-	   $('.toggle input[type="checkbox"]').on('click', function() {
-	        var isChecked = $(this).prop('checked'); // 클릭한 토글의 체크 상태 가져오기
-	        var row = $(this).closest('tr'); // 클릭한 토글이 속한 행 선택
-	        if (isChecked) {
-	            row.addClass('checked'); // 체크되었을 경우 해당 행에 클래스 추가
-	        } else {
-	            row.removeClass('checked'); // 체크 해제되었을 경우 해당 행에서 클래스 제거
-	        }
-	    });
-	});
-</script>
-</head>
-<body>
-<div layout:fragment="content">
-	<section>
-		<!-- 여행기록 section-->
-		<table>
-			<thead>
-				<tr> 
-				    <th>번호</th>
-					<th>제목</th>
-					<th>수정</th>
-					<th>삭제</th>
-					<th>공개여부</th>
-				</tr>
-			</thead>
-			<tbody>
-				<th:block th:each="trip : ${tripList}">
-					<tr class="question">
-						<td><input type="hidden" th:value="${trip.postId}"></td>
-						<td th:text="${trip.tripTitle}"></td>
-						<td><button type="button">수정</button></td>
-						<td><button type="button">삭제</button></td>
-    					<td class="toggle">
-			                <input type="checkbox" th:id="'toggle_' + ${trip.postId}" name="toggle1" th:value="${trip.postId}">
-			                <label th:for="'toggle_' + ${trip.postId}"></label>
-			            </td>
+	<!DOCTYPE html>
+	<html xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:th="http://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="@{layouts/default_layout}">
+	<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="Azenta Template">
+	<meta name="keywords" content="Azenta, unica, creative, html">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>여행기록 전체 조회</title>
+	<!-- Google Font -->
+	<link
+		href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap"
+		rel="stylesheet">
+	<style type="text/css">
+	table, th,td {
+		border: 1px solid black;
+		text-align: center;
+		margin: 0 auto;
+	}
+	.toggle {
+	    position: relative;
+	    display: inline-block;
+	    width: 48px;
+	    height: 24px;
+	}
+	
+	.toggle input {
+	    display: none;
+	}
+	
+	.toggle label {
+	    display: block;
+	    width: 100%;
+	    height: 100%;
+	    position: relative;
+	    cursor: pointer;
+	    background-color: #dedede;
+	    border-radius: 1em;
+	    transition: background-color 0.25s ease;
+	}
+	
+	.toggle label::before,
+	.toggle label::after {
+	    content: "";
+	    display: block;
+	    position: absolute;
+	    cursor: pointer;
+	}
+	
+	.toggle label::before {
+	    width: 100%;
+	    height: 100%;
+	    background-color: inherit;
+	    border-radius: inherit;
+	}
+	
+	.toggle label::after {
+	    content: "";
+	    top: 0;
+	    left: 0;
+	    width: 20px;
+	    height: 20px;
+	    border-radius: 50%;
+	    background-color: #fff;
+	    box-shadow: 0 0 4px rgba(0, 0, 0, 0.45);
+	    transition: left 0.25s ease;
+	}
+	
+	.toggle input:checked + label::before {
+	    background-color: skyblue;
+	}
+	
+	.toggle input:checked + label::after {
+	    left: 24px;
+	}
+	
+	</style>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		   //현재 페이지에 데이터가 없으면 이전 페이지로 이동하는 구문
+		   var hasContent = [[${paging.end}]]-[[${paging.start}]] ;
+		   var currentPage = [[${paging.nowPage}]];
+		   
+		   
+		   // 데이터가 없고 현재 페이지가 1보다 큰 경우 이전 페이지로 자동 이동
+		   if (hasContent < 0 && currentPage > 1) {
+		      let selected = $('#cntPerPage').val();
+		      var prevPage = currentPage - 1;
+		       var prevPageUrl = location.href = 'cartList?nowPage=' + prevPage + '&cntPerPage=' + selected;
+		       window.location.href = prevPageUrl; // 자동으로 이동
+		   }
+		   
+		   $('.toggle input[type="checkbox"]').on('click', function() {
+		        var isChecked = $(this).prop('checked'); // 클릭한 토글의 체크 상태 가져오기
+		        console.log(isChecked);
+		        var postId = $(this).val();
+		        console.log(postId);
+		        var tripDisclose = '';
+		        if(isChecked == true){
+		        	tripDisclose = '01';
+		        }else if(isChecked == false){
+		        	tripDisclose = '02';
+		        }
+		        console.log(tripDisclose) ;
+		        
+		        let obj={
+		        		postId : postId,
+		        		tripDisclose : tripDisclose
+		        }
+		        
+		        $.ajax({
+		        	url:'discloseUpdate',
+		        	type: 'post',
+		        	data : obj
+		        	}).done(data => {
+		        		
+		            }).fail(reject => console.log(reject));
+		        
+		        var row = $(this).closest('tr'); // 클릭한 토글이 속한 행 선택
+		        if (isChecked) {
+		            row.addClass('checked'); // 체크되었을 경우 해당 행에 클래스 추가
+		        } else {
+		            row.removeClass('checked'); // 체크 해제되었을 경우 해당 행에서 클래스 제거
+		        }
+		    });
+		});
+	</script>
+	</head>
+	<body>
+	<div layout:fragment="content">
+		<section>
+			<!-- 여행기록 section-->
+			<table>
+				<thead>
+					<tr> 
+					    <th>번호</th>
+						<th>제목</th>
+						<th>수정</th>
+						<th>삭제</th>
+						<th>공개여부</th>
 					</tr>
-				</th:block>
-			</tbody>
-			</table>
-			<!-- 여행기록 페이징 -->
-			<div class="container" style="text-align: center">
-				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{myPageTrip(nowPage=1, cntPerPage=${paging.cntPerPage})}" ><<</a>
-				</th:block>
-				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{myPageTrip(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
-				</th:block>
-				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
-					<th:block th:if="${p eq paging.nowPage}">
-						<b th:text="${p}"></b>
+				</thead>
+				<tbody>
+					<th:block th:each="trip : ${tripList}">
+						<tr class="question">
+							<td><input type="hidden" th:value="${trip.postId}"></td>
+							<td th:text="${trip.tripTitle}"></td>
+							<td><button type="button">수정</button></td>
+							<td><button type="button">삭제</button></td>
+	    					<td class="toggle">
+				                <input type="checkbox" th:id="'toggle_' + ${trip.postId}" name="toggle1" th:value="${trip.postId}" 
+	                   					th:checked="${trip.tripDisclose == '01'}">
+				                <label th:for="'toggle_' + ${trip.postId}"></label>
+				            </td>
+						</tr>
 					</th:block>
-					<th:block th:if="${p ne paging.nowPage}">
-						<a th:href="@{myPageTrip(nowPage=${p}, cntPerPage=${paging.cntPerPage})}" th:text="${p}"></a>
+				</tbody>
+				</table>
+				<!-- 여행기록 페이징 -->
+				<div class="container" style="text-align: center">
+					<th:block th:if="${paging.startPage != 1}">
+						<a th:href="@{myPageTrip(nowPage=1, cntPerPage=${paging.cntPerPage})}" ><<</a>
 					</th:block>
-				</th:block>
-				<th:block
-					th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-					<a th:href="@{myPageTrip(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
-				</th:block>
-				<th:block th:if="${paging.endPage != paging.lastPage}">
-					<a th:href="@{myPageTrip(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
-				</th:block>
-			</div>
-		</section>
-	</div>
-
-</body>
-</html>
+					<th:block th:if="${paging.startPage != 1}">
+						<a th:href="@{myPageTrip(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+					</th:block>
+					<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+						<th:block th:if="${p eq paging.nowPage}">
+							<b th:text="${p}"></b>
+						</th:block>
+						<th:block th:if="${p ne paging.nowPage}">
+							<a th:href="@{myPageTrip(nowPage=${p}, cntPerPage=${paging.cntPerPage})}" th:text="${p}"></a>
+						</th:block>
+					</th:block>
+					<th:block
+						th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+						<a th:href="@{myPageTrip(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					</th:block>
+					<th:block th:if="${paging.endPage != paging.lastPage}">
+						<a th:href="@{myPageTrip(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
+					</th:block>
+				</div>
+			</section>
+		</div>
+	
+	</body>
+	</html>

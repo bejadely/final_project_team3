@@ -18,7 +18,7 @@
             f.end_date = #{festival.endDate},
             f.festival_img = #{festival.festivalImg},
             f.address = #{festival.address},
-            f.save_date = SYSDATE
+            f.update_date = #{festival.updateDate}
             WHEN NOT MATCHED THEN
             INSERT (
             festival_id,
@@ -30,7 +30,8 @@
             festival_img,
             content_id,
             address,
-            save_date
+            save_date,
+            update_date
             )
             VALUES (
             #{festival.festivalId},
@@ -42,7 +43,8 @@
             #{festival.festivalImg},
             #{festival.contentId},
             #{festival.address},
-            SYSDATE
+            SYSDATE,
+            #{festival.updateDate}
             );
         </foreach>
     </insert>
@@ -51,21 +53,47 @@
 	<select id="getFestivalCalendarInfo" resultType="FestivalInfoVO">
         SELECT *
        	FROM festival_info
+        WHERE delete_yn = 'N'
    </select>
    
    <!-- 축제정보리스트 첫페이지 현재달로 조회 -->
 	<select id="getFestivalListInfo" resultType="FestivalInfoVO">
 		 <![CDATA[
 			SELECT festival_name, start_date, end_date, area_code, sigungu_code, content_id
-			FROM festival_info
-			WHERE TO_DATE(start_date, 'YYYYMMDD') >= TRUNC(SYSDATE, 'MM')
-			  AND TO_DATE(start_date, 'YYYYMMDD') < ADD_MONTHS(TRUNC(SYSDATE, 'MM'), 1)
-			ORDER BY start_date
+			  FROM festival_info
+			 WHERE TO_DATE(start_date, 'YYYYMMDD') <= LAST_DAY(TRUNC(SYSDATE))
+			   AND TO_DATE(end_date, 'YYYYMMDD') >= TRUNC(SYSDATE, 'MM')
+	 	  ORDER BY TO_DATE(start_date, 'YYYYMMDD') DESC
 		]]> 
 	</select>
 	
-    <!-- 매일 오후 11시 50분쯤에 스케쥴러 돌리고, updateDate는 SYSDATE로 -->
+	<!-- 버튼 동작에 따라 현재달 축제 리스트 조회  -->
+	<select id = "getFestivalNewList" resultType="FestivalInfoVO">
+		<![CDATA[ 
+			SELECT festival_name, start_date, end_date, area_code, sigungu_code, content_id
+	  		  FROM festival_info
+	  		 WHERE TO_DATE(start_date, 'YYYYMMDD') <= LAST_DAY(TO_DATE(#{year} || #{month} || '01', 'YYYYMMDD'))
+	    	   AND TO_DATE(end_date, 'YYYYMMDD') >= TO_DATE(#{year} || #{month} || '01', 'YYYYMMDD')
+	   	  ORDER BY TO_DATE(start_date, 'YYYYMMDD') DESC
+		 ]]>
+	</select>
 
+    <update id="modifyFestivalInfo" parameterType="FestivalInfoVO">
+        UPDATE festival_info
+        SET festival_name = #{festivalName},
+            address = #{address},
+            content = #{content},
+            start_date = #{startDate},
+            end_date = #{endDate},
+            update_date = SYSDATE
+        WHERE content_id = #{contentId}
+    </update>
 
+    <update id="removeFestivalInfo" parameterType="String">
+        UPDATE festival_info
+        SET delete_yn = 'Y',
+            update_date = SYSDATE
+        WHERE content_id = #{contentId}
+    </update>
 
   </mapper>
