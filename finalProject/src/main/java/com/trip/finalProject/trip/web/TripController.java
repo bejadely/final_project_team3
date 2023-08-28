@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -110,7 +111,7 @@ public class TripController {
 		return "trip/tripRecordInfo";
 	}
 
-	// 여행기록 등록
+	// 여행기록 등록 - 여행기록 작성하기 버튼 클릭 시 실행되는 메소드
 	// form 호출 시 해당 내용을 임시저장을 시킴(post_id를 가져오기 위함) 
 	@PostMapping("tripRecordInsertForm")
 	public String tripRecordInsertForm(TripVO tripVO, Model model) {
@@ -118,14 +119,14 @@ public class TripController {
 		// 여행기록 테이블에 데이터 삽입
 		TripVO result = tripService.TsInsertTripInfo(tripVO);
 		
-		
+		//post
 		model.addAttribute("tripVO", result);
 		return "trip/tripRecordInsertForm";
 	}
 
 	// 여행기록 등록 - 임시저장 상태에서 저장상태로 상태 업데이트
 	@PostMapping("tripRecordInsertUp")
-	public String tripRecordInsertProcess(TripVO tripVO, Model model) {
+	public String tripRecordInsertProcess(TripVO tripVO) {
 		tripService.InsertTripInfo(tripVO);
 		return "redirect:/tripRecordList";
 	}
@@ -133,7 +134,7 @@ public class TripController {
 	// 여행기록 임시저장 - 임시 저장인 상태로 다시 업데이트
 	@PostMapping("tsTripRecordInsertUp")
 	public String tsTripRecordInsertProcess(TripVO tripVO) {
-		tripService.TsInsertTripInfo(tripVO);
+		tripService.TsTripInfo(tripVO);
 		return "redirect:/tripRecordList";
 	}
 
@@ -143,7 +144,14 @@ public class TripController {
 		model.addAttribute("tripVO", tripVO);
 		return "trip/tripMappingInsertForm";
 	}
-
+	
+//	//여행경로 저장
+//	@PostMapping("tripMappingInsert")
+//	public String tripMappingInsert(TripVO tripVO) {
+//		tripService.InsertTripMapping(tripVO);
+//		
+//		return "redirect:/tripRecordList";
+//	}
 //	// 여행기록 지도 맵핑 - 처리
 //	@PostMapping("tripMappingInsert")
 //	public String tripMappingInsertProcess(TripVO tripVO) {
@@ -151,18 +159,28 @@ public class TripController {
 //		return "redirect:/tripInsertForm";
 //	}
 
-	// 여행기록 메모 등록
+	// 여행기록 메모 등록 
+	@PostMapping("tripMemoInsert")
+	public String tripMemoInsert(TripVO tripVO, Model model) {
+		
+		//TripVO result = tripService.TsInsertTripInfo(tripVO);
+		
+		//model.addAttribute("tripVO", result);
+		
+		return null;
+		//return "trip/tripRecordInsertForm";
+	}
 	
 	
-//	// 여행 경로 저장 (ajax)
-//    @PostMapping("mappingInsert")
-//    @ResponseBody
-//    public String receiveMappingData(@RequestBody TripVO[] mappingData) {
-//        for (TripVO item : mappingData) {
-//            tripService.InsertTripMapping(item);
-//        }
-//        return "redirect:/tripInsertForm";
-//    }
-	
-	
+	// 여행 경로 저장 (ajax)
+    @PostMapping("tripMappingInsert")
+    @ResponseBody
+    public String receiveMappingData(@RequestBody TripVO[] mapDataArry) {
+    	for (TripVO item : mapDataArry) {
+            tripService.InsertTripMapping(item);
+        	//System.out.println(item);
+        }
+        return null;
+        //return "redirect:/tripInsertForm";
+    }
 }
