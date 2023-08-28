@@ -282,6 +282,7 @@ form {
 	        // 예를 들어, window.location.href = '결제페이지URL';
 	        let totalAmount = parseInt($("#totalPrice").text());
 	        let orderName = "[[ ${info.name} ]]";
+	        let postId = "[[ ${info.postId} ]]"
 	        let quantity = parseInt(document.getElementById('quantity').value);
 	     
 	        $.ajax({
@@ -290,7 +291,8 @@ form {
 	        	data:{
 	        		totalAmount: totalAmount,
 	        		orderName : orderName,
-	        		quantity : quantity
+	        		quantity : quantity,
+	        		postId: postId
 	        	},
 	        	success:function(response){
 	        		location.href = response.next_redirect_pc_url

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip.finalProject.kakaoPay.mapper.KakaoPayMapper">
+
+	<insert id="insertPaymentInfo" parameterType="KakaoPayInfoVO">
+		<selectKey keyProperty="paymentId" resultType="String" order="BEFORE">
+			SELECT 'PAY' || (TO_NUMBER(NVL((SUBSTR(MAX(payment_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM package_regist
+			WHERE SUBSTR(payment_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+		INSERT INTO payment
+					(
+						payment_id
+						,partner_user_id
+						,order_name
+						,total_amout
+						,tid
+						,cid
+						,status
+						,calculate_status
+						,partner_order_id
+						,approved_at
+					)
+					VALUES
+					(
+					
+					)
+					
+	</insert>
+
+</mapper>  
