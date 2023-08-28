@@ -43,10 +43,16 @@
 	</select>
 	
 <!-- 특정 게시글의 상세 정보를 조회하는 쿼리 글의 id를 사용해서 해당 게시글을 가져옴 -->	
-	<select id="boardDetail" resultType="NoticeVO">
+	<select id="getNoticeDetail" resultType="NoticeVO">
 		SELECT *
-		FROM board
-		WHERE board_id = #{boardId}
+		FROM notice
+		WHERE notice_number = #{noticeNumber}
+	</select>
+	
+<!-- 게시글 수정 -->	
+	<select id="modifyNoticeInfo" resultType="NoticeVO">
+	
+	
 	</select>
 	
 <!-- 새로운 게시글을 삽입하는 쿼리. 게시글 번호는 자동생성됨-->	

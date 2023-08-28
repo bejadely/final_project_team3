@@ -21,6 +21,9 @@ public interface NoticeMapper {
 	// 전체 게시글 수 카운트
 	public int getAllNoticeCount();
 	
+	//게시글 상세조회
+	public NoticeVO getNoticeDetail(NoticeVO vo);
+	
 	public int boardUpdate(NoticeVO vo);
 	
 	public int boardDelete(NoticeVO vo);

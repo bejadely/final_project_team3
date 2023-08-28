@@ -374,13 +374,13 @@
                 </th:block>
                 <a th:href="'boardList.do?page=' + ${realEnd}" class="bt last">>></a>
             </div> -->
+            
             <div class="bt_wrap">
+           <!--  <div th:if="${id == board.memberId || id == 'manager'}"> -->
             <a href="/noticeWrite" class="on">등록</a>
-               <!--  <th:block th:if="${not empty id}">
-                    
-                </th:block>  -->
+           </div>
             </div>
-        </div>
+   <!--      </div> -->
 
     
     <div>
