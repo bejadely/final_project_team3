@@ -16,5 +16,5 @@ public class KakaoPayInfoVO {
 	private String calculateStatus;
 	private String partnerOrderId;
 	private String pg_token;
-	private String approved_at;
+	private String approvedAt;
 }
