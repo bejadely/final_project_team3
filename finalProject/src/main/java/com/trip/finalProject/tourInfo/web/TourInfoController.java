@@ -125,9 +125,9 @@ public class TourInfoController {
     
     //관광정보 검색 페이지
     @GetMapping("/search")
-    public String searchDetail(String searchKeyWord, Model model) {
+    public String searchDetail(String searchKeyWord, int areaCode, int sigunguCode, Model model) {
     
-    	model.addAttribute("searchInfoList", tourInfoService.getsearchInfo(searchKeyWord));
+    	model.addAttribute("searchInfoList", tourInfoService.getsearchInfo(searchKeyWord, areaCode, sigunguCode));
     	model.addAttribute("searchKeyWord", searchKeyWord);
     	
     	return "tourInfo/searchDetail";

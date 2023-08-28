@@ -15,7 +15,6 @@
  	 <select id="getPerCount" resultType="int">
  		SELECT COUNT(*)
  		FROM trip_record
- 		WHERE end_day > sysdate AND trip_save='T1'
  	</select>
  	
  	<!-- 마이페이지 페이징 - 미완료 여행/임시저장-->
@@ -58,6 +57,14 @@
 		WHERE rn BETWEEN #{start } AND #{end }
 	</select>
 	
+	<!-- 저장 정보 업데이트 -->
+	<update id="updateDis" parameterType="TripVO">
+		UPDATE trip_record
+		<set>
+			trip_disclose = #{tripDisclose}
+		</set>
+		WHERE post_id = #{postId}
+	</update>
 	<!-- 마이페이지 여행기록 임시저장 -->
 	<select id="selectPerNotTrip" resultType="TripVO">	
 		SELECT *
@@ -144,7 +151,7 @@
 	<!-- 여행기록 등록(등록시 임시저장 상태로 페이지 이동) -->
 	<insert id="tsInsertTripInfo" parameterType="TripVO">
 		<selectKey keyProperty="postId" resultType="String" order="BEFORE">
-			SELECT 'trr' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			SELECT 'TRR' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
 			FROM trip_record
 			WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
 		</selectKey>
@@ -184,10 +191,37 @@
 				        )
 	</insert>
 	
+	<!-- 여행메모 등록 -->
+	<insert id="insertTripMemo" parameterType="TripVO">
+		<selectKey keyProperty="memoId" resultType="String" order="BEFORE">
+			SELECT 'TRM' || (TO_NUMBER(NVL((SUBSTR(MAX(memo_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM trip_record_memo
+			WHERE SUBSTR(memo_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+		INSERT INTO trip_record_memo
+						(
+							memo_id
+							, memo_no
+							, content
+							, memo_date
+							, post_id
+							, trip_date
+						)
+				   VALUES
+				        (
+							#{memoId}
+							, #{memoNo}
+							, #{content}
+							, #{memoDate}
+							, #{postId}
+							, #{tripDate}
+				        )
+	</insert>
+	
 	<!-- 여행기록 등록 - 여행 경로 맵핑-->
 	<insert id="insertTripMapping" parameterType="TripVO">
 		<selectKey keyProperty="mapId" resultType="String" order="BEFORE">
-			SELECT 'map' || (TO_NUMBER(NVL((SUBSTR(MAX(map_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			SELECT 'MAP' || (TO_NUMBER(NVL((SUBSTR(MAX(map_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
 			FROM map
 			WHERE SUBSTR(map_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
 		</selectKey>
@@ -215,5 +249,9 @@
 					  )
 	</insert>
 	
+	<!-- 여행기록 삭제 -->
+	<delete id="deleteTripInfo" parameterType="String">
+	
+	</delete>
 
 </mapper>

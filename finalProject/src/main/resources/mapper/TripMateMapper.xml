@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip.finalProject.tripMate.mapper.TripMateMapper">
+	<!-- 여행 메이트 글 전체 조회 -->
+	<select id="selectAllTripMate" resultType="TripMateVO">
+		SELECT *
+		FROM mate_recruit m LEFT OUTER JOIN 
+			 attached_file a ON m.post_id = a.post_id
+		ORDER BY m.post_id DESC
+	</select>
+	
+	<!-- 여행 메이트 글 상세 조회 -->
+	<select id="selectTripMateInfo" resultType="TripMateVO">
+		SELECT post_id,
+			   writer_id,
+			   mate_title,
+			   start_day,
+			   end_day,
+			   deadline,
+			   mate_content,
+			   mate_expense,
+			   mate_max,
+			   apply_num,
+			   hit
+		FROM mate_recruit
+		WHERE post_id = #{postId}
+	</select>
+	
+	<!-- 여행메이트 게시글 등록 -->
+	<insert id="insertEditor" parameterType="TripMateVO">
+		<selectKey keyProperty="postId" resultType="String" order="BEFORE">
+			SELECT 'MAT' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM mate_recruit
+			WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+		INSERT INTO mate_recruit
+						(
+							post_id
+							, mate_title
+							, mate_content
+							, mate_expense
+							, start_day
+							, end_day
+							, mate_style
+							, mate_tag
+							, mate_max
+							, complition
+							, write_date
+							, deadline
+							, writer_id
+							, trip_area
+						)
+					VALUES
+						(
+							#{postId}
+							, #{mateTitle}
+							, #{mateContent}
+							, #{mateExpense}
+							, #{startDay}
+							, #{endDay}
+							, #{mateStyle}
+							, #{mateTag}
+							, #{mateMax}
+							, 'C1'
+							, sysdate
+							, #{deadline}
+							, #{writerId}
+							, #{tripArea}						
+						)
+		
+	</insert>
+	
+	
+	<!-- 여행 메이트 신청 (등록된 게시글에 대한 여행메이트 신청) -->
+	<insert id="insertTripMateApply" parameterType="TripMateVO">
+		<selectKey keyProperty="applyId" resultType="String" order="BEFORE">
+			SELECT 'APL' || (TO_NUMBER(NVL((SUBSTR(MAX(apply_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM mate_apply
+			WHERE SUBSTR(apply_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+		INSERT INTO mate_apply
+						(
+							apply_id
+							, member_id
+							, post_id
+							, apply_day
+							, apply_info
+							, approve_status
+						)
+					VALUES
+						(
+							#{applyId}
+							, #{memberId}
+							, #{postId}
+							, sysdate
+							, #{applyInfo}
+							, 'a1'
+						)
+	</insert>
+</mapper>

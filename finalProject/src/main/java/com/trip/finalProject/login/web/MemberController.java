@@ -52,17 +52,25 @@ public class MemberController {
 		memberService.insertMemberInfo(memberVO);
 		return "redirect:/";
 	}
-	
-	
-	
-	//가이드 회원가입
-	@GetMapping("member/guideInsert")
-	public String guideInsertForm(MemberVO memberVO) { 
-		
-		/* memberService.insertMemberInfo(memberVO); */
-		 
-		return "member/guideInsert";
+
+	//가이드 회원가입 폼 호출
+	@GetMapping("/member/guideInsert") 
+	public String guideInsertForm() {
+		return"member/guideInsert";
 	}
+	
+	//가이드 회원가입 처리
+	@PostMapping("/guideInsert")
+	public String guideInsertForm(MemberVO memberVO) { 		
+		 memberService.insertGuide(memberVO);
+		return "redirect:/";
+	}
+	
+
+
+	
+	
+	
 	
 	
 	//멤버 로그인화면 호출

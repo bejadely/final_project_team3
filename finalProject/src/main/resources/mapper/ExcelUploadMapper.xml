@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.trip.finalProject.excelUpload.mapper.ExcelUploadMapper">
+    <update id="uploadRestaurantList" parameterType="java.util.List">
+        <foreach collection="list" item="item" open="INSERT ALL " close="SELECT * FROM DUAL" separator=" ">
+            INTO CHART_RESTAURANT (AREA_CODE, SIGUNGU_CODE, VISITOR_NUMBER, RESTAURANT_NAME, RESTAURANT_TYPE, YEAR_MONTH) VALUES
+            (TO_NUMBER(#{item.areaCode}),TO_NUMBER(#{item.sigunguCode}),TO_NUMBER(#{item.visitorNumber}),#{item.restaurantName},#{item.restaurantType},#{item.yearMonth})
+        </foreach>
+    </update>
+  </mapper>
