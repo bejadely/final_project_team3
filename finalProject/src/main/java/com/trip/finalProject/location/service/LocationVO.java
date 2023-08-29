@@ -1,5 +1,10 @@
 package com.trip.finalProject.location.service;
 
-public class LocationVO {
+import lombok.Data;
 
+@Data
+public class LocationVO {
+	private int areaCode;
+	private int sigunguCode;
+	private String locationName;
 }

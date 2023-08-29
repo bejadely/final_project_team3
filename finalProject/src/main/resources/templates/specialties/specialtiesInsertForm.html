@@ -123,10 +123,13 @@ ClassicEditor
 			$.each(filenames,function(i,obj){
 				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
 			});
-	
+			var sigunguCode = $("#location > option:selected").attr("value1");
+			var areaCode = $("#location > option:selected").attr("value2");
+			console.log(sigunguCode);
+			console.log(areaCode);
 			formObj.append(str);
 			document.getElementById('editorForm').action = "register";
-			document.getElementById('editorForm').submit();
+			//document.getElementById('editorForm').submit();
 			
 			
 			
@@ -252,8 +255,9 @@ ClassicEditor
 			</div>
 			<div>
 				<label>지역</label>
-				<select name=>
-				
+				<select id="location">
+					<option value="">선택</option>
+					<option th:each = "a : ${area}"  th:value1="${a.sigunguCode}" th:value2="${a.areaCode}" th:text="${a.locationName}"></option>	
 				</select>
 			</div>
 			<div class="uploadDiv">
@@ -269,6 +273,12 @@ ClassicEditor
 				<label>특산물 명</label>
 				<input type="text" placeholder="특산물 명" name=title id="title"/>
 			</div>
+			<div id="test" class="modal" style="height: 600px;  width: 500px; text-align: center;">
+				<form>
+					<h1></h1>
+				</form>
+			</div>
+			<a href="#test" rel="modal:open" class="primary-btn">여행기록 등록</a>
 			
 		</div>
 		<h5>패키지 설명</h5>
