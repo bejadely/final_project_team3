@@ -85,7 +85,7 @@
 				</th:block>
 				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
 					<th:block th:if="${p eq paging.nowPage}">
-						<a th:text="${p}" style="background-color : #2cbdb8;"></a>
+						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
 					</th:block>
 					<th:block th:if="${p ne paging.nowPage}">
 						<a th:href="@{searchAdminMember(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
@@ -99,38 +99,6 @@
 				</th:block>
 			</div>
 		</th:block>
-		
-		<!-- 작업중 : 실험중 -->
-		  
-		<nav aria-label="Page navigation" style="display: none;">
-             <ul class="pagination justify-content-center" th:attr="data-content-type-id=${contentTypeId}, data-area-code=${areaCode}, data-sigungu-code=${sigunguCode}">
-
-                 <!-- paging에 cntPage보다 현재 페이지가 작거나 같으면 < 버튼 disabled 처리 아니면 활성화 -->
-                 <li class="page-item" th:if="${paging.nowPage <= paging.cntPage}">
-                     <a class="page-link disabled"><</a>
-                 </li>
-                 <li class="page-item" th:unless="${paging.nowPage <= paging.cntPage}" th:attr="data-page=${paging.startPage - 1}">
-                     <a class="page-link pointer"><</a>
-                 </li>
-				
-                 <!-- startPage, endPage 범위 -->
-                 <li class="page-item"
-                     th:each="pageNumber : ${#numbers.sequence(paging.startPage, paging.endPage)}" th:attr="data-page=${pageNumber}">
-                     <a class="page-link" th:classappend="${pageNumber == paging.nowPage} ? 'active' : 'pointer'" th:text="${pageNumber}"></a>
-                 </li>
-
-                 <!-- paging에 lastPage의 값이 startPage 이상 endPage 이하이면 > 버튼 disabled 처리 아니면 활성화 -->
-                 <li class="page-item"
-                     th:if="${paging.lastPage >= paging.startPage && paging.lastPage <= paging.endPage}">
-                     <a class="page-link disabled">></a>
-                 </li>
-                 <li class="page-item"
-                     th:unless="${paging.lastPage >= paging.startPage && paging.lastPage <= paging.endPage}" th:attr="data-page=${paging.endPage + 1}">
-                     <a class="page-link pointer">></a>
-                 </li>
-             </ul>
-         </nav>
-         
 		
 	</div>
 	

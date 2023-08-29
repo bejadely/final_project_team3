@@ -52,16 +52,24 @@
 	
 	<script th:inline="javascript" type="text/javascript">
 	
+	console.log($($('button[type=button]')[2]));
+	
 	$(document).ready(function() {
 		// 이벤트 설정
-		$('#searchButton').on('click', search);
-		$('.memberInfo').on('mouseover', colorDarker)
-						.on('mouseleave', colorReset)
-						.on('click')
-						.on('mouseup', moveToMemberDetail);
-		// 작업중 : 수정해야함
-		$('button[type=button]').on('click', withdrawMember);
+		//$('#searchButton').on('click', search);
+		$($('button[type=button]')[0]).on('click', doPunish);
+		$($('button[type=button]')[2]).on('click', returnToBeforePage);
 	});
+	
+	// 이전페이지로 이동
+	function returnToBeforePage(){
+		location.href='/admin/seeAllReport';
+	}
+	
+	// 제재 처리 실행
+	function doPunish(event){
+		$('form').attr('action','/admin/doPunish').submit();
+	}
 	
 	</script>
 	
