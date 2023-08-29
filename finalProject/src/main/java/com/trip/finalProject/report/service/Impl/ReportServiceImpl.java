@@ -36,5 +36,12 @@ public class ReportServiceImpl implements ReportService {
 		
 		return map;
 	}
+
+	@Override
+	public ReportVO getReportDetail(ReportVO reportVO) {
+		// 신고 내역 상세 조회
+		
+		return reportMapper.getReportDetail(reportVO);
+	}
 	
 }

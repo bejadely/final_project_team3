@@ -13,4 +13,7 @@ public interface ReportMapper {
 	// 신고 미처리 내역 전체조회
 	public List<ReportVO> selectAllNewReport(PagingVO vo);
 	
+	// 신고 내역 상세조회
+	public ReportVO getReportDetail(ReportVO vo);
+	
 }
