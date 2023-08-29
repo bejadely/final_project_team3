@@ -3,55 +3,37 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip.finalProject.like.mapper.LikeMapper">
-	<!-- 패키지 -->
-	<select id="paCount" resultType="int">
+	<!-- 여행메이트 -->
+	<select id="mtCount" resultType="int">
 		SELECT COUNT(*)
 		FROM post_like
-		WHERE post_id Like 'pkg%' AND member_id = #{memberId}
+		WHERE post_id Like 'MAT%' AND member_id = #{memberId}
 	</select>
-	<!-- 특산물 -->
-	<select id="spCount" resultType="int">
-		SELECT COUNT(*)
-		FROM post_like
-		WHERE post_id Like 'SPC%'
-	</select>
+
 	<!-- 여행기록 -->
 	<select id="trCount" resultType="int">
 		SELECT COUNT(*)
 		FROM post_like
-		WHERE post_id Like 'POS'
+		WHERE post_id Like 'TRR%'
 	</select>
-	<!-- 패키지 -->
- 	<select id="paAllLike" resultType="LikeVO">
+
+ 	<!-- 여행메이트 -->
+ 	<select id="mtAllLike" resultType="LikeVO">
  		SELECT *
 		FROM(SELECT ROWNUM rn, a.*
 			 FROM(SELECT l.like_id like_id, 
 			 			 l.member_id member_id,
 			 			 l.post_id post_id,
-			 			 r.name name,
-			 			 r.location_id location_id,
-			 			 r.tour_theme tour_theme,
-			 			 r.start_date start_date,
-			 			 r.end_date end_date,
-			 			 r.completion completion
-				  FROM post_like l LEFT JOIN package_regist r ON (l.post_id = r.post_id) 
-				  WHERE l.post_id LIKE 'pkg%'
-				  ORDER BY l.post_id DESC) a)
-		WHERE rn BETWEEN #{start } AND #{end }
- 	</select>
- 	<!-- 특산물 -->
- 	<select id="spAllLike" resultType="LikeVO">
- 		SELECT *
-		FROM(SELECT ROWNUM rn, a.*
-			 FROM(SELECT l.like_id like_id, 
-			 			 l.member_id member_id,
-			 			 l.post_id post_id,
-			 			 r.title title,
-			 			 r.type type,
-			 			 o.price price
-				  FROM post_like l LEFT JOIN specialties_resigt r ON (l.post_id = r.post_id)
-				  				   LEFT JOIN specialties_option o ON (l.post_id = o.post_id) 
-				  WHERE l.post_id LIKE 'SPC%'
+			 			 r.mate_title,
+			 			 r.apply_num,
+			 			 r.start_day,
+			 			 r.end_day,
+			 			 code_val(r.complition) complition,
+			 			 r.deadline,
+			 			 r.trip_area
+			 			 
+				  FROM post_like l LEFT JOIN mate_recruit r ON (l.post_id = r.post_id)
+				  WHERE l.post_id LIKE 'MAT%'
 				  ORDER BY l.post_id DESC) a)
 		WHERE rn BETWEEN #{start } AND #{end }
  	</select>
@@ -66,7 +48,7 @@
 			 			 r.start_day,
 			 			 r.end_day
 				  FROM post_like l LEFT JOIN trip_record r ON (l.post_id = r.post_id) 
-				  WHERE l.post_id LIKE 'POS'
+				  WHERE l.post_id LIKE 'TRR%'
 				  ORDER BY l.post_id DESC) a)
 		WHERE rn BETWEEN #{start } AND #{end }
  	</select>

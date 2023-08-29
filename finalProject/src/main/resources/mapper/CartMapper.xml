@@ -51,6 +51,14 @@
  		DELETE FROM cart
  		WHERE post_id = #{postId}
  	</delete>
+ 	<!-- 수량 업데이트 -->
+ 	<update id="quanUpdate" parameterType="CartVO">
+ 		UPDATE cart 
+ 		<set>
+ 			quantity = #{quantity}
+ 		</set>
+ 		WHERE post_id = #{postId}
+ 	</update>
  
  
  </mapper>

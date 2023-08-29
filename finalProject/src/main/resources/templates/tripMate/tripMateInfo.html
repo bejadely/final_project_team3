@@ -16,30 +16,45 @@
 	rel="stylesheet">
 </head>
 <body>
-	<div layout:fragment="content">
+	<div layout:fragment="content" style="text-align: center;">
 		<div>
-			<label for="writerId">작성자아이디</label>
-			<input type="text" name="writerId" th:value="${tripMateInfo.writerId}">
+			<label for="writerId">작성자 : </label>
+			[[${tripMateInfo.writerId}]]
 		</div>
 		<div>
-			<label for="mateTitle">여행타이틀</label>
-			<input type="text" name="mateTitle" th:value="${tripMateInfo.mateTitle}">
+			<label for="mateTitle">여행타이틀 : </label>
+			[[${tripMateInfo.mateTitle}]]
 		</div>
 		<div>
-			<label for="startDay">여행시작일</label>
-			<input type="text" name="startDay" th:value="${#dates.format(tripMateInfo.startDay, 'yy년 MM월 dd일')}">
+			<label for="tripArea">여행 지역 : </label>
+			[[${tripMateInfo.tripArea}]]
 		</div>
 		<div>
-			<label for="endDay">여행끝일</label>
-			<input type="text" name="endDay" th:value="${#dates.format(tripMateInfo.endDay, 'yy년 MM월 dd일')}">
+			<label for="">여행 기간 : </label>
+			[[${#dates.format(tripMateInfo.startDay, 'yy년 MM월 dd일')}]] ~ [[${#dates.format(tripMateInfo.endDay, 'yy년 MM월 dd일')}]]
 		</div>
+		<div th:utext="${tripMateInfo.mateContent}">
+		</div>
+		<div>
+			<label for="mateMax">모집 인원 : </label>
+			[[${tripMateInfo.mateMax}]]
+			<br>
+			<label for="applyNum">신청 인원 : </label>
+			[[${tripMateInfo.applyNum}]]
+		</div>
+		
 		<button type="button" class="primary-btn" onclick="location.href='tripMateList'">목록으로</button>
-		<!-- <button type="button" class="primary-btn" onclick="location.href='tripMateApplyForm'">신청하기</button> -->
 		<form id="sendData" action="tripMateApplyForm" method="post">
 			<input type="hidden" name="postId" th:value="${tripMateInfo.postId}">
-			<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="submit" class="primary-btn">신청하기</button>
+			<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" 
+			type="submit" class="primary-btn">신청하기</button>
 		</form>
-		<button type="button" class="primary-btn" onclick="">신고하기</button>
+		<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="button" class="primary-btn" 
+		th:onclick="">신고하기</button>
+		<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button" class="primary-btn" 
+		th:onclick="|location.href='@{/mateRecruitDelete(postId=${tripMateInfo.postId})}'|">수정</button>
+		<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button" class="primary-btn" 
+		th:onclick="|location.href='@{/mateRecruitDelete(postId=${tripMateInfo.postId})}'|">삭제</button>
 	</div>
 	<script>
 	</script>
