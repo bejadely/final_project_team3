@@ -114,65 +114,52 @@ table {
 		<br>
 	</div>
 	<div id="ls2" align="center">
-		<table border="1" style="width: 80%;" th:object="${noticeVO}">
-			<tr>
-				<th width="70">순번</th>
-				<td width="50" align="center" th:text="*{noticeNumber}" ></td>		
-				<th width="100">작성자</th>
-				<td width="150" align="center" th:text="*{writerId}"></td>
-				<th width="100">작성일자</th>
-				<td width="150" align="center" th:text="*{registDate}"></td>
-				<th width="100">조회수</th>
-				<td width="70" align="center" th:text="*{hit}"></td>
-			</tr>
-			<tr>
-				<th colspan="2">제목</th>
-				<td colspan="6" th:text="*{title}"></td>
-			</tr>
-			<tr>
-				<th colspan="2">내용</th>
-				<td colspan="6"><textarea rows="10" cols="97" readonly th:text="*{content}"></textarea>
-				</td>
-			</tr>
-		</table>
-	</div>
-	<br>
-<!-- <div>
-    <div align="center">
-        <c:if test="${id == board.memberId || id == 'manager'}">
-            <button type="button" onclick="callFunction('E')">수정</button>&nbsp;&nbsp;
-            <button type="button" onclick="callFunction('D')">삭제</button>&nbsp;&nbsp;
-        </c:if>
-        
-        신고하기
-        <c:if test="${id != board.memberId && id != 'manager' && board.memberId != 'manager'}">
-        <form id="reportForm" action="reportAction.do" method="post" class="report-form">
-            <input type="hidden" id="memberId" name="memberId" value="${board.memberId}">
-            <label for="reportContent">신고 내용을 선택하세요 : </label>
-            <select id="reportContent" name="reportContent">
-                <option value="관련 없는 내용">관련 없는 내용</option>
-                <option value="욕설">욕설</option>
-                <option value="음란물">음란물</option>
-            </select>
-            <input type="hidden" id="boardId2" name="boardId2" value="${board.boardId }">
-            <input type="submit" value="신고하기">
-        </form>
-        </c:if>
-        
-        <button type="button" onclick="location.href='boardList.do?page=1'">목록</button>
-    </div>
-</div> -->
 	
-	<div>
-		<!-- action은 E냐 D에 따라 액션이 달라지므로 적지않음. javascript에서 frm.action으로 설정 -->
-		<form id="frm" method="post">
-			<input type="hidden" id="boardId" name="boardId"
-				value="${board.boardId }">
-			<!-- noticeId는 같이 넘어가야하므로 히든폼에 noticeId를 담는다id와 name은 vo객체명 그대로 쓴다 -->
+		<form id="frm" action="/admin/modifyNoticeInfo" th:object="${noticeVO}" method="post">
+	 		<table border="1" style="width: 80%;" >
+				<tr>
+					
+					<th width="70">순번</th>
+					<td width="50" align="center" th:text="*{noticeNumber}" >
+					</td>		
+					<th width="100">작성자</th>
+					<td width="150" align="center" th:text="*{writerId}"></td>
+					<th width="100">작성일자</th>
+					<td width="150" align="center" th:text="*{registDate}"></td>
+					<th width="100">조회수</th>
+					<td width="70" align="center" th:text="*{hit}"></td>
+				</tr>
+				<tr>
+					<th colspan="2">제목</th>
+					<td colspan="6"><textarea rows="1" th:text="*{title}" th:value="*{title}" name="title"  id="title" readonly ></textarea>
+					</td>
+				</tr>
+				<tr>
+					<th colspan="2">내용</th>
+					<td colspan="6"><textarea rows="10" cols="97" th:text="*{content}" th:value="*{content}" id="content" name="content" readonly ></textarea>
+					</td>
+				</tr>
+			</table>
+			<div>
+		
+			 	<input type="hidden" name="noticeNumber" th:value="*{noticeNumber}">
+
+			</div>
 		</form>
 	</div>
-	<hr>
-	<p>댓글</p>
+	<br>
+	
+	
+
+    <div align="center">
+    <!--  <div th:if="${id == board.memberId || id == 'manager'}"> -->
+    		<!--  <input type="button" onclick="callFunction('E')" value="버튼"/>-->
+            <button type="button" id='modify' class="modify" onclick="callFunction('E')">수정</button>&nbsp;&nbsp;
+            <button type="button" onclick="callFunction('D')">삭제</button>&nbsp;&nbsp;
+            <button type="button" onclick="callFunction('B')">되돌아가기</button>&nbsp;&nbsp;
+     <!-- </div>-->
+     </div>
+   <!-- <p>댓글</p>-->
 	<!-- <c:forEach items="${reples}" var="r">
 		<div>
 			<p>${r.repleContent }</p>
@@ -184,29 +171,33 @@ table {
 		</div>
 		<br>
 	</c:forEach> -->
-
-<!-- 	<script>
-		function repleDelete(event, id) {
-			event.target.parentNode.remove();
-			let url = "ajaxRepleDelete.do?id=" + id + "&boardId=" + ${board.boardId };
-
-			fetch(url)
-				.then(response => response.text());
-
-		}
 		
-		function callFunction(str){
-			let frm = document.getElementById("frm");
-			if(str=='E'){
-				frm.action = "boardEdit.do"; //액션 = 동작되는 것. 폼객체가 가지고 있는 action속성에 noticeEdit을 담아라
-			} else {
-				frm.action = "boardDelete.do";
-			}
+		<script th:inline="javascript">
+		 function callFunction(str){
 			
-			frm.submit(); //이폼이 전송
-		}
-		
-	</script> -->
+			if(str=='E'){
+
+				// 상세보기 할 member의 id값 가져오기
+				document.getElementById('title').readOnly = false; 
+				document.getElementById('content').readOnly = false; 
+				document.getElementById('modify').textContent = '등록'; 
+				document.getElementById('content').focus();
+			    //$(".modify").attr("class","edit");		
+			    
+			    let modifyButton = document.getElementById("modify");
+			    modifyButton.classList.add("edit");
+		        modifyButton.onclick = function() {
+		        	console.log("edit 버튼 눌렀다."); 
+			    	
+		        	
+	        	let frm = document.getElementById("frm");
+	        	frm.submit();
+		            // edit 버튼이 클릭되었을 때의 동작을 여기에 작성
+		        };
+			
+			}
+		 }		 					
+		</script> 
 
 
 </body>

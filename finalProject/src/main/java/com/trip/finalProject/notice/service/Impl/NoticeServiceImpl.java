@@ -21,18 +21,7 @@ public class NoticeServiceImpl implements NoticeService {
 	NoticeMapper noticeMapper;
     
     
-    @Override
-	public NoticeVO insertpost(NoticeVO  noticeVO) throws Exception {
 
-		NoticeVO result = noticeMapper.insertpost(noticeVO);
-		
-		if(result !=null) {
-			return noticeMapper.insertpost(noticeVO);
-		}else {
-			return null;
-		}
-
-    }
     
 	
     //전체 게시글 수 카운트
@@ -47,6 +36,18 @@ public class NoticeServiceImpl implements NoticeService {
 		
 		return noticeMapper.SelectAllNoticeList(pagingVO);
 	}
+	
+	//게시글 상세조회
+	@Override
+	public NoticeVO getNoticeDetail(NoticeVO vo) {
+		
+		return noticeMapper.getNoticeDetail(vo);
+	}
+	
+	/*
+	 * @Override public NoticeVO modifyNoticeInfo(NoticeVO vo) { return
+	 * noticeMapper.modifyNoticeInfo(vo); }
+	 */
 
 	//게시글 등록
 	@Override
@@ -54,7 +55,20 @@ public class NoticeServiceImpl implements NoticeService {
 
 		return noticeMapper.noticeInsert(vo);
 	}
-
+	
+	//게시물 수정하기
+	@Override
+	public String modifyNoticeInfo(NoticeVO vo) {
+		
+		int result = noticeMapper.modifyNoticeInfo(vo);
+	
+		if(result > 1) {
+			return "success";
+		} else {
+			return "fail";
+		}
+	}
+	
 	@Override
 	public int boardUpdate(NoticeVO vo) {
 		

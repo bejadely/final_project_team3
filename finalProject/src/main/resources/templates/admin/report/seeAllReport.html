@@ -38,7 +38,7 @@
 								<td align="center" th:text="${l.reporterId}"></td>
 								<td align="center" th:text="${l.postId}"></td>
 								<td align="center" th:text="${l.reportReason}"></td>
-								<td align="center" th:text="${l.reportDate}"></td>
+								<td align="center" th:text="${#strings.substring(l.reportDate, 0, 10)}"></td>
 								<td align="center" th:text="${l.result}"></td>
 								<td align="center" th:text="${l.punishCount}"></td>
 							</tr>
@@ -106,14 +106,14 @@
 	</div>
 	
 	<script th:inline="javascript" type="text/javascript">
-	// 구현중
+	
 	$(document).ready(function() {
 		// 이벤트 설정
 		$('#searchButton').on('click', search);
 		$('.reportInfo').on('mouseover', colorDarker)
 						.on('mouseleave', colorReset)
 						.on('click')
-						.on('mouseup', moveToMemberDetail)
+						.on('mouseup', moveToReportDetail)
 	});
 	
 	// 조건검색기능
@@ -137,13 +137,13 @@
 	}
 	
 	// 클릭시 신고상세내역 조회페이지로 이동(구현중)
-	function moveToMemberDetail(event){
+	function moveToReportDetail(event){
 		
-		// 상세보기 할 member의 id값 가져오기
-		let memberId = $(event.currentTarget).find('td:eq(0)').text();
+		// 상세보기 할 report의 id값 가져오기
+		let reportId = $(event.currentTarget).find('td:eq(0)').text();
 		
 		// 페이지 전환 실행
-		location.href=`seeMemberDetail?memberId=${memberId}`;
+		location.href=`seeReportDetail?reportId=${reportId}`;
 	}
 	
 	</script>
