@@ -49,6 +49,7 @@ public class KakaoPayController {
 		return mv;
 	}
 	
+	
 	@GetMapping("/info")
 	public ModelAndView info() {
 	    KakaoPayInfoResponseVO kakaoPayInfoResponseVO = kakaoPayService.infoResponse();
@@ -57,7 +58,7 @@ public class KakaoPayController {
 	    //int totalAmount = kakaoPayInfoResponseVO.getAmount().getTotal();
 	    
 	    KakaoPayInfoVO vo = new KakaoPayInfoVO();
-		vo.setApproved_at(kakaoPayInfoResponseVO.getApproved_at());
+		vo.setApprovedAt(kakaoPayInfoResponseVO.getApproved_at());
 		vo.setCalculateStatus("N2");
 		vo.setCid(kakaoPayInfoResponseVO.getCid());
 		vo.setOrderName(kakaoPayInfoResponseVO.getItem_name());
@@ -66,8 +67,12 @@ public class KakaoPayController {
 		vo.setStatus(kakaoPayInfoResponseVO.getStatus());
 		vo.setTid(kakaoPayInfoResponseVO.getTid());
 		vo.setTotalAmount(kakaoPayInfoResponseVO.getAmount().getTotal());
-		
 		kakaoPayService.insertPayment(vo);
+		System.out.println(vo.getPaymentId());
+		
+		kakaoPayInfoResponseVO.setAmount(kakaoPayInfoResponseVO.getAmount());
+		kakaoPayInfoResponseVO.setApproved_at(kakaoPayInfoResponseVO.getApproved_at());
+		kakaoPayInfoResponseVO.setCancel_available_amount(null);
 	    
 	    ModelAndView mv = new ModelAndView("redirect:/kakaoPaySuccess");
 	    
