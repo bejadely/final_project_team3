@@ -21,6 +21,12 @@ public interface NoticeMapper {
 	// 전체 게시글 수 카운트
 	public int getAllNoticeCount();
 	
+	//게시글 상세조회
+	public NoticeVO getNoticeDetail(NoticeVO vo);
+	
+	// 게시물 수정하기
+	public int modifyNoticeInfo(NoticeVO vo);
+	
 	public int boardUpdate(NoticeVO vo);
 	
 	public int boardDelete(NoticeVO vo);
@@ -32,6 +38,8 @@ public interface NoticeMapper {
 	public int boardView(NoticeVO vo);
 	
 	public int boardReple(NoticeVO vo);
+	
+	
 
 
 	
