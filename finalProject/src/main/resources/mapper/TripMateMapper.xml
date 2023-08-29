@@ -24,7 +24,8 @@
 			   mate_max,
 			   apply_num,
 			   hit,
-			   trip_area
+			   trip_area,
+			   write_date
 		FROM mate_recruit
 		WHERE post_id = #{postId}
 	</select>
@@ -83,12 +84,68 @@
 		
 	</insert>
 	
+	<!-- 여행메이트 게시글 수정 -->
+	<update id="updateTripMateRecruit" parameterType="TripMateVO">
+		UPDATE mate_recruit
+		<set>
+			mate_title = #{mateTitle},
+			mate_content = #{mateContent},
+		    mate_expense = #{mateExpense},
+			start_day = #{startDay},
+			end_day = #{endDay},
+			mate_style = #{mateStyle},
+			mate_tag = #{mateTag},
+			mate_max = #{mateMax},
+			deadline = #{deadline},
+			trip_area = #{tripArea},
+		</set>
+		WHERE post_id = #{postId}
+	</update>
+	
+	
 	<!-- 여행메이트 게시글 삭제 -->
 	<delete id="deleteTripMateRecruit" parameterType="TripMateVO">
 		DELETE FROM mate_recruit
 		WHERE post_id = #{postId}
 	</delete>
 	
+	<!-- 여행메이트 게시글 삭제 시 해당 게시글과 연결된 이미지 파일 같이 삭제 -->
+	<delete id="deleteAttachedFile" parameterType="TripMateVO">
+		DELETE FROM attached_file
+		WHERE post_id = #{postId}
+	</delete>
+	
+	<!-- 여행 게시글 신고 -->
+	<insert id="reportTripMate" parameterType="TripMateVO">
+		<selectKey keyProperty="reportId" resultType="String" order="BEFORE">
+			SELECT 'REP' || (TO_NUMBER(NVL((SUBSTR(MAX(report_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM report
+			WHERE SUBSTR(report_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+		INSERT INTO report
+						(
+							report_id
+							, reporter_id
+							, post_id
+							, punished_id
+							, report_date
+							, report_reason
+							, content
+							, result
+						)
+					VALUES
+						(
+							#{reportId}
+							, #{reporterId}
+							, #{postId}
+							, #{punishedId}
+							, sysdate
+							, #{reportReason}
+							, #{content}
+							, 'P2'
+						)
+	</insert>
+
 	<!-- 여행 메이트 신청 (등록된 게시글에 대한 여행메이트 신청) -->
 	<insert id="insertTripMateApply" parameterType="TripMateVO">
 		<selectKey keyProperty="applyId" resultType="String" order="BEFORE">

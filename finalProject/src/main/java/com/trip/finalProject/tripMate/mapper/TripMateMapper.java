@@ -5,13 +5,13 @@ import java.util.List;
 import com.trip.finalProject.tripMate.service.TripMateVO;
 
 public interface TripMateMapper {
-	//여행 메이트 글 전체조회
+	//여행 메이트 게시글 전체조회
 	public List<TripMateVO> selectAllTripMate();
 	
-	//여행 메이트 글 상세조회
+	//여행 메이트 게시글 상세조회
 	public TripMateVO selectTripMateInfo(TripMateVO tripMateVO);
 	
-	//여행 메이트 글 조회수 업데이트
+	//여행 메이트 게시글 조회수 업데이트
 	public int updateMateRecruitHit(TripMateVO tripMateVO);
 	
 	//여행 메이트 게시글 등록
@@ -20,8 +20,14 @@ public interface TripMateMapper {
 	//여행 메이트 게시글 삭제
 	public int deleteTripMateRecruit(TripMateVO tripMateVO);
 	
+	//여행 메이트 게시글 삭제 시 해당 게시글과 관련된 첨부파일 테이블 데이터 삭제
+	public int deleteAttachedFile(TripMateVO tripMateVO);
+	
 	//여행 메이트 게시글 수정
 	public int updateTripMateRecruit(TripMateVO tripMateVO);
+	
+	//여행 메이트 게시글 신고
+	public int reportTripMate(TripMateVO tripMateVO);
 	
 	//여행 메이트 신청 (등록된 게시글에 대한 여행메이트 신청)
 	public int insertTripMateApply(TripMateVO tripMateVO); 

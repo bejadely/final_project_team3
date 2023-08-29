@@ -67,6 +67,16 @@ public class TripMateVO {
 		@DateTimeFormat(pattern = "yyyy-MM-dd")
 		private Date approveDate;
 		
+		//report
+		private String reportId;
+		private String reporterId; //신고자
+		private String punishedId;
+		@DateTimeFormat(pattern = "yyyy-MM-dd")
+		private Date reportDate;
+		private String reportReason;
+		private String content;
+		private String result;
+		
 		//선택한 여행 지역을 최초로 지도에 표시하기 위한 위도,경도 값
 		private String tripArea;
 
