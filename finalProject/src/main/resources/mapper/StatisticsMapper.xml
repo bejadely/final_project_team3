@@ -9,4 +9,29 @@
       WHERE year_month = #{prevMonth}
     </select>
 
+	<select id="getVisitorRank" resultType="VisitorVO">
+      <![CDATA[
+	      SELECT *
+			FROM (
+			    SELECT *
+			    FROM chart_visitor
+			    ORDER BY visitor_number DESC
+			    )
+			WHERE year_month = #{prevMonth}
+			AND ROWNUM <= 5
+		]]>
+    </select>
+    
+    <select id="getAttractionRank" resultType="AttractionVO">
+      <![CDATA[
+	      SELECT *
+			FROM (
+			    SELECT *
+			    FROM chart_attraction
+			    ORDER BY visitor_number DESC
+			    )
+			WHERE year_month = #{prevMonth}
+			AND ROWNUM <= 5
+		]]>
+    </select>
   </mapper>

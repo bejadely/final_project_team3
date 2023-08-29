@@ -1,13 +1,16 @@
 package com.trip.finalProject.statistics.service.impl;
 
 import com.trip.finalProject.statistics.mapper.StatisticsMapper;
+import com.trip.finalProject.statistics.service.AttractionVO;
 import com.trip.finalProject.statistics.service.StatisticsService;
-import com.trip.finalProject.statistics.web.VisitorVO;
+import com.trip.finalProject.statistics.service.VisitorVO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,4 +106,44 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         return locationName;
     }
+
+	@Override
+	public List<VisitorVO> getVisitorRank() {
+		
+		String prevMonth = getPrevMonth();
+		
+		List<VisitorVO> visitorList = statisticsMapper.getVisitorRank(prevMonth);
+		
+		for(int i = 0; i<visitorList.size(); i++) {
+			
+			String areaCode=visitorList.get(i).getAreaCode();
+			String sigunguCode=visitorList.get(i).getSigunguCode();
+			String locationName = getLocationName(areaCode, sigunguCode);
+			
+			visitorList.get(i).setLocationName(locationName);
+		}
+		
+		return visitorList;
+	}
+
+	@Override
+	public List<AttractionVO> getAttractionRank() {
+		
+		String prevMonth = getPrevMonth();
+		
+		List<AttractionVO> attractionList = statisticsMapper.getAttractionRank(prevMonth);
+		
+		for(int i = 0; i<attractionList.size(); i++) {
+			
+			String areaCode=attractionList.get(i).getAreaCode();
+			String sigunguCode=attractionList.get(i).getSigunguCode();
+			String locationName = getLocationName(areaCode, sigunguCode);
+			
+			attractionList.get(i).setLocationName(locationName);
+			
+			System.out.println(locationName);
+		}
+		
+		return attractionList;
+	}
 }
