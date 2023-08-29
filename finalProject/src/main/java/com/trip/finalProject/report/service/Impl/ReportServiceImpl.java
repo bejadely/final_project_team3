@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.trip.finalProject.adminMember.mapper.AdminMemberMapper;
 import com.trip.finalProject.common.PagingVO;
@@ -49,6 +50,7 @@ public class ReportServiceImpl implements ReportService {
 	}
 
 	@Override
+	@Transactional
 	public String punishProcess(ReportVO reportVO) {
 		// 신고 처리
 		
@@ -56,8 +58,7 @@ public class ReportServiceImpl implements ReportService {
 			// 제재 처리
 			
 			// 1. Member 제재횟수 + 1
-			
-			
+			adminMemberMapper.plusPunishCount(reportVO.getPunishedId());
 			
 			// 2. 신고현황에 처리내역 변경
 			

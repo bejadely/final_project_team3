@@ -47,6 +47,6 @@ public interface AdminMemberMapper {
 	public int rejectAuthRequest(String memberId);
 	
 	// 제재카운트 1 증가
-	public int plusPunishCount(AdminMemberVO vo);
+	public int plusPunishCount(String memberId);
 	
 }
