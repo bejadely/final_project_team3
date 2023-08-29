@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip.finalProject.like.mapper.LikeMapper">
+	<!-- 패키지 -->
+	<select id="paCount" resultMap="int">
+		SELECT COUNT(*)
+		FROM post_like
+		WHERE post_id Like 'POS'
+	</select>
+	<!-- 특산물 -->
+	<select id="spCount" resultMap="int">
+		SELECT COUNT(*)
+		FROM post_like
+		WHERE post_id Like 'SPE'
+	</select>
+	<!-- 여행기록 -->
+	<select id="trCount" resultMap="int">
+		SELECT COUNT(*)
+		FROM post_like
+		WHERE post_id Like 'POS'
+	</select>
+	<!-- 패키지 -->
+ 	<select id="paAllLike" resultType="LikeVO">
+ 		SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			 FROM(SELECT l.like_id, 
+			 			 l.member_id,
+			 			 l.post_id,
+			 			 r.name,
+			 			 r.location_id,
+			 			 r.tour_theme,
+			 			 r.start_date,
+			 			 r.end_date,
+			 			 r.completion_id
+				  FROM post_like l LEFT JOIN package_regist r ON (l.post_id = r.post_id) 
+				  WHERE l.post_id LIKE 'POS'
+				  ORDER BY l.postId DESC) a)
+		WHERE rn BETWEEN #{start } AND #{end }
+ 	</select>
+ 	<!-- 특산물 -->
+ 	<select id="spAllLike" resultType="LikeVO">
+ 		SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			 FROM(SELECT l.like_id, 
+			 			 l.member_id,
+			 			 l.post_id,
+			 			 r.title,
+			 			 r.type
+				  FROM post_like l LEFT JOIN specialties_resigt r ON (l.post_id = r.post_id) 
+				  WHERE l.post_id LIKE 'SPE'
+				  ORDER BY l.postId DESC) a)
+		WHERE rn BETWEEN #{start } AND #{end }
+ 	</select>
+ 	<!-- 여행기록 -->
+ 	<select id="trAllLike" resultType="LikeVO">
+ 		SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			 FROM(SELECT l.like_id, 
+			 			 l.member_id,
+			 			 l.post_id,
+			 			 r.trip_title,
+			 			 r.start_day,
+			 			 r.end_day
+				  FROM post_like l LEFT JOIN trip_record r ON (l.post_id = r.post_id) 
+				  WHERE l.post_id LIKE 'POS'
+				  ORDER BY l.postId DESC) a)
+		WHERE rn BETWEEN #{start } AND #{end }
+ 	</select>
+
+</mapper>
