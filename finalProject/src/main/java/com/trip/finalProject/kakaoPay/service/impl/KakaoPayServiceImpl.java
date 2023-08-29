@@ -91,10 +91,10 @@ public class KakaoPayServiceImpl implements KakaoPayService {
     }
     
     //주문조회
-    public KakaoPayInfoResponseVO infoResponse() {
+    public KakaoPayInfoResponseVO infoResponse(String tid) {
     	MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
     	parameters.add("cid", cid);
-    	parameters.add("tid", kakaoPayResponseVO.getTid());
+    	parameters.add("tid", tid);
     	// 파라미터, 헤더
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
         
@@ -139,6 +139,13 @@ public class KakaoPayServiceImpl implements KakaoPayService {
 	public int insertPayment(KakaoPayInfoVO kakaoPayInfoVO) {
 		// TODO Auto-generated method stub
 		return kakaoPayMapper.insertPaymentInfo(kakaoPayInfoVO);
+	}
+
+
+	@Override
+	public int insertPurchase(KakaoPayInfoResponseVO kakaoPayInfoResponseVO) {
+		// TODO Auto-generated method stub
+		return kakaoPayMapper.insertPurchaseInfo(kakaoPayInfoResponseVO);
 	}
     
 }

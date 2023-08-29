@@ -1,10 +1,7 @@
 package com.trip.finalProject.kakaoPay.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,26 +36,24 @@ public class KakaoPayController {
 		KakaoApproveResponseVO approveResponse = kakaoPayService.approveResponse(pgToken);
 		// KakaoApproveResponseVO 객체의 tid 값을 가져오기
 		//String tid = approveResponseVO.getTid();
-		System.out.println(approveResponse);
 		// tid 값을 출력
 		//mv.addObject("tid", approveResponse.getTid());
 		
 		
 		ModelAndView mv = new ModelAndView();
+		mv.addObject("tid",approveResponse.getTid());
 		mv.setViewName("redirect:/payment/info");
 		return mv;
 	}
 	
 	
 	@GetMapping("/info")
-	public ModelAndView info() {
-	    KakaoPayInfoResponseVO kakaoPayInfoResponseVO = kakaoPayService.infoResponse();
-	    System.out.println(kakaoPayInfoResponseVO);
-	    
+	public ModelAndView info(@ModelAttribute KakaoApproveResponseVO  approveResponse) {
+	    KakaoPayInfoResponseVO kakaoPayInfoResponseVO = kakaoPayService.infoResponse(approveResponse.getTid());
 	    //int totalAmount = kakaoPayInfoResponseVO.getAmount().getTotal();
-	    
+	    System.out.println(kakaoPayInfoResponseVO);
 	    KakaoPayInfoVO vo = new KakaoPayInfoVO();
-		vo.setApprovedAt(kakaoPayInfoResponseVO.getApproved_at());
+		vo.setApprovedAt(kakaoPayInfoResponseVO.getApproved_at().replace("T", " "));
 		vo.setCalculateStatus("N2");
 		vo.setCid(kakaoPayInfoResponseVO.getCid());
 		vo.setOrderName(kakaoPayInfoResponseVO.getItem_name());
@@ -70,10 +65,19 @@ public class KakaoPayController {
 		kakaoPayService.insertPayment(vo);
 		System.out.println(vo.getPaymentId());
 		
-		kakaoPayInfoResponseVO.setAmount(kakaoPayInfoResponseVO.getAmount());
-		kakaoPayInfoResponseVO.setApproved_at(kakaoPayInfoResponseVO.getApproved_at());
-		kakaoPayInfoResponseVO.setCancel_available_amount(null);
-	    
+		kakaoPayInfoResponseVO.setPaymentId(vo.getPaymentId());
+		kakaoPayInfoResponseVO.setPrice(kakaoPayInfoResponseVO.getAmount().getTotal());
+		kakaoPayInfoResponseVO.setPostId(kakaoPayInfoResponseVO.getItem_code());
+		kakaoPayInfoResponseVO.setMemberId(kakaoPayInfoResponseVO.getPartner_user_id());
+		kakaoPayInfoResponseVO.setQuantity(kakaoPayInfoResponseVO.getQuantity());
+		kakaoPayInfoResponseVO.setOrderDate(kakaoPayInfoResponseVO.getApproved_at().replace("T", " "));
+		kakaoPayInfoResponseVO.setOrderStatus(kakaoPayInfoResponseVO.getStatus());
+		kakaoPayInfoResponseVO.setCid(kakaoPayInfoResponseVO.getCid());
+		kakaoPayInfoResponseVO.setTid(kakaoPayInfoResponseVO.getTid());
+		
+		System.out.println(kakaoPayInfoResponseVO);
+	    kakaoPayService.insertPurchase(kakaoPayInfoResponseVO);
+		
 	    ModelAndView mv = new ModelAndView("redirect:/kakaoPaySuccess");
 	    
 	    return mv;

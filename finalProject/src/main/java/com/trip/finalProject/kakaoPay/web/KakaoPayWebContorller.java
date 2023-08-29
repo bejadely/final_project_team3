@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class KakaoPayWebContorller {
 	
-	@GetMapping("kakaoPaySuccess")
+	@GetMapping("/kakaoPaySuccess")
 	public String kakaoPaySuccess() {
 		
 		return "payment/kakaPaySuccess";
