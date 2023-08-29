@@ -93,7 +93,8 @@
 		SELECT writer_id,
 			   trip_title,
 			   start_day,
-			   end_day
+			   end_day,
+			   trip_area
 		FROM trip_record
 		WHERE post_id = #{postId}
 	</select>
@@ -218,6 +219,9 @@
 				        )
 	</insert>
 	
+	<!-- 여행 메모 조회 -->
+	
+	
 	<!-- 여행기록 등록 - 여행 경로 맵핑-->
 	<insert id="insertTripMapping" parameterType="TripVO">
 		<selectKey keyProperty="mapId" resultType="String" order="BEFORE">
@@ -248,6 +252,18 @@
 					  	, #{tripDate}
 					  )
 	</insert>
+	
+	<!-- 여행경로 조회 -->
+	<select id="selectMapData" resultType="TripVO">
+		SELECT m.map_no
+				, m.map_name
+				, m.map_lat
+				, m.map_lng
+				, m.trip_date
+		FROM map m JOIN trip_record t 
+           			ON m.post_id = t.post_id 
+		WHERE t.post_id = #{postId}
+	</select>
 	
 	<!-- 여행기록 삭제 -->
 	<delete id="deleteTripInfo" parameterType="String">
