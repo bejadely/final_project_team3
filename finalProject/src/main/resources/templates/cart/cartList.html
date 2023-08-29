@@ -4,275 +4,44 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="@{layouts/default_layout}">
 <head>
-<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <meta charset="UTF-8">
 <title>장바구니</title>
-<style type="text/css">
-
-table, th, td {
-	border: 1px solid black;
-	text-align: center;
-	margin: 0 auto;
-}
-</style>
+<link rel="stylesheet" th:href="@{/css/cart.css}" type="text/css">
 <script>
-$(document).ready(function() {
-	
-	function handleClick(data) {
-		
-		var postId = data.postId;
-	    var nowPage = data.clickedPage;
-
-		let obj = { postId: postId, 
-					nowPage: nowPage };
-		
-    	
-		 $.ajax({
-            url: 'ajaxCartList',
-            type: 'post',
-            data:obj
-            
-        }).done(data => {
-        	paging(data.paging);
-            displayData(data.cartList);
-        }).fail(reject => console.log(reject));
-    }
-
-    // 클릭 이벤트 핸들러 자동 실행
-    $('#pakage').click(function() {
-    	var postId = 'pkg';
-        var data = { postId: postId }
-        handleClick(data);
-        
-    });
-
-    $('#jam').click(function() {
-    	var postId = 'lod';
-        var clickedPage = '1';
-        var data = { postId: postId }
-        handleClick(data);
-    });
-
-    $('#mul').click(function() {
-    	var postId = 'spe';
-        var clickedPage = '1';
-        var data = { postId: postId }
-        handleClick(data);
-    });
-    
-    // 데이터를 표시하는 함수
-	function displayData(data) {
-	    var html = ""; // 빈 문자열로 초기화
-	    var lmth = "";
-	    var thead = $("thead");
-	    var tbody = $("tbody");
-	    thead.empty();
-	    tbody.empty(); // tbody 내용 초기화
-	    lmth += "<tr>" + 
-		"<th><input type='checkbox' id='cbx_chkAll' /></th>" +
-		"<th>상품사진</th>" +
-		"<th>상품 명</th>" +
-		"<th>상품수량</th>" +
-		"<th>상품가격</th>" +
-		"<th>삭제</th>"+
-		"</tr>";
-	
-	    // 가져온 데이터를 순회하면서 처리	
-	    $.each(data, (index, cartItem) => {
-	    		html += "<tr>" +
-	            "<td><input type='checkbox' name='chk' data-cartid='" + cartItem.postId + "' /></td>" +
-	            "<td>" + cartItem.cartName + "</td>" +
-	            "<td>" + cartItem.cartName + "</td>" +
-	            "<td>" + cartItem.quantity + "</td>" +
-	            "<td>" + cartItem.price + "</td>" +
-	            "<td><button class='delete-btn'>삭제</button></td>" +
-	            "</tr>";	        
-	    });
-	    
-	    // tbody 내용을 업데이트
-	    thead.html(lmth);
-	    tbody.html(html);
-	}
-    
-    function paging(data){
-    	var html = "";
-    	var div = $("#paging");
-    	
-    	div.empty();
-    	
-    	if (data.startPage != 1) {
-            html += '<a><<</a>';
-            html += '<a>&lt;</a>';
-        }
-
-		
-        for(var p = data.startPage ; p <= data.endPage; p ++){
-        	if (p == data.nowPage) {
-                html += '<b>' + p + '</b>';
-            } else {
-                html += '<a>' + p + '</a>';
-            }
-        }
-
-        if (data.endPage != data.lastPage) {
-            html += '<a>&gt;</a>';
-        }
-
-        if (data.endPage != data.lastPage) {
-        	html += '<a><input type="hidden" value="' + data.lastPage + '">>></a>';
-        }
-        
-        div.html(html);
-        
-    }
-    //페이징 버튼 클릭시 동작
-    $("#paging").on("click", "a", function(event) {
-        event.preventDefault(); // 기본 동작 방지 (링크 이동 X)
-        
-        var clickedPage = $(this).text(); // 클릭한 페이지 번호 가져오기
-        var tbody = $("tbody")
-        var second = tbody.children().children();
-        var cartId = second.find("input[name='chk']").data("cartid");
-        var postId = cartId.substring(0, 3); 
-        //다음 페이지
-        if(clickedPage == '>'){
-        	var next = $(this).prev().text();
-        	clickedPage = Number(next) + 1;
-        } 
-        
-        //이전 페이지
-        if(clickedPage == '<'){
-        	var next = $(this).next().text();
-        	clickedPage = Number(next) - 1;
-        }
-        
-        //처음으로
-        if(clickedPage == '<<'){
-        	clickedPage = 1;
-        }
-        
-        //끝으로
-        if(clickedPage == '>>'){
-        	var last = $(this).find('input').val();
-        	clickedPage = last;
-        } 
-        
-        var data = { postId: postId, clickedPage: clickedPage };
-        
-        handleClick(data); // 객체로 데이터를 함께 넘김
-    });
-    
-      
-	$("#pakage").trigger('click');
-	
-    // 체크박스 전체 선택/해제 기능
-    $("thead").on("click", "input[type=checkbox]", function() {
-        if ($(this).is(":checked")) {
-            $("input[name=chk]").prop("checked", true);
-        } else {
-            $("input[name=chk]").prop("checked", false);
-        }
-    });
-
-    // 각 체크박스의 클릭 이벤트 처리
-    $("input[name=chk]").click(function() {
-        var total = $("input[name=chk]").length;
-        var checked = $("input[name=chk]:checked").length;
-
-        if (total != checked) {
-            $("#cbx_chkAll").prop("checked", false);
-        } else {
-            $("#cbx_chkAll").prop("checked", true);
-        }
-    });
-    
-    // 삭제 버튼 클릭 시 선택된 항목 삭제
-    $("body").on("click", ".delete-btn", function() {
-        let row = $(this).closest("tr");
-        let cartId = row.find("input[name='chk']").data("cartid");
-        let url = "/cartDelete?postId=" + cartId;
-
-        fetch(url)
-            .then(response => response.text())
-            .then(text => {
-                row.remove();
-                var page = $('#paging').find('b').text();
-                var postId = cartId.substring(0, 3);
-                var tbody = $("tbody");
-                var length = tbody.children().length
-                
-                if(page != 1){
-                    if(length == 0){
-                    	page = Number(page) -1;
-                    }
-                }
-                var data = { postId: postId, clickedPage: page };
-                handleClick(data);
-            });
-    });
-    
-    // 삭제 버튼 클릭 시 선택된 항목 삭제
-    $("#delBtn").click(function() {
-    let ckb = $('tbody input[type=checkbox]:checked');
-
-    ckb.each(function() {
-        let check = $(this);
-        let id = check.val();
-        let cartId = check.data("cartid"); // Retrieve cartId
-        let url = "/cartDelete?postId=" + cartId; // Use 'cartId'
-
-
-        fetch(url)
-            .then(response => response.text())
-            .then(text => {
-                check.parent().parent().remove();
-                var page = $('#paging').find('b').text();
-                var postId = cartId.substring(0, 3);
-                var tbody = $("tbody");
-                var length = tbody.children().length
-                if(page != 1){
-                    if(length == 0){
-                    	page = Number(page) -1;
-                    }
-                }
-                var data = { postId: postId, clickedPage: page };
-                handleClick(data);
-                     
-            });
-    });
-  }); 
-});
-
 </script>
 </head>
 <body>
-	<th:block layout:fragment="css">
-		<!--    <link rel="stylesheet" th:href="@{/css/page/home.css}" >-->
-	</th:block>
-	<!-- index.html 고유 스크립트 추가 -->
-	<th:block layout:fragment="script">
-		<!--    <script th:src="@{/js/page/home.js}"></script>-->
-	</th:block>
 	<div layout:fragment="content" id="cartAllList" style="text-align: center;">
-		<div>
-			<button type="button" id="pakage">패키지</button>
-			<button type="button" id="jam">숙소</button>
-			<button type="button" id="mul">특산물</button>
+	<script th:src="@{/js/cartList.js}"></script>
+
+		<div class="sidebar-btn">
+			<div class="bt-item">
+				<input type="radio" name="s-type" id="pakage" checked>
+				<label for="pakage">패키지</label>
+			</div>
+			<div class="bt-item">
+				<input type="radio" name="s-type" id="mul">
+				<label for="mul">특산물</label>
+			</div>
 		</div>
-	
-		<table>
+
+
+		<table id="board-table" class="board-table">
 			<thead>
-				
+
 			</thead>
 			<tbody>
-				
+
 			</tbody>
 		</table>
+		<div id="price">
+				
+		</div>
 		<button type="button">구매</button>
 		<button type="button" id="delBtn">삭제</button>
-		<div id="paging">
-			
-		</div>
+		<div id="paging" class="property-pagination"></div>
 	</div>
 </body>
 </html>
