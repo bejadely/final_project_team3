@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.trip.finalProject.adminMember.mapper.AdminMemberMapper;
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.report.mapper.ReportMapper;
 import com.trip.finalProject.report.service.ReportService;
@@ -14,6 +15,9 @@ import com.trip.finalProject.report.service.ReportVO;
 
 @Service
 public class ReportServiceImpl implements ReportService {
+	
+	@Autowired
+	AdminMemberMapper adminMemberMapper;
 	
 	@Autowired
 	ReportMapper reportMapper;
@@ -42,6 +46,36 @@ public class ReportServiceImpl implements ReportService {
 		// 신고 내역 상세 조회
 		
 		return reportMapper.getReportDetail(reportVO);
+	}
+
+	@Override
+	public String punishProcess(ReportVO reportVO) {
+		// 신고 처리
+		
+		if(reportVO.getResult().equals("P2")) {
+			// 제재 처리
+			
+			// 1. Member 제재횟수 + 1
+			
+			
+			
+			// 2. 신고현황에 처리내역 변경
+			
+			// 3. 제재이력에 이력 추가
+			
+			// 4. 신고당한 게시글 삭제
+			
+			// 5. 신고당한 게시자의 알림창에 추가
+			
+		}
+		
+		
+		
+		
+		// 제재 미처리시
+		
+		
+		return null;
 	}
 	
 }
