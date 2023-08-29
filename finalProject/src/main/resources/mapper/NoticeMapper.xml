@@ -56,7 +56,7 @@
   			<set> 				
 				title = #{title},					
 				content = #{content},							
-				 update_date= sysdate
+				update_date= sysdate
 			</set>
   			WHERE notice_number = #{noticeNumber}
   		</update>
