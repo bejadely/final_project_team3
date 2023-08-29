@@ -3,6 +3,7 @@ package com.trip.finalProject.statistics.service.impl;
 import com.trip.finalProject.statistics.mapper.StatisticsMapper;
 import com.trip.finalProject.statistics.service.AttractionVO;
 import com.trip.finalProject.statistics.service.StatisticsService;
+import com.trip.finalProject.statistics.service.TotalDataVO;
 import com.trip.finalProject.statistics.service.VisitorVO;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,4 +147,69 @@ public class StatisticsServiceImpl implements StatisticsService {
 		
 		return attractionList;
 	}
+
+    @Override
+    public List<TotalDataVO> getTotalData(String locationName) {
+        List<TotalDataVO> totalDataVOList = new ArrayList<>();
+        TotalDataVO totalDataVO = new TotalDataVO();
+
+        Map<String,String> areaSigunguCode = getAreaSigunguCode(locationName);
+        String areaCode = areaSigunguCode.get("areaCode");
+        String sigunguCode = areaSigunguCode.get("sigunguCode");
+
+        totalDataVO.setFellowVOList(statisticsMapper.getFellowList(areaCode, sigunguCode));
+        totalDataVO.setRestaurantVOList(statisticsMapper.getRestaurantList(areaCode, sigunguCode));
+        totalDataVO.setAttractionVOList(statisticsMapper.getAttractionList(areaCode, sigunguCode));
+        totalDataVO.setTripVOList(statisticsMapper.getTripList(areaCode, sigunguCode));
+        totalDataVO.setSnsVOList(statisticsMapper.getSnsList(areaCode, sigunguCode));
+
+        totalDataVOList.add(totalDataVO);
+
+        System.out.println("totalDataVOList = " + totalDataVOList);
+
+        return totalDataVOList;
+    }
+
+    private Map<String,String> getAreaSigunguCode(String locationName) {
+        Map<String, String> areaSigunguCodeMap = new HashMap<>();
+        String areaCode = "";
+        String sigunguCode = "0";
+
+        switch(locationName) {
+            case "대구":
+                areaCode = "4";
+                break;
+            case "부산":
+                areaCode = "6";
+                break;
+            case "울산":
+                areaCode = "7";
+                break;
+            case "경주":
+                areaCode = "35";
+                sigunguCode = "11";
+                break;
+            case "안동":
+                areaCode = "35";
+                sigunguCode = "2";
+                break;
+            case "포항":
+                areaCode = "35";
+                sigunguCode = "23";
+                break;
+            case "거제":
+                areaCode = "36";
+                sigunguCode = "1";
+                break;
+            case "통영":
+                areaCode = "36";
+                sigunguCode = "17";
+                break;
+        }
+
+        areaSigunguCodeMap.put("areaCode", areaCode);
+        areaSigunguCodeMap.put("sigunguCode", sigunguCode);
+
+        return areaSigunguCodeMap;
+    }
 }

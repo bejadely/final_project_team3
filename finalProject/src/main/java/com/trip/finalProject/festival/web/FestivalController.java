@@ -12,12 +12,17 @@ import org.springframework.web.bind.annotation.*;
 import com.trip.finalProject.festival.service.FestivalInfoVO;
 import com.trip.finalProject.festival.service.FestivalService;
 
+import javax.servlet.http.HttpSession;
+
 //오유리, 2023년 08월, 축제정보페이지
 @Controller
 public class FestivalController {
 
 	@Autowired
 	FestivalService festivalService;
+
+	@Autowired
+	HttpSession session;
 	
 	//축제정보 페이지(첫페이지)
 	@GetMapping("/festival")
@@ -28,6 +33,13 @@ public class FestivalController {
 		
 		//리스트 정보 받아오기
 		model.addAttribute("festivalList", festivalService.getFestivalListInfo());
+
+		String authority = session.getAttribute("sessionAuthority") == null ? null : session.getAttribute("sessionAuthority").toString().replaceAll(" ", "");
+		if(authority != null && authority.equals("A3")) {
+			model.addAttribute("isAdminLogin", true);
+		} else {
+			model.addAttribute("isAdminLogin", false);
+		}
 		
 		return "festival/festivalInfo"; 
 	}
