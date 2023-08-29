@@ -89,6 +89,10 @@ ul, ol {
   Helper CSS
 -----------------------*/
 
+.service-city{
+	color: #aaaab3;
+}
+
 .section-title {
 	text-align: center;
 	margin-bottom: 65px;

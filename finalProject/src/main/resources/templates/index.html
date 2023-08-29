@@ -5,6 +5,23 @@
       layout:decorate="@{layouts/default_layout}"> 
 <head>
 <title>메인화면</title>
+<style>
+  .moreSpecialties {
+    display: inline-block;
+    padding: 5px 10px;
+    color: #2cbdb8; /* 링크의 글자색을 #2cbdb8로 지정 */
+    text-decoration: none;
+    border: 2px solid #2cbdb8; /* 링크 주변에 1px 두께의 테두리 추가 */
+    font-weight: bold;
+    font-size: 13px;
+  }
+
+
+  .moreSpecialties:hover {
+    background-color: #2cbdb8; /* 호버 시 배경색 변경 */
+    color: white; /* 호버 시 글자색을 흰색으로 변경 */
+  }
+</style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -156,242 +173,88 @@
 
     <!-- Feature Section Begin -->
     <section class="feature-section spad">
-        <div class="container">
+       <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="section-title">
-                        <span>Sale Regional Specialties</span>
-                        <h2>지역 특산물 추천 </h2>
+                    <div class="properties-title">
+                        <div class="section-title">
+                            <span>Sale Regional Specialties </span>
+                            <h2>특산물 추천</h2>
+                        </div>
+                        <div style="text-align: right;">
+						    <a href="#" class="moreSpecialties">특산물 더보기</a>
+						</div>
+                        
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="feature-carousel owl-carousel">
-                    <div class="col-lg-4">
-                        <div class="feature-item">
-                            <div class="fi-pic set-bg" data-setbg="img/feature/feature-1.jpg">
-                                <div class="pic-tag">
-                                    <div class="f-text">feauture</div>
-                                    <div class="s-text">For Sale</div>
-                                </div>
-                                <div class="feature-author">
-                                    <div class="fa-pic">
-                                        <img src="img/feature/f-author-1.jpg" alt="">
-                                    </div>
-                                    <div class="fa-text">
-                                        <span>Rena Simmons</span>
-                                    </div>
-                                </div>
+        </div>
+        <div class="container">
+            <div class="top-properties-carousel owl-carousel">
+                <div class="single-top-properties">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="stp-pic">
+                                <img src="img/properties/properties-1.jpg" alt="">
                             </div>
-                            <div class="fi-text">
-                                <div class="inside-text">
-                                    <h4>French Riviera Villa</h4>
-                                    <ul>
-                                        <li><i class="fa fa-map-marker"></i> 180 York Road, London, UK</li>
-                                        <li><i class="fa fa-tag"></i> Villa</li>
-                                    </ul>
-                                    <h5 class="price">$5900<span>/month</span></h5>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="stp-text">
+                                <div class="s-text">For Sale</div>
+                                <h2>Villa 9721 Glen Creek</h2>
+                                <div class="room-price">
+                                    <span>Start From:</span>
+                                    <h4>$3.000.000</h4>
                                 </div>
+                                <div class="properties-location"><i class="icon_pin"></i> 9721 Glen Creek Ave. Ballston Spa, NY</div>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                                 <ul class="room-features">
                                     <li>
                                         <i class="fa fa-arrows"></i>
-                                        <p>780 sqft</p>
+                                        <p>5201 sqft</p>
                                     </li>
                                     <li>
                                         <i class="fa fa-bed"></i>
-                                        <p>4</p>
+                                        <p>8 Bed Room</p>
                                     </li>
                                     <li>
                                         <i class="fa fa-bath"></i>
-                                        <p>3</p>
-                                    </li>
-                                    <li>
-                                        <i class="fa fa-car"></i>
-                                        <p>2</p>
+                                        <p>7 Baths Bed</p>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="feature-item">
-                            <div class="fi-pic set-bg" data-setbg="img/feature/feature-2.jpg">
-                                <div class="pic-tag">
-                                    <div class="f-text">feauture</div>
-                                    <div class="s-text">For Sale</div>
-                                </div>
-                                <div class="feature-author">
-                                    <div class="fa-pic">
-                                        <img src="img/feature/f-author-2.jpg" alt="">
-                                    </div>
-                                    <div class="fa-text">
-                                        <span>Rena Johnston</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="fi-text">
-                                <div class="inside-text">
-                                    <h4>French Riviera Villa</h4>
-                                    <ul>
-                                        <li><i class="fa fa-map-marker"></i> 180 York Road, London, UK</li>
-                                        <li><i class="fa fa-tag"></i> Villa</li>
-                                    </ul>
-                                    <h5 class="price">$5900<span>/month</span></h5>
-                                </div>
-                                <ul class="room-features">
-                                    <li>
-                                        <i class="fa fa-arrows"></i>
-                                        <p>780 sqft</p>
-                                    </li>
-                                    <li>
-                                        <i class="fa fa-bed"></i>
-                                        <p>4</p>
-                                    </li>
-                                    <li>
-                                        <i class="fa fa-bath"></i>
-                                        <p>3</p>
-                                    </li>
-                                    <li>
-                                        <i class="fa fa-car"></i>
-                                        <p>2</p>
-                                    </li>
-                                </ul>
+                </div>
+                <div class="single-top-properties">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="stp-pic">
+                                <img src="img/properties/properties-2.jpg" alt="">
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="feature-item">
-                            <div class="fi-pic set-bg" data-setbg="img/feature/feature-3.jpg">
-                                <div class="pic-tag">
-                                    <div class="f-text">feauture</div>
-                                    <div class="s-text">For Sale</div>
+                        <div class="col-lg-6">
+                            <div class="stp-text">
+                                <div class="s-text">For Sale</div>
+                                <h2>Villa 9721 Glen Creek</h2>
+                                <div class="room-price">
+                                    <span>Start From:</span>
+                                    <h4>$3.000.000</h4>
                                 </div>
-                                <div class="feature-author">
-                                    <div class="fa-pic">
-                                        <img src="img/feature/f-author-3.jpg" alt="">
-                                    </div>
-                                    <div class="fa-text">
-                                        <span>Jonathan Walters</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="fi-text">
-                                <div class="inside-text">
-                                    <h4>French Riviera Villa</h4>
-                                    <ul>
-                                        <li><i class="fa fa-map-marker"></i> 180 York Road, London, UK</li>
-                                        <li><i class="fa fa-tag"></i> Villa</li>
-                                    </ul>
-                                    <h5 class="price">$5900<span>/month</span></h5>
-                                </div>
+                                <div class="properties-location"><i class="icon_pin"></i> 9721 Glen Creek Ave. Ballston Spa, NY</div>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                                 <ul class="room-features">
                                     <li>
                                         <i class="fa fa-arrows"></i>
-                                        <p>780 sqft</p>
+                                        <p>5201 sqft</p>
                                     </li>
                                     <li>
                                         <i class="fa fa-bed"></i>
-                                        <p>4</p>
+                                        <p>8 Bed Room</p>
                                     </li>
                                     <li>
                                         <i class="fa fa-bath"></i>
-                                        <p>3</p>
-                                    </li>
-                                    <li>
-                                        <i class="fa fa-car"></i>
-                                        <p>2</p>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="feature-item">
-                            <div class="fi-pic set-bg" data-setbg="img/feature/feature-4.jpg">
-                                <div class="pic-tag">
-                                    <div class="f-text">feauture</div>
-                                    <div class="s-text">For Sale</div>
-                                </div>
-                                <div class="feature-author">
-                                    <div class="fa-pic">
-                                        <img src="img/feature/f-author-3.jpg" alt="">
-                                    </div>
-                                    <div class="fa-text">
-                                        <span>Jonathan Walters</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="fi-text">
-                                <div class="inside-text">
-                                    <h4>French Riviera Villa</h4>
-                                    <ul>
-                                        <li><i class="fa fa-map-marker"></i> 180 York Road, London, UK</li>
-                                        <li><i class="fa fa-tag"></i> Villa</li>
-                                    </ul>
-                                    <h5 class="price">$5900<span>/month</span></h5>
-                                </div>
-                                <ul class="room-features">
-                                    <li>
-                                        <i class="fa fa-arrows"></i>
-                                        <p>780 sqft</p>
-                                    </li>
-                                    <li>
-                                        <i class="fa fa-bed"></i>
-                                        <p>4</p>
-                                    </li>
-                                    <li>
-                                        <i class="fa fa-bath"></i>
-                                        <p>3</p>
-                                    </li>
-                                    <li>
-                                        <i class="fa fa-car"></i>
-                                        <p>2</p>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="feature-item">
-                            <div class="fi-pic set-bg" data-setbg="img/feature/feature-5.jpg">
-                                <div class="pic-tag">
-                                    <div class="f-text">feauture</div>
-                                    <div class="s-text">For Sale</div>
-                                </div>
-                                <div class="feature-author">
-                                    <div class="fa-pic">
-                                        <img src="img/feature/f-author-3.jpg" alt="">
-                                    </div>
-                                    <div class="fa-text">
-                                        <span>Jonathan Walters</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="fi-text">
-                                <div class="inside-text">
-                                    <h4>French Riviera Villa</h4>
-                                    <ul>
-                                        <li><i class="fa fa-map-marker"></i> 180 York Road, London, UK</li>
-                                        <li><i class="fa fa-tag"></i> Villa</li>
-                                    </ul>
-                                    <h5 class="price">$5900<span>/month</span></h5>
-                                </div>
-                                <ul class="room-features">
-                                    <li>
-                                        <i class="fa fa-arrows"></i>
-                                        <p>780 sqft</p>
-                                    </li>
-                                    <li>
-                                        <i class="fa fa-bed"></i>
-                                        <p>4</p>
-                                    </li>
-                                    <li>
-                                        <i class="fa fa-bath"></i>
-                                        <p>3</p>
-                                    </li>
-                                    <li>
-                                        <i class="fa fa-car"></i>
-                                        <p>2</p>
+                                        <p>7 Baths Bed</p>
                                     </li>
                                 </ul>
                             </div>
@@ -400,6 +263,7 @@
                 </div>
             </div>
         </div>
+        
     </section>
     <!-- Feature Section End -->
 
