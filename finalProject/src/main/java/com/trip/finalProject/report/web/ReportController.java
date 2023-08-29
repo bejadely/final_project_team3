@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.trip.finalProject.report.service.ReportService;
+import com.trip.finalProject.report.service.ReportVO;
 
 @Controller
 public class ReportController {
@@ -17,7 +18,7 @@ public class ReportController {
 	ReportService reportService;
 	
 	// 새로운 신고내역 전체 조회 
-	@GetMapping("/admin/seeAllNewReport")
+	@GetMapping("/admin/seeAllReport")
 	public String seeAllNewReport(Model model
 			 , @RequestParam( name = "searchBy", defaultValue = "name" ) String searchBy
 			 , @RequestParam( name = "keyword", defaultValue = "" ) String keyword
@@ -39,5 +40,14 @@ public class ReportController {
 		return "admin/report/seeAllreport";
 	}
 	
+	// 신고내역 상세조회
+	@GetMapping("/admin/seeReportDetail")
+	public String seeReportDetail(ReportVO reportVO, Model model) {
+		
+		// 상세조회 수행 및 결과값 모델에 담기
+		model.addAttribute("reportVO", reportService.getReportDetail(reportVO));
+		
+		return "admin/report/seeReportDetail";
+	}
 	
 }
