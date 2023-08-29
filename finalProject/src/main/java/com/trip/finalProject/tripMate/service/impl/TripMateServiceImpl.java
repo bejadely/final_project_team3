@@ -26,19 +26,19 @@ public class TripMateServiceImpl implements TripMateService {
 	@Setter(onMethod_=@Autowired)
 	private AttachedFileMapper attachedFileMapper; 
 	
-	//여행 메이트 글 전체 조회
+	//여행 메이트 게시글 전체 조회
 	@Override
 	public List<TripMateVO> getTripMateAll() {
 		return tripMateMapper.selectAllTripMate();
 	}
 
-	//여행 메이트 글 상세 조회
+	//여행 메이트 게시글 상세 조회
 	@Override
 	public TripMateVO getTripMateInfo(TripMateVO tripMateVO) {
 		return tripMateMapper.selectTripMateInfo(tripMateVO);
 	}
 	
-	//여행 메이트 글 조회수 카운트
+	//여행 메이트 게시글 조회수 카운트
 	@Override
 	public int updateMateRecruitHit(TripMateVO tripMateVO) {
 		return tripMateMapper.updateMateRecruitHit(tripMateVO);
@@ -73,6 +73,12 @@ public class TripMateServiceImpl implements TripMateService {
 	public int deleteTripMateRecruit(TripMateVO tripMAteVO) {
 		return tripMateMapper.deleteTripMateRecruit(tripMAteVO);
 	}
+	
+	//여행 메이트 글 삭제 시 해당 게시글과 관련된 첨부파일 테이블 데이터 삭제
+	@Override
+	public int deleteAttachedFile(TripMateVO tripMateVO) {
+		return tripMateMapper.deleteAttachedFile(tripMateVO);
+	}
 
 	//여행 메이트 게시글 수정
 	@Override
@@ -80,6 +86,12 @@ public class TripMateServiceImpl implements TripMateService {
 		return tripMateMapper.updateTripMateRecruit(tripMateVO);
 	}
 	
+	//여행 메이트 게시글 신고
+	@Override
+	public int reportTripMate(TripMateVO tripMateVO) {
+		return tripMateMapper.reportTripMate(tripMateVO);
+	}
+
 	//여행 메이트 신청 (등록된 게시글에 대한 여행메이트 신청)
 	@Override
 	public TripMateVO InsertTripMateApply(TripMateVO tripMateVO) {
