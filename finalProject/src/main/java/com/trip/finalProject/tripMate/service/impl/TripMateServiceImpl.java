@@ -37,6 +37,12 @@ public class TripMateServiceImpl implements TripMateService {
 	public TripMateVO getTripMateInfo(TripMateVO tripMateVO) {
 		return tripMateMapper.selectTripMateInfo(tripMateVO);
 	}
+	
+	//여행 메이트 글 조회수 카운트
+	@Override
+	public int updateMateRecruitHit(TripMateVO tripMateVO) {
+		return tripMateMapper.updateMateRecruitHit(tripMateVO);
+	}
 
 	//여행 메이트 게시글 등록
 	@Transactional
@@ -45,18 +51,33 @@ public class TripMateServiceImpl implements TripMateService {
 		mapper.insertEditor(tripMateVO);
 		if (tripMateVO.getAttachList() == null || tripMateVO.getAttachList().size() <= 0) {			
 			return ;
-		}
-		if(tripMateVO.getEditorAttachList()==null || tripMateVO.getEditorAttachList().size()<=0) {
-			return;
-		}
+		}else {
 			tripMateVO.getAttachList().forEach(attach->{
 				attach.setPostId(tripMateVO.getPostId());
 				attachedFileMapper.insertAttachedFile(attach);
 			});
+		}
+		
+		if(tripMateVO.getEditorAttachList()==null || tripMateVO.getEditorAttachList().size()<=0) {
+			return;
+		}else {
 			tripMateVO.getEditorAttachList().forEach(attach->{
 				attach.setPostId(tripMateVO.getPostId());
 				attachedFileMapper.insertAttachedFile(attach);
 			});
+		}
+	}	
+
+	//여행 메이트 게시글 삭제
+	@Override
+	public int deleteTripMateRecruit(TripMateVO tripMAteVO) {
+		return tripMateMapper.deleteTripMateRecruit(tripMAteVO);
+	}
+
+	//여행 메이트 게시글 수정
+	@Override
+	public int updateTripMateRecruit(TripMateVO tripMateVO) {
+		return tripMateMapper.updateTripMateRecruit(tripMateVO);
 	}
 	
 	//여행 메이트 신청 (등록된 게시글에 대한 여행메이트 신청)
@@ -65,6 +86,19 @@ public class TripMateServiceImpl implements TripMateService {
 		tripMateMapper.insertTripMateApply(tripMateVO);
 		return tripMateVO;
 	}
-	
 
+	//여행 메이트 신청 시 게시글의 신청자 수 업데이트
+	@Override
+	public int updateMateRecruitApplyNum(TripMateVO tripMateVO) {
+		return tripMateMapper.updateMateRecruitApplyNum(tripMateVO);
+	}
+
+	//여행 메이트 게시글의 현재 신청자 수 카운트
+	@Override
+	public int selectMateRecruitApplyNum(TripMateVO tripMateVO) {
+		int result = tripMateMapper.selectMateRecruitApplyNum(tripMateVO);
+		return result;
+	}
+
+	
 }

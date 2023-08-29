@@ -1,6 +1,8 @@
 package com.trip.finalProject.cart.service.Impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,5 +37,24 @@ public class CartServiceImpl implements CartService {
 	public int deleteCartInfo(String postId) {
 		return cartMapper.deleteCartInfo(postId);
 	}
+
+	@Override
+	public Map<String, Object> getQuanUpdate(CartVO cartVO) {
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("게시물 번호", String.valueOf(cartVO.getPostId()));
+		map.put("수얄", String.valueOf(cartVO.getQuantity()));
+		
+		int result  = cartMapper.quanUpdate(cartVO);
+		if(result > 0) {
+			map.put("결과", "Success");
+		}else {
+			map.put("결과", "fail");
+		}		
+		
+		return map;	
+	}
+	
+	
 
 }

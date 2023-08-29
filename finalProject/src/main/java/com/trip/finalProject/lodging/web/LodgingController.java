@@ -25,7 +25,4 @@ public class LodgingController {
 		return"lodging/apitest";
 	}
 	
-	
-	
-	
 }

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="@{layouts/default_layout}">
+   xmlns:th="http://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="@{layouts/default_layout}">
 <head>
 <meta charset="UTF-8">
 <meta name="description" content="Azenta Template">
@@ -12,50 +12,71 @@
 <title>여행경로 선택</title>
 <!-- Google Font -->
 <link
-	href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap"
-	rel="stylesheet">
+   href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap"
+   rel="stylesheet">
 <!-- 고유 CSS 추가 -->
 <th:block layout:fragment="css">
-	<link rel="stylesheet" th:href="@{/css/map.css}">
+   <link rel="stylesheet" th:href="@{/css/map.css}">
 </th:block>
 </head>
 <body>
-	<div layout:fragment="content">
-		<div class="map_wrap"
-			style="height: 800px; width: 700px; border: solid 1px;">
-			<div id="map"
-				style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
-			<hr>
-			<!-- 클릭 시 마커 생성 -->
-			<div id="clickLatlng"></div>
-		</div>
-		<div>
-			<button type="submit" id="addMap">경로 추가</button>
-			<div id="addSearchMap">
-			
-			</div>
+   <div layout:fragment="content">
+      <div class="map_wrap"
+         style="height: 800px; width: 700px; border: solid 1px;">
+         <div id="map"
+            style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
+         <hr>
+         <!-- 클릭 시 마커 생성 -->
+         <div id="clickLatlng"></div>
+      </div>
+      <div>
+         <!-- <button type="submit" id="addMap">경로 추가</button> -->
+         <div id="addSearchMap">
+            <!-- 키워드 검색 결과를 나타냄 -->
+            <div id="searchMap"
+               style="height: 50px; width: 800px; border: solid 1px; margin-top: 10px;">
+               <div style="margin-top: 10px; margin-left: 25px;">
+                  <input type="text" value="" id="keyword" size="50"
+                     placeholder="키워드를 입력 해주세요.">
+                  <button onclick="initMap(); return false;">검색하기</button>
+                  <button type="submit" id="mapping">경로 선택/수정</button>
+               </div>
+               <div id="menu_wrap" class="map_wrap"
+                  style="margin-left: 710px; margin-top: 280px; height: 400px; width: 700px; border: solid 1px; display: none;">
+                  <ul id="placesList"></ul>
+                  <div id="pagination"></div>
+               </div>
+            </div>
+            <button type="button" id="fixMap" style="display: none">경로
+               수정</button>
+            <!-- post_id 넘길때 사용? -->
+            <form name="#" method="post" th:object="${tripVO}"
+               enctype="multipart/form-data">
+               <div id="showMapping"></div>
+            </form>
+         </div>
 
-			<!--   
-	<div id="div1">
-   		<input type="text" id="div1-keyword" size="50" placeholder="키워드를 입력 해주세요.">
-   		<button id="searchButton1">검색하기</button>
-	</div>
-	
-	<div id="div2">
-   		<input type="text" id="div2-keyword" size="50" placeholder="키워드를 입력 해주세요.">
-  	 	<button id="searchButton2">검색하기</button>
-	</div>
-	-->
-			<div id="wrapper"></div>
-		</div>
-		<script>
+         <!--   
+   <div id="div1">
+         <input type="text" id="div1-keyword" size="50" placeholder="키워드를 입력 해주세요.">
+         <button id="searchButton1">검색하기</button>
+   </div>
+   
+   <div id="div2">
+         <input type="text" id="div2-keyword" size="50" placeholder="키워드를 입력 해주세요.">
+         <button id="searchButton2">검색하기</button>
+   </div>
+   -->
+         <div id="wrapper"></div>
+      </div>
+      <script>
             // 마커를 담는 배열
             var markers = [];
             // 최종적으로 저장된 위도, 경도위 정보를 담아주는 배열
             var mapping = [];
             // 지도상의 선을 초기화
             var polyline = null;
-			// 생성된 마커의 위도, 경도를 담아줄 변수
+         // 생성된 마커의 위도, 경도를 담아줄 변수
             var markerPosition ;
             // 지도를 표시할 div
             var mapContainer = document.getElementById('map'), mapOption = {
@@ -93,7 +114,7 @@
             function performSearch(divId) {
                 var keywordInput = document.getElementById(divId + '-keyword');
                 var keyword = keywordInput.value;
-				
+            
                 //.replace(/^\s+|\s+$/g 앞 뒤의 공백을 제거
                 if (!keyword.replace(/^\s+|\s+$/g, '')) {
                     alert('키워드를 입력해주세요!');
@@ -124,7 +145,7 @@
             function searchPlaces() {
 
                var keyword = document.getElementById('keyword').value;
-				
+            
                //
                if (!keyword.replace(/^\s+|\s+$/g, '')) {
                   alert('키워드를 입력해주세요!');
@@ -443,16 +464,15 @@
             
             
             $(document).ready(function() {
-            	 $(document).on("click", ".mapping", function() {
-            	   console.log('kakakkak');
-            	   
+               $("#mapping").click(function() {
+                  
                    if(confirm("경로 선택을 완료하시겠습니까?")){
                        // 마커 클릭 시 해당 마커와 그에 따른 선을 지우는 함수 호출
                    mappingMarker();
                    alert("완료 되었습니다.");
-                   $('.searchMap').attr('style', 'display:none;');
-                   $('.fixMap').attr('style', 'display:block;');
-                   $('.map_wrap').attr('style', 'display:none;');
+                   $('#searchMap').attr('style', 'display:none;');
+                   $('#fixMap').attr('style', 'display:block;');
+                   $('#menu_wrap').attr('style', 'display:none;');
                    
                  //location.href="tripRecordList";
                    return;
@@ -461,40 +481,39 @@
                     }
                });
                
-               $(".fixMap").click(function() {
-             	   $('.searchMap').attr('style', 'display:block;');
-             	   $('.fixMap').attr('style', 'display:none;');
-             	   $('.map_wrap').attr('style', 'display:block;');
+               $("#fixMap").click(function() {
+                   $('#searchMap').attr('style', 'display:block;');
+                   $('#fixMap').attr('style', 'display:none;');
+                   $('#menu_wrap').attr('style', 'display:block;');
                 });
                
                
                $("#addMap").click(function() {
-            	   console.log("tttttttt");
-            	   addTripData();
+                  console.log("tttttttt");
+                  addTripData();
                });
                
             });
             
             //여행 경로추가 div를 생성해주는 함수
             function addTripData(){
-            	var addTripMapdata = document.getElementById('addSearchMap');
-            	console.log("aaaaaaaaaa");
-            	//addTripMapdata.innerHTML = "";
-            	for(var i=0; i<3; i++){
-            	var mapDataString = `<div class="searchMap" style="height: 50px; width: 800px; border: solid 1px; margin-top: 10px;">
-									  	<div style="margin-top: 10px; margin-left: 25px;">
-											<input type="text" value="" id="keyword" size="50" placeholder="키워드를 입력 해주세요.">
-											<button onclick="initMap(); return false;">검색하기</button>
-											<button type="button" class="mapping">경로 선택/수정</button>
-										</div>
-										<div id="menu_wrap" class="map_wrap" style="margin-left: 710px; margin-top: 280px; height: 400px; width: 700px; border: solid 1px; display: none;">
-											<ul id="placesList"></ul>
-											<div id="pagination"></div>
-										</div>
-									</div>
-									<div id="showMapping"></div>
-									<button type="button" class="fixMap" style="display: none">경로 수정</button>`
-            		addTripMapdata.innerHTML += mapDataString;
+               var addTripMapdata = document.getElementById('addSearchMap');
+               console.log("aaaaaaaaaa");
+               //addTripMapdata.innerHTML = "";
+               for(var i=0; i<3; i++){
+               var mapDataString = `<div id="searchMap${i+1}" style="height: 50px; width: 800px; border: solid 1px; margin-top: 10px;">
+                                <div style="margin-top: 10px; margin-left: 25px;">
+                                 <input type="text" value="" id="keyword" size="50" placeholder="키워드를 입력 해주세요.">
+                                 <button onclick="initMap(); return false;">검색하기</button>
+                                 <button type="submit" id="mapping">경로 선택/수정</button>
+                              </div>
+                              <div id="menu_wrap" class="map_wrap" style="margin-left: 710px; margin-top: 280px; height: 400px; width: 700px; border: solid 1px; display: none;">
+                                 <ul id="placesList"></ul>
+                                 <div id="pagination"></div>
+                              </div>
+                           </div>
+                           <button type="button" id="fixMap" style="display: none">경로 수정</button>`
+                  addTripMapdata.innerHTML += mapDataString;
             }
             }
             
@@ -511,28 +530,30 @@
                    var mappingObj = mapping[i];
                    
                    var mappingString = "<div class='mapData" + (i+1) + "'>"
-                    					+ "<input type='text' name='mapNo' value = '" + (i + 1) + "'>" 
-                    					+ "<input type='text' name='mapName' value = '" + mappingObj.mapName + "'>" 
-                    					+ "<input type='hidden' name='mapLat' value = '" + mappingObj.mapLat + "'>"
-                    					+ "<input type='hidden' name='mapLng' value = '" + mappingObj.mapLng + "'>"
-                    					+ "</div>";
+                                   + "<input type='text' name='mapNo' value = '" + (i + 1) + "'>" 
+                                   + "<input type='text' name='mapName' value = '" + mappingObj.mapName + "'>" 
+                                   + "<input type='hidden' name='mapLat' value = '" + mappingObj.mapLat + "'>"
+                                   + "<input type='hidden' name='mapLng' value = '" + mappingObj.mapLng + "'>"
+                                   + "<input type='hidden' name='postId' value = '" + [[${tripVO.postId}]] + "'>"
+                                   + "</div>";
                    
                    mappingCoordinates.innerHTML += mappingString;
                    
-            	   //객체 생성
+                  //객체 생성
                    var mapDataObj = {
-            	                       mapNo : (i+1),
-            	                       mapName : mappingObj.mapName,
-            	                       mapLat : mappingObj.mapLat,
-            	                       mapLng : mappingObj.mapLng
-            	                    }
-            	   console.log(mapDataObj);
+                                      mapNo : (i+1),
+                                      mapName : mappingObj.mapName,
+                                      mapLat : mappingObj.mapLat,
+                                      mapLng : mappingObj.mapLng
+                                      postId : [[${tripVO.postId}]]
+                                   }
+                  console.log(mapDataObj);
                  //객체를 배열로 변환
-              	 mapDataArry.push(mapDataObj);
-              	 console.log(mapDataArry);
+                  mapDataArry.push(mapDataObj);
+                  console.log(mapDataArry);
                 };
-              	sendMappingData(mapDataArry);
-              	console.log(JSON.stringify(mapDataArry));
+                 sendMappingData(mapDataArry);
+                 console.log(JSON.stringify(mapDataArry));
             
              };
              
@@ -557,12 +578,12 @@
                  }
              
              function tripMemo(){
-            	 
-            	 
+                
+                
              }
              
              
          </script>
-	</div>
+   </div>
 </body>
 </html>

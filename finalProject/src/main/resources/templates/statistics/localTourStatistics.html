@@ -24,14 +24,13 @@
             src="https://code.jquery.com/jquery-3.7.0.js"
             integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
             crossorigin="anonymous"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<!-- billboard.js -->
     <link rel="stylesheet" href="https://naver.github.io/billboard.js/release/latest/dist/theme/datalab.min.css">
     <script src="https://naver.github.io/billboard.js/release/latest/dist/billboard.pkgd.min.js"></script>
-<!--    &lt;!&ndash; billboard.js cdn &ndash;&gt;
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/billboard.js/3.9.3/billboard.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/billboard.js/3.9.3/billboard.min.css">
-    &lt;!&ndash; d3.js cdn &ndash;&gt;
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>-->
-    <style>
+
+<style>
     .rounded-box {
         border-radius: 10px;
         padding: 20px;
@@ -93,14 +92,19 @@
      .uploadMadalbtn {
    		 text-align: right;
  	 }
- .upload-container {
+ 	.upload-container {
       display: flex;
       flex-wrap: wrap;
       gap: 5px;
     }
-.dropdown {
-        margin-bottom: 10px; /* 외부 여백 크기를 조절할 수 있습니다. */
+	.dropdown {
+        margin-bottom: 10px; 
     }
+	.input-container input {
+	    font-size: 10px; 
+	    padding: 5px;
+	    text-align: center;
+	}
 </style>
 </head>
 <body>
@@ -136,41 +140,41 @@
 		      <div class="modal-body">
 		      <div class="upload-container">
 			      <div class="dropdown">
-				  &nbsp;<button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+				  &nbsp;<button class="btn btn-sm btn-outline-dark dropdown-toggle" id="fileTypeButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 				    파일타입
 				  </button>
-				  <ul class="dropdown-menu">
-				    <li><a class="dropdown-item" >동행유형</a></li>
-				    <li><a class="dropdown-item" >여행유형</a></li>
-				    <li><a class="dropdown-item" >맛집방문자</a></li>
-				    <li><a class="dropdown-item" >여행지방문자</a></li>
-				    <li><a class="dropdown-item" >방문자수</a></li>
-				    <li><a class="dropdown-item" >SNS언급량</a></li>
+				  <ul id="fileType" class="dropdown-menu">
+				    <li><a class="dropdown-item">동행유형</a></li>
+				    <li><a class="dropdown-item">여행유형</a></li>
+				    <li><a class="dropdown-item">맛집방문자</a></li>
+				    <li><a class="dropdown-item">여행지방문자</a></li>
+				    <li><a class="dropdown-item">방문자수</a></li>
+				    <li><a class="dropdown-item">SNS언급량</a></li>
 				  </ul>
 				</div><div class="dropdown">
-				  <button class="btn btn-sm btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+				  <button class="btn btn-sm btn-outline-dark dropdown-toggle" id="locationTypeButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
 				    지역선택
 				  </button>
-				  <ul class="dropdown-menu">
-				    <li><a class="dropdown-item" >대구</a></li>
-				    <li><a class="dropdown-item" >부산</a></li>
-				    <li><a class="dropdown-item" >울산</a></li>
-				    <li><a class="dropdown-item" >경주</a></li>
-				    <li><a class="dropdown-item" >포항</a></li>
-				    <li><a class="dropdown-item" >안동</a></li>
-				    <li><a class="dropdown-item" >거제</a></li>
-				    <li><a class="dropdown-item" >통영</a></li>
+				  <ul id="locationType" class="dropdown-menu">
+                      <li><a class="dropdown-item" th:attr="data-area-code='4', data-sigungu-code='0'">대구</a></li>
+                      <li><a class="dropdown-item" th:attr="data-area-code='6', data-sigungu-code='0'">부산</a></li>
+                      <li><a class="dropdown-item" th:attr="data-area-code='7', data-sigungu-code='0'">울산</a></li>
+                      <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='2'">경주</a></li>
+                      <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='23'">포항</a></li>
+                      <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='11'">안동</a></li>
+                      <li><a class="dropdown-item" th:attr="data-area-code='36', data-sigungu-code='17'">통영</a></li>
+                      <li><a class="dropdown-item" th:attr="data-area-code='36', data-sigungu-code='1'">거제</a></li>
 				  </ul>
 				</div> 
 		    </div>
 		       <div class="filebox">
-				  <label for="ex_filename"></label> 
-				  <input type="file" id="ex_filename" class="upload-hidden"> 
+				  <label for="ex_filename"></label>
+				  <input type="file" id="ex_filename" class="upload-hidden">
 				</div>
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-		        <button type="button" class="btn btn-primary">업로드</button>
+		        <button type="button" id="uploadButton" class="btn btn-primary">업로드</button>
 		      </div>
 		    </div>
 		  </div>
@@ -2692,10 +2696,10 @@
                     </div>
                     <!-- 통계자료 전체 + 3등지역 보일 네모박스 -->
                     <div class="input-container">
-                        <input class="form-control" type="text"  aria-label="default input example" readonly>
-                        <input class="form-control" type="text"  aria-label="default input example" readonly>
-                        <input class="form-control" type="text"  aria-label="default input example" readonly>
-                        <input class="form-control" type="text"  aria-label="default input example" readonly>
+                        <input class="form-control" type="text" id="total" aria-label="default input example" readonly disabled>
+                        <input class="form-control" type="text" id="first" aria-label="default input example" readonly disabled>
+                        <input class="form-control" type="text" id="second" aria-label="default input example" readonly disabled>
+                        <input class="form-control" type="text" id="third" aria-label="default input example" readonly disabled>
                     </div>
                 </div>
             </div>
@@ -2704,30 +2708,10 @@
                     <h6>방문자 수 최다 지역</h6>
                     <table class="table table-sm">
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>지역</td>
-                                <td>명수</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>지역</td>
-                                <td>명수</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>지역</td>
-                                <td>명수</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">4</th>
-                                <td>지역</td>
-                                <td>명수</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">5</th>
-                                <td>지역</td>
-                                <td>명수</td>
+                            <tr th:each ="visitorInfo, stat : ${visitorRank}">
+                                <th scope="row" th:text="${stat.count}"></th>
+                                <td th:text="${visitorInfo.locationName}"></td>
+                                <td th:text="|${visitorInfo.visitorNumber} 명|"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -2736,31 +2720,13 @@
                     <h6>관광지 검색 순위</h6>
                     <table class="table table-sm">
                         <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>지역</td>
-                            <td>명수</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>지역</td>
-                            <td>명수</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>지역</td>
-                            <td>명수</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">4</th>
-                            <td>지역</td>
-                            <td>명수</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">5</th>
-                            <td>지역</td>
-                            <td>명수</td>
-                        </tr>
+	                        <tr th:each="attractionInfo, stat : ${attractionRank}">
+	                            <th scope="row" th:text="${stat.count}"></th>
+	                            <td th:text="${attractionInfo.locationName}"></td>
+	                            <td th:text="${attractionInfo.attractionType}"></td>
+	                            <td th:text="${attractionInfo.attractionName}"></td>
+	                            <td th:text="|${attractionInfo.visitorNumber} 건|"></td>
+	                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -2771,18 +2737,18 @@
         <div class="row">
             <div class="dropdown-check">
                 <h5 style="margin: 0;">&ensp;|&nbsp;</h5>
-                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">지역</button>
+                <button id="locationName" class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">대구</button>
                 <ul class="dropdown-menu" style="margin: 0;">
-                    <li><a class="dropdown-item" >대구</a></li>
-                    <li><a class="dropdown-item" >부산</a></li>
-                    <li><a class="dropdown-item" >울산</a></li>
-                    <li><a class="dropdown-item" >안동</a></li>
-                    <li><a class="dropdown-item" >경주</a></li>
-                    <li><a class="dropdown-item" >포항</a></li>
-                    <li><a class="dropdown-item" >통영</a></li>
-                    <li><a class="dropdown-item" >거제</a></li>
+                    <li><a class="dropdown-item" th:attr="data-area-code='4', data-sigungu-code='0'">대구</a></li>
+                    <li><a class="dropdown-item" th:attr="data-area-code='6', data-sigungu-code='0'">부산</a></li>
+                    <li><a class="dropdown-item" th:attr="data-area-code='7', data-sigungu-code='0'">울산</a></li>
+                    <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='2'">경주</a></li>
+                    <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='23'">포항</a></li>
+                    <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='11'">안동</a></li>
+                    <li><a class="dropdown-item" th:attr="data-area-code='36', data-sigungu-code='17'">통영</a></li>
+                    <li><a class="dropdown-item" th:attr="data-area-code='36', data-sigungu-code='1'">거제</a></li>
                 </ul>
-                <h5 style="margin: 0;">&nbsp;별 관광 데이터</h5>
+                <h5 style="margin: 0;">&nbsp; 관광 데이터</h5>
                 &nbsp;<button type="button" class="btn btn-outline-dark btn-sm">조회</button>
             </div>
             <!--지역별 관광 총 집계 -->
@@ -2999,25 +2965,16 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
 
-            $.ajax({
+            //  ajax로 방문자수 데이터 가져오기 map형식(지역, 방문자수)
+            getVisitorData(function(data) {
+               if(data) {
+                   makePopover(data);
+                   appendRank(data);
+               }
+            });
 
-            })
-
-
-            const svgElement = document.getElementById("path1256");
-            // const svgElement = document.getElementsByClassName("tongyoung");
-
-            let tongyoung = ['path200', 'path202', 'path204', 'path206', 'path208', 'path210', 'path212', 'path214', 'path216', 'path218', 'path220', 'path224', 'path230', 'path240', 'path286'];
-
-            for(let i = 0; i < tongyoung.length; i++) {
-                new bootstrap.Popover(document.getElementById(tongyoung[i]), {
-                    container: "body", // Place the popover in the <body> element
-                    html: true, // Enable HTML content
-                    trigger: "hover", // Show the popover on hover
-                    content: "대구 : " // Replace with your desired content
-                });
-            }
-
+            //  최초에 데이터 ajax로 받아서 아래쪽 통계 데이터 넣어주기
+            // getStatisticsData();
         });
 
         let locationName;
@@ -3051,6 +3008,188 @@
             },
             bindto: "#chart"
         });
+
+        $('#fileType li > a').on('click', function() {
+            // 버튼에 선택된 항목 텍스트 넣기
+            let fileType = $(this).text();
+            $('#fileTypeButton').text(fileType);
+
+            if(fileType == '방문자수' || fileType == 'SNS언급량') {
+                $('#locationTypeButton').addClass('disabled', true);
+                $('#locationTypeButton').text('지역선택 없음');
+                $('#locationTypeButton').data('areaCode', '0');
+                $('#locationTypeButton').data('sigunguCode', '0');
+            } else {
+                $('#locationTypeButton').removeClass('disabled');
+                $('#locationTypeButton').text('지역선택');
+            }
+
+        });
+
+        $('#locationType li > a').on('click', function() {
+            // 버튼에 선택된 항목 텍스트 넣기
+            let locationType = $(this).text();
+            $('#locationTypeButton').text(locationType);
+            $('#locationTypeButton').data('areaCode', $(this).data('areaCode'));
+            $('#locationTypeButton').data('sigunguCode', $(this).data('sigunguCode'));
+        });
+
+        $(document).on('click', '#uploadButton', function() {
+            let fileType = $('#fileTypeButton').text();
+            let locationType = $('#locationTypeButton').text();
+            let areaCode = $('#locationTypeButton').data('areaCode');
+            let sigunguCode = $('#locationTypeButton').data('sigunguCode');
+            let file = $('#ex_filename')[0].files[0];
+
+            if(fileType == null || fileType == '파일타입' || fileType.replaceAll(' ', '') == '') {
+                alert('파일 타입을 선택해주세요');
+                return;
+            }
+            if(locationType == null || ((fileType == '동행유형' || fileType == '여행유형' || fileType == '맛집방문자' || fileType == '여행지방문자') && locationType == '지역선택')) {
+                alert('지역을 선택해주세요.');
+                return;
+            }
+            if(file == undefined) {
+                alert('엑셀 파일을 선택해주세요');
+                return;
+            }
+
+            // FormData 객체 생성 및 값 설정
+            let formData = new FormData();
+            formData.append('fileType', fileType);
+            formData.append('areaCode', areaCode);
+            formData.append('sigunguCode', sigunguCode);
+            formData.append('file', file);
+
+            uploadExcel(formData, function(data) {
+                if(data > 0) {
+                    alert('엑셀 업로드를 성공했습니다.');
+                    return;
+                } else {
+                    alert('엑셀 업로드를 실패했습니다.');
+                    return;
+                }
+            });
+        })
+
+        function uploadExcel(formData, callback) {
+            $.ajax({
+                type : 'POST',
+                url : '/excel',
+                data : formData,
+                contentType: false,
+                processData: false
+            })
+            .done(function(data, textStatus, jqXHR) {
+                console.log('done');
+
+                callback(data);
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                console.log('fail');
+            })
+        }
+
+        function getVisitorData(callback) {
+            $.ajax({
+                type : 'GET',
+                url : '/visitor'
+            })
+            .done(function(data, textStatus, jqXHR) {
+                console.log('done');
+
+                callback(data);
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                console.log('fail');
+            })
+        }
+
+        function makePopover(data) {
+            console.log(data);
+
+            const locationPathIdObject = {
+                "대구" : "path1256",
+                "부산" : "path1260",
+                "울산" : "path1258",
+                "안동" : "path32",
+                "경주" : "path26",
+                "포항" : "path1262",
+                "거제" : "path734"
+            }
+
+            //  통영은 svg path가 분리되어 있으므로 따로 빼서 for문으로 처리
+            for(const key in data) {
+                if(key != '통영') {
+                    let pathId = locationPathIdObject[key];
+                    let svgElement = document.getElementById(pathId);
+                    new bootstrap.Popover(svgElement, {
+                        container: "body", // Place the popover in the <body> element
+                        html: true, // Enable HTML content
+                        trigger: "hover", // Show the popover on hover
+                        content: key + " " + data[key] + "건" // Replace with your desired content
+                    });
+                } else {
+                    let tongyoung = ['path200', 'path202', 'path204', 'path206', 'path208', 'path210', 'path212', 'path214', 'path216', 'path218', 'path220', 'path224', 'path230', 'path240', 'path286'];
+                    for(let i = 0; i < tongyoung.length; i++) {
+                        new bootstrap.Popover(document.getElementById(tongyoung[i]), {
+                            container: "body", // Place the popover in the <body> element
+                            html: true, // Enable HTML content
+                            trigger: "hover", // Show the popover on hover
+                            content: key + " " + data[key] + "건" // Replace with your desired content
+                        });
+                    }
+                }
+            }
+        }
+
+        function appendRank(data) {
+            // 전체 숫자의 합 계산
+            const totalSum = Object.values(data).reduce((acc, num) => acc + num, 0);
+            $('#total').val('전체 ' + totalSum + '명');
+
+            // 객체를 배열로 변환하여 정렬
+            const sortedEntries = Object.entries(data).sort((a, b) => b[1] - a[1]);
+
+            //  svg 맵 아래에 방문자수 데이터 넣기
+            $('#first').val(sortedEntries[0][0] + " " + sortedEntries[0][1] + '명');
+            $('#second').val(sortedEntries[1][0] + " " + sortedEntries[1][1] + '명');
+            $('#third').val(sortedEntries[2][0] + " " + sortedEntries[2][1] + '명');
+
+        }
+
+        /*
+        function getStatisticsData() {
+            let locationName = $('#locationName').text();
+            getAjax(locationName);
+
+
+        }
+
+        function getAjax(locationName) {
+
+        }
+
+        $('#fileType li > a').on('click', function() {
+            // 버튼에 선택된 항목 텍스트 넣기
+            let fileType = $(this).text();
+            $('#fileTypeButton').text(fileType);
+            getAjax(locationName);
+
+
+            if(fileType == '방문자수' || fileType == 'SNS언급량') {
+                $('#locationTypeButton').addClass('disabled', true);
+                $('#locationTypeButton').text('지역선택 없음');
+                $('#locationTypeButton').data('areaCode', '0');
+                $('#locationTypeButton').data('sigunguCode', '0');
+            } else {
+                $('#locationTypeButton').removeClass('disabled');
+                $('#locationTypeButton').text('지역선택');
+            }
+
+        });
+
+         */
     </script>
 </div>
 </body>
