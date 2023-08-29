@@ -2,6 +2,7 @@ package com.trip.finalProject.kakaoPay.service.impl;
 
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -10,8 +11,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.trip.finalProject.kakaoPay.mapper.KakaoPayMapper;
 import com.trip.finalProject.kakaoPay.service.KakaoApproveResponseVO;
 import com.trip.finalProject.kakaoPay.service.KakaoPayInfoResponseVO;
+import com.trip.finalProject.kakaoPay.service.KakaoPayInfoVO;
 import com.trip.finalProject.kakaoPay.service.KakaoPayResponseVO;
 import com.trip.finalProject.kakaoPay.service.KakaoPayService;
 import com.trip.finalProject.kakaoPay.service.PaymentVO;
@@ -23,6 +26,9 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class KakaoPayServiceImpl implements KakaoPayService {
 	
+	@Autowired
+	KakaoPayMapper kakaoPayMapper;
+	
 	static final String cid = "TC0ONETIME";
 	static final String admin_Key = "7b4adfbd7d95d738f22c53a059516ffc";
 	static final String partner_order_id = UUID.randomUUID() + "user1";
@@ -31,7 +37,7 @@ public class KakaoPayServiceImpl implements KakaoPayService {
 	
 	
 	@Override
-	public KakaoPayResponseVO kakoPayReady(PaymentVO vo, int quantity) {
+	public KakaoPayResponseVO kakoPayReady(PaymentVO vo, int quantity,String postId) {
 		// TODO Auto-generated method stub
 		
 		//서버로 요청할 Body
@@ -40,6 +46,7 @@ public class KakaoPayServiceImpl implements KakaoPayService {
 		parameters.add("partner_order_id", partner_order_id);
 		parameters.add("partner_user_id", "user1");
         parameters.add("item_name", vo.getOrderName());
+        parameters.add("item_code", postId);
         parameters.add("quantity", String.valueOf(quantity));
         parameters.add("total_amount", String.valueOf(vo.getTotalAmount()));
         parameters.add("tax_free_amount", String.valueOf(vo.getTotalAmount()));
@@ -84,10 +91,10 @@ public class KakaoPayServiceImpl implements KakaoPayService {
     }
     
     //주문조회
-    public KakaoPayInfoResponseVO infoResponse() {
+    public KakaoPayInfoResponseVO infoResponse(String tid) {
     	MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
     	parameters.add("cid", cid);
-    	parameters.add("tid", kakaoPayResponseVO.getTid());
+    	parameters.add("tid", tid);
     	// 파라미터, 헤더
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
         
@@ -126,5 +133,19 @@ public class KakaoPayServiceImpl implements KakaoPayService {
 
         return httpHeaders;
     }
+
+    //결제 테이블 저장
+	@Override
+	public int insertPayment(KakaoPayInfoVO kakaoPayInfoVO) {
+		// TODO Auto-generated method stub
+		return kakaoPayMapper.insertPaymentInfo(kakaoPayInfoVO);
+	}
+
+
+	@Override
+	public int insertPurchase(KakaoPayInfoResponseVO kakaoPayInfoResponseVO) {
+		// TODO Auto-generated method stub
+		return kakaoPayMapper.insertPurchaseInfo(kakaoPayInfoResponseVO);
+	}
     
 }
