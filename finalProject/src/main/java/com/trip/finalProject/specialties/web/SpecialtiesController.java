@@ -21,6 +21,7 @@ public class SpecialtiesController {
 	@GetMapping("/specialtiesInsertForm")
 	public String package2(Model model) {
 		model.addAttribute("S",commonMapper.selectCode("S"));
+		model.addAttribute("area",specialtiesService.getLocationList());
 		return "specialties/specialtiesInsertForm";
 	}
 	
