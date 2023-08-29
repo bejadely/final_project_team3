@@ -458,11 +458,13 @@
             let checkedgrade = $('input[name=inlineRadioOptions]:checked').val();
             if(checkedgrade == null) {
                 alert("점수를 체크해주세요.");
+                return;
             }
 
             let reviewContent = $('#reviewInput').val();
-            if(reviewContent == null) {
+            if(reviewContent == null || reviewContent.replaceAll(' ', '') == '') {
                 alert("내용을 입력해주세요.");
+                return;
             }
             //  ajax 들어가서 로그인 되어있는지 먼저 확인 - 안되면 바로 fail throw new Exception(); 예외 일부러 발생시켜주기
             $.ajax({
@@ -575,6 +577,12 @@
             $('#locationTypeButton').text($(this).text());
             $('#locationTypeButton').data('areaCode', $(this).data('areaCode'));
             $('#locationTypeButton').data('sigunguCode', $(this).data('sigunguCode'));
+        });
+
+        document.getElementById('search-input').addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                document.getElementById('button-addon2').click();
+            }
         });
     </script>
 </div>

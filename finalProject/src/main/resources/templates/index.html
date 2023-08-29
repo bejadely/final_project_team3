@@ -21,6 +21,10 @@
     background-color: #2cbdb8; /* 호버 시 배경색 변경 */
     color: white; /* 호버 시 글자색을 흰색으로 변경 */
   }
+
+  .linkButton {
+      cursor: pointer;
+  }
 </style>
 </head>
 <body>
@@ -35,9 +39,9 @@
                             <div class="hero-text">
                                 <p class="room-location"><i class="icon_pin"></i> 경주</p>
                                 <h2>경상도 지역 관광정보</h2>
-                            
-                                <ul class="room-features">
-                                    <li>
+
+                                <ul class="room-features" data-area-code="35" data-sigungu-code="2">
+                                    <li class="linkButton" data-content-type-id="12">
                                         <i class="fa-solid fa-map-location-dot fa-lg" style="color: #2cbdb8;"></i>
                                         <p>경주 여행지</p>
                                     </li>
@@ -286,7 +290,16 @@
     </section>
     <!-- Latest Blog Section End -->
 	<script>
-	
+        $('.linkButton').on('click', function() {
+            let areaCode = $(this).parent().data('areaCode');
+            let sigunguCode = $(this).parent().data('sigunguCode');
+            let contentTypeId = $(this).data('contentTypeId');
+
+            location.href = './localTourInfo/spotDetail?page=1' +
+                '&areaCode=' + areaCode +
+                '&contentTypeId=' + contentTypeId +
+                '&sigunguCode=' + sigunguCode;
+        })
 	</script>
 </div>
 </body>
