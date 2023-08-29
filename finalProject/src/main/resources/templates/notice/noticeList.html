@@ -298,19 +298,7 @@
                 </thead>
                 <tbody>
                 
-             <!--    <th:block th:each="n, status : ${notice}">
-                    <th:block th:if="${n.memberId == 'manager'}">
-                        <tr th:attr="onmouseover='this.style.background=&quot;#dadada&quot;;', onmouseleave='this.style.background=&quot;#FFFFFF&quot;;', onclick='boardChois(\'' + ${b.boardId} + '\',\'' + ${b.memberId} + '\',\'' + ${b.boardSecret} + '\')'">
-                            <td th:text="${n.noticeNumber}"></td>
-                            <td><h5 style="text-decoration: underline;" th:text="${n.title}"></h5></td>
-                            <td th:text="${n.writerId}"></td>
-                            <td th:text="${n.registDate}"></td>
-                            <td th:text="${n.hit}"></td>
-                        </tr>
-                    </th:block>
-                    <th:block th:unless="${b.memberId == 'manager'}">
-                        'manager'가 아닌 회원의 글은 이 부분에서 처리
-                    </th:block> -->
+           
                 </th:block>
                 
               
@@ -359,28 +347,14 @@
 			</th:block>
 		</div>
 	</div>
-     <!--        <div class="notice_page">
-                <a href="boardList.do?page=1" class="bt first"></a>
-                <th:block th:if="${startPage > 1}">
-                    <a th:href="'boardList.do?page=' + ${startPage - 1}" class="bt prev"></a>
-                </th:block>
-                
-                <th:block th:each="num : ${startPage..endPage}">
-                    <a th:href="'boardList.do?page=' + ${num}" th:text="${num}" class="num" th:classappend="${num == currentPage} ? 'on'"></a>
-                </th:block>
-                
-                <th:block th:if="${endPage < realEnd}">
-                    <a th:href="'boardList.do?page=' + ${endPage + 1}" class="bt next">></a>
-                </th:block>
-                <a th:href="'boardList.do?page=' + ${realEnd}" class="bt last">>></a>
-            </div> -->
+ 
+            
             <div class="bt_wrap">
+           <!--  <div th:if="${id == board.memberId || id == 'manager'}"> -->
             <a href="/noticeWrite" class="on">등록</a>
-               <!--  <th:block th:if="${not empty id}">
-                    
-                </th:block>  -->
+           </div>
             </div>
-        </div>
+   <!--      </div> -->
 
     
     <div>
@@ -394,94 +368,28 @@
 </section>
 
 
-<!-- <script type="text/javascript">
-    function searchTarget(){
-        var word = document.getElementById("search").value;
-
-        location.href = "boardSearch.do?page=1&searchWord=" + word;
-    }
-    
-    function boardChois(idd, memberId, boardSecret){
-        let frm = document.getElementById("frm2");
-        frm.boardId.value = idd;
-        
-        if('${id}' != 'manager'){
-            
-            if(boardSecret=='Y'){
-                if(memberId == '${id}'){
-                    
-                    frm.submit();
-                } else {
-                    console.log('${id}');
-                    alert("비밀글입니다.");
-                }
-            } else {
-                frm.submit();
-            }
-        } else {
-            frm.submit();
-        }
-        
-    }
-</script> -->
 
 
 
 
-<!-- <script type="text/javascript">
-	function searchTarget(){
-		var word = document.getElementById("search").value;
 
-		location.href="boardSearch.do?page=1&searchWord=" + word;
-	}
-	
-	function boardChois(idd, memberId, boardSecret){
-		//자바스크립트 url호출(get방식)
-//		let url = 'noticeSelect.do?noticeId=' + id; ->get방식이므로 post방식에는 안씀
-//		location.href=url; ->get방식이므로 post방식에는 안씀
-		//location.replace(url); //현재페이지에 덮어씌움 이전페이지로 돌아갈 수 없음	
-		//window.open(url);
-		let frm = document.getElementById("frm2");	//post방식 (hidden폼이 날아감)
-		frm.boardId.value = idd;
-		
-		if('${id}' != 'manager'){
-			
-			if(boardSecret=='Y'){
-				if(memberId == '${id}'){
-					
-					frm.submit();
-				} else {
-					console.log('${id}');
-					alert("비밀글입니다.");
-				}
-			} else {
-				frm.submit();
-			}
-		} else {
-			frm.submit();
-		}
-		
-	}
-</script> -->
+
 
 <script th:inline="javascript" type="text/javascript">
 $(document).ready(function() {
 	// 승인 버튼 클릭 시 발생 이벤트 설정
 	$('#searchButton').on('click', search);
-	$('.memberInfo')
-					
-					
-					.on('mouseup', moveToMemberDetail)
+	$('.memberInfo').on('mouseup', moveToNoticeDetail)
 });
 
 //클릭시 공지사항 상세 조회페이지로 이동
-function moveToMemberDetail(event){
+function moveToNoticeDetail(event){
 	
 	// 상세보기 할 member의 id값 가져오기
 	let noticeNumber = $(event.currentTarget).find('td:eq(0)').text();
 	
 	// 페이지 전환 실행
-	location.href=`seeNoticeDetail?noticeNumber=${noticeNumber}`;
+	location.href=`/admin/seeNoticeDetail?noticeNumber=${noticeNumber}`;
 }
 </script>
 
