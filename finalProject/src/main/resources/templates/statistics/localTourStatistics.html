@@ -26,15 +26,11 @@
             crossorigin="anonymous"></script>
     <!-- Popper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-
+	<!-- billboard.js -->
     <link rel="stylesheet" href="https://naver.github.io/billboard.js/release/latest/dist/theme/datalab.min.css">
     <script src="https://naver.github.io/billboard.js/release/latest/dist/billboard.pkgd.min.js"></script>
-<!--    &lt;!&ndash; billboard.js cdn &ndash;&gt;
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/billboard.js/3.9.3/billboard.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/billboard.js/3.9.3/billboard.min.css">
-    &lt;!&ndash; d3.js cdn &ndash;&gt;
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>-->
-    <style>
+
+<style>
     .rounded-box {
         border-radius: 10px;
         padding: 20px;
@@ -96,14 +92,19 @@
      .uploadMadalbtn {
    		 text-align: right;
  	 }
- .upload-container {
+ 	.upload-container {
       display: flex;
       flex-wrap: wrap;
       gap: 5px;
     }
-.dropdown {
-        margin-bottom: 10px; /* 외부 여백 크기를 조절할 수 있습니다. */
+	.dropdown {
+        margin-bottom: 10px; 
     }
+	.input-container input {
+	    font-size: 10px; 
+	    padding: 5px;
+	    text-align: center;
+	}
 </style>
 </head>
 <body>
@@ -2707,30 +2708,10 @@
                     <h6>방문자 수 최다 지역</h6>
                     <table class="table table-sm">
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td id="firstLocation">지역</td>
-                                <td id="firstVisitor">명수</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td id="secondLocation">지역</td>
-                                <td id="secondVisitor">명수</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td id="thirdLocation">지역</td>
-                                <td id="thirdVisitor">명수</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">4</th>
-                                <td id="fourthLocation">지역</td>
-                                <td id="fourthVisitor">명수</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">5</th>
-                                <td id="fifthLocation">지역</td>
-                                <td id="fifthVisitor">명수</td>
+                            <tr th:each ="visitorInfo, stat : ${visitorRank}">
+                                <th scope="row" th:text="${stat.count}"></th>
+                                <td th:text="${visitorInfo.locationName}"></td>
+                                <td th:text="|${visitorInfo.visitorNumber} 명|"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -2739,31 +2720,13 @@
                     <h6>관광지 검색 순위</h6>
                     <table class="table table-sm">
                         <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>지역</td>
-                            <td>명수</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>지역</td>
-                            <td>명수</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>지역</td>
-                            <td>명수</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">4</th>
-                            <td>지역</td>
-                            <td>명수</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">5</th>
-                            <td>지역</td>
-                            <td>명수</td>
-                        </tr>
+	                        <tr th:each="attractionInfo, stat : ${attractionRank}">
+	                            <th scope="row" th:text="${stat.count}"></th>
+	                            <td th:text="${attractionInfo.locationName}"></td>
+	                            <td th:text="${attractionInfo.attractionType}"></td>
+	                            <td th:text="${attractionInfo.attractionName}"></td>
+	                            <td th:text="|${attractionInfo.visitorNumber} 건|"></td>
+	                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -3193,17 +3156,6 @@
             $('#second').val(sortedEntries[1][0] + " " + sortedEntries[1][1] + '명');
             $('#third').val(sortedEntries[2][0] + " " + sortedEntries[2][1] + '명');
 
-            //  방문자 수 최다지역 데이터 넣기
-            $('#firstLocation').text(sortedEntries[0][0]);
-            $('#firstVisitor').text(sortedEntries[0][1] + '명');
-            $('#secondLocation').text(sortedEntries[1][0]);
-            $('#secondVisitor').text(sortedEntries[1][1] + '명');
-            $('#thirdLocation').text(sortedEntries[2][0]);
-            $('#thirdVisitor').text(sortedEntries[2][1] + '명');
-            $('#fourthLocation').text(sortedEntries[3][0]);
-            $('#fourthVisitor').text(sortedEntries[3][1] + '명');
-            $('#fifthLocation').text(sortedEntries[4][0]);
-            $('#fifthVisitor').text(sortedEntries[4][1] + '명');
         }
 
         /*

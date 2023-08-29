@@ -31,12 +31,12 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
 
         switch(fileType) {
             case "동행유형":
-//                excelDataList = getFellowList(areaCode, sigunguCode, file);
-//                result = excelUploadMapper.uploadFellowList(excelDataList);
+                excelDataList = getFellowList(areaCode, sigunguCode, file);
+                result = excelUploadMapper.uploadFellowList(excelDataList);
                 break;
             case "여행유형":
-//                excelDataList = getTripList(areaCode, sigunguCode, file);
-//                result = excelUploadMapper.uploadTripList(excelDataList);
+                excelDataList = getTripList(areaCode, sigunguCode, file);
+                result = excelUploadMapper.uploadTripList(excelDataList);
                 break;
             case "맛집방문자":
                 excelDataList = getRestaurantList(areaCode, sigunguCode, file);
@@ -62,7 +62,84 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
         return result;
     }
 
-    private List<Map<String,String>> getRestaurantList(String areaCode, String sigunguCode, MultipartFile file) {
+    private List<Map<String, String>> getTripList(String areaCode, String sigunguCode, MultipartFile file) {
+    	List<Map<String, String>> tripList = new ArrayList<>();
+
+        String yearMonth = getThisYearMonth();
+
+        try (InputStream inputStream = file.getInputStream()) {
+
+            // 엑셀 파일로 Workbook instance를 생성한다.
+            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+
+            // workbook의 첫번째 sheet를 가저온다.
+            XSSFSheet sheet = workbook.getSheetAt(0);
+
+            String tripType = "";
+            String searchNumber = "";
+            // 모든 행(row)들을 조회한다. 첫줄은 데이터 목록이므로 생략. 1~5위만 가져와야해서 1부터 6까지.
+            for (int i = 1; i < 6; i++) {
+            	tripType = sheet.getRow(i).getCell(2).getStringCellValue(); //  타입
+                searchNumber = String.valueOf((int)sheet.getRow(i).getCell(3).getNumericCellValue()); //  방문자수 : 숫자는 getNumericCellValue()로 받는데, 이건 double 타입이라 int 타입으로 형변환 해준 후 String 값으로 가져옴
+
+                Map<String, String> tripMap = new HashMap<>();
+                tripMap.put("tripType", tripType);
+                tripMap.put("searchNumber", searchNumber);
+                tripMap.put("yearMonth", yearMonth);
+                tripMap.put("areaCode", areaCode);
+                tripMap.put("sigunguCode", sigunguCode);
+
+                tripList.add(tripMap);
+            }
+            System.out.println("tripList = " + tripList);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return tripList;
+	}
+
+	private List<Map<String, String>> getFellowList(String areaCode, String sigunguCode, MultipartFile file) {
+    	List<Map<String, String>> fellowList = new ArrayList<>();
+
+        String yearMonth = getThisYearMonth();
+
+        try (InputStream inputStream = file.getInputStream()) {
+
+            // 엑셀 파일로 Workbook instance를 생성한다.
+            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+
+            // workbook의 첫번째 sheet를 가저온다.
+            XSSFSheet sheet = workbook.getSheetAt(0);
+
+            String fellowType = "";
+            String searchNumber = "";
+            // 모든 행(row)들을 조회한다. 첫줄은 데이터 목록이므로 생략. 1~5위만 가져와야해서 1부터 6까지.
+            for (int i = 1; i < 6; i++) {
+                fellowType = sheet.getRow(i).getCell(2).getStringCellValue(); //  타입
+                searchNumber = String.valueOf((int)sheet.getRow(i).getCell(3).getNumericCellValue()); //  방문자수 : 숫자는 getNumericCellValue()로 받는데, 이건 double 타입이라 int 타입으로 형변환 해준 후 String 값으로 가져옴
+
+                Map<String, String> fellowMap = new HashMap<>();
+                fellowMap.put("fellowType", fellowType);
+                fellowMap.put("searchNumber", searchNumber);
+                fellowMap.put("yearMonth", yearMonth);
+                fellowMap.put("areaCode", areaCode);
+                fellowMap.put("sigunguCode", sigunguCode);
+
+                fellowList.add(fellowMap);
+            }
+            System.out.println("fellowList = " + fellowList);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return fellowList;
+		
+	}
+
+	private List<Map<String,String>> getRestaurantList(String areaCode, String sigunguCode, MultipartFile file) {
         List<Map<String, String>> restaurantList = new ArrayList<>();
 
         String yearMonth = getThisYearMonth();

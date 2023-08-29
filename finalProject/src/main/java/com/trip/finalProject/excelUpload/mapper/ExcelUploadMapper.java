@@ -11,4 +11,8 @@ public interface ExcelUploadMapper {
     Integer uploadVisitorList(List<Map<String, String>> visitorList);
 
     Integer uploadSnsList(List<Map<String, String>> snsList);
+
+	Integer uploadFellowList(List<Map<String, String>> fellowList);
+
+	Integer uploadTripList(List<Map<String, String>> tripList);
 }

@@ -1,4 +1,4 @@
-package com.trip.finalProject.statistics.web;
+package com.trip.finalProject.statistics.service;
 
 import lombok.Data;
 
@@ -8,4 +8,6 @@ public class VisitorVO {
     private String sigunguCode;
     private String visitorNumber;
     private String yearMonth;
+    
+    private String locationName;
 }
