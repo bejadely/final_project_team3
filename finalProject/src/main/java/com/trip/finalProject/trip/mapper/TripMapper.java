@@ -49,8 +49,14 @@ public interface TripMapper {
 	//여행메모 저장
 	public int insertTripMemo(TripVO tripVO);
 	
+	//여행메모 데이터 조회
+	public List<TripVO> selectMemoData(TripVO tripVO);
+	
 	//여행경로 저장
 	public int insertTripMapping(TripVO tripVO);
+	
+	//여행경로 데이터 조회
+	public List<TripVO> selectMapData(TripVO tripVO);
 	
 	//여행기록 삭제
 	public int deleteTripInfo(int postId);
