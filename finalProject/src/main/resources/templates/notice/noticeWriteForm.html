@@ -65,8 +65,22 @@
             background-color: #5a6268;
             color: #ffffff;
         }
+        
+        .ck.ck-editor {
+	width: 100%;
+	max-width: 1500px;
+	margin: 0 auto;
+}
+
+.ck-editor__editable {
+	height: 50vh;
+}
     </style>
 </head>
+<script type="text/javascript">
+	
+</script>
+<script src ="ckeditor5-build-classic/ckeditor.js"></script>
 <body>
     <div class="container">
         <div class="text-center">
@@ -78,7 +92,7 @@
             <form id="frm" action="/noticeProc" method="post">
                	<div class="mb-3" style="float: left; margin-right: 20px;" >
 					<select class="" id="noticeType" name="noticeType"
-						aria-label="Default select example" required >
+						aria-label="Default select example"  >
 						<option value="">공지사항 종류</option>
 						<option value="n1">공지사항</option>
 						<option value="n2">이벤트</option>
@@ -87,7 +101,7 @@
 				
 				<div class="mb-3" style="float: left; margin-right: 20px;" >
 					<select class="" id="release" name="release"
-						aria-label="Default select example" required >
+						aria-label="Default select example" >
 						<option value="">공개대상</option>
 						<option value="N1">전체</option>
 						<option value="N2">가이드</option>
@@ -96,7 +110,7 @@
 				
 		       	 <div class="mb-3" style="float:left;">
 					<select class="" id="status" name="status"
-						aria-label="Default select example" required >
+						aria-label="Default select example"  >
 						<option value="">글 저장상태</option>
 						<option value="T1">임시저장</option>
 						<option value="T2">저장완료</option>
@@ -118,18 +132,23 @@
                         </tr>
                               
                         <tr>
-                            <th>제목</th>
-                            <td colspan="3">
-                                <input type="text" id="boardTitle" name="title" size="70" class="form-control">
+                            <th style="text-align: left;">제목</th>
+                            <td colspan="3" >
+                                <input  type="text" id="boardTitle" name="title" size="70" class="form-control">
                             </td>
                         </tr>    
                                   
                            
                         <tr>
-                            <th>내용</th>
-                            <td colspan="3">
+                            <th style="text-align: left;">내용</th>
+                            <!-- <td colspan="3">
                                 <textarea rows="10" cols="=50" id="boardContent" name="content" placeholder="내용을 입력해주세요." required class="form-control"></textarea>
+                            </td> -->
+                            <td  > <textarea  id="editor" placeholder="내용을 입력해주세요." ></textarea>
                             </td>
+                            
+                        
+				
                         </tr>
                     </table>
                 </div>
@@ -142,10 +161,10 @@
                     <div align="left">
                     <input type='checkbox' name="boardSecret" id="boardSecret" onclick="settingSecret()" value="N" class="form-check-input">
                     
-                    </div>
+                    </div>                
                     <div align="right">
-                    <input type="submit" value="등록" class="btn btn-primary registrationButton">&nbsp;&nbsp;         
-                    <input type="reset" value="취소" class="btn btn-secondary">&nbsp;&nbsp;
+                    <button type="submit" value="등록" class="btn btn-primary registrationButton">등록</button>&nbsp;&nbsp;         
+                    <input type="reset" value="취소" class="btn btn-secondary" id="cancelBtn">&nbsp;&nbsp;
                     <input type="button" value="목록" onclick="location.href='boardList.do?page=1'" class="btn btn-secondary">
                     </div>
                     <br><br>
@@ -158,15 +177,25 @@
    	</script>
 </body>
 
+
+
+
+
+
+
 <script>
+ 
+
 $(document).ready(function() {
 		// 승인 버튼 클릭 시 발생 이벤트 설정
-		$('.registrationButton').on('click', registration);
+		$('.registrationButton').on('click', go);
+		 // $('#frm').on('submit', loginAccountcheck);
 	/* 	$('.rejectButton').on('click', authReject); */
+		$.noConflict();
 	});
 	
 	// 승인 버튼 클릭 시 발생 이벤트
-	function registration(e){
+	function go(e){
 		e.stopPropagation();
 		
 		Swal.fire({
@@ -177,23 +206,124 @@ $(document).ready(function() {
 		      cancelButtonColor: '#d33',
 		      confirmButtonText: '저장',
 		      cancelButtonText: '취소',
-		      //reverseButtons: true,
-		 
-	/* 	      reverseButtons: true, */
 		      
-	    })/* .then((result1) => {
-	      if (result.isConfirmed) {
-			let frmm = document.getElementById("frm");		
-			frmm.action="/noticeInsert"
-				  console.log('yes');
-			frmm.submit();
-	      }else{
-	    	  alert('wow');
-	    	  console.log('wow');
-	      }
-	    })*/
-		
+	    }).then((result) => {
+		      if (result.isConfirmed) {
+		          
+		    	  //post방식으로 페이지 전환
+				  console.log('hi');
+				 // document.getElementById('frm').submit();
+				  //$('#frm')[0].submit();
+		      }
+		    })
+		 
+	   	    
 	} 
+	
+	
+	ClassicEditor
+	.create(document.querySelector('#editor'), {
+		/* htmlEncodeOutput: false, */
+		ckfinder: {
+			uploadUrl : 'upload'	
+		}
+	
+		
+	})
+	.then(editor => {
+		console.log('Editor was initialized');
+		
+		document.getElementById("cancelBtn").addEventListener("click",function(){
+			const data = editor.getData();
+			//Data 변수에 저장된 데이터를 파싱하여 이미지 태크를 찾음
+			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
+			
+			const filenames = imgTags.map(img=> {
+				const src = img.getAttribute('src');
+				
+				return src.substring(src.lastIndexOf('/')+1);
+			});
+			console.log(filenames);
+			fetch(`/deleteImg`,{
+				method: 'POST',
+				headers:{
+					'Content-Type':'application/json'
+				},
+				body: JSON.stringify({ filenames })
+			})
+			.then(response => response.text())
+			.then(message => {
+				console.log(message);
+				editor.setData('');
+			})
+			
+		})
+		
+		
+		var formObj = $("#frm");
+		
+		//document.getElementById("editorForm").addEventListener("submit",function(event){
+		$("button[type='submit']").on("click",function(event){
+				
+			event.preventDefault();
+	
+			const data = editor.getData();
+			
+			let objData = serializeObject();
+			
+			console.log(data);
+			const {  writerId, registDate, title} = objData;
+			var combinedData={
+				content: data,
+				writerId: writerId,
+				registDate: registDate,
+				title: title
+			};
+			console.log(combinedData);
+	
+			
+			var str="";
+			
+			str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";
+			
+			
+			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
+			
+			const filenames = imgTags.map(img=> {
+				const src = img.getAttribute('src');
+				
+				return src;
+			});		
+			$.each(filenames,function(i,obj){
+				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
+			});
+	
+			formObj.append(str);
+			document.getElementById('frm').action = "/noticeProc";
+			document.getElementById('frm').submit();
+			
+			
+			
+			
+		})
+		//////////////////////////////////////////////////////////////////////
+	})
+	.catch(error => {
+		console.error(error);
+	});
+		
+	function serializeObject(){
+		let formData = $('form').serializeArray();
+		let formObject={};
+		$.each(formData, function(idx,obj){
+			//let field = obj.name;
+			//let val= obj.value;
+			formObject[obj.name] = obj.value;
+			//formObject[field] = val;
+		});
+		
+		return formObject;
+	}
 </script>
 
 

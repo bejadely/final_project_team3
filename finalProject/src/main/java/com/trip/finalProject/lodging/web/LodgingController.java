@@ -25,10 +25,7 @@ public class LodgingController {
 		return"lodging/apitest";
 	}
 	
-	@GetMapping("packageInsertForm")
-	public String package2() {
-		return "package/packageInsertForm";
-	}
+	
 	
 	
 }

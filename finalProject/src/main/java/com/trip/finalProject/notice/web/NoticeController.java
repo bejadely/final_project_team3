@@ -8,10 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.trip.finalProject.adminMember.service.AdminMemberVO;
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.notice.service.NoticeService;
 import com.trip.finalProject.notice.service.NoticeVO;
@@ -38,10 +35,10 @@ public class NoticeController {
 	};
 	
 	//공지사항 게시글 상세보기
-	@GetMapping("/seeNoticeDetail")
+	@GetMapping("/admin/seeNoticeDetail")
 	public String selectNoticeDetail(NoticeVO noticeVO, Model model) {
 		
-		// 회원 상세조회 실행
+		// 공지사항 상세조회 실행
 		noticeVO = noticeService.getNoticeDetail(noticeVO);
 		model.addAttribute("noticeVO", noticeVO);
 		System.out.println(noticeVO);
@@ -49,19 +46,7 @@ public class NoticeController {
 		
 	}
 	
-	// 회원정보 수정 폼 호출
-	@PostMapping("/admin/modifyNoticeInfoForm")
-	@ResponseBody
-	public String modifyMemberInfoForm(NoticeVO noticeVO, Model model) {
-		
-		// 회원 상세조회 실행
-		noticeVO = noticeService.getNoticeDetail(noticeVO);
-					
-		// 상세 조회 결과값 모델에 담기
-		model.addAttribute("noticeVO", noticeVO);
-		
-		return "notice/modifyNoticeInfoForm";
-		}
+	
 		
 		// 게시글 수정 기능 수행
 		@PostMapping("/admin/modifyNoticeInfo")
@@ -73,41 +58,10 @@ public class NoticeController {
 			// 리다이렉트 어트리뷰트에 결과값 담기(성공 : success / 실패 : fail)
 			rtt.addFlashAttribute("result", result);
 			
-			return "redirect:noticeDetail?noticeNumber=" + noticeVO.getNoticeNumber();
+			return "redirect:seeNoticeDetail?noticeNumber=" + noticeVO.getNoticeNumber();
 		}
 	
-	
-		/*
-		 * // 게시글 수정 기능 수행
-		 * 
-		 * @PostMapping("/admin/modifyNoticeInfo") public String
-		 * modifyNoticeInfo(NoticeVO noticeVO, RedirectAttributes rtt) {
-		 * 
-		 * // 회원정보 수정 String result = noticeService.modifyNoticeInfo(noticeVO);
-		 * 
-		 * // 리다이렉트 어트리뷰트에 결과값 담기(성공 : success / 실패 : fail)
-		 * rtt.addFlashAttribute("result", result);
-		 * 
-		 * return "redirect:seeMemberDetail?noticeNumber=" + noticeVO.getNoticeNumber();
-		 * }
-		 */
-	
-		/*
-		 * // 게시글 삭제
-		 * 
-		 * @PostMapping("/admin/deleteNotice") public String
-		 * withdrawMember(AdminMemberVO adminVO, RedirectAttributes rtt) {
-		 * 
-		 * // 회원 삭제 String result = adminMemberService.withdrawMember(adminVO);
-		 * 
-		 * // 리다이렉트 어트리뷰트에 결과값 담기(성공 : success / 실패 : fail) rtt.addAttribute("result",
-		 * result);
-		 * 
-		 * return "redirect:seeMemberDetail?memberId=" + adminVO.getMemberId();
-		 * 
-		 * }
-		 */
-	
+		
 	
 	
 	
@@ -128,7 +82,7 @@ public class NoticeController {
 	@PostMapping("/noticeProc")
 	public String boardInsert(NoticeVO noticeVO) {
 		noticeService.noticeInsert(noticeVO);
-		return"notice/NoticeList";
+		return"redirect:/noticeList";
 	};
 	
 	/*

@@ -34,6 +34,11 @@ public class PackageController {
 		return "package/packageInfo";
 	}
 	
+	//ck-editor
+	@GetMapping("packageInsertForm")
+	public String package2() {
+		return "package/packageInsertForm";
+	}
 
 	
 	@PostMapping("register")

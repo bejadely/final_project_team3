@@ -53,18 +53,31 @@
 	<update id="modifyNoticeInfo" parameterType="NoticeVO">
 	
   			UPDATE notice
+  			<set> 				
+				title = #{title},					
+				content = #{content},							
+				 update_date= sysdate
+			</set>
+  			WHERE notice_number = #{noticeNumber}
+  		</update>
+  		
+  		
+  		
+  		
+ <!--  		<update id="modifyNoticeInfo" parameterType="NoticeVO">
+	
+  			UPDATE notice
   			<set>
   				<if test="title != null and !title.equals('')">
 					title = #{title},
 				</if>
 				<if test="content != null and !content.equals('')">
-				content = #{content},	
-				</if>
-			
-				 update_date= sysdate
+					content = #{content},	
+				</if>			
+					 update_date= sysdate
 			</set>
   			WHERE notice_number = #{noticeNumber}
-  		</update>
+  		</update> -->
 		
 	
 
