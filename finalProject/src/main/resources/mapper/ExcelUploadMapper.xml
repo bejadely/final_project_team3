@@ -9,4 +9,39 @@
             (TO_NUMBER(#{item.areaCode}),TO_NUMBER(#{item.sigunguCode}),TO_NUMBER(#{item.visitorNumber}),#{item.restaurantName},#{item.restaurantType},#{item.yearMonth})
         </foreach>
     </update>
+    
+    <update id="uploadAttractionList" parameterType="java.util.List">
+        <foreach collection="list" item="item" open="INSERT ALL " close="SELECT * FROM DUAL" separator=" ">
+            INTO CHART_ATTRACTION (AREA_CODE, SIGUNGU_CODE, ATTRACTION_NAME, ATTRACTION_TYPE, VISITOR_NUMBER, YEAR_MONTH) VALUES
+            (TO_NUMBER(#{item.areaCode}),TO_NUMBER(#{item.sigunguCode}),#{item.attractionName},#{item.attractionType},TO_NUMBER(#{item.visitorNumber}),#{item.yearMonth})
+        </foreach>
+    </update>
+
+    <update id="uploadVisitorList" parameterType="java.util.List">
+        <foreach collection="list" item="item" open="INSERT ALL " close="SELECT * FROM DUAL" separator=" ">
+            INTO CHART_VISITOR (AREA_CODE, SIGUNGU_CODE, VISITOR_NUMBER, YEAR_MONTH) VALUES
+            (TO_NUMBER(#{item.areaCode}),TO_NUMBER(#{item.sigunguCode}),TO_NUMBER(#{item.visitorNumber}),#{item.yearMonth})
+        </foreach>
+    </update>
+
+    <update id="uploadSnsList" parameterType="java.util.List">
+        <foreach collection="list" item="item" open="INSERT ALL " close="SELECT * FROM DUAL" separator=" ">
+            INTO CHART_SNS (AREA_CODE, SIGUNGU_CODE, SEARCH_NUMBER, YEAR_MONTH) VALUES
+            (TO_NUMBER(#{item.areaCode}),TO_NUMBER(#{item.sigunguCode}),TO_NUMBER(#{item.searchNumber}),#{item.yearMonth})
+        </foreach>
+    </update>
+
+	<update id="uploadFellowList" parameterType="java.util.List">
+        <foreach collection="list" item="item" open="INSERT ALL " close="SELECT * FROM DUAL" separator=" ">
+            INTO CHART_FELLOW (AREA_CODE, SIGUNGU_CODE, FELLOW_TYPE, SEARCH_NUMBER, YEAR_MONTH) VALUES
+            (TO_NUMBER(#{item.areaCode}),TO_NUMBER(#{item.sigunguCode}),#{item.fellowType}, TO_NUMBER(#{item.searchNumber}),#{item.yearMonth})
+        </foreach>
+    </update>
+    
+    <update id="uploadTripList" parameterType="java.util.List">
+        <foreach collection="list" item="item" open="INSERT ALL " close="SELECT * FROM DUAL" separator=" ">
+            INTO CHART_TRIP (AREA_CODE, SIGUNGU_CODE, TRIP_TYPE, SEARCH_NUMBER, YEAR_MONTH) VALUES
+            (TO_NUMBER(#{item.areaCode}),TO_NUMBER(#{item.sigunguCode}),#{item.tripType}, TO_NUMBER(#{item.searchNumber}),#{item.yearMonth})
+        </foreach>
+    </update>
   </mapper>

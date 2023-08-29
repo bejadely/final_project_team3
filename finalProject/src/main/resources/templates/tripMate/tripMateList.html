@@ -46,7 +46,7 @@
 						class="col-lg-4 col-md-6">
 						<div class="single-blog-item">
 							<div class="sb-pic">
-								<img th:src="${tripMateInfo.writerId}" alt="이미지">
+								<img style="width: 300px; height: 250px;" th:src="${tripMateInfo.loadingImg}" alt="이미지">
 							</div>
 							<div class="sb-text">
 								<ul>
@@ -60,7 +60,7 @@
 									</li>
 									<li>
 										<i class="fa"></i>
-										<span th:text="${tripMateInfo.hit}"></span>
+										조회수 : <span th:text="${tripMateInfo.hit}"></span>
 									</li>
 								</ul>
 								<h5>
