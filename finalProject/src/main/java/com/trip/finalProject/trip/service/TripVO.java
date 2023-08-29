@@ -48,6 +48,13 @@ public class TripVO {
 	private Date registDay;
 	private String tripReview;
 	private String tripShare;
+	
+	//trip_record_memo
+	private String memoId;
+	private int memoNo;
+	private String content;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date memoDate;
 
 	//선택한 여행 지역을 최초로 지도에 표시하기 위한 위도,경도 값
 	private String tripArea;

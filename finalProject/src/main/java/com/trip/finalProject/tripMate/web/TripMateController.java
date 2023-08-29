@@ -26,14 +26,14 @@ public class TripMateController {
 	AttachedFileService attachedFileService;
 	
 	//여행 메이트 글 전체 조회
-	@GetMapping("tripMateList")
+	@GetMapping("/tripMateList")
 	public String tripMateList(Model model) {
 		model.addAttribute("tripMateList", tripMateService.getTripMateAll());
 		return "tripMate/tripMateList";
 	}
 	
 	//여행 메이트 글 상세 조회
-	@GetMapping("tripMateInfo")
+	@GetMapping("/tripMateInfo")
 	public String tripMateInfo(TripMateVO tripMateVO, Model model) {
 		TripMateVO findVO = tripMateService.getTripMateInfo(tripMateVO);
 		tripMateService.updateMateRecruitHit(tripMateVO);
@@ -42,13 +42,13 @@ public class TripMateController {
 	}
 	
 	//여행 메이트 글 등록 - form
-	@GetMapping("tripMateRecruitForm")
+	@GetMapping("/tripMateRecruitForm")
 	public String tripMateRecruitForm(Model model) {
 		return "tripMate/tripMateRecruitForm";
 	}
 	
 	//여행 메이트 글 등록 - process
-	@PostMapping("tripMateRecruitInsert")
+	@PostMapping("/tripMateRecruitInsert")
 	public ModelAndView tripMateRecruitInsert(TripMateVO tripMateVO) {
 		tripMateService.insertTripMateRecruit(tripMateVO);
 		ModelAndView mv = new ModelAndView("redirect:/tripMateList");
@@ -56,7 +56,7 @@ public class TripMateController {
 	}
 	
 	//첨부파일 상세정보(파일 여러개를 보여주기 위해서)
-	@GetMapping("getAttach")
+	@GetMapping("/getAttach")
 	@ResponseBody
 	public List<AttachedFileVO> getAttachList(AttachedFileVO vo){
 		System.out.println(vo.getPostId());
@@ -64,14 +64,14 @@ public class TripMateController {
 	}
 	
 	//여행 메이트 글 삭제
-	@GetMapping("mateRecruitDelete")
+	@GetMapping("/mateRecruitDelete")
 	public String mateRecruitDelete(TripMateVO tripMateVO) {
 		tripMateService.deleteTripMateRecruit(tripMateVO);
 		return "redirect:tripMateList";
 	}
 	
 	//여행 메이트 글 수정 - form
-	@GetMapping("mateRecruitUpdateForm")
+	@GetMapping("/mateRecruitUpdateForm")
 	public String mateRecruitUpdateForm(TripMateVO tripMateVO, Model model) {
 		TripMateVO findVO = tripMateService.getTripMateInfo(tripMateVO);
 		model.addAttribute("tripMateVO", findVO);
@@ -79,7 +79,7 @@ public class TripMateController {
 	}
 	
 	//여행 메이트 글 수정 - process
-	@PostMapping("mateRecruitUpdate")
+	@PostMapping("/mateRecruitUpdate")
 	@ResponseBody
 	public Map<String, Object> mateRecruitUpdateProcess(TripMateVO tripMateVO){
 		boolean result = false;
@@ -98,14 +98,14 @@ public class TripMateController {
 	}
 	
 	//여행 메이트 신청 - form
-	@PostMapping("tripMateApplyForm")
+	@PostMapping("/tripMateApplyForm")
 	public String tripMateApplyForm(TripMateVO trvo, Model model) {
 		model.addAttribute("tripMateVO", trvo );
 		return "tripMate/tripMateApplyForm";
 	}
 	
 	//여행 메이트 신청 - process
-	@PostMapping("tripMateApplyInsert")
+	@PostMapping("/tripMateApplyInsert")
 	public String tripMateApplyInsert(TripMateVO tripMateVO, Model model) {
 		//최대 인원, 신청 인원 조회
 		//tripMateService.selectMateRecruitApplyNum(tripMateVO);
