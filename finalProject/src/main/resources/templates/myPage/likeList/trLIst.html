@@ -25,6 +25,13 @@ table, th,td {
 </style>
 <script>
 $(document).ready(function() {
+	$("#mt").click(function() {
+		location.href="myMtList"	
+	})
+
+	$("#tr").click(function() {
+		location.href="myTrList"
+	})
 });
 </script>
 </head>
@@ -35,25 +42,20 @@ $(document).ready(function() {
 	<div layout:fragment="content" style="text-align: center;">
 	<form>
 		<h5>좋아요 목록</h5>
-		<button type="button">패키지</button>
-		<button type="button">특산물</button>
-		<button type="button">여행기록</button>
+		<button type="button" id="mt">여행메이트</button>
+		<button type="button" id="tr">여행기록</button>
 		<table>
 			<thead>
 				<tr>
-					<th><input type="checkbox"></th>
-					<th>상품 이름</th>
-					<th>분류</th>
-					<th>가격</th>
+					<th>이름</th>
+					<th>기간</th>
 				</tr>
 			</thead>
 			<tbody>
 				<th:block th:each="li : ${list}">
-					<tr class="list">
-						<td><input type="checkbox"></td>
-						<td th:text="${li.title}"></td>
-						<td th:text="${li.type}"></td>
-						<td th:text="${li.price}"></td>
+					<tr class="list" th:onclick="|location.href='@{/tripRecordInfo(postId=${li.postId})}'|">
+						<td th:text="${li.tripTitle}"></td>
+						<td th:text="${li.startDay + '~'+ li.endDay}"></td>
 					</tr>
 				</th:block>
 			</tbody>

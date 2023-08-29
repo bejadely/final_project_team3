@@ -16,14 +16,10 @@ public class LikeServiceImpl implements LikeService {
 	LikeMapper likeMapper;
 
 	@Override
-	public int paCountInfo(String memberId) {
-		return likeMapper.paCount(memberId);
+	public int mtCountInfo(String memberId) {
+		return likeMapper.mtCount(memberId);
 	}
 
-	@Override
-	public int spCountInfo(String memberId) {
-		return likeMapper.spCount(memberId);
-	}
 
 	@Override
 	public int trCountInfo(String memberId) {
@@ -31,13 +27,8 @@ public class LikeServiceImpl implements LikeService {
 	}
 
 	@Override
-	public List<LikeVO> paAllLikeInfo(PagingVO pagingVO) {
-		return likeMapper.paAllLike(pagingVO);
-	}
-
-	@Override
-	public List<LikeVO> spAllLikeInfo(PagingVO pagingVO) {
-		return likeMapper.spAllLike(pagingVO);
+	public List<LikeVO> mtAllLikeInfo(PagingVO pagingVO) {
+		return likeMapper.mtAllLike(pagingVO);
 	}
 
 	@Override
