@@ -20,14 +20,14 @@ function handleClick(data) {
 
     // 클릭 이벤트 핸들러 자동 실행
     $('#pakage').click(function() {
-    	var postId = 'pkg';
+    	var postId = 'PKG';
         var data = { postId: postId }
         handleClick(data);
         
     });
 
     $('#mul').click(function() {
-    	var postId = 'spe';
+    	var postId = 'SPE';
         var clickedPage = '1';
         var data = { postId: postId }
         handleClick(data);
