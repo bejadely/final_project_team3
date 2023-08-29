@@ -1,6 +1,7 @@
 package com.trip.finalProject.cart.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.trip.finalProject.common.PagingVO;
 
@@ -14,6 +15,7 @@ public interface CartService {
 	public int insertCartInfo(CartVO cartVO);
 	//삭제
 	public int deleteCartInfo(String postId);
-	//
+	//수량 업데이트
+	public Map<String, Object> getQuanUpdate(CartVO cartVO);
 
 }

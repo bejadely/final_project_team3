@@ -18,6 +18,9 @@ public interface CartMapper {
 	//등록
 	public int insertCartInfo(CartVO cartVO);
 	
+	//수량 업데이트
+	public int quanUpdate(CartVO cartVO);
+	
 	//삭제
 	public int deleteCartInfo(String postId);
 

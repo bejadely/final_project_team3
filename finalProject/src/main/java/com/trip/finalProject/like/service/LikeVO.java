@@ -10,20 +10,18 @@ public class LikeVO {
 	private String likeId;
 	private String memberId;
 	private String postId;
-	//package_regist
-	private String name;
-	private String locationId;
-	private String tourTheme;
-	private Date startDate;
-	private Date endDate;
-	private String completion;
+
 	//trip_record
 	private String tripTitle;
 	private Date startDay;
 	private Date endDay;
-	//specialties_resigt
-	private String title;
-	private String type;
-	private int price;
+	
+	//mate_recruit
+	private String mateTitle;
+	private Integer applyNum;
+	private String complition;
+	private Date deadline;
+	private String tripArea;
+
 	
 }

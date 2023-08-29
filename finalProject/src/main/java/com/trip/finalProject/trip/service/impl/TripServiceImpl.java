@@ -135,6 +135,12 @@ public class TripServiceImpl implements TripService {
 		return tripVO;
 	}
 	
+	//여행메모 데이터 조회
+	@Override
+	public List<TripVO> getMemoData(TripVO tripVO) {
+		return tripMapper.selectMemoData(tripVO);
+	}
+	
 	//여행기록 삭제
 	@Override
 	public int DeleteTripInfo(int postId) {
@@ -142,6 +148,13 @@ public class TripServiceImpl implements TripService {
 		
 		return result;
 	}
+
+	//여행경로 데이터 조회
+	@Override
+	public List<TripVO> getMapData(TripVO tripVO) {
+		return tripMapper.selectMapData(tripVO);
+	}
+
 
 	
 
