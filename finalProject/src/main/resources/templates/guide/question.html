@@ -19,6 +19,7 @@ table, th,td {
 	border: none;
 	text-align: center;
 	margin: 0 auto;
+	display:none;
 }
 
 }
@@ -26,8 +27,6 @@ table, th,td {
 <script>
 $(document).ready(function() {
 	let list = [];
-	
-    $('.hidden').attr('style', 'display:none;');
     
     $('.answer').click(function(){
         var tr = $(this).closest('tr'); // 부모 <tr> 요소 선택

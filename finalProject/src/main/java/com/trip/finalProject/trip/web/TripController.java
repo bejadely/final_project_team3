@@ -52,7 +52,7 @@ public class TripController {
 		model.addAttribute("tripList", tripList);
 		model.addAttribute("paging", pagingVO);
 		
-		return "myPage/myPageTrip";
+		return "myPage/trip/myPageTrip";
 	}
 	
 	//여행기록 개인 조회/임시저장 - myPgae(재운)
@@ -67,7 +67,7 @@ public class TripController {
 		model.addAttribute("tripList", tripList);
 		model.addAttribute("paging", pagingVO);
 		
-		return "myPage/myPageNotTrip";
+		return "myPage/trip/myPageNotTrip";
 	}
 	
 	//여행기록 개인 조회/완료된 여행 - myPgae(재운)
@@ -82,7 +82,7 @@ public class TripController {
 		model.addAttribute("tripList", tripList);
 		model.addAttribute("paging", pagingVO);
 		
-		return "myPage/myPageComTrip";
+		return "myPage/trip/myPageComTrip";
 	}
 	
 	//여행기록 공개 설정 업데이트
@@ -107,7 +107,18 @@ public class TripController {
 	@GetMapping("tripRecordInfo")
 	public String tripRecordInfo(TripVO tripVO, Model model) {
 		TripVO findVO = tripService.getTripInfo(tripVO);
+		
+		//여행 기록 데이터
 		model.addAttribute("tripInfo", findVO);
+		
+		//여행 경로 데이터
+		List<TripVO> mapInfo = tripService.getMapData(tripVO);
+		model.addAttribute("mapInfo", mapInfo);
+
+		//여행 메모 데이터
+		List<TripVO> memoInfo = tripService.getMemoData(tripVO);
+		model.addAttribute("memoInfo", memoInfo);
+		
 		return "trip/tripRecordInfo";
 	}
 

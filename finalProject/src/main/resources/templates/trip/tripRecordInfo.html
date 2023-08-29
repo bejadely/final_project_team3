@@ -17,23 +17,167 @@
 </head>
 <body>
 	<div layout:fragment="content">
-		<div>
-			<label id="writerId">작성자아이디</label>
-			<input type="text" id="writerId" th:value="${tripInfo.writerId}">
+		<div style="text-align: center;">
+			<h3>[[${tripInfo.writerId}]] 님의 [[${tripInfo.tripTitle}]] 여행 일정</h3>
+			<br>
+			<div>
+				<h5>여행일자</h5>
+				[[${#dates.format(tripInfo.startDay, 'yy년 MM월 dd일')}]] ~ [[${#dates.format(tripInfo.endDay, 'yy년 MM월 dd일')}]]
+			</div>
+			<div class="map_wrap" style="height: 800px; width: 700px; border: solid 1px;">
+         		<div id="map"style="width: 100%; height: 100%; position: relative; overflow: hidden;">
+         		</div>
+         	</div>
+         	<h5>여행 경로</h5>
+			<div th:each="mp : ${mapInfo}">
+				순번 : [[${mp.mapNo}]] 장소명 : [[${mp.mapName}]]
+				<h3> ----------</h3>
+			</div>
+			<h5>여행 메모</h5>
+			
+			
+			
+			<button type="button" onclick="location.href='/tripRecordList'">목록으로</button>
 		</div>
-		<div>
-			<label id="tripTitle">여행타이틀</label>
-			<input type="text" id="tripTitle" th:value="${tripInfo.tripTitle}">
-		</div>
-		<div>
-			<label id="startDay">여행시작일</label>
-			<input type="text" id="startDay" th:value="${#dates.format(tripInfo.startDay, 'yy년 MM월 dd일')}">
-		</div>
-		<div>
-			<label id="endDay">여행끝일</label>
-			<input type="text" id="endDay" th:value="${#dates.format(tripInfo.endDay, 'yy년 MM월 dd일')}">
-		</div>
-		<button type="button" onclick="location.href='tripRecordList'">목록으로</button>
+		[[${tripInfo.tripArea}]]
+	
+		<script th:inline="javascript">
+			var markers = [];
+			var mapping = [];
+			var polyline = null;
+			var markerPosition ;
+			
+			var center
+			// 지도를 표시
+			var mapContainer = document.getElementById('map'), mapOption = {
+	               // 최초로 생성된 지도의 중심좌표 
+	               //지금은 대구로 되어있지만 맵핑 등록기능 구현 완료 시 여행계획 등록시 선택한 지역의 시청 좌표값으로 변경할 예정
+	               center : new kakao.maps.LatLng(35.871159972672, 128.60183648521),
+	               // 지도의 확대 레벨
+	               level : 7
+	            };
+			// 지도 생성 
+            var map = new kakao.maps.Map(mapContainer, mapOption);
+			
+			
+         // 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
+            function addMarker(position, idx, title) {
+               var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+               imageSize = new kakao.maps.Size(36, 37), // 마커 이미지의 크기
+               imgOptions = {
+                  spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+                  spriteOrigin : new kakao.maps.Point(0, (idx * 46) + 10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+                  offset : new kakao.maps.Point(13, 37)
+               // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+               }, markerImage = new kakao.maps.MarkerImage(imageSrc,
+                     imageSize, imgOptions), marker = new kakao.maps.Marker(
+                     {
+                        position : position, // 마커의 위치
+                        image : markerImage
+                     });
+
+               marker.setMap(map); // 지도 위에 마커를 표출합니다
+               markers.push(marker); // 배열에 생성된 마커를 추가합니다
+
+               return marker;
+            }
+         
+         	//DB에서 가져온 map 데이터
+         	
+         	var mapList = [[${mapInfo}]];
+         	
+         	console.log(mapList);
+         	
+         	var first_positions = [];
+         	
+         	//여행 경로 데이터에서 받아온 장소 데이터를 통해 지도위에 마커 생성
+         	$.each(mapList, function (index, obj){
+         		
+         		let object = {};
+         		
+         		object["content"] = obj.mapName;
+         		object["latlng"] = new kakao.maps.LatLng(obj.mapLat, obj.mapLng);
+         		
+         		first_positions.push(object);
+         		
+         	});
+         	
+            for (var i = 0; i < first_positions.length; i++) {
+
+                // 마커를 생성합니다
+
+                var marker = new kakao.maps.Marker({
+
+                   map : map, // 마커를 표시할 지도
+
+                   position : first_positions[i].latlng
+                // 마커의 위치// 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+
+                });
+
+                // 마커에 표시할 인포윈도우를 생성합니다
+
+                var infowindow = new kakao.maps.InfoWindow({
+
+                   content : first_positions[i].content, // 인포윈도우에 표시할 내용
+
+                   removable : true
+
+                });
+
+                kakao.maps.event.addListener(marker, 'click', marker_click(
+                      map, marker, infowindow));
+
+             }
+
+             function marker_click(map, marker, infowindow) {
+
+                return function() {
+
+                   infowindow.open(map, marker);
+
+                };
+
+             }
+             
+           //선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+
+           
+          	var first_polyline = []
+         	//여행 경로 데이터에서 받아온 장소 데이터를 통해 마커 사이에 선을 생성
+			$.each(mapList, function (index, obj){
+         		
+         		let object2 = {};
+         		
+         		object2 = new kakao.maps.LatLng(obj.mapLat, obj.mapLng),
+         		
+         		first_polyline.push(object2);
+         		
+         	});
+           
+
+             // 지도에 표시할 선을 생성합니다
+
+             var first_linePath = new kakao.maps.Polyline({
+
+                path : first_polyline, // 선을 구성하는 좌표배열 입니다
+
+                strokeWeight : 3, // 선의 두께 입니다
+
+                strokeColor : 'black', // 선의 색깔입니다
+
+                strokeOpacity : 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+
+                strokeStyle : 'solid' // 선의 스타일입니다
+
+             });
+             
+			
+            // 선 생성 
+            first_linePath.setMap(map);
+            // 지도에 마커를 표시합니다
+            marker.setMap(map);
+		</script>	
 	</div>
 </body>
 </html>
