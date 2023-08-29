@@ -82,20 +82,26 @@ ClassicEditor
 		$("button[type='submit']").on("click",function(event){
 				
 			event.preventDefault();
+			
+			var sigunguCode = $("#location > option:selected").attr("value1");
+			var areaCode = $("#location > option:selected").attr("value2");
+			str+=`<input tpye='text' name='sigunguCode' value='${sigunguCode}'>
+				 <input type ='text'name = 'areaCode' value='${areaCode}'>`
+			console.log(sigunguCode);
+			console.log(areaCode);
 	
 			const data = editor.getData();
 			
 			let objData = serializeObject();
-			
+			console.log(objData);
 			//sconsole.log(data);
-			const { tourTheme, name, price, startDate, endDate, deadlineDate, maxReservation } = objData;
+			const { title,  price, writerId, deadlineDate, maxReservation } = objData;
 			var combinedData={
 				content: data,
-				tourTheme: tourTheme,
-		        name: name,
-		        price: price,
-		        startDate: startDate,
-		        endDate: endDate,
+				title: title,
+				sigunguCode: sigunguCode,
+				areaCode: areaCode,
+		        writerId: writerId,
 		        deadlineDate: deadlineDate,
 		        maxReservation: maxReservation
 			};
@@ -104,6 +110,7 @@ ClassicEditor
 			var str="";
 			$(".uploadResult ul li").each(function(i,obj){
 				var jobj = $(obj);
+				
 				str += "<input type ='hidden' name='attachList["+i+"].originImg' value='"+jobj.data("filename")+"'>";
 				str += "<input type ='hidden' name='attachList["+i+"].savedImg' value='"+jobj.data("path")+"'>";
 				str += "<input type ='hidden' name='attachList["+i+"].imgType' value='"+jobj.data("type")+"'>";
@@ -112,6 +119,30 @@ ClassicEditor
 			});
 			str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";
 			
+			/* $(".specialtiesOption > input[type='text']").each(function(i,obj){
+				
+				str+=`<input type = "text" 'name=optionList[i].type' value='obj.specialityType'>
+					<input type = "text" 'name=optionList[i].price' value='obj.price'>`;
+			}); */
+			/* $("#specialityType").each(function(i,obj){		
+				var type = $(obj).val();
+				str+=`<input type = 'text' name='optionList[i].type' value='${type}'>`;
+			});
+			$("#price").each(function(i,obj){
+				var price = $(obj).val();
+				str+=`<input type = 'text' name='optionList[i].price' value='${price}'>`;
+			}); */
+			
+			var specialtiesOption = $(".specialtiesOption");
+
+			$(".specialityType", specialtiesOption).each(function(i, typeInput) {
+			    var type = $(typeInput).val();
+			    var priceInput = $(typeInput).closest(".specialtiesOption").find(".price").eq(i);
+			    var price = $(priceInput).val();
+
+			    str += `<input type='text' name='optionList[${i}].type' value='${type}'>
+			            <input type='text' name='optionList[${i}].price' value='${prisce}'>`;
+			});
 			
 			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
 			
@@ -123,13 +154,10 @@ ClassicEditor
 			$.each(filenames,function(i,obj){
 				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
 			});
-			var sigunguCode = $("#location > option:selected").attr("value1");
-			var areaCode = $("#location > option:selected").attr("value2");
-			console.log(sigunguCode);
-			console.log(areaCode);
+			
 			formObj.append(str);
-			document.getElementById('editorForm').action = "register";
-			//document.getElementById('editorForm').submit();
+			document.getElementById('editorForm').action = "specialtiesInsert";
+			document.getElementById('editorForm').submit();
 			
 			
 			
@@ -237,7 +265,46 @@ ClassicEditor
 		});
 		uploadResult.append(str);
 	}
+	$(document).ready(function() {
+		$('.optionInsert').on('click', insertOption);
+		//$('.optionDelete').on('click', authReject);
+	});
 	
+	// 옵션 추가 버튼
+	function insertOption(e){
+		
+		e.stopPropagation();
+		
+		Swal.fire({
+		      title: '특산물 옵션 추가',
+		      html:`<label>옵션명</label><input type="text" id="optionType"><br>
+					<label>가격</label><input type="number" id="optionPrice"><br>`,
+		      showCancelButton: true,
+		      confirmButtonColor: '#3085d6',
+		      cancelButtonColor: '#d33',
+		      confirmButtonText: '추가',
+		      cancelButtonText: '취소',
+		      reverseButtons: true,
+		      
+	    }).then((result) => {
+	      if (result.isConfirmed) {
+	    	  var specialtiesOption = $(".specialtiesOption");  
+	      
+	    	  //sweetalert2에서 입력된 값을 가지고옴	
+		      const optionType = document.getElementById('optionType').value;
+			  const optionPrice = document.getElementById('optionPrice').value;
+			  const optionId = 'option_' + new Date().getTime(); //고유 식별자 생성
+			  
+		      let form = document.getElementById("editorForm");
+			  let str="";
+			  str +=`<input type="checkbox" class="deleteCheckbox" data-optionid="${optionId}" >
+			  		<label>옵션</label><input type="text" id="specialityType" name="specialityType" value="${optionType}" readonly>
+				  	<label>가격</label><input type="text" id="price" name="price" value="${optionPrice}"readonly><br>`;			  
+			  specialtiesOption.append(str);
+	      }
+	    })
+		
+	};
 	
 });
 </script>
@@ -273,12 +340,12 @@ ClassicEditor
 				<label>특산물 명</label>
 				<input type="text" placeholder="특산물 명" name=title id="title"/>
 			</div>
-			<div id="test" class="modal" style="height: 600px;  width: 500px; text-align: center;">
-				<form>
-					<h1></h1>
-				</form>
+			<div class="specialtiesOption">
 			</div>
-			<a href="#test" rel="modal:open" class="primary-btn">여행기록 등록</a>
+			<div>
+				<button type="button" class="optionInsert" name="optionInsert">옵션추가</button>  
+				<button type="button" class="optionDelete" name="optionDelete">옵션삭제</button>
+			</div>
 			
 		</div>
 		<h5>패키지 설명</h5>
