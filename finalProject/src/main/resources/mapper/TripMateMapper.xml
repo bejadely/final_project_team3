@@ -7,7 +7,7 @@
 	<select id="selectAllTripMate" resultType="TripMateVO">
 		SELECT *
 		FROM mate_recruit m LEFT OUTER JOIN 
-			 attached_file a ON m.post_id = a.post_id
+     		 attached_file a ON m.post_id = a.post_id
 		ORDER BY m.post_id DESC
 	</select>
 	
@@ -23,10 +23,21 @@
 			   mate_expense,
 			   mate_max,
 			   apply_num,
-			   hit
+			   hit,
+			   trip_area
 		FROM mate_recruit
 		WHERE post_id = #{postId}
 	</select>
+	
+	<!-- 여행 메이트 글 조회수 업데이트 -->
+	<update id="updateMateRecruitHit" parameterType="TripMateVO">
+		UPDATE mate_recruit
+		<set>
+			hit = NVL((hit), 0) + 1
+		</set>
+		WHERE post_id = #{postId}
+	</update>
+	
 	
 	<!-- 여행메이트 게시글 등록 -->
 	<insert id="insertEditor" parameterType="TripMateVO">
@@ -72,6 +83,11 @@
 		
 	</insert>
 	
+	<!-- 여행메이트 게시글 삭제 -->
+	<delete id="deleteTripMateRecruit" parameterType="TripMateVO">
+		DELETE FROM mate_recruit
+		WHERE post_id = #{postId}
+	</delete>
 	
 	<!-- 여행 메이트 신청 (등록된 게시글에 대한 여행메이트 신청) -->
 	<insert id="insertTripMateApply" parameterType="TripMateVO">
@@ -99,4 +115,21 @@
 							, 'a1'
 						)
 	</insert>
+	
+	<!-- 여행 메이트 신청시 게시글의 신청자 수 update -->
+	<update id="updateMateRecruitApplyNum" parameterType="TripMateVO">
+		UPDATE mate_recruit
+		<set>
+			APPLY_NUM = NVL((APPLY_NUM), 0) + 1
+		</set>
+		WHERE post_id = #{postId}
+	</update>
+	
+	<!-- 여행 메이트 게시글의 신청자 수 조회 -->
+	<select id="selectMateRecruitApplyNum" resultType="TripMateVO">
+		SELECT apply_num, mate_max
+		FROM mate_recruit
+		WHERE post_id = #{postId}
+	</select>
+	
 </mapper>

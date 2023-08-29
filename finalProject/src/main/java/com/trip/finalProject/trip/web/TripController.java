@@ -107,7 +107,18 @@ public class TripController {
 	@GetMapping("tripRecordInfo")
 	public String tripRecordInfo(TripVO tripVO, Model model) {
 		TripVO findVO = tripService.getTripInfo(tripVO);
+		
+		//여행 기록 데이터
 		model.addAttribute("tripInfo", findVO);
+		
+		//여행 경로 데이터
+		List<TripVO> mapInfo = tripService.getMapData(tripVO);
+		model.addAttribute("mapInfo", mapInfo);
+
+		//여행 메모 데이터
+		List<TripVO> memoInfo = tripService.getMemoData(tripVO);
+		model.addAttribute("memoInfo", memoInfo);
+		
 		return "trip/tripRecordInfo";
 	}
 
