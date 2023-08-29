@@ -3,7 +3,9 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="@{layouts/admin_layout}">
-	
+<head>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@alphardex/aqua.css/dist/aqua.min.css">
+</head>
 <!-- Content -->
 <div layout:fragment="content">
 		<div class="container">
@@ -80,7 +82,7 @@
 					<input type="hidden" name="memberId" th:value="*{memberId}">
 				</div>
 				<div align="center">
-					<button type="submit" class="feature-btn">수정하기</button>
+					<button type="submit" class="btn btn-primary btn-ghost">수정하기</button>
 					<button type="button" class="feature-btn">탈퇴처리</button>
 				</div>
 			</form>

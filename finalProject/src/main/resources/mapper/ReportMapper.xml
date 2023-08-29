@@ -15,12 +15,29 @@
   		<!-- 신고 미처리 내역 전체조회(작업중) -->
   		<select id="selectAllNewReport" parameterType="PagingVO">
   		  SELECT *
-		  FROM (SELECT ROWNUM rn, a.*
-			        FROM(SELECT *
-				           FROM report
-				          WHERE result = 'P1'
- 		  			   ORDER BY report_date DESC) a )
-		  WHERE rn BETWEEN #{start} AND #{end}
+		    FROM (SELECT ROWNUM rn, a.*
+		              FROM(SELECT r.*, m.punish_count
+		                     FROM report r JOIN member m
+		                       ON r.punished_id = m.member_id
+		                    WHERE result = 'P1'
+		                 ORDER BY r.report_date DESC) a )
+		    WHERE rn BETWEEN #{start} AND #{end}
+  		</select>
+  		
+  		<!-- 신고 내역 상세조회 -->
+  		<select id="getReportDetail" parameterType="ReportVO">
+  			SELECT r.report_id
+		         , r.reporter_id
+		         , r.post_id
+		         , r.punished_id
+		         , r.report_date
+		         , r.report_reason
+		         , r.content
+		         , r.result
+		         , m.punish_count
+			  FROM report r JOIN member m
+			    ON r.punished_id = m.member_id
+			 WHERE r.report_id = #{reportId}
   		</select>
   		
   		

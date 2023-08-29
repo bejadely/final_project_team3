@@ -16,6 +16,6 @@ public class ReportVO {
 	private String result; // 처리여부
 	
 	//제재횟수를 확인하기 위한 칼럼
-	private Integer punishCount;
+	private Integer punishCount; //피신고자의 제재횟수
 	
 }
