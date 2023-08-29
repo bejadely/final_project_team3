@@ -26,7 +26,7 @@ public class PackageController {
 	@Autowired
 	AttachedFileService attachedFileService;
 	
-	@GetMapping("packageInfo")
+	@GetMapping("/packageInfo")
 	public String getpackageInfo(Model model, PackageVO packageVO) {
 		PackageVO findVO = packageService.packageInfo(packageVO);
 
@@ -34,22 +34,27 @@ public class PackageController {
 		return "package/packageInfo";
 	}
 	
+	//ck-editor
+	@GetMapping("packageInsertForm")
+	public String package2() {
+		return "package/packageInsertForm";
+	}
 
 	
-	@PostMapping("register")
+	@PostMapping("/register")
 	public ModelAndView register(PackageVO vo) {	
 		packageService.register(vo);
 		ModelAndView mv = new ModelAndView("redirect:/packageList");
 		return mv;
 	}
 	
-	@GetMapping("packageList")
+	@GetMapping("/packageList")
 	public String getPackageList(Model model) {
 		model.addAttribute("packageList",packageService.getPackageList());
 		return "package/packageList";
 	}
 	
-	@GetMapping("getAttachList")
+	@GetMapping("/getAttachList")
 	@ResponseBody
 	public List<AttachedFileVO> getAttachList(AttachedFileVO vo){
 		System.out.println(vo.getPostId());
