@@ -2,13 +2,13 @@ package com.trip.finalProject.notice.service;
 
 import java.util.List;
 
+
 import com.trip.finalProject.common.PagingVO;
 
 
 public interface NoticeService {
 	
 	
-	public NoticeVO insertpost(NoticeVO noticeVO) throws Exception; 
 	
 	
 	//public List<NoticeVO> boardSelect(NoticeVO vo);
@@ -25,4 +25,9 @@ public interface NoticeService {
 	public List<NoticeVO> SelectAllNoticeList(PagingVO pagingVO);
 	//게시글 수 카운트
 	public int listCount();
+	//게시글 상세조회 
+	public NoticeVO getNoticeDetail(NoticeVO vo);
+	//게시글 수정적용
+	public String modifyNoticeInfo(NoticeVO noticeVO);
+	
 }
