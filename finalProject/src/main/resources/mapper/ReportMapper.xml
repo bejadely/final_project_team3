@@ -40,5 +40,12 @@
 			 WHERE r.report_id = #{reportId}
   		</select>
   		
+  		<!-- 신고 처리결과 변경 -->
+  		<update id="updateResult" parameterType="ReportVO">
+  			UPDATE report
+			   SET result = 'P2'
+			 WHERE report_id = #{reportId};
+  		</update>
+  		
   		
   </mapper>

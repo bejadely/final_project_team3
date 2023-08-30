@@ -62,6 +62,7 @@ public class ReportServiceImpl implements ReportService {
 			
 			// 2. 신고현황에 처리내역 변경
 			
+			
 			// 3. 제재이력에 이력 추가
 			
 			// 4. 신고당한 게시글 삭제
