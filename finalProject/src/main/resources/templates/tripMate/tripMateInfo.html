@@ -2,61 +2,162 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="@{layouts/default_layout}">
+	layout:decorate="@{layouts/default_layout}"
+	layout:fragment="content">
 <head>
 <meta charset="UTF-8">
-<meta name="description" content="Azenta Template">
-<meta name="keywords" content="Azenta, unica, creative, html">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
 <title>여행 메이트 상세 조회</title>
-<!-- Google Font -->
-<link
-	href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap"
-	rel="stylesheet">
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css"></th:block>
+<!-- index.html 고유 스크립트 추가 -->
+<th:block layout:fragment="script"></th:block>
+<style>
+body {
+	background-color: #fff;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+	color: #333;
+}
+
+h1 {
+	color: #333;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+th, td {
+	padding: 10px;
+	text-align: left;
+	border: 1px solid #ddd;
+}
+
+th {
+	background-color: #f5f5f5;
+}
+
+textarea {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ddd;
+	resize: none;
+}
+
+button {
+	background-color: #333;
+	color: #fff;
+	border: none;
+	padding: 10px 20px;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: #222;
+}
+
+p {
+    padding: 5px;
+    margin-bottom: 5px;
+    margin-left : 10px;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+	margin: 10px;
+	padding: 10px;
+}
+    .report-form {
+        display: inline;
+        background-color: #f2f2f2;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .report-form label {
+        font-weight: bold;
+    }
+
+    .report-form select {
+        width: 200px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    .report-form input[type="submit"] {
+        background-color: #333;
+        color: white;
+        padding: 8px 16px;
+        border: 1px solid black;
+        border-radius: 0;
+        cursor: pointer;
+    }
+
+    .report-form input[type="submit"]:hover {
+        background-color: #222;
+    }
+</style>
 </head>
 <body>
-	<div layout:fragment="content" style="text-align: center;">
-		<div>
-			<label for="writerId">작성자 : </label>
-			[[${tripMateInfo.writerId}]]
-		</div>
-		<div>
-			<label for="mateTitle">여행타이틀 : </label>
-			[[${tripMateInfo.mateTitle}]]
-		</div>
-		<div>
-			<label for="tripArea">여행 지역 : </label>
-			[[${tripMateInfo.tripArea}]]
-		</div>
-		<div>
-			<label for="">여행 기간 : </label>
-			[[${#dates.format(tripMateInfo.startDay, 'yy년 MM월 dd일')}]] ~ [[${#dates.format(tripMateInfo.endDay, 'yy년 MM월 dd일')}]]
-		</div>
-		<div th:utext="${tripMateInfo.mateContent}">
-		</div>
-		<div>
-			<label for="mateMax">모집 인원 : </label>
-			[[${tripMateInfo.mateMax}]]
-			<br>
-			<label for="applyNum">신청 인원 : </label>
-			[[${tripMateInfo.applyNum}]]
-		</div>
-		
-		<button type="button" class="primary-btn" onclick="location.href='tripMateList'">목록으로</button>
+	<div align="center">
+		<br>
+		<br>
+		<h1>여행 메이트 글 상세보기</h1>
+		<br>
+	</div>
+	<div id="ls2" align="center">
+		<table border="1" style="width: 80%;">
+			<tr>
+				<th width="70">여행 지역</th>
+				<td width="50" align="center" th:text="${tripMateInfo.tripArea}" ></td>
+				<th width="100">작성자</th>
+				<td width="150" align="center" th:text="${tripMateInfo.writerId}"></td>
+				<th width="100">등록일자</th>
+				<td width="150" align="center" th:text="${#dates.format(tripMateInfo.writeDate, 'yy년 MM월 dd일 hh:mm:ss')}"></td>
+				<th width="100">조회수</th>
+				<td width="70" align="center" th:text="${tripMateInfo.hit}"></td>
+			</tr>
+			<tr>
+				<th colspan="2">여행 타이틀</th>
+				<td colspan="6" align="center" th:text="${tripMateInfo.mateTitle}">
+				</td>
+			</tr>
+			<tr>
+				<th colspan="1">여행 기간</th>
+				<td colspan="3" align="center">[[${#dates.format(tripMateInfo.startDay, 'yy년 MM월 dd일')}]] ~ [[${#dates.format(tripMateInfo.endDay, 'yy년 MM월 dd일')}]]</td>
+				<th width="100">모집 인원</th>
+				<td width="110" align="center" th:text="${tripMateInfo.mateMax}"></td>
+				<th width="100">신청 인원</th>
+				<td width="110" align="center" th:text="${tripMateInfo.applyNum}"></td>
+			</tr>
+			<tr>
+				<td colspan="8">
+				<th:textarea rows="30" th:utext="${tripMateInfo.mateContent}" readonly ></th:textarea>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div align="center">
 		<form id="sendData" action="tripMateApplyForm" method="post">
 			<input type="hidden" name="postId" th:value="${tripMateInfo.postId}">
-			<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" 
-			type="submit" class="primary-btn">신청하기</button>
+			<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="submit" class="primary-btn">
+			신청하기</button>&nbsp;&nbsp;
+			<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="button" class="primary-btn" 
+			th:onclick="|location.href='@{/mateRecruitReportForm(postId=${tripMateInfo.postId})}'|">신고하기</button>&nbsp;&nbsp;
+			<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button" class="primary-btn" 
+			th:onclick="|location.href='@{/mateRecruitUpdateForm(postId=${tripMateInfo.postId})}'|">수정</button>&nbsp;&nbsp;
+			<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button" class="primary-btn" 
+			th:onclick="|location.href='@{/mateRecruitDelete(postId=${tripMateInfo.postId})}'|">삭제</button>&nbsp;&nbsp;
+			<button type="button" class="primary-btn" onclick="location.href='tripMateList'">목록으로</button>
 		</form>
-		<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="button" class="primary-btn" 
-		th:onclick="">신고하기</button>
-		<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button" class="primary-btn" 
-		th:onclick="|location.href='@{/mateRecruitDelete(postId=${tripMateInfo.postId})}'|">수정</button>
-		<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button" class="primary-btn" 
-		th:onclick="|location.href='@{/mateRecruitDelete(postId=${tripMateInfo.postId})}'|">삭제</button>
 	</div>
-	<script>
+	<script th:inline="javascript">
+	
 	</script>
 </body>
 </html>
