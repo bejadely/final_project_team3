@@ -155,6 +155,12 @@ public class TripServiceImpl implements TripService {
 		return tripMapper.selectMapData(tripVO);
 	}
 
+	//여행경로 삭제
+	@Override
+	public int deleteTripMapping(TripVO tripVO) {
+		return tripMapper.deleteTripMapping(tripVO);
+	}
+
 
 	
 
