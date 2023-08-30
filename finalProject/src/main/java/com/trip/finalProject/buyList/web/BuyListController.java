@@ -21,7 +21,7 @@ public class BuyListController {
 	BuyListService buyService;
 	
 	// 여행메이트 전체 조회
-		@GetMapping("common/buyPkList")
+		@GetMapping("/common/buyPkList")
 		public String paList(Model model, 
 				@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
 				@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
@@ -38,7 +38,7 @@ public class BuyListController {
 		}
 		
 		// 여행계획 전체 조회
-		@GetMapping("common/mySpList")
+		@GetMapping("/common/buySpList")
 		public String trList(Model model, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
 				@RequestParam(value = "cntPerPage", defaultValue = "12") Integer cntPerPage) {
 			String memberId = "1";

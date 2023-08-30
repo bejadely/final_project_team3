@@ -11,10 +11,16 @@ public interface BuyListService {
 	//특산물 조회(카운트)
 	public int spCountInfo(String memberId);
 
-	//특산물 조회
+	//패키지 조회
 	public List<BuyListVO> pkAllLikeInfo(PagingVO pagingVO);
 	
-	//여행기록 조회
+	//특산물 조회
 	public List<BuyListVO> spAllLikeInfo(PagingVO pagingVO);
+	
+	//패키지 상품 상세조회
+	public BuyListVO selectPkInfo(BuyListVO buyVO);
+	
+	//특산물 상품 상세조회
+	public BuyListVO selectSpInfo(BuyListVO buyVO);
 
 }
