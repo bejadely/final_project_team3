@@ -40,7 +40,7 @@
 			 WHERE r.report_id = #{reportId}
   		</select>
   		
-  		<!-- 신고 처리결과 변경 -->
+  		<!-- 신고 제재처리로 상태값 변경 -->
   		<update id="updateResult" parameterType="ReportVO">
   			UPDATE report
 			   SET result = 'P2'

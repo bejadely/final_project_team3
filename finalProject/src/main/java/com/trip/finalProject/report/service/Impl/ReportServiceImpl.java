@@ -61,9 +61,10 @@ public class ReportServiceImpl implements ReportService {
 			adminMemberMapper.plusPunishCount(reportVO.getPunishedId());
 			
 			// 2. 신고현황에 처리내역 변경
-			
+			reportMapper.updateResult(reportVO);
 			
 			// 3. 제재이력에 이력 추가
+			
 			
 			// 4. 신고당한 게시글 삭제
 			
