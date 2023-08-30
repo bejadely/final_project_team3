@@ -1,8 +1,6 @@
 package com.trip.finalProject.tripMate.web;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -35,9 +33,13 @@ public class TripMateController {
 	//여행 메이트 게시글 상세 조회
 	@GetMapping("/tripMateInfo")
 	public String tripMateInfo(TripMateVO tripMateVO, Model model) {
-		TripMateVO findVO = tripMateService.getTripMateInfo(tripMateVO);
+		//조회수 카운트
 		tripMateService.updateMateRecruitHit(tripMateVO);
+		
+		TripMateVO findVO = tripMateService.getTripMateInfo(tripMateVO);
+		
 		model.addAttribute("tripMateInfo", findVO);
+		
 		return "tripMate/tripMateInfo";
 	}
 	

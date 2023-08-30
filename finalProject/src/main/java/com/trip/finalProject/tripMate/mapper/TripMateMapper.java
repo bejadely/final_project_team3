@@ -20,7 +20,7 @@ public interface TripMateMapper {
 	//여행 메이트 게시글 삭제
 	public int deleteTripMateRecruit(TripMateVO tripMateVO);
 	
-	//여행 메이트 게시글 삭제 시 해당 게시글과 관련된 첨부파일 테이블 데이터 삭제
+	//여행 메이트 게시글 삭제시 해당 게시글과 관련된 첨부파일 테이블 데이터 삭제
 	public int deleteAttachedFile(TripMateVO tripMateVO);
 	
 	//여행 메이트 게시글 수정
@@ -32,7 +32,10 @@ public interface TripMateMapper {
 	//여행 메이트 신청 (등록된 게시글에 대한 여행메이트 신청)
 	public int insertTripMateApply(TripMateVO tripMateVO); 
 	
-	//여행 메이트 신청 시 게시글의 신청자 수 업데이트
+	//여행 메이트 신청시 작성자에게 알림
+	public int sendAlert(TripMateVO tripMateVO);
+	
+	//여행 메이트 신청시 게시글의 신청자 수 업데이트
 	public int updateMateRecruitApplyNum(TripMateVO tripMateVO);
 	
 	//여행 메이트 게시글의 현재 신청자 수 조회
