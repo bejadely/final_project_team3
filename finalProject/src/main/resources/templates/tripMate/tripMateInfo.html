@@ -156,8 +156,48 @@ table {
 			<button type="button" class="primary-btn" onclick="location.href='tripMateList'">목록으로</button>
 		</form>
 	</div>
-	<script th:inline="javascript">
 	
+	
+	
+	
+	
+<!-- 댓글  -->
+<div class="collapse" id="reply_card">
+    <section class="modal-section">
+        <div class="card card-body">
+            <!-- 댓글 목록 -->
+            <div class="reply-list reply-list${tmp.no }">
+                <!-- 댓글이 목록이 들어가는 곳 -->
+            </div>
+            <!-- 댓글 작성 => 로그인한 상태여야만 댓글작성 칸이 나온다. -->
+            <th:if test="${not empty sessionScope.nick }">
+                <div class="row reply_write">
+                    <div class="col-1">
+                        <a href="other_profile.do?other_nick=${tmp.writer }">
+                            <img id="write_reply_profileImage"
+                                src="./upload/profile/${sessionScope.profile }" />
+                        </a>
+                    </div>
+                    <div class="col-8" class="input_reply_div">
+                        <input class="w-100 form-control" id="input_reply${tmp.no}"
+                            type="text" placeholder="댓글입력...">
+                    </div>
+                    <div class="col-3 ">
+                        <button type="button" idx="${tmp.no }"
+                            class="btn btn-success mb-1 write_reply">댓글&nbsp;달기</button>
+                    </div>
+                </div>
+            </th:if>
+        </div>
+    </section>
+</div>
+	
+	
+	
+	
+	
+	<script th:inline="javascript">
+
 	</script>
 </body>
 </html>

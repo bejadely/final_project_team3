@@ -10,16 +10,16 @@ import lombok.Data;
 public class PostCommentVO {
 	
 	//post_comment
-	private String commentId;
-	private String postId;
-	private int cmtGrp;
-	private int cmtGrps;
-	private String writerId;
-	private String deleteYn;
+	private String commentId; 					//댓글id
+	private String postId;						//게시글id		
+	private int cmtGrp;							//댓글 소속의 번호
+	private int cmtGrps;						//같은 댓글 소속에서의 순서
+	private int cmtGrpl;						//댓글과 대댓글 구분 0,1 
+	private String writerId;					//작성자id
+	@DateTimeFormat(pattern = "yyyy-MM-dd")    
+	private Date registDate;					//댓글 작성일
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date registDate;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date modifiyDate;
-	private String cmtContent;
+	private Date modifiyDate;					//댓글 수정일
+	private String cmtContent;					//댓글 내용
 	
 }
