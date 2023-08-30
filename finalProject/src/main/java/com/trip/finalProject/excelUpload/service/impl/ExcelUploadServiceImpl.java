@@ -341,11 +341,11 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
             case "울산":
                 areaCode = "7";
                 break;
-            case "경주":
+            case "안동":
                 areaCode = "35";
                 sigunguCode = "11";
                 break;
-            case "안동":
+            case "경주":
                 areaCode = "35";
                 sigunguCode = "2";
                 break;
