@@ -3,7 +3,7 @@ package com.trip.finalProject.specialties.mapper;
 import java.util.List;
 
 import com.trip.finalProject.location.service.LocationVO;
-import com.trip.finalProject.specialties.service.SepcialtiesOptionVO;
+import com.trip.finalProject.specialties.service.SpecialtiesOptionVO;
 import com.trip.finalProject.specialties.service.SpecialtiesVO;
 
 public interface SpecialtiesMapper {
@@ -19,5 +19,5 @@ public interface SpecialtiesMapper {
 	//지역 리스트
 	public List<LocationVO> listArea();
 	
-	public void insertSpecialtiesOption(SepcialtiesOptionVO spSepcialtiesOptionVO);
+	public void insertSpecialtiesOption(SpecialtiesOptionVO specialtiesOptionVO);
 }

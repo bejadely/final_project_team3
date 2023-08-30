@@ -41,7 +41,7 @@
 			
 	</insert>
 	
-	<insert id="insertSpecialtiesOption" parameterType="SepcialtiesOptionVO">
+	<insert id="insertSpecialtiesOption" parameterType="SpecialtiesOptionVO">
 		<selectKey keyProperty="optionId" resultType="String" order="BEFORE">
 			SELECT 'SPO' || (TO_NUMBER(NVL((SUBSTR(MAX(option_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
 			FROM specialties_option
@@ -62,4 +62,9 @@
 						,#{postId}
 					)
 	</insert>
+	<select id="listSpecialties" resultType="SpecialtiesVO">
+		SELECT *
+		FROM specialties_regist
+		
+	</select>
 </mapper>

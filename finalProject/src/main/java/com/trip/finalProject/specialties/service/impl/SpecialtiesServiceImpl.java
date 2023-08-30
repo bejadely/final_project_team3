@@ -38,7 +38,7 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
 	@Override
 	public List<SpecialtiesVO> getSpecialtiesList() {
 		// TODO Auto-generated method stub
-		return null;
+		return mapper.listSpecialties();
 	}
 	
 	@Override
