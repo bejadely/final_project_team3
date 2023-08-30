@@ -42,8 +42,8 @@ public class CartServiceImpl implements CartService {
 	public Map<String, Object> getQuanUpdate(CartVO cartVO) {
 		Map<String, Object> map = new HashMap<>();
 		
-		map.put("게시물 번호", String.valueOf(cartVO.getPostId()));
-		map.put("수얄", String.valueOf(cartVO.getQuantity()));
+		map.put("postId", String.valueOf(cartVO.getPostId()));
+		map.put("quantity", String.valueOf(cartVO.getQuantity()));
 		
 		int result  = cartMapper.quanUpdate(cartVO);
 		if(result > 0) {

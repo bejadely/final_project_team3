@@ -51,5 +51,13 @@ public class BuyListController {
 
 			return "myPage/buyList/spList";
 		}
+		
+		@GetMapping("/common/buyPkSelect")
+		public String selectPk(BuyListVO buyVO,Model model) {
+			BuyListVO findVo = buyService.selectPkInfo(buyVO);
+			model.addAttribute("list", findVo);
+						
+			return "myPage/buyList/detailBuyInfo";
+		}
 
 }

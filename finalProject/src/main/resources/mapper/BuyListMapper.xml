@@ -22,11 +22,16 @@
 			 			 p.post_id,
 			 			 p.member_id,
 			 			 p.quantity,
-			 			 p.price,
+			 			 p.price pu_price,
 			 			 p.order_date,
 			 			 code_val(p.order_status) order_status,
 			 			 p.payment_id,
+			 	<!-- 	 p.tid,
+			 			 p.cid,
+			 			 p.cancel_amount,
+			 			 p.cancel_tax_free_amount, -->
 			 			 r.start_date,
+			 			 r.price pk_price,
 			 			 r.end_date,
 			 			 r.deadline_date,
 			 			 r.tour_theme,
@@ -63,18 +68,21 @@
 			 			 p.post_id,
 			 			 p.member_id,
 			 			 p.quantity,
-			 			 p.price,
+			 			 p.price pu_price,
 			 			 p.order_date,
 			 			 code_val(p.order_status) order_status,
 			 			 p.payment_id,
 			 			 r.start_date,
+			 			 r.price pk_price,
 			 			 r.end_date,
 			 			 r.deadline_date,
 			 			 r.tour_theme,
                          r.name,
-			 			 code_val(r.completion) completion
+			 			 code_val(r.completion) completion,
+			 			 f.loading_img
 	  FROM purchase p LEFT JOIN package_regist r ON (p.post_id = r.post_id)
-	  WHERE p.post_id = #{postId}
+                                    JOIN attached_file f ON (p.post_id = f.post_id)
+	  WHERE f.img_type = 'U2' and p.order_detail_id = #{orderDetailId}
   </select>
   
     <select id="selectSp" resultType="BuyListVO">
@@ -86,11 +94,13 @@
 			 			 p.order_date,
 			 			 p.order_status,
 			 			 p.payment_id,
+			 	<!-- 	 p.tid,
+			 			 p.cid,
+			 			 p.cancel_amount,
+			 			 p.cancel_tax_free_amount, -->
+			 			 r.title,
 			 			 r.type,
-			 			 r.discount,
-			 			 r.deadline_date,
-			 			 o.specialty_type,
-			 			 o.discount_rate
+			 			 o.specialty_type
 			 			 code_val(r.complition) complition
 				  FROM purchase p LEFT JOIN SPECIALTIES_RESIGT r ON (p.post_id = r.post_id)
 				  				  LEFT JOIN SPECIALTIES_option o ON (p.post_id = o.post_id)
