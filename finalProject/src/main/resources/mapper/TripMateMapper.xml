@@ -188,7 +188,6 @@
 						, content
 						, confirmation
 						, member_id
-						, alert_type
 						, post_id	
 					)
 				VALUES
@@ -196,9 +195,8 @@
 				    	#{alertId}
 				    	, sysdate
 				    	, '등록한 메이트 모집글에 새로운 요청이 있습니다.'
-				    	, #{confirmation}
+				    	, 'W2'
 				    	, #{memberId}
-				    	, 'b2'
 				    	, #{postId}
 				    )
 	</insert>
