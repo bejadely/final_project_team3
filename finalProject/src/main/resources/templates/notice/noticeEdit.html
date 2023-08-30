@@ -89,7 +89,7 @@
         <br>
         </div>
         <div id="ls" class="text-center">
-            <form id="frm" action="/noticeProc" method="post">
+            <form id="frm" action="/admin/modifyNoticeInfo" th:object="${noticeVO}" method="post">
                	<div class="mb-3" style="float: left; margin-right: 20px;" >
 					<select class="" id="noticeType" name="noticeType"
 						aria-label="Default select example"  >
@@ -134,7 +134,7 @@
                         <tr>
                             <th style="text-align: left;">제목</th>
                             <td colspan="3" >
-                                <input  type="text" id="boardTitle" name="title" size="70" class="form-control">
+                                <input  type="text" id="boardTitle" name="title" size="70" th:text="*{title}" class="form-control">
                             </td>
                         </tr>    
                                   
@@ -144,7 +144,7 @@
                             <!-- <td colspan="3">
                                 <textarea rows="10" cols="=50" id="boardContent" name="content" placeholder="내용을 입력해주세요." required class="form-control"></textarea>
                             </td> -->
-                            <td  > <textarea  id="editor" placeholder="내용을 입력해주세요." ></textarea>
+                            <td  > <textarea  id="editor" th:utext="*{content}"  ></textarea>
                             </td>
                             
                         
@@ -155,7 +155,7 @@
                 <br>
 
                 <div>
-                    <input type="hidden" name="boardS" id="boardS">
+                    <input type="hidden" id="순번" name="noticeNumber" th:value="3">
                 </div>
                 <div>
                     <div align="left">

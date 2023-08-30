@@ -74,23 +74,29 @@ public class NoticeController {
 	
 	//공지사항 작성 폼 불러옴
 	  @GetMapping("/noticeWrite")
-	  public String boardWrite() {
+	  public String noticedWrite() {
 		  return"notice/noticeWriteForm"; 
 	  };
 	 
 	//공지사항 작성후 DB저장
 	@PostMapping("/noticeProc")
-	public String boardInsert(NoticeVO noticeVO) {
+	public String noticeInsert(NoticeVO noticeVO) {
 		noticeService.noticeInsert(noticeVO);
 		return"redirect:/noticeList";
 	};
 	
-	/*
-	 * //공지사항 리스트 불러오기 list에 뿌리기
-	 * 
-	 * @GetMapping("/boardSelect") public String boardSelect() {
-	 * return"notice/BoardList"; };
-	 */
+	//공지사항 수정 폼 불러옴
+    @PostMapping("/noticeEdit")
+    public String noticedEdit(NoticeVO noticeVO, Model model) {
+    	// 공지사항 상세조회 실행
+    			noticeVO = noticeService.getNoticeDetail(noticeVO);
+    			model.addAttribute("noticeVO", noticeVO);
+    			System.out.println(noticeVO);
+       return"notice/noticeEdit"; 
+    };
+    
+
+	
 	@GetMapping("/boardEdit")
 	public String boardEdit() {
 		return"notice/BoardList";

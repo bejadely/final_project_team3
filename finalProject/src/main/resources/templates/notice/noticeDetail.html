@@ -103,6 +103,11 @@ table {
     .report-form input[type="submit"]:hover {
         background-color: #222;
     }
+    #actionButton {
+  			text-align: right;
+ 			padding-right: 10%;
+}
+		    	
 </style>
 
 </head>
@@ -115,7 +120,7 @@ table {
 	</div>
 	<div id="ls2" align="center">
 	
-		<form id="frm" action="/admin/modifyNoticeInfo" th:object="${noticeVO}" method="post">
+		<form id="frm" action="/noticeEdit" th:object="${noticeVO}" method="post">
 	 		<table border="1" style="width: 80%;" >
 				<tr>
 					
@@ -144,53 +149,44 @@ table {
 			</table>
 			<div>
 		
-			 	<input type="hidden" name="noticeNumber" th:value="*{noticeNumber}">
+			 	 <input type="hidden" name="noticeNumber" th:value="*{noticeNumber}"> 
 
 			</div>
 		</form>
 	</div>
-	<br>
 	
-	
-
-    <div align="center">
+    <div id='actionButton' align="center">
+   
     <!--  <div th:if="${id == board.memberId || id == 'manager'}"> -->
     		<!--  <input type="button" onclick="callFunction('E')" value="버튼"/>-->
-            <button type="button" id='modify' class="modify" onclick="callFunction('E')">수정</button>&nbsp;&nbsp;
+            <button  type="submit" id='modify' class="modify"onclick="callFunction('E')" >수정</button>&nbsp;&nbsp;
             <button type="button" onclick="callFunction('D')">삭제</button>&nbsp;&nbsp;
             <button type="button" onclick="callFunction('B')">되돌아가기</button>&nbsp;&nbsp;
+         
      <!-- </div>-->
      </div>
- 
-<script th:inline="javascript">
+        <br>
+<!--  onclick="callFunction('E') -->
+ <script th:inline="javascript">
  function callFunction(str){
 	
 	if(str=='E'){
-
-		// 상세보기 할 member의 id값 가져오기
-		document.getElementById('title').readOnly = false; 
-		//document.getElementById('content').readOnly = false; 
-		document.getElementById('modify').textContent = '등록'; 
-		//document.getElementById('content').focus();
-	    //$(".modify").attr("class","edit");		
-	    
-	    let modifyButton = document.getElementById("modify");
-	    modifyButton.classList.add("edit");
-	    
-        modifyButton.onclick = function() {
-        	console.log("edit 버튼 눌렀다."); 
-	    	
-        	
-    	let frm = document.getElementById("frm");
-    	frm.submit();
-            // edit 버튼이 클릭되었을 때의 동작을 여기에 작성
-        };
 	
+console.log('hi')
+		
+		document.getElementById('title').readOnly = false; 
+		//document.getElementById('content').readOnly = false;
+document.getElementById("frm").submit();
+	
+	    
 	}
- }		 					
+ }	    
 
+	    	
+       	
+	 
  
- </script>
+ </script> 
 		
 		
 
