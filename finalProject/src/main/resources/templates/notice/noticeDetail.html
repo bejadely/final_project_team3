@@ -137,7 +137,7 @@ table {
 				<tr>
 					<th colspan="2">내용</th>
 					<td colspan="6">
-					 <div th:utext="*{content}" class="contentStyle"></div> 
+					 <div th:utext="*{content}" class="contentStyle" ></div> 
 					<!-- <th:textarea rows="10" cols="97" th:utext="*{content}"  id="content" name="content" readonly ></th:textarea> -->
 					</td>
 				</tr>
@@ -176,6 +176,7 @@ table {
 	    
 	    let modifyButton = document.getElementById("modify");
 	    modifyButton.classList.add("edit");
+	    
         modifyButton.onclick = function() {
         	console.log("edit 버튼 눌렀다."); 
 	    	
@@ -189,146 +190,6 @@ table {
  }		 					
 
  
- 
- 
- $(document).ready(function() {
-		// 승인 버튼 클릭 시 발생 이벤트 설정
-		$('.registrationButton').on('click', go);
-		 // $('#frm').on('submit', loginAccountcheck);
-	/* 	$('.rejectButton').on('click', authReject); */
-		$.noConflict();
-	});
-	
-	// 승인 버튼 클릭 시 발생 이벤트
-	function go(e){
-		e.stopPropagation();
-		
-		Swal.fire({
-		      title: '저장하시겠습니까',
-		      icon: 'question',
-		      showCancelButton: true,
-		      confirmButtonColor: '#3085d6',
-		      cancelButtonColor: '#d33',
-		      confirmButtonText: '저장',
-		      cancelButtonText: '취소',
-		      
-	    }).then((result) => {
-		      if (result.isConfirmed) {
-		          
-		    	  //post방식으로 페이지 전환
-				  console.log('hi');
-				 // document.getElementById('frm').submit();
-				  $('#frm')[0].submit();
-		      }
-		    })
-		 
-	   	    
-	} 
-	
-	
-	ClassicEditor
-	.create(document.querySelector('#editor'), {
-		/* htmlEncodeOutput: false, */
-		ckfinder: {
-			uploadUrl : 'upload'	
-		}
-	
-		
-	})
-	.then(editor => {
-		console.log('Editor was initialized');
-		
-		document.getElementById("cancelBtn").addEventListener("click",function(){
-			const data = editor.getData();
-			//Data 변수에 저장된 데이터를 파싱하여 이미지 태크를 찾음
-			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
-			
-			const filenames = imgTags.map(img=> {
-				const src = img.getAttribute('src');
-				
-				return src.substring(src.lastIndexOf('/')+1);
-			});
-			console.log(filenames);
-			fetch(`/deleteImg`,{
-				method: 'POST',
-				headers:{
-					'Content-Type':'application/json'
-				},
-				body: JSON.stringify({ filenames })
-			})
-			.then(response => response.text())
-			.then(message => {
-				console.log(message);
-				editor.setData('');
-			})
-			
-		})
-		
-		
-		var formObj = $("#frm");
-		
-		//document.getElementById("editorForm").addEventListener("submit",function(event){
-		$("button[type='submit']").on("click",function(event){
-				
-			event.preventDefault();
-	
-			const data = editor.getData();
-			
-			let objData = serializeObject();
-			
-			console.log(data);
-			const {  writerId, registDate, title} = objData;
-			var combinedData={
-				content: data,
-				writerId: writerId,
-				registDate: registDate,
-				title: title
-			};
-			console.log(combinedData);
-	
-			
-			var str="";
-			
-			str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";
-			
-			
-			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
-			
-			const filenames = imgTags.map(img=> {
-				const src = img.getAttribute('src');
-				
-				return src;
-			});		
-			$.each(filenames,function(i,obj){
-				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
-			});
-	
-			formObj.append(str);
-			document.getElementById('frm').action = "/noticeProc";
-			document.getElementById('frm').submit();
-			
-			
-			
-			
-		})
-		//////////////////////////////////////////////////////////////////////
-	})
-	.catch(error => {
-		console.error(error);
-	});
-		
-	function serializeObject(){
-		let formData = $('form').serializeArray();
-		let formObject={};
-		$.each(formData, function(idx,obj){
-			//let field = obj.name;
-			//let val= obj.value;
-			formObject[obj.name] = obj.value;
-			//formObject[field] = val;
-		});
-		
-		return formObject;
-	}
  </script>
 		
 		
