@@ -96,7 +96,7 @@ public class TourInfoController {
     @PostMapping("/review")
     @ResponseBody
     public Map<String,Object> reviewInsert(SpotDetailReviewVO spotDetailReviewVO) throws Exception {
-        if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().equals("")) {
+        if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().replaceAll(" ", "").equals("")) {
             spotDetailReviewVO.setWriterId(session.getAttribute("sessionId").toString());
         } else {
             throw new Exception("no login");
@@ -110,7 +110,7 @@ public class TourInfoController {
     @ResponseBody
     public Map<String,Object> reviewDelete(int contentId, String writerId, String reviewId) throws Exception {
         String sessionId = "";
-        if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().equals("")) {
+        if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().replaceAll(" ", "").equals("")) {
             sessionId =  session.getAttribute("sessionId").toString();
         } else {
             throw new Exception("no login");
