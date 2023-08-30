@@ -3,270 +3,282 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip.finalProject.trip.mapper.TripMapper">
-	 <!-- 여행기록 전체조회 페이징 -->
- 	<select id="getTotalCount" resultType="int">
- 		SELECT COUNT(*)
- 		FROM trip_record
- 		WHERE trip_save = 'T2' 
-			AND trip_disclose = '01'
- 	</select>
- 	
- 	<!-- 마이페이지 페이징 - 미완료 여행-->
- 	 <select id="getPerCount" resultType="int">
- 		SELECT COUNT(*)
- 		FROM trip_record
- 	</select>
- 	
- 	<!-- 마이페이지 페이징 - 미완료 여행/임시저장-->
- 	 <select id="getPerNotCount" resultType="int">
- 		SELECT COUNT(*)
- 		FROM trip_record
- 		WHERE end_day > sysdate AND trip_save='T2'
- 	</select>
- 	
- 	 <!-- 마이페이지 페이징 - 미완료 여행-->
- 	 <select id="getPerComCount" resultType="int">
- 	 <![CDATA[ SELECT COUNT(*)
- 		FROM trip_record
- 		WHERE end_day < sysdate ]]>
- 		
- 	</select>
-	
-	<!-- 여행기록 전체 조회 -->
-	<select id="selectAllTrip" resultType="TripVO">		
-		SELECT *
-		FROM(SELECT ROWNUM rn, a.*
-			 FROM(SELECT *
-				  FROM trip_record t LEFT OUTER JOIN 
-				  	   attached_file a ON t.post_id = a.post_id
-				  WHERE trip_save = 'T2' 
-				  	AND trip_disclose = '01'
-				  ORDER BY t.post_id DESC) a)
-		WHERE rn BETWEEN #{start } AND #{end }
-	</select>
-	
-	<!-- 마이페이지 여행 기록 불러오기 - 계획한 여행(재운) -->
-	<select id="selectPerTrip" resultType="TripVO">	
-		SELECT *
-		FROM(SELECT ROWNUM rn, a.*
-			 FROM(SELECT *
-				  FROM trip_record
-				  WHERE end_day > sysdate AND trip_save='T1'
-				  ORDER BY regist_day DESC) a)
-		WHERE rn BETWEEN #{start } AND #{end }
-	</select>
-	
-	<!-- 저장 정보 업데이트 -->
-	<update id="updateDis" parameterType="TripVO">
-		UPDATE trip_record
-		<set>
-			trip_disclose = #{tripDisclose}
-		</set>
-		WHERE post_id = #{postId}
-	</update>
-	<!-- 마이페이지 여행기록 임시저장 -->
-	<select id="selectPerNotTrip" resultType="TripVO">	
-		SELECT *
-		FROM(SELECT ROWNUM rn, a.*
-			 FROM(SELECT *
-				  FROM trip_record
-				  WHERE end_day > sysdate AND trip_save='T2'
-				  ORDER BY regist_day DESC) a)
-		WHERE rn BETWEEN #{start } AND #{end }
-	</select>
-	
-	<!-- 마이페이지 여행 기록 불러오기 - 완료된 여행(재운) -->
-	<select id="selectPerComTrip" resultType="TripVO">
-	<![CDATA[ SELECT *
-		FROM(SELECT ROWNUM rn, a.*
-			 FROM(SELECT *
-				  FROM trip_record
-				  WHERE end_day < sysdate 
-				  ORDER BY regist_day DESC) a)
-		WHERE rn BETWEEN #{start } AND #{end } ]]>		
-		
-	</select>
-	
-	<!-- 여행기록 상세조회 -->
-	<select id="selectTripInfo" resultType="TripVO">
-		SELECT writer_id,
-			   trip_title,
-			   start_day,
-			   end_day,
-			   trip_area
-		FROM trip_record
-		WHERE post_id = #{postId}
-	</select>
-	
-	
-	<!-- 여행기록 등록(임시저장에서 저장상태로 업데이트) -->
-	<update id="insertTripInfo" parameterType="TripVO">
-		UPDATE trip_record
-		<set>
-			trip_save = 'T2'
-		</set>
-		WHERE post_id = #{postId}
-	</update>
-	<!--
-	<insert id="insertTripInfo" parameterType="TripVO">
-		<selectKey keyProperty="postId" resultType="String" order="BEFORE">
-			SELECT 'trr' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
-			FROM trip_record
-			WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
-		</selectKey>
-			INSERT INTO trip_record
-						(
-							post_id
-							, writer_id
-							, trip_title
-							, start_day
-							, end_day
-							, trip_disclose
-							, trip_save
-							, regist_day
-						)
-				   VALUES
-				        (
-							#{postId}
-							, #{writerId}
-							, #{tripTitle}
-							, #{startDay}
-							, #{endDay}
-							, #{tripDisclose}
-							, 'T2'
-							, sysdate
-				        )
-	</insert>
-	  -->
-	  
-	<!-- 여행기록 임시저장(임시저장에서 임시저장 상태로 업데이트) -->
-	<update id="tsTripInfo" parameterType="TripVO">
-		UPDATE trip_record
-		<set>
-			trip_save = 'T1'
-		</set>
-		WHERE post_id = #{postId}
-	</update>
-		
-	<!-- 여행기록 등록(등록시 임시저장 상태로 페이지 이동) -->
-	<insert id="tsInsertTripInfo" parameterType="TripVO">
-		<selectKey keyProperty="postId" resultType="String" order="BEFORE">
-			SELECT 'TRR' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
-			FROM trip_record
-			WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
-		</selectKey>
-		INSERT INTO trip_record
-						(
-							post_id
-							, writer_id
-							<if test="tripTitle != null and !tripTitle.equals('')">
-							, trip_title
-							</if>
-							<if test="startDay != null and !startDay.equals('')">
-							, start_day
-							</if>
-							<if test="endDay != null and !startDay.equals('')">
-							, end_day
-							</if>
-							, trip_disclose
-							, trip_save
-							, regist_day
-						)
-				   VALUES
-				        (
-							#{postId}
-							, #{writerId}
-							<if test="tripTitle != null and !tripTitle.equals('')">
-							, #{tripTitle}
-							</if>
-							<if test="startDay != null and !startDay.equals('')">
-							, #{startDay}
-							</if>
-							<if test="endDay != null and !startDay.equals('')">
-							, #{endDay}
-							</if>
-							, #{tripDisclose}
-							, 'T1'
-							, sysdate
-				        )
-	</insert>
-	
-	<!-- 여행메모 등록 -->
-	<insert id="insertTripMemo" parameterType="TripVO">
-		<selectKey keyProperty="memoId" resultType="String" order="BEFORE">
-			SELECT 'TRM' || (TO_NUMBER(NVL((SUBSTR(MAX(memo_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
-			FROM trip_record_memo
-			WHERE SUBSTR(memo_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
-		</selectKey>
-		INSERT INTO trip_record_memo
-						(
-							memo_id
-							, memo_no
-							, content
-							, memo_date
-							, post_id
-							, trip_date
-						)
-				   VALUES
-				        (
-							#{memoId}
-							, #{memoNo}
-							, #{content}
-							, #{memoDate}
-							, #{postId}
-							, #{tripDate}
-				        )
-	</insert>
-	
-	<!-- 여행 메모 조회 -->
-	
-	
-	<!-- 여행기록 등록 - 여행 경로 맵핑-->
-	<insert id="insertTripMapping" parameterType="TripVO">
-		<selectKey keyProperty="mapId" resultType="String" order="BEFORE">
-			SELECT 'MAP' || (TO_NUMBER(NVL((SUBSTR(MAX(map_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
-			FROM map
-			WHERE SUBSTR(map_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
-		</selectKey>
-		INSERT INTO map
-					  (
-						map_id
-						, map_no
-						, map_name
-						, map_lat
-						, map_lng
-						, post_id
-						, upload_date
-						, trip_date
-					  )
-				VALUES
-					  (
-					  	#{mapId}
-					  	, #{mapNo}
-					  	, #{mapName}
-					  	, #{mapLat}
-					  	, #{mapLng}
-					  	, #{postId}
-					  	, sysdate
-					  	, #{tripDate}
-					  )
-	</insert>
-	
-	<!-- 여행경로 조회 -->
-	<select id="selectMapData" resultType="TripVO">
-		SELECT m.map_no
-				, m.map_name
-				, m.map_lat
-				, m.map_lng
-				, m.trip_date
-		FROM map m JOIN trip_record t 
-           			ON m.post_id = t.post_id 
-		WHERE t.post_id = #{postId}
-	</select>
-	
-	<!-- 여행기록 삭제 -->
-	<delete id="deleteTripInfo" parameterType="String">
-	
-	</delete>
+    <!-- 여행기록 전체조회 페이징 -->
+    <select id="getTotalCount" resultType="int">
+       SELECT COUNT(*)
+       FROM trip_record
+       WHERE trip_save = 'T2' 
+         AND trip_disclose = '01'
+    </select>
+    
+    <!-- 마이페이지 페이징 - 미완료 여행-->
+     <select id="getPerCount" resultType="int">
+       SELECT COUNT(*)
+       FROM trip_record
+    </select>
+    
+    <!-- 마이페이지 페이징 - 미완료 여행/임시저장-->
+     <select id="getPerNotCount" resultType="int">
+       SELECT COUNT(*)
+       FROM trip_record
+       WHERE end_day > sysdate AND trip_save='T2'
+    </select>
+    
+     <!-- 마이페이지 페이징 - 미완료 여행-->
+     <select id="getPerComCount" resultType="int">
+     <![CDATA[ SELECT COUNT(*)
+       FROM trip_record
+       WHERE end_day < sysdate ]]>
+       
+    </select>
+   
+   <!-- 여행기록 전체 조회 -->
+   <select id="selectAllTrip" resultType="TripVO">      
+      SELECT *
+      FROM(SELECT ROWNUM rn, a.*
+          FROM(SELECT *
+              FROM trip_record t LEFT OUTER JOIN 
+                    attached_file a ON t.post_id = a.post_id
+              WHERE trip_save = 'T2' 
+                 AND trip_disclose = '01'
+              ORDER BY t.post_id DESC) a)
+      WHERE rn BETWEEN #{start } AND #{end }
+   </select>
+   
+   <!-- 마이페이지 여행 기록 불러오기 - 계획한 여행(재운) -->
+   <select id="selectPerTrip" resultType="TripVO">   
+      SELECT *
+      FROM(SELECT ROWNUM rn, a.*
+          FROM(SELECT *
+              FROM trip_record
+              WHERE end_day > sysdate AND trip_save='T1'
+              ORDER BY regist_day DESC) a)
+      WHERE rn BETWEEN #{start } AND #{end }
+   </select>
+   
+   <!-- 저장 정보 업데이트 -->
+   <update id="updateDis" parameterType="TripVO">
+      UPDATE trip_record
+      <set>
+         trip_disclose = #{tripDisclose}
+      </set>
+      WHERE post_id = #{postId}
+   </update>
+   <!-- 마이페이지 여행기록 임시저장 -->
+   <select id="selectPerNotTrip" resultType="TripVO">   
+      SELECT *
+      FROM(SELECT ROWNUM rn, a.*
+          FROM(SELECT *
+              FROM trip_record
+              WHERE end_day > sysdate AND trip_save='T2'
+              ORDER BY regist_day DESC) a)
+      WHERE rn BETWEEN #{start } AND #{end }
+   </select>
+   
+   <!-- 마이페이지 여행 기록 불러오기 - 완료된 여행(재운) -->
+   <select id="selectPerComTrip" resultType="TripVO">
+   <![CDATA[ SELECT *
+      FROM(SELECT ROWNUM rn, a.*
+          FROM(SELECT *
+              FROM trip_record
+              WHERE end_day < sysdate 
+              ORDER BY regist_day DESC) a)
+      WHERE rn BETWEEN #{start } AND #{end } ]]>      
+      
+   </select>
+   
+   <!-- 여행기록 상세조회 -->
+   <select id="selectTripInfo" resultType="TripVO">
+      SELECT writer_id,
+            trip_title,
+            start_day,
+            end_day
+      FROM trip_record
+      WHERE post_id = #{postId}
+   </select>
+   
+   
+   <!-- 여행기록 등록(임시저장에서 저장상태로 업데이트) -->
+   <update id="insertTripInfo" parameterType="TripVO">
+      UPDATE trip_record
+      <set>
+         trip_save = 'T2'
+      </set>
+      WHERE post_id = #{postId}
+   </update>
+   <!--
+   <insert id="insertTripInfo" parameterType="TripVO">
+      <selectKey keyProperty="postId" resultType="String" order="BEFORE">
+         SELECT 'trr' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+         FROM trip_record
+         WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+      </selectKey>
+         INSERT INTO trip_record
+                  (
+                     post_id
+                     , writer_id
+                     , trip_title
+                     , start_day
+                     , end_day
+                     , trip_disclose
+                     , trip_save
+                     , regist_day
+                  )
+               VALUES
+                    (
+                     #{postId}
+                     , #{writerId}
+                     , #{tripTitle}
+                     , #{startDay}
+                     , #{endDay}
+                     , #{tripDisclose}
+                     , 'T2'
+                     , sysdate
+                    )
+   </insert>
+     -->
+     
+   <!-- 여행기록 임시저장(임시저장에서 임시저장 상태로 업데이트) -->
+   <update id="tsTripInfo" parameterType="TripVO">
+      UPDATE trip_record
+      <set>
+         trip_save = 'T1'
+      </set>
+      WHERE post_id = #{postId}
+   </update>
+      
+   <!-- 여행기록 등록(등록시 임시저장 상태로 페이지 이동) -->
+   <insert id="tsInsertTripInfo" parameterType="TripVO">
+      <selectKey keyProperty="postId" resultType="String" order="BEFORE">
+         SELECT 'TRR' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+         FROM trip_record
+         WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+      </selectKey>
+      INSERT INTO trip_record
+                  (
+                     post_id
+                     , writer_id
+                     <if test="tripTitle != null and !tripTitle.equals('')">
+                     , trip_title
+                     </if>
+                     <if test="startDay != null and !startDay.equals('')">
+                     , start_day
+                     </if>
+                     <if test="endDay != null and !startDay.equals('')">
+                     , end_day
+                     </if>
+                     , trip_disclose
+                     , trip_save
+                     , regist_day
+                  )
+               VALUES
+                    (
+                     #{postId}
+                     , #{writerId}
+                     <if test="tripTitle != null and !tripTitle.equals('')">
+                     , #{tripTitle}
+                     </if>
+                     <if test="startDay != null and !startDay.equals('')">
+                     , #{startDay}
+                     </if>
+                     <if test="endDay != null and !startDay.equals('')">
+                     , #{endDay}
+                     </if>
+                     , #{tripDisclose}
+                     , 'T1'
+                     , sysdate
+                    )
+   </insert>
+   
+   <!-- 여행메모 등록 -->
+   <insert id="insertTripMemo" parameterType="TripVO">
+      <selectKey keyProperty="memoId" resultType="String" order="BEFORE">
+         SELECT 'TRM' || (TO_NUMBER(NVL((SUBSTR(MAX(memo_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+         FROM trip_record_memo
+         WHERE SUBSTR(memo_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+      </selectKey>
+      INSERT INTO trip_record_memo
+                  (
+                     memo_id
+                     , memo_no
+                     , content
+                     , memo_date
+                     , post_id
+                     , trip_date
+                  )
+               VALUES
+                    (
+                     #{memoId}
+                     , #{memoNo}
+                     , #{content}
+                     , #{memoDate}
+                     , #{postId}
+                     , #{tripDate}
+                    )
+   </insert>
+   
+   <!-- 여행 메모 조회 -->
+   <select id="selectMemoData" resultType="TripVO">
+      SELECT m.trip_date
+            , m.memo_no
+            , m.content
+      FROM trip_record t JOIN trip_record_memo m 
+                     ON t.post_id = m.post_id
+      WHERE t.post_id = #{postId}
+   </select>
+   
+   <!-- 여행기록 등록 - 여행 경로 맵핑-->
+   <insert id="insertTripMapping" parameterType="TripVO">
+      <selectKey keyProperty="mapId" resultType="String" order="BEFORE">
+         SELECT 'MAP' || (TO_NUMBER(NVL((SUBSTR(MAX(map_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+         FROM map
+         WHERE SUBSTR(map_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+      </selectKey>
+      INSERT INTO map
+                 (
+                  map_id
+                  , map_no
+                  , map_name
+                  , map_lat
+                  , map_lng
+                  , post_id
+                  , upload_date
+                  , trip_date
+                 )
+            VALUES
+                 (
+                    #{mapId}
+                    , #{mapNo}
+                    , #{mapName}
+                    , #{mapLat}
+                    , #{mapLng}
+                    , #{postId}
+                    , sysdate
+                    , #{tripDate}
+                 )
+   </insert>
+   
+   <!-- 여행경로 삭제 -->
+   <delete id="deleteTripMapping" parameterType="TripVO">
+      DELETE FROM map
+      WHERE map_id = #{mapId}
+   </delete>
+   
+   <!-- 여행경로 조회 -->
+   <select id="selectMapData" resultType="TripVO">
+      SELECT m.map_no
+            , m.map_name
+            , m.map_lat
+            , m.map_lng
+            , m.trip_date
+      FROM map m JOIN trip_record t 
+                    ON m.post_id = t.post_id 
+      WHERE t.post_id = #{postId}
+   </select>
+   
+   <!-- 여행기록 삭제 -->
+   <delete id="deleteTripInfo" parameterType="String">
+   
+   </delete>
 
 </mapper>
