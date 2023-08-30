@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/default_layout}" 
+	layout:fragment="content">
+<head>
+<meta charset="UTF-8">
+<title>게시글 신고</title>
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css"></th:block>
+<!-- index.html 고유 스크립트 추가 -->
+<th:block layout:fragment="script"><style>
+body {
+	background-color: #fff;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+	color: #333;
+}
+
+h1 {
+	color: #333;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+th, td {
+	padding: 10px;
+	text-align: left;
+	border: 1px solid #ddd;
+}
+
+th {
+	background-color: #f5f5f5;
+}
+
+textarea {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ddd;
+	resize: none;
+}
+
+button {
+	background-color: #333;
+	color: #fff;
+	border: none;
+	padding: 10px 20px;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: #222;
+}
+
+p {
+    padding: 5px;
+    margin-bottom: 5px;
+    margin-left : 10px;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+	margin: 10px;
+	padding: 10px;
+}
+    .report-form {
+        display: inline;
+        background-color: #f2f2f2;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .report-form label {
+        font-weight: bold;
+    }
+
+    .report-form select {
+        width: 200px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+
+    .report-form input[type="submit"] {
+        background-color: #333;
+        color: white;
+        padding: 8px 16px;
+        border: 1px solid black;
+        border-radius: 0;
+        cursor: pointer;
+    }
+
+    .report-form input[type="submit"]:hover {
+        background-color: #222;
+    }
+</style>
+</head>
+<body>
+	<div class="container">
+		<div class="text-center">
+        	<br>
+            <h1>게시글 신고</h1>
+       		<br>
+        </div>
+        <div id="ls" class="text-center">
+        	<form method="post">
+        		<div>
+        			<input type="hidden" name="postId" th:value="${tripMateVO.postId}">
+        			<div class="mb-3" style="float: left; margin-right: 20px;">
+                 		<select class="" id="reportReason" name="reportReason" aria-label="Default select example"  >
+                 			<option value="" selected="selected">신고사유</option>
+                  			<option value="R4">욕설/비방</option>
+                  			<option value="R5">도배</option>
+                  			<option value="R6">음란성</option>
+                  			<option value="R7">불법촬영물</option>
+                  			<option value="R8">기타</option>
+               			</select>
+              		</div>
+              		<div>
+              			<table class="table">
+               				<tr>
+               					<th width="150">신고자 아이디</th>
+               					<td width="150">
+                                	<input type="text" name="reporterId" th:value="${session.sessionId}" readOnly class="form-control">
+                            	</td>
+               				</tr>
+               				<tr>
+               					<th width="150">피신고자 아이디</th>
+               					<td width="150">
+                                	<input type="text" name="punishedId" th:value="${tripMateVO.writerId}" readOnly class="form-control">
+                            	</td>
+               				</tr>
+               				<tr>
+                            	<th width="150">신고일자</th>
+                            	<td width="150">
+                                	<input type="date" id="now_date" name="reportDate" readOnly class="form-control">
+                            	</td>
+                        	</tr>
+                        	<tr>
+                            	<th>신고 내용</th>
+                            	<td colspan="3">
+                                	<textarea rows="10" cols="=50" name="content" placeholder="내용을 입력해주세요." required class="form-control"></textarea>
+                            	</td>
+                        	</tr>
+               			</table>
+              		</div>
+        		</div>
+        		<div align="right">
+                   	<input type="submit" value="신고" class="btn btn-primary" id="report">&nbsp;&nbsp;
+                   	<input type="reset" value="취소" class="btn btn-secondary">&nbsp;&nbsp;
+                    <input type="button" value="목록" onclick="location.href='tripMateList'" class="btn btn-secondary">
+                </div>
+        	</form>
+        </div>
+	</div>
+	<script th:inline="javascript">
+		//오늘 날짜를 계산
+		document.getElementById('now_date').value = new Date().toISOString().substring(0, 10);
+	
+		$("#report").click(function() {
+            $("form").attr("action", "/mateRecruitReport");
+         });
+		
+	</script>
+</body>
+</html>
