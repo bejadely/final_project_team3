@@ -136,7 +136,9 @@ table {
 				</tr>
 				<tr>
 					<th colspan="2">내용</th>
-					<td colspan="6"><textarea rows="10" cols="97" th:text="*{content}" th:value="*{content}" id="content" name="content" readonly ></textarea>
+					<td colspan="6">
+					 <div th:utext="*{content}" class="contentStyle" ></div> 
+					<!-- <th:textarea rows="10" cols="97" th:utext="*{content}"  id="content" name="content" readonly ></th:textarea> -->
 					</td>
 				</tr>
 			</table>
@@ -159,45 +161,38 @@ table {
             <button type="button" onclick="callFunction('B')">되돌아가기</button>&nbsp;&nbsp;
      <!-- </div>-->
      </div>
-   <!-- <p>댓글</p>-->
-	<!-- <c:forEach items="${reples}" var="r">
-		<div>
-			<p>${r.repleContent }</p>
-			<p>${r.repleDate }</p>
-			<c:if test="${id eq 'manager'}">
-				<button type="button" onclick="repleDelete(event, ${r.repleId})">삭제</button>
-			</c:if>
-			<br>
-		</div>
-		<br>
-	</c:forEach> -->
-		
-		<script th:inline="javascript">
-		 function callFunction(str){
-			
-			if(str=='E'){
+ 
+<script th:inline="javascript">
+ function callFunction(str){
+	
+	if(str=='E'){
 
-				// 상세보기 할 member의 id값 가져오기
-				document.getElementById('title').readOnly = false; 
-				document.getElementById('content').readOnly = false; 
-				document.getElementById('modify').textContent = '등록'; 
-				document.getElementById('content').focus();
-			    //$(".modify").attr("class","edit");		
-			    
-			    let modifyButton = document.getElementById("modify");
-			    modifyButton.classList.add("edit");
-		        modifyButton.onclick = function() {
-		        	console.log("edit 버튼 눌렀다."); 
-			    	
-		        	
-	        	let frm = document.getElementById("frm");
-	        	frm.submit();
-		            // edit 버튼이 클릭되었을 때의 동작을 여기에 작성
-		        };
-			
-			}
-		 }		 					
-		</script> 
+		// 상세보기 할 member의 id값 가져오기
+		document.getElementById('title').readOnly = false; 
+		//document.getElementById('content').readOnly = false; 
+		document.getElementById('modify').textContent = '등록'; 
+		//document.getElementById('content').focus();
+	    //$(".modify").attr("class","edit");		
+	    
+	    let modifyButton = document.getElementById("modify");
+	    modifyButton.classList.add("edit");
+	    
+        modifyButton.onclick = function() {
+        	console.log("edit 버튼 눌렀다."); 
+	    	
+        	
+    	let frm = document.getElementById("frm");
+    	frm.submit();
+            // edit 버튼이 클릭되었을 때의 동작을 여기에 작성
+        };
+	
+	}
+ }		 					
+
+ 
+ </script>
+		
+		
 
 
 </body>

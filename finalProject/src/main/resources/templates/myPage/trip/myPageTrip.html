@@ -79,6 +79,16 @@
 	
 	</style>
 	<script type="text/javascript">
+	function pageChange(str){
+		   if(str == 'my'){
+			   location.href='/myPageTrip'
+		   }else if(str == 'com'){
+			   location.href='/myPageComTrip'
+		   }else{
+			   location.href='/myPageNotTrip'
+		   }
+		   
+	   }
 	$(document).ready(function() {
 		   //현재 페이지에 데이터가 없으면 이전 페이지로 이동하는 구문
 		   var hasContent = [[${paging.end}]]-[[${paging.start}]] ;
@@ -126,12 +136,18 @@
 		            row.removeClass('checked'); // 체크 해제되었을 경우 해당 행에서 클래스 제거
 		        }
 		    });
+		   
 		});
 	</script>
 	</head>
 	<body>
 	<div layout:fragment="content">
 		<section>
+			<div>
+				<button type="button" onclick="pageChange('my')">나의 여행 계획</button>
+				<button type="button" onclick="pageChange('com')">완료된 여행</button>
+				<button type="button" onclick="pageChange('not')">임시저장 한 파일</button>
+			</div>
 			<!-- 여행기록 section-->
 			<table>
 				<thead>
@@ -145,10 +161,10 @@
 				</thead>
 				<tbody>
 					<th:block th:each="trip : ${tripList}">
-						<tr class="question">
+						<tr class="question" th:onclick="|location.href='@{/tripRecordInfo(postId=${trip.postId})}'|">
 							<td><input type="hidden" th:value="${trip.postId}"></td>
 							<td th:text="${trip.tripTitle}"></td>
-							<td><button type="button">수정</button></td>
+							<td><button type="button" th:onclick="">수정</button></td>
 							<td><button type="button">삭제</button></td>
 	    					<td class="toggle">
 				                <input type="checkbox" th:id="'toggle_' + ${trip.postId}" name="toggle1" th:value="${trip.postId}" 
