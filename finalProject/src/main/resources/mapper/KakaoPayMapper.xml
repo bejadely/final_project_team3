@@ -34,7 +34,7 @@
 						,#{status}
 						,#{calculateStatus}
 						,#{partnerOrderId}
-						,TO_DATE(#{approvedAt},'YYYY-MM-DD HH:MI:SS')
+						,TO_DATE(#{approvedAt},'YYYY-MM-DD HH24:MI:SS')
 					)
 					
 	</insert>
@@ -71,7 +71,7 @@
 				    	,#{memberId}
 				    	,#{quantity}
 				    	,#{price}
-				    	,TO_DATE(#{orderDate},'YYYY-MM-DD HH:MI:SS')
+				    	,TO_DATE(#{orderDate},'YYYY-MM-DD HH24:MI:SS')
 				    	<choose>
 				    		<when test='postId.substring(0,3).equals("PKG") and orderStatus.equals("SUCCESS_PAYMENT")'>
 				    			,'B1'

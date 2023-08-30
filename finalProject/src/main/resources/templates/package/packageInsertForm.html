@@ -143,12 +143,14 @@ ClassicEditor
 			
 			const filenames = imgTags.map(img=> {
 				const src = img.getAttribute('src');
+				
 				return src;
 			});		
 			$.each(filenames,function(i,obj){
 				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
 			});
-					
+			
+			
 			//filenames.forEach(function(src, i) {
 			   // var jobj = $(imgTags[i]);
 			    //console.log(jobj);
@@ -156,12 +158,17 @@ ClassicEditor
 			    //str += "<input type ='text' name='attachList[" + i + "].savedImg' value='" + jobj.data("path") + "'>";
 			    //str += "<input type ='text' name='attachList[" + i + "].imgType' value='" + jobj.data("type") + "'>";
 			//});
-	
+			
+			
+			
+			
 			formObj.append(str);
 			document.getElementById('editorForm').action = "register";
 			document.getElementById('editorForm').submit();
 			
-
+			
+			
+			
 		})
 		//////////////////////////////////////////////////////////////////////
 	})
@@ -200,7 +207,7 @@ ClassicEditor
 			$.ajax({
 				url:'mainImageUpload',
 				processData: false,
-				Type: false,
+				contentType: false,
 				data: imageData,
 				type:'POST',
 				dataType:'json',
