@@ -8,6 +8,7 @@
 		SELECT *
 		FROM mate_recruit m LEFT OUTER JOIN 
      		 attached_file a ON m.post_id = a.post_id
+     	WHERE a.member_id IS NOT NULL OR a.file_id IS NULL
 		ORDER BY m.post_id DESC
 	</select>
 	
@@ -97,7 +98,7 @@
 			mate_tag = #{mateTag},
 			mate_max = #{mateMax},
 			deadline = #{deadline},
-			trip_area = #{tripArea},
+			trip_area = #{tripArea}
 		</set>
 		WHERE post_id = #{postId}
 	</update>
@@ -171,6 +172,11 @@
 							, #{applyInfo}
 							, 'a1'
 						)
+	</insert>
+	
+	<!-- 여행 메이트 신청시 -->
+	<insert id="sendAlert" parameterType="TripMateVO">
+		
 	</insert>
 	
 	<!-- 여행 메이트 신청시 게시글의 신청자 수 update -->

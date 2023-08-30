@@ -9,6 +9,9 @@ public interface TripMateService {
 	//여행 메이트 게시글 상세조회
 	public TripMateVO getTripMateInfo(TripMateVO tripMateVO);
 	
+	//여행 메이트 게시글에 댓글 달기
+	
+	
 	//여행 메이트 게시글 조회수 카운트
 	public int updateMateRecruitHit(TripMateVO tripMateVO);
 	
@@ -30,7 +33,10 @@ public interface TripMateService {
 	//여행 메이트 신청 (등록된 게시글에 대한 여행메이트 신청)
 	public TripMateVO InsertTripMateApply(TripMateVO tripMateVO); 
 	
-	//여행 메이트 신청 시 게시글의 신청자 수 업데이트
+	//여행 메이트 신청시 작성자에게
+	public int sendAlert(TripMateVO tripMateVO);
+	
+	//여행 메이트 신청시 게시글의 신청자 수 업데이트
 	public int updateMateRecruitApplyNum(TripMateVO tripMateVO);
 	
 	//여행 메이트 게시글의 현재 신청자 수 조회

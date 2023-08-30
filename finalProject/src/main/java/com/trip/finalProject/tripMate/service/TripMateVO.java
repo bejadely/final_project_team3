@@ -11,17 +11,6 @@ import lombok.Data;
 
 @Data
 public class TripMateVO {
-		//map
-		private String mapId;
-		private int mapNo;
-		private String mapName;
-		private double mapLat;
-		private double mapLng;
-		private String postId;
-		@DateTimeFormat(pattern = "yyyy-MM-dd")
-		private Date uploadDate;
-		@DateTimeFormat(pattern = "yyyy-MM-dd")
-		private Date tripDate;
 		
 		//member
 		private String memberId;
@@ -39,6 +28,7 @@ public class TripMateVO {
 		private String loadingImg;
 		
 		//mate_recruit 메이트 글 등록
+		private String postId;
 		private String mateTitle;
 		private String mateContent;
 		private int mateExpense;
@@ -76,6 +66,12 @@ public class TripMateVO {
 		private String reportReason;
 		private String content;
 		private String result;
+		
+		//alert
+		private String alertId;
+		@DateTimeFormat(pattern = "yyyy-MM-dd")
+		private Date alertDate;
+		private String confirmation;
 		
 		//선택한 여행 지역을 최초로 지도에 표시하기 위한 위도,경도 값
 		private String tripArea;
