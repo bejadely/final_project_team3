@@ -125,9 +125,6 @@
 	                                <span th:if="${searchInfo.sigunguCode=='17'}" th:text="통영"></span>
 	                                
                                 </li>
-                                <li>
-                                	<i class="fa-regular fa-comment-dots" style="color: #2cbdb8;"></i> 개의 리뷰
-                                </li>
                             </ul>
                             <h4 th:text="${searchInfo.title}"><a href="#"></a></h4>
                         </div>
@@ -505,6 +502,12 @@
 			$('#locationTypeButton').text($(this).text());
 			$('#locationTypeButton').data('areaCode', $(this).data('areaCode'));
 			$('#locationTypeButton').data('sigunguCode', $(this).data('sigunguCode'));
+		});
+
+		document.getElementById('search-input').addEventListener("keyup", function(event) {
+			if (event.key === "Enter") {
+				document.getElementById('button-addon2').click();
+			}
 		});
     </script>
 </div>

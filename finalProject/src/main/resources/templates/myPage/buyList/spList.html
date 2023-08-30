@@ -25,13 +25,13 @@ table, th,td {
 </style>
 <script>
 $(document).ready(function() {
-    $("#pk").click(function() {
-        location.href = "/common/buyPkList";
-    });
+	$("#pk").click(function() {
+		location.href="/common/buyPkList"	
+	})
 
-    $("#sp").click(function() {
-        location.href = "/common/buySpList";
-    });
+	$("#sp").click(function() {
+		location.href="/common/buySpList"
+	})
 });
 </script>
 </head>
@@ -47,25 +47,21 @@ $(document).ready(function() {
 		<table>
 			<thead>
 				<tr>
-					<th>타이틀</th>
-					<th>여행날짜</th>
-					<th>마감날짜</th>
-					<th>여행테마</th>
-					<th>모집완료 여부</th>
-					<th>결제여부</th>
+					<th>이름</th>
 					<th>가격</th>
+					<th>옵션</th>
+					<th>갯수</th>
+					<th>총 구매가격</th>
 				</tr>
 			</thead>
 			<tbody>
 				<th:block th:each="li : ${list}">
-					<tr class="list" th:onclick="|location.href='@{/common/buyPkSelect(orderDetailId=${li.orderDetailId})}'|">
-						<td th:text="${li.name}"></td>
-						<td th:text="${li.startDate} + '~' + ${li.endDate}"></td>
-						<td th:text="${li.deadlineDate}"></td>
-						<td th:text="${li.tourTheme}"></td>
-						<td th:text="${li.completion}"></td>
-						<td th:text="${li.orderStatus}"></td>
-						<td th:text="${li.pkPrice}"></td>
+					<tr class="list" th:onclick="|location.href='@{/packageInfo(postId=${li.postId})}'|">
+						<td th:text="${li.title}"></td>
+						<td th:text="${li.price}"></td>
+						<td th:text="${li.specialtyType}"></td>
+						<td th:text="${li.quantity}"></td>
+						<td th:text="${li.price * li.quantity}"></td>
 					</tr>
 				</th:block>
 			</tbody>
@@ -73,11 +69,11 @@ $(document).ready(function() {
 		</form>
 		<div>
 			<th:block th:if="${paging.startPage != 1}">
-				<a th:href="@{common/buyPkList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
+				<a th:href="@{common/buySpList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
 			</th:block>
 			<th:block th:if="${paging.startPage != 1}">
 				<a
-					th:href="@{common/buyPkList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+					th:href="@{common/buySpList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 			</th:block>
 			<th:block
 				th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
@@ -86,17 +82,17 @@ $(document).ready(function() {
 				</th:block>
 				<th:block th:if="${p ne paging.nowPage}">
 					<a
-						th:href="@{common/buyPkList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
+						th:href="@{common/buySpList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
 						th:text="${p}"></a>
 				</th:block>
 			</th:block>
 			<th:block th:if="${paging.endPage != paging.lastPage}">
 				<a
-					th:href="@{common/buyPkList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					th:href="@{common/buySpList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 			</th:block>
 			<th:block th:if="${paging.endPage != paging.lastPage}">
 				<a
-					th:href="@{common/buyPkList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
+					th:href="@{common/buySpList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
 			</th:block>
 		</div>
 	</div>

@@ -30,7 +30,7 @@
          <div id="clickLatlng"></div>
       </div>
       <div>
-         <!-- <button type="submit" id="addMap">경로 추가</button> -->
+         <button type="submit" id="addMap">경로 추가</button>
          <div id="addSearchMap">
             <!-- 키워드 검색 결과를 나타냄 -->
             <div id="searchMap"
@@ -534,7 +534,6 @@
                                    + "<input type='text' name='mapName' value = '" + mappingObj.mapName + "'>" 
                                    + "<input type='hidden' name='mapLat' value = '" + mappingObj.mapLat + "'>"
                                    + "<input type='hidden' name='mapLng' value = '" + mappingObj.mapLng + "'>"
-                                   + "<input type='hidden' name='postId' value = '" + [[${tripVO.postId}]] + "'>"
                                    + "</div>";
                    
                    mappingCoordinates.innerHTML += mappingString;
@@ -545,7 +544,6 @@
                                       mapName : mappingObj.mapName,
                                       mapLat : mappingObj.mapLat,
                                       mapLng : mappingObj.mapLng
-                                      postId : [[${tripVO.postId}]]
                                    }
                   console.log(mapDataObj);
                  //객체를 배열로 변환

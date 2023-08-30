@@ -13,6 +13,7 @@ import com.trip.finalProject.common.PagingVO;
 @Service
 public class BuyListServiceImpl implements BuyListService {
 	
+
 	@Autowired
 	BuyListMapper buyMapper;	
 
@@ -36,4 +37,13 @@ public class BuyListServiceImpl implements BuyListService {
 		return buyMapper.spAllLike(pagingVO);
 	}
 
+	@Override
+	public BuyListVO selectPkInfo(BuyListVO buyVO) {
+		return buyMapper.selectPk(buyVO);
+	}
+	
+	@Override
+	public BuyListVO selectSpInfo(BuyListVO buyVO) {
+		return buyMapper.selectPk(buyVO);
+	}
 }

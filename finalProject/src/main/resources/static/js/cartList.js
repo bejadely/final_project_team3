@@ -77,9 +77,10 @@ function handleClick(data) {
 	    tbody.html(html);
 	    priceBody.html(price);
 	}
-    
+   
 	    // 이벤트 핸들러 연결
-	    $("body").on("click", ".quantity-btn", function() {
+	    $("body").on("click", ".quantity-btn", function(e) {
+	    	e.stopImmediatePropagation();
 	    	var th = $(this);
 	    	var postId = th.parent().parent().find("td:eq(0)").find("input[name='chk']").data("cartid");
 	        var input = th.siblings(".quantity-input");
@@ -88,6 +89,7 @@ function handleClick(data) {
 	        
 	        if ($(this).hasClass("increment-btn")) {
 	            input.val(currentValue + 1);
+	            
 	        } else if ($(this).hasClass("decrement-btn")) {
 	            if (currentValue > 1) {
 	                input.val(currentValue - 1);
@@ -96,8 +98,6 @@ function handleClick(data) {
 	        }
 	        var result = input.val();
 	        
-	        console.log(result);
-	        console.log(postId);
 	        
  	        $.ajax({
 	            url: 'updateQuantity',
@@ -107,7 +107,8 @@ function handleClick(data) {
 	            	  }
 	            
 	        }).done(data => {
-	        	console.log(data);
+	        
+	        	updateTotalAndPrice(data.quantity)
 	        		            
 	        }).fail(reject => console.log(reject));
 	    }); 
@@ -185,19 +186,24 @@ function handleClick(data) {
 	$("#pakage").trigger('click');
 	
 	//체크박스 활성화 시 총 금액 추가되는 부분	
-	function updateTotalAndPrice() {
-	    var result = 0;
+function updateTotalAndPrice(data) {
+    var result = 0;
+    
+    // 체크된 체크박스를 찾는 루프
+    $("tbody input[type=checkbox]:checked").each(function() {
+        var row = $(this).closest("tr");
+        var quantity = row.find("input[type=text]").val();
+        var price = parseFloat(row.find("td:eq(4)").text());
+        var cartTotal = quantity * price;
+        result += cartTotal;
+    });
 
-	    $("tbody input[type=checkbox]:checked").each(function() {
-	        var row = $(this).closest("tr");
-	        var quantity = parseFloat(row.find("input[type=text]").val());
-	        var price = parseFloat(row.find("td:eq(4)").text());
-	        var cartTotal = quantity * price;
-	        result += cartTotal;
-	    });
+    // 결과를 텍스트 필드에 설정
+    $("#result").val(result);
+}
 
-	    $("#result").val(result);
-	}
+// 체크박스나 입력 필드의 변경 시에만 updateTotalAndPrice 호출
+$("tbody input[type=checkbox], input[type=text]").on("change input", updateTotalAndPrice);
 	
 	var result = "";
     // 체크박스 전체 선택/해제 기능
