@@ -9,4 +9,6 @@ public interface StatisticsService {
 	List<VisitorVO> getVisitorRank();
 
 	List<AttractionVO> getAttractionRank();
+
+    List<TotalDataVO> getTotalData(String locationName);
 }
