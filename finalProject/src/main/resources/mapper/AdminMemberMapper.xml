@@ -223,14 +223,21 @@
   		<!-- 권한 승인 요청 승인 처리 -->
   		<update id="approveAuthRequest">
   			UPDATE member
-			SET authority = 'A2'
-			WHERE member_id = #{memberId}
+			   SET authority = 'A2'
+			 WHERE member_id = #{memberId}
   		</update>
   		
   		<!-- 권한 승인 요청 반려 처리 -->
   		<update id="rejectAuthRequest">
   			UPDATE member
-			SET authority = 'A1'
-			WHERE member_id = #{memberId}
+			   SET authority = 'A1'
+			 WHERE member_id = #{memberId}
+  		</update>
+  		
+  		<!-- 제재카운트 1 증가 -->
+  		<update id="plusPunishCount">
+  			UPDATE member
+			   SET punish_count = punish_count + 1
+			 WHERE member_id = #{memberId}
   		</update>
   </mapper>
