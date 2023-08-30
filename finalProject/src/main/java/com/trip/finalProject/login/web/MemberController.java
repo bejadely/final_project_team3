@@ -173,7 +173,7 @@ public class MemberController {
 			memberVO.setMemberId(session.getAttribute("sessionId").toString());  //to do 
 			MemberVO findVO = memberService.memberInfo(memberVO);
 			model.addAttribute("memberInfo", findVO);
-			return "myPage/myPage";
+			return "myPage/info/myPage";
 		}
 		
 		//회원수정 폼 호출
@@ -182,7 +182,7 @@ public class MemberController {
 			memberVO.setMemberId(session.getAttribute("sessionId").toString());
 			MemberVO findVO = memberService.memberInfo(memberVO);
 			model.addAttribute("memberInfo", findVO);
-			return "myPage/myPageUpdate";
+			return "myPage/info/myPageUpdate";
 		}
 		
 		//회원수정 프로세서
