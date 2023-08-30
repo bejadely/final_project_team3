@@ -18,5 +18,11 @@ public interface BuyListMapper {
 	
 	//특산물 조회
 	public List<BuyListVO> spAllLike(PagingVO pagingVO);
+	
+	//데이터 불러오기
+	public BuyListVO selectPk(BuyListVO buyVO);
+	
+	//데이터 불러오기
+	public BuyListVO selectSp(BuyListVO buyVO);
 
 }

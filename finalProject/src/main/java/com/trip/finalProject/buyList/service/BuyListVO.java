@@ -24,6 +24,7 @@ public class BuyListVO {
 	private String tourTheme;
 	//sepcialties_resigt
 	private String type;
+	private String title;
 	private String discount;
 	//specialties_option
 	private String specialtyType;
