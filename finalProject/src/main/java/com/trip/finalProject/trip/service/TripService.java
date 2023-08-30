@@ -57,6 +57,9 @@ public interface TripService {
 	//여행경로 저장
 	public int InsertTripMapping(TripVO tripVO);
 	
+	//여행경로 삭제
+	public int deleteTripMapping(TripVO tripVO);
+	
 	//여행경로 데이터 조회
 	public List<TripVO> getMapData(TripVO tripVO);
 	
