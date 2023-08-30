@@ -41,10 +41,17 @@
   		</select>
   		
   		<!-- 신고 제재처리로 상태값 변경 -->
-  		<update id="updateResult" parameterType="ReportVO">
+  		<update id="updateResultToPunish" parameterType="ReportVO">
   			UPDATE report
 			   SET result = 'P2'
-			 WHERE report_id = #{reportId};
+			 WHERE report_id = #{reportId}
+  		</update>
+  		
+  		<!-- 신고 제재미처리로 상태값 변경 -->
+  		<update id="updateResultToInvalidate">
+  		  	UPDATE report
+			   SET result = 'P3'
+			 WHERE report_id = #{reportId}
   		</update>
   		
   		

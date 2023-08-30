@@ -5,9 +5,26 @@
   <mapper namespace="com.trip.finalProject.report.mapper.PunishMapper">
   	
   	<!-- 제재내역 저장(제재) -->
-  	<insert id="">
-    	INSERT INTO punish
-    	VALUES
+  	<insert id="insertPunishInfo" parameterType="PunishVO">
+    	<selectKey keyProperty="punishId" resultType="String" order="BEFORE">
+			SELECT 'PNS' || (TO_NUMBER(NVL((SUBSTR(MAX(punish_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM punish
+			WHERE SUBSTR(punish_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+    	</selectKey>
+    	INSERT INTO punish(
+    		punish_id
+		  , punish_date
+		  , report_id
+		  , punished_id
+		  , punish_reason
+    	)
+    	VALUES(
+    		#{punishId}
+    	  , sysdate
+    	  , #{reportId}
+    	  , #{punishedId}
+    	  , #{punishReason}	
+    	)
   	</insert>
   
   </mapper>

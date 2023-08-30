@@ -1,6 +1,5 @@
 package com.trip.finalProject.report.web;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.trip.finalProject.common.mapper.CommonMapper;
 import com.trip.finalProject.report.service.ReportService;
@@ -62,10 +62,13 @@ public class ReportController {
 	
 	// 신고 처리
 	@PostMapping("/admin/punishProcess")
-	public String punishProcess(ReportVO reportVO) {
+	public String punishProcess(ReportVO reportVO, RedirectAttributes rtt) {
 		
-		// 신고 처리 service 호출
+		// 신고처리 서비스 호출
+		String message = reportService.punishProcess(reportVO);
 		
+		// 처리결과 메세지 담기
+		rtt.addFlashAttribute("message", message);
 		
 		return "redirect:/admin/seeAllReport";
 	}
