@@ -11,7 +11,55 @@
 		FROM location
 		
 	</select>
-
-
-
+	
+	<insert id="insertSpecialites" parameterType="SpecialtiesVO">
+		<selectKey keyProperty="postId" resultType="String" order="BEFORE">
+			SELECT 'SPE' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM specialties_regist
+			WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+		insert into specialties_regist
+					(
+						post_id,
+						title,
+						content,
+						writer_id,
+						area_code,
+						sigungu_code,
+						type
+					)
+				VALUES
+					(
+						#{postId}
+						,#{title}
+						,#{content}
+						,#{writerId}
+						,#{areaCode}
+						,#{sigunguCode}
+						,#{type}
+					)			
+			
+	</insert>
+	
+	<insert id="insertSpecialtiesOption" parameterType="SepcialtiesOptionVO">
+		<selectKey keyProperty="optionId" resultType="String" order="BEFORE">
+			SELECT 'SPO' || (TO_NUMBER(NVL((SUBSTR(MAX(option_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM specialties_option
+			WHERE SUBSTR(option_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+		insert into specialties_option
+					(
+						option_id
+						,specialty_type
+						,price
+						,post_id
+					)
+				VALUES
+					(
+						#{optionId}
+						,#{specialtyType}
+						,#{price}
+						,#{postId}
+					)
+	</insert>
 </mapper>

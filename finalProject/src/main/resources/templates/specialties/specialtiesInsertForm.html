@@ -80,8 +80,8 @@ ClassicEditor
 		
 		//document.getElementById("editorForm").addEventListener("submit",function(event){
 		$("button[type='submit']").on("click",function(event){
-				
 			event.preventDefault();
+			var str="";	
 			
 			var sigunguCode = $("#location > option:selected").attr("value1");
 			var areaCode = $("#location > option:selected").attr("value2");
@@ -95,19 +95,18 @@ ClassicEditor
 			let objData = serializeObject();
 			console.log(objData);
 			//sconsole.log(data);
-			const { title,  price, writerId, deadlineDate, maxReservation } = objData;
+			const { title, writerId,type } = objData;
 			var combinedData={
 				content: data,
 				title: title,
 				sigunguCode: sigunguCode,
 				areaCode: areaCode,
 		        writerId: writerId,
-		        deadlineDate: deadlineDate,
-		        maxReservation: maxReservation
+		        type:type
 			};
 			console.log(combinedData);
 			
-			var str="";
+			
 			$(".uploadResult ul li").each(function(i,obj){
 				var jobj = $(obj);
 				
@@ -135,13 +134,13 @@ ClassicEditor
 			
 			var specialtiesOption = $(".specialtiesOption");
 
-			$(".specialityType", specialtiesOption).each(function(i, typeInput) {
-			    var type = $(typeInput).val();
-			    var priceInput = $(typeInput).closest(".specialtiesOption").find(".price").eq(i);
+			$("#specialtype", specialtiesOption).each(function(i, obj) {
+			    var type = $(obj).val();
+			    var priceInput = $(obj).closest(".specialtiesOption").find("#price").eq(i);
 			    var price = $(priceInput).val();
 
-			    str += `<input type='text' name='optionList[${i}].type' value='${type}'>
-			            <input type='text' name='optionList[${i}].price' value='${prisce}'>`;
+			    str += `<input type='text' name='optionList[${i}].specialtyType' value='${type}'>
+			            <input type='text' name='optionList[${i}].price' value='${price}'>`;
 			});
 			
 			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
@@ -267,7 +266,7 @@ ClassicEditor
 	}
 	$(document).ready(function() {
 		$('.optionInsert').on('click', insertOption);
-		//$('.optionDelete').on('click', authReject);
+		$('.optionDelete').on('click', deleteOption);
 	});
 	
 	// 옵션 추가 버튼
@@ -293,17 +292,31 @@ ClassicEditor
 	    	  //sweetalert2에서 입력된 값을 가지고옴	
 		      const optionType = document.getElementById('optionType').value;
 			  const optionPrice = document.getElementById('optionPrice').value;
-			  const optionId = 'option_' + new Date().getTime(); //고유 식별자 생성
 			  
 		      let form = document.getElementById("editorForm");
 			  let str="";
-			  str +=`<input type="checkbox" class="deleteCheckbox" data-optionid="${optionId}" >
-			  		<label>옵션</label><input type="text" id="specialityType" name="specialityType" value="${optionType}" readonly>
-				  	<label>가격</label><input type="text" id="price" name="price" value="${optionPrice}"readonly><br>`;			  
+			  str +=`<div class="option"><input type="checkbox" class="deleteCheckbox" >
+			  		<label>옵션</label><input type="text" id="specialtype" name="" value="${optionType}" readonly>
+				  	<label>가격</label><input type="text" id="price" name="" value="${optionPrice}"readonly><br>`;			  
 			  specialtiesOption.append(str);
 	      }
 	    })
 		
+	};
+	
+	function deleteOption(e){
+		e.preventDefault();
+		/* $("input[type=checkbox]:checked").each(function() {
+	        var label = $(this).closest("label");
+	        var specialtiesType = label.find("input[type=text]");
+	        console.log(label);
+	        console.log(specialtiesType)
+	       label.remove();
+	       specialtiesType.remove();
+	    }); */
+		 $("input[type=checkbox]:checked").each(function() {
+			    $(this).closest(".option").remove();
+			  });
 	};
 	
 });
@@ -313,6 +326,7 @@ ClassicEditor
 <div layout:fragment="content">
 	<form method="post" id="editorForm" enctype="multipart/form-data" >
 		<div id="specialtiesInfo">	
+			<input type="hidden" name="writerId" th:value="${session.sessionId}">
 			<div>
 				<label>특산물 종류</label>
 				<select name="type" id="type">
