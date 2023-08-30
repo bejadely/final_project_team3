@@ -53,7 +53,7 @@ $(document).ready(function() {
 					<td>
 						<img alt="대표사진" src="${list.loadingImg}">
 					</td>
-					<td th:text="${list.name}"></td>
+					<td th:text="${list.title}"></td>
 					<td th:text="${list.quantity}"></td>
 					<td th:text="${list.pkPrice}"></td>
 				</tr>
@@ -73,8 +73,8 @@ $(document).ready(function() {
 				<label>결제 상태</label>
 				<input type="text" th:value="${list.orderStatus}" readonly="readonly">
 			</li>
-
 		</ul>
+		<button type="button">환불</button>
 
 	</form>
 	</div>
