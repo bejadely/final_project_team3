@@ -3,8 +3,6 @@ package com.trip.finalProject.excelUpload.service.impl;
 import com.trip.finalProject.excelUpload.mapper.ExcelUploadMapper;
 import com.trip.finalProject.excelUpload.service.ExcelUploadService;
 
-import org.apache.poi.hssf.record.PageBreakRecord.Break;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -65,7 +65,7 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
     private List<Map<String, String>> getTripList(String areaCode, String sigunguCode, MultipartFile file) {
     	List<Map<String, String>> tripList = new ArrayList<>();
 
-        String yearMonth = getThisYearMonth();
+        String prevMonth = getPrevMonth();
 
         try (InputStream inputStream = file.getInputStream()) {
 
@@ -85,7 +85,7 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
                 Map<String, String> tripMap = new HashMap<>();
                 tripMap.put("tripType", tripType);
                 tripMap.put("searchNumber", searchNumber);
-                tripMap.put("yearMonth", yearMonth);
+                tripMap.put("prevMonth", prevMonth);
                 tripMap.put("areaCode", areaCode);
                 tripMap.put("sigunguCode", sigunguCode);
 
@@ -103,7 +103,7 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
 	private List<Map<String, String>> getFellowList(String areaCode, String sigunguCode, MultipartFile file) {
     	List<Map<String, String>> fellowList = new ArrayList<>();
 
-        String yearMonth = getThisYearMonth();
+        String prevMonth = getPrevMonth();
 
         try (InputStream inputStream = file.getInputStream()) {
 
@@ -123,7 +123,7 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
                 Map<String, String> fellowMap = new HashMap<>();
                 fellowMap.put("fellowType", fellowType);
                 fellowMap.put("searchNumber", searchNumber);
-                fellowMap.put("yearMonth", yearMonth);
+                fellowMap.put("prevMonth", prevMonth);
                 fellowMap.put("areaCode", areaCode);
                 fellowMap.put("sigunguCode", sigunguCode);
 
@@ -142,7 +142,7 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
 	private List<Map<String,String>> getRestaurantList(String areaCode, String sigunguCode, MultipartFile file) {
         List<Map<String, String>> restaurantList = new ArrayList<>();
 
-        String yearMonth = getThisYearMonth();
+        String prevMonth = getPrevMonth();
 
         try (InputStream inputStream = file.getInputStream()) {
 
@@ -165,7 +165,7 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
                 restaurantMap.put("restaurantName", restaurantName);
                 restaurantMap.put("restaurantType", restaurantType);
                 restaurantMap.put("visitorNumber", visitorNumber);
-                restaurantMap.put("yearMonth", yearMonth);
+                restaurantMap.put("prevMonth", prevMonth);
                 restaurantMap.put("areaCode", areaCode);
                 restaurantMap.put("sigunguCode", sigunguCode);
 
@@ -183,7 +183,7 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
 	private List<Map<String, String>> getAttractionList(String areaCode, String sigunguCode, MultipartFile file) {
 		List<Map<String, String>> attractionList = new ArrayList<>();
 
-        String yearMonth = getThisYearMonth();
+        String prevMonth = getPrevMonth();
 
         try (InputStream inputStream = file.getInputStream()) {
 
@@ -206,7 +206,7 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
                 attractionMap.put("attractionName", attractionName);
                 attractionMap.put("attractionType", attractionType);
                 attractionMap.put("visitorNumber", visitorNumber);
-                attractionMap.put("yearMonth", yearMonth);
+                attractionMap.put("prevMonth", prevMonth);
                 attractionMap.put("areaCode", areaCode);
                 attractionMap.put("sigunguCode", sigunguCode);
 
@@ -313,13 +313,17 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
         return snsList;
     }
 
-    private String getThisYearMonth() {
-        //오늘 날짜
-        Date now = new Date(); //현재시간 부르기
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMM"); //시간 포맷팅하기
-        String formattedNow = formatter.format(now); //현재시간에 포맷팅 적용
+    private String getPrevMonth() {
+        // 현재 날짜를 가져옴
+        LocalDate currentDate = LocalDate.now();
 
-        return formattedNow;
+        // 지난 달의 날짜를 계산
+        LocalDate lastMonthDate = currentDate.minusMonths(1);
+
+        // 지난 달의 날짜를 yyyyMM 형식의 문자열로 포맷
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
+
+        return lastMonthDate.format(formatter);
     }
 
     private Map<String,String> getAreaSigunguCode(String locationName) {
@@ -337,11 +341,11 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
             case "울산":
                 areaCode = "7";
                 break;
-            case "경주":
+            case "안동":
                 areaCode = "35";
                 sigunguCode = "11";
                 break;
-            case "안동":
+            case "경주":
                 areaCode = "35";
                 sigunguCode = "2";
                 break;
