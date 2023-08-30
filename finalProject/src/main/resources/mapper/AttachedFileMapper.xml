@@ -5,7 +5,7 @@
 <mapper namespace="com.trip.finalProject.attachedFile.mapper.AttachedFileMapper">
 	<insert id="insertAttachedFile" parameterType="AttachedFileVO">
 		<selectKey keyProperty="fileId" resultType="String" order="BEFORE">		
-    		SELECT 'atf' || (TO_NUMBER(NVL((SUBSTR(MAX(file_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1) 
+    		SELECT 'ATF' || (TO_NUMBER(NVL((SUBSTR(MAX(file_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1) 
     		FROM attached_file
     		WHERE SUBSTR(file_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
 		</selectKey>
@@ -52,4 +52,5 @@
 		FROM attached_file 
 		WHERE post_id = #{postId} AND img_type ='U2'
 	</select>
+
 </mapper>

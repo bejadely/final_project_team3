@@ -3,6 +3,7 @@ package com.trip.finalProject.notice.mapper;
 
 import java.util.List;
 
+import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.notice.service.NoticeVO;
 
 public interface NoticeMapper {
@@ -11,9 +12,20 @@ public interface NoticeMapper {
 
 	public List<NoticeVO> boardSelectList(NoticeVO vo) ;
 	
-	public List<NoticeVO> boardSelect(NoticeVO vo);
+	//리스트 화면에 뿌리기
+	public List<NoticeVO> SelectAllNoticeList(PagingVO pagingVO);
 	
+	//공지사항 작성
 	public int noticeInsert(NoticeVO vo);
+	
+	// 전체 게시글 수 카운트
+	public int getAllNoticeCount();
+	
+	//게시글 상세조회
+	public NoticeVO getNoticeDetail(NoticeVO vo);
+	
+	// 게시물 수정하기
+	public int modifyNoticeInfo(NoticeVO vo);
 	
 	public int boardUpdate(NoticeVO vo);
 	
@@ -26,6 +38,8 @@ public interface NoticeMapper {
 	public int boardView(NoticeVO vo);
 	
 	public int boardReple(NoticeVO vo);
+	
+	
 
 
 	

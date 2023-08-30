@@ -33,10 +33,12 @@ public class AdminMemberController {
 	AlertService alertService;
 	
 	// 회원정보 전체 조회
-	@GetMapping("/seeAllMemberList")
+	@GetMapping("/admin/seeAllMemberList")
 	public String seeAllMember(Model model
-			                 , @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
-			                 , @RequestParam(value = "cntPerPage", defaultValue = "10")Integer cntPerPage ){
+							 , @RequestParam( name = "searchBy", defaultValue = "name" ) String searchBy
+							 , @RequestParam( name = "keyword", defaultValue = "" ) String keyword
+			                 , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
+			                 , @RequestParam( name = "cntPerPage", defaultValue = "10")Integer cntPerPage ){
 		
 		// 전체 조회될 회원 수 카운트
 		int total = adminMemberService.memberCount();
@@ -49,42 +51,107 @@ public class AdminMemberController {
 		model.addAttribute("list", list);
 		model.addAttribute("paging", pagingVO);
 		
+		// 검색어가 없을 경우를 대비한 구문
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("searchBy", searchBy);
+		
 		return "admin/manageMember/seeAllMemberList";
 	}
 	
 	// 특정 조건으로 회원 상세 검색
-	@GetMapping("/searchAdminMember")
-	public String searchAdminMember(@RequestParam( name = "searchBy" ) String searchBy, @RequestParam( name = "keyword" ) String keyword, Model model, AdminMemberVO adminMemberVO) {
+	@GetMapping("/admin/searchAdminMember")
+	public String searchAdminMember(@RequestParam( name = "searchBy" ) String searchBy
+								  , @RequestParam( name = "keyword" ) String keyword
+								  , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
+								  , @RequestParam( name = "cntPerPage", defaultValue = "10") Integer cntPerPage
+								  , Model model
+								  , AdminMemberVO adminMemberVO) {
 		
 		// 조건 파악
 		if(searchBy.equals("name")) {
 			
+			// 전체 조회될 회원 수 카운트
+			int total = adminMemberService.countName();
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			
 			// 이름으로 검색기능 수행
 			adminMemberVO.setMemberName(keyword);
-			List<AdminMemberVO> list = adminMemberService.searchMemberByName(adminMemberVO);
+			List<AdminMemberVO> list = adminMemberService.searchMemberByName(adminMemberVO, pagingVO);
 			model.addAttribute("list", list);
+			model.addAttribute("paging", pagingVO);
 			
 		} else if(searchBy.equals("id")) {
 			
+			// 전체 조회될 회원 수 카운트
+			int total = adminMemberService.memberCount();
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			
 			// 아이디로 검색기능 수행
 			adminMemberVO.setMemberId(keyword);
-			List<AdminMemberVO> list = adminMemberService.searchMemberById(adminMemberVO);
+			List<AdminMemberVO> list = adminMemberService.searchMemberById(adminMemberVO, pagingVO);
 			model.addAttribute("list", list);
-
+			model.addAttribute("paging", pagingVO);
+			
 		}
+		
+		// 검색결과 기억을 위해 keyword와 searchBy 담기
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("searchBy", searchBy);
 		
 		return "admin/manageMember/seeAllMemberList";
 	}
 	
 	// 회원상세정보 조회
-	@GetMapping("/seeMemberDetail")
+	@GetMapping("/admin/seeMemberDetail")
 	public String seeMemberDetail(AdminMemberVO memberVO, Model model) {
 		
+		// 회원 상세조회 실행
+		memberVO = adminMemberService.getMemberDetail(memberVO);
 		
-		//memberVO = adminMemberService.s
+		// 상세 조회 결과값 모델에 담기
 		model.addAttribute("memberVO", memberVO);
 		
 		return "admin/manageMember/memberDetail";
+	}
+	
+	// 회원정보 수정 폼 호출
+	@PostMapping("/admin/modifyMemberInfoForm")
+	public String modifyMemberInfoForm(AdminMemberVO memberVO, Model model) {
+		
+		// 회원 상세조회 실행
+		memberVO = adminMemberService.getMemberDetail(memberVO);
+		
+		// 상세 조회 결과값 모델에 담기
+		model.addAttribute("memberVO", memberVO);
+		
+		return "admin/manageMember/modifyMemberInfoForm";
+	}
+	
+	// 회원정보 수정 기능 수행
+	@PostMapping("/admin/modifyMemberInfo")
+	public String modifyMemberInfo(AdminMemberVO adminVO, RedirectAttributes rtt) {
+		
+		// 회원정보 수정
+		String result = adminMemberService.modifyMemberInfo(adminVO);
+		
+		// 리다이렉트 어트리뷰트에 결과값 담기(성공 : success / 실패 : fail)
+		rtt.addFlashAttribute("result", result);
+		
+		return "redirect:seeMemberDetail?memberId=" + adminVO.getMemberId();
+	}
+	
+	// 회원 삭제
+	@PostMapping("/admin/withdrawMember")
+	public String withdrawMember(AdminMemberVO adminVO, RedirectAttributes rtt) {
+		
+		// 회원 삭제
+		String result = adminMemberService.withdrawMember(adminVO);
+		
+		// 리다이렉트 어트리뷰트에 결과값 담기(성공 : success / 실패 : fail)
+		rtt.addAttribute("result", result);
+		
+		return "redirect:seeMemberDetail?memberId=" + adminVO.getMemberId();
+		
 	}
 	
 	// 권한 승인 요청 전체 조회

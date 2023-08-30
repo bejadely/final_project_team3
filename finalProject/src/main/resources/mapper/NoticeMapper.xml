@@ -4,51 +4,36 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip.finalProject.notice.mapper.NoticeMapper"><!-- 구현! 메서드 명 만들어 놓은 것을 여기서 만들겠다. -->
 
-<!--Notice테이블에 새로운 레코드 삽입하는 쿼리  -->
-<!--  xxxxxxxxxxx안쓰는듯?xxxxxxxxxxx -->
-   <insert id="insertpost" parameterType="NoticeVO">
-   INSERT INTO Notice
-				SELECT IFNULL
-			(max(boardPromoter_id)+1,100001),
-			 #{bpGroup}, 
-			 #{bpHighLight},
-			 #{bpTitle}, 
-			 #{bpSubTitle},
-			 #{bpKeyword},
-			 #{bpTitleImageLink},
-			 #{bpRelatedLink}, 
-			 #{bpContent}, 
-			 #{bpViewCount},
-			 #{bpOrder}, 
-			 #{bpStatus}, 
-			 #{staff_id}, NOW(), NOW(), null, 'bpIpAddress_temp' 
-			 FROM
-				BoardPromoter_tbl  
-   </insert>
- <!--  xxxxxxxxxxx안쓰는듯?xxxxxxxxxxx -->  
- 
- 
- 
+
 
 <!--  페이지별로 게시글 확인 row 개수에 따라 -->
-   <select id="boardSelectList" resultType="NoticeVO">
-		SELECT *
+   <select id="SelectAllNoticeList" >
+		<!-- SELECT *
 		FROM (SELECT ROWNUM rn, b.*
-			FROM(SELECT * FROM board order by board_id desc) b )
+			FROM(SELECT * FROM notice order by notice_number desc) b )
 		WHERE rn BETWEEN ((#{page}-1) * 10) + 1 
-			AND (#{page} * 10)	
+			AND (#{page} * 10)	 -->
+				SELECT *
+			  	FROM (SELECT ROWNUM rn, a.*
+			        	FROM(SELECT notice_Number,title,writer_Id,regist_Date,hit 
+							FROM notice  order by notice_number) a )
+			  WHERE rn BETWEEN #{start} AND #{end}
+			  
+						
+			<!-- SELECT notice_Number,writer_Id,regist_Date,hit 
+		FROM notice  order by notice_number -->
+		
 	</select>
 	
-<!--  게시글 총 개수를 조회-->
-	<select id="boardSelectMax">
-		SELECT count(*)
-		FROM board
-		<if test="boardContent != null">
-			WHERE board_content LIKE '%${boardContent}%' 
-		</if>
-	</select>
+	<!-- 전체 게시글 수 카운트 -->
+  		<select id="getAllNoticeCount">
+  			SELECT COUNT(*)
+  			  FROM notice
+  		</select>
 	
-<!-- 검색어를 포함한 페이지별 게시글 목록을 조회 -->
+
+	
+<!-- 검색어를 '포함한' 페이지별 게시글 목록을 조회 -->
 	<select id="boardSelect" resultType="NoticeVO">
 		SELECT *
 		FROM (SELECT ROWNUM rn, b.*
@@ -58,19 +43,62 @@
 	</select>
 	
 <!-- 특정 게시글의 상세 정보를 조회하는 쿼리 글의 id를 사용해서 해당 게시글을 가져옴 -->	
-	<select id="boardDetail" resultType="NoticeVO">
+	<select id="getNoticeDetail" resultType="NoticeVO">
 		SELECT *
-		FROM board
-		WHERE board_id = #{boardId}
+		FROM notice
+		WHERE notice_number = #{noticeNumber}
 	</select>
+	
+<!-- 게시글 수정 -->	
+	<update id="modifyNoticeInfo" parameterType="NoticeVO">
+	
+  			UPDATE notice
+  			<set> 				
+				title = #{title},					
+				content = #{content},							
+				update_date= sysdate
+			</set>
+  			WHERE notice_number = #{noticeNumber}
+  		</update>
+  		
+  		
+  		
+  		
+ <!--  		<update id="modifyNoticeInfo" parameterType="NoticeVO">
+	
+  			UPDATE notice
+  			<set>
+  				<if test="title != null and !title.equals('')">
+					title = #{title},
+				</if>
+				<if test="content != null and !content.equals('')">
+					content = #{content},	
+				</if>			
+					 update_date= sysdate
+			</set>
+  			WHERE notice_number = #{noticeNumber}
+  		</update> -->
+		
+	
+
 	
 <!-- 새로운 게시글을 삽입하는 쿼리. 게시글 번호는 자동생성됨-->	
 	<insert id="noticeInsert" parameterType="NoticeVO" >
-		<selectKey keyProperty="notice_number" resultType = "int" order="BEFORE">
-			select NVL(max(noticeNumber),0) +1 as noticeNumber FROM notice
+		<selectKey keyProperty="noticeNumber" resultType = "int" order="BEFORE">
+			select NVL(max(notice_Number),0) +1 as notice_Number FROM notice
 		</selectKey>
 		INSERT INTO notice
-		VALUES(#{noticeNumber},#{title},#{content}, sysdate,'null', 'STATUS = 'T1'', 'RELEASE=N1', 'N','관리자', 0)
+		VALUES(
+		#{noticeNumber},
+		#{title},
+		#{content}, 
+		sysdate,
+		null, 
+		#{status}, 
+		#{release}, 
+		#{noticeType},
+		#{writerId},
+		 0)
 	</insert>
 	
 <!-- 특정 게시글의 내용을 업데이트하는 쿼리 -->	

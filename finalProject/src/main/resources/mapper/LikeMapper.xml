@@ -3,54 +3,38 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip.finalProject.like.mapper.LikeMapper">
-	<!-- 패키지 -->
-	<select id="paCount" resultMap="int">
+	<!-- 여행메이트 -->
+	<select id="mtCount" resultType="int">
 		SELECT COUNT(*)
 		FROM post_like
-		WHERE post_id Like 'POS'
+		WHERE post_id Like 'MAT%' AND member_id = #{memberId}
 	</select>
-	<!-- 특산물 -->
-	<select id="spCount" resultMap="int">
-		SELECT COUNT(*)
-		FROM post_like
-		WHERE post_id Like 'SPE'
-	</select>
+
 	<!-- 여행기록 -->
-	<select id="trCount" resultMap="int">
+	<select id="trCount" resultType="int">
 		SELECT COUNT(*)
 		FROM post_like
-		WHERE post_id Like 'POS'
+		WHERE post_id Like 'TRR%'
 	</select>
-	<!-- 패키지 -->
- 	<select id="paAllLike" resultType="LikeVO">
+
+ 	<!-- 여행메이트 -->
+ 	<select id="mtAllLike" resultType="LikeVO">
  		SELECT *
 		FROM(SELECT ROWNUM rn, a.*
-			 FROM(SELECT l.like_id, 
-			 			 l.member_id,
-			 			 l.post_id,
-			 			 r.name,
-			 			 r.location_id,
-			 			 r.tour_theme,
-			 			 r.start_date,
-			 			 r.end_date,
-			 			 r.completion_id
-				  FROM post_like l LEFT JOIN package_regist r ON (l.post_id = r.post_id) 
-				  WHERE l.post_id LIKE 'POS'
-				  ORDER BY l.postId DESC) a)
-		WHERE rn BETWEEN #{start } AND #{end }
- 	</select>
- 	<!-- 특산물 -->
- 	<select id="spAllLike" resultType="LikeVO">
- 		SELECT *
-		FROM(SELECT ROWNUM rn, a.*
-			 FROM(SELECT l.like_id, 
-			 			 l.member_id,
-			 			 l.post_id,
-			 			 r.title,
-			 			 r.type
-				  FROM post_like l LEFT JOIN specialties_resigt r ON (l.post_id = r.post_id) 
-				  WHERE l.post_id LIKE 'SPE'
-				  ORDER BY l.postId DESC) a)
+			 FROM(SELECT l.like_id like_id, 
+			 			 l.member_id member_id,
+			 			 l.post_id post_id,
+			 			 r.mate_title,
+			 			 r.apply_num,
+			 			 r.start_day,
+			 			 r.end_day,
+			 			 code_val(r.complition) complition,
+			 			 r.deadline,
+			 			 r.trip_area
+			 			 
+				  FROM post_like l RIGHT JOIN mate_recruit r ON (l.post_id = r.post_id)
+				  WHERE l.post_id LIKE 'MAT%'
+				  ORDER BY l.post_id DESC) a)
 		WHERE rn BETWEEN #{start } AND #{end }
  	</select>
  	<!-- 여행기록 -->
@@ -63,9 +47,9 @@
 			 			 r.trip_title,
 			 			 r.start_day,
 			 			 r.end_day
-				  FROM post_like l LEFT JOIN trip_record r ON (l.post_id = r.post_id) 
-				  WHERE l.post_id LIKE 'POS'
-				  ORDER BY l.postId DESC) a)
+				  FROM post_like l RIGHT JOIN trip_record r ON (l.post_id = r.post_id) 
+				  WHERE l.post_id LIKE 'TRR%'
+				  ORDER BY l.post_id DESC) a)
 		WHERE rn BETWEEN #{start } AND #{end }
  	</select>
 
