@@ -71,13 +71,7 @@ ClassicEditor
 			.then(message => {
 				console.log(message);
 				editor.setData('');
-			}).then((result) => {
-			      if (result.isConfirmed) {
-			          
-			    	  //post방식으로 페이지 전환
-					  sendPost();
-					  console.log('모달모달');
-			      }
+			})
 			
 		})
 		
