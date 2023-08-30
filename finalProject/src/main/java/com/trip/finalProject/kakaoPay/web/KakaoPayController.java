@@ -43,6 +43,8 @@ public class KakaoPayController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("tid",approveResponse.getTid());
 		mv.setViewName("redirect:/payment/info");
+		
+		
 		return mv;
 	}
 	

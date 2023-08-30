@@ -127,12 +127,12 @@ $(document).ready(function() {
 					<tr class="hidden">
 						<td colspan="5">
 							<input type="hidden" th:value="${que.answerId}">
-							<input type="text" th:value="${que.questionContent}" readonly="readonly">
+							<th:textarea rows="9" cols="70" readonly="readonly">[[${que.questionContent}]]</th:textarea>
 						</td>
 					</tr>
 					<tr class="hidden">
 						<td colspan="5">
-							<input type="text" th:value="${que.answerContexts}">
+							<textarea rows="9" cols="70">[[${que.answerContexts}]]</textarea>
 							<br><button type="reset">취소</button>
 							<button type="button" class="insert" th:if="${que.answerContexts == null}">등록</button>
 							<button type="button" class="update" th:if="${que.answerContexts != null}">수정</button>
