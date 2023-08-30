@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -110,7 +111,10 @@ public class TripMateController {
 	
 	//여행 메이트 신청 - form
 	@PostMapping("/tripMateApplyForm")
-	public String tripMateApplyForm(TripMateVO trvo, Model model) {
+	public String tripMateApplyForm(TripMateVO trvo,  @RequestParam(name="mateWriter", defaultValue = "name") String mateWriter, Model model) {
+		//trvo.setWriterId(mateWriter);
+		//System.out.println(mateWriter);
+		//model.addAttribute("mateWriter", mateWriter);
 		model.addAttribute("mateVO", trvo );
 		return "tripMate/tripMateApplyForm";
 	}
