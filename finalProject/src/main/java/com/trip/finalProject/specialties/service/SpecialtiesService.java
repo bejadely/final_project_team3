@@ -2,6 +2,8 @@ package com.trip.finalProject.specialties.service;
 
 import java.util.List;
 
+import com.trip.finalProject.location.service.LocationVO;
+
 public interface SpecialtiesService {
 	
 	
@@ -13,4 +15,7 @@ public interface SpecialtiesService {
 	
 	//특산물 등록
 	public void insertSepcialties(SpecialtiesVO specialtiesVO);
+	
+	//지역 코드 리스트
+	public List<LocationVO> getLocationList();
 }
