@@ -89,8 +89,9 @@
     .total-datail {
         margin-bottom: 0; /* 테이블의 바깥쪽 여백 제거 */
     }
-     .uploadMadalbtn {
+     .uploadModalbtn {
    		 text-align: right;
+         display: none;
  	 }
  	.upload-container {
       display: flex;
@@ -105,6 +106,16 @@
 	    padding: 5px;
 	    text-align: center;
 	}
+	  .table td, .table th {
+    text-align: center; 
+  }
+  .statisticsContent {
+        height: 60px; /* 셀 높이 */
+    }
+    .total-datail td {
+        vertical-align: middle; /* 셀 내용을 중앙에 정렬 */
+        font-size: 14px; /* 글자 크기 */
+    }
 </style>
 </head>
 <body>
@@ -125,7 +136,7 @@
     <!-- 내용창 -->
     <div class="container-lg">
     	<!-- 파일업로드 버튼 -->
-    	<div class="uploadMadalbtn">
+    	<div class="uploadModalbtn">
     		<button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#staticBackdrop">파일업로드</button>&ensp;
     	</div>
     	<!-- 파일업로드 모달 -->
@@ -2709,8 +2720,8 @@
                     <table class="table table-sm">
                         <tbody>
                             <tr th:each ="visitorInfo, stat : ${visitorRank}">
-                                <th scope="row" th:text="${stat.count}"></th>
-                                <td th:text="${visitorInfo.locationName}"></td>
+                                <th scope="row" style="width: 15%" th:text="${stat.count}"></th>
+                                <td style="width: 40%" th:text="${visitorInfo.locationName}"></td>
                                 <td th:text="|${visitorInfo.visitorNumber} 명|"></td>
                             </tr>
                         </tbody>
@@ -2721,7 +2732,7 @@
                     <table class="table table-sm">
                         <tbody>
 	                        <tr th:each="attractionInfo, stat : ${attractionRank}">
-	                            <th scope="row" th:text="${stat.count}"></th>
+	                            <th scope="row" style="width: 15%" th:text="${stat.count}"></th>
 	                            <td th:text="${attractionInfo.locationName}"></td>
 	                            <td th:text="${attractionInfo.attractionType}"></td>
 	                            <td th:text="${attractionInfo.attractionName}"></td>
@@ -2738,43 +2749,43 @@
             <div class="dropdown-check">
                 <h5 style="margin: 0;">&ensp;|&nbsp;</h5>
                 <button id="locationName" class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">대구</button>
-                <ul class="dropdown-menu" style="margin: 0;">
-                    <li><a class="dropdown-item" th:attr="data-area-code='4', data-sigungu-code='0'">대구</a></li>
-                    <li><a class="dropdown-item" th:attr="data-area-code='6', data-sigungu-code='0'">부산</a></li>
-                    <li><a class="dropdown-item" th:attr="data-area-code='7', data-sigungu-code='0'">울산</a></li>
-                    <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='2'">경주</a></li>
-                    <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='23'">포항</a></li>
-                    <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='11'">안동</a></li>
-                    <li><a class="dropdown-item" th:attr="data-area-code='36', data-sigungu-code='17'">통영</a></li>
-                    <li><a class="dropdown-item" th:attr="data-area-code='36', data-sigungu-code='1'">거제</a></li>
+                <ul id="locationNameType" class="dropdown-menu" style="margin: 0;">
+                    <li><a class="dropdown-item">대구</a></li>
+                    <li><a class="dropdown-item">부산</a></li>
+                    <li><a class="dropdown-item">울산</a></li>
+                    <li><a class="dropdown-item">경주</a></li>
+                    <li><a class="dropdown-item">포항</a></li>
+                    <li><a class="dropdown-item">안동</a></li>
+                    <li><a class="dropdown-item">통영</a></li>
+                    <li><a class="dropdown-item">거제</a></li>
                 </ul>
                 <h5 style="margin: 0;">&nbsp; 관광 데이터</h5>
-                &nbsp;<button type="button" class="btn btn-outline-dark btn-sm">조회</button>
             </div>
             <!--지역별 관광 총 집계 -->
             <div class="col-md-6">
                 <div class="rounded-box total-data" >
+                    <br>
                     <h6>데이터 총 정리</h6>
                     <table class="table table-sm total-datail">
                         <tbody>
                             <tr>
                                 <td>동행유형</td>
-                                <td></td>
+                                <td class="totalDataContent statisticsContent"></td>
                                 <td>가장 많아요!</td>
                             </tr>
                             <tr>
                                 <td>여행유형</td>
-                                <td></td>
+                                <td class="totalDataContent statisticsContent"></td>
                                 <td>가장 많아요!</td>
                             </tr>
                             <tr>
                                 <td>맛집은</td>
-                                <td></td>
+                                <td class="totalDataContent statisticsContent"></td>
                                 <td>인기에요!</td>
                             </tr>
                             <tr>
                                 <td>관광지는</td>
-                                <td></td>
+                                <td class="totalDataContent statisticsContent"></td>
                                 <td>인기에요!</td>
                             </tr>
                         </tbody>
@@ -2805,28 +2816,28 @@
                                     <tbody>
                                     <tr>
                                         <th scope="col">1등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td style="width: 40%" class="tripNameContent statisticsContent"></td>
+                                        <td class="tripNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">2등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td style="width: 45%" class="tripNameContent statisticsContent"></td>
+                                        <td class="tripNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">3등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td style="width: 45%" class="tripNameContent statisticsContent"></td>
+                                        <td class="tripNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">4등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td style="width: 45%" class="tripNameContent statisticsContent"></td>
+                                        <td class="tripNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">5등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td style="width: 45%" class="tripNameContent statisticsContent"></td>
+                                        <td class="tripNumberContent statisticsContent"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -2845,28 +2856,28 @@
                                     <tbody>
                                     <tr>
                                         <th scope="col">1등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td style="width: 45%" class="fellowNameContent statisticsContent"></td>
+                                        <td class="fellowNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">2등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td style="width: 45%" class="fellowNameContent statisticsContent"></td>
+                                        <td class="fellowNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">3등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td style="width: 45%" class="fellowNameContent statisticsContent"></td>
+                                        <td class="fellowNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">4등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td style="width: 45%" class="fellowNameContent statisticsContent"></td>
+                                        <td class="fellowNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">5등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td style="width: 45%" class="fellowNameContent statisticsContent"></td>
+                                        <td class="fellowNumberContent statisticsContent"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -2889,28 +2900,33 @@
                                     <tbody>
                                     <tr>
                                         <th scope="col">1등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td class="restaurantNameContent statisticsContent"></td>
+                                        <td class="restaurantTypeContent statisticsContent"></td>
+                                        <td class="restaurantNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">2등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td class="restaurantNameContent statisticsContent"></td>
+                                        <td class="restaurantTypeContent statisticsContent"></td>
+                                        <td class="restaurantNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">3등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td class="restaurantNameContent statisticsContent"></td>
+                                        <td class="restaurantTypeContent statisticsContent"></td>
+                                        <td class="restaurantNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">4등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td class="restaurantNameContent statisticsContent"></td>
+                                        <td class="restaurantTypeContent statisticsContent"></td>
+                                        <td class="restaurantNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">5등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td class="restaurantNameContent statisticsContent"></td>
+                                        <td class="restaurantTypeContent statisticsContent"></td>
+                                        <td class="restaurantNumberContent statisticsContent"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -2929,28 +2945,33 @@
                                     <tbody>
                                     <tr>
                                         <th scope="col">1등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td class="attractionNameContent statisticsContent"></td>
+                                        <td class="attractionTypeContent statisticsContent"></td>
+                                        <td class="attractionNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">2등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td class="attractionNameContent statisticsContent"></td>
+                                        <td class="attractionTypeContent statisticsContent"></td>
+                                        <td class="attractionNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">3등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td class="attractionNameContent statisticsContent"></td>
+                                        <td class="attractionTypeContent statisticsContent"></td>
+                                        <td class="attractionNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">4등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td class="attractionNameContent statisticsContent"></td>
+                                        <td class="attractionTypeContent statisticsContent"></td>
+                                        <td class="attractionNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">5등</th>
-                                        <td>이름</td>
-                                        <td>건수</td>
+                                        <td class="attractionNameContent statisticsContent"></td>
+                                        <td class="attractionTypeContent statisticsContent"></td>
+                                        <td class="attractionNumberContent statisticsContent"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -2962,7 +2983,12 @@
         </div>
         <br><br>
     </div>
-    <script>
+    <script th:inline="javascript">
+        const isAdminLogin = [[${isAdminLogin}]];
+        if(isAdminLogin) {
+            $('.uploadModalbtn').attr('style', 'display:block;');
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
 
             //  ajax로 방문자수 데이터 가져오기 map형식(지역, 방문자수)
@@ -2973,40 +2999,8 @@
                }
             });
 
-            //  최초에 데이터 ajax로 받아서 아래쪽 통계 데이터 넣어주기
-            // getStatisticsData();
-        });
-
-        let locationName;
-
-        let dataColumns = [locationName, ];
-
-        let chart = bb.generate({
-            data: {
-                columns: [
-                    // ["대구", 1903496, 1880936, 2164568, 2132880, 2370608, 2269152]
-                    dataColumns
-                ],
-                type: "line", // for ESM specify as: line()
-            },
-            axis: {
-                x: {
-                    type: "category",
-                    categories: [
-                        "2023.02",
-                        "2023.03",
-                        "2023.04",
-                        "2023.05",
-                        "2023.06",
-                        "2023.07",
-                    ],
-                    label: "최근 6개월"
-                },
-                y: {
-                    label: "언급량(건)"
-                }
-            },
-            bindto: "#chart"
+            // 최초에 데이터 ajax로 받아서 아래쪽 통계 데이터 넣어주기
+            getStatisticsData();
         });
 
         $('#fileType li > a').on('click', function() {
@@ -3158,24 +3152,120 @@
 
         }
 
-        /*
         function getStatisticsData() {
             let locationName = $('#locationName').text();
-            getAjax(locationName);
+            getTotalData(locationName, function(data) {
+                if(data) {
+                    clearSummaryAndChartData();
+                    clearGraph();
+                    appendSummaryAndChartData(data);
+                    appendGraphData(locationName, data);
+                }
+            });
+        }
 
+        function getTotalData(locationName, callback) {
+            $.ajax({
+                type : 'GET',
+                url : '/totalData',
+                data : {
+                    'locationName' : locationName
+                }
+            })
+            .done(function(data, textStatus, jqXHR) {
+                console.log('done');
+                console.log(data);
+                callback(data);
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                console.log('fail');
+            })
+        }
+
+        function clearSummaryAndChartData() {
+            $('.statisticsContent').text('');
+        }
+
+        function clearGraph() {
 
         }
 
-        function getAjax(locationName) {
+        function appendSummaryAndChartData(data) {
+            let fellowVOList = data[0].fellowVOList;
+            let tripVOList = data[0].tripVOList;
+            let restaurantVOList = data[0].restaurantVOList;
+            let attractionVOList = data[0].attractionVOList;
 
+            for(let i = 0; i < 5; i++) {
+                $('.tripNameContent').eq(i).text(tripVOList[i].tripType);
+                $('.tripNumberContent').eq(i).text(tripVOList[i].searchNumber + '건');
+
+                $('.fellowNameContent').eq(i).text(fellowVOList[i].fellowType);
+                $('.fellowNumberContent').eq(i).text(fellowVOList[i].searchNumber + '건');
+
+                $('.restaurantNameContent').eq(i).text(restaurantVOList[i].restaurantName);
+                $('.restaurantTypeContent').eq(i).text(restaurantVOList[i].restaurantType);
+                $('.restaurantNumberContent').eq(i).text(restaurantVOList[i].visitorNumber + '건');
+
+                $('.attractionNameContent').eq(i).text(attractionVOList[i].attractionName);
+                $('.attractionTypeContent').eq(i).text(attractionVOList[i].attractionType);
+                $('.attractionNumberContent').eq(i).text(attractionVOList[i].visitorNumber + '건');
+            }
+
+            let totalSummaryData = [
+                fellowVOList[0].fellowType,
+                tripVOList[0].tripType,
+                restaurantVOList[0].restaurantName,
+                attractionVOList[0].attractionName
+            ]
+
+            for(let i = 0; i < totalSummaryData.length; i++) {
+                $('.totalDataContent').eq(i).text(totalSummaryData[i]);
+            }
+        }
+
+        function appendGraphData(locationName, data) {
+
+            let list = data[0].snsVOList;
+
+            let dataColumns = [];
+            dataColumns.push(locationName);
+            for(let i = 0; i < 5; i++) {
+                dataColumns.push(list[i].searchNumber);
+            }
+
+            let yearMonthColumns = [];
+            let yearMonthString = '';
+            for(let i = 0; i < 5; i++) {
+                yearMonthString = list[i].yearMonth.slice(0,4) + '.' + list[i].yearMonth.slice(4,6);
+                yearMonthColumns.push(yearMonthString);
+            }
+
+            let chart = bb.generate({
+                data: {
+                    columns: [
+                        dataColumns
+                    ],
+                    type: "line", // for ESM specify as: line()
+                },
+                axis: {
+                    x: {
+                        type: "category",
+                        categories: yearMonthColumns,
+                        label: "최근 6개월"
+                    },
+                    y: {
+                        label: "언급량(건)"
+                    }
+                },
+                bindto: "#chart"
+            });
         }
 
         $('#fileType li > a').on('click', function() {
             // 버튼에 선택된 항목 텍스트 넣기
             let fileType = $(this).text();
             $('#fileTypeButton').text(fileType);
-            getAjax(locationName);
-
 
             if(fileType == '방문자수' || fileType == 'SNS언급량') {
                 $('#locationTypeButton').addClass('disabled', true);
@@ -3189,7 +3279,13 @@
 
         });
 
-         */
+        $('#locationNameType li > a').on('click', function() {
+            // 버튼에 선택된 항목 텍스트 넣기
+            let locationName = $(this).text();
+            $('#locationName').text(locationName);
+
+            getStatisticsData();
+        });
     </script>
 </div>
 </body>
