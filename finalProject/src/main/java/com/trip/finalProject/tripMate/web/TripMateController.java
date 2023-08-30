@@ -111,7 +111,7 @@ public class TripMateController {
 	//여행 메이트 신청 - form
 	@PostMapping("/tripMateApplyForm")
 	public String tripMateApplyForm(TripMateVO trvo, Model model) {
-		model.addAttribute("tripMateVO", trvo );
+		model.addAttribute("mateVO", trvo );
 		return "tripMate/tripMateApplyForm";
 	}
 	
@@ -130,7 +130,7 @@ public class TripMateController {
 		//게시글 작성자에게 알림
 		tripMateService.sendAlert(tripMateVO);
 		
-			return "redirect:/tripMateList";			
+		return "redirect:/tripMateList";			
 	}
 	
 }
