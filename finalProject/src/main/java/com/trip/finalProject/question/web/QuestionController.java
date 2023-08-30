@@ -28,7 +28,8 @@ public class QuestionController {
 	public String quideQue(Model model
 			  ,@RequestParam(value="nowPage", defaultValue="1") Integer nowPage
 			  ,@RequestParam(value="cntPerPage", defaultValue="10") Integer cntPerPage) {
-		int total = queService.Count();
+		String writerMemberId = "10";
+		int total = queService.Count(writerMemberId);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 		List<QuestionVO> guideQue = queService.getQueAll(pagingVO);
 		
@@ -50,5 +51,24 @@ public class QuestionController {
 		public Map<String, String> empUpdateProcess(@RequestBody QuestionVO queVO) {
 			return queService.updateQueInfo(queVO);
 		}
+		
+	//일반사용자
+	//전체 조회	
+		@GetMapping("common/memberQue")
+		public String memberQue(Model model
+				  ,@RequestParam(value="nowPage", defaultValue="1") Integer nowPage
+				  ,@RequestParam(value="cntPerPage", defaultValue="10") Integer cntPerPage) {
+			String MemberId = "10";
+			int total = queService.memberCount(MemberId);
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			List<QuestionVO> memberQue = queService.getQueAllMember(pagingVO);
+			
+			model.addAttribute("guideQue", memberQue);
+			model.addAttribute("paging", pagingVO);
+					
+			return"myPage/memberQuestion";
+		}
+		
+		
 		
 }
