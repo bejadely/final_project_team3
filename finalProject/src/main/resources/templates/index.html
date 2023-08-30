@@ -5,6 +5,16 @@
       layout:decorate="@{layouts/default_layout}"> 
 <head>
 <title>메인화면</title>
+<!-- getbootstrap cdn -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+            crossorigin="anonymous">
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
 <style>
   .moreSpecialties {
     display: inline-block;
@@ -45,15 +55,15 @@
                                         <i class="fa-solid fa-map-location-dot fa-lg" style="color: #2cbdb8;"></i>
                                         <p>경주 여행지</p>
                                     </li>
-                                    <li>
+                                    <li class="linkButton" data-content-type-id="39">
                                         <i class="fa-solid fa-utensils fa-lg" style="color: #2cbdb8;"></i>
                                         <p>경주 맛집</p>
                                     </li>
-                                    <li>
+                                    <li class="linkButton" data-content-type-id="38">
                                         <i class="fa-solid fa-bag-shopping fa-lg" style="color: #2cbdb8;"></i>
                                         <p>경주 쇼핑</p>
                                     </li>
-                                    <li>
+                                    <li class="linkButton" data-content-type-id="14">
                                         <i class="fa-solid fa-icons fa-lg" style="color: #2cbdb8;"></i>
                                         <p>경주 문화시설</p>
                                     </li>
@@ -71,20 +81,20 @@
                                 <p class="room-location"><i class="icon_pin"></i> 대구</p>
                                 <h2>경상도 지역 관광정보</h2>
                               
-                                <ul class="room-features">
-                                    <li>
+                                <ul class="room-features" data-area-code="4" data-sigungu-code="0">
+                                    <li data-content-type-id="12">
                                         <i class="fa-solid fa-map-location-dot fa-lg" style="color: #2cbdb8;"></i>
-                                        <p>대구 더보기</p>
+                                        <p>대구 여행지</p>
                                     </li>
-                                    <li>
+                                    <li class="linkButton" data-content-type-id="39">
                                         <i class="fa-solid fa-utensils fa-lg" style="color: #2cbdb8;"></i>
                                         <p>대구 맛집</p>
                                     </li>
-                                    <li>
+                                    <li class="linkButton" data-content-type-id="38">
                                         <i class="fa-solid fa-bag-shopping fa-lg" style="color: #2cbdb8;"></i>
                                         <p>대구 쇼핑</p>
                                     </li>
-                                    <li>
+                                    <li class="linkButton" data-content-type-id="14">
                                         <i class="fa-solid fa-icons fa-lg" style="color: #2cbdb8;"></i>
                                         <p>대구 문화시설</p>
                                     </li>
@@ -102,20 +112,20 @@
                                 <p class="room-location"><i class="icon_pin"></i> 안동</p>
                                 <h2>경상도 지역 관광정보</h2>
                              
-                                <ul class="room-features">
-                                    <li>
+                                <ul class="room-features" data-area-code="35" data-sigungu-code="11">
+                                    <li data-content-type-id="12">
                                         <i class="fa-solid fa-map-location-dot fa-lg" style="color: #2cbdb8;"></i>
-                                        <p>안동 더보기</p>
+                                        <p>안동 여행지</p>
                                     </li>
-                                    <li>
+                                    <li class="linkButton" data-content-type-id="39">
                                         <i class="fa-solid fa-utensils fa-lg" style="color: #2cbdb8;"></i>
                                         <p>안동 맛집</p>
                                     </li>
-                                    <li>
+                                    <li class="linkButton" data-content-type-id="38">
                                         <i class="fa-solid fa-bag-shopping fa-lg" style="color: #2cbdb8;"></i>
                                         <p>안동 쇼핑</p>
                                     </li>
-                                    <li>
+                                    <li class="linkButton" data-content-type-id="14">
                                         <i class="fa-solid fa-icons fa-lg" style="color: #2cbdb8;"></i>
                                         <p>안동 문화시설</p>
                                     </li>
@@ -156,18 +166,18 @@
             </div>
             <div class="row">
                 <div class="input-group input-group-lg">
-                    <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">지역선택</button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" >대구</a></li>
-                            <li><a class="dropdown-item" >부산</a></li>
-                            <li><a class="dropdown-item" >울산</a></li>
-                            <li><a class="dropdown-item" >경주</a></li>
-                            <li><a class="dropdown-item" >안동</a></li>
-                            <li><a class="dropdown-item" >포항</a></li>
-                            <li><a class="dropdown-item" >거제</a></li>
-                            <li><a class="dropdown-item" >통영</a></li>
-                        </ul>
-                    <input type="text" class="form-control" placeholder="가고싶은 곳을 검색해보아요" aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <button id="locationTypeButton" class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">지역 선택</button>
+                            <ul id="locationType" class="dropdown-menu">
+                                <li><a class="dropdown-item" th:attr="data-area-code='4', data-sigungu-code='0'">대구</a></li>
+                                <li><a class="dropdown-item" th:attr="data-area-code='6', data-sigungu-code='0'">부산</a></li>
+                                <li><a class="dropdown-item" th:attr="data-area-code='7', data-sigungu-code='0'">울산</a></li>
+                                <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='2'">경주</a></li>
+                                <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='23'">포항</a></li>
+                                <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='11'">안동</a></li>
+                                <li><a class="dropdown-item" th:attr="data-area-code='36', data-sigungu-code='17'">통영</a></li>
+                                <li><a class="dropdown-item" th:attr="data-area-code='36', data-sigungu-code='1'">거제</a></li>
+                            </ul>
+                    <input type="text" class="form-control" placeholder="가고싶은 곳을 검색해보아요" aria-label="Recipient's username" aria-describedby="button-addon2" id="search-input">
                     <button class="btn btn-outline-dark" type="button" id="button-addon2">검색</button>
                 </div>
             </div>
@@ -290,6 +300,7 @@
     </section>
     <!-- Latest Blog Section End -->
 	<script>
+		//메인캐러셀 링크
         $('.linkButton').on('click', function() {
             let areaCode = $(this).parent().data('areaCode');
             let sigunguCode = $(this).parent().data('sigunguCode');
@@ -300,6 +311,39 @@
                 '&contentTypeId=' + contentTypeId +
                 '&sigunguCode=' + sigunguCode;
         })
+        
+        //검색정보 보내기
+        $('#button-addon2').on('click', function(e){
+            e.preventDefault();
+            let searchKeyWord = $('#search-input').val();
+            let areaCode = $('#locationTypeButton').data('areaCode');
+            let sigunguCode = $('#locationTypeButton').data('sigunguCode');
+
+            if(searchKeyWord.length<=1){
+                alert('1글자 이상 검색해주세요.');
+                return;
+            } else if($('#locationTypeButton').text() == '지역 선택') {
+                alert('지역을 선택해주세요.');
+                return;
+            }
+
+            window.location.href=window.location.origin + "/localTourInfo/search?searchKeyWord="+searchKeyWord+"&areaCode="+areaCode+"&sigunguCode="+sigunguCode;
+        })
+        
+        // 드롭박스 버튼에 선택된 항목 텍스트 넣기
+        $('#locationType li > a').on('click', function() {
+            
+            $('#locationTypeButton').text($(this).text());
+            $('#locationTypeButton').data('areaCode', $(this).data('areaCode'));
+            $('#locationTypeButton').data('sigunguCode', $(this).data('sigunguCode'));
+        });
+
+		//엔터처리
+        document.getElementById('search-input').addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                document.getElementById('button-addon2').click();
+            }
+        });
 	</script>
 </div>
 </body>

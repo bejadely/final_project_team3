@@ -106,6 +106,16 @@
 	    padding: 5px;
 	    text-align: center;
 	}
+	  .table td, .table th {
+    text-align: center; 
+  }
+  .statisticsContent {
+        height: 60px; /* 셀 높이 */
+    }
+    .total-datail td {
+        vertical-align: middle; /* 셀 내용을 중앙에 정렬 */
+        font-size: 14px; /* 글자 크기 */
+    }
 </style>
 </head>
 <body>
@@ -2710,8 +2720,8 @@
                     <table class="table table-sm">
                         <tbody>
                             <tr th:each ="visitorInfo, stat : ${visitorRank}">
-                                <th scope="row" th:text="${stat.count}"></th>
-                                <td th:text="${visitorInfo.locationName}"></td>
+                                <th scope="row" style="width: 15%" th:text="${stat.count}"></th>
+                                <td style="width: 40%" th:text="${visitorInfo.locationName}"></td>
                                 <td th:text="|${visitorInfo.visitorNumber} 명|"></td>
                             </tr>
                         </tbody>
@@ -2722,7 +2732,7 @@
                     <table class="table table-sm">
                         <tbody>
 	                        <tr th:each="attractionInfo, stat : ${attractionRank}">
-	                            <th scope="row" th:text="${stat.count}"></th>
+	                            <th scope="row" style="width: 15%" th:text="${stat.count}"></th>
 	                            <td th:text="${attractionInfo.locationName}"></td>
 	                            <td th:text="${attractionInfo.attractionType}"></td>
 	                            <td th:text="${attractionInfo.attractionName}"></td>
@@ -2754,6 +2764,7 @@
             <!--지역별 관광 총 집계 -->
             <div class="col-md-6">
                 <div class="rounded-box total-data" >
+                    <br>
                     <h6>데이터 총 정리</h6>
                     <table class="table table-sm total-datail">
                         <tbody>
@@ -2805,27 +2816,27 @@
                                     <tbody>
                                     <tr>
                                         <th scope="col">1등</th>
-                                        <td class="tripNameContent statisticsContent"></td>
+                                        <td style="width: 40%" class="tripNameContent statisticsContent"></td>
                                         <td class="tripNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">2등</th>
-                                        <td class="tripNameContent statisticsContent"></td>
+                                        <td style="width: 45%" class="tripNameContent statisticsContent"></td>
                                         <td class="tripNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">3등</th>
-                                        <td class="tripNameContent statisticsContent"></td>
+                                        <td style="width: 45%" class="tripNameContent statisticsContent"></td>
                                         <td class="tripNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">4등</th>
-                                        <td class="tripNameContent statisticsContent"></td>
+                                        <td style="width: 45%" class="tripNameContent statisticsContent"></td>
                                         <td class="tripNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">5등</th>
-                                        <td class="tripNameContent statisticsContent"></td>
+                                        <td style="width: 45%" class="tripNameContent statisticsContent"></td>
                                         <td class="tripNumberContent statisticsContent"></td>
                                     </tr>
                                     </tbody>
@@ -2845,27 +2856,27 @@
                                     <tbody>
                                     <tr>
                                         <th scope="col">1등</th>
-                                        <td class="fellowNameContent statisticsContent"></td>
+                                        <td style="width: 45%" class="fellowNameContent statisticsContent"></td>
                                         <td class="fellowNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">2등</th>
-                                        <td class="fellowNameContent statisticsContent"></td>
+                                        <td style="width: 45%" class="fellowNameContent statisticsContent"></td>
                                         <td class="fellowNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">3등</th>
-                                        <td class="fellowNameContent statisticsContent"></td>
+                                        <td style="width: 45%" class="fellowNameContent statisticsContent"></td>
                                         <td class="fellowNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">4등</th>
-                                        <td class="fellowNameContent statisticsContent"></td>
+                                        <td style="width: 45%" class="fellowNameContent statisticsContent"></td>
                                         <td class="fellowNumberContent statisticsContent"></td>
                                     </tr>
                                     <tr>
                                         <th scope="col">5등</th>
-                                        <td class="fellowNameContent statisticsContent"></td>
+                                        <td style="width: 45%" class="fellowNameContent statisticsContent"></td>
                                         <td class="fellowNumberContent statisticsContent"></td>
                                     </tr>
                                     </tbody>
