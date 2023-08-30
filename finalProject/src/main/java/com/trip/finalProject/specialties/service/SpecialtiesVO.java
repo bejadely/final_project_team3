@@ -15,7 +15,7 @@ public class SpecialtiesVO {
 	private String discount;
 	private int areaCode;
 	private int sigunguCode;
-	
+	private String loadingImg;
 	private String specialtyType;
 	private int price;
 	private List<SpecialtiesOptionVO> optionList;

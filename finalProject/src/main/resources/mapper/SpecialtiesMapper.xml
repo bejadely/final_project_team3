@@ -63,8 +63,9 @@
 					)
 	</insert>
 	<select id="listSpecialties" resultType="SpecialtiesVO">
-		SELECT *
-		FROM specialties_regist
+		SELECT s.title, s.writer_id, s.post_id, a.loading_img
+		FROM specialties_regist s JOIN attached_file a ON s.post_id = a.post_id
+		WHERE a.img_type='U2'
 		
 	</select>
 </mapper>

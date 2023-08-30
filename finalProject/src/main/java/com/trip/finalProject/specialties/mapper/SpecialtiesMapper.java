@@ -19,5 +19,8 @@ public interface SpecialtiesMapper {
 	//지역 리스트
 	public List<LocationVO> listArea();
 	
+	//특산물 옵션 등록
 	public void insertSpecialtiesOption(SpecialtiesOptionVO specialtiesOptionVO);
+	
+	public List<SpecialtiesOptionVO> findByPostId(SpecialtiesOptionVO specialtiesVO);
 }
