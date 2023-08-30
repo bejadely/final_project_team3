@@ -1,7 +1,5 @@
 package com.trip.finalProject.kakaoPay.service;
 
-import java.util.Date;
-
 import com.trip.finalProject.kakaoPay.service.KakaoCancelResponseVO.CancelAvailableAmountVO;
 import com.trip.finalProject.kakaoPay.service.KakaoCancelResponseVO.CanceledAmountVO;
 
