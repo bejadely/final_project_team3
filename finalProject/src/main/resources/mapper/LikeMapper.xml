@@ -32,7 +32,7 @@
 			 			 r.deadline,
 			 			 r.trip_area
 			 			 
-				  FROM post_like l LEFT JOIN mate_recruit r ON (l.post_id = r.post_id)
+				  FROM post_like l RIGHT JOIN mate_recruit r ON (l.post_id = r.post_id)
 				  WHERE l.post_id LIKE 'MAT%'
 				  ORDER BY l.post_id DESC) a)
 		WHERE rn BETWEEN #{start } AND #{end }
@@ -47,7 +47,7 @@
 			 			 r.trip_title,
 			 			 r.start_day,
 			 			 r.end_day
-				  FROM post_like l LEFT JOIN trip_record r ON (l.post_id = r.post_id) 
+				  FROM post_like l RIGHT JOIN trip_record r ON (l.post_id = r.post_id) 
 				  WHERE l.post_id LIKE 'TRR%'
 				  ORDER BY l.post_id DESC) a)
 		WHERE rn BETWEEN #{start } AND #{end }

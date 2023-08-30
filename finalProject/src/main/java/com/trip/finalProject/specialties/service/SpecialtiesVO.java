@@ -2,6 +2,8 @@ package com.trip.finalProject.specialties.service;
 
 import java.util.List;
 
+import com.trip.finalProject.attachedFile.service.AttachedFileVO;
+
 import lombok.Data;
 @Data
 public class SpecialtiesVO {
@@ -14,5 +16,11 @@ public class SpecialtiesVO {
 	private int areaCode;
 	private int sigunguCode;
 	
+	private String specialtyType;
+	private int price;
 	private List<SepcialtiesOptionVO> optionList;
+	
+	
+	private List<AttachedFileVO> attachList;
+	private List<AttachedFileVO> editorAttachList;
 }
