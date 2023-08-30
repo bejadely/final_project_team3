@@ -16,4 +16,6 @@ public interface ReportMapper {
 	// 신고 내역 상세조회
 	public ReportVO getReportDetail(ReportVO vo);
 	
+	
+	
 }

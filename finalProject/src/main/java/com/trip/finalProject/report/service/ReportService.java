@@ -9,4 +9,7 @@ public interface ReportService {
 	
 	// 신고 내역 상세 조회
 	public ReportVO getReportDetail(ReportVO reportVO);
+	
+	// 신고 처리
+	public String punishProcess(ReportVO reportVO);
 }

@@ -1,13 +1,16 @@
 package com.trip.finalProject.report.web;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.trip.finalProject.common.mapper.CommonMapper;
 import com.trip.finalProject.report.service.ReportService;
 import com.trip.finalProject.report.service.ReportVO;
 
@@ -16,6 +19,9 @@ public class ReportController {
 	
 	@Autowired
 	ReportService reportService;
+	
+	@Autowired
+	CommonMapper commonMapper;
 	
 	// 새로운 신고내역 전체 조회 
 	@GetMapping("/admin/seeAllReport")
@@ -37,17 +43,31 @@ public class ReportController {
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("searchBy", searchBy);
 		
-		return "admin/report/seeAllreport";
+		return "admin/report/seeAllReport";
 	}
 	
 	// 신고내역 상세조회
 	@GetMapping("/admin/seeReportDetail")
 	public String seeReportDetail(ReportVO reportVO, Model model) {
 		
+		// 공통 코드 중 제재사유 코드 모두 읽어오기
+		// List<Map<String, String>> punishReasonList = commonMapper.selectCode("P");
+		
 		// 상세조회 수행 및 결과값 모델에 담기
 		model.addAttribute("reportVO", reportService.getReportDetail(reportVO));
+		// model.addAttribute("reasonList", punishReasonList);
 		
 		return "admin/report/seeReportDetail";
+	}
+	
+	// 신고 처리
+	@PostMapping("/admin/punishProcess")
+	public String punishProcess(ReportVO reportVO) {
+		
+		// 신고 처리 service 호출
+		
+		
+		return "redirect:/admin/seeAllReport";
 	}
 	
 }
