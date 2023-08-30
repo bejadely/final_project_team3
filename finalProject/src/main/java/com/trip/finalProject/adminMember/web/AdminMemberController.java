@@ -134,7 +134,7 @@ public class AdminMemberController {
 		// 회원정보 수정
 		String result = adminMemberService.modifyMemberInfo(adminVO);
 		
-		// 리다이렉트 어트리뷰트에 결과값 담기(성공 : success / 실패 : fail)
+		// 수정 결과값 담기(성공 : success / 실패 : fail)
 		rtt.addFlashAttribute("result", result);
 		
 		return "redirect:seeMemberDetail?memberId=" + adminVO.getMemberId();

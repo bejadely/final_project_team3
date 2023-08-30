@@ -26,10 +26,10 @@ public class ReportController {
 	// 새로운 신고내역 전체 조회 
 	@GetMapping("/admin/seeAllReport")
 	public String seeAllNewReport(Model model
-			 , @RequestParam( name = "searchBy", defaultValue = "name" ) String searchBy
-			 , @RequestParam( name = "keyword", defaultValue = "" ) String keyword
-            , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
-            , @RequestParam( name = "cntPerPage", defaultValue = "10")Integer cntPerPage) {
+								, @RequestParam( name = "searchBy", defaultValue = "name" ) String searchBy
+								, @RequestParam( name = "keyword", defaultValue = "" ) String keyword
+					            , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
+					            , @RequestParam( name = "cntPerPage", defaultValue = "10")Integer cntPerPage) {
 		
 		
 		// 새로운 신고접수내역 전체 조회
