@@ -19,7 +19,6 @@
 	  			       , status
 	  			       , requester_id
 	  			       , reject_reason
-	  			       , reject_reason_detail
 					     ) 
 					     VALUES
 					     (
@@ -27,7 +26,6 @@
 					      , sysdate
 					      , 'A2'
 					      , #{requesterId}
-					      , null
 					      , null
 					     )
 		</insert>
@@ -45,7 +43,6 @@
 	  			       , status
 	  			       , requester_id
 	  			       , reject_reason
-	  			       , reject_reason_detail
 					     ) 
 					     VALUES
 					     (
@@ -54,7 +51,6 @@
 					      , 'A1'
 					      , #{requesterId}
 					      , null
-					      , #{rejectReasonDetail}
 					     )
 		</insert>
   </mapper>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/default_layout}">
+<head>
+<meta charset="UTF-8">
+<title>여행 메이트 글 등록</title>
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	> -->
+<!-- <script src="https://cdn.ckeditor.com/ckeditor5/12.4.0/classic/ckeditor.js">
+</script>
+ -->
+<script src ="ckeditor5-build-classic/ckeditor.js"></script>
+<style>
+.ck.ck-editor {
+	width: 80%;
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.ck-editor__editable {
+	height: 80vh;
+}
+
+form {
+	text-align: center;
+}
+
+</style>
+<!-- CKEditor -->
+<!-- <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script> -->
+<script>
+$(document).ready(function() {	
+
+ClassicEditor
+	.create(document.querySelector('#editor'), {
+		/* htmlEncodeOutput: false, */
+		ckfinder: {
+			uploadUrl : 'upload'	
+		}
+	
+		
+	})
+	.then(editor => {
+		console.log('Editor was initialized');
+		
+		document.getElementById("cancelBtn").addEventListener("click",function(){
+			const data = editor.getData();
+			//Data 변수에 저장된 데이터를 파싱하여 이미지 태크를 찾음
+			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
+			
+			const filenames = imgTags.map(img=> {
+				const src = img.getAttribute('src');
+				
+				return src.substring(src.lastIndexOf('/')+1);
+			});
+			console.log(filenames);
+			fetch(`/deleteImg`,{
+				method: 'POST',
+				headers:{
+					'Content-Type':'application/json'
+				},
+				body: JSON.stringify({ filenames })
+			})
+			.then(response => response.text())
+			.then(message => {
+				console.log(message);
+				editor.setData('');
+			})
+			
+		})
+		
+		
+		var formObj = $("#editorForm");
+		
+		$("button[type='submit']").on("click",function(event){
+				
+			event.preventDefault();
+	
+			const data = editor.getData();
+			
+			let objData = serializeObject();
+			
+			let writerId = "[[${session.sessionId}]]";
+			
+			//sconsole.log(data);
+			const { tripArea, mateStyle, mateTag, mateTitle, mateExpense, startDay, endDay, deadline, mateMax, mateContent } = objData;
+			var combinedData={
+				writerId : writerId,	
+				tripArea : tripArea,
+				mateStyle : mateStyle,
+				mateTag : mateTag,
+				mateTitle : mateTitle,
+				mateExpense : mateExpense,
+				startDay : startDay,
+				endDay : endDay,
+				deadline : deadline,
+				mateMax : mateMax,
+				mateContent: data
+			};
+			console.log(combinedData);
+			
+			var str="";
+			$(".uploadResult ul li").each(function(i,obj){
+				var jobj = $(obj);
+				str += "<input type ='hidden' name='attachList["+i+"].originImg' value='"+jobj.data("filename")+"'>";
+				str += "<input type ='hidden' name='attachList["+i+"].memberId' value='[[${session.sessionId}]]'>";
+				str += "<input type ='hidden' name='attachList["+i+"].savedImg' value='"+jobj.data("path")+"'>";
+				str += "<input type ='hidden' name='attachList["+i+"].imgType' value='"+jobj.data("type")+"'>";
+				str += "<input type ='hidden' name='attachList["+i+"].loadingImg' value='"+jobj.data("loadingpath")+"'>";
+				
+			});
+			str +="<input type='hidden' name='mateContent' value='"+combinedData.mateContent+"'>";
+			
+			
+			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
+			
+			const filenames = imgTags.map(img=> {
+				const src = img.getAttribute('src');
+				
+				return src;
+			});		
+			$.each(filenames,function(i,obj){
+				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
+			});
+			
+			formObj.append(str);
+			document.getElementById('editorForm').action = "tripMateRecruitInsert";
+			document.getElementById('editorForm').submit();
+			
+		})
+	})
+	.catch(error => {
+		console.error(error);
+	});
+	
+	function serializeObject(){
+		let formData = $('form').serializeArray();
+		let formObject={};
+		$.each(formData, function(idx,obj){
+			formObject[obj.name] = obj.value;
+		});
+		
+		return formObject;
+	}
+	var cloneObj = $(".uploadDiv").clone();
+	
+	$(function(){
+		$("#uploadBtn").on('click',function(e){
+			e.preventDefault();
+			let imageData = new FormData();
+			
+			let inputTag = document.querySelector('input[name="mainImage"]');
+			
+			let files = inputTag.files;
+			
+			for(let i=0; i<files.length; i++){
+				console.log(files[i]);
+				imageData.append("mainImage",files[i]);
+			}
+		
+			$.ajax({
+				url:'mainImageUpload',
+				processData: false,
+				contentType: false,
+				data: imageData,
+				type:'POST',
+				dataType:'json',
+				success: function(result){
+					alert("성공");
+					
+					console.log(result);
+					
+					showUploadedFile(result);
+					
+					$(".uploadDiv").html(cloneObj.html());
+				}
+			});
+		});
+	});
+
+	$(".uploadResult").on("click","span",function(e){
+		var targetFile = $(this).data("file");
+		var clickedSpan = $(this);
+		$.ajax({
+			url:'deleteFile',
+			data: {savedImg: targetFile},
+			dataType: 'text',
+			type: 'POST',
+			success: function(result){
+				alert(result);
+				var currentNode = clickedSpan.closest("li");
+				var prevNode = currentNode.prev();
+				var nextNode = currentNode.next();
+				
+				currentNode.add(prevNode).add(nextNode).remove();
+				
+			}
+		})
+	})
+	
+	var uploadResult = $(".uploadResult ul");
+	
+	function showUploadedFile(uploadResultArr){
+		var str = "";
+		$(uploadResultArr).each(function(i,obj){
+			
+			var fileCallPath = encodeURIComponent(obj.savedImg);
+			
+			str += "<li style='width:500px; height:500px; text-align: center;' data-path='"+obj.savedImg+"'";
+			str +=" data-filename='"+obj.originImg+"' data-type='"+obj.imgType+"'";
+			str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div>";
+			str +="<span> " + obj.originImg +"</span>";
+			str +="<img src='display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
+		});
+		uploadResult.append(str);
+	}
+	
+	
+});
+</script>
+</head>
+<body>
+<div layout:fragment="content">
+	<form method="post" id="editorForm" enctype="multipart/form-data">
+		<div id="tripMateRecruitInfo">	
+		<input type="hidden" name="writerId" th:value="${session.sessionId}">
+		<input type="hidden" name="memberId" th:value="${session.sessionId}">
+			<div>
+				<h5>여행 지역</h5>
+				<select name="tripArea" id="tripArea">
+					<option value="" selected="selected">지역 선택</option>
+					<option value="대구">대구</option>
+					<option value="부산">부산</option>
+					<option value="포항">포항</option>
+					<option value="안동">안동</option>
+					<option value="경주">경주</option>
+					<option value="울산">울산</option>
+					<option value="통영">통영</option>
+					<option value="거제">거제</option>
+				</select>
+				<br>	
+			</div>
+			<div>
+				<h5>여행 스타일</h5>
+				<select name="mateStyle" id="mateStyle">
+					<option value="" selected="selected">여행 스타일 선택</option>
+					<option value="J1">계획적인 여행</option>
+					<option value="J2">자유로운 여행</option>
+					<option value="J3">역사 탐방</option>
+					<option value="J4">맛집 탐방</option>
+					<option value="J5">드라이브 여행</option>
+					<option value="J6">배낭 여행</option>
+					<option value="J7">기타</option>
+				</select>
+				<br>	
+			</div>
+			<div>
+				<h5>여행 태그</h5>
+				<input type="text" placeholder="ex. #가자가자 #기기괴괴" name="mateTag" id="mateTag"/>
+			</div>
+			<div class="uploadDiv">
+				<h5>메인 이미지</h5>
+				<input type="file" name="mainImage" id="mainImage" multiple/>
+				<button id ="uploadBtn">upload</button>
+			</div>
+			<div class="uploadResult">
+				<ul>
+				
+				</ul>
+			</div>
+			<div>
+				<h5>여행 타이틀</h5>
+				<input type="text" placeholder="여행 타이틀" name="mateTitle" id="mateTitle"/>
+			</div>
+			
+			<div>
+				<h5>예상 경비</h5>
+				<input type="text" placeholder="예상 경비" name="mateExpense" id="mateExpense"/>
+			</div>
+			<div>
+			
+			</div>
+			<div>
+				<h5>여행 기간</h5>
+				<label>시작일</label>
+				<input type="date" name="startDay" id="startDay"/>
+				<label> ~ 종료일</label>
+				<input type="date" name="endDay" id="endDay"/>
+			</div>
+			
+			<div>
+				<h5>모집 종료일</h5>
+				<input type="date" name="deadline" id="deadline"/>
+			</div>
+			
+			<div>
+				<h5>모집 인원</h5>
+				<input type="number" name ="mateMax" id="mateMax"/>
+			</div>
+		</div>
+		<h5>패키지 설명</h5>
+		<div id="editor">
+		
+		</div>
+		<button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>
+		<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>
+		<button type="button" class="btn btn-primary mt-3 mx-2" onclick="location.href='tripMateList'">목록으로</button>
+	</form>
+
+</div>
+</body>
+</html>

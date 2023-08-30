@@ -1,6 +1,8 @@
 package com.trip.finalProject.trip.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,7 @@ import com.trip.finalProject.trip.service.TripVO;
 
 @Service
 public class TripServiceImpl implements TripService {
-	
+
 	@Autowired
 	TripMapper tripMapper;
 	
@@ -50,6 +52,24 @@ public class TripServiceImpl implements TripService {
 	@Override
 	public List<TripVO> getTripPer(PagingVO pagingVO) {
 		return tripMapper.selectPerTrip(pagingVO);
+	}
+	
+	//여행 저장 데이터 업데이트
+	@Override
+	public Map<String, Object> getUpdateDis(TripVO tripVO) {
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("게시물 번호", String.valueOf(tripVO.getPostId()));
+		map.put("저장 번호", String.valueOf(tripVO.getTripDisclose()));
+		
+		int result  = tripMapper.updateDis(tripVO);
+		if(result > 0) {
+			map.put("결과", "Success");
+		}else {
+			map.put("결과", "fail");
+		}		
+		
+		return map;	
 	}
 	
 	//여행기록 회원별 조회
@@ -106,6 +126,21 @@ public class TripServiceImpl implements TripService {
 		
 	}
 
+	//여행메모 등록
+	@Override
+	public TripVO InsertTripMemo(TripVO tripVO) {
+		
+		tripMapper.insertTripMemo(tripVO);
+		
+		return tripVO;
+	}
+	
+	//여행메모 데이터 조회
+	@Override
+	public List<TripVO> getMemoData(TripVO tripVO) {
+		return tripMapper.selectMemoData(tripVO);
+	}
+	
 	//여행기록 삭제
 	@Override
 	public int DeleteTripInfo(int postId) {
@@ -113,6 +148,14 @@ public class TripServiceImpl implements TripService {
 		
 		return result;
 	}
+
+	//여행경로 데이터 조회
+	@Override
+	public List<TripVO> getMapData(TripVO tripVO) {
+		return tripMapper.selectMapData(tripVO);
+	}
+
+
 	
 
 }

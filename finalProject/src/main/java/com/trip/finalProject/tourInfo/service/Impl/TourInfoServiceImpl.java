@@ -604,7 +604,7 @@ public class TourInfoServiceImpl implements TourInfoService {
 
     //searchDetail페이지 정보 가져오기
 	@Override
-	public List<SearchInfoDTO> getsearchInfo(String searchKeyWord) {
+	public List<SearchInfoDTO> getsearchInfo(String searchKeyWord, int areaCode, int sigunguCode) {
 		
 		//인코딩
 		String encodedSearchKeyWord="";
@@ -623,6 +623,10 @@ public class TourInfoServiceImpl implements TourInfoService {
         stringBuilder.append("&arrange=" + "Q");    //  A:제목순, C:수정일순, D:생성일순, 대표이미지가 반드시 있는 정렬 - O:제목순, Q:수정일순, R:생성일순
         stringBuilder.append("&_type=" + "json");
         stringBuilder.append("&numOfRows=" + "30"); //한번에 가져올 데이터 갯수
+        stringBuilder.append("&areaCode=" + areaCode); //한번에 가져올 데이터 갯수
+        if(sigunguCode != 0) {
+            stringBuilder.append("&sigunguCode=" + sigunguCode);
+        }
         stringBuilder.append("&keyword=" + encodedSearchKeyWord);
         
         String apiUrl = stringBuilder.toString();
@@ -668,10 +672,10 @@ public class TourInfoServiceImpl implements TourInfoService {
                 String firstImage = itemObject.get("firstimage").getAsString();
                 String title = itemObject.get("title").getAsString();
                 String address = itemObject.get("addr1").getAsString();
-                String areaCode = itemObject.get("areacode").getAsString();
-                String sigunguCode = "0";
-                if(areaCode.equals("35")  || areaCode.equals("36")) {
-                	sigunguCode=itemObject.get("sigungucode").getAsString();
+                String areaCodeData = itemObject.get("areacode").getAsString();
+                String sigunguCodeData = "0";
+                if(areaCodeData.equals("35")  || sigunguCodeData.equals("36")) {
+                    sigunguCodeData=itemObject.get("sigungucode").getAsString();
                 }
                 
                 searchInfoDTO.setContentId(contentId);
@@ -679,8 +683,8 @@ public class TourInfoServiceImpl implements TourInfoService {
                 searchInfoDTO.setFirstImage(firstImage);
                 searchInfoDTO.setAddress(address);
                 searchInfoDTO.setTitle(title);
-                searchInfoDTO.setAreaCode(areaCode);
-                searchInfoDTO.setSigunguCode(sigunguCode);
+                searchInfoDTO.setAreaCode(areaCodeData);
+                searchInfoDTO.setSigunguCode(sigunguCodeData);
 
                 itemList.add(searchInfoDTO);
            

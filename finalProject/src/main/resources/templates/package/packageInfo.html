@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <style>
 form {
 	text-align: center;
@@ -15,6 +16,10 @@ form {
 	width:400px;
 	height:400px;
 	margin: 0 auto;
+}
+.pt img{
+	width:200px;
+	height:200px;
 }
 </style>
 
@@ -37,20 +42,11 @@ form {
                         </div>
                         <div class="property-more-pic">
                             <div class="product-pic-zoom">
-                                <img class="product-big-img" src="img/properties/property-details-b1.jpg" alt="">
+                               
                             </div>
                             <div class="product-thumbs">
                                 <div class="product-thumbs-track ps-slider owl-carousel">
-                                    <div class="pt" data-imgbigurl="img/properties/property-details-b2.jpg"><img
-                                            src="img/properties/thumb-1.jpg" alt=""></div>
-                                    <div class="pt active" data-imgbigurl="img/properties/property-details-b1.jpg"><img
-                                            src="img/properties/thumb-2.jpg" alt=""></div>
-                                    <div class="pt" data-imgbigurl="img/properties/property-details-b3.jpg"><img
-                                            src="img/properties/thumb-3.jpg" alt=""></div>
-                                    <div class="pt" data-imgbigurl="img/properties/property-details-b4.jpg"><img
-                                            src="img/properties/thumb-4.jpg" alt=""></div>
-                                    <div class="pt" data-imgbigurl="img/properties/property-details-b5.jpg"><img
-                                            src="img/properties/thumb-5.jpg" alt=""></div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -178,14 +174,24 @@ form {
                         <h4>구매하기</h4>
                             <div class="sidebar-btn">
                                 <div class="bt-item">
-                                    <input type="radio" name="s-type" id="st-buy" checked>
-                                    <label for="st-buy">Buy</label>
+                                    <input type="radio" name="kakaoPay" id="kakaoPay" >
+                                    <label for="kakaoPay">Buy</label>
                                 </div>
                                 <div class="bt-item">
                                     <input type="radio" name="s-type" id="st-rent">
                                     <label for="st-rent">Cart</label>
                                 </div>
                             </div>
+                            <div>
+							    <label for="numOfBuy">구매 인원</label>
+							    <input type="number" id="quantity" min="1" value="1" >
+							    <button id="calculate">계산</button>
+							</div>
+							
+							<!-- 총 금액 표시 -->
+							<div id="totalPriceDisplay">
+							    총 금액: <span id="totalPrice">0</span> 원
+							</div>
                     </div>
                 </div>
             </div>
@@ -193,10 +199,40 @@ form {
         		
     </section>
     <!-- Property Details Section End -->
-	
+	 <div class="partner-section">
+        <div class="container">
+            <div class="partner-carousel owl-carousel">
+                <a href="#" class="partner-logo">
+                    <div class="partner-logo-tablecell">
+                        <img src="img/partner/partner-1.png" alt="">
+                    </div>
+                </a>
+                <a href="#" class="partner-logo">
+                    <div class="partner-logo-tablecell">
+                        <img src="img/partner/partner-2.png" alt="">
+                    </div>
+                </a>
+                <a href="#" class="partner-logo">
+                    <div class="partner-logo-tablecell">
+                        <img src="img/partner/partner-3.png" alt="">
+                    </div>
+                </a>
+                <a href="#" class="partner-logo">
+                    <div class="partner-logo-tablecell">
+                        <img src="img/partner/partner-4.png" alt="">
+                    </div>
+                </a>
+                <a href="#" class="partner-logo">
+                    <div class="partner-logo-tablecell">
+                        <img src="img/partner/partner-5.png" alt="">
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- Partner Carousel Section End -->
 
-	<script>
-	$.noConflict();
+<script>
 	var content = '[[${info.content }]]';
 	var postId = '[[${info.postId}]]';
 	
@@ -205,17 +241,67 @@ form {
 			$.getJSON("getAttachList",{postId:postId},function(arr){
 				console.log(arr);
 				var str="";
-				$(arr).each(function(i, attch){
-					str+=`<img class="product-big-img" src=attach.loadingImg alt="">`
+				var str2="";
+				$(arr).each(function(i, attach){
+					console.log(i);
+					if(i==0){
+						str+=`<img src="${attach.loadingImg}" class="product-big-img"  alt="">`	
+					}
+					else{
+						str2+=`<div class="pt" data-imgbigurl="${attach.loadingImg}"><img
+                            src="${attach.loadingImg}" alt=""></div>`
+					}
 				});
-				${".property-more-pic"}.html(str);
+				$(".product-pic-zoom").html(str);
+				$(".product-thumbs-track.ps-slider.owl-carousel").html(str2);
 			});
 		})();
 		   
 	});
 		
 	
-	</script>
+	 function calculatePrice(pricePerPerson) {
+	        const quantity = parseInt(document.getElementById('quantity').value);
+	        const totalPrice = pricePerPerson * quantity;
+	        return totalPrice;
+	    }
+
+	    // 모집 인원 입력 변경 이벤트 처리
+	    document.getElementById('calculate').addEventListener('click', function() {
+	        const pricePerPerson =[[ ${info.price} ]]; // 가격 가져오기
+	        const totalPrice = calculatePrice(pricePerPerson);
+
+	        // 총 금액 표시 업데이트
+	        document.getElementById('totalPrice').textContent = totalPrice;
+	        
+	    });
+
+	    // 결제 버튼 클릭 이벤트 처리
+	    document.getElementById('kakaoPay').addEventListener('click', function() {
+	        // 여기에 결제 페이지로 이동하는 코드 추가
+	        // 예를 들어, window.location.href = '결제페이지URL';
+	        let totalAmount = parseInt($("#totalPrice").text());
+	        let orderName = "[[ ${info.name} ]]";
+	        let postId = "[[ ${info.postId} ]]"
+	        let quantity = parseInt(document.getElementById('quantity').value);
+	     
+	        $.ajax({
+	        	type:'post',
+	        	url:'payment/ready',
+	        	data:{
+	        		totalAmount: totalAmount,
+	        		orderName : orderName,
+	        		quantity : quantity,
+	        		postId: postId
+	        	},
+	        	success:function(response){
+	        		location.href = response.next_redirect_pc_url
+	        	}
+	        	
+	        });
+	    });
+
+</script>
 </div>
 </body>
 </html>

@@ -71,7 +71,13 @@ ClassicEditor
 			.then(message => {
 				console.log(message);
 				editor.setData('');
-			})
+			}).then((result) => {
+			      if (result.isConfirmed) {
+			          
+			    	  //post방식으로 페이지 전환
+					  sendPost();
+					  console.log('모달모달');
+			      }
 			
 		})
 		
@@ -207,7 +213,7 @@ ClassicEditor
 			$.ajax({
 				url:'mainImageUpload',
 				processData: false,
-				contentType: false,
+				Type: false,
 				data: imageData,
 				type:'POST',
 				dataType:'json',
