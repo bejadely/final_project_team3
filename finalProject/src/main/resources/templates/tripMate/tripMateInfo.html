@@ -159,15 +159,16 @@ table {
 	</div>
 	<!-- 댓글 기능 -->
 	<div align="center">
-		<form action="">
+		<form id="form" method="post">
 			<table id="comment" style="font-size:0.9em; text-align: center;width: 1070px; margin: 0 auto; height : 60px; background-color: white;">
 				<tr>
 					<td>
-					<input type="hidden" id="" value="${게시글 번호}">
+					<input type="hidden" id="postId" value="${tripMateInfo.postId}">
 					<input type="hidden" name="writerId" th:value="${session.sessionId}">
+					<input type="hidden" id="writerId" th:value="${session.sessionId}">
 					</td>
-					<td colspan="3"><textarea rows="3" cols="50" id="content"></textarea></td>
-					<td><input type="button" value="댓글달기" onclick="comment_save()"></td>
+					<td colspan="3"><textarea rows="3" cols="50" id="cmtContent"></textarea></td>
+					<td><input type="button" value="댓글달기" onclick="comment_save();"></td>
 				</tr>
 			</table>
 		</form>
@@ -182,37 +183,37 @@ table {
 	function comment_save() {
 		//댓글 저장 버튼 클릭 시 세션 아이디가 없으면 로그인 페이지로 이동
 		if ('${session.sessionId}' == "") {
-			alert("로그인 후 사용 가능합니다.")
+			alert("로그인이 필요합니다.")
 			//location.href="로그인 페이지로 이동"
 		}else {
-			var nick = $("#nick").val();
-			var content = $("#content").val();
-			var numgroup = $("#numgroup").val();
-			var step = $("#step").val();
+			var writer = $("#writerId").val();
+			var content = $("#cmtContent").val();
+			var postId = $("#postId").val();
+			//var step = $("#step").val();
 			var form = {
-				nick : nick,
-				content : content,
-				numgroup : numgroup,
-				step : step,
+				writer : writerId,
+				content : cmtContent,
+				postId : postId,
+				//step : step,
 			}
 			//댓글 내용이 없는 경우 알림
 			if(content=="") {
 				alert("댓글 내용을 입력하세요.")
-				$("#content").focus()
+				$("#cmtContent").focus()
 			}else{
 				$.ajax({
-					url : "/",
+					url : "/InsertComment",
 					type : "POST",
 					data : form,
-					success : function(list) {
-						//성공하면 댓글 리스트에 해당 값을 저장
+					success : 
 						//showComment(list);
-						//console.log("성공")
-					},
+						console.log("성공")
+						console.log("postId")
+					,
 					error : function(request, status, error) {
-						console.log("실패")
+						console.log("실패");
 						//alert("code:" + request.status + "\n" + "message:"
-								+ request.responseText + "\n" + "error:" + error);
+								//+ request.responseText + "\n" + "error:" + error);
 					}
 				});
 			}
