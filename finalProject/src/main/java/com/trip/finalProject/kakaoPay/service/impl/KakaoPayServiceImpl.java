@@ -37,7 +37,7 @@ public class KakaoPayServiceImpl implements KakaoPayService {
 	
 	
 	@Override
-	public KakaoPayResponseVO kakoPayReady(PaymentVO vo, int quantity,String postId) {
+	public KakaoPayResponseVO kakoPayReady(PaymentVO vo, int quantity,String postId,String specialtyType) {
 		// TODO Auto-generated method stub
 		
 		//서버로 요청할 Body
@@ -50,7 +50,7 @@ public class KakaoPayServiceImpl implements KakaoPayService {
         parameters.add("quantity", String.valueOf(quantity));
         parameters.add("total_amount", String.valueOf(vo.getTotalAmount()));
         parameters.add("tax_free_amount", String.valueOf(vo.getTotalAmount()));
-        parameters.add("approval_url", "http://localhost:8787/payment/success"); // 성공 시 redirect url
+        parameters.add("approval_url", "http://localhost:8787/payment/success?specialtyType=" + specialtyType); // 성공 시 redirect url
         parameters.add("cancel_url", "http://localhost:8787/payment/cancel"); // 취소 시 redirect url
         parameters.add("fail_url", "http://localhost:8787/payment/fail"); // 실패 시 redirect url
 		
