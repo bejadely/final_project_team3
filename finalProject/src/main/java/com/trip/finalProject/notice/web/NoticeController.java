@@ -47,24 +47,6 @@ public class NoticeController {
 	}
 	
 	
-		
-		// 게시글 수정 기능 수행
-		@PostMapping("/admin/modifyNoticeInfo")
-		public String modifyNoticeInfo(NoticeVO noticeVO, RedirectAttributes rtt) {
-			
-			// 게시글 수정
-			String result = noticeService.modifyNoticeInfo(noticeVO);
-			
-			// 리다이렉트 어트리뷰트에 결과값 담기(성공 : success / 실패 : fail)
-			rtt.addFlashAttribute("result", result);
-			
-			return "redirect:seeNoticeDetail?noticeNumber=" + noticeVO.getNoticeNumber();
-		}
-	
-		
-	
-	
-	
 	//검색
 	@GetMapping("/noticeSearch")
 	public String boardSearch() {
@@ -74,23 +56,43 @@ public class NoticeController {
 	
 	//공지사항 작성 폼 불러옴
 	  @GetMapping("/noticeWrite")
-	  public String boardWrite() {
+	  public String noticedWrite() {
 		  return"notice/noticeWriteForm"; 
 	  };
 	 
 	//공지사항 작성후 DB저장
 	@PostMapping("/noticeProc")
-	public String boardInsert(NoticeVO noticeVO) {
+	public String noticeInsert(NoticeVO noticeVO) {
 		noticeService.noticeInsert(noticeVO);
 		return"redirect:/noticeList";
 	};
 	
-	/*
-	 * //공지사항 리스트 불러오기 list에 뿌리기
-	 * 
-	 * @GetMapping("/boardSelect") public String boardSelect() {
-	 * return"notice/BoardList"; };
-	 */
+	//공지사항 수정 폼 불러옴
+    @PostMapping("/noticeEdit")
+    public String noticedEdit(NoticeVO noticeVO, Model model) {
+    	// 공지사항 상세조회 실행
+    			noticeVO = noticeService.getNoticeDetail(noticeVO);
+    			model.addAttribute("noticeVO", noticeVO);
+    			System.out.println(noticeVO);
+       return"notice/noticeEdit"; 
+    };
+    
+	
+	// 게시글 수정 기능 수행
+	@PostMapping("/admin/modifyNoticeInfo")
+	public String modifyNoticeInfo(NoticeVO noticeVO, RedirectAttributes rtt) {
+		
+		// 게시글 수정
+		String result = noticeService.modifyNoticeInfo(noticeVO);
+		
+		// 리다이렉트 어트리뷰트에 결과값 담기(성공 : success / 실패 : fail)
+		rtt.addFlashAttribute("result", result);
+		
+		return "redirect:seeNoticeDetail?noticeNumber=" + noticeVO.getNoticeNumber();
+	}
+
+
+	
 	@GetMapping("/boardEdit")
 	public String boardEdit() {
 		return"notice/BoardList";
