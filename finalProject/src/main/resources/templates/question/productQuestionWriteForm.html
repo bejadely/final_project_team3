@@ -67,37 +67,11 @@
     <div class="container">
         <div class="text-center">
         <br>
-            <h1>공지사항 등록</h1>
+            <h1>문의하기</h1>
         <br>
         </div>
         <div id="ls" class="text-center">
             <form id="frm" action="/noticeProc" method="post">
-               	<div class="mb-3" style="float: left; margin-right: 20px;" >
-					<select class="" id="noticeType" name="noticeType"
-						aria-label="Default select example" required >
-						<option value="">공지사항 종류</option>
-						<option value="n1">공지사항</option>
-						<option value="n2">이벤트</option>
-					</select> 
-				</div>  
-				
-				<div class="mb-3" style="float: left; margin-right: 20px;" >
-					<select class="" id="release" name="release"
-						aria-label="Default select example"  required>
-						<option value="">공개대상</option>
-						<option value="N1">전체</option>
-						<option value="N2">가이드</option>
-					</select> 
-				</div>  
-				
-		       	 <div class="mb-3" style="float:left;">
-					<select class="" id="status" name="status"
-						aria-label="Default select example" required >
-						<option value="">글 저장상태</option>
-						<option value="T1">임시저장</option>
-						<option value="T2">저장완료</option>
-					</select> 
-				</div>  
                 <div>
                     <table class="table">
 	                    <tr>
@@ -112,21 +86,12 @@
                                 <input type="date" id="registDate" name="registDate" size="70"  class="form-control" readOnly style="width: 33%;">
                             </td>
                         </tr>
-                              
-                        <tr>
-                            <th style="text-align: left;">제목</th>
-                            <td colspan="3" >
-                                <input  type="text" id="boardTitle" name="title" size="70" class="form-control">
-                            </td>
-                        </tr>    
-                                  
-                           
                         <tr>
                             <th style="text-align: left;">내용</th>
-                            <!-- <td colspan="3">
+                            <td colspan="3">
                                 <textarea rows="10" cols="=50" id="boardContent" name="content" placeholder="내용을 입력해주세요." required class="form-control"></textarea>
-                            </td> -->
-                            <td  > <textarea  id="editor" placeholder="내용을 입력해주세요." ></textarea>
+                            </td>
+                            <td> <textarea  id="editor" placeholder="내용을 입력해주세요." ></textarea>
                             </td>
                             
                         
