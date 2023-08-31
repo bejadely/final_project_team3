@@ -19,7 +19,6 @@
 				  WHERE post_id LIKE '${cartVO.postId}%'
 				  ORDER BY reg_date DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
-		
  	</select>
  	
  	

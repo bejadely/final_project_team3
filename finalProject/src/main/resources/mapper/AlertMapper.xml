@@ -6,8 +6,8 @@
   <mapper namespace="com.trip.finalProject.alert.mapper.AlertMapper">
   		<!-- 알람 전체 조회 -->
   		<select id="selectAllAlert" resultType="AlertVO">
+			  		
   		</select>
-  		
   		<!-- 새로운 알람 내역 추가 -->
   		<insert id="insertAlert">
   			<selectKey keyProperty="alertId" resultType="String" order="BEFORE">
