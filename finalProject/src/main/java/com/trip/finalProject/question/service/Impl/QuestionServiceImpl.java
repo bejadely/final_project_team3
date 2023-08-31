@@ -19,13 +19,19 @@ public class QuestionServiceImpl implements QuestionService {
 	QuestionMapper queMapper;
 
 	@Override
-	public int Count() {
-		return queMapper.getTotalCount();
+	public int Count(String writerMemberId) {
+		return queMapper.getTotalCount(writerMemberId);
+	}
+	
+	@Override
+	public int memberCount(String memberId) {
+		// TODO Auto-generated method stub
+		return queMapper.getTotalMember(memberId);
 	}
 
 	@Override
-	public List<QuestionVO> getQueAll(PagingVO pagingvo) {
-		return queMapper.selectAllQue(pagingvo);
+	public List<QuestionVO> getQueAll(QuestionVO questionVO, PagingVO pagingvo) {
+		return queMapper.selectAllQue(questionVO, pagingvo);
 	}
 	//답글 입력
 	@Override
@@ -44,5 +50,14 @@ public class QuestionServiceImpl implements QuestionService {
 		queMapper.updateQue(questionVO);
 		return map;
 	}
+
+
+
+	@Override
+	public List<QuestionVO> getQueAllMember(QuestionVO questionVO, PagingVO pagingVO) {
+		return queMapper.selectAllQueMember(questionVO, pagingVO);
+	}
+	
+	
 
 }
