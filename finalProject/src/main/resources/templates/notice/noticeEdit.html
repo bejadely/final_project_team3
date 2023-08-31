@@ -85,7 +85,7 @@
     <div class="container">
         <div class="text-center">
         <br>
-            <h1>공지사항 등록</h1>
+            <h1>공지사항 수정</h1>
         <br>
         </div>
         <div id="ls" class="text-center">
@@ -121,11 +121,11 @@
 	                    <tr>
 	                        <th style="text-align: left;">작성자</th>
 	                        <td colspan="3">
-								<input type="text" id="boardTitle" name="writerId" size="70" class="form-control" th:value="${session.sessionId}" readonly style="width: 33%;">
+								<input type="text" id="boardTitle" name="writerId" size="70" class="form-control" th:value="*{writerId}" readonly style="width: 33%;">
 	                        </td>
 	                     </tr>
 	                     <tr>
-                            <th style="text-align: left;">작성일자</th>
+                            <th style="text-align: left;">수정일자</th>
                             <td colspan="3">
                                 <input type="date" id="registDate" name="registDate" size="70"  class="form-control" readOnly style="width: 33%;">
                             </td>
@@ -134,10 +134,12 @@
                         <tr>
                             <th style="text-align: left;">제목</th>
                             <td colspan="3" >
-                                <input  type="text" id="boardTitle" name="title" size="70" th:text="*{title}" class="form-control">
+                                <input  type="text" id="boardTitle" name="title" size="70"  th:value="*{title}" class="form-control">
                             </td>
                         </tr>    
                                   
+               
+					
                            
                         <tr>
                             <th style="text-align: left;">내용</th>
@@ -163,7 +165,7 @@
                     
                     </div>                
                     <div align="right">
-                    <button type="submit" value="등록" class="btn btn-primary submitButton">등록</button>&nbsp;&nbsp;         
+                    <button type="submit" value="등록" class="btn btn-primary submitButton">수정</button>&nbsp;&nbsp;         
                     <input type="reset" value="취소" class="btn btn-secondary" id="cancelBtn">&nbsp;&nbsp;
                     <input type="button" value="목록" onclick="location.href='noticeList?page=1'" class="btn btn-secondary">
                     </div>
@@ -191,13 +193,13 @@ $(document).ready(function() {
 		$('.submitButton').on('click', go);
 		 // $('#frm').on('submit', loginAccountcheck);
 	/* 	$('.rejectButton').on('click', authReject); */
-		$.noConflict();
+});
 	
 		
 	// 승인 버튼 클릭 시 발생 이벤트
 	function go(e){
 		event.preventDefault();
-		e.stopPropagation();
+		
 	
 		Swal.fire({
 			
@@ -224,12 +226,12 @@ $(document).ready(function() {
 		 
 	   	    
 	} 
-});
+
 	
 	
 	ClassicEditor
 	.create(document.querySelector('#editor'), {
-		/* htmlEncodeOutput: false, */
+		 htmlEncodeOutput: false, 
 		ckfinder: {
 			uploadUrl : 'upload'	
 		}
@@ -309,8 +311,8 @@ $(document).ready(function() {
 			});
 	
 			formObj.append(str);
-			document.getElementById('frm').action = "/noticeProc";
-			document.getElementById('frm').submit();
+			//document.getElementById('frm').action = "/noticeProc";
+			//document.getElementById('frm').submit();
 			
 			
 			
