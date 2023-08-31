@@ -88,7 +88,7 @@ ClassicEditor
 			let objData = serializeObject();
 			
 			//sconsole.log(data);
-			const { tourTheme, name, price, startDate, endDate, deadlineDate, maxReservation } = objData;
+			const { tourTheme, name, price, startDate, endDate, deadlineDate, maxReservation,writerId } = objData;
 			var combinedData={
 				content: data,
 				tourTheme: tourTheme,
@@ -97,7 +97,8 @@ ClassicEditor
 		        startDate: startDate,
 		        endDate: endDate,
 		        deadlineDate: deadlineDate,
-		        maxReservation: maxReservation
+		        maxReservation: maxReservation,
+		        writerId : writerId
 			};
 			console.log(combinedData);
 		/* 	var xhr = new XMLHttpRequest();
@@ -143,12 +144,14 @@ ClassicEditor
 			
 			const filenames = imgTags.map(img=> {
 				const src = img.getAttribute('src');
+				
 				return src;
 			});		
 			$.each(filenames,function(i,obj){
 				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
 			});
-					
+			
+			
 			//filenames.forEach(function(src, i) {
 			   // var jobj = $(imgTags[i]);
 			    //console.log(jobj);
@@ -156,12 +159,17 @@ ClassicEditor
 			    //str += "<input type ='text' name='attachList[" + i + "].savedImg' value='" + jobj.data("path") + "'>";
 			    //str += "<input type ='text' name='attachList[" + i + "].imgType' value='" + jobj.data("type") + "'>";
 			//});
-	
+			
+			
+			
+			
 			formObj.append(str);
 			document.getElementById('editorForm').action = "register";
 			document.getElementById('editorForm').submit();
 			
-
+			
+			
+			
 		})
 		//////////////////////////////////////////////////////////////////////
 	})
@@ -200,7 +208,7 @@ ClassicEditor
 			$.ajax({
 				url:'mainImageUpload',
 				processData: false,
-				Type: false,
+				contentType: false,
 				data: imageData,
 				type:'POST',
 				dataType:'json',
@@ -273,7 +281,8 @@ ClassicEditor
 <body>
 <div layout:fragment="content">
 	<form method="post" id="editorForm" enctype="multipart/form-data" >
-		<div id="packageInfo">	
+		<div id="packageInfo">
+		<input type="hidden" name="writerId" th:value="${session.sessionId}">
 			<div>
 				<label>테마</label>
 				<select name="tourTheme" id="tourTheme">
