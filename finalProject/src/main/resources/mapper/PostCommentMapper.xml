@@ -4,82 +4,57 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip.finalProject.postComment.mapper.PostCommentMapper">
 	<!-- 댓글 작성 -->
-	<insert id="picture_reply_write" parameterType="PostCommentVO">
-    	insert into p_reply
-    	values(0, #{bno}, #{grp}, 0, 0, #{writer}, #{content}, now())
+	<insert id="insertPostComment" parameterType="PostCommentVO">
+    	<selectKey keyProperty="commentId" resultType="String" order="BEFORE">
+			SELECT 'CMT' || (TO_NUMBER(NVL((SUBSTR(MAX(comment_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM post_comment
+			WHERE SUBSTR(comment_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+    		INSERT INTO post_comment
+    					(
+    						comment_id
+    						, cmtContent
+    						, regist_date
+    						, post_id
+    						, writer_id
+    						, cmt_style
+    						<choose>
+    							<when test="cmtParentId == null">
+    							, null
+    							</when>
+    							<otherwise>
+    							, cmt_parent_id
+    							</otherwise>
+    						</choose>
+    						, del_yn
+    					)
+    				VALUES
+    					(
+    						#{commentId}
+    						, #{cmtContent}
+    						, #{registDate}
+    						, #{postId}
+    						, #{writerId}
+    						, #{cmtStyle}
+    						<choose>
+    							<when test="cmtParentId == null">
+    							, null
+    							</when>
+    							<otherwise>
+    							, #{cmtParentId}
+    							</otherwise>
+    						</choose>
+    						, 'N'
+    					)
 	</insert>
-
-	<!-- 모댓글일경우 no, grp 일치하게 함 -->
-	<update id="picture_reply_check" parameterType="PostCommentVO">
-   		update p_reply set grp=#{grp}
-    	where no != grp
-	</update>
-
-	<!-- 모댓글이 삭제된 댓글일때 그에 딸린 답글들이 모두삭제되면 테이블에서 완전히 삭제한다 -->
-	<delete id="picture_reply_delete_after_rereply_delete" parameterType="PostCommentVO">
-    	delete from p_reply
-   		where content="" and grp=#{grp}
-	</delete>
-
-	<!-- 답글 쓰기 -->
-	<insert id="picture_rereply_write" parameterType="PostCommentVO">
-    	insert into p_reply
-    	values(0, #{bno}, #{grp}, 0, #{grpl}, #{writer}, #{content}, now())
-	</insert>
-
-	<!-- p_board에 댓글수 증가 -->
-	<update id="picture_reply_up" parameterType="PostCommentVO">
-   		update p_board set reply=reply+1 
-    	where no=#{no}
-	</update>
-
-	<!-- 댓글 리스트 가져오기 -->
-	<select id="picutre_replyList" resultType="PostCommentVO">
-    	select r.no, r.bno, r.grp, r.grpl, r.writer, r.content, date_format(wdate,'%Y-%m-%d') wdate, datediff(now(), wdate) wgap , u.profile
-    	from p_reply r left outer join user u
-    								on r.writer = u.nick
-    	where r.bno = #{bno}
-    	order by grp asc, grps desc
-	</select>
-
-
-	<!-- 댓글 추가/삭제시 댓글 갯수 가져오기 -->
-	<select id="picture_reply_count" resultType="PostCommentVO">
-    	select reply 
-    	from p_board
-    	where no=#{no}
-	</select>
-
-	<!-- 모댓글의 답글수를 카운트 -->
-	<select id="picture_count_rereply" resultType="PostCommentVO">
-    	select count(no)
-    	from p_reply
-    	where no != #{no} and grp = #{no}
-	</select>
-
-	<!-- 답글수를 카운트 -->
-	<select id="picture_count_rereply_fromrereply" resultType="PostCommentVO">
-    	select count(no)
-    	from p_reply
-    	where no != #{grp} and grp = #{grp}
-	</select>
-
-	<!-- 모댓글 삭제 - 답글 없음 -->
-	<delete id="picture_reply_delete" parameterType="PostCommentVO">
-    	delete from p_reply
-    	where no=#{no}
-	</delete>
-
-	<!-- 모댓글 삭제 - 답글 있음 -->
-	<update id="picture_reply_not_delete" parameterType="PostCommentVO">
-    	update p_reply set content=""
-    	where no=#{no}
-	</update>
-
-	<!-- p_board에 댓글수 감소 -->
-	<update id="picture_reply_down" parameterType="PostCommentVO">
-    	update p_board set reply=reply-1
-    	where no=#{no}
-	</update>
-	
 </mapper>
+<!-- 	private String commentId; 					//댓글id - 댓글 고유번호
+	private String cmtContent;					//댓글 내용
+	@DateTimeFormat(pattern = "yyyy-MM-dd")    
+	private Date registDate;					//댓글 작성일
+	private String postId;						//게시글id
+	private String writerId;					//작성자id
+	private String cmtStyle;					//댓글 대댓글 구분
+	private String cmtParentId;					//부모댓글 아이디
+	private String delYn;						// 삭제 여부 -->
+

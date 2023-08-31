@@ -111,10 +111,12 @@ public class TripMateController {
 	
 	//여행 메이트 신청 - form
 	@PostMapping("/tripMateApplyForm")
-	public String tripMateApplyForm(TripMateVO trvo,  @RequestParam(name="mateWriter", defaultValue = "name") String mateWriter, Model model) {
-		//trvo.setWriterId(mateWriter);
-		//System.out.println(mateWriter);
-		//model.addAttribute("mateWriter", mateWriter);
+	public String tripMateApplyForm(TripMateVO trvo,  
+			@RequestParam(name="mateWriter") String mateWriter, Model model) {
+		trvo.setMemberId(mateWriter);
+		//System.out.println(trvo.getMemberId());
+		model.addAttribute("mateWriter", trvo.getMemberId());
+		
 		model.addAttribute("mateVO", trvo );
 		return "tripMate/tripMateApplyForm";
 	}
@@ -122,7 +124,8 @@ public class TripMateController {
 	//여행 메이트 신청 - process
 	@Transactional
 	@PostMapping("/tripMateApplyInsert")
-	public String tripMateApplyInsert(TripMateVO tripMateVO, Model model) {
+	public String tripMateApplyInsert(TripMateVO tripMateVO, 
+			@RequestParam(name="mateWriter") String mateWriter, Model model) {
 		//최대 인원, 신청 인원 조회
 		//tripMateService.selectMateRecruitApplyNum(tripMateVO);
 		//메이트 신청
@@ -131,6 +134,7 @@ public class TripMateController {
 		//신청인원 업데이트
 		tripMateService.updateMateRecruitApplyNum(tripMateVO);
 		
+		tripMateVO.setMemberId(mateWriter);
 		//게시글 작성자에게 알림
 		tripMateService.sendAlert(tripMateVO);
 		
