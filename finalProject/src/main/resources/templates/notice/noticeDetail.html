@@ -115,12 +115,38 @@ table {
 	<div align="center">
 		<br>
 		<br>
-		<h1>게시글 상세보기</h1>
+		<h1>공지사항 상세보기</h1>
 		<br>
 	</div>
 	<div id="ls2" align="center">
 	
 		<form id="frm" action="/noticeEdit" th:object="${noticeVO}" method="post">
+		   	<div class="mb-3" style="float: left; margin-left: 10%; margin-right:20px" >
+					<select class="" id="noticeType" name="noticeType"
+						aria-label="Default select example"  >
+						<option value="">공지사항 종류</option>
+						<option value="n1">공지사항</option>
+						<option value="n2">이벤트</option>
+					</select> 
+				</div>  
+				
+				<div class="mb-3" style="float: left; margin-right: 20px;" >
+					<select class="" id="release" name="release"
+						aria-label="Default select example" >
+						<option value="">공개대상</option>
+						<option value="N1">전체</option>
+						<option value="N2">가이드</option>
+					</select> 
+				</div>  
+				
+		       	 <div  id="status" class="mb-3" style="float:left;">
+					<select class="" name="status"
+						aria-label="Default select example"  >
+						<option value="">글 저장상태</option>
+						<option value="T1">임시저장</option>
+						<option value="T2">저장완료</option>
+					</select> 
+				</div> 
 	 		<table border="1" style="width: 80%;" >
 				<tr>
 					
@@ -181,6 +207,30 @@ document.getElementById("frm").submit();
 	    
 	}
  }	    
+ 
+	$(document).ready(function() {
+		//저장상태
+		setStatus();
+		//공개대상
+		//setRelease();
+		//공지종류
+		//setNoticeType();
+	});
+	
+function setStatus(){
+		
+		// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
+		let defaultStatus = [[${noticeVO.status}]];
+		
+		// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
+		$('#status').find('span').text(defaultStatus);
+		
+		// selected 처리되어있던 option을 일반 옵션으로 변경
+		$('#status').find('.option.selected').attr("class", "option");
+		
+		// 불러온 저장상태 값에 해당하는 option을 selected 및 focus 처리
+		$('.option[data-value="'+defaultStatus+'"]').attr("class", "option selected focus");
+	}
 
 	    	
        	

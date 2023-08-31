@@ -47,24 +47,6 @@ public class NoticeController {
 	}
 	
 	
-		
-		// 게시글 수정 기능 수행
-		@PostMapping("/admin/modifyNoticeInfo")
-		public String modifyNoticeInfo(NoticeVO noticeVO, RedirectAttributes rtt) {
-			
-			// 게시글 수정
-			String result = noticeService.modifyNoticeInfo(noticeVO);
-			
-			// 리다이렉트 어트리뷰트에 결과값 담기(성공 : success / 실패 : fail)
-			rtt.addFlashAttribute("result", result);
-			
-			return "redirect:seeNoticeDetail?noticeNumber=" + noticeVO.getNoticeNumber();
-		}
-	
-		
-	
-	
-	
 	//검색
 	@GetMapping("/noticeSearch")
 	public String boardSearch() {
@@ -95,6 +77,20 @@ public class NoticeController {
        return"notice/noticeEdit"; 
     };
     
+	
+	// 게시글 수정 기능 수행
+	@PostMapping("/admin/modifyNoticeInfo")
+	public String modifyNoticeInfo(NoticeVO noticeVO, RedirectAttributes rtt) {
+		
+		// 게시글 수정
+		String result = noticeService.modifyNoticeInfo(noticeVO);
+		
+		// 리다이렉트 어트리뷰트에 결과값 담기(성공 : success / 실패 : fail)
+		rtt.addFlashAttribute("result", result);
+		
+		return "redirect:seeNoticeDetail?noticeNumber=" + noticeVO.getNoticeNumber();
+	}
+
 
 	
 	@GetMapping("/boardEdit")
