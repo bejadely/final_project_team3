@@ -58,14 +58,14 @@ $(document).ready(function() {
 			</thead>
 			<tbody>
 				<th:block th:each="li : ${list}">
-					<tr class="list" th:onclick="|location.href='@{/packageInfo(postId=${li.postId})}'|">
+					<tr class="list" th:onclick="|location.href='@{/common/buyPkSelect(orderDetailId=${li.orderDetailId})}'|">
 						<td th:text="${li.name}"></td>
 						<td th:text="${li.startDate} + '~' + ${li.endDate}"></td>
 						<td th:text="${li.deadlineDate}"></td>
 						<td th:text="${li.tourTheme}"></td>
 						<td th:text="${li.completion}"></td>
 						<td th:text="${li.orderStatus}"></td>
-						<td th:text="${li.price}"></td>
+						<td th:text="${li.pkPrice}"></td>
 					</tr>
 				</th:block>
 			</tbody>

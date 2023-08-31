@@ -2,6 +2,8 @@ package com.trip.finalProject.question.service;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -18,6 +20,7 @@ public class QuestionVO {
 	private String questionId;
 	private String questionType;
 	private String questionContent;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date questionDate;
 	private String productId;
 	private String memberId;
@@ -29,7 +32,10 @@ public class QuestionVO {
 //	MEMBER_ID       NOT NULL VARCHAR2(70) 
 //	QUESTION_ID     NOT NULL CHAR(13)
 	private String answerId;
-	private String answerContexts;
+	private String answerContent;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date answerDate;
-	private String ansMemberId;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date answerModifyDate;
+	private String answerMemberId;
 }
