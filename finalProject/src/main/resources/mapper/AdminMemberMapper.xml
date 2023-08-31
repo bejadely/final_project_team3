@@ -73,7 +73,7 @@
 				 , address
 				 , address_detail
 				 , phone_number
-				 , authority
+				 , code_val(authority) authority
 				 , origin_profile_img
 				 , saved_profile_img
 				 , bank_code
@@ -82,7 +82,7 @@
 				 , access_token
 				 , refresh_token
 				 , birth_date
-				 , gender
+				 , code_val(gender)
 				 , punish_count
 				 , sign_up_date
 				 , withdrawal_date
