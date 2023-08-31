@@ -19,6 +19,7 @@ import com.trip.finalProject.alert.service.AlertVO;
 import com.trip.finalProject.authConfirm.service.AuthConfirmService;
 import com.trip.finalProject.authConfirm.service.AuthConfirmVO;
 import com.trip.finalProject.common.PagingVO;
+import com.trip.finalProject.common.mapper.CommonMapper;
 
 @Controller
 public class AdminMemberController {
@@ -31,6 +32,9 @@ public class AdminMemberController {
 	
 	@Autowired
 	AlertService alertService;
+	
+	@Autowired
+	CommonMapper commonMapper;
 	
 	// 회원정보 전체 조회
 	@GetMapping("/admin/seeAllMemberList")
@@ -121,8 +125,12 @@ public class AdminMemberController {
 		// 회원 상세조회 실행
 		memberVO = adminMemberService.getMemberDetail(memberVO);
 		
-		// 상세 조회 결과값 모델에 담기
+		// 권한 분류값을 가져오기 위한 Mapper 호출
+		List<Map<String, String>> authList = commonMapper.selectCode("A");
+		
+		// 결과값 모델에 담기
 		model.addAttribute("memberVO", memberVO);
+		model.addAttribute("authList", authList);
 		
 		return "admin/manageMember/modifyMemberInfoForm";
 	}
