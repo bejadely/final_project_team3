@@ -8,20 +8,13 @@
 
 <!--  페이지별로 게시글 확인 row 개수에 따라 -->
    <select id="SelectAllNoticeList" >
-		<!-- SELECT *
-		FROM (SELECT ROWNUM rn, b.*
-			FROM(SELECT * FROM notice order by notice_number desc) b )
-		WHERE rn BETWEEN ((#{page}-1) * 10) + 1 
-			AND (#{page} * 10)	 -->
+		
 				SELECT *
 			  	FROM (SELECT ROWNUM rn, a.*
 			        	FROM(SELECT notice_Number,title,writer_Id,regist_Date,hit 
 							FROM notice  order by notice_number) a )
 			  WHERE rn BETWEEN #{start} AND #{end}
-			  
-						
-			<!-- SELECT notice_Number,writer_Id,regist_Date,hit 
-		FROM notice  order by notice_number -->
+			  				
 		
 	</select>
 	
@@ -64,20 +57,6 @@
   		
   		
   		
- <!--  		<update id="modifyNoticeInfo" parameterType="NoticeVO">
-	
-  			UPDATE notice
-  			<set>
-  				<if test="title != null and !title.equals('')">
-					title = #{title},
-				</if>
-				<if test="content != null and !content.equals('')">
-					content = #{content},	
-				</if>			
-					 update_date= sysdate
-			</set>
-  			WHERE notice_number = #{noticeNumber}
-  		</update> -->
 		
 	
 
@@ -101,15 +80,7 @@
 		 0)
 	</insert>
 	
-<!-- 특정 게시글의 내용을 업데이트하는 쿼리 -->	
-	<update id="boardUpdate">
-	UPDATE board 
-		<set>
-		<!-- if문 -> test에는 실려오는 VO객체명 그대로 쓴다. 값이 실려오면 동일한 값이든 아니든 그값으로 변경해라 -->
-			<if test="boardContent != null">board_content = #{boardContent} </if>
-		</set>
-	WHERE board_id = #{boardId}
-	</update>
+
 	
 <!--  게시글 조회수 증가 -->	
 	<update id="boardView">

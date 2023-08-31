@@ -16,4 +16,5 @@ public class AlertVO {
 	private String content; // 알림 내용
 	private String confirmation; // 알림확인여부 W1 : 확인완료, W2 : 미확인
 	private String memberId; // 외래키 - member 테이블의 primary키 참조
+	private String postId; 
 }
