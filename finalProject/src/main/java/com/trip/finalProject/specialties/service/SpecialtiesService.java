@@ -18,4 +18,6 @@ public interface SpecialtiesService {
 	
 	//지역 코드 리스트
 	public List<LocationVO> getLocationList();
+	
+	public List<SpecialtiesOptionVO> getOptionList(SpecialtiesOptionVO specialtiesOptionVO);
 }

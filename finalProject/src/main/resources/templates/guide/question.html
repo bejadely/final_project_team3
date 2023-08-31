@@ -43,14 +43,14 @@ $(document).ready(function() {
     	var tr = $(this).closest('tr');
     	var td = tr.parent();
     	
-    	var answerContexts = tr.find('input[type=text]').val();
-    	var questionId = tr.prev().prev().find('input[type=hidden]').val();
-    	console.log(answerContexts);
+    	var answerContent = tr.find('textarea').val();
+    	var questionId = tr.prev().prev().find('input[type=hidden]');
+    	console.log(answerContent);
     	console.log(questionId);
     	
     	var obj = {};
         obj["questionId"] = questionId; // question_id 값을 설정
-        obj["answerContexts"] = answerContexts;
+        obj["answerContent"] = answerContent;
         
     	
     	console.log(obj);
@@ -71,14 +71,12 @@ $(document).ready(function() {
     	var tr = $(this).closest('tr');
     	var td = tr.parent();
     	
-    	var answerContexts = tr.find('input[type=text]').val();
-    	var answerId = tr.prev().find('input[type=hidden]').val();
-    	console.log(answerContexts);
-    	console.log(answerId);
+    	var answerContent = tr.find('input[type=text]').val();
+    	var answerId = tr.prev().prev().find('input[type=hidden]').val();
     	
     	var obj = {};
         obj["answerId"] = answerId; // question_id 값을 설정
-        obj["answerContexts"] = answerContexts;
+        obj["answerContent"] = answerContent;
         
     	
     	console.log(obj);
@@ -106,36 +104,36 @@ $(document).ready(function() {
 		<table>
 			<thead>
 				<tr>
-					<th>번호</th>
-					<th>제목</th>
-					<th>작성자</th>
-					<th>등록일</th>
+					<th>작성일</th>
+					<th>답변일</th>
 					<th>답변여부</th>
 				</tr>
 			</thead>
 			<tbody>
 				<th:block th:each="que, queStat : ${guideQue}">
 					<tr class="question">
-						<td class="que"><input type="hidden" th:value="${que.questionId}"></td>
-						<td th:text="${que.questionContent}"></td>
-						<td th:text="${que.memberId}"></td>
+						<td th:if="${que.answerModifyDate == null}" th:text="${que.questionType}" th:value="${que.questionId}"></td>
+						<td th:if="${que.answerModifyDate != null}" th:text="${que.questionType(수정됨)}"></td>
 						<td th:text="${que.questionDate}"></td>
-						<td th:if="${que.answerContexts == null}" class="answer">미답변</td>
-						<td th:if="${que.answerContexts != null}" class="answer">답변완료</td>
-					</tr>
-					
+						<td th:if="${que.answerDate == null}">답변이 없습니다</td>
+						<td th:if="${que.answerModifyDate == null and que.answerDate != null}" th:value="${que.answerDate}">
+						<td th:if="${que.answerModifyDate != null}" th:value="${que.answerModifyDate}"></td>
+						<td th:if="${que.answerContent == null}" class="answer">미답변</td>
+						<td th:if="${que.answerContent != null}" class="answer" >답변완료</td>
+					</tr>		
 					<tr class="hidden">
-						<td colspan="5">
-							<input type="hidden" th:value="${que.answerId}">
+						<td colspan="4">
+							<label>내용</label>
 							<th:textarea rows="9" cols="70" readonly="readonly">[[${que.questionContent}]]</th:textarea>
 						</td>
 					</tr>
 					<tr class="hidden">
-						<td colspan="5">
-							<textarea rows="9" cols="70">[[${que.answerContexts}]]</textarea>
+						<td colspan="4">
+							<label>답변</label>
+							<textarea rows="9" cols="70">[[${que.answerContent}]]</textarea>
 							<br><button type="reset">취소</button>
-							<button type="button" class="insert" th:if="${que.answerContexts == null}">등록</button>
-							<button type="button" class="update" th:if="${que.answerContexts != null}">수정</button>
+							<button type="button" class="insert" th:if="${que.answerContent == null}">등록</button>
+							<button type="button" class="update" th:if="${que.answerContent != null}">수정</button>
 										
 						</td>
 					</tr>

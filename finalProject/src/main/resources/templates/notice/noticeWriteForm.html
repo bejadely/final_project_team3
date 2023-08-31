@@ -67,14 +67,14 @@
         }
         
         .ck.ck-editor {
-	width: 100%;
-	max-width: 1500px;
-	margin: 0 auto;
-}
-
-.ck-editor__editable {
-	height: 50vh;
-}
+		width: 100%;
+		max-width: 1500px;
+		margin: 0 auto;
+		}
+		
+		.ck-editor__editable {
+			height: 50vh;
+		}
     </style>
 </head>
 <script type="text/javascript">
@@ -92,7 +92,7 @@
             <form id="frm" action="/noticeProc" method="post">
                	<div class="mb-3" style="float: left; margin-right: 20px;" >
 					<select class="" id="noticeType" name="noticeType"
-						aria-label="Default select example"  >
+						aria-label="Default select example" required >
 						<option value="">공지사항 종류</option>
 						<option value="n1">공지사항</option>
 						<option value="n2">이벤트</option>
@@ -101,7 +101,7 @@
 				
 				<div class="mb-3" style="float: left; margin-right: 20px;" >
 					<select class="" id="release" name="release"
-						aria-label="Default select example" >
+						aria-label="Default select example"  required>
 						<option value="">공개대상</option>
 						<option value="N1">전체</option>
 						<option value="N2">가이드</option>
@@ -110,7 +110,7 @@
 				
 		       	 <div class="mb-3" style="float:left;">
 					<select class="" id="status" name="status"
-						aria-label="Default select example"  >
+						aria-label="Default select example" required >
 						<option value="">글 저장상태</option>
 						<option value="T1">임시저장</option>
 						<option value="T2">저장완료</option>
@@ -163,9 +163,9 @@
                     
                     </div>                
                     <div align="right">
-                    <button type="submit" value="등록" class="btn btn-primary registrationButton">등록</button>&nbsp;&nbsp;         
+                    <button type="submit" value="등록" class="btn btn-primary submitButton">등록</button>&nbsp;&nbsp;         
                     <input type="reset" value="취소" class="btn btn-secondary" id="cancelBtn">&nbsp;&nbsp;
-                    <input type="button" value="목록" onclick="location.href='boardList.do?page=1'" class="btn btn-secondary">
+                    <input type="button" value="목록" onclick="location.href='noticeList?page=1'" class="btn btn-secondary">
                     </div>
                     <br><br>
                 </div>
@@ -188,17 +188,19 @@
 
 $(document).ready(function() {
 		// 승인 버튼 클릭 시 발생 이벤트 설정
-		$('.registrationButton').on('click', go);
+		$('.submitButton').on('click', go);
 		 // $('#frm').on('submit', loginAccountcheck);
 	/* 	$('.rejectButton').on('click', authReject); */
-		$.noConflict();
-	});
+});	
 	
+		
 	// 승인 버튼 클릭 시 발생 이벤트
 	function go(e){
-		e.stopPropagation();
+		e.preventDefault();
 		
+	
 		Swal.fire({
+			
 		      title: '저장하시겠습니까',
 		      icon: 'question',
 		      showCancelButton: true,
@@ -206,24 +208,29 @@ $(document).ready(function() {
 		      cancelButtonColor: '#d33',
 		      confirmButtonText: '저장',
 		      cancelButtonText: '취소',
-		      
+		    
 	    }).then((result) => {
+	    	
 		      if (result.isConfirmed) {
 		          
 		    	  //post방식으로 페이지 전환
 				  console.log('hi');
-				 // document.getElementById('frm').submit();
-				  $('#frm')[0].submit();
+				  document.getElementById('frm').submit();
+				
+		      }else{
+		    	  console.log('Nope')
+		    	  return;
 		      }
-		    })
+		    });
 		 
 	   	    
-	} 
+	} 	
+	//ck-editor
 	
 	
 	ClassicEditor
 	.create(document.querySelector('#editor'), {
-		/* htmlEncodeOutput: false, */
+		 htmlEncodeOutput: false, 
 		ckfinder: {
 			uploadUrl : 'upload'	
 		}
@@ -271,7 +278,11 @@ $(document).ready(function() {
 			
 			let objData = serializeObject();
 			
+			
+			//작성 내용
 			console.log(data);
+			
+			//서버로 넘어가는 데이터 값들
 			const {  writerId, registDate, title} = objData;
 			var combinedData={
 				content: data,
@@ -299,8 +310,6 @@ $(document).ready(function() {
 			});
 	
 			formObj.append(str);
-			document.getElementById('frm').action = "/noticeProc";
-			document.getElementById('frm').submit();
 			
 			
 			
@@ -323,7 +332,7 @@ $(document).ready(function() {
 		});
 		
 		return formObject;
-	}
+	} 
 </script>
 
 

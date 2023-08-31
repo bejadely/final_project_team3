@@ -11,6 +11,7 @@ import com.trip.finalProject.attachedFile.mapper.AttachedFileMapper;
 import com.trip.finalProject.location.service.LocationVO;
 import com.trip.finalProject.packaged.mapper.PackageMapper;
 import com.trip.finalProject.specialties.mapper.SpecialtiesMapper;
+import com.trip.finalProject.specialties.service.SpecialtiesOptionVO;
 import com.trip.finalProject.specialties.service.SpecialtiesService;
 import com.trip.finalProject.specialties.service.SpecialtiesVO;
 
@@ -28,23 +29,39 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
 	@Setter(onMethod_=@Autowired)
 	private AttachedFileMapper attachedFileMapper;
 	
+	//옵션 정보 리스트
+	@Override
+	public List<SpecialtiesOptionVO> getOptionList(SpecialtiesOptionVO specialtiesOptionVO) {
+		// TODO Auto-generated method stub
+		return specialtiesMapper.findByPostId(specialtiesOptionVO);
+	}
 	
+	//특산물 정보
 	@Override
 	public SpecialtiesVO getSpecialtiesInfo(SpecialtiesVO specialtiesVO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	@Transactional
+	
+	//특산물 리스트
 	@Override
 	public List<SpecialtiesVO> getSpecialtiesList() {
 		// TODO Auto-generated method stub
-		return null;
+		return specialtiesMapper.listSpecialties();
 	}
 	
+	//특산물, 옵션, 첨부파일 등록
+	@Transactional
 	@Override
 	public void insertSepcialties(SpecialtiesVO specialtiesVO) {
 		// TODO Auto-generated method stub
 		mapper.insertSpecialites(specialtiesVO);
+		
+		specialtiesVO.getOptionList().forEach(option->{
+			option.setPostId(specialtiesVO.getPostId());
+			mapper.insertSpecialtiesOption(option);
+		});
+		
 		if(specialtiesVO.getAttachList()==null || specialtiesVO.getAttachList().size()<=0) {
 			return;
 		}else {
@@ -61,16 +78,16 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
 				attachedFileMapper.insertAttachedFile(attach);
 			});
 		}
-		specialtiesVO.getOptionList().forEach(attach->{
-			attach.setPostId(specialtiesVO.getPostId());
-			mapper.insertSpecialtiesOption(attach);
-		});
+		
 	}
-
+	
+	//지역 정보 리스트
 	@Override
 	public List<LocationVO> getLocationList() {
 		// TODO Auto-generated method stub
 		return specialtiesMapper.listArea();
 	}
+
+
 
 }
