@@ -10,7 +10,6 @@ public class LikeVO {
 	private String likeId;
 	private String memberId;
 	private String postId;
-
 	//trip_record
 	private String tripTitle;
 	private Date startDay;

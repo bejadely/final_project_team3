@@ -45,7 +45,8 @@ public class KakaoLoginController {
     session.setAttribute("sessionId", userInfo.getMemberId());
   	session.setAttribute("kakaoN", userInfo.getMemberName());
   	session.setAttribute("kakaoE", userInfo.getEmail());
-  	session.setAttribute("kakaoProfile", userInfo.getSavedProfileImg()); 	
+  	session.setAttribute("kakaoProfile", userInfo.getSavedProfileImg()); 
+  	session.setAttribute("access_Token", userInfo.getAccessToken());
   	System.out.println("프로필사진:" + userInfo.getSavedProfileImg() );
   	
       

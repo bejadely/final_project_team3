@@ -33,6 +33,10 @@ public class KakaoPayInfoResponseVO {
 	 private String canceled_at; // 결제 취소 시각
 	 //private SelectedCardInfoVO selected_card_info;
 	 private PaymentActionDetailsVO payment_action_details; // 결제/취소 상세
+	 //취소 금액
+	 private int cancelAmount;
+	 //취소 비과세 금액
+	 private int cancelTaxfreeAmount;
 	 
 	 @Data
 	 public class PaymentActionDetailsVO{

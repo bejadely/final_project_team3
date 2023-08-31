@@ -64,6 +64,9 @@
 						,cid
 						,tid
 						,specialty_type
+						,cancel_amount
+						,cancel_tax_free_amount
+
 					)
 				    VALUES
 				    (
@@ -85,6 +88,9 @@
 				    	,#{cid}
 				    	,#{tid}
 				    	,#{specialtyType}
+				    	,#{cancelAmount}
+				    	,#{cancelTaxfreeAmount}
+
 				    	
 				    )
 	</insert>

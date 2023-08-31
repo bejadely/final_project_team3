@@ -55,33 +55,33 @@
 		<!-- 페이징 구문 -->
 		<!-- 검색키워드가 없을때 -->
 		<th:block th:if="${#strings.isEmpty(keyword)}">
-			<div style="text-align : center;">
+			<div style="text-align : center;" class="property-pagination">
 				<th:block th:if="${paging.nowPage != 1}">
-					<a th:href="@{seeAllMemberList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+					<a th:href="@{/admin/seeAllReport(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
 				</th:block>
 				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{seeAllMemberList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+					<a th:href="@{/admin/seeAllReport(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 				</th:block>
 				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
 					<th:block th:if="${p eq paging.nowPage}">
-						<b th:text="${p}"></b>
+						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
 					</th:block>
 					<th:block th:if="${p ne paging.nowPage}">
-						<a th:href="@{seeAllMemberList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+						<a th:href="@{/admin/seeAllReport(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
 					</th:block>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-					<a th:href="@{seeAllMemberList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					<a th:href="@{/admin/seeAllReport(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage}">
-					<a th:href="@{seeAllMemberList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+					<a th:href="@{/admin/seeAllReport(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
 				</th:block>
 			</div>
 		</th:block>
 		<!-- 검색키워드가 있을때 -->
 		<th:block th:if="${!#strings.isEmpty(keyword)}">
 			<div style="text-align : center;">
-				<th:block th:if="${paging.nowPage != 1}">
+				<th:block th:if="${paging.nowPage != 1}" class="property-pagination">
 					<a th:href="@{searchAdminMember(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
 				</th:block>
 				<th:block th:if="${paging.startPage != 1}">
@@ -89,7 +89,7 @@
 				</th:block>
 				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
 					<th:block th:if="${p eq paging.nowPage}">
-						<b th:text="${p}"></b>
+						<a th:text="${p}"></a>
 					</th:block>
 					<th:block th:if="${p ne paging.nowPage}">
 						<a th:href="@{searchAdminMember(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
@@ -144,6 +144,24 @@
 		
 		// 페이지 전환 실행
 		location.href=`seeReportDetail?reportId=${reportId}`;
+	}
+	
+	
+	// 메시지 프린트
+	
+	printMessage([[${message}]]);
+		
+	function printMessage(message){
+		
+		if(message != null && message != ""){
+			
+			Swal.fire({
+				  icon: 'success',
+			      title: message,
+			    })	
+		
+		}
+		
 	}
 	
 	</script>

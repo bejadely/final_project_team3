@@ -88,7 +88,7 @@ ClassicEditor
 			let objData = serializeObject();
 			
 			//sconsole.log(data);
-			const { tourTheme, name, price, startDate, endDate, deadlineDate, maxReservation } = objData;
+			const { tourTheme, name, price, startDate, endDate, deadlineDate, maxReservation,writerId } = objData;
 			var combinedData={
 				content: data,
 				tourTheme: tourTheme,
@@ -97,7 +97,8 @@ ClassicEditor
 		        startDate: startDate,
 		        endDate: endDate,
 		        deadlineDate: deadlineDate,
-		        maxReservation: maxReservation
+		        maxReservation: maxReservation,
+		        writerId : writerId
 			};
 			console.log(combinedData);
 		/* 	var xhr = new XMLHttpRequest();
@@ -280,7 +281,8 @@ ClassicEditor
 <body>
 <div layout:fragment="content">
 	<form method="post" id="editorForm" enctype="multipart/form-data" >
-		<div id="packageInfo">	
+		<div id="packageInfo">
+		<input type="hidden" name="writerId" th:value="${session.sessionId}">
 			<div>
 				<label>테마</label>
 				<select name="tourTheme" id="tourTheme">
