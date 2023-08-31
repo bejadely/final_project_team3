@@ -79,7 +79,7 @@ public class KakaoPayController {
 		kakaoPayInfoResponseVO.setCid(kakaoPayInfoResponseVO.getCid());
 		kakaoPayInfoResponseVO.setTid(kakaoPayInfoResponseVO.getTid());
 		kakaoPayInfoResponseVO.setCancelAmount(kakaoPayInfoResponseVO.getCancel_available_amount().getTotal());
-		kakaoPayInfoResponseVO.setCancelTaxfreeAmount(kakaoPayInfoResponseVO.getCancel_available_amount().getTax_free());
+		kakaoPayInfoResponseVO.setCancelTaxFreeAmount(kakaoPayInfoResponseVO.getCancel_available_amount().getTax_free());
 		
 		
 		System.out.println(kakaoPayInfoResponseVO);
@@ -92,8 +92,10 @@ public class KakaoPayController {
 	
 	@PostMapping("/refund")
 	public ModelAndView refund(KakaoPayInfoResponseVO vo) {
+		System.out.println(vo);
 		kakaoPayService.KakaoCancelResponse(vo);
-		ModelAndView mv = new ModelAndView("payment/kakaoPaySuccess");
+		kakaoPayService.updatePurchase(vo);
+		ModelAndView mv = new ModelAndView("/payment/kakaoRefundSuccess");
 		return mv;
 	}
 	
