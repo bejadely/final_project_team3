@@ -28,10 +28,13 @@ public class KakaoPayController {
 	@PostMapping("ready")
 	public KakaoPayResponseVO readyToKakaoPay(PaymentVO vo,@RequestParam("quantity") int quantity,@RequestParam("postId")String postId, String specialtyType) {
 		return kakaoPayService.kakoPayReady(vo,quantity,postId,specialtyType);
+
 	}
 	
+
 	@GetMapping("success")
 	public ModelAndView afterPayRequest(@RequestParam("pg_token") String pgToken, String specialtyType) {
+
 		KakaoApproveResponseVO approveResponse = kakaoPayService.approveResponse(pgToken);
 		// KakaoApproveResponseVO 객체의 tid 값을 가져오기
 		//String tid = approveResponseVO.getTid();
@@ -52,9 +55,6 @@ public class KakaoPayController {
 	public ModelAndView info(@ModelAttribute KakaoApproveResponseVO  approveResponse) {
 	    KakaoPayInfoResponseVO kakaoPayInfoResponseVO = kakaoPayService.infoResponse(approveResponse.getTid());
 	    //int totalAmount = kakaoPayInfoResponseVO.getAmount().getTotal();
-	    //System.out.println(kakaoPayInfoResponseVO);
-	    //결제 테이블 등록
-	    System.out.println(approveResponse.getSpecialtyType());
 	    KakaoPayInfoVO vo = new KakaoPayInfoVO();
 		vo.setApprovedAt(kakaoPayInfoResponseVO.getApproved_at().replace("T", " "));
 		vo.setCalculateStatus("N2");
@@ -66,7 +66,6 @@ public class KakaoPayController {
 		vo.setTid(kakaoPayInfoResponseVO.getTid());
 		vo.setTotalAmount(kakaoPayInfoResponseVO.getAmount().getTotal());
 		kakaoPayService.insertPayment(vo);
-		System.out.println(vo.getPaymentId());
 		
 		//주문 상세 테이블 등록
 		kakaoPayInfoResponseVO.setSpecialtyType(approveResponse.getSpecialtyType());
@@ -79,6 +78,8 @@ public class KakaoPayController {
 		kakaoPayInfoResponseVO.setOrderStatus(kakaoPayInfoResponseVO.getStatus());
 		kakaoPayInfoResponseVO.setCid(kakaoPayInfoResponseVO.getCid());
 		kakaoPayInfoResponseVO.setTid(kakaoPayInfoResponseVO.getTid());
+		kakaoPayInfoResponseVO.setCancelAmount(kakaoPayInfoResponseVO.getCancel_available_amount().getTotal());
+		kakaoPayInfoResponseVO.setCancelTaxfreeAmount(kakaoPayInfoResponseVO.getCancel_available_amount().getTax_free());
 		
 		
 		System.out.println(kakaoPayInfoResponseVO);
@@ -89,7 +90,16 @@ public class KakaoPayController {
 	    return mv;
 	}
 	
-	@GetMapping("cancel")
+	@PostMapping("/refund")
+	public ModelAndView refund(KakaoPayInfoResponseVO vo) {
+		kakaoPayService.KakaoCancelResponse(vo);
+		ModelAndView mv = new ModelAndView("payment/kakaoPaySuccess");
+		return mv;
+	}
+	
+	
+	
+	@GetMapping("/cancel")
 	public ModelAndView cancel() {
 		ModelAndView mv = new ModelAndView("/package/packageList");
 		return mv;

@@ -11,4 +11,6 @@ public interface KakaoPayService {
 	public int insertPayment(KakaoPayInfoVO kakaoPayInfoVO);
 	
 	public int insertPurchase(KakaoPayInfoResponseVO kakaoPayInfoResponseVO);
+	
+	public KakaoCancelResponseVO KakaoCancelResponse(KakaoPayInfoResponseVO kakaoPayInfoResponseVO);
 }

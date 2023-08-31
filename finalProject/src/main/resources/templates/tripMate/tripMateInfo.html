@@ -145,6 +145,7 @@ table {
 	<div align="center">
 		<form id="sendData" action="tripMateApplyForm" method="post">
 			<input type="hidden" name="postId" th:value="${tripMateInfo.postId}">
+			<input type="hidden" name="mateWriter" th:value="${tripMateInfo.writerId}">
 			<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="submit" class="primary-btn">
 			신청하기</button>&nbsp;&nbsp;
 			<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="button" class="primary-btn" 
@@ -156,7 +157,68 @@ table {
 			<button type="button" class="primary-btn" onclick="location.href='tripMateList'">목록으로</button>
 		</form>
 	</div>
+	<!-- 댓글 기능 -->
+	<div align="center">
+		<form action="">
+			<table id="comment" style="font-size:0.9em; text-align: center;width: 1070px; margin: 0 auto; height : 60px; background-color: white;">
+				<tr>
+					<td>
+					<input type="hidden" id="" value="${게시글 번호}">
+					<input type="hidden" name="writerId" th:value="${session.sessionId}">
+					</td>
+					<td colspan="3"><textarea rows="3" cols="50" id="content"></textarea></td>
+					<td><input type="button" value="댓글달기" onclick="comment_save()"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	
+	
+	
+	
+	
 	<script th:inline="javascript">
+	// 댓글 저장
+	function comment_save() {
+		//댓글 저장 버튼 클릭 시 세션 아이디가 없으면 로그인 페이지로 이동
+		if ('${session.sessionId}' == "") {
+			alert("로그인 후 사용 가능합니다.")
+			//location.href="로그인 페이지로 이동"
+		}else {
+			var nick = $("#nick").val();
+			var content = $("#content").val();
+			var numgroup = $("#numgroup").val();
+			var step = $("#step").val();
+			var form = {
+				nick : nick,
+				content : content,
+				numgroup : numgroup,
+				step : step,
+			}
+			//댓글 내용이 없는 경우 알림
+			if(content=="") {
+				alert("댓글 내용을 입력하세요.")
+				$("#content").focus()
+			}else{
+				$.ajax({
+					url : "/",
+					type : "POST",
+					data : form,
+					success : function(list) {
+						//성공하면 댓글 리스트에 해당 값을 저장
+						//showComment(list);
+						//console.log("성공")
+					},
+					error : function(request, status, error) {
+						console.log("실패")
+						//alert("code:" + request.status + "\n" + "message:"
+								+ request.responseText + "\n" + "error:" + error);
+					}
+				});
+			}
+		}
+	}
+	
 	
 	</script>
 </body>

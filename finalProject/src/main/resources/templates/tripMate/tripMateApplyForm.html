@@ -111,7 +111,8 @@ table {
         <div id="ls" class="text-center">
             <form method="post">
                 <div>
-                	<input type="hidden" name="postId" th:value="${tripMateVO.postId}">
+                	<input type="hidden" name="mateWriter" th:value="${mateWriter}">
+                	<input type="hidden" name="postId" th:value="${mateVO.postId}">
                     <table class="table">
                     	<tr>
                             <th width="150">신청자 아이디</th>

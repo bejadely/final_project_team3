@@ -30,7 +30,7 @@
         </div>
         <div class="language-bar">
             <div class="language-option">
-                <img src="img/flag.png" alt="">
+                <img src="/img/flag.png" alt="">
                 <span>English</span>
                 <i class="fa fa-angle-down"></i>
                 <div class="flag-dropdown">
@@ -41,41 +41,63 @@
                     </ul>
                 </div>
             </div>
-            <div class="property-btn">
-                <a href="#" class="property-sub">Submit Property</a>
-            </div>
         </div>
         
         <nav class="main-menu">
             <ul>
-                <li><a href="./index.html">Home</a></li>
-                <li><a href="./property.html">Property</a></li>
-                <li><a href="./about-us.html">Agets</a></li>
-                <li><a href="./blog.html">News</a></li>
-                <li><a href="./property-details.html">Pages</a></li>
+                <li><a href="/tripRecordList">여행기록</a></li>
+                <li><a href="/tripMateList">여행메이트</a></li>
+                <li><a href="/localTourInfo">관광정보</a></li>
+                <li><a href="/festival">축제정보</a></li>
+                <li><a href="/localTourStatistics">관광통계</a></li>
+                <li><a href="/">호텔예약</a></li>
+                <li><a href="/">상품구매</a></li>
+                <li><a href="/">패키지구매</a></li>
             </ul>
         </nav>
         <div class="nav-logo-right">
             <ul>
-                <li>
-                    <i class="icon_phone"></i>
+                <li onclick="window.location.href='/member/login'">
+                    <i class="fa-sharp fa-solid fa-lock" ></i>
                     <div class="info-text">
-                        <span>Phone:</span>
-                        <p>(+12) 345 6789</p>
+                        <span>login & join</span>
+                        <p>로그인</p>
                     </div>
                 </li>
-                <li>
-                    <i class="icon_map"></i>
+     <!--로그아웃<li onclick="window.location.href='/'">
+                             <i class="fa-solid fa-lock-open"></i>
+                             <div class="info-text">
+                       <span>logout</span>
+                       <p>로그아웃</p>
+                   </div>
+                </li>  -->    
+                   
+        <!--관리자<li onclick="window.location.href='/'">
+                    <i class="fa-solid fa-user-large"></i>
                     <div class="info-text">
-                        <span>Address:</span>
-                        <p>16 Creek Ave, <span>NY</span></p>
+                        <span>adminpage</span>
+                        <p>관리자페이지</p>
+                    </div>
+                </li>-->
+         <!--회원<li onclick="window.location.href='/'">
+      				<i class="fa-solid fa-user-large"></i>
+      				<div class="info-text">
+                        <span>mypage</span>
+                        <p>마이페이지</p>
+                    </div>
+                </li>-->
+                <li onclick="window.location.href='/'">
+                   <i class="fa-solid fa-bell" ></i>
+                    <div class="info-text">
+                        <span>alarm</span>
+                        <p>알림</p>
                     </div>
                 </li>
-                <li>
-                    <i class="icon_mail"></i>
+                <li onclick="window.location.href='/noticeList'">
+                   <i class="fa-solid fa-clipboard-check" ></i>
                     <div class="info-text">
-                        <span>Email:</span>
-                        <p>Info.cololib@gmail.com</p>
+                        <span>notice</span>
+                        <p>공지사항</p>
                     </div>
                 </li>
             </ul>
@@ -87,23 +109,24 @@
         <div class="top-nav">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-9">
+                    <div class="col-lg-10">
                         <nav class="main-menu">
                             <ul>
-                                <li class="active"><a href="./index.html">Home</a></li>
-                                <li><a href="./property.html">Property</a></li>
-                                <li><a href="./about-us.html">Agets</a></li>
-                                <li><a href="./blog.html">News</a></li>
-                                <li><a href="./property-details.html">Pages</a></li>
-                                <li><a href="./property-details.html">Pages</a></li>
-                                <li><a href="./property-details.html">Pages</a></li>
+                                <li><a href="/tripRecordList">여행기록</a></li>
+                                <li><a href="/tripMateList">여행메이트</a></li>
+                                <li><a href="/localTourInfo">관광정보</a></li>
+                                <li><a href="/festival">축제정보</a></li>
+                                <li><a href="/localTourStatistics">관광통계</a></li>
+                                <li><a href="/">호텔예약</a></li>
+                                <li><a href="/">상품구매</a></li>
+                                <li><a href="/">패키지구매</a></li>
                             </ul>
                         </nav>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <div class="top-right">
                             <div class="language-option">
-                                <img src="img/flag.png" alt="">
+                                <img src="/img/flag.png" alt="">
                                 <span>English</span>
                                 <i class="fa fa-angle-down"></i>
                                 <!-- google api 기능 추가 -->
@@ -130,32 +153,53 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="logo">
-                            <a href="./index.html"><img src="img/logo.png" alt=""></a>
+                            <a href="/"><img src="/img/logo.png" alt=""></a>
                         </div>
                     </div>
                     <div class="col-lg-9">
-                        <div class="nav-logo-right">
+                        <div class="nav-logo-right"> 
                             <ul>
-                                <li>
-                                    <i class="icon_phone"></i>
+                                <li onclick="window.location.href='/member/login'">
+                                    <i class="fa-sharp fa-solid fa-lock"></i>
                                     <div class="info-text">
-                                        <span>Phone:</span>
-                                        <p>(+12) 345 6789</p>
-                                    </div>
+				                        <span>login & join</span>
+				                        <p>로그인</p>
+				                    </div>
                                 </li>
-                                <li>
-                                    <i class="icon_map"></i>
+                     <!--로그아웃<li onclick="window.location.href='/'">
+                                 <i class="fa-solid fa-lock-open"></i>
+                                 <div class="info-text">
+			                        <span>logout</span>
+			                        <p>로그아웃</p>
+			                    </div>
+                                </li>  -->
+             	        <!--관리자<li onclick="window.location.href='/'">
+                                 <i class="fa-solid fa-user-large"></i>
+                                 <div class="info-text">
+			                        <span>adminpage</span>
+			                        <p>관리자페이지</p>
+			                    </div>
+                                </li>  -->
+                   		<!--회원<li onclick="window.location.href='/'">
+                                 <i class="fa-solid fa-user-large"></i>
+                                 <div class="info-text">
+			                        <span>mypage</span>
+			                        <p>마이페이지</p>
+			                    </div>
+                                </li>  -->
+                                <li onclick="window.location.href='/">
+                                    <i class="fa-solid fa-bell"><a href="/"></a></i>
                                     <div class="info-text">
-                                        <span>Address:</span>
-                                        <p>16 Creek Ave, <span>NY</span></p>
-                                    </div>
+				                      <span>alarm</span>
+				                      <p>알림</p>
+				                  	</div>
                                 </li>
-                                <li>
-                                    <i class="icon_mail"></i>
+                                <li onclick="window.location.href='/noticeList'">
+                                    <i class="fa-solid fa-clipboard-check"></i>
                                     <div class="info-text">
-                                        <span>Email:</span>
-                                        <p>Info.cololib@gmail.com</p>
-                                    </div>
+				                      <span>notice</span>
+				                      <p>공지사항</p>
+				                  	</div>
                                 </li>
                             </ul>
                         </div>
