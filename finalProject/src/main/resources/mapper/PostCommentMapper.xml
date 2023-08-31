@@ -3,6 +3,14 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip.finalProject.postComment.mapper.PostCommentMapper">
+	<!-- 해당 게시글의 전체 댓글 조회 -->
+	<select id="selectAllPostComment" resultType="postCommentVO">
+			SELECT *
+			FROM post_comment
+			WHERE post_id = #{postId}
+			ORDER BY comment_id ASC, cmt_num ASC
+	</select>
+
 	<!-- 댓글 작성 -->
 	<insert id="insertPostComment" parameterType="PostCommentVO">
     	<selectKey keyProperty="commentId" resultType="String" order="BEFORE">
@@ -24,7 +32,8 @@
     					(
     						#{commentId}
     						, #{postId}
-    						, #{cmtNum}
+    						<!-- 해당 게시글 아이디에서 댓글 번호를 찾아서 그 수에서 +1 카운트 -->
+    						, (SELECT NVL(MAX(cmt_num), 0) + 1 FROM post_comment WHERE post_id = #{postId})
     						, #{writerId}
     						, #{cmtContent}
     						, sysdate
