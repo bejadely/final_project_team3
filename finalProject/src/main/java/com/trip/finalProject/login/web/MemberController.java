@@ -39,9 +39,9 @@ public class MemberController {
 	//회원가입
 	//넘겨주고 받을게 없어서 매개변수 x 
 	//그냥 등록페이지의 뷰를 반환함.(Get방식)(return: 실제 경로)
-	@GetMapping("member/memberInsert") 
+	@GetMapping("/member/memberInsert") 
 	public String memberInsertForm() {
-		return"member/memberInsert";
+		return"/member/memberInsert";
 	}
 	
 	//form의 action에 따른 회원등록처리:URI RETURN- 홈화면
