@@ -89,10 +89,14 @@
 				    	,#{tid}
 				    	,#{specialtyType}
 				    	,#{cancelAmount}
-				    	,#{cancelTaxfreeAmount}
-
-				    	
+				    	,#{cancelTaxFreeAmount}
 				    )
 	</insert>
-
+	<update id="updatePurchaseStatus" parameterType="KakaoPayInfoResponseVO">
+		UPDATE purchase 	
+		<set>
+			ORDER_STATUS = 'X2'
+		</set>		
+		WHERE order_detail_id = #{orderDetailId}
+	</update>
 </mapper>  

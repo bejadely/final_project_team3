@@ -58,7 +58,7 @@ function handleClick(data) {
 	    		html += "<tr>" +
 	            "<td><input type='checkbox' name='chk' data-cartid='" + cartItem.postId + "' /></td>" +
 	            "<td>" + cartItem.cartName + "</td>" +
-	            "<td>" + cartItem.cartName + "</td>" +
+	            "<td class='orderName'>" + cartItem.cartName + "</td>" +
 	            `<td>
 				    <button type="button" class="quantity-btn decrement-btn">-</button>
 				    <input type="text" class="quantity-input" name="productAmount" value="${cartItem.quantity}">
@@ -285,3 +285,55 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
             });
     });
   }); 
+	 
+  	$("#buyBtn").click(function(){
+  		var totalAmount =0;
+  		var quantity = 0;
+  		var orderName= null;
+  		var orderElements = [];
+  		var th = $(this);
+	    var postId = th.parent().parent().find("td:eq(0)").find("input[name='chk']").data("cartid");
+  		// 체크된 체크박스를 찾는 루프
+	    $("tbody input[type=checkbox]:checked").each(function() {
+	        var row = $(this).closest("tr");
+	        var count = parseInt(row.find("input[type=text]").val());
+	        var price = parseFloat(row.find("td:eq(4)").text());
+	        var cartTotal = count * price;
+			orderElements.push(row.find("td:eq(2)").text()); // 값을 배열에 추가	       
+	        console.log(orderElements);
+	        totalAmount += cartTotal;
+	        quantity += count;
+	    });	
+	    
+	    	if(orderElements.length == 1) {
+				orderName = orderElements[0];		
+			}
+			else{
+				orderName = orderElements[0] + ' 외 ' + (orderElements.length - 1) + '건';
+			}		
+	    	console.log(postId);
+	        console.log(quantity);
+	        console.log(orderName);
+	        console.log(totalAmount);
+	        
+	        $.ajax({
+	        	type:'post',
+	        	url:'payment/ready',
+	        	data:{
+	        		totalAmount: totalAmount,
+	        		orderName : orderName,
+	        		quantity : quantity,
+	        		postId: postId
+	        		
+	        	},
+	        	success:function(response){
+	        		location.href = response.next_redirect_pc_url
+	        	}
+	        	
+	        }); 
+	        
+  	});
+  	
+ 
+  	
+  	
