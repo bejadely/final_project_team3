@@ -18,6 +18,7 @@ public class PagingVO {
 	private int start;			//현재 페이지 안에 보여줄 첫번째 데이터
 	private int end;			//현재 페이지 안에 보여줄 마지막 데이터
 	
+	
 	public PagingVO(int totalData, int nowPage, int cntPerPage) {
 		this.totalData = totalData;
 		this.nowPage = nowPage;

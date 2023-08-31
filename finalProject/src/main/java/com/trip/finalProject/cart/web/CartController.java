@@ -32,7 +32,7 @@ public class CartController {
 	public String cartList(Model model){
 	
 		
-		return "cart/cartList";
+		return "myPage/cart/cartList";
 	};
 	
 	
