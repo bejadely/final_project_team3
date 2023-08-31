@@ -85,10 +85,10 @@ ClassicEditor
 			
 			var sigunguCode = $("#location > option:selected").attr("value1");
 			var areaCode = $("#location > option:selected").attr("value2");
-			str+=`<input tpye='text' name='sigunguCode' value='${sigunguCode}'>
-				 <input type ='text'name = 'areaCode' value='${areaCode}'>`
-			console.log(sigunguCode);
-			console.log(areaCode);
+			str+=`<input type='hidden' name='sigunguCode' value='${sigunguCode}'>
+				 <input type ='hidden' name = 'areaCode' value='${areaCode}'>`
+			//console.log(sigunguCode);
+			//console.log(areaCode);
 	
 			const data = editor.getData();
 			
@@ -134,11 +134,11 @@ ClassicEditor
 			
 			var specialtiesOption = $(".specialtiesOption");
 
-			$("#specialtype", specialtiesOption).each(function(i, obj) {
+			$(".specialtype").each(function(i, obj) {
 			    var type = $(obj).val();
-			    var priceInput = $(obj).closest(".specialtiesOption").find("#price").eq(i);
+			    var priceInput = $(obj).closest(".specialtiesOption").find(".price").eq(i);
 			    var price = $(priceInput).val();
-
+				console.log(priceInput);
 			    str += `<input type='text' name='optionList[${i}].specialtyType' value='${type}'>
 			            <input type='text' name='optionList[${i}].price' value='${price}'>`;
 			});
@@ -296,8 +296,8 @@ ClassicEditor
 		      let form = document.getElementById("editorForm");
 			  let str="";
 			  str +=`<div class="option"><input type="checkbox" class="deleteCheckbox" >
-			  		<label>옵션</label><input type="text" id="specialtype" name="" value="${optionType}" readonly>
-				  	<label>가격</label><input type="text" id="price" name="" value="${optionPrice}"readonly><br>`;			  
+			  		<label>옵션</label><input type="text" class="specialtype" name="" value="${optionType}" readonly>
+				  	<label>가격</label><input type="text" class="price" name="" value="${optionPrice}"readonly><br>`;			  
 			  specialtiesOption.append(str);
 	      }
 	    })
