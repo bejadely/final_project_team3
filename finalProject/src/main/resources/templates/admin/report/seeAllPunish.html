@@ -7,7 +7,7 @@
 <!-- Content -->
 <div layout:fragment="content">
 	<div class="container">
-		<h5><b>신고내역 관리</b></h5>
+		<h5><b>제재 처리내역 관리</b></h5>
 		<br>
 		<div>
 			<select id="searchBy" name="searchBy">
@@ -21,26 +21,20 @@
 			<table class="table">
 				<thead>
 					<tr>
-						<th width="100" align="center">신고접수번호</th>
-						<th width="250" align="center">신고자ID</th>
-						<th width="500" align="center">신고게시글</th>
-						<th width="350" align="center">신고사유</th>
-						<th width="350" align="center">접수일자</th>
-						<th width="350" align="center">처리현황</th>
-						<th width="350" align="center">제재횟수</th>
+						<th width="100" align="center">제재관리번호</th>
+						<th width="250" align="center">처리일자</th>
+						<th width="500" align="center">제재회원ID</th>
+						<th width="350" align="center">제재사유</th>
 					</tr>
 				</thead>
 				<th:block th:if="${!#lists.isEmpty(list)}">
 					<tbody>
 						<th:block th:each="l : ${list}">
-							<tr class="reportInfo">
-								<td align="center" th:text="${l.reportId}"></td>
-								<td align="center" th:text="${l.reporterId}"></td>
-								<td align="center" th:text="${l.postId}"></td>
-								<td align="center" th:text="${l.reportReason}"></td>
-								<td align="center" th:text="${#strings.substring(l.reportDate, 0, 10)}"></td>
-								<td align="center" th:text="${l.result}"></td>
-								<td align="center" th:text="${l.punishCount}"></td>
+							<tr class="punishInfo">
+								<td align="center" th:text="${l.punishId}"></td>
+								<td align="center" th:text="${#strings.substring(l.punishDate,0,10)}"></td>
+								<td align="center" th:text="${l.punishedId}"></td>
+								<td align="center" th:text="${l.punishReason}"></td>
 							</tr>
 						</th:block>
 					</tbody>
@@ -48,7 +42,7 @@
 			</table>
 			<th:block th:if="${#lists.isEmpty(list)}">
 				<div align="center">
-					<span>새로운 신고 접수 내역이 없습니다.</span>
+					<span>제재 처리 내역이 없습니다.</span>
 				</div>
 			</th:block>
 		</div>
@@ -57,24 +51,24 @@
 		<th:block th:if="${#strings.isEmpty(keyword)}">
 			<div style="text-align : center;" class="property-pagination">
 				<th:block th:if="${paging.nowPage != 1}">
-					<a th:href="@{/admin/seeAllReport(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+					<a th:href="@{/admin/seeAllPunish(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
 				</th:block>
 				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{/admin/seeAllReport(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+					<a th:href="@{/admin/seeAllPunish(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 				</th:block>
 				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
 					<th:block th:if="${p eq paging.nowPage}">
 						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
 					</th:block>
 					<th:block th:if="${p ne paging.nowPage}">
-						<a th:href="@{/admin/seeAllReport(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+						<a th:href="@{/admin/seeAllPunish(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
 					</th:block>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-					<a th:href="@{/admin/seeAllReport(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					<a th:href="@{/admin/seeAllPunish(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage}">
-					<a th:href="@{/admin/seeAllReport(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+					<a th:href="@{/admin/seeAllPunish(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
 				</th:block>
 			</div>
 		</th:block>
@@ -110,7 +104,7 @@
 	$(document).ready(function() {
 		// 이벤트 설정
 		$('#searchButton').on('click', search);
-		$('.reportInfo').on('mouseover', colorDarker)
+		$('.punishInfo').on('mouseover', colorDarker)
 						.on('mouseleave', colorReset)
 						.on('click')
 						.on('mouseup', moveToReportDetail)
@@ -121,7 +115,7 @@
 		
 		let value = $('#searchBy').val();
 		let keyword = $('#keyword').val();
-		location.href='/admin/searchAdminMember?searchBy='+value+'&keyword='+keyword;
+		location.href='/admin/searchPunishInfo?searchBy='+value+'&keyword='+keyword;
 		
 	}
 	
@@ -135,17 +129,6 @@
 	function colorReset(event){
 		$(event.currentTarget).css({background: '#ffffff'});
 	}
-	
-	// 클릭시 신고상세내역 조회페이지로 이동(구현중)
-	function moveToReportDetail(event){
-		
-		// 상세보기 할 report의 id값 가져오기
-		let reportId = $(event.currentTarget).find('td:eq(0)').text();
-		
-		// 페이지 전환 실행
-		location.href=`seeReportDetail?reportId=${reportId}`;
-	}
-	
 	
 	// 메시지 프린트
 	
