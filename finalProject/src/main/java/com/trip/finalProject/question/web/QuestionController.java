@@ -26,12 +26,14 @@ public class QuestionController {
 	//전체조회
 	@GetMapping("guideQue")
 	public String quideQue(Model model
+			  , QuestionVO questionVO
 			  ,@RequestParam(value="nowPage", defaultValue="1") Integer nowPage
 			  ,@RequestParam(value="cntPerPage", defaultValue="10") Integer cntPerPage) {
-		String writerMemberId = "10";
-		int total = queService.Count(writerMemberId);
+		String answerMemberId = "101";
+		int total = queService.Count(answerMemberId);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-		List<QuestionVO> guideQue = queService.getQueAll(pagingVO);
+		questionVO.setAnswerMemberId(answerMemberId);
+		List<QuestionVO> guideQue = queService.getQueAll(questionVO, pagingVO);
 		
 		model.addAttribute("guideQue", guideQue);
 		model.addAttribute("paging", pagingVO);
@@ -56,12 +58,20 @@ public class QuestionController {
 	//전체 조회	
 		@GetMapping("common/memberQue")
 		public String memberQue(Model model
+				  ,QuestionVO questionVO
 				  ,@RequestParam(value="nowPage", defaultValue="1") Integer nowPage
 				  ,@RequestParam(value="cntPerPage", defaultValue="10") Integer cntPerPage) {
-			String MemberId = "10";
-			int total = queService.memberCount(MemberId);
+			
+			String memberId = "101";
+			 
+			
+			int total = queService.memberCount(memberId);
 			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-			List<QuestionVO> memberQue = queService.getQueAllMember(pagingVO);
+			questionVO.setMemberId(memberId);
+			
+			System.out.println("test 1: " + questionVO.toString());
+			List<QuestionVO> memberQue = queService.getQueAllMember(questionVO, pagingVO);
+			System.out.println("test 2: " + memberQue);
 			
 			model.addAttribute("guideQue", memberQue);
 			model.addAttribute("paging", pagingVO);
