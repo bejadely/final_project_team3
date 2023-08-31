@@ -63,6 +63,8 @@
 						,payment_id
 						,cid
 						,tid
+						,cancel_amount
+						,cancel_tax_free_amount
 					)
 				    VALUES
 				    (
@@ -83,6 +85,8 @@
 				    	,#{paymentId}
 				    	,#{cid}
 				    	,#{tid}
+				    	,#{cancelAmount}
+				    	,#{cancelTaxfreeAmount}
 				    	
 				    )
 	</insert>
