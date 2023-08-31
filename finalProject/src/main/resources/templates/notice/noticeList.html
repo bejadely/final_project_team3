@@ -235,6 +235,7 @@
 		    margin-top: 30px;
 		    text-align: center;
 		    font-size: 0;
+		    
 		}
 		
 		.bt_wrap a {
@@ -257,9 +258,15 @@
 		    background: #000;
 		    color: #fff;
 		}
+		
+		#board-list .bt_wrap {
+  			text-align: right;
+ 			padding-right: 20%;
+}
 		    	
 	</style>
 </head>
+<script src ="ckeditor5-build-classic/ckeditor.js"></script>
 <body>
 <section class="notice">
   <div class="page-title">
@@ -351,7 +358,7 @@
             
             <div class="bt_wrap">
            <!--  <div th:if="${id == board.memberId || id == 'manager'}"> -->
-            <a href="/noticeWrite" class="on">등록</a>
+            <a href="/noticeWrite" class="on">등록&nbsp;</a>
            </div>
             </div>
    <!--      </div> -->

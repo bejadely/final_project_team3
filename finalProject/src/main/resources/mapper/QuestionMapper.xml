@@ -17,59 +17,47 @@
 	    FROM (
 	        SELECT
 	            question_id,
-	            question_type,
+	            code_val(question_type),
 	            question_content,
 	            question_date,
-	            questionId,
-	            memebr_id,
+	            member_id,
 	            answer_result
 	            answer_id,
-	            answer_content,
+	           	column1 answer_content,
 	            answer_date,
 	            answer_modify_date,
 	            answer_member_id
-	        FROM
-	            question
-	        ORDER BY
-	            q.question_date DESC
-	        where answer_member_id = #{answerMemberId}
+	        FROM  question
+	        where answer_member_id = #{questionVO.answerMemberId}
+	        ORDER BY question_date DESC
 	    ) a
-	) WHERE rn BETWEEN #{start} AND #{end}
+	) WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
  	</select>
  	<!-- 입력 -->
- 	<insert id="insertQue" parameterType="QuestionVO">
- 		<selectKey keyProperty="answerId" resultType="String" order="BEFORE">
-			SELECT 'ANS' || (TO_NUMBER(NVL((SUBSTR(MAX(answer_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
-			FROM question_answer
-			WHERE SUBSTR(answer_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
-		</selectKey>
-		INSERT INTO question
-					(
-					answer_id,
-					answer_content,
-					answer_date
-					)
-				VALUES
-					(
-					#{answerId},
-					#{answerContent},
-					sysdate
-					)
- 	</insert>
+ 	 <update id="insertQue" parameterType="QuestionVO">
+	 	update question
+	 	<set>
+	 		column1 = #{answerContent},
+	 		answer_date = sysdate
+	 	</set>
+		WHERE questionId = #{questionId}
+ 	</update>
+
  	<!-- 수정 -->
  	<update id="updateQue" parameterType="QuestionVO">
-	 	update question_answer
+	 	update question
 	 	<set>
 	 		answer_contexts = #{answerContexts},
 	 		answer_modify_date = sysdate
 	 	</set>
-		where answer_id = #{answerId}
+		WHERE answer_member_id = #{answerMemberId}
  	</update>
  	<!-- 일반사용자 구성 -->
  	<!-- 페이징 -->
  	<select id="getTotalMember" resultType="int">
  	 	SELECT COUNT(*)
  		FROM question
+ 		WHERE member_id = #{memberId}
  	</select>
  	
  	<!-- 전체조회 -->
@@ -83,21 +71,18 @@
 	            question_type,
 	            question_content,
 	            question_date,
-	            questionId,
-	            memebr_id,
+	            member_id,
 	            answer_result
 	            answer_id,
-	            answer_content,
+	           	column1 answer_content,
 	            answer_date,
 	            answer_modify_date,
 	            answer_member_id
-	        FROM
-	            question
-	        ORDER BY
-	            q.question_date DESC
-	        where member_id = #{memberId}
+	        FROM  question
+	        where member_id = #{questionVO.memberId}
+	        ORDER BY question_date DESC
 	    ) a
-	) WHERE rn BETWEEN #{start} AND #{end}
+	) WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
  	</select>
   
   </mapper>

@@ -85,14 +85,14 @@
     <div class="container">
         <div class="text-center">
         <br>
-            <h1>공지사항 등록</h1>
+            <h1>공지사항 수정</h1>
         <br>
         </div>
         <div id="ls" class="text-center">
-            <form id="frm" action="/noticeProc" method="post">
+            <form id="frm" action="/admin/modifyNoticeInfo" th:object="${noticeVO}" method="post">
                	<div class="mb-3" style="float: left; margin-right: 20px;" >
 					<select class="" id="noticeType" name="noticeType"
-						aria-label="Default select example" required >
+						aria-label="Default select example"  >
 						<option value="">공지사항 종류</option>
 						<option value="n1">공지사항</option>
 						<option value="n2">이벤트</option>
@@ -101,7 +101,7 @@
 				
 				<div class="mb-3" style="float: left; margin-right: 20px;" >
 					<select class="" id="release" name="release"
-						aria-label="Default select example"  required>
+						aria-label="Default select example" >
 						<option value="">공개대상</option>
 						<option value="N1">전체</option>
 						<option value="N2">가이드</option>
@@ -110,7 +110,7 @@
 				
 		       	 <div class="mb-3" style="float:left;">
 					<select class="" id="status" name="status"
-						aria-label="Default select example" required >
+						aria-label="Default select example"  >
 						<option value="">글 저장상태</option>
 						<option value="T1">임시저장</option>
 						<option value="T2">저장완료</option>
@@ -121,11 +121,11 @@
 	                    <tr>
 	                        <th style="text-align: left;">작성자</th>
 	                        <td colspan="3">
-								<input type="text" id="boardTitle" name="writerId" size="70" class="form-control" th:value="${session.sessionId}" readonly style="width: 33%;">
+								<input type="text" id="boardTitle" name="writerId" size="70" class="form-control" th:value="*{writerId}" readonly style="width: 33%;">
 	                        </td>
 	                     </tr>
 	                     <tr>
-                            <th style="text-align: left;">작성일자</th>
+                            <th style="text-align: left;">수정일자</th>
                             <td colspan="3">
                                 <input type="date" id="registDate" name="registDate" size="70"  class="form-control" readOnly style="width: 33%;">
                             </td>
@@ -134,17 +134,19 @@
                         <tr>
                             <th style="text-align: left;">제목</th>
                             <td colspan="3" >
-                                <input  type="text" id="boardTitle" name="title" size="70" class="form-control">
+                                <input  type="text" id="boardTitle" name="title" size="70"  th:value="*{title}" class="form-control">
                             </td>
                         </tr>    
                                   
+               
+					
                            
                         <tr>
                             <th style="text-align: left;">내용</th>
                             <!-- <td colspan="3">
                                 <textarea rows="10" cols="=50" id="boardContent" name="content" placeholder="내용을 입력해주세요." required class="form-control"></textarea>
                             </td> -->
-                            <td  > <textarea  id="editor" placeholder="내용을 입력해주세요." ></textarea>
+                            <td  > <textarea  id="editor" th:utext="*{content}"  ></textarea>
                             </td>
                             
                         
@@ -155,7 +157,7 @@
                 <br>
 
                 <div>
-                    <input type="hidden" name="boardS" id="boardS">
+                    <input type="hidden" id="순번" name="noticeNumber" th:value="3">
                 </div>
                 <div>
                     <div align="left">
@@ -163,7 +165,7 @@
                     
                     </div>                
                     <div align="right">
-                    <button type="submit" value="등록" class="btn btn-primary submitButton">등록</button>&nbsp;&nbsp;         
+                    <button type="submit" value="등록" class="btn btn-primary submitButton">수정</button>&nbsp;&nbsp;         
                     <input type="reset" value="취소" class="btn btn-secondary" id="cancelBtn">&nbsp;&nbsp;
                     <input type="button" value="목록" onclick="location.href='noticeList?page=1'" class="btn btn-secondary">
                     </div>
@@ -191,12 +193,12 @@ $(document).ready(function() {
 		$('.submitButton').on('click', go);
 		 // $('#frm').on('submit', loginAccountcheck);
 	/* 	$('.rejectButton').on('click', authReject); */
-});	
+});
 	
 		
 	// 승인 버튼 클릭 시 발생 이벤트
 	function go(e){
-		e.preventDefault();
+		event.preventDefault();
 		
 	
 		Swal.fire({
@@ -219,13 +221,12 @@ $(document).ready(function() {
 				
 		      }else{
 		    	  console.log('Nope')
-		    	  return;
 		      }
 		    });
 		 
 	   	    
-	} 	
-	//ck-editor
+	} 
+
 	
 	
 	ClassicEditor
@@ -310,6 +311,8 @@ $(document).ready(function() {
 			});
 	
 			formObj.append(str);
+			//document.getElementById('frm').action = "/noticeProc";
+			//document.getElementById('frm').submit();
 			
 			
 			
@@ -332,7 +335,7 @@ $(document).ready(function() {
 		});
 		
 		return formObject;
-	} 
+	}
 </script>
 
 
