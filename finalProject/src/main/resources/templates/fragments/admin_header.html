@@ -57,32 +57,44 @@
         </nav>
         <div class="nav-logo-right">
             <ul>
-                <li>
-                    <i class="fa-sharp fa-solid fa-lock"><a href="/"></a></i>
-                    <!--로그아웃<i class="fa-solid fa-lock-open"><a href="/"></a></i>  -->
+                <li onclick="window.location.href='/member/login'">
+                    <i class="fa-sharp fa-solid fa-lock" ></i>
                     <div class="info-text">
-                        <span>login</span>
+                        <span>login & join</span>
                         <p>로그인</p>
                     </div>
                 </li>
-                <li>
-                    <i class="fa-solid fa-user-plus"><a href="/"></a></i>
-                    <!--관리자<i class="fa-solid fa-user-large"><a href="/"></a></i>-->
-                    <!--회원<i class="fa-solid fa-user-large"><a href="/"></a></i>  -->
+     <!--로그아웃<li onclick="window.location.href='/'">
+                             <i class="fa-solid fa-lock-open"></i>
+                             <div class="info-text">
+                       <span>logout</span>
+                       <p>로그아웃</p>
+                   </div>
+                </li>  -->    
+                   
+        <!--관리자<li onclick="window.location.href='/'">
+                    <i class="fa-solid fa-user-large"></i>
                     <div class="info-text">
+                        <span>adminpage</span>
+                        <p>관리자페이지</p>
+                    </div>
+                </li>-->
+         <!--회원<li onclick="window.location.href='/'">
+      				<i class="fa-solid fa-user-large"></i>
+      				<div class="info-text">
                         <span>mypage</span>
                         <p>마이페이지</p>
                     </div>
-                </li>
-                <li>
-                   <i class="fa-solid fa-bell"><a href="/"></a></i>
+                </li>-->
+                <li onclick="window.location.href='/'">
+                   <i class="fa-solid fa-bell" ></i>
                     <div class="info-text">
                         <span>alarm</span>
                         <p>알림</p>
                     </div>
                 </li>
-                <li>
-                   <i class="fa-solid fa-clipboard-check"><a href="/noticeList"></a></i>
+                <li onclick="window.location.href='/noticeList'">
+                   <i class="fa-solid fa-clipboard-check" ></i>
                     <div class="info-text">
                         <span>notice</span>
                         <p>공지사항</p>
@@ -150,7 +162,7 @@
                                 <li onclick="window.location.href='/member/login'">
                                     <i class="fa-sharp fa-solid fa-lock"></i>
                                     <div class="info-text">
-				                        <span>login</span>
+				                        <span>login & join</span>
 				                        <p>로그인</p>
 				                    </div>
                                 </li>
@@ -161,13 +173,6 @@
 			                        <p>로그아웃</p>
 			                    </div>
                                 </li>  -->
-                                <li onclick="window.location.href='/member/memberInsert'">
-                                    <i class="fa-solid fa-user-plus"></i>
-                                    <div class="info-text">
-				                        <span>join</span>
-				                        <p>회원가입</p>
-				                    </div>
-                                </li>
              	        <!--관리자<li onclick="window.location.href='/'">
                                  <i class="fa-solid fa-user-large"></i>
                                  <div class="info-text">
