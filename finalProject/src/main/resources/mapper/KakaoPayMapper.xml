@@ -63,6 +63,7 @@
 						,payment_id
 						,cid
 						,tid
+						,specialty_type
 					)
 				    VALUES
 				    (
@@ -83,6 +84,7 @@
 				    	,#{paymentId}
 				    	,#{cid}
 				    	,#{tid}
+				    	,#{specialtyType}
 				    	
 				    )
 	</insert>
