@@ -21,6 +21,7 @@
 						,deadline_date
 						,max_reservation
 						,tour_theme
+						,reg_date
 					)
 				values
 					(
@@ -33,6 +34,7 @@
 						,#{deadlineDate}
 						,#{maxReservation}
 						,#{tourTheme}
+						,sysdate
 					)
 	</insert>
 	 

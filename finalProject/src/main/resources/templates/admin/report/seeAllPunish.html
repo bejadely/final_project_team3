@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/admin_layout}">
+	
+<!-- Content -->
+<div layout:fragment="content">
+	<div class="container">
+		<h5><b>제재 처리내역 관리</b></h5>
+		<br>
+		<div>
+			<select id="searchBy" name="searchBy">
+				<option value="name">이름으로 검색</option>
+				<option value="id">아이디로 검색</option>
+			</select>
+			<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
+			<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+		</div>
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th width="100" align="center">제재관리번호</th>
+						<th width="250" align="center">처리일자</th>
+						<th width="500" align="center">제재회원ID</th>
+						<th width="350" align="center">제재사유</th>
+					</tr>
+				</thead>
+				<th:block th:if="${!#lists.isEmpty(list)}">
+					<tbody>
+						<th:block th:each="l : ${list}">
+							<tr class="punishInfo">
+								<td align="center" th:text="${l.punishId}"></td>
+								<td align="center" th:text="${#strings.substring(l.punishDate,0,10)}"></td>
+								<td align="center" th:text="${l.punishedId}"></td>
+								<td align="center" th:text="${l.punishReason}"></td>
+							</tr>
+						</th:block>
+					</tbody>
+				</th:block>
+			</table>
+			<th:block th:if="${#lists.isEmpty(list)}">
+				<div align="center">
+					<span>제재 처리 내역이 없습니다.</span>
+				</div>
+			</th:block>
+		</div>
+		<!-- 페이징 구문 -->
+		<!-- 검색키워드가 없을때 -->
+		<th:block th:if="${#strings.isEmpty(keyword)}">
+			<div style="text-align : center;" class="property-pagination">
+				<th:block th:if="${paging.nowPage != 1}">
+					<a th:href="@{/admin/seeAllPunish(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+				</th:block>
+				<th:block th:if="${paging.startPage != 1}">
+					<a th:href="@{/admin/seeAllPunish(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+				</th:block>
+				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+					<th:block th:if="${p eq paging.nowPage}">
+						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+					</th:block>
+					<th:block th:if="${p ne paging.nowPage}">
+						<a th:href="@{/admin/seeAllPunish(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+					</th:block>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+					<a th:href="@{/admin/seeAllPunish(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage}">
+					<a th:href="@{/admin/seeAllPunish(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+				</th:block>
+			</div>
+		</th:block>
+		<!-- 검색키워드가 있을때 -->
+		<th:block th:if="${!#strings.isEmpty(keyword)}">
+			<div style="text-align : center;">
+				<th:block th:if="${paging.nowPage != 1}" class="property-pagination">
+					<a th:href="@{searchAdminMember(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
+				</th:block>
+				<th:block th:if="${paging.startPage != 1}">
+					<a th:href="@{searchAdminMember(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;</a>
+				</th:block>
+				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+					<th:block th:if="${p eq paging.nowPage}">
+						<a th:text="${p}"></a>
+					</th:block>
+					<th:block th:if="${p ne paging.nowPage}">
+						<a th:href="@{searchAdminMember(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
+					</th:block>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+					<a th:href="@{searchAdminMember(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage}">
+					<a th:href="@{searchAdminMember(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
+				</th:block>
+			</div>
+		</th:block>
+	</div>
+	
+	<script th:inline="javascript" type="text/javascript">
+	
+	$(document).ready(function() {
+		// 이벤트 설정
+		$('#searchButton').on('click', search);
+		$('.punishInfo').on('mouseover', colorDarker)
+						.on('mouseleave', colorReset)
+						.on('click')
+						.on('mouseup', moveToReportDetail)
+	});
+	
+	// 조건검색기능
+	function search(event){
+		
+		let value = $('#searchBy').val();
+		let keyword = $('#keyword').val();
+		location.href='/admin/searchPunishInfo?searchBy='+value+'&keyword='+keyword;
+		
+	}
+	
+	// 마우스 오버 : 색상 어둡게
+	function colorDarker(event){
+		$(event.currentTarget).css({background: '#f2f4f5'})
+							  .css({cursor: 'pointer'});		
+	}
+	
+	// 마우스릴리브 : 색상 원상복귀
+	function colorReset(event){
+		$(event.currentTarget).css({background: '#ffffff'});
+	}
+	
+	// 메시지 프린트
+	
+	printMessage([[${message}]]);
+		
+	function printMessage(message){
+		
+		if(message != null && message != ""){
+			
+			Swal.fire({
+				  icon: 'success',
+			      title: message,
+			    })	
+		
+		}
+		
+	}
+	
+	</script>
+</div>
+
+</html>

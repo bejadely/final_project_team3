@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/default_layout}">
+<head>
+<meta charset="UTF-8">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+<title>문의사항</title>
+<style type="text/css">
+table, th,td {
+	border: 1px solid black;
+	text-align: center;
+	margin: 0 auto;
+}
+.hidden{
+	border: none;
+	text-align: center;
+	margin: 0 auto;
+}
+
+}
+</style>
+<script>
+
+//환불 버튼 클릭 이벤트 처리
+$(document).ready(function(){
+	$("button").click(function(){
+		let tid =  $(".tid").val();
+		let cancelAmount = $(".cancelAmount").val();
+		let cancelTaxFreeAmount = $(".cancelTaxFreeAmount").val();
+		
+		console.log(tid);
+		console.log(cancelAmount);
+		console.log(cancelTaxFreeAmount);
+		
+		$.ajax({
+			type:'post',
+			url:'/payment/refund',
+			data:{
+				tid: tid,
+				cancelAmount : cancelAmount,
+				cancelTaxFreeAmount : cancelTaxFreeAmount 
+			}
+		}).done(data=>{
+			console.log(data);
+		}).fail(reject => console.log(reject));
+	});
+	
+});
+</script>
+</head>
+<body>
+
+	<th:block layout:fragment="css"></th:block>
+	<th:block layout:fragment="script"></th:block>
+	<div layout:fragment="content" style="text-align: center;">
+	<form>
+		<h5>주문 상세내역</h5>
+		<input type="text" th:value="${list.cid}">	
+		<input type="text" class="tid" th:value="${list.tid}">	
+		<input type="text" class="cancelAmount" th:value="${list.cancelAmount}">	
+		<input type="text" class="cancelTaxFreeAmount" th:value="${list.cancelTaxFreeAmount}"> 
+		<table>
+			<thead>
+				<tr>
+					<th colspan="2">상품명</th>
+					<th>옵션</th>
+					<th>상품금액</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:onclick="|location.href='@{/packageInfo(postId=${list.postId})}'|">
+					<td>
+						<img alt="대표사진" src="${list.loadingImg}">
+					</td>
+					<td th:text="${list.title}"></td>
+					<td th:text="${list.quantity}"></td>
+					<td th:text="${list.spPrice}"></td>
+				</tr>
+				<tr>
+					<td colspan="3"> 총 금액 </td>
+					<td th:text="${list.puPrice}"></td>
+				<tr>
+			</tbody>
+		</table>
+		<h5>결제정보</h5>
+		<ul>
+			<li>
+				<label>결제 금액</label>
+				<input type="text" th:value="${list.puPrice}" readonly="readonly">
+			</li>
+			<li>
+				<label>결제 상태</label>
+				<input type="text" th:value="${list.orderStatus}" readonly="readonly">
+			</li>
+		</ul>
+		<button type="button" id="refundBtn">환불</button>
+
+	</form>
+	</div>
+
+</body>
+</html>

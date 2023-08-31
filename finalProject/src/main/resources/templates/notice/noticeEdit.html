@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="@{layouts/default_layout}"
+      	layout:fragment="content"> 
+
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+</th:block>
+<!-- index.html 고유 스크립트 추가 -->
+<th:block layout:fragment="script">
+</th:block>
+<!-- Content -->
+
+
+
+
+
+
+
+
+   <style>
+        body {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0069d9;
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            color: #ffffff;
+        }
+        
+        .ck.ck-editor {
+		width: 100%;
+		max-width: 1500px;
+		margin: 0 auto;
+		}
+		
+		.ck-editor__editable {
+			height: 50vh;
+		}
+    </style>
+</head>
+<script type="text/javascript">
+	
+</script>
+<script src ="ckeditor5-build-classic/ckeditor.js"></script>
+<body>
+    <div class="container">
+        <div class="text-center">
+        <br>
+            <h1>공지사항 수정</h1>
+        <br>
+        </div>
+        <div id="ls" class="text-center">
+            <form id="frm" action="/admin/modifyNoticeInfo" th:object="${noticeVO}" method="post">
+               	<div class="mb-3" style="float: left; margin-right: 20px;" >
+					<select class="" id="noticeType" name="noticeType"
+						aria-label="Default select example"  >
+						<option value="">공지사항 종류</option>
+						<option value="n1">공지사항</option>
+						<option value="n2">이벤트</option>
+					</select> 
+				</div>  
+				
+				<div class="mb-3" style="float: left; margin-right: 20px;" >
+					<select class="" id="release" name="release"
+						aria-label="Default select example" >
+						<option value="">공개대상</option>
+						<option value="N1">전체</option>
+						<option value="N2">가이드</option>
+					</select> 
+				</div>  
+				
+		       	 <div class="mb-3" style="float:left;">
+					<select class="" id="status" name="status"
+						aria-label="Default select example"  >
+						<option value="">글 저장상태</option>
+						<option value="T1">임시저장</option>
+						<option value="T2">저장완료</option>
+					</select> 
+				</div>  
+                <div>
+                    <table class="table">
+	                    <tr>
+	                        <th style="text-align: left;">작성자</th>
+	                        <td colspan="3">
+								<input type="text" id="boardTitle" name="writerId" size="70" class="form-control" th:value="*{writerId}" readonly style="width: 33%;">
+	                        </td>
+	                     </tr>
+	                     <tr>
+                            <th style="text-align: left;">수정일자</th>
+                            <td colspan="3">
+                                <input type="date" id="registDate" name="registDate" size="70"  class="form-control" readOnly style="width: 33%;">
+                            </td>
+                        </tr>
+                              
+                        <tr>
+                            <th style="text-align: left;">제목</th>
+                            <td colspan="3" >
+                                <input  type="text" id="boardTitle" name="title" size="70"  th:value="*{title}" class="form-control">
+                            </td>
+                        </tr>    
+                                  
+               
+					
+                           
+                        <tr>
+                            <th style="text-align: left;">내용</th>
+                            <!-- <td colspan="3">
+                                <textarea rows="10" cols="=50" id="boardContent" name="content" placeholder="내용을 입력해주세요." required class="form-control"></textarea>
+                            </td> -->
+                            <td  > <textarea  id="editor" th:utext="*{content}"  ></textarea>
+                            </td>
+                            
+                        
+				
+                        </tr>
+                    </table>
+                </div>
+                <br>
+
+                <div>
+                    <input type="hidden" id="순번" name="noticeNumber" th:value="3">
+                </div>
+                <div>
+                    <div align="left">
+                    <input type='checkbox' name="boardSecret" id="boardSecret" onclick="settingSecret()" value="N" class="form-check-input">
+                    
+                    </div>                
+                    <div align="right">
+                    <button type="submit" value="등록" class="btn btn-primary submitButton">수정</button>&nbsp;&nbsp;         
+                    <input type="reset" value="취소" class="btn btn-secondary" id="cancelBtn">&nbsp;&nbsp;
+                    <input type="button" value="목록" onclick="location.href='noticeList?page=1'" class="btn btn-secondary">
+                    </div>
+                    <br><br>
+                </div>
+            </form>
+        </div>
+    </div>
+	<script>
+        document.getElementById('registDate').value = new Date().toISOString().substring(0, 10);
+   	</script>
+</body>
+
+
+
+
+
+
+
+<script>
+ 
+
+$(document).ready(function() {
+		// 승인 버튼 클릭 시 발생 이벤트 설정
+		$('.submitButton').on('click', go);
+		 // $('#frm').on('submit', loginAccountcheck);
+	/* 	$('.rejectButton').on('click', authReject); */
+});
+	
+		
+	// 승인 버튼 클릭 시 발생 이벤트
+	function go(e){
+		event.preventDefault();
+		
+	
+		Swal.fire({
+			
+		      title: '저장하시겠습니까',
+		      icon: 'question',
+		      showCancelButton: true,
+		      confirmButtonColor: '#3085d6',
+		      cancelButtonColor: '#d33',
+		      confirmButtonText: '저장',
+		      cancelButtonText: '취소',
+		    
+	    }).then((result) => {
+	    	
+		      if (result.isConfirmed) {
+		          
+		    	  //post방식으로 페이지 전환
+				  console.log('hi');
+				  document.getElementById('frm').submit();
+				
+		      }else{
+		    	  console.log('Nope')
+		      }
+		    });
+		 
+	   	    
+	} 
+
+	
+	
+	ClassicEditor
+	.create(document.querySelector('#editor'), {
+		 htmlEncodeOutput: false, 
+		ckfinder: {
+			uploadUrl : 'upload'	
+		}
+	
+		
+	})
+	.then(editor => {
+		console.log('Editor was initialized');
+		
+		document.getElementById("cancelBtn").addEventListener("click",function(){
+			const data = editor.getData();
+			//Data 변수에 저장된 데이터를 파싱하여 이미지 태크를 찾음
+			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
+			
+			const filenames = imgTags.map(img=> {
+				const src = img.getAttribute('src');
+				
+				return src.substring(src.lastIndexOf('/')+1);
+			});
+			console.log(filenames);
+			fetch(`/deleteImg`,{
+				method: 'POST',
+				headers:{
+					'Content-Type':'application/json'
+				},
+				body: JSON.stringify({ filenames })
+			})
+			.then(response => response.text())
+			.then(message => {
+				console.log(message);
+				editor.setData('');
+			})
+			
+		})
+		
+		
+		var formObj = $("#frm");
+		
+		//document.getElementById("editorForm").addEventListener("submit",function(event){
+		$("button[type='submit']").on("click",function(event){
+				
+			event.preventDefault();
+	
+			const data = editor.getData();
+			
+			let objData = serializeObject();
+			
+			
+			//작성 내용
+			console.log(data);
+			
+			//서버로 넘어가는 데이터 값들
+			const {  writerId, registDate, title} = objData;
+			var combinedData={
+				content: data,
+				writerId: writerId,
+				registDate: registDate,
+				title: title
+			};
+			console.log(combinedData);
+	
+			
+			var str="";
+			
+			str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";
+			
+			
+			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
+			
+			const filenames = imgTags.map(img=> {
+				const src = img.getAttribute('src');
+				
+				return src;
+			});		
+			$.each(filenames,function(i,obj){
+				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
+			});
+	
+			formObj.append(str);
+			//document.getElementById('frm').action = "/noticeProc";
+			//document.getElementById('frm').submit();
+			
+			
+			
+			
+		})
+		//////////////////////////////////////////////////////////////////////
+	})
+	.catch(error => {
+		console.error(error);
+	});
+		
+	function serializeObject(){
+		let formData = $('form').serializeArray();
+		let formObject={};
+		$.each(formData, function(idx,obj){
+			//let field = obj.name;
+			//let val= obj.value;
+			formObject[obj.name] = obj.value;
+			//formObject[field] = val;
+		});
+		
+		return formObject;
+	}
+</script>
+
+
+
+
+</html>

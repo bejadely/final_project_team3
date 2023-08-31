@@ -143,7 +143,7 @@
 							, sysdate
 							, #{reportReason}
 							, #{content}
-							, 'P2'
+							, 'P1'
 						)
 	</insert>
 
@@ -174,9 +174,31 @@
 						)
 	</insert>
 	
-	<!-- 여행 메이트 신청시 -->
+	<!-- 여행 메이트 신청시 게시글 작성자에게 알림-->
 	<insert id="sendAlert" parameterType="TripMateVO">
-		
+		<selectKey keyProperty="alertId" resultType="String" order="BEFORE">
+			SELECT 'ALT' || (TO_NUMBER(NVL((SUBSTR(MAX(alert_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM alert
+			WHERE SUBSTR(alert_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+		INSERT INTO alert
+					(
+						alert_id
+						, alert_date
+						, content
+						, confirmation
+						, member_id
+						, post_id	
+					)
+				VALUES
+				    (
+				    	#{alertId}
+				    	, sysdate
+				    	, '등록한 메이트 모집글에 새로운 요청이 있습니다.'
+				    	, 'W2'
+				    	, #{memberId}
+				    	, #{postId}
+				    )
 	</insert>
 	
 	<!-- 여행 메이트 신청시 게시글의 신청자 수 update -->
