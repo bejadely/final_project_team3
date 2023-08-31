@@ -101,6 +101,27 @@ table {
     .report-form input[type="submit"]:hover {
         background-color: #222;
     }
+    
+    
+  ///////////////////////////////////////////////////////////////  
+    #comment_table  {
+    	width: 100%;
+    	border-top: 1px solid rgba(50, 50, 50, 0.2);
+    	border-collapse: collapse;
+  	}
+  
+	#comment_table th, td {
+		background-color: white;
+    	border-bottom: 1px solid rgba(50, 50, 50, 0.2);
+    	padding: 10px;
+    	margin: 10px;
+  	}
+
+	#comment_table td a {
+		text-decoration: none;
+  	}
+  
+  ////////////////////////////////////////////////////////////////
 </style>
 </head>
 <body>
@@ -160,65 +181,89 @@ table {
 	<!-- 댓글 기능 -->
 	<div align="center">
 		<form id="form" method="post">
-			<table id="comment" style="font-size:0.9em; text-align: center;width: 1070px; margin: 0 auto; height : 60px; background-color: white;">
+			<table id="comment_table" style="font-size:0.9em; text-align: center;width: 1070px; margin: 0 auto; height : 60px; background-color: white;">
 				<tr>
 					<td>
-					<input type="hidden" id="postId" value="${tripMateInfo.postId}">
-					<input type="hidden" name="writerId" th:value="${session.sessionId}">
+					<input type="hidden" id="postId" th:value="${tripMateInfo.postId}">
 					<input type="hidden" id="writerId" th:value="${session.sessionId}">
 					</td>
 					<td colspan="3"><textarea rows="3" cols="50" id="cmtContent"></textarea></td>
-					<td><input type="button" value="댓글달기" onclick="comment_save();"></td>
+					<td><input type="button" id="cmtSave" value="댓글작성"></td>
+					<td><input type="button" id="callCmt" value="댓글보기"></td>
 				</tr>
 			</table>
 		</form>
 	</div>
 	
-	
-	
-	
-	
 	<script th:inline="javascript">
-	// 댓글 저장
-	function comment_save() {
-		//댓글 저장 버튼 클릭 시 세션 아이디가 없으면 로그인 페이지로 이동
+	function selectCommentList(){
+		console.log("댓글리스트 출력");
+		$.ajax({
+			url: '/commentList',
+            type: 'get',
+            data: { "postId" : [[{tripMateInfo.postId}]]},
+            dataType : 'JSON',
+        }).done(data => {
+        	console.log("댓글리스트 ajax 정상 동작");
+
+        	//paging(data.paging);
+            //displayData(data.cartList);
+        }).fail(reject => console.log(reject));
+		})
+		
+	}
+	
+	
+	$("#cmtSave").click(function() {
+		
+		
+		
+	})
+	
+	
+	
+	$("#cmtSave").click(function() {
+		//session에 아이디 값이 없으면 로그인 페이지 호출
 		if ('${session.sessionId}' == "") {
 			alert("로그인이 필요합니다.")
-			//location.href="로그인 페이지로 이동"
-		}else {
-			var writer = $("#writerId").val();
+			location.href="/member/login"
+		}else{
+			var writer = [[${session.sessionId}]];
 			var content = $("#cmtContent").val();
 			var postId = $("#postId").val();
-			//var step = $("#step").val();
-			var form = {
-				writer : writerId,
-				content : cmtContent,
-				postId : postId,
-				//step : step,
-			}
-			//댓글 내용이 없는 경우 알림
+			var step = 0;
+			
+			var obj = {
+					writerId : writer,
+					cmtContent : content,
+					postId : postId,
+					step : step,
+				}
+			//댓글 내용이 미 작성시 알림호출 후 포커스 이동 
 			if(content=="") {
 				alert("댓글 내용을 입력하세요.")
 				$("#cmtContent").focus()
 			}else{
+				
+				//댓글 내용이 존재하면 ajax를 통해 저장 기능 실행
 				$.ajax({
-					url : "/InsertComment",
-					type : "POST",
-					data : form,
-					success : 
-						//showComment(list);
-						console.log("성공")
-						console.log("postId")
-					,
-					error : function(request, status, error) {
-						console.log("실패");
-						//alert("code:" + request.status + "\n" + "message:"
-								//+ request.responseText + "\n" + "error:" + error);
-					}
-				});
+		            url: '/insertComment',
+		            type: 'post',
+		            data: obj
+		            
+		        }).done(data => {
+		        	alert("댓글이 등록 되었습니다.")
+		        	$("#cmtContent").val("");  
+
+		        	//paging(data.paging);
+		            //displayData(data.cartList);
+		        }).fail(reject => console.log(reject));
 			}
+			
 		}
-	}
+		
+	})
+
 	
 	
 	</script>
