@@ -15,10 +15,10 @@ public class SpecialtiesVO {
 	private String discount;
 	private int areaCode;
 	private int sigunguCode;
-	
+	private String loadingImg;
 	private String specialtyType;
 	private int price;
-	private List<SepcialtiesOptionVO> optionList;
+	private List<SpecialtiesOptionVO> optionList;
 	
 	
 	private List<AttachedFileVO> attachList;
