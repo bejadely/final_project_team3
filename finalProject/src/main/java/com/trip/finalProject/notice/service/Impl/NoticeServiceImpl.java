@@ -44,11 +44,6 @@ public class NoticeServiceImpl implements NoticeService {
 		return noticeMapper.getNoticeDetail(vo);
 	}
 	
-	/*
-	 * @Override public NoticeVO modifyNoticeInfo(NoticeVO vo) { return
-	 * noticeMapper.modifyNoticeInfo(vo); }
-	 */
-
 	//게시글 등록
 	@Override
 	public int noticeInsert(NoticeVO vo) {

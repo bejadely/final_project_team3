@@ -12,7 +12,7 @@
 				SELECT *
 			  	FROM (SELECT ROWNUM rn, a.*
 			        	FROM(SELECT notice_Number,title,writer_Id,regist_Date,hit 
-							FROM notice  order by notice_number) a )
+							FROM notice  order by regist_Date desc) a )
 			  WHERE rn BETWEEN #{start} AND #{end}
 			  				
 		
@@ -37,25 +37,33 @@
 	
 <!-- 특정 게시글의 상세 정보를 조회하는 쿼리 글의 id를 사용해서 해당 게시글을 가져옴 -->	
 	<select id="getNoticeDetail" resultType="NoticeVO">
-		SELECT *
+		SELECT notice_number,
+				title,
+				content,
+				regist_date,
+				update_date, 
+       			code_val(status) status,
+       			code_val(release) release, 
+       			code_val(notice_type) notice_type, 
+       			writer_id, 
+       			hit
 		FROM notice
 		WHERE notice_number = #{noticeNumber}
-		
+	
 <!-- 		code_val(authority) authority -->
 	</select>
 	
 <!-- 게시글 수정 -->	
 	<update id="modifyNoticeInfo" parameterType="NoticeVO">
-	
   			UPDATE notice
   			<set> 				
 				title = #{title},					
 				content = #{content},							
-				update_date= sysdate
+				update_date = sysdate,
 			</set>
   			WHERE notice_number = #{noticeNumber}
-  		</update>
-  		
+  	</update>
+  	
   		
   		
   		

@@ -121,21 +121,22 @@ table {
 	<div id="ls2" align="center">
 	
 		<form id="frm" action="/noticeEdit" th:object="${noticeVO}" method="post">
-		   	<div class="mb-3" style="float: left; margin-left: 10%; margin-right:20px" >
-					<select class="" id="noticeType" name="noticeType"
+		   
+		   	<div  id="noticeType"  class="mb-3" style="float: left; margin-left: 10%; margin-right:20px" >
+					<select class=""name="noticeType"
 						aria-label="Default select example"  >
 						<option value="">공지사항 종류</option>
-						<option value="n1">공지사항</option>
-						<option value="n2">이벤트</option>
+						<option value="공지사항">공지사항</option>
+						<option value="이벤트">이벤트</option>
 					</select> 
 				</div>  
 				
-				<div class="mb-3" style="float: left; margin-right: 20px;" >
-					<select class="" id="release" name="release"
+				<div id="release" class="mb-3" style="float: left; margin-right: 20px;" >
+					<select class=""  name="release"
 						aria-label="Default select example" >
 						<option value="">공개대상</option>
-						<option value="N1">전체</option>
-						<option value="N2">가이드</option>
+						<option value="전체">전체</option>
+						<option value="가이드">가이드</option>
 					</select> 
 				</div>  
 				
@@ -143,16 +144,16 @@ table {
 					<select class="" name="status"
 						aria-label="Default select example"  >
 						<option value="">글 저장상태</option>
-						<option value="T1">임시저장</option>
-						<option value="T2">저장완료</option>
+						<option value="임시저장">임시저장</option>
+						<option value="저장완료">저장완료</option>
 					</select> 
 				</div> 
 	 		<table border="1" style="width: 80%;" >
 				<tr>
 					
-					<th width="70">순번</th>
+					<!-- <th width="70">순번</th>
 					<td width="50" align="center" th:text="*{noticeNumber}" >
-					</td>		
+					</td> -->	
 					<th width="100">작성자</th>
 					<td width="150" align="center" th:text="*{writerId}"></td>
 					<th width="100">작성일자</th>
@@ -161,12 +162,13 @@ table {
 					<td width="70" align="center" th:text="*{hit}"></td>
 				</tr>
 				<tr>
-					<th colspan="2">제목</th>
-					<td colspan="6"><textarea rows="1" th:text="*{title}" th:value="*{title}" name="title"  id="title" readonly ></textarea>
+					<th width="100">제목</th>
+					<td colspan="6">
+					<div  th:text="*{title}" th:value="*{title}"   id="title"  ></div>
 					</td>
 				</tr>
 				<tr>
-					<th colspan="2">내용</th>
+					<th width="100">내용</th>
 					<td colspan="6">
 					 <div th:utext="*{content}" class="contentStyle" ></div> 
 					<!-- <th:textarea rows="10" cols="97" th:utext="*{content}"  id="content" name="content" readonly ></th:textarea> -->
@@ -193,6 +195,10 @@ table {
      </div>
         <br>
 <!--  onclick="callFunction('E') -->
+
+
+
+</body>
  <script th:inline="javascript">
  function callFunction(str){
 	
@@ -208,15 +214,22 @@ document.getElementById("frm").submit();
 	}
  }	    
  
-	$(document).ready(function() {
-		//저장상태
-		setStatus();
-		//공개대상
-		//setRelease();
-		//공지종류
-		//setNoticeType();
-	});
-	
+ 
+ 
+ 
+
+ $(document).ready(function() {
+ 	//저장상태
+ 	setStatus();
+ 	//공개대상
+ 	setRelease();
+ 	//공지종류
+ 	setNoticeType();
+ });
+
+
+
+//저장상태 한글로 표시	
 function setStatus(){
 		
 		// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
@@ -231,6 +244,37 @@ function setStatus(){
 		// 불러온 저장상태 값에 해당하는 option을 selected 및 focus 처리
 		$('.option[data-value="'+defaultStatus+'"]').attr("class", "option selected focus");
 	}
+//공개대상 한글로 표시	
+function setRelease(){
+	
+	// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
+	let defaultRelease = [[${noticeVO.release}]];
+	
+	// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
+	$('#release').find('span').text(defaultRelease);
+	
+	// selected 처리되어있던 option을 일반 옵션으로 변경
+	$('#release').find('.option.selected').attr("class", "option");
+	
+	// 불러온 저장상태 값에 해당하는 option을 selected 및 focus 처리
+	$('.option[data-value="'+defaultRelease+'"]').attr("class", "option selected focus");
+}
+
+//공지종류 한글로 표시	
+function setNoticeType(){
+		
+		// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
+		let defaultNoticeType = [[${noticeVO.noticeType}]];
+		
+		// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
+		$('#noticeType').find('span').text(defaultNoticeType);
+		
+		// selected 처리되어있던 option을 일반 옵션으로 변경
+		$('#noticeType').find('.option.selected').attr("class", "option");
+		
+		// 불러온 저장상태 값에 해당하는 option을 selected 및 focus 처리
+		$('.option[data-value="'+defaultNoticeType+'"]').attr("class", "option selected focus");
+	}
 
 	    	
        	
@@ -241,5 +285,4 @@ function setStatus(){
 		
 
 
-</body>
 </html>
