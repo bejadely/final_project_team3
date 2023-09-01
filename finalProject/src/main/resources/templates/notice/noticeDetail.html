@@ -126,8 +126,8 @@ table {
 					<select class=""name="noticeType"
 						aria-label="Default select example"  >
 						<option value="">공지사항 종류</option>
-						<option value="공지사항">공지사항</option>
-						<option value="이벤트">이벤트</option>
+						<option value="n1">공지사항</option>
+						<option value="n2">이벤트</option>
 					</select> 
 				</div>  
 				
@@ -135,8 +135,8 @@ table {
 					<select class=""  name="release"
 						aria-label="Default select example" >
 						<option value="">공개대상</option>
-						<option value="전체">전체</option>
-						<option value="가이드">가이드</option>
+						<option value="N1">전체공개</option>
+						<option value="N2">가이드공개</option>
 					</select> 
 				</div>  
 				
@@ -144,8 +144,8 @@ table {
 					<select class="" name="status"
 						aria-label="Default select example"  >
 						<option value="">글 저장상태</option>
-						<option value="임시저장">임시저장</option>
-						<option value="저장완료">저장완료</option>
+						<option value="T1">임시저장</option>
+						<option value="T2">저장완료</option>
 					</select> 
 				</div> 
 	 		<table border="1" style="width: 80%;" >
@@ -244,11 +244,13 @@ function setStatus(){
 		// 불러온 저장상태 값에 해당하는 option을 selected 및 focus 처리
 		$('.option[data-value="'+defaultStatus+'"]').attr("class", "option selected focus");
 	}
+
 //공개대상 한글로 표시	
 function setRelease(){
 	
 	// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
 	let defaultRelease = [[${noticeVO.release}]];
+	console.log([[${noticeVO.release}]]);
 	
 	// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
 	$('#release').find('span').text(defaultRelease);
@@ -265,7 +267,7 @@ function setNoticeType(){
 		
 		// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
 		let defaultNoticeType = [[${noticeVO.noticeType}]];
-		
+		//console.log([[${noticeVO.noticeType}]]);
 		// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
 		$('#noticeType').find('span').text(defaultNoticeType);
 		
