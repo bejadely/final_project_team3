@@ -92,7 +92,8 @@
 		SELECT writer_id,
 			   trip_title,
 			   start_day,
-			   end_day
+			   end_day,
+			   regist_day
 		FROM trip_record
 		WHERE post_id = #{postId}
 	</select>
@@ -199,7 +200,7 @@
 							#{memoId}
 							, #{memoNo}
 							, #{content}
-							, #{memoDate}
+							, sysdate
 							, #{postId}
 							, #{tripDate}
 				        )
