@@ -7,11 +7,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.trip.finalProject.attachedFile.service.AttachedFileService;
 import com.trip.finalProject.attachedFile.service.AttachedFileVO;
+import com.trip.finalProject.common.PagingVO;
+import com.trip.finalProject.like.service.LikeVO;
 import com.trip.finalProject.tripMate.service.TripMateService;
 import com.trip.finalProject.tripMate.service.TripMateVO;
 
@@ -126,4 +129,21 @@ public class TripMateController {
 			return "redirect:/tripMateList";			
 	}
 	
+	//마이페이지----------------------------------------------------------------------
+	//내가 적성한 메이트
+	@GetMapping("/common/myPageTrip")
+	public String tripMateList(Model model,
+			TripMateVO trVO,
+			@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
+			@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
+		String memberId = "1";
+		int total = tripMateService.myTripCount(memberId);
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		List<TripMateVO> myTipPageList = tripMateService.myMateList(trVO, pagingVO);
+
+		model.addAttribute("list", myTipPageList);
+		model.addAttribute("paging", pagingVO);
+
+		return "myPage/trip/myTripMate";
+	}
 }

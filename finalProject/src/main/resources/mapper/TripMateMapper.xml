@@ -195,4 +195,27 @@
 		WHERE post_id = #{postId}
 	</select>
 	
+	<!-- 마이페이지 -->
+	<!-- 내가 저장한 트립베이트 -->
+	<select id="myMateList" resultType="TripMateVO">
+		SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			 FROM(SELECT m.post_id,
+			 			 m.mate_title,
+			 			 m.start_day,
+			 		 	 m.end_day,
+			 			 m.mate_max,
+			 			 m.apply_num,
+			 			 code_val(m.complitoin) complition,
+			 			 m.write_date,
+			 			 m.deadline,
+			 			 m.hit,
+			 			 m.writer,
+			 			 m.trip_area		 
+				FROM matm.e_recruit m LEFT OUTER JOIN 
+     				 attached_file a ON m.post_id = a.post_id
+     				 WHERE a.member_id IS NOT NULL OR a.file_id IS NULL AND memberId = #{trVO.memberId}
+					 ORDER BY m.post_id DESC) a)
+		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
+	</select>
 </mapper>

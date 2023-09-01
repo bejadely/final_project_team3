@@ -21,8 +21,7 @@
 	            question_content,
 	            question_date,
 	            member_id,
-	            answer_result
-	            answer_id,
+	            answer_result,
 	           	column1 answer_content,
 	            answer_date,
 	            answer_modify_date,
@@ -72,8 +71,7 @@
 	            question_content,
 	            question_date,
 	            member_id,
-	            answer_result
-	            answer_id,
+	            answer_result,
 	           	column1 answer_content,
 	            answer_date,
 	            answer_modify_date,
