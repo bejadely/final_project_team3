@@ -37,7 +37,8 @@
 	 	update question
 	 	<set>
 	 		column1 = #{answerContent},
-	 		answer_date = sysdate
+	 		answer_date = sysdate,
+	 		
 	 	</set>
 		WHERE questionId = #{questionId}
  	</update>
@@ -59,6 +60,7 @@
  		WHERE member_id = #{memberId}
  	</select>
  	
+ 	<!-- 일반유저 -->
  	<!-- 전체조회 -->
  	<select id="selectAllQueMember" resultType="QuestionVO">
 	SELECT *

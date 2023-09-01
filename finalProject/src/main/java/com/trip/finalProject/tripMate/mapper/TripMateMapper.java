@@ -48,5 +48,14 @@ public interface TripMateMapper {
 	
 	//전체 메이트 불러오기
 	public List<TripMateVO> myMateList(TripMateVO trVO, PagingVO pagingVO);
+	
+	//내가 참여한 메이트 페이징용
+	public int myTripAppCount(String memberId);
+	
+	//전체 참여한 불러오기
+	public List<TripMateVO> myMateAppList(TripMateVO trVO, PagingVO pagingVO);
+	
+	//참여한 메이트 취소
+	public int myTripCancle(TripMateVO trVO);
 
 }

@@ -132,6 +132,22 @@ public class TripMateServiceImpl implements TripMateService {
 	public List<TripMateVO> myMateList(TripMateVO trVO, PagingVO pagingVO) {
 		return tripMateMapper.myMateList(trVO, pagingVO);
 	}
+	//내가 참여한 마이페이지 페이징
+	@Override
+	public int myTripAppCount(String memberId) {
+		// TODO Auto-generated method stub
+		return tripMateMapper.myTripAppCount(memberId);
+	}
+	//내가 참여한 마이페이지
+	@Override
+	public List<TripMateVO> myMateAppList(TripMateVO trVO, PagingVO pagingVO) {
+		return tripMateMapper.myMateAppList(trVO, pagingVO);
+	}
+
+	@Override
+	public int myMateCancle(TripMateVO trVO) {
+		return tripMateMapper.myTripCancle(trVO);
+	}
 
 
 }

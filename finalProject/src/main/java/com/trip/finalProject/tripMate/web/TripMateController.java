@@ -74,7 +74,6 @@ public class TripMateController {
 	public String mateRecruitDelete(TripMateVO tripMateVO) {
 		//여행 메이트 글 삭제 시 해당 게시글과 관련된 첨부파일 테이블 데이터 삭제
 		tripMateService.deleteAttachedFile(tripMateVO);
-		
 		tripMateService.deleteTripMateRecruit(tripMateVO);
 		return "redirect:/tripMateList";
 	}
@@ -145,7 +144,7 @@ public class TripMateController {
 	
 	//마이페이지----------------------------------------------------------------------
 	//내가 적성한 메이트
-	@GetMapping("/common/myPageTrip")
+	@GetMapping("common/myPageTrip")
 	public String tripMateList(Model model,
 			TripMateVO trVO,
 			@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
@@ -153,11 +152,39 @@ public class TripMateController {
 		String memberId = "1";
 		int total = tripMateService.myTripCount(memberId);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		trVO.setWriterId(memberId);
 		List<TripMateVO> myTipPageList = tripMateService.myMateList(trVO, pagingVO);
 
 		model.addAttribute("list", myTipPageList);
 		model.addAttribute("paging", pagingVO);
 
-		return "myPage/trip/myTripMate";
+		return "myPage/mate/myTripMate";
 	}
+	
+	//신청한 메이트 조회
+	@GetMapping("common/myPageAppTrip")
+	public String tripMateAppList(Model model,
+			TripMateVO trVO,
+			@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
+			@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
+		String memberId = "leesw";
+		int total = tripMateService.myTripAppCount(memberId);
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		trVO.setMemberId(memberId);
+		List<TripMateVO> myTipPageList = tripMateService.myMateAppList(trVO, pagingVO);
+		System.out.println("test : "+trVO.getApplyId());
+		
+		model.addAttribute("list", myTipPageList);
+		model.addAttribute("paging", pagingVO);
+		
+		return "myPage/mate/myTripAppMate";
+	}
+	//신청한 메이트 취소
+	@PostMapping("common/myPageCancle")
+	public String tripMateCancle(TripMateVO tripVO) {
+		
+		
+		return "redirect:/common/myPageAppTrip";
+	}
+	
 }
