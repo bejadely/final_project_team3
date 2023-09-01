@@ -40,6 +40,8 @@
 		SELECT *
 		FROM notice
 		WHERE notice_number = #{noticeNumber}
+		
+<!-- 		code_val(authority) authority -->
 	</select>
 	
 <!-- 게시글 수정 -->	
