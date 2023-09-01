@@ -157,7 +157,7 @@
                 <br>
 
                 <div>
-                    <input type="hidden" id="순번" name="noticeNumber" th:value="3">
+                    <input type="hidden" id="순번" name="noticeNumber" th:value="${noticeVO.noticeNumber}">
                 </div>
                 <div>
                     <div align="left">
@@ -284,7 +284,7 @@ $(document).ready(function() {
 			console.log(data);
 			
 			//서버로 넘어가는 데이터 값들
-			const {  writerId, registDate, title} = objData;
+			const { writerId, registDate, title} = objData;
 			var combinedData={
 				content: data,
 				writerId: writerId,

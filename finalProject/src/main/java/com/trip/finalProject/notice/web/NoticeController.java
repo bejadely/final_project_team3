@@ -82,6 +82,8 @@ public class NoticeController {
 	@PostMapping("/admin/modifyNoticeInfo")
 	public String modifyNoticeInfo(NoticeVO noticeVO, RedirectAttributes rtt) {
 		
+		System.out.println("인풋" + noticeVO);
+		
 		// 게시글 수정
 		String result = noticeService.modifyNoticeInfo(noticeVO);
 		
