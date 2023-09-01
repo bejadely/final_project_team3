@@ -219,25 +219,64 @@
 	
 	<!-- 마이페이지 -->
 	<!-- 내가 저장한 트립베이트 -->
+	<select id="myTripCount" resultType="int">
+		SELECT count(*)
+		FROM mate_recruit
+		WHERE writer_id = #{writerId}
+	</select>
+
 	<select id="myMateList" resultType="TripMateVO">
 		SELECT *
 		FROM(SELECT ROWNUM rn, a.*
-			 FROM(SELECT m.post_id,
-			 			 m.mate_title,
-			 			 m.start_day,
-			 		 	 m.end_day,
-			 			 m.mate_max,
-			 			 m.apply_num,
-			 			 code_val(m.complitoin) complition,
-			 			 m.write_date,
-			 			 m.deadline,
-			 			 m.hit,
-			 			 m.writer,
-			 			 m.trip_area		 
-				FROM matm.e_recruit m LEFT OUTER JOIN 
-     				 attached_file a ON m.post_id = a.post_id
-     				 WHERE a.member_id IS NOT NULL OR a.file_id IS NULL AND memberId = #{trVO.memberId}
-					 ORDER BY m.post_id DESC) a)
+			 FROM(SELECT post_id,
+			 			 mate_title,
+			 			 start_day,
+			 		 	 end_day,
+			 			 mate_max,
+			 			 apply_num,
+			 			 code_val(complition) complition,
+			 			 write_date,
+			 			 deadline,
+			 			 hit,
+			 			 writer_id,
+			 			 trip_area		 
+				 FROM mate_recruit
+     			 WHERE writer_id = #{trVO.writerId}
+				 ORDER BY post_id DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
 	</select>
+	
+	<select id="myTripAppCount" resultType="int">
+		SELECT count(*)
+		FROM mate_recruit r left OUTER JOIN mate_apply a on r.post_id = a.post_id
+		WHERE a.member_id = #{memberId}
+	</select>
+
+	<select id="myMateAppList" resultType="TripMateVO">
+		SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			 FROM(SELECT  r.post_id,
+			 			 r.mate_title,
+			 			 r.start_day,
+			 		 	 r.end_day,
+			 			 r.mate_max,
+			 			 r.apply_num,
+			 			 code_val(r.complition) complition,
+			 			 r.write_date,
+			 			 r.deadline,
+			 			 r.hit,
+			 			 r.writer_id,
+			 			 r.trip_area,
+                         a.apply_id	 
+				 FROM mate_recruit r left OUTER JOIN mate_apply a on r.post_id = a.post_id
+     			 WHERE a.member_id = #{trVO.memberId}
+				 ORDER BY r.post_id DESC) a)
+		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
+	</select>
+	
+	<delete id="myTripCancle" parameterType="TripMateVO">
+		DELETE FROM mate_apply
+		WHERE apply_id = #{applyId}
+	</delete>
+	
 </mapper>

@@ -39,7 +39,7 @@ public class LikeController {
 	}
 	
 	// 여행계획 전체 조회
-	@GetMapping("/myTrList")
+	@GetMapping("myTrList")
 	public String trList(Model model, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
 			@RequestParam(value = "cntPerPage", defaultValue = "12") Integer cntPerPage) {
 		LikeVO likeVO = new LikeVO();

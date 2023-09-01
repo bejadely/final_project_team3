@@ -47,7 +47,17 @@ public interface TripMateService {
 	//마이페이지-----------------------------------------------------------------------------------------------------
 	//내가 작성한 메이트 페이징
 	public int myTripCount(String memberId);
+	
 	//내가 작성한 메이트
 	public List<TripMateVO> myMateList(TripMateVO trVO, PagingVO pagingVO);
+	
+	//내가 참여한 메이트 페이징
+	public int myTripAppCount(String memberId);
+	
+	//내가 참여한 메이트
+	public List<TripMateVO> myMateAppList(TripMateVO trVO, PagingVO pagingVO);
+	
+	//신청한 메이트 취소
+	public int myMateCancle(TripMateVO trVO);
 	
 }
