@@ -121,8 +121,8 @@ $(document).ready(function() {
 						<td th:if="${que.answerDate == null}">답변이 없습니다</td>
 						<td th:if="${que.answerModifyDate == null and que.answerDate != null}" th:value="${que.answerDate}">
 						<td th:if="${que.answerModifyDate != null}" th:value="${que.answerModifyDate}"></td>
-						<td th:if="${que.answerContent == null}" class="answer">미답변</td>
-						<td th:if="${que.answerContent != null}" class="answer">답변완료</td>
+						<td th:if="${que.answerResult == 'k1'}" class="answer">미답변</td>
+						<td th:if="${que.answerResult == 'k2'}" class="answer">답변완료</td>
 					</tr>
 					
 					<tr class="hidden">
