@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -112,21 +113,34 @@ public class TripMateController {
 	
 	//여행 메이트 신청 - form
 	@PostMapping("/tripMateApplyForm")
-	public String tripMateApplyForm(TripMateVO trvo, Model model) {
-		model.addAttribute("tripMateVO", trvo );
+	public String tripMateApplyForm(TripMateVO trvo,  
+			@RequestParam(name="mateWriter") String mateWriter, Model model) {
+		trvo.setMemberId(mateWriter);
+		//System.out.println(trvo.getMemberId());
+		model.addAttribute("mateWriter", trvo.getMemberId());
+		
+		model.addAttribute("mateVO", trvo );
 		return "tripMate/tripMateApplyForm";
 	}
 	
 	//여행 메이트 신청 - process
+	@Transactional
 	@PostMapping("/tripMateApplyInsert")
-	public String tripMateApplyInsert(TripMateVO tripMateVO, Model model) {
+	public String tripMateApplyInsert(TripMateVO tripMateVO, 
+			@RequestParam(name="mateWriter") String mateWriter, Model model) {
 		//최대 인원, 신청 인원 조회
 		//tripMateService.selectMateRecruitApplyNum(tripMateVO);
 		//메이트 신청
 		tripMateService.InsertTripMateApply(tripMateVO);
+		
 		//신청인원 업데이트
 		tripMateService.updateMateRecruitApplyNum(tripMateVO);
-			return "redirect:/tripMateList";			
+		
+		tripMateVO.setMemberId(mateWriter);
+		//게시글 작성자에게 알림
+		tripMateService.sendAlert(tripMateVO);
+		
+		return "redirect:/tripMateList";			
 	}
 	
 	//마이페이지----------------------------------------------------------------------

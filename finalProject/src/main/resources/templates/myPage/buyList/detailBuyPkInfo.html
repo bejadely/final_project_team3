@@ -24,8 +24,31 @@ table, th,td {
 }
 </style>
 <script>
-$(document).ready(function() {
 
+//환불 버튼 클릭 이벤트 처리
+$(document).ready(function(){
+	$("button").click(function(){
+		let tid =  $(".tid").val();
+		let cancelAmount = $(".cancelAmount").val();
+		let cancelTaxFreeAmount = $(".cancelTaxFreeAmount").val();
+		
+		console.log(tid);
+		console.log(cancelAmount);
+		console.log(cancelTaxFreeAmount);
+		
+		$.ajax({
+			type:'post',
+			url:'/payment/refund',
+			data:{
+				tid: tid,
+				cancelAmount : cancelAmount,
+				cancelTaxFreeAmount : cancelTaxFreeAmount 
+			}
+		}).done(data=>{
+			console.log(data);
+		}).fail(reject => console.log(reject));
+	});
+	
 });
 </script>
 </head>
@@ -36,10 +59,10 @@ $(document).ready(function() {
 	<div layout:fragment="content" style="text-align: center;">
 	<form>
 		<h5>주문 상세내역</h5>
-<!-- 		<input type="hidden" th:value="list.cid">	
-		<input type="hidden" th:value="list.tid">	
-		<input type="hidden" th:value="list.cancelAmount">	
-		<input type="hidden" th:value="list.cancelTaxFreeAmount"> -->
+		<input type="text" th:value="${list.cid}">	
+		<input type="text" class="tid" th:value="${list.tid}">	
+		<input type="text" class="cancelAmount" th:value="${list.cancelAmount}">	
+		<input type="text" class="cancelTaxFreeAmount" th:value="${list.cancelTaxFreeAmount}"> 
 		<table>
 			<thead>
 				<tr>
@@ -74,9 +97,10 @@ $(document).ready(function() {
 				<input type="text" th:value="${list.orderStatus}" readonly="readonly">
 			</li>
 		</ul>
-		<button type="button">환불</button>
+		<button type="button" id="refundBtn">환불</button>
 
 	</form>
 	</div>
+
 </body>
 </html>
