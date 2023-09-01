@@ -102,8 +102,6 @@ table {
         background-color: #222;
     }
     
-    
-  ///////////////////////////////////////////////////////////////  
     #comment_table  {
     	width: 100%;
     	border-top: 1px solid rgba(50, 50, 50, 0.2);
@@ -121,7 +119,6 @@ table {
 		text-decoration: none;
   	}
   
-  ////////////////////////////////////////////////////////////////
 </style>
 </head>
 <body>
@@ -188,83 +185,79 @@ table {
 					<input type="hidden" id="writerId" th:value="${session.sessionId}">
 					</td>
 					<td colspan="3"><textarea rows="3" cols="50" id="cmtContent"></textarea></td>
-					<td><input type="button" id="cmtSave" value="댓글작성"></td>
-					<td><input type="button" id="callCmt" value="댓글보기"></td>
+					<td>
+						<input type="button" id="cmtSave" value="댓글작성">
+						<input type="button" id="callCmt" value="댓글보기">
+					</td>
 				</tr>
 			</table>
 		</form>
 	</div>
 	
 	<script th:inline="javascript">
-	function selectCommentList(){
-		console.log("댓글리스트 출력");
-		$.ajax({
-			url: '/commentList',
-            type: 'get',
-            data: { "postId" : [[{tripMateInfo.postId}]]},
-            dataType : 'JSON',
-        }).done(data => {
-        	console.log("댓글리스트 ajax 정상 동작");
-
-        	//paging(data.paging);
-            //displayData(data.cartList);
-        }).fail(reject => console.log(reject));
-		})
+	$(document).ready(function() {  
+	
+		//ajax 댓글 리스트 출력
 		
-	}
-	
-	
-	$("#cmtSave").click(function() {
-		
-		
-		
-	})
-	
-	
-	
-	$("#cmtSave").click(function() {
-		//session에 아이디 값이 없으면 로그인 페이지 호출
-		if ('${session.sessionId}' == "") {
-			alert("로그인이 필요합니다.")
-			location.href="/member/login"
-		}else{
-			var writer = [[${session.sessionId}]];
-			var content = $("#cmtContent").val();
-			var postId = $("#postId").val();
-			var step = 0;
-			
-			var obj = {
-					writerId : writer,
-					cmtContent : content,
-					postId : postId,
-					step : step,
-				}
-			//댓글 내용이 미 작성시 알림호출 후 포커스 이동 
-			if(content=="") {
-				alert("댓글 내용을 입력하세요.")
-				$("#cmtContent").focus()
-			}else{
-				
-				//댓글 내용이 존재하면 ajax를 통해 저장 기능 실행
-				$.ajax({
-		            url: '/insertComment',
-		            type: 'post',
-		            data: obj
-		            
-		        }).done(data => {
-		        	alert("댓글이 등록 되었습니다.")
-		        	$("#cmtContent").val("");  
-
-		        	//paging(data.paging);
-		            //displayData(data.cartList);
-		        }).fail(reject => console.log(reject));
-			}
+		function showComment(){
 			
 		}
 		
-	})
-
+		//ajax를 통해서 해당 게시글의 포스트 아이디를 보내서 결과 값을 리스트로 담아서 가져옴.
+	    $('#callCmt').click(function() {
+			console.log("댓글리스트 출력");
+		    $.ajax({
+		            url: '/commentList',
+		            type: 'get',
+		            data: {postId : [[${tripMateInfo.postId}]]}
+		           }).done(data => {
+		              //console.log(postId);
+		              //console.log(data);
+		              showComment(data);
+		           }).fail(reject => console.log(reject));
+		         })
 	
+	
+		//ajax 댓글 등록
+		$("#cmtSave").click(function() {
+			//session에 아이디 값이 없으면 로그인 페이지 호출
+			if ('${session.sessionId}' == "") {
+				alert("로그인이 필요합니다.")
+				location.href="/member/login"
+			}else{
+				var writer = [[${session.sessionId}]];
+				var content = $("#cmtContent").val();
+				var postId = $("#postId").val();
+				var step = 0; //(부모)댓글일 경우 step 는 0
+				var obj = {
+						writerId : writer,
+						cmtContent : content,
+						postId : postId,
+						step : step,
+				}
+		
+				//댓글 내용이 미 작성시 알림호출 후 포커스 이동 
+				if(content=="") {
+					alert("댓글 내용을 입력하세요.");
+					$("#cmtContent").focus();
+				}else{
+					//댓글 내용이 존재하면 ajax를 통해 저장 기능 실행
+					$.ajax({
+						url: '/insertComment',
+						type: 'post',
+						data: obj
+					}).done(data => {
+						alert("댓글이 등록 되었습니다.");
+						$("#cmtContent").val("");  
+					}).fail(reject => console.log(reject));
+				}
+			}
+		})
+
+		
+		
+		
+	})
 	
 	</script>
 </body>

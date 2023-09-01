@@ -16,8 +16,9 @@ public class PostCommentServiceImpl implements PostCommentService {
 	
 	//해당 게시글의 전체 게시글 조회
 	@Override
-	public List<PostCommentVO> getPostCommentAll() {
-		return postCommentMapper.selectAllPostComment();
+	public List<PostCommentVO> getPostCommentAll(String postId) {
+		
+		return postCommentMapper.selectAllPostComment(postId);
 	}
 	
 	// 댓글 등록
