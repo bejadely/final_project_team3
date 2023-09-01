@@ -44,7 +44,7 @@
         font-size: 12px;
     }
     .rounded-box {
-        height: 100%;
+        height: 90%;
         padding: 10px;
     }
     .col-md-7,
@@ -110,7 +110,7 @@
    		 text-align: center; 
     }
     .statisticsContent {
-        height: 60px; 
+        height: 70px; 
     }
     .total-datail td {
         vertical-align: middle; 
@@ -2769,7 +2769,6 @@
             <!--지역별 관광 총 집계 -->
             <div class="col-md-6">
                 <div class="rounded-box total-data" >
-                    <br>
                     <h6>데이터 총 정리</h6>
                     <table class="table table-sm total-datail">
                         <tbody>
@@ -2800,7 +2799,10 @@
             <!-- 지역별 관광 차트 -->
             <div class="col-md-6">
                 <div class="rounded-box" >
-                    <div id="chart"></div>
+                	<h6>최근 SNS언급량</h6>
+               
+                    	<div id="chart"></div>
+                    
                 </div>
             </div>
         </div>
@@ -3235,13 +3237,13 @@
 
             let dataColumns = [];
             dataColumns.push(locationName);
-            for(let i = 0; i < 6; i++) {
+            for(let i = 0; i < 5; i++) {
                 dataColumns.push(list[i].searchNumber);
             }
 
             let yearMonthColumns = [];
             let yearMonthString = '';
-            for(let i = 0; i < 6; i++) {
+            for(let i = 0; i < 5; i++) {
                 yearMonthString = list[i].yearMonth.slice(0,4) + '.' + list[i].yearMonth.slice(4,6);
                 yearMonthColumns.push(yearMonthString);
             }
