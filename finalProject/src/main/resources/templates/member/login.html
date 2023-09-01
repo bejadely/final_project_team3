@@ -1,8 +1,8 @@
 <!DOCTYPE html>
      <html lang="en" xmlns:th="http://www.thymeleaf.org"
-				xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      			layout:decorate="@{layouts/default_layout}"
-      			layout:fragment="content"> 
+            xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+               layout:decorate="@{layouts/default_layout}"
+               layout:fragment="content"> 
     
         
 <head>
@@ -103,6 +103,10 @@ padding:5px;
     outline: none;
 /*     border-radius: 30px; */
 }
+
+#submit{
+   border-radius: 10px;
+}
 .checkbox {
     margin: 30px 10px 30px 0;
 }
@@ -144,28 +148,28 @@ span {
                     <input type="text" class="input-field" name="memberId" placeholder="아이디"  id="id" ><!-- required -->
                     <input type="password"  class="input-field"name="password" placeholder="비밀번호" id="pw" ><!-- required  -->
              <!--        <input type="checkbox" class="checkbox"><span>Remember Password</span> -->
-             					<font id="checkId" size="2"></font>
+                            <font id="checkId" size="2"></font>
              
              <div id="find">
-             	<a th:href="@{/member/memberInsert}"class="property-sub">아이디 찾기</a>
-              	<span>&nbsp;|&nbsp;</span>
- 			 <a th:href="@{/member/memberInsert}"class="property-sub">비밀번호 찾기</a>
- 			 </div>
-	             <br/>
-	             <br/>
-                    <button type="submit" class="submit">일반 로그인</button>
+                <a th:href="@{/member/memberInsert}"class="property-sub">아이디 찾기</a>
+                 <span>&nbsp;|&nbsp;</span>
+           <a th:href="@{/member/memberInsert}"class="property-sub">비밀번호 찾기</a>
+           </div>
+                <br/>
+                <br/>
+                    <button type="submit" class="submit" id="submit" >일반 로그인</button>
                          <!--  SNS로그인 -->
                       <div class="sns">
-			                <div class="social-icons">
-				                <!--  카카오 API를 사용하여 OAuth 2.0 인증을 위한 URL -->				 
-								 <a  th:href="@{https://kauth.kakao.com/oauth/authorize?client_id=7a2faaf15ad43d8157f12b22e12d694d&redirect_uri=http://localhost:8787/member/kakaologin&response_type=code}">
-								 <img  id="kakao" src="/img/login/카카오로그인.png" height="50" alt="kakao"    ></a>
-				 				 <!-- 네이버 API로그인  -->
-				 				 <a  th:href="@{${url}}"><img id="naver" src="/img/login/네이버로그인.png" height="50" alt="naver"   ></a>                     
-			               </div>
-			          </div>
-         					 <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a>
-<!--            			<button  type="submit" class="submit" onclick="location.href='memberInsert'">회원가입</button>
+                         <div class="social-icons">
+                            <!--  카카오 API를 사용하여 OAuth 2.0 인증을 위한 URL -->             
+                         <a  th:href="@{https://kauth.kakao.com/oauth/authorize?client_id=7a2faaf15ad43d8157f12b22e12d694d&redirect_uri=http://localhost:8787/member/kakaologin&response_type=code}">
+                         <img  id="kakao" src="/img/login/카카오로그인.png" height="50" alt="kakao"    ></a>
+                          <!-- 네이버 API로그인  -->
+                          <a  th:href="@{${url}}"><img id="naver" src="/img/login/네이버로그인.png" height="50" alt="naver"   ></a>                     
+                        </div>
+                   </div>
+                         <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a>
+<!--                     <button  type="submit" class="submit" onclick="location.href='memberInsert'">회원가입</button>
  -->                </form>
                 
             <!--  가이드 로그인 -->
@@ -178,26 +182,26 @@ span {
              <div id="find">
               <a th:href="@{/member/memberInsert}"class="property-sub">아이디 찾기</a>
               <span>&nbsp;|&nbsp;</span>
- 			 <a th:href="@{/member/memberInsert}"class="property-sub">비밀번호 찾기</a>
- 			 </div>
-	             <br/>
-	             <br/>
+           <a th:href="@{/member/memberInsert}"class="property-sub">비밀번호 찾기</a>
+           </div>
+                <br/>
+                <br/>
                     <button type="submit" class="submit" > 로그인</button>
-     		 <a th:href="@{/member/guideInsert}"class="property-sub">회원가입</a>
+            <a th:href="@{/member/guideInsert}"class="property-sub">회원가입</a>
                 </form>
                
             </div>
         </div>
 
         <script>
-	        var v = document.getElementById("kakao");
-	        var w = document.getElementById("naver");
+           var v = document.getElementById("kakao");
+           var w = document.getElementById("naver");
             var x = document.getElementById("member");
             var y = document.getElementById("guide");
             var z = document.getElementById("btn");
             function member(){
-         /*    	v.style.left = "500px";
-            	w.style.left = "500px"; */
+         /*       v.style.left = "500px";
+               w.style.left = "500px"; */
                 x.style.left = "50px";
                 y.style.left = "450px";
                 z.style.left = "0";
@@ -212,50 +216,49 @@ span {
         <!-- 로그인시 아이디 비밀번호 DB에 있는지 확인 -->         
         <script>       
         
-		//이벤트 핸들링 등록. HTML 요소가 모두 로딩된 이후에 이루어져야 하므로.
+      //이벤트 핸들링 등록. HTML 요소가 모두 로딩된 이후에 이루어져야 하므로.
         $(document).ready(function(){
-	        $('#member').on('submit', loginAccountcheck);
+           $('#member').on('submit', loginAccountcheck);
         });
         
         
-        function loginAccountcheck(event){		
-        event.preventDefault();         	
+        function loginAccountcheck(event){      
+        event.preventDefault();            
         let userId = $('#id').val(); // input_id에 입력되는 값
-		let userPassword = $('#pw').val();
-		$.ajax({
-			/* url : "IdCheckService", */
-			url : "/loginAccountCheck", 
-			type : "post",
-			data :  {memberId :userId , password:userPassword},
-			dataType : 'json',
-			
-			success : function(result){
-				if(result == 0){
-					
-					$("#checkId").html('아이디 또는 비밀번호가 틀렸습니다.');
-					$("#checkId").attr('color','red');//멈춰야함
-					
-				
-				} else{	
-					//event.unbind();
-					//$("#checkId").html('사용할 수 있는 아이디입니다.');
-					//$("#checkId").attr('color','green');
-					$('#member')[0].submit();
-				}  
-			},
-			error : function(){
-				
-				alert("서버요청실패");
-			}
-		});
-		//$('#member').submit();
-		 
-	}
+      let userPassword = $('#pw').val();
+      $.ajax({
+         /* url : "IdCheckService", */
+         url : "/loginAccountCheck", 
+         type : "post",
+         data :  {memberId :userId , password:userPassword},
+         dataType : 'json',
+         
+         success : function(result){
+            if(result == 0){
+               
+               $("#checkId").html('아이디 또는 비밀번호가 틀렸습니다.');
+               $("#checkId").attr('color','red');//멈춰야함
+               
+            
+            } else{   
+               //event.unbind();
+               //$("#checkId").html('사용할 수 있는 아이디입니다.');
+               //$("#checkId").attr('color','green');
+               $('#member')[0].submit();
+            }  
+         },
+         error : function(){
+            
+            alert("서버요청실패");
+         }
+      });
+      //$('#member').submit();
+       //수정완
+   }
  </script>
  
-	
- 	
+   
+    
     </body>
 </html> 
-
 
