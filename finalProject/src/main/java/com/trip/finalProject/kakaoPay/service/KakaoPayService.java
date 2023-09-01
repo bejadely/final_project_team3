@@ -2,7 +2,7 @@ package com.trip.finalProject.kakaoPay.service;
 
 
 public interface KakaoPayService {
-	public KakaoPayResponseVO kakoPayReady(PaymentVO vo,int quantity, String postId);
+	public KakaoPayResponseVO kakoPayReady(PaymentVO vo,int quantity, String postId, String specialtyType);
 	
 	public KakaoApproveResponseVO approveResponse(String pgToken);
 	
@@ -12,5 +12,8 @@ public interface KakaoPayService {
 	
 	public int insertPurchase(KakaoPayInfoResponseVO kakaoPayInfoResponseVO);
 	
-	public KakaoCancelResponseVO KakaoCancelResponse(KakaoPayInfoResponseVO kakaoPayInfoResponseVO);
+	public KakaoPayInfoResponseVO KakaoCancelResponse(KakaoPayInfoResponseVO kakaoPayInfoResponseVO);
+	
+	public int updatePurchase(KakaoPayInfoResponseVO vo);
+	
 }
