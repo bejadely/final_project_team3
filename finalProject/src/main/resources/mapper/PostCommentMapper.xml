@@ -3,6 +3,14 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip.finalProject.postComment.mapper.PostCommentMapper">
+	<!-- 해당 게시글의 전체 댓글 조회 -->
+	<select id="selectAllPostComment" resultType="postCommentVO">
+			SELECT *
+			FROM post_comment
+			WHERE post_id = #{postId}
+			ORDER BY comment_id ASC, cmt_num ASC
+	</select>
+
 	<!-- 댓글 작성 -->
 	<insert id="insertPostComment" parameterType="PostCommentVO">
     	<selectKey keyProperty="commentId" resultType="String" order="BEFORE">
@@ -13,48 +21,23 @@
     		INSERT INTO post_comment
     					(
     						comment_id
-    						, cmtContent
-    						, regist_date
     						, post_id
+    						, cmt_num
     						, writer_id
-    						, cmt_style
-    						<choose>
-    							<when test="cmtParentId == null">
-    							, null
-    							</when>
-    							<otherwise>
-    							, cmt_parent_id
-    							</otherwise>
-    						</choose>
-    						, del_yn
+    						, cmt_content
+    						, regist_date
+    						, step
     					)
     				VALUES
     					(
     						#{commentId}
-    						, #{cmtContent}
-    						, #{registDate}
     						, #{postId}
+    						<!-- 해당 게시글 아이디에서 댓글 번호를 찾아서 그 수에서 +1 카운트 -->
+    						, (SELECT NVL(MAX(cmt_num), 0) + 1 FROM post_comment WHERE post_id = #{postId})
     						, #{writerId}
-    						, #{cmtStyle}
-    						<choose>
-    							<when test="cmtParentId == null">
-    							, null
-    							</when>
-    							<otherwise>
-    							, #{cmtParentId}
-    							</otherwise>
-    						</choose>
-    						, 'N'
+    						, #{cmtContent}
+    						, sysdate
+    						, #{step}
     					)
 	</insert>
 </mapper>
-<!-- 	private String commentId; 					//댓글id - 댓글 고유번호
-	private String cmtContent;					//댓글 내용
-	@DateTimeFormat(pattern = "yyyy-MM-dd")    
-	private Date registDate;					//댓글 작성일
-	private String postId;						//게시글id
-	private String writerId;					//작성자id
-	private String cmtStyle;					//댓글 대댓글 구분
-	private String cmtParentId;					//부모댓글 아이디
-	private String delYn;						// 삭제 여부 -->
-
