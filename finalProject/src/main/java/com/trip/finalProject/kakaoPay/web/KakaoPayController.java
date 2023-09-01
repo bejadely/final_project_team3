@@ -33,17 +33,17 @@ public class KakaoPayController {
 	
 
 	@GetMapping("success")
-	public ModelAndView afterPayRequest(@RequestParam("pg_token") String pgToken, String specialtyType) {
-
-		KakaoApproveResponseVO approveResponse = kakaoPayService.approveResponse(pgToken);
+	public ModelAndView afterPayRequest(@RequestParam("pg_token") String pgToken, String specialtyType, String partner_order_id, String partner_user_id,String postId) {
+		KakaoApproveResponseVO approveResponse = kakaoPayService.approveResponse(pgToken,partner_order_id,partner_user_id);
 		// KakaoApproveResponseVO 객체의 tid 값을 가져오기
 		//String tid = approveResponseVO.getTid();
 		// tid 값을 출력
 		//mv.addObject("tid", approveResponse.getTid());
-		
+		System.out.println(postId);
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("tid",approveResponse.getTid());
 		mv.addObject("specialtyType",specialtyType);
+		mv.addObject("postId",postId);
 		mv.setViewName("redirect:/payment/info");
 		
 		
@@ -65,13 +65,17 @@ public class KakaoPayController {
 		vo.setStatus(kakaoPayInfoResponseVO.getStatus());
 		vo.setTid(kakaoPayInfoResponseVO.getTid());
 		vo.setTotalAmount(kakaoPayInfoResponseVO.getAmount().getTotal());
+		
 		kakaoPayService.insertPayment(vo);
 		
 		//주문 상세 테이블 등록
+		System.out.println(kakaoPayInfoResponseVO);
 		kakaoPayInfoResponseVO.setSpecialtyType(approveResponse.getSpecialtyType());
 		kakaoPayInfoResponseVO.setPaymentId(vo.getPaymentId());
 		kakaoPayInfoResponseVO.setPrice(kakaoPayInfoResponseVO.getAmount().getTotal());
-		kakaoPayInfoResponseVO.setPostId(kakaoPayInfoResponseVO.getItem_code());
+		kakaoPayInfoResponseVO.setPostId(approveResponse.getPostId());
+		kakaoPayInfoResponseVO.setItem_code(kakaoPayInfoResponseVO.getItem_code());
+		kakaoPayInfoResponseVO.setItem_name(kakaoPayInfoResponseVO.getItem_name());
 		kakaoPayInfoResponseVO.setMemberId(kakaoPayInfoResponseVO.getPartner_user_id());
 		kakaoPayInfoResponseVO.setQuantity(kakaoPayInfoResponseVO.getQuantity());
 		kakaoPayInfoResponseVO.setOrderDate(kakaoPayInfoResponseVO.getApproved_at().replace("T", " "));

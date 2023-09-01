@@ -78,5 +78,11 @@ public class CartController {
 	    
 	    return map;
 	}
+	@PostMapping("/cartInsert")
+	@ResponseBody
+	public String cartInsert(CartVO cartVO) {
+		
+		return cartService.insertCartInfo(cartVO);
+	}
 	
 }

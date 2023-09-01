@@ -42,7 +42,7 @@ function handleClick(data) {
 		    var tbody = $("tbody");
 		    var priceBody = $("#price");
 		    thead.empty();
-		    tbody.empty(); // tbody 내용 초기화
+		    tbody.empty(); // tbody 내용 초기화  
 	    
 	    lmth += "<tr>" + 
 		"<th ><input type='checkbox' id='cbx_chkAll' /></th>" +
@@ -56,7 +56,7 @@ function handleClick(data) {
 	    // 가져온 데이터를 순회하면서 처리	
 	    $.each(data, (index, cartItem) => {
 	    		html += "<tr>" +
-	            "<td><input type='checkbox' name='chk' data-cartid='" + cartItem.postId + "' /></td>" +
+	            "<td><input type='checkbox' name='chk' data-cartid='" + cartItem.cartId + "' /></td>" +
 	            "<td>"+"<input type='hidden' class='cartId' value='" + cartItem.cartId + "' />" + cartItem.cartName + "</td>" +
 	            "<td class='orderName'>" + cartItem.cartName + "</td>" +
 	            `<td>
@@ -231,15 +231,16 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
     });
     
     // 삭제 버튼 클릭 시 선택된 항목 삭제
-    $("body").on("click", ".delete-btn", function() {
+    $("body").on("click", ".delete-btn", function(e) {
+    	e.stopImmediatePropagation()
         let row = $(this).closest("tr");
         let cartId = row.find("input[name='chk']").data("cartid");
-        let url = "/cartDelete?postId=" + cartId;
+        console.log(cartId);
+        let url = "/cartDelete?cartId=" + cartId;
 
         fetch(url)
             .then(response => response.text())
             .then(text => {
-                row.remove();
                 var page = $('#paging').find('b').text();
                 var postId = cartId.substring(0, 3);
                 var tbody = $("tbody");
@@ -262,8 +263,8 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
     ckb.each(function() {
         let check = $(this);
         let id = check.val();
-        let cartId = check.data("cartid"); // Retrieve cartId
-        let url = "/cartDelete?postId=" + cartId; // Use 'cartId'
+        let cartId = check.data("cartId"); // Retrieve cartId
+        let url = "/cartDelete?cartId=" + cartId; // Use 'cartId'
 
 
         fetch(url)
@@ -296,19 +297,18 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
 	    var postId;
   		// 체크된 체크박스를 찾는 루프
 	    $("tbody input[type=checkbox]:checked").each(function() {
+	    	postId = "";
 	        var row = $(this).closest("tr");
 	        var count = parseInt(row.find("input[type=text]").val());
 	        var price = parseFloat(row.find("td:eq(4)").text());
-	        var value = row.find("input[type=hidden]").val() 
+	        //var value = row.find("input[type=hidden]").val() 
 	        var cartTotal = count * price;
 			orderElements.push(row.find("td:eq(2)").text()); // 값을 배열에 추가	       
-	        console.log(orderElements);
-	        console.log(value);
-	        cartIdElements.push(value);
+	        //cartIdElements.push(value);
 	        totalAmount += cartTotal;
 	        quantity += count;
 	    });	
-	    
+	    console.log(postId);
 	    	if(orderElements.length == 1) {
 				orderName = orderElements[0];		
 			}
@@ -318,26 +318,23 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
 			
 
 			
-	        console.log(quantity);
-	        console.log(orderName);
-	        console.log(totalAmount);
-	        console.log(cartIdElements);
 	        
-	     $.ajax({
-	     	type:'post',
-	     	url:'payment/ready',
-	     	data:{
-	     		totalAmount: totalAmount,
-	     		orderName : orderName,
-	     		quantity : quantity,
-	     		postId: cartIdElements.join(',')
-	     		
-	     	},
-	     	success:function(response){
-	     		location.href = response.next_redirect_pc_url
-	     	}
-	       	
-	     }); 
+	    $.ajax({
+	    	type:'post',
+	    	url:'payment/ready',
+	    	data:{
+	    		totalAmount: totalAmount,
+	    		orderName : orderName,
+	    		quantity : quantity,
+	    		item_code: cartIdElements.join(',')
+	    		//post_id : 
+	    		
+	    	},
+	    	success:function(response){
+	    		location.href = response.next_redirect_pc_url
+	    	}
+	      	
+	    }); 
 	        
   	});
   	
