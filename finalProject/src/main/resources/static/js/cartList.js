@@ -57,7 +57,7 @@ function handleClick(data) {
 	    $.each(data, (index, cartItem) => {
 	    		html += "<tr>" +
 	            "<td><input type='checkbox' name='chk' data-cartid='" + cartItem.postId + "' /></td>" +
-	            "<td>" + cartItem.cartName + "</td>" +
+	            "<td>"+"<input type='hidden' class='cartId' value='" + cartItem.cartId + "' />" + cartItem.cartName + "</td>" +
 	            "<td class='orderName'>" + cartItem.cartName + "</td>" +
 	            `<td>
 				    <button type="button" class="quantity-btn decrement-btn">-</button>
@@ -292,15 +292,19 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
   		var orderName= null;
   		var orderElements = [];
   		var th = $(this);
-	    var postId = th.parent().parent().find("td:eq(0)").find("input[name='chk']").data("cartid");
+	    var cartIdElements = [];
+	    var postId;
   		// 체크된 체크박스를 찾는 루프
 	    $("tbody input[type=checkbox]:checked").each(function() {
 	        var row = $(this).closest("tr");
 	        var count = parseInt(row.find("input[type=text]").val());
 	        var price = parseFloat(row.find("td:eq(4)").text());
+	        var value = row.find("input[type=hidden]").val() 
 	        var cartTotal = count * price;
 			orderElements.push(row.find("td:eq(2)").text()); // 값을 배열에 추가	       
 	        console.log(orderElements);
+	        console.log(value);
+	        cartIdElements.push(value);
 	        totalAmount += cartTotal;
 	        quantity += count;
 	    });	
@@ -311,26 +315,29 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
 			else{
 				orderName = orderElements[0] + ' 외 ' + (orderElements.length - 1) + '건';
 			}		
-	    	console.log(postId);
+			
+
+			
 	        console.log(quantity);
 	        console.log(orderName);
 	        console.log(totalAmount);
+	        console.log(cartIdElements);
 	        
-	        $.ajax({
-	        	type:'post',
-	        	url:'payment/ready',
-	        	data:{
-	        		totalAmount: totalAmount,
-	        		orderName : orderName,
-	        		quantity : quantity,
-	        		postId: postId
-	        		
-	        	},
-	        	success:function(response){
-	        		location.href = response.next_redirect_pc_url
-	        	}
-	        	
-	        }); 
+	     $.ajax({
+	     	type:'post',
+	     	url:'payment/ready',
+	     	data:{
+	     		totalAmount: totalAmount,
+	     		orderName : orderName,
+	     		quantity : quantity,
+	     		postId: cartIdElements.join(',')
+	     		
+	     	},
+	     	success:function(response){
+	     		location.href = response.next_redirect_pc_url
+	     	}
+	       	
+	     }); 
 	        
   	});
   	
