@@ -42,7 +42,7 @@
 		<section class="blog-section blog-page spad">
 			<div class="container">
 				<div class="row">
-					<div th:each="list : ${specialtiesList}" th:onclick="|location.href='@{/specialInfo(postId=${list.postId})}'|"
+					<div th:each="list : ${specialtiesList}" th:onclick="|location.href='@{/specialtiesInfo(postId=${list.postId})}'|"
 						class="col-lg-4 col-md-6">
 						<div class="single-blog-item">
 							<div class="sb-pic">

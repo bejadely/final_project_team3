@@ -13,7 +13,6 @@ import org.springframework.web.client.RestTemplate;
 
 import com.trip.finalProject.kakaoPay.mapper.KakaoPayMapper;
 import com.trip.finalProject.kakaoPay.service.KakaoApproveResponseVO;
-import com.trip.finalProject.kakaoPay.service.KakaoCancelResponseVO;
 import com.trip.finalProject.kakaoPay.service.KakaoPayInfoResponseVO;
 import com.trip.finalProject.kakaoPay.service.KakaoPayInfoVO;
 import com.trip.finalProject.kakaoPay.service.KakaoPayResponseVO;
@@ -38,7 +37,7 @@ public class KakaoPayServiceImpl implements KakaoPayService {
 	
 	
 	@Override
-	public KakaoPayResponseVO kakoPayReady(PaymentVO vo, int quantity,String postId) {
+	public KakaoPayResponseVO kakoPayReady(PaymentVO vo, int quantity,String postId,String specialtyType) {
 		// TODO Auto-generated method stub
 		
 		//서버로 요청할 Body
@@ -51,7 +50,7 @@ public class KakaoPayServiceImpl implements KakaoPayService {
         parameters.add("quantity", String.valueOf(quantity));
         parameters.add("total_amount", String.valueOf(vo.getTotalAmount()));
         parameters.add("tax_free_amount", String.valueOf(vo.getTotalAmount()));
-        parameters.add("approval_url", "http://localhost:8787/payment/success"); // 성공 시 redirect url
+        parameters.add("approval_url", "http://localhost:8787/payment/success?specialtyType=" + specialtyType); // 성공 시 redirect url
         parameters.add("cancel_url", "http://localhost:8787/payment/cancel"); // 취소 시 redirect url
         parameters.add("fail_url", "http://localhost:8787/payment/fail"); // 실패 시 redirect url
 		
@@ -114,22 +113,22 @@ public class KakaoPayServiceImpl implements KakaoPayService {
     
     
     //결제환불
-    public KakaoCancelResponseVO KakaoCancelResponse(KakaoPayInfoResponseVO kakaoPayInfoResponseVO) {
+    public KakaoPayInfoResponseVO KakaoCancelResponse(KakaoPayInfoResponseVO kakaoPayInfoResponseVO) {
     	MultiValueMap<String, String> parameter = new LinkedMultiValueMap<>();
     	parameter.add("cid", cid);
     	parameter.add("tid", kakaoPayInfoResponseVO.getTid());
     	parameter.add("cancel_amount", String.valueOf(kakaoPayInfoResponseVO.getCancelAmount()) );
-    	parameter.add("cancel_tax_free_amount",String.valueOf(kakaoPayInfoResponseVO.getCancelTaxfreeAmount()) );
+    	parameter.add("cancel_tax_free_amount",String.valueOf(kakaoPayInfoResponseVO.getCancelTaxFreeAmount()) );
     	System.out.println(kakaoPayInfoResponseVO.getCancelAmount());
-    	System.out.println(kakaoPayInfoResponseVO.getCancelTaxfreeAmount());
+    	System.out.println(kakaoPayInfoResponseVO.getCancelTaxFreeAmount());
     	System.out.println(kakaoPayInfoResponseVO.getTid());
     	HttpEntity<MultiValueMap<String, String>> requEntity = new HttpEntity<>(parameter,this.getHeaders());
     	
     	RestTemplate restTemplate = new RestTemplate();
     	
-    	KakaoCancelResponseVO cancelResponseVO = restTemplate.postForObject("https://kapi.kakao.com/v1/payment/cancel", requEntity, KakaoCancelResponseVO.class);
+    	KakaoPayInfoResponseVO kakaoPayInfoResponseVO2 = restTemplate.postForObject("https://kapi.kakao.com/v1/payment/cancel", requEntity, KakaoPayInfoResponseVO.class);
     	
-    	return cancelResponseVO;
+    	return kakaoPayInfoResponseVO2;
     	
     }
     
@@ -157,6 +156,14 @@ public class KakaoPayServiceImpl implements KakaoPayService {
 	public int insertPurchase(KakaoPayInfoResponseVO kakaoPayInfoResponseVO) {
 		// TODO Auto-generated method stub
 		return kakaoPayMapper.insertPurchaseInfo(kakaoPayInfoResponseVO);
+	}
+
+
+	@Override
+	public int updatePurchase(KakaoPayInfoResponseVO vo) {
+		// TODO Auto-generated method stub
+		
+		return kakaoPayMapper.updatePurchaseStatus(vo);
 	}
 
 
