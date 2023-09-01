@@ -193,7 +193,7 @@ form {
 							<div class="form-horizontal" style="text-align: left;">
 								<label>구매수량 : </label> 
 								<select class="form-control" id="select_count">
-								    <th:block th:each="count : ${#numbers.sequence(1, 20)}">
+								    <th:block th:each="count : ${#numbers.sequence(0, 20)}">
 								        <option th:value="${count}" th:text="${count}"></option>
 								    </th:block>
 								</select>
