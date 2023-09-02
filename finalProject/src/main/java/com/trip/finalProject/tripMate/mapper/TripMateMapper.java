@@ -2,6 +2,7 @@ package com.trip.finalProject.tripMate.mapper;
 
 import java.util.List;
 
+import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.tripMate.service.TripMateVO;
 
 public interface TripMateMapper {
@@ -40,4 +41,21 @@ public interface TripMateMapper {
 	
 	//여행 메이트 게시글의 현재 신청자 수 조회
 	public int selectMateRecruitApplyNum(TripMateVO tripMateVO);
+	
+	//마이페이지--------------------------------------------------------------------------------------
+	//내가 작성한 메이트 페이징용
+	public int myTripCount(String memberId);
+	
+	//전체 메이트 불러오기
+	public List<TripMateVO> myMateList(TripMateVO trVO, PagingVO pagingVO);
+	
+	//내가 참여한 메이트 페이징용
+	public int myTripAppCount(String memberId);
+	
+	//전체 참여한 불러오기
+	public List<TripMateVO> myMateAppList(TripMateVO trVO, PagingVO pagingVO);
+	
+	//참여한 메이트 취소
+	public int myTripCancle(TripMateVO trVO);
+
 }

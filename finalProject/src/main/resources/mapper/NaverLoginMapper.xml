@@ -11,10 +11,36 @@
 </select>
 
 <insert id="insertNaverLogin" parameterType="java.util.HashMap">
-		insert into 
+	<!-- 	insert into 
 		member(member_id, member_name , BIRTH_DATE,GENDER, sign_up_date )
 			values
-			(#{id}, '1', '940426','G1', sysdate)
+			(#{id}, '1', '940426','G1', sysdate) -->
+				insert into member
+					(member_id,
+					<!-- password, -->
+					member_Name,
+					Email,
+					saved_profile_img,
+					AUTHORITY,
+			<!-- 		access_token,
+					refresh_token, -->
+					login_type,
+					birth_date,
+					gender,
+					sign_up_date)
+		values
+					(#{id},
+				<!-- 	#{password}, -->
+					#{nickname},
+					#{email},					
+					#{profileImage},
+					'A1',
+				<!-- 	#{accessToken},
+					#{refreshToken}, -->
+					'L3',
+					null,
+					null,
+					sysdate)
 	</insert>
   
   </mapper>

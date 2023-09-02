@@ -1,4 +1,4 @@
-package com.trip.finalProject.question.mapper;
+	package com.trip.finalProject.question.mapper;
 
 import java.util.List;
 
@@ -11,12 +11,12 @@ public interface QuestionMapper {
 	//페이징 - 멤버용
 	public int getTotalMember(String memberId);
 	//전체조회
-	public List<QuestionVO> selectAllQue(PagingVO pagingVO);
+	public List<QuestionVO> selectAllQue(QuestionVO questionVO, PagingVO pagingVO);
 	//등록
 	public int insertQue(QuestionVO qeustionVO);
 	//수정
 	public int updateQue(QuestionVO questionVO);
 	
-	public List<QuestionVO> selectAllQueMember(PagingVO pagingVO);
+	public List<QuestionVO> selectAllQueMember(QuestionVO questionVO, PagingVO pagingVO);
 
 }

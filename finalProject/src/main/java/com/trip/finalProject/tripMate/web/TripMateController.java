@@ -4,14 +4,18 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.trip.finalProject.attachedFile.service.AttachedFileService;
 import com.trip.finalProject.attachedFile.service.AttachedFileVO;
+import com.trip.finalProject.common.PagingVO;
+import com.trip.finalProject.like.service.LikeVO;
 import com.trip.finalProject.tripMate.service.TripMateService;
 import com.trip.finalProject.tripMate.service.TripMateVO;
 
@@ -70,7 +74,6 @@ public class TripMateController {
 	public String mateRecruitDelete(TripMateVO tripMateVO) {
 		//여행 메이트 글 삭제 시 해당 게시글과 관련된 첨부파일 테이블 데이터 삭제
 		tripMateService.deleteAttachedFile(tripMateVO);
-		
 		tripMateService.deleteTripMateRecruit(tripMateVO);
 		return "redirect:/tripMateList";
 	}
@@ -109,21 +112,79 @@ public class TripMateController {
 	
 	//여행 메이트 신청 - form
 	@PostMapping("/tripMateApplyForm")
-	public String tripMateApplyForm(TripMateVO trvo, Model model) {
-		model.addAttribute("tripMateVO", trvo );
+	public String tripMateApplyForm(TripMateVO trvo,  
+			@RequestParam(name="mateWriter") String mateWriter, Model model) {
+		trvo.setMemberId(mateWriter);
+		//System.out.println(trvo.getMemberId());
+		model.addAttribute("mateWriter", trvo.getMemberId());
+		
+		model.addAttribute("mateVO", trvo );
 		return "tripMate/tripMateApplyForm";
 	}
 	
 	//여행 메이트 신청 - process
+	@Transactional
 	@PostMapping("/tripMateApplyInsert")
-	public String tripMateApplyInsert(TripMateVO tripMateVO, Model model) {
+	public String tripMateApplyInsert(TripMateVO tripMateVO, 
+			@RequestParam(name="mateWriter") String mateWriter, Model model) {
 		//최대 인원, 신청 인원 조회
 		//tripMateService.selectMateRecruitApplyNum(tripMateVO);
 		//메이트 신청
 		tripMateService.InsertTripMateApply(tripMateVO);
+		
 		//신청인원 업데이트
 		tripMateService.updateMateRecruitApplyNum(tripMateVO);
-			return "redirect:/tripMateList";			
+		
+		tripMateVO.setMemberId(mateWriter);
+		//게시글 작성자에게 알림
+		tripMateService.sendAlert(tripMateVO);
+		
+		return "redirect:/tripMateList";			
+	}
+	
+	//마이페이지----------------------------------------------------------------------
+	//내가 적성한 메이트
+	@GetMapping("common/myPageTrip")
+	public String tripMateList(Model model,
+			TripMateVO trVO,
+			@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
+			@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
+		String memberId = "1";
+		int total = tripMateService.myTripCount(memberId);
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		trVO.setWriterId(memberId);
+		List<TripMateVO> myTipPageList = tripMateService.myMateList(trVO, pagingVO);
+
+		model.addAttribute("list", myTipPageList);
+		model.addAttribute("paging", pagingVO);
+
+		return "myPage/mate/myTripMate";
+	}
+	
+	//신청한 메이트 조회
+	@GetMapping("common/myPageAppTrip")
+	public String tripMateAppList(Model model,
+			TripMateVO trVO,
+			@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
+			@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
+		String memberId = "leesw";
+		int total = tripMateService.myTripAppCount(memberId);
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		trVO.setMemberId(memberId);
+		List<TripMateVO> myTipPageList = tripMateService.myMateAppList(trVO, pagingVO);
+		System.out.println("test : "+trVO.getApplyId());
+		
+		model.addAttribute("list", myTipPageList);
+		model.addAttribute("paging", pagingVO);
+		
+		return "myPage/mate/myTripAppMate";
+	}
+	//신청한 메이트 취소
+	@PostMapping("common/myPageCancle")
+	public String tripMateCancle(TripMateVO tripVO) {
+		
+		
+		return "redirect:/common/myPageAppTrip";
 	}
 	
 }

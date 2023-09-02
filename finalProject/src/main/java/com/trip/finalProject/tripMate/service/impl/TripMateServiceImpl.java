@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.trip.finalProject.attachedFile.mapper.AttachedFileMapper;
+import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.packaged.mapper.PackageMapper;
 import com.trip.finalProject.tripMate.mapper.TripMateMapper;
 import com.trip.finalProject.tripMate.service.TripMateService;
@@ -117,5 +118,36 @@ public class TripMateServiceImpl implements TripMateService {
 		int result = tripMateMapper.selectMateRecruitApplyNum(tripMateVO);
 		return result;
 	}
+
+	
+	//마이페이지--------------------------------------------------------------------------------------
+	//내가 작성한 마이페이지 페이징
+	@Override
+	public int myTripCount(String memberId) {
+		// TODO Auto-generated method stub
+		return tripMateMapper.myTripCount(memberId);
+	}
+	//내가 작성한 마이페이지
+	@Override
+	public List<TripMateVO> myMateList(TripMateVO trVO, PagingVO pagingVO) {
+		return tripMateMapper.myMateList(trVO, pagingVO);
+	}
+	//내가 참여한 마이페이지 페이징
+	@Override
+	public int myTripAppCount(String memberId) {
+		// TODO Auto-generated method stub
+		return tripMateMapper.myTripAppCount(memberId);
+	}
+	//내가 참여한 마이페이지
+	@Override
+	public List<TripMateVO> myMateAppList(TripMateVO trVO, PagingVO pagingVO) {
+		return tripMateMapper.myMateAppList(trVO, pagingVO);
+	}
+
+	@Override
+	public int myMateCancle(TripMateVO trVO) {
+		return tripMateMapper.myTripCancle(trVO);
+	}
+
 
 }
