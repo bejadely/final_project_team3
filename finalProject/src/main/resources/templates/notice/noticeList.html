@@ -264,10 +264,14 @@
  			padding-right: 20%;
 }
 		    	
+	
+		    	
 	</style>
 </head>
 <script src ="ckeditor5-build-classic/ckeditor.js"></script>
+
 <body>
+<script src="https://kit.fontawesome.com/d58c3728d1.js" crossorigin="anonymous"></script>
 <section class="notice">
   <div class="page-title">
         <div class="container">
@@ -276,19 +280,43 @@
     </div>
 
     <!-- board seach area -->
-    <div id="board-search">
-        <div class="container">
-            <div class="search-window">
-                <form id="frm" method="get">
-                    <div class="search-wrap">
-                        <label for="search" class="blind">내용 검색</label>
-                        <input id="search" type="search" name="search" placeholder="검색어를 입력해주세요.">
-                        <button type="button" onclick="searchTarget()" class="btn btn-dark">검색</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+  
+    <br> <!-- style='margin-left: 8%;' -->
+      <div  th:if="${session.sessionAuthority} == 'A3'">
+		
+					
+			   	<div  id="noticeType"  class="mb-3" style="float: left; margin-left: 10%; margin-right:20px" >
+		    	
+					<select class=""name="noticeType"
+						aria-label="Default select example"  >
+						<option value="">공지사항 종류</option>
+						<option value="n1">공지사항</option>
+						<option value="n2">이벤트</option>
+					</select> 
+				</div>   
+				
+				<div id="release" class="mb-3" style="float: left; margin-right: 20px;" >
+					<select class=""  name="release"
+						aria-label="Default select example" >
+						<option value="">공개대상</option>
+						<option value="N1">전체공개</option>
+						<option value="N2">가이드공개</option>
+					</select> 
+				</div>  
+				
+		       	 <div  id="status" class="mb-3" style="float:left;">
+					<select class="" name="status"
+						aria-label="Default select example"  >
+						<option value="">글 저장상태</option>
+						<option value="T1">임시저장</option>
+						<option value="T2">저장완료</option>
+					</select> 
+				</div>
+			<div>
+				<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
+				<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+			</div>
+			</div>
    
     <!-- notice list area -->
     <div id="board-list">
@@ -311,7 +339,7 @@
               
                 
                 <th:block th:each="n : ${list}">
-                    <tr class="memberInfo" th:attr="onmouseover='this.style.background=&quot;#dadada&quot;;', onmouseleave='this.style.background=&quot;#FFFFFF&quot;;' ">
+                    <tr class="noticeInfo" th:attr="onmouseover='this.style.background=&quot;#dadada&quot;;', onmouseleave='this.style.background=&quot;#FFFFFF&quot;;' ">
                         <td th:text="${n.noticeNumber}"></td>
                         <td th:text="${n.title}"></td>
                         <td th:text="${n.writerId}"></td>
@@ -330,35 +358,63 @@
 				</th:block>
             
             <div style="text-align : center;">
-			<!-- 페이징 구현중 -->
-			<th:block th:if="${paging.nowPage != 1}">
-				<a th:href="@{noticeList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
-			</th:block>
-			<th:block th:if="${paging.startPage != 1}">
-				<a th:href="@{noticeList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
-			</th:block>
-			<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
-				<th:block th:if="${p eq paging.nowPage}">
-					<b th:text="${p}"></b>
+<!-- 페이징 구문 -->
+		<!-- 검색키워드가 없을때 -->
+		<th:block th:if="${#strings.isEmpty(keyword)}">
+			<div style="text-align : center;" class="property-pagination">
+				<th:block th:if="${paging.nowPage != 1}">
+					<a th:href="@{seeAllMemberList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
 				</th:block>
-				<th:block th:if="${p ne paging.nowPage}">
-					<a th:href="@{noticeList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+				<th:block th:if="${paging.startPage != 1}">
+					<a th:href="@{seeAllMemberList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 				</th:block>
-			</th:block>
-			<th:block
-				th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-				<a th:href="@{noticeList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
-			</th:block>
-			<th:block th:if="${paging.nowPage != paging.lastPage}">
-				<a th:href="@{noticeList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
-			</th:block>
+				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+					<th:block th:if="${p eq paging.nowPage}">
+						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+					</th:block>
+					<th:block th:if="${p ne paging.nowPage}">
+						<a th:href="@{seeAllMemberList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+					</th:block>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+					<a th:href="@{seeAllMemberList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage}">
+					<a th:href="@{seeAllMemberList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+				</th:block>
+			</div>
+		</th:block>
+		<!-- 검색키워드가 있을때 -->
+		<th:block th:if="${!#strings.isEmpty(keyword)}">
+			<div style="text-align : center;" class="property-pagination">
+				<th:block th:if="${paging.nowPage != 1}">
+					<a th:href="@{searchAdminMember(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
+				</th:block>
+				<th:block th:if="${paging.startPage != 1}">
+					<a th:href="@{searchAdminMember(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;</a>
+				</th:block>
+				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+					<th:block th:if="${p eq paging.nowPage}">
+						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+					</th:block>
+					<th:block th:if="${p ne paging.nowPage}">
+						<a th:href="@{searchAdminMember(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
+					</th:block>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+					<a th:href="@{searchAdminMember(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage}">
+					<a th:href="@{searchAdminMember(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
+				</th:block>
+			</div>
+		</th:block>
 		</div>
-	</div>
  
             
             <div class="bt_wrap">
            <!--  <div th:if="${id == board.memberId || id == 'manager'}"> -->
-            <a href="/noticeWrite" class="on">등록&nbsp;</a>
+            <a href="/noticeWrite" class="on" th:if="${session.sessionAuthority} == 'A3'">등록&nbsp;</a>
            </div>
             </div>
    <!--      </div> -->
@@ -386,8 +442,17 @@
 $(document).ready(function() {
 	// 승인 버튼 클릭 시 발생 이벤트 설정
 	$('#searchButton').on('click', search);
-	$('.memberInfo').on('mouseup', moveToNoticeDetail)
+	$('.noticeInfo').on('mouseup', moveToNoticeDetail)
+	$('#searchButton').on('click', search);
 });
+//조건검색기능
+function search(event){
+	
+	let value = $('#searchBy').val();
+	let keyword = $('#keyword').val();
+	location.href='/admin/searchAdminMember?searchBy='+value+'&keyword='+keyword;
+	
+}
 
 //클릭시 공지사항 상세 조회페이지로 이동
 function moveToNoticeDetail(event){

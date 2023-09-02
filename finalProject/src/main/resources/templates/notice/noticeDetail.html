@@ -121,15 +121,15 @@ table {
 	<div id="ls2" align="center">
 	
 		<form id="frm" action="/noticeEdit" th:object="${noticeVO}" method="post">
-		   
-		   	<div  id="noticeType"  class="mb-3" style="float: left; margin-left: 10%; margin-right:20px" >
+		   <div th:if="${session.sessionAuthority} == 'A3'">
+		    	<div  id="noticeType"  class="mb-3" style="float: left; margin-left: 10%; margin-right:20px" >
 					<select class=""name="noticeType"
 						aria-label="Default select example"  >
 						<option value="">공지사항 종류</option>
 						<option value="n1">공지사항</option>
 						<option value="n2">이벤트</option>
 					</select> 
-				</div>  
+				</div>   
 				
 				<div id="release" class="mb-3" style="float: left; margin-right: 20px;" >
 					<select class=""  name="release"
@@ -147,7 +147,8 @@ table {
 						<option value="T1">임시저장</option>
 						<option value="T2">저장완료</option>
 					</select> 
-				</div> 
+				</div>
+			</div>
 	 		<table border="1" style="width: 80%;" >
 				<tr>
 					
@@ -267,13 +268,14 @@ function setNoticeType(){
 		
 		// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
 		let defaultNoticeType = [[${noticeVO.noticeType}]];
-		//console.log([[${noticeVO.noticeType}]]);
+		console.log([[${noticeVO.noticeType}]]);
 		// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
 		$('#noticeType').find('span').text(defaultNoticeType);
-		
+		console.log($('#noticeType').find('span').text());
+
 		// selected 처리되어있던 option을 일반 옵션으로 변경
 		$('#noticeType').find('.option.selected').attr("class", "option");
-		
+		//console.log($('#noticeType .option.selected').attr("class"));
 		// 불러온 저장상태 값에 해당하는 option을 selected 및 focus 처리
 		$('.option[data-value="'+defaultNoticeType+'"]').attr("class", "option selected focus");
 	}
