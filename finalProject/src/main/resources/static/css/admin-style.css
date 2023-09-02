@@ -98,6 +98,38 @@ ul, ol {
 th, td {
 	text-align: center;
 }
+.custom-aside {
+	width: 100%;
+	height: 100%;
+	border-radius: 0;
+	line-height: 46px;
+	margin-bottom: 20px;
+	
+	text-align: left;
+	color: whitesmoke;
+}
+
+.custom-aside h5, h6, p {
+	margin-left: 10;
+}
+
+.custom-sidebar {
+	width: 100%;
+	text-align: left;
+	color: whitesmoke;
+	padding: 5px;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    height: 100%	
+}
+.custom-sidebar h5, h6 {
+	margin-bottom: 5%;
+	color: 
+}
+
+.custom-top-margin{
+	margin-top: 100px;
+}
 
 /*---------------------
   Custom - sweetalert2
@@ -215,7 +247,7 @@ h1 {
 	background-position: top center;
 }
 .spad {
-	padding-top: 100px;
+	/*padding-top: 100px;*/
 	padding-bottom: 100px;
 }
 .spad-2 {
@@ -320,6 +352,8 @@ h1 {
 }
 .top-nav {
 	background: #1c1c1c;
+	position: sticky;
+	top: 0;
 }
 .top-nav .main-menu ul li {
 	list-style: none;

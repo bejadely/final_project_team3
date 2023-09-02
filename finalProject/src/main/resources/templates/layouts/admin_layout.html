@@ -12,16 +12,29 @@
 </head>
 <body>
     <!-- header fragment 사용 -->
-    <th:block th:replace="fragments/admin_header :: headerFragment"></th:block>
+    <th:block th:replace="fragments/admin_header3_no_logo :: headerFragment"></th:block>
         
     <!-- aside + content -->    
     <section class="property-section spad">
         <div class="container">
+        	<div class="custom-top-margin"></div>
             <div class="row">
-                <div class="col-lg-3">
+                <div class="col-lg-3 custom-sidebar">
                     <div class="property-sidebar">
                         <h4>관리자 마이페이지</h4>
                         <form action="#" class="sidebar-search">
+                            <div class="custom-aside">
+	                            <h5><b>회원관리</b></h5>
+	                        	<a href="/admin/seeAllMemberList"><h5>회원정보관리</h5></a>
+	                        	<a href="/authRequestList"><h5>권한승인요청내역</h5></a>
+	                        	<h5><b>신고 현황 및 제재 관리</b></h5>
+	                        	<a href="/admin/seeAllReport"><h5>새로운 신고 내역</h5></a>
+	                        	<a href="/admin/seeAllPunish"><h5>제재 처리 내역 관리</h5></a>
+	                        	<h5><b>상품 판매 및 정산 관리</b></h5>
+	                        	<h5><b>문의 내역 관리</b></h5>
+	                        	<h5><b>공지 관리</b></h5>
+                        	</div>
+                            <!-- 
                             <select>
                                 <option value="">회원관리</option>
                                 <option value="">- 회원정보관리</option>
@@ -43,18 +56,8 @@
                             <select>
                                 <option value="">공지 관리</option>
                             </select>
+                             -->
                             <!-- 작업중 -->
-                            <div>
-	                        	<h6><b>회원관리</b></h6>
-	                        	<a href="/admin/seeAllMemberList"><h6>회원정보관리</h6></a>
-	                        	<a href="/authRequestList"><h6>권한승인요청내역</h6></a>
-	                        	<h6><b>신고 현황 및 제재 관리</b></h6>
-	                        	<a href="/admin/seeAllReport"><h6>새로운 신고 내역</h6></a>
-	                        	<a href="/admin/seeAllPunish"><h6>제재 처리 내역 관리</h6></a>
-	                        	<h6><b>상품 판매 및 정산 관리</b></h6>
-	                        	<h6><b>문의 내역 관리</b></h6>
-	                        	<h6><b>공지 관리</b></h6>
-	                        </div>
                             
                         </form>
                     </div>
