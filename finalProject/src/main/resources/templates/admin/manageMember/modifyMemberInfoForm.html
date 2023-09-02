@@ -25,7 +25,13 @@
 								<th width="150" align="center">이름</th>
 								<td width="400" align="center"><input type="text" name="memberName" th:value="*{memberName}"></td>
 								<th width="150" align="center">권한분류</th>
-								<td width="400" align="center"><input type="text" name="authority" th:value="*{authority}"></td>
+								<td id="authority" width="400" align="center">
+									<select name="authority">
+										<th:block th:each="a : ${authList}"> 
+											<option th:value="${a.detailCode}">[[${a.value}]]</option>
+										</th:block>
+									</select>
+								</td>
 							</tr>
 							<tr>
 								<th width="150" align="center">성별</th>
@@ -37,7 +43,6 @@
 								<th width="150" align="center">국적</th>
 								<td id="nationality" width="400" align="center">
 									<select name="nationality">
-										<!-- <option>[[*{nationality}]]</option> -->
 										<option value="대한민국">대한민국</option>
 										<option value="일본">일본</option>
 										<option value="중국">중국</option>
@@ -105,6 +110,7 @@
 		$('.zip').on('click', openDaumAddrApi);
 		$('#returnPage').on('click', returnToBeforePage);
 		setDefaultNationality();
+		setDefaultAuth();
 	});
 	
 	// daum 주소 api 호출
@@ -152,6 +158,22 @@
 		
 		// 불러온 국적값에 해당하는 option을 selected 및 focus 처리
 		$('.option[data-value="'+defaultNationality+'"]').attr("class", "option selected focus");
+	}
+	
+	// 권한분류 코드 기본설정하기
+	function setDefaultAuth(){
+		
+		// 기본으로 설정할 국적 설정(컨트롤러에서 불러온 회원의 기본 국적 설정값)
+		let defaultAuth = [[${memberVO.authority}]];
+		
+		// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
+		$('#authority').find('span').text(defaultAuth);
+		
+		// selected 처리되어있던 option을 일반 옵션으로 변경
+		$('#authority').find('.option.selected').attr("class", "option");
+		
+		// 불러온 국적값에 해당하는 option을 selected 및 focus 처리
+		$('.option[data-value="'+defaultAuth+'"]').attr("class", "option selected focus");
 	}
 	
 	</script>

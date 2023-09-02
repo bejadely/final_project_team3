@@ -158,15 +158,9 @@
 						(
 							post_id
 							, writer_id
-							<if test="tripTitle != null and !tripTitle.equals('')">
 							, trip_title
-							</if>
-							<if test="startDay != null and !startDay.equals('')">
 							, start_day
-							</if>
-							<if test="endDay != null and !startDay.equals('')">
 							, end_day
-							</if>
 							, trip_disclose
 							, trip_save
 							, regist_day
@@ -175,15 +169,9 @@
 				        (
 							#{postId}
 							, #{writerId}
-							<if test="tripTitle != null and !tripTitle.equals('')">
 							, #{tripTitle}
-							</if>
-							<if test="startDay != null and !startDay.equals('')">
 							, #{startDay}
-							</if>
-							<if test="endDay != null and !startDay.equals('')">
 							, #{endDay}
-							</if>
 							, #{tripDisclose}
 							, 'T1'
 							, sysdate

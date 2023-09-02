@@ -5,9 +5,72 @@
 	layout:decorate="@{layouts/default_layout}">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<meta name="description" content="Azenta Template">
+<meta name="keywords" content="Azenta, unica, creative, html">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>여행메이트 글 전체 조회</title>
+<!-- Google Font -->
+<link
+	href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap"
+	rel="stylesheet">
+<!-- include jQuery :) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+
+<!-- jQuery Modal -->
 </head>
 <body>
-
+	<div layout:fragment="content">
+		<!-- 페이지 제목 부분 -->
+		<section class="breadcrumb-section">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="breadcrumb-text">
+							<h2>여행 메이트 글</h2>
+							<div class="col-lg-12">
+								<div class="loadmore">								
+									<a href="./specialtiesInsertForm" class="primary-btn">특산물 등록</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- 여행메이트 글 section-->
+		<section class="blog-section blog-page spad">
+			<div class="container">
+				<div class="row">
+					<div th:each="list : ${specialtiesList}" th:onclick="|location.href='@{/specialInfo(postId=${list.postId})}'|"
+						class="col-lg-4 col-md-6">
+						<div class="single-blog-item">
+							<div class="sb-pic">
+								<img style="width: 300px; height: 250px;" th:src="${list.loadingImg}" alt="이미지">
+							</div>
+							<div class="sb-text">
+								<ul>
+									<li>
+										<i class="fa fa-user"></i>
+										<span th:text="${list.writerId}"></span>
+									</li>
+								
+									
+								</ul>
+								<h5>
+									<a th:text="${list.title}"></a>
+								</h5>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- 여행메이트 글 section end -->
+	</div>
+	<script>
+		
+	</script>
 </body>
 </html>

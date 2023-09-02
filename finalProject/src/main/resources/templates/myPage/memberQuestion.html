@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="@{layouts/default_layout}">
+	layout:decorate="@{layouts/myPage_layout}">
 <head>
 <meta charset="UTF-8">
 <script
@@ -28,7 +28,7 @@ table, th,td {
 $(document).ready(function() {
 	let list = [];
     
-    $('.answer').click(function(){
+    $('.question').click(function(){
         var tr = $(this).closest('tr'); // 부모 <tr> 요소 선택
         var hiddenRows = tr.nextAll('.hidden:first, .hidden:eq(1)');
         
@@ -106,45 +106,41 @@ $(document).ready(function() {
 		<table>
 			<thead>
 				<tr>
-					<th>번호</th>
 					<th>제목</th>
-					<th>작성자</th>
 					<th>등록일</th>
+					<th>답변일</th>
 					<th>답변여부</th>
 				</tr>
 			</thead>
 			<tbody>
 				<th:block th:each="que: ${guideQue}">
 					<tr class="question">
-						<td class="que"><input type="hidden" th:value="${que.questionId}"></td>
-						<td th:text="${que.questionContent}"></td>
-						<td th:text="${que.memberId}"></td>
+						<td th:if="${que.answerModifyDate == null}" th:text="${que.questionContent}"><input type="hidden" th:value="${que.questionId}"></td>
+						<td th:if="${que.answerModifyDate != null}" th:text="${que.questionContent(수정됨)}"><input type="hidden" th:value="${que.questionId}"></td>
 						<td th:text="${que.questionDate}"></td>
-						<td th:if="${que.answerContent == null}" class="answer">미답변</td>
-						<td th:if="${que.answerContent != null}" class="answer">답변완료</td>
+						<td th:if="${que.answerDate == null}">답변이 없습니다</td>
+						<td th:if="${que.answerModifyDate == null and que.answerDate != null}" th:value="${que.answerDate}">
+						<td th:if="${que.answerModifyDate != null}" th:value="${que.answerModifyDate}"></td>
+						<td th:if="${que.answerResult == 'k1'}" class="answer">미답변</td>
+						<td th:if="${que.answerResult == 'k2'}" class="answer">답변완료</td>
 					</tr>
 					
 					<tr class="hidden">
-						<td colspan="5">
+						<td colspan="4">
 							<input type="hidden" th:value="${que.answerId}">
-							<th:blcok th:if="${que.answerModifyDate == null}">
-							<label>답변일</label>
-							<input type="text" th:value="${que.answerDate}">
-							</th:blcok>
-							<th:blcok th:if="${que.answerModifyDate != null}">
-							<label>수정일</label>
-							<input type="text" th:value="${que.answerModifyDate}">
-							</th:blcok>
 							<label>내용</label>
 							<th:textarea rows="9" cols="70">[[${que.questionContent}]]</th:textarea>
 						</td>
 					</tr>
 					<tr class="hidden">
-						<td colspan="5">
+						<td colspan="4">
+							<th:blcok th:if="${que.answerContent == null}">
+								답변이 없습니다.
+							</th:blcok>
+							<th:block th:if="${que.answerContent != null}">
 							<label>답변</label>
-							<textarea rows="9" cols="70" readonly="readonly">[[${que.answerContexts}]]</textarea>
-							<br><button type="reset">취소</button>	
-							<button type="button" class="update">수정</button>									
+							<th:textarea rows="9" cols="70" readonly="readonly">[[${que.answerContent}]]</th:textarea>
+							</th:block>							
 						</td>
 					</tr>
 					

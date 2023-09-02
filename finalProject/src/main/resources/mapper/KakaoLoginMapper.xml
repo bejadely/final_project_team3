@@ -32,6 +32,10 @@
 					member_Name,
 					Email,
 					saved_profile_img,
+					AUTHORITY,
+					access_token,
+					refresh_token,
+					login_type,
 					birth_date,
 					gender,
 					sign_up_date)
@@ -39,10 +43,14 @@
 					(#{id},
 					#{password},
 					#{nickname},
-					#{email},
+					#{email},					
 					#{profileImage},
-					'940426',
-					'G1',
+					'A1',
+					#{accessToken},
+					#{refreshToken},
+					'L2',
+					null,
+					null,
 					sysdate)
 	</insert>
 		

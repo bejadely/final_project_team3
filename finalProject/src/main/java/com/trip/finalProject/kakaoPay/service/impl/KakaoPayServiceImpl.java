@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.trip.finalProject.kakaoPay.mapper.KakaoPayMapper;
 import com.trip.finalProject.kakaoPay.service.KakaoApproveResponseVO;
+import com.trip.finalProject.kakaoPay.service.KakaoCancelResponseVO;
 import com.trip.finalProject.kakaoPay.service.KakaoPayInfoResponseVO;
 import com.trip.finalProject.kakaoPay.service.KakaoPayInfoVO;
 import com.trip.finalProject.kakaoPay.service.KakaoPayResponseVO;
@@ -113,14 +114,24 @@ public class KakaoPayServiceImpl implements KakaoPayService {
     
     
     //결제환불
-//    public KakaoCancelResponse kakaoCancel() {
-//    	MultiValueMap<String, String> parameter = new LinkedMultiValueMap<>();
-//    	parameter.add("cid", cid);
-//    	parameter.add("tid", kakaoPayResponseVO.getTid());
-//    	parameter.add("cancel_amount",);
-//    	
-//    }
-    
+    public KakaoCancelResponseVO KakaoCancelResponse(KakaoPayInfoResponseVO kakaoPayInfoResponseVO) {
+    	MultiValueMap<String, String> parameter = new LinkedMultiValueMap<>();
+    	parameter.add("cid", cid);
+    	parameter.add("tid", kakaoPayInfoResponseVO.getTid());
+    	parameter.add("cancel_amount", String.valueOf(kakaoPayInfoResponseVO.getCancelAmount()) );
+    	parameter.add("cancel_tax_free_amount",String.valueOf(kakaoPayInfoResponseVO.getCancelTaxfreeAmount()) );
+    	System.out.println(kakaoPayInfoResponseVO.getCancelAmount());
+    	System.out.println(kakaoPayInfoResponseVO.getCancelTaxfreeAmount());
+    	System.out.println(kakaoPayInfoResponseVO.getTid());
+    	HttpEntity<MultiValueMap<String, String>> requEntity = new HttpEntity<>(parameter,this.getHeaders());
+    	
+    	RestTemplate restTemplate = new RestTemplate();
+    	
+    	KakaoCancelResponseVO cancelResponseVO = restTemplate.postForObject("https://kapi.kakao.com/v1/payment/cancel", requEntity, KakaoCancelResponseVO.class);
+    	
+    	return cancelResponseVO;
+    	
+    }
     
   //서버로 요청할 Header
     private HttpHeaders getHeaders() {
@@ -147,5 +158,7 @@ public class KakaoPayServiceImpl implements KakaoPayService {
 		// TODO Auto-generated method stub
 		return kakaoPayMapper.insertPurchaseInfo(kakaoPayInfoResponseVO);
 	}
+
+
     
 }

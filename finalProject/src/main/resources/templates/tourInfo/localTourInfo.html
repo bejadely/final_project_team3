@@ -127,7 +127,16 @@
 .fa-square-plus {
 	cursor: pointer;
 }
-
+.slick-button {
+  background-color: #2cbdb8;
+  color: white;
+}
+.nav-link {
+  color: #2cbdb8;
+}
+.nav-link:hover {
+  color: black; 
+}
 </style>
 </head>
 <body>
@@ -173,28 +182,28 @@
 		<!--지역 네비게이션-->
 		<ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
 			<li class="nav-item" role="presentation">
-				<button class="nav-link active link-info" id="daegu-tab" data-bs-toggle="tab" data-bs-target="#daegu-tab-pane" type="button" role="tab" aria-controls="daegu-tab-pane" aria-selected="true" data-area-code="4">대구</button>
+				<button class="nav-link active " id="daegu-tab" data-bs-toggle="tab" data-bs-target="#daegu-tab-pane" type="button" role="tab" aria-controls="daegu-tab-pane" aria-selected="true" data-area-code="4">대구</button>
 			</li>
 			<li class="nav-item" role="presentation">
-				<button class="nav-link link-info" id="busan-tab" data-bs-toggle="tab" data-bs-target="#busan-tab-pane" type="button" role="tab" aria-controls="busan-tab-pane" aria-selected="false" data-area-code="6">부산</button>
+				<button class="nav-link " id="busan-tab" data-bs-toggle="tab" data-bs-target="#busan-tab-pane" type="button" role="tab" aria-controls="busan-tab-pane" aria-selected="false" data-area-code="6">부산</button>
 			</li>
 			<li class="nav-item" role="presentation">
-				<button class="nav-link link-info" id="ulsan-tab" data-bs-toggle="tab" data-bs-target="#ulsan-tab-pane" type="button" role="tab" aria-controls="ulsan-tab-pane" aria-selected="false" data-area-code="7">울산</button>
+				<button class="nav-link " id="ulsan-tab" data-bs-toggle="tab" data-bs-target="#ulsan-tab-pane" type="button" role="tab" aria-controls="ulsan-tab-pane" aria-selected="false" data-area-code="7">울산</button>
 			</li>
 			<li class="nav-item" role="presentation">
-				<button class="nav-link link-info" id="gyeongju-tab" data-bs-toggle="tab" data-bs-target="#gyeongju-tab-pane" type="button" role="tab" aria-controls="gyeongju-tab-pane" aria-selected="true" data-area-code="35" data-sigungu-code="2">경주</button>
+				<button class="nav-link " id="gyeongju-tab" data-bs-toggle="tab" data-bs-target="#gyeongju-tab-pane" type="button" role="tab" aria-controls="gyeongju-tab-pane" aria-selected="true" data-area-code="35" data-sigungu-code="2">경주</button>
 			</li>
 			<li class="nav-item" role="presentation">
-				<button class="nav-link link-info" id="pohang-tab" data-bs-toggle="tab" data-bs-target="#pohang-tab-pane" type="button" role="tab" aria-controls="pohang-tab-pane" aria-selected="false" data-area-code="35" data-sigungu-code="23">포항</button>
+				<button class="nav-link " id="pohang-tab" data-bs-toggle="tab" data-bs-target="#pohang-tab-pane" type="button" role="tab" aria-controls="pohang-tab-pane" aria-selected="false" data-area-code="35" data-sigungu-code="23">포항</button>
 			</li>
 			<li class="nav-item" role="presentation">
-				<button class="nav-link link-info" id="andong-tab" data-bs-toggle="tab" data-bs-target="#andong-tab-pane" type="button" role="tab" aria-controls="andong-tab-pane" aria-selected="false" data-area-code="35" data-sigungu-code="11">안동</button>
+				<button class="nav-link " id="andong-tab" data-bs-toggle="tab" data-bs-target="#andong-tab-pane" type="button" role="tab" aria-controls="andong-tab-pane" aria-selected="false" data-area-code="35" data-sigungu-code="11">안동</button>
 			</li>
 			<li class="nav-item" role="presentation">
-				<button class="nav-link link-info" id="tongyoung-tab" data-bs-toggle="tab" data-bs-target="#tongyoung-tab-pane" type="button" role="tab" aria-controls="tongyoung-tab-pane" aria-selected="false" data-area-code="36" data-sigungu-code="17">통영</button>
+				<button class="nav-link " id="tongyoung-tab" data-bs-toggle="tab" data-bs-target="#tongyoung-tab-pane" type="button" role="tab" aria-controls="tongyoung-tab-pane" aria-selected="false" data-area-code="36" data-sigungu-code="17">통영</button>
 			</li>
 			<li class="nav-item" role="presentation">
-				<button class="nav-link link-info" id="geoje-tab" data-bs-toggle="tab" data-bs-target="#geoje-tab-pane" type="button" role="tab" aria-controls="geoje-tab-pane" aria-selected="false" data-area-code="36" data-sigungu-code="1">거제</button>
+				<button class="nav-link " id="geoje-tab" data-bs-toggle="tab" data-bs-target="#geoje-tab-pane" type="button" role="tab" aria-controls="geoje-tab-pane" aria-selected="false" data-area-code="36" data-sigungu-code="1">거제</button>
 			</li>
 		</ul>
 		<br>
@@ -208,8 +217,8 @@
 		<div id="" class="">
 			<div class="outer">
 				<div class="inner1">
-					<button type="button" class="btn btn-primary btn-lg prev prev1"><</button>
-					<button type="button" class="btn btn-primary btn-lg next next1">></button>
+					<button type="button" class="btn btn-lg prev prev1 slick-button"><</button>
+					<button type="button" class="btn btn-lg next next1 slick-button">></button>
 					<div class="cards-wrapper cards-wrapper1">
 						<div th:each="item : ${tourSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 							<div class="image-wrapper">
@@ -232,8 +241,8 @@
 		<div id="" class="">
 			<div class="outer">
 				<div class="inner2">
-					<button type="button" class="btn btn-primary btn-lg prev prev2"><</button>
-					<button type="button" class="btn btn-primary btn-lg next next2">></button>
+					<button type="button" class="btn btn-lg prev prev2 slick-button"><</button>
+					<button type="button" class="btn btn-lg next next2 slick-button">></button>
 					<div class="cards-wrapper cards-wrapper2">
 						<div th:each="item : ${foodSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 							<div class="image-wrapper">
@@ -256,8 +265,8 @@
 		<div id="" class="">
 			<div class="outer">
 				<div class="inner3">
-					<button type="button" class="btn btn-primary btn-lg prev prev3"><</button>
-					<button type="button" class="btn btn-primary btn-lg next next3">></button>
+					<button type="button" class="btn btn-lg prev prev3 slick-button"><</button>
+					<button type="button" class="btn btn-lg next next3 slick-button">></button>
 					<div class="cards-wrapper cards-wrapper3">
 						<div th:each="item : ${shoppingSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 							<div class="image-wrapper">
@@ -280,8 +289,8 @@
 		<div id="" class="">
 			<div class="outer">
 				<div class="inner4">
-					<button type="button" class="btn btn-primary btn-lg prev prev4"><</button>
-					<button type="button" class="btn btn-primary btn-lg next next4">></button>
+					<button type="button" class="btn btn-lg prev prev4 slick-button"><</button>
+					<button type="button" class="btn btn-lg next next4 slick-button">></button>
 					<div class="cards-wrapper cards-wrapper4">
 						<div th:each="item : ${cultureSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 							<div class="image-wrapper">
@@ -304,8 +313,8 @@
 		<div id="" class="">
 			<div class="outer">
 				<div class="inner5">
-					<button type="button" class="btn btn-primary btn-lg prev prev5"><</button>
-					<button type="button" class="btn btn-primary btn-lg next next5">></button>
+					<button type="button" class="btn btn-lg prev prev5 slick-button"><</button>
+					<button type="button" class="btn btn-lg next next5 slick-button">></button>
 					<div class="cards-wrapper cards-wrapper5">
 						<div th:each="item : ${leportsSpot}" class="card" th:attr="data-content-id=${item.contentId}, data-content-type-id=${item.contentTypeId}, data-address=${item.address}" data-bs-toggle="modal" data-bs-target="#exampleModal">
 							<div class="image-wrapper">

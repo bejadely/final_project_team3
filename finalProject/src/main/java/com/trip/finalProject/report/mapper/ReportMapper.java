@@ -16,6 +16,10 @@ public interface ReportMapper {
 	// 신고 내역 상세조회
 	public ReportVO getReportDetail(ReportVO vo);
 	
+	// 신고 제재처리로 상태값 변경
+	public int updateResultToPunish(ReportVO vo);
 	
+	// 신고 제재미처리로 상태값 변경
+	public int updateResultToInvalidate(ReportVO vo);
 	
 }

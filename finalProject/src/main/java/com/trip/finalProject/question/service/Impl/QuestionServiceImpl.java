@@ -30,8 +30,8 @@ public class QuestionServiceImpl implements QuestionService {
 	}
 
 	@Override
-	public List<QuestionVO> getQueAll(PagingVO pagingvo) {
-		return queMapper.selectAllQue(pagingvo);
+	public List<QuestionVO> getQueAll(QuestionVO questionVO, PagingVO pagingvo) {
+		return queMapper.selectAllQue(questionVO, pagingvo);
 	}
 	//답글 입력
 	@Override
@@ -54,8 +54,8 @@ public class QuestionServiceImpl implements QuestionService {
 
 
 	@Override
-	public List<QuestionVO> getQueAllMember(PagingVO pagingVO) {
-		return queMapper.selectAllQueMember(pagingVO);
+	public List<QuestionVO> getQueAllMember(QuestionVO questionVO, PagingVO pagingVO) {
+		return queMapper.selectAllQueMember(questionVO, pagingVO);
 	}
 	
 	
