@@ -112,7 +112,7 @@
 		$('.memberInfo').on('mouseover', colorDarker)
 						.on('mouseleave', colorReset)
 						.on('click')
-						.on('mouseup', moveToMemberDetail)
+						.on('mouseup', moveToMemberDetail);
 	});
 	
 	// 조건검색기능
@@ -129,6 +129,7 @@
 		$(event.currentTarget).css({background: '#f2f4f5'})
 							  .css({cursor: 'pointer'});		
 	}
+	
 	
 	// 마우스릴리브 : 색상 원상복귀
 	function colorReset(event){

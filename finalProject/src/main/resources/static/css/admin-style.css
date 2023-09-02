@@ -86,7 +86,7 @@ input:focus, select:focus, button:focus, textarea:focus {
 a:hover, a:focus {
 	text-decoration: none;
 	outline: none;
-	color: #fff;
+	color: #2cbdb8;
 }
 ul, ol {
 	padding: 0;
@@ -108,8 +108,9 @@ th, td {
     height: 100%;
 }
 .custom-sidebar h5, h6 {
-	margin-bottom: 10%;
-	color: 
+	/*margin-bottom: 10%; */
+	padding-top: 5%;
+	padding-bottom: 5%;
 }
 
 .custom-top-margin{
@@ -127,11 +128,9 @@ th, td {
 .main-menu{
 	font-weight: bold;	
 }
-.detail-menu{
-	margin-left: 10px;
-}
 
 .detail-menu i{
+	padding-left: 10px;
 	font-size: 14px;
 	vertical-align: baseline;
 	margin-right: 6px;
