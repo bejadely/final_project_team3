@@ -35,16 +35,30 @@ $(document).ready(function() {
 	       window.location.href = prevPageUrl; // 자동으로 이동
 	   }
 	   
-	   function buttonClick(postId) {
-	       location.href='@{/tripMateInfo(postId=' + postId + ')}';
-	   }
+	   $('.cancle').click(function(event){
+		   event.stopPropagation();
+		   var applyId = $(this).attr('value');// 버튼의 'th:value' 속성 값을 가져옵니다.
+		   var postId = $(this).parent().parent().find("td:eq(0)").attr("value");
+	        console.log('버튼이 클릭되었습니다. applyId: ' + applyId);
+	        console.log("postId : " + postId)
+	        
+	        var form = $("<form action='/common/myPageCancle' method='post'></form>");
+	        form.append("<input type='hidden' name='applyId' value='" + applyId + "'>");
+	        form.append("<input type='hidden' name='postId' value='" + postId + "'>");
+	        form.appendTo("body").submit();
+
+	   })
+
+	   
 	});
+
 </script>
 </head>
 <body>
 <div layout:fragment="content">
 	<section>
 		<!-- 여행기록 section-->
+		<form method="post" >
 		<table>
 			<thead>
 				<tr> 
@@ -58,19 +72,20 @@ $(document).ready(function() {
 				</tr>
 			</thead>
 			<tbody>
-				<th:block th:each="l : ${list}">
-					<tr class="question" th:onclick="'javascript:buttonClick(' + ${l.postId} + ')'" >
-						<td th:text="${l.mateTitle}" th:value="${l.applyId}"></td>
-						<td th:text="${#dates.format(l.startDay, 'yyyy-MM-dd')} + '~' + ${#dates.format(l.endDay, 'yyyy-MM-dd')}"></td>
-    					<td th:text="${#dates.format(l.deadline, 'yyyy-MM-dd')}"></td>
-    					<td th:text="${l.applyNum} + '/' +${l.mateMax}"></td>
-    					<td th:text="${l.complition}"></td>
-    					<td th:text="${l.hit}"></td>
-    					<td><button type="button" class="cancle">취소</button></td>
-					</tr>
-				</th:block>
+					<th:block th:each="l : ${list}">
+						<tr class="question" th:onclick="|location.href='@{/tripMateInfo(postId=${l.postId})}'|">
+							<td th:text="${l.mateTitle}" th:value="${l.postId}" ></td>
+							<td th:text="${#dates.format(l.startDay, 'yyyy-MM-dd')} + '~' + ${#dates.format(l.endDay, 'yyyy-MM-dd')}"></td>
+	    					<td th:text="${#dates.format(l.deadline, 'yyyy-MM-dd')}"></td>
+	    					<td th:text="${l.applyNum} + '/' +${l.mateMax}"></td>
+	    					<td th:text="${l.complition}"></td>
+	    					<td th:text="${l.hit}"></td>
+	    					<td><button type="button" class="cancle" th:value="${l.applyId}">취소</button></td>
+						</tr>
+					</th:block>
 			</tbody>
 			</table>
+				</form>
 			<!-- 여행기록 페이징 -->
 			<div class="container" style="text-align: center">
 				<th:block th:if="${paging.startPage != 1}">
