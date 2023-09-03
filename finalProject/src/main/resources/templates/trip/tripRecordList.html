@@ -141,8 +141,15 @@
 	<script>
 	document.querySelector('form[name="sendData"]').addEventListener('submit', function(e) {
 		e.preventDefault();
+		
+		let title = document.getElementsByName('tripTitle')[0];
 		let date1 = document.getElementsByName('startDay')[0];
 		let date2 = document.getElementsByName('endDay')[0];
+		if (title.value == '') {
+	          alert('여행제목이 입력되지 않았습니다.')
+	          title.focus();
+	          return;
+	       }
 		if (date1.value == '') {
 			alert('여행일정이 입력되지 않았습니다.')
 			return;
@@ -154,19 +161,6 @@
 		sendData.submit();
 		
 	});
-	
-	//여행기록 저장시 예외처리
-    document.querySelector('form[name="insertForm"]').addEventListener('submit', function(e) {
-       //이벤트 버블링 제어
-       e.preventDefault();
-       let title = document.getElementsByName('tripTitle')[0];
-       if (title.value == '') {
-          alert('여행제목이 입력되지 않았습니다.')
-          title.focus();
-          return;
-       }
-       insertForm.submit();
-    });   
 	
 	</script>
 </body>

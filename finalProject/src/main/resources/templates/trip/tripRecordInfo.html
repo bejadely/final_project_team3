@@ -148,7 +148,7 @@ table {
 			</div>
 			<h5>여행 메모</h5>
 			<div th:each="mo : ${memoInfo}">
-				순번 : [[${mo.memoNo}]] 내용 : [[${mo.content}]]
+				내용 : [[${mo.content}]]
 				<h3> ----------</h3>
 			</div>
 			<button type="button" onclick="location.href='/tripRecordList'">목록으로</button>
