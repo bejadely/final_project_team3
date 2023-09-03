@@ -112,6 +112,18 @@ public class QuestionServiceImpl implements QuestionService {
 		
 		return map;
 	}
+
+	@Override
+	public QuestionVO insertAnswerToQuestion(QuestionVO questionVO) {
+		// 문의 답변 입력(관리자)
+		int result = queMapper.insertAnswerToQuestion(questionVO);
+		
+		if(result > 0) {
+			return questionVO;
+		} else {
+			return null;
+		}
+	}
 	
 	
 

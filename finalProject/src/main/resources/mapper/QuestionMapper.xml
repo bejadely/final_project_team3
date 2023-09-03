@@ -151,5 +151,16 @@
       WHERE rn BETWEEN #{start} AND #{end}
  	</select>
  	
+ 	<update id="insertAnswerToQuestion">
+ 		UPDATE question
+	    <set>
+		   answer_result = 'K2',
+		   answer_member_id = #{answerMemberId},
+		   answer_date = sysdate,
+		   answer_content = #{answerContent},
+	    </set> 
+		 WHERE question_id = #{questionId}
+ 	</update>
+ 	
   
   </mapper>
