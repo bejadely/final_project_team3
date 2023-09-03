@@ -58,7 +58,7 @@ $(document).ready(function() {
 			</thead>
 			<tbody>
 				<th:block th:each="l : ${list}">
-					<tr class="question" th:onclick="|location.href='@{/tripMateInfo(postId=${l.postId})}'|">
+					<tr class="question" th:onclick="|location.href='@{/common/tripMateMyInfo(postId=${l.postId})}'|">
 						<td th:text="${l.mateTitle}"><input type="hidden" th:value="${l.postId}"></td>
 						<td th:text="${#dates.format(l.startDay, 'yyyy-MM-dd')} + '~' + ${#dates.format(l.endDay, 'yyyy-MM-dd')}"></td>
     					<td th:text="${#dates.format(l.deadline, 'yyyy-MM-dd')}"></td>

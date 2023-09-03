@@ -1,6 +1,7 @@
 package com.trip.finalProject.tripMate.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.trip.finalProject.common.PagingVO;
 
@@ -51,6 +52,9 @@ public interface TripMateService {
 	//내가 작성한 메이트
 	public List<TripMateVO> myMateList(TripMateVO trVO, PagingVO pagingVO);
 	
+	//내가 작성한 메이트 게시글 상세조회
+	public List<TripMateVO> getTripMateMyInfo(TripMateVO tripMateVO);
+	
 	//내가 참여한 메이트 페이징
 	public int myTripAppCount(String memberId);
 	
@@ -59,5 +63,11 @@ public interface TripMateService {
 	
 	//신청한 메이트 취소
 	public int myMateCancle(TripMateVO trVO);
+	
+	//메이트 인원수 줄이기
+	public int myTripnum(TripMateVO trVO);
+	
+	//참여한 메이트 정보 불러오기
+	public TripMateVO memberInfo(TripMateVO tripMateVO);
 	
 }

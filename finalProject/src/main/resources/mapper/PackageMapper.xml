@@ -50,4 +50,89 @@
 		FROM package_regist
 		WHERE post_id=#{postId}
 	</select>
+	
+	<!-- 가이드용 ========================================================================== -->
+	<select id="guiListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM package_regist
+		WHERE writer_id = #{writerId} AND completion = #{completion}
+	</select>
+	
+	<select id="guiListPackage" resultType="PackageVO">
+	SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			 FROM(SELECT post_id,
+				   name,
+				   content,
+				   tour_theme,
+				   deadline_date,
+				   start_date,
+				   end_date,
+				   max_reservation,
+				   code_val(completion) completion,
+				   writer_id,
+				   now_reservation,
+				   reg_date
+			FROM package_regist
+			WHERE writer_id = #{pacVO.writerId} AND completion = #{pacVO.completion}
+				 ORDER BY reg_date DESC) a)
+		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
+	</select>
+	<select id="guiListComCount" resultType="int">
+		SELECT COUNT(*)
+		FROM package_regist r RIGHT JOIN calculation c on r.post_id = c.post_id 
+		WHERE r.writer_id = #{writerId} AND c.cal_status = 'V2'
+	</select>
+	
+	<select id="guiListComPackage" resultType="PackageVO">
+	SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			 FROM(SELECT r.post_id,
+					    r.name,
+					    r.content,
+					    r.tour_theme,
+					    r.deadline_date,
+					    r.start_date,
+					    r.end_date,
+					    r.max_reservation,
+					    code_val(r.completion) completion,
+					    r.writer_id,
+					    r.now_reservation,
+					    r.reg_date
+			FROM package_regist r RIGHT JOIN calculation c on r.post_id = c.post_id 
+			WHERE r.writer_id = #{pacVO.writerId} AND c.cal_status = 'V2'
+				 ORDER BY reg_date DESC) a)
+		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
+	</select>
+	
+	<select id="guidePacInfo" resultType="PackageVO">
+		SELECT content, 
+			   name, 
+			   price, 
+			   start_date, 
+			   end_date, 
+			   deadline_date,
+			   now_reservation, 
+			   max_reservation, 
+			   tour_theme,
+			   code_val(completion) completion,
+			   post_id
+		FROM package_regist
+		WHERE post_id=#{postId}
+	</select>
+	<!-- 패키지 상세보기 내의 회원 정보 불러오기 -->
+	<select id="pacMember" resultType="PackageVO">
+		SELECT p.post_id,
+			   p.member_id,
+			   p.price,
+			   p.order_status,
+			   p.quantity,
+			   p.order_date,
+			   m.member_name,
+			   m.nationality,
+			   code_val(m.gender) gender,
+			   m.birth_date
+		FROM purchase p LEFT JOIN member m on p.member_id = m.member_id 
+		WHERE p.post_id = #{postId}
+	</select>
 </mapper>

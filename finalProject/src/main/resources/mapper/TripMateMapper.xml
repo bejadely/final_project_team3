@@ -274,9 +274,58 @@
 		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
 	</select>
 	
+	<!-- 내가 신청한 메이트 취소  -->
 	<delete id="myTripCancle" parameterType="TripMateVO">
 		DELETE FROM mate_apply
 		WHERE apply_id = #{applyId}
 	</delete>
+	
+	<!-- 내가 작성한 메이트 글 상세 조회 -->
+	<select id="selectTripMateMyInfo" resultType="TripMateVO">
+  				 SELECT  r.post_id,
+			 			 r.mate_title,
+			 			 r.start_day,
+			 		 	 r.end_day,
+			 			 r.mate_max,
+			 			 r.apply_num,
+			 			 code_val(r.complition) complition,
+			 			 r.write_date,
+			 			 r.deadline,
+			 			 r.hit,
+			 			 r.writer_id,
+			 			 r.trip_area,
+                         a.apply_id,
+                         m.member_id,
+                         code_val(m.gender) gender,
+                         m.birth_date,
+                         m.nationality
+		FROM mate_recruit r left OUTER JOIN mate_apply a on r.post_id = a.post_id
+							right OUTER JOIN member m on a.member_id = m.member_id
+		WHERE r.post_id = #{postId}
+	</select>
+	<!-- 신청인원수 줄이기 -->
+	<update id="myTripnum" parameterType="TripMateVO">
+		UPDATE mate_recruit
+		<set>
+			apply_num = apply_num - 1
+		</set>
+		WHERE post_id = #{postId}
+	</update>
+	
+	<select id="memberInfo" resultType="TripMateVO">
+  				 SELECT  a.apply_id,
+  				 		 a.apply_info,
+  				 		 a.post_id,
+                         m.member_id,
+                         m.member_name,
+                         code_val(m.gender) gender,
+                         m.birth_date,
+                         m.phone_number,
+                         m.nationality
+		FROM mate_apply a right JOIN member m on a.member_id = m.member_id
+		WHERE m.member_id = #{memberId} AND a.post_id = #{postId}
+	</select>
+	
+	
 	
 </mapper>

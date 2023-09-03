@@ -1,6 +1,8 @@
 package com.trip.finalProject.tripMate.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.trip.finalProject.attachedFile.mapper.AttachedFileMapper;
 import com.trip.finalProject.common.PagingVO;
-import com.trip.finalProject.packaged.mapper.PackageMapper;
 import com.trip.finalProject.tripMate.mapper.TripMateMapper;
 import com.trip.finalProject.tripMate.service.TripMateService;
 import com.trip.finalProject.tripMate.service.TripMateVO;
@@ -124,7 +125,6 @@ public class TripMateServiceImpl implements TripMateService {
 	//내가 작성한 마이페이지 페이징
 	@Override
 	public int myTripCount(String memberId) {
-		// TODO Auto-generated method stub
 		return tripMateMapper.myTripCount(memberId);
 	}
 	//내가 작성한 마이페이지
@@ -132,10 +132,16 @@ public class TripMateServiceImpl implements TripMateService {
 	public List<TripMateVO> myMateList(TripMateVO trVO, PagingVO pagingVO) {
 		return tripMateMapper.myMateList(trVO, pagingVO);
 	}
+	
+	//여행 메이트 게시글 상세 조회
+	@Override
+	public List<TripMateVO> getTripMateMyInfo(TripMateVO tripMateVO) {
+		return tripMateMapper.selectTripMateMyInfo(tripMateVO);
+	}
+	
 	//내가 참여한 마이페이지 페이징
 	@Override
 	public int myTripAppCount(String memberId) {
-		// TODO Auto-generated method stub
 		return tripMateMapper.myTripAppCount(memberId);
 	}
 	//내가 참여한 마이페이지
@@ -148,6 +154,18 @@ public class TripMateServiceImpl implements TripMateService {
 	public int myMateCancle(TripMateVO trVO) {
 		return tripMateMapper.myTripCancle(trVO);
 	}
+
+	//참여한 메이트 정보 불러오기
+	@Override
+	public TripMateVO memberInfo(TripMateVO tripMateVO) {
+		return tripMateMapper.memberInfo(tripMateVO);
+	}
+
+	@Override
+	public int myTripnum(TripMateVO trVO) {
+		return tripMateMapper.myTripnum(trVO);
+	}
+	
 
 
 }
