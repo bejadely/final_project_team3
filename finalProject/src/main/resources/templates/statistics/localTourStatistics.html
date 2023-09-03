@@ -2727,7 +2727,7 @@
                             <tr th:each ="visitorInfo, stat : ${visitorRank}">
                                 <th scope="row" style="width: 15%" th:text="${stat.count}"></th>
                                 <td style="width: 40%" th:text="${visitorInfo.locationName}"></td>
-                                <td th:text="|${visitorInfo.visitorNumber} 명|"></td>
+                                <td data-th-text="${#numbers.formatInteger(visitorInfo.visitorNumber, 3, 'COMMA') + '명'}"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -2741,7 +2741,7 @@
 	                            <td th:text="${attractionInfo.locationName}"></td>
 	                            <td th:text="${attractionInfo.attractionType}"></td>
 	                            <td th:text="${attractionInfo.attractionName}"></td>
-	                            <td th:text="|${attractionInfo.visitorNumber} 건|"></td>
+                                <td data-th-text="${#numbers.formatInteger(attractionInfo.visitorNumber, 3, 'COMMA') + '명'}"></td>
 	                        </tr>
                         </tbody>
                     </table>
@@ -3128,7 +3128,7 @@
                         container: "body", // Place the popover in the <body> element
                         html: true, // Enable HTML content
                         trigger: "hover", // Show the popover on hover
-                        content: key + " " + data[key] + "건" // Replace with your desired content
+                        content: key + " " + data[key].toLocaleString('ko-KR') + "건" // Replace with your desired content
                     });
                 } else {
                     let tongyoung = ['path200', 'path202', 'path204', 'path206', 'path208', 'path210', 'path212', 'path214', 'path216', 'path218', 'path220', 'path224', 'path230', 'path240', 'path286'];
@@ -3137,7 +3137,7 @@
                             container: "body", // Place the popover in the <body> element
                             html: true, // Enable HTML content
                             trigger: "hover", // Show the popover on hover
-                            content: key + " " + data[key] + "건" // Replace with your desired content
+                            content: key + " " + data[key].toLocaleString('ko-KR') + "건" // Replace with your desired content
                         });
                     }
                 }
@@ -3147,15 +3147,15 @@
         function appendRank(data) {
             // 전체 숫자의 합 계산
             const totalSum = Object.values(data).reduce((acc, num) => acc + num, 0);
-            $('#total').val('전체 ' + totalSum + '명');
+            $('#total').val('전체 ' + totalSum.toLocaleString('ko-KR') + '명');
 
             // 객체를 배열로 변환하여 정렬
             const sortedEntries = Object.entries(data).sort((a, b) => b[1] - a[1]);
 
             //  svg 맵 아래에 방문자수 데이터 넣기
-            $('#first').val(sortedEntries[0][0] + " " + sortedEntries[0][1] + '명');
-            $('#second').val(sortedEntries[1][0] + " " + sortedEntries[1][1] + '명');
-            $('#third').val(sortedEntries[2][0] + " " + sortedEntries[2][1] + '명');
+            $('#first').val(sortedEntries[0][0] + " " + sortedEntries[0][1].toLocaleString('ko-KR') + '명');
+            $('#second').val(sortedEntries[1][0] + " " + sortedEntries[1][1].toLocaleString('ko-KR') + '명');
+            $('#third').val(sortedEntries[2][0] + " " + sortedEntries[2][1].toLocaleString('ko-KR') + '명');
 
         }
 
@@ -3205,18 +3205,18 @@
 
             for(let i = 0; i < 5; i++) {
                 $('.tripNameContent').eq(i).text(tripVOList[i].tripType);
-                $('.tripNumberContent').eq(i).text(tripVOList[i].searchNumber + '건');
+                $('.tripNumberContent').eq(i).text(Number(tripVOList[i].searchNumber).toLocaleString('ko-KR') + '건');
 
                 $('.fellowNameContent').eq(i).text(fellowVOList[i].fellowType);
-                $('.fellowNumberContent').eq(i).text(fellowVOList[i].searchNumber + '건');
+                $('.fellowNumberContent').eq(i).text(Number(fellowVOList[i].searchNumber).toLocaleString('ko-KR') + '건');
 
                 $('.restaurantNameContent').eq(i).text(restaurantVOList[i].restaurantName);
                 $('.restaurantTypeContent').eq(i).text(restaurantVOList[i].restaurantType);
-                $('.restaurantNumberContent').eq(i).text(restaurantVOList[i].visitorNumber + '건');
+                $('.restaurantNumberContent').eq(i).text(Number(restaurantVOList[i].visitorNumber).toLocaleString('ko-KR') + '건');
 
                 $('.attractionNameContent').eq(i).text(attractionVOList[i].attractionName);
                 $('.attractionTypeContent').eq(i).text(attractionVOList[i].attractionType);
-                $('.attractionNumberContent').eq(i).text(attractionVOList[i].visitorNumber + '건');
+                $('.attractionNumberContent').eq(i).text(Number(attractionVOList[i].visitorNumber).toLocaleString('ko-KR') + '건');
             }
 
             let totalSummaryData = [
