@@ -86,7 +86,7 @@
 									<td>
 									<button type="button" th:class="btn-success" th:text="${l.answerResult}"></button>
 									<span th:text="${l.questionTitle}"></span><br>
-									<span th:utext="|문의자ID : ${l.memberId}  ${#dates.format(l.questionDate, 'yyyy년MM월dd일')}"></span>
+									<span th:utext="|문의자ID : ${l.memberId} 문의일자 : ${#dates.format(l.questionDate, 'yyyy.MM.dd HH:mm')}"></span>
 									<p th:text="${l.questionContent}"></p>
 									<th:block th:if="${l.answerResult == '미답변'}">
 										<button type="button" th:id="|ansBtn${lStat.count}|" class="btn btn-primary btn-sm" data-visible="visible">답변하기</button>
@@ -104,7 +104,7 @@
 												<textarea name="answerContent" class="form-control" rows="3" cols="90"></textarea>
 											</th:block>
 											<th:block th:if="${l.answerResult != '미답변'}">
-												<p th:text="|답변일자 : ${#dates.format(l.answerDate, 'yyyy년MM월dd일')}|"></p>
+												<p th:text="|답변일자 : ${#dates.format(l.answerDate, 'yyyy.MM.dd HH:mm')}|"></p>
 												<textarea name="answerContent" class="form-control" th:text="${l.answerContent}" rows="3" cols="90" readonly></textarea>
 											</th:block>
 											<th:block th:if="${l.answerResult == '미답변'}">	
@@ -130,24 +130,24 @@
 		<th:block th:if="${#strings.isEmpty(keyword)}">
 			<div style="text-align : center;" class="property-pagination">
 				<th:block th:if="${paging.nowPage != 1}">
-					<a th:href="@{seeAllMemberList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+					<a th:href="@{/admin/seeAllQuestion(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
 				</th:block>
 				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{seeAllMemberList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 				</th:block>
 				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
 					<th:block th:if="${p eq paging.nowPage}">
 						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
 					</th:block>
 					<th:block th:if="${p ne paging.nowPage}">
-						<a th:href="@{seeAllMemberList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+						<a th:href="@{/admin/seeAllQuestion(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
 					</th:block>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-					<a th:href="@{seeAllMemberList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage}">
-					<a th:href="@{seeAllMemberList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
 				</th:block>
 			</div>
 		</th:block>
@@ -155,24 +155,24 @@
 		<th:block th:if="${!#strings.isEmpty(keyword)}">
 			<div style="text-align : center;" class="property-pagination">
 				<th:block th:if="${paging.nowPage != 1}">
-					<a th:href="@{searchAdminMember(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
+					<a th:href="@{/admin/seeAllQuestion(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
 				</th:block>
 				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{searchAdminMember(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;</a>
+					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;</a>
 				</th:block>
 				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
 					<th:block th:if="${p eq paging.nowPage}">
 						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
 					</th:block>
 					<th:block th:if="${p ne paging.nowPage}">
-						<a th:href="@{searchAdminMember(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
+						<a th:href="@{/admin/seeAllQuestion(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
 					</th:block>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-					<a th:href="@{searchAdminMember(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
+					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage}">
-					<a th:href="@{searchAdminMember(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
+					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
 				</th:block>
 			</div>
 		</th:block>
@@ -210,7 +210,7 @@
 		
 	}
 	
-	// 답변하기 버튼 누를 시 답변 내용  이름 쓸 예정
+	// 답변하기 버튼 누를 시 답변 입력사항 바로 반영
 	function ajaxSubmitAnswer(event){
 		
 		let serializedForm = $(this).closest('form').serialize();
@@ -222,13 +222,18 @@
 		})
 		.done( data => {
 			console.log(data);
-			
-			let answerDate = (data.answerDate)
 			// 추가작업
-			$(this).closest('textarea').attr("readonly", "readonly")
-				   .closest('button').val('답변완료')
-				   .closest('form').append(`<p text="답변일자 : ${data.answer_date}"></p>`)
-				   .remove()
+			
+			let answerDate = formatDate(data.answerDate);
+			let form = $(this).closest('form');
+			let html = `
+				<p>답변일자 : ${answerDate}</p>
+				<textarea name="answerContent" class="form-control" rows="3" cols="90" readonly>${data.answerContent}</textarea>
+			`
+			$(this).closest('tr').prev().find('button').eq(0).text('답변완료');
+			$(this).closest('tr').prev().find('button').eq(1).text('답변보기');
+			form.empty();
+			form.html(html);
 			
 		})
 		.fail( reject => console.log(reject));
@@ -236,7 +241,21 @@
 		
 		
 	}
-	
+	// 날짜 변환 함수
+	function formatDate(date) {
+	    
+	    var d = new Date(date),
+	    
+	    month = '' + (d.getMonth() + 1) , 
+	    day = '' + d.getDate(), 
+	    year = d.getFullYear();
+	    hour = (d.toTimeString().split(' ')[0]).substring(0, 5);
+	    
+	    if (month.length < 2) month = '0' + month; 
+	    if (day.length < 2) day = '0' + day; 
+	    
+	    return ([year, month, day].join('.')) + ' ' + hour;
+	}
 	
 	// 조건검색기능
 	function search(event){

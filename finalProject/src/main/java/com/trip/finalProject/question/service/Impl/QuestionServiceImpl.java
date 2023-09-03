@@ -124,6 +124,13 @@ public class QuestionServiceImpl implements QuestionService {
 			return null;
 		}
 	}
+
+	@Override
+	public QuestionVO ajaxSelectOneQuestion(QuestionVO questionVO) {
+		// 문의 단건 조회(관리자 - ajax)
+		
+		return queMapper.ajaxSelectOneQuestion(questionVO);
+	}
 	
 	
 

@@ -162,5 +162,11 @@
 		 WHERE question_id = #{questionId}
  	</update>
  	
+ 	<!-- 문의 단건 조회(ajax용) -->
+	<select id="ajaxSelectOneQuestion">
+		SELECT *
+		  FROM question
+		 WHERE question_id = #{questionId}
+	</select> 	
   
   </mapper>

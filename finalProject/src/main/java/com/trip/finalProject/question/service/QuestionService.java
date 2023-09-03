@@ -28,4 +28,7 @@ public interface QuestionService {
 	
 	// 문의 답변 입력(관리자)
 	public QuestionVO insertAnswerToQuestion(QuestionVO questionVO);
+	
+	// 문의 단건 조회(관리자 - ajax)
+	public QuestionVO ajaxSelectOneQuestion(QuestionVO questionVO);
 }

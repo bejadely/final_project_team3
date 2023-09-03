@@ -164,12 +164,10 @@ public class QuestionController {
 	public QuestionVO ajaxAnswerQuestion(QuestionVO questionVO) {
 		
 		// 문의 답변 등록하기
-		questionVO = queService.insertAnswerToQuestion(questionVO);
+		queService.insertAnswerToQuestion(questionVO);
 		
 		// 문의 결과 리턴하기
-		
-		
-		return questionVO;
+		return queService.ajaxSelectOneQuestion(questionVO);
 	}
 		
 		
