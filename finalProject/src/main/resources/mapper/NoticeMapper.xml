@@ -16,24 +16,16 @@
 			  WHERE rn BETWEEN #{start} AND #{end}
 			  				
 		
-	</select>
-	
+	</select>	
 	<!-- 전체 게시글 수 카운트 -->
   		<select id="getAllNoticeCount">
   			SELECT COUNT(*)
   			  FROM notice
-  		</select>
+  	</select>
 	
 
 	
-<!-- 검색어를 '포함한' 페이지별 게시글 목록을 조회 -->
-	<select id="boardSelect" resultType="NoticeVO">
-		SELECT *
-		FROM (SELECT ROWNUM rn, b.*
-			FROM(SELECT * FROM board WHERE board_content LIKE '%${boardContent}%' order by board_id desc) b )
-		WHERE rn BETWEEN (#{page}-1) * 10
-			AND (#{page} * 10)	
-	</select>
+
 	
 <!-- 특정 게시글의 상세 정보를 조회하는 쿼리 글의 id를 사용해서 해당 게시글을 가져옴 -->	
 	<select id="getNoticeDetail" resultType="NoticeVO">
@@ -91,21 +83,74 @@
 	</insert>
 	
 
+<!-- 글 속성이 공지사항인 총 결과값 카운트 -->
+  		<select id="countNoticeType1n">
+  			SELECT COUNT(*)
+  			  FROM notice
+  			 WHERE notice_Type='n1'  and title LIKE '%${title}%'
+  		</select>
+  		
+  		<!-- 제목으로 게시글 검색 -->
+  		<select id="searchByNoticeByTitle1n" resultType="NoticeVO">
+ 		SELECT *
+		FROM(SELECT ROWNUM rn, a.notice_number
+						     , a.title
+						     , a.writer_Id						    
+						     , a.regist_date
+						     , a.hit
+						     <!-- , code_val(a.authority) authority -->
+			 FROM(SELECT notice_number
+				       , title
+				       ,writer_Id				       
+				       , regist_date
+				       ,hit
+				    FROM notice
+				   WHERE notice_Type='n1'  and  title LIKE '%${noticeVO.title}%'
+				ORDER BY regist_date DESC) a)
+		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+  		</select>
+
+
+
+
+<!-- 글 속성이 이벤트인 총 결과값 카운트 -->
+  		<select id="countNoticeType2n">
+  			SELECT COUNT(*)
+  			  FROM notice
+  			 WHERE notice_Type='n2'  and title LIKE '%${title}%'
+  		</select>
+  		
+  		<!-- 제목으로 게시글 검색 -->
+  		<select id="searchByNoticeByTitle2n" resultType="NoticeVO">
+ 		SELECT *
+		FROM(SELECT ROWNUM rn, a.notice_number
+						     , a.title
+						     , a.writer_Id						    
+						     , a.regist_date
+						     , a.hit
+						     <!-- , code_val(a.authority) authority -->
+			 FROM(SELECT notice_number
+				       , title
+				       ,writer_Id				       
+				       , regist_date
+				       ,hit
+				    FROM notice
+				   WHERE notice_Type='n2'  and  title LIKE '%${noticeVO.title}%'
+				ORDER BY regist_date DESC) a)
+		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+  		</select>
+
+
+
+
+
 	
 <!--  게시글 조회수 증가 -->	
 	<update id="boardView">
 		UPDATE board SET board_hit = board_hit+1 WHERE board_id = #{boardId}
 	</update>
 	
-<!--  게시글의 댓글 상태를 Y로 변경 -->	
-	<update id="boardReple">
-		UPDATE board SET board_reple_state = 'Y' WHERE board_id = #{boardId}
-	</update>
-	
-<!--  게시글의 댓글 상태를 N으로 변경 -->	
-	<update id="boardRepleN">
-		UPDATE board SET board_reple_state = 'N' WHERE board_id = #{boardId}
-	</update>
+
 	
 <!-- 게시글을 삭제하는 쿼리 -->	
 	<delete id="boardDelete">

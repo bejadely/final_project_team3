@@ -264,7 +264,7 @@ display: none;
 					var name1 = $("#name").val();
 					var name2 = $("#bankHolderInfo").val();
 
-					if (name1 !== name2) { // 여기서 오류 수정: number1과 number2 대신 name1과 name2를 비교해야 합니다.
+					if (name1 !== name2) { 
 						alert("이름이 다릅니다.");
 						$("#bankHolderInfo").val(""); // 이름이 다를 경우 값을 비워줍니다.
 					} else if (data.errormsg) {
