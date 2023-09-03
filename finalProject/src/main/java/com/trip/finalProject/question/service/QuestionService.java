@@ -31,4 +31,7 @@ public interface QuestionService {
 	
 	// 문의 단건 조회(관리자 - ajax)
 	public QuestionVO ajaxSelectOneQuestion(QuestionVO questionVO);
+	
+	// 타입별로 문의 조회
+	public Map<String, Object> searchQuestionByType(Integer nowPage, Integer cntPerPage, QuestionVO questionVO);
 }

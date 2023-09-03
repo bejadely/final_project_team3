@@ -67,13 +67,18 @@
 		<h5><b>문의 내역 조회</b></h5>
 		<br>
 		<div>
-			<!-- 선택시 아이작스 호출 할 것임( 전체문의 / 일반 문의 / 특산물 문의 ) -->
-			<select id="searchBy" name="searchBy">
+			<select id="questionType" name="questionType">
+				<option value="">문의 분류</option>
+				<option value="Q1">일반문의</option>
+				<option value="Q3">특산물 문의</option>
+				<option value="Q4">숙박상품 문의</option>
+			</select>
+			<!-- <select id="searchBy" name="searchBy">
 				<option value="name">이름으로 검색</option>
 				<option value="id">아이디로 검색</option>
 			</select>
 			<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
-			<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+			<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button> -->
 		</div>
 		<div class="table-responsive">
 				<table class="table">
@@ -188,13 +193,23 @@
 						.on('mouseleave', colorReset)
 						.on('click')
 						.on('mouseup', moveToMemberDetail);
+		$('#questionType').on('change', searchType);
 		
 		// 답변하기 버튼 누를 시 토글 활성화
 		$('[id^="ansBtn"]').on('click', toggleVisible);
 		
-		// 
+		// ajax 활용 답변 완료 시 해당 답변 바로 페이지에 반영
 		$('.answer-btn').on('click', ajaxSubmitAnswer);
+		rememberSearchingMemory();
 	});
+	
+	// selectbox 선택시 조건 검색 바로 실행
+	function searchType(event){
+		
+		let value = $('#questionType').val();
+		location.href='/admin/searchQuestionByType?questionType='+value;
+		
+	}
 	
 	// 답변하기 버튼 클릭 시 hidden 버튼 활성화
 	function toggleVisible(event){
@@ -286,6 +301,24 @@
 		
 		// 페이지 전환 실행
 		location.href=`seeMemberDetail?memberId=${memberId}`;
+	}
+	
+	// 만약 조건 검색을 했다면 해당 검색조건 기억
+	function rememberSearchingMemory(){
+		
+		if([[${rememberType}]] != null){
+			// 기본으로 설정할 타입 설정
+			let defaultType = [[${rememberType}]];
+			
+			// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
+			$('#questionType').next().find('span').text($('.option[data-value="'+defaultType+'"]').text());
+			
+			// selected 처리되어있던 option을 일반 옵션으로 변경
+			$('#questionType').next().find('.option.selected').attr("class", "option");
+			
+			// 불러온 값에 해당하는 option을 selected 및 focus 처리
+			$('.option[data-value="'+defaultType+'"]').attr("class", "option selected focus");
+		}
 	}
 	
 	</script>

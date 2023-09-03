@@ -35,4 +35,10 @@ public interface QuestionMapper {
 	// 문의 단건 조회(관리자 - ajax용)
 	public QuestionVO ajaxSelectOneQuestion(QuestionVO questionVO);
 	
+	// 조건에 따른 문의글 카운트
+	public int countAllQuestionByType(QuestionVO questionVO);
+	
+	// 조건에 따른 문의글 전체 검색
+	public List<QuestionVO> selectAllQuestionByType(PagingVO pagingVO, QuestionVO questionVO);
+	
 }
