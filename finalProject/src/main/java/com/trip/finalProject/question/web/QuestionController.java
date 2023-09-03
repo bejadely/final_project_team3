@@ -134,7 +134,40 @@ public class QuestionController {
 		
 		return "redirect:" + prevUrl;
 	}
+	
+	//문의 전체 조회
+	@GetMapping("/admin/seeAllQuestion")
+	public String seeAllPunish(Model model
+							 , @RequestParam( name = "searchBy", defaultValue = "name" ) String searchBy
+							 , @RequestParam( name = "keyword", defaultValue = "" ) String keyword
+				             , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
+				             , @RequestParam( name = "cntPerPage", defaultValue = "10")Integer cntPerPage) {
 		
+		// 문의 내역 전체 조회
+		 Map<String, Object> map = queService.selectAllQuestion(nowPage, cntPerPage);
+		
+		// 모든 회원 정보 모델에 담기
+		model.addAttribute("list", map.get("list"));
+		model.addAttribute("paging", map.get("PagingVO"));
+		
+		// 검색어가 없을 경우를 대비한 구문
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("searchBy", searchBy);
+		
+		
+		return "admin/question/seeAllQuestion";
+	}
+	
+	// 문의 답변
+	@PostMapping("/admin/answerQuestion")
+	@ResponseBody
+	public String ajaxAnswerQuestion(QuestionVO questionVO) {
+		
+		// 문의 답변 등록하기
+		
+		
+		return "냠";
+	}
 		
 		
 }

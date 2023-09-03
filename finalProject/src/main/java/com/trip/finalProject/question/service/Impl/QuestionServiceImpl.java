@@ -11,6 +11,7 @@ import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.question.mapper.QuestionMapper;
 import com.trip.finalProject.question.service.QuestionService;
 import com.trip.finalProject.question.service.QuestionVO;
+import com.trip.finalProject.report.service.PunishVO;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -90,6 +91,26 @@ public class QuestionServiceImpl implements QuestionService {
 			return "fail";
 		}
 		
+	}
+	
+	@Override
+	public Map<String, Object> selectAllQuestion(Integer nowPage, Integer cntPerPage) {
+		// 문의글 전체 조회(관리자)
+		
+		// 전체 문의글 카운트
+		int total = queMapper.countAllQuestion();
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		
+		// 전체 문의글 
+		List<QuestionVO> list = queMapper.selectAllQuestion(pagingVO);
+		
+		// 컨트롤러에 값을 보내기 위한 Map 생성
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("list", list);
+		map.put("PagingVO", pagingVO);
+		
+		return map;
 	}
 	
 	

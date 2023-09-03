@@ -20,6 +20,15 @@ public interface QuestionMapper {
 	public List<QuestionVO> selectAllQueMember(QuestionVO questionVO, PagingVO pagingVO);
 	
 	// 0903 창민 추가
+	// 문의글 등록(관리자)
 	public int insertQuestion(QuestionVO questionVO);
+	
+	// 문의글 전체 조회 카운트(관리자)
+	public int countAllQuestion();
+	
+	// 문의글 전체 조회(관리자)
+	public List<QuestionVO> selectAllQuestion(PagingVO pagingVO);
+	
+	
 
 }
