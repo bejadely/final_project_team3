@@ -26,6 +26,10 @@ public class PackageVO {
 	private String savedImg;
 	private String imgType;
 	private String loadingImg;
+	private int areaCode;
+	private int sigunguCode;
+	private String writerId;
+	private String completion;
 	
 	private List<AttachedFileVO> attachList;
 	private List<AttachedFileVO> editorAttachList;

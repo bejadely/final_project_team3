@@ -4,13 +4,17 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip.finalProject.lodging.mapper.LodgingMapper">
 	<insert id="insertLodging" parameterType="LodgingVO">
+		<selectKey keyProperty="postId" resultType="String" order="BEFORE">
+			SELECT 'LOD' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM lodging
+			WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
 		INSERT INTO lodging
 				(
-					content_id
-					,contenttype_id
-					,addr_1
+					post_id
+					,content_id
+					,addr1
 					,first_image
-					,first_image2
 					,tel
 					,title
 					,area_code
@@ -19,26 +23,41 @@
 				)
 				VALUES
 				(
-					#{contentid}
-					,#{contenttypeid}
+					#{postId}
+					,#{contentid}
 					,#{addr1}
 					,#{firstimage}
-					,#{firstimage2}
 					,#{tel}
 					,#{title}
 					,#{areacode}
-					,#{sigungucode
+					,#{sigungucode}
 					
 				)
 	</insert>
 
 	<select id="listLodging" resultType="LodgingVO">
 		SELECT title
-			   ,addr_1
+			   ,addr1
 			   ,first_image
 			   ,tel
+			   ,content_id
 		FROM lodging
-		ORDER BY area_code	
+		ORDER BY area_code,sigungu_code
 	</select>
+	
+	<select id="listArea" parameterType="LocationVO">
+		SELECT area_code
+				,sigungu_code
+				,location_name
+		FROM location
+		
+	</select>
+	
+	<select id="listAreaLodging" resultType="LodgingVO">
+		SELECT *
+		FROM lodging
+		WHERE sigungu_code=#{sigungucode} AND area_code=#{areacode}
+	</select>
+	
 
 </mapper>
