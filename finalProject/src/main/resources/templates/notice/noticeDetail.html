@@ -121,6 +121,7 @@ table {
 	<div id="ls2" align="center">
 	
 		<form id="frm" action="/noticeEdit" th:object="${noticeVO}" method="post">
+		<!--  관리자일 경우 확인 가능 -->
 		   <div th:if="${session.sessionAuthority} == 'A3'">
 		    	<div  id="noticeType"  class="mb-3" style="float: left; margin-left: 10%; margin-right:20px" >
 					<select class=""name="noticeType"

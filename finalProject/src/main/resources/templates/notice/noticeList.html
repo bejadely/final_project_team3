@@ -1,514 +1,540 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="@{layouts/default_layout}"
-      	layout:fragment="content"> 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/default_layout}" layout:fragment="content">
 
-<!-- index.html 고유 CSS 추가 -->
-<th:block layout:fragment="css">
-</th:block>
-<!-- index.html 고유 스크립트 추가 -->
-<th:block layout:fragment="script">
-</th:block>
-<!-- Content -->
 
-   
-  <style>
-    	table {
-  			border-collapse: collapse;
-  			border-spacing: 0;
-		}
-		section.notice {
-  			padding: 80px 0;
-		}
-
-		.page-title {
-  			margin-bottom: 60px;
-		}
-		.page-title h3 {
-  			font-size: 28px;
-  			color: #333333;
-  			font-weight: 400;
-  			text-align: center;
-		}
-		
-		#board-search .search-window {
-  			padding: 15px 0;
-  			background-color: #f9f7f9;
-		}
-		#board-search .search-window .search-wrap {
-  			position: relative;
-		/*   padding-right: 124px; */
-  			margin: 0 auto;
-  			width: 80%;
-  			max-width: 564px;
-		}
-		#board-search .search-window .search-wrap input {
-		  height: 40px;
-		  width: 100%;
-		  font-size: 14px;
-		  padding: 7px 14px;
-		  border: 1px solid #ccc;
-		}
-		#board-search .search-window .search-wrap input:focus {
-		  border-color: #333;
-		  outline: 0;
-		  border-width: 1px;
-		}
-		#board-search .search-window .search-wrap .btn {
-		  position: absolute;
-		  right: 0;
-		  top: 0;
-		  bottom: 0;
-		  width: 108px;
-		  padding: 0;
-		  font-size: 16px;
-		}
-		
-		.board-table {
-		  font-size: 13px;
-		  width: 100%;
-		  border-top: 1px solid #ccc;
-		  border-bottom: 1px solid #ccc;
-		}
-		
-		.board-table a {
-		  color: #333;
-		  display: inline-block;
-		  line-height: 1.4;
-		  word-break: break-all;
-		  vertical-align: middle;
-		}
-		.board-table a:hover {
-		  text-decoration: underline;
-		}
-		.board-table th {
-		  text-align: center;
-		}
-		
-		.board-table .th-num {
-		  width: 100px;
-		  text-align: center;
-		}
-		
-		.board-table .th-date {
-		  width: 200px;
-		}
-		
-		.board-table th, .board-table td {
-		  padding: 14px 0;
-		}
-		
-		.board-table tbody td {
-		  border-top: 1px solid #e7e7e7;
-		  text-align: center;
-		}
-		
-		.board-table tbody th {
-		  padding-left: 28px;
-		  padding-right: 14px;
-		  border-top: 1px solid #e7e7e7;
-		  text-align: center;
-		}
-		
-		.board-table tbody th p{
-		  display: none;
-		}
-		
-		.btn {
-		  display: inline-block;
-		  padding: 0 30px;
-		  font-size: 15px;
-		  font-weight: 400;
-		  background: transparent;
-		  text-align: center;
-		  white-space: nowrap;
-		  vertical-align: middle;
-		  -ms-touch-action: manipulation;
-		  touch-action: manipulation;
-		  cursor: pointer;
-		  -webkit-user-select: none;
-		  -moz-user-select: none;
-		  -ms-user-select: none;
-		  user-select: none;
-		  border: 1px solid transparent;
-		  text-transform: uppercase;
-		  -webkit-border-radius: 0;
-		  -moz-border-radius: 0;
-		  border-radius: 0;
-		  -webkit-transition: all 0.3s;
-		  -moz-transition: all 0.3s;
-		  -ms-transition: all 0.3s;
-		  -o-transition: all 0.3s;
-		  transition: all 0.3s;
-		}
-		
-		.btn-dark {
-		  background: #555;
-		  color: #fff;
-		}
-		
-		.btn-dark:hover, .btn-dark:focus {
-		  background: #373737;
-		  border-color: #373737;
-		  color: #fff;
-		}
-		
-		.btn-dark {
-		  background: #555;
-		  color: #fff;
-		}
-		
-		.btn-dark:hover, .btn-dark:focus {
-		  background: #373737;
-		  border-color: #373737;
-		  color: #fff;
-		}
-		
-		/* reset */
-		
-		* {
-		  list-style: none;
-		  text-decoration: none;
-		  padding: 0;
-		  margin: 0;
-		  box-sizing: border-box;
-		}
-		.clearfix:after {
-		  content: '';
-		  display: block;
-		  clear: both;
-		}
-		.container {
-		 
-		  margin: 0 auto;
-		}
-		.blind {
-		  position: absolute;
-		  overflow: hidden;
-		  clip: rect(0 0 0 0);
-		  margin: -1px;
-		  width: 1px;
-		  height: 1px;
-		}
-		.board_page {
-		    margin-top: 30px;
-		    text-align: center;
-		    font-size: 0;
-		}
-		
-		.board_page a {
-		    display: inline-block;
-		    width: 32px;
-		    height: 32px;
-		    box-sizing: border-box;
-		    vertical-align: middle;
-		    border: 1px solid #ddd;
-		    border-left: 0;
-		    line-height: 100%;
-		    text-decoration: none;
-		    color: inherit;
-		}
-		
-		.board_page a.bt {
-		    padding-top: 10px;
-		    font-size: 1.2rem;
-		    letter-spacing: -1px;
-		}
-		
-		.board_page a.num {
-		    padding-top: 9px;
-		    font-size: 1.4rem;
-		}
-		
-		.board_page a.num.on {
-		    border-color: #000;
-		    background: #000;
-		    color: #fff;
-		}
-		
-		.board_page a:first-child {
-		    border-left: 1px solid #ddd;
-		}
-		.bt_wrap {
-		    margin-top: 30px;
-		    text-align: center;
-		    font-size: 0;
-		    
-		}
-		
-		.bt_wrap a {
-		    display: inline-block;
-		    min-width: 80px;
-		    margin-left: 10px;
-		    padding: 10px;
-		    border: 1px solid #000;
-		    border-radius: 2px;
-		    font-size: 1.4rem;
-		    text-decoration: none;
-		    color: inherit;
-		}
-		
-		.bt_wrap a:first-child {
-		    margin-left: 0;
-		}
-		
-		.bt_wrap a.on {
-		    background: #000;
-		    color: #fff;
-		}
-		
-		#board-list .bt_wrap {
-  			text-align: right;
- 			padding-right: 20%;
+<style>
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
 }
-		    	
-	
-		    	
-	</style>
+
+section.notice {
+	padding: 80px 0;
+}
+
+.page-title {
+	margin-bottom: 60px;
+}
+
+.page-title h3 {
+	font-size: 28px;
+	color: #333333;
+	font-weight: 400;
+	text-align: center;
+}
+
+#board-search .search-window {
+	padding: 15px 0;
+	background-color: #f9f7f9;
+}
+
+#board-search .search-window .search-wrap {
+	position: relative;
+	/*   padding-right: 124px; */
+	margin: 0 auto;
+	width: 80%;
+	max-width: 564px;
+}
+
+#board-search .search-window .search-wrap input {
+	height: 40px;
+	width: 100%;
+	font-size: 14px;
+	padding: 7px 14px;
+	border: 1px solid #ccc;
+}
+
+#board-search .search-window .search-wrap input:focus {
+	border-color: #333;
+	outline: 0;
+	border-width: 1px;
+}
+
+#board-search .search-window .search-wrap .btn {
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 108px;
+	padding: 0;
+	font-size: 16px;
+}
+
+.board-table {
+	font-size: 13px;
+	width: 100%;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+}
+
+.board-table a {
+	color: #333;
+	display: inline-block;
+	line-height: 1.4;
+	word-break: break-all;
+	vertical-align: middle;
+}
+
+.board-table a:hover {
+	text-decoration: underline;
+}
+
+.board-table th {
+	text-align: center;
+}
+
+.board-table .th-num {
+	width: 100px;
+	text-align: center;
+}
+
+.board-table .th-date {
+	width: 200px;
+}
+
+.board-table th, .board-table td {
+	padding: 14px 0;
+}
+
+.board-table tbody td {
+	border-top: 1px solid #e7e7e7;
+	text-align: center;
+}
+
+.board-table tbody th {
+	padding-left: 28px;
+	padding-right: 14px;
+	border-top: 1px solid #e7e7e7;
+	text-align: center;
+}
+
+.board-table tbody th p {
+	display: none;
+}
+
+.btn {
+	display: inline-block;
+	padding: 0 30px;
+	font-size: 15px;
+	font-weight: 400;
+	background: transparent;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border: 1px solid transparent;
+	text-transform: uppercase;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	-webkit-transition: all 0.3s;
+	-moz-transition: all 0.3s;
+	-ms-transition: all 0.3s;
+	-o-transition: all 0.3s;
+	transition: all 0.3s;
+}
+
+.btn-dark {
+	background: #555;
+	color: #fff;
+}
+
+.btn-dark:hover, .btn-dark:focus {
+	background: #373737;
+	border-color: #373737;
+	color: #fff;
+}
+
+.btn-dark {
+	background: #555;
+	color: #fff;
+}
+
+.btn-dark:hover, .btn-dark:focus {
+	background: #373737;
+	border-color: #373737;
+	color: #fff;
+}
+
+/* reset */
+* {
+	list-style: none;
+	text-decoration: none;
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+.clearfix:after {
+	content: '';
+	display: block;
+	clear: both;
+}
+
+.container {
+	margin: 0 auto;
+}
+
+.blind {
+	position: absolute;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	margin: -1px;
+	width: 1px;
+	height: 1px;
+}
+
+.board_page {
+	margin-top: 30px;
+	text-align: center;
+	font-size: 0;
+}
+
+.board_page a {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	box-sizing: border-box;
+	vertical-align: middle;
+	border: 1px solid #ddd;
+	border-left: 0;
+	line-height: 100%;
+	text-decoration: none;
+	color: inherit;
+}
+
+.board_page a.bt {
+	padding-top: 10px;
+	font-size: 1.2rem;
+	letter-spacing: -1px;
+}
+
+.board_page a.num {
+	padding-top: 9px;
+	font-size: 1.4rem;
+}
+
+.board_page a.num.on {
+	border-color: #000;
+	background: #000;
+	color: #fff;
+}
+
+.board_page a:first-child {
+	border-left: 1px solid #ddd;
+}
+
+.bt_wrap {
+	margin-top: 30px;
+	text-align: center;
+	font-size: 0;
+}
+
+.bt_wrap a {
+	display: inline-block;
+	min-width: 80px;
+	margin-left: 10px;
+	padding: 10px;
+	border: 1px solid #000;
+	border-radius: 2px;
+	font-size: 1.4rem;
+	text-decoration: none;
+	color: inherit;
+}
+
+.bt_wrap a:first-child {
+	margin-left: 0;
+}
+
+.bt_wrap a.on {
+	background: #000;
+	color: #fff;
+}
+
+#board-list .bt_wrap {
+	text-align: right;
+	padding-right: 20%;
+}
+</style>
+
 </head>
-<script src ="ckeditor5-build-classic/ckeditor.js"></script>
+
 
 <body>
-<script src="https://kit.fontawesome.com/d58c3728d1.js" crossorigin="anonymous"></script>
-<section class="notice">
-  <div class="page-title">
-        <div class="container">
-            <h3>공지사항</h3>
-        </div>
-    </div>
 
-    <!-- board seach area -->
-  
-    <br> <!-- style='margin-left: 8%;' -->
-    <!--  관리자(A3)인 경우 검색 div  -->
-     <div  th:if="${session.sessionAuthority} == 'A3'">
-			   	<div  id="noticeType"  class="mb-3" style="float: left; margin-left: 10%; margin-right:20px" >
-		    	
-					<select class=""name="noticeType"
-						aria-label="Default select example"  >
-						<option value="">공지사항 종류</option>
-						<option value="n1">공지사항</option>
-						<option value="n2">이벤트</option>
-					</select> 
-				</div>   
-				
-				<div id="release" class="mb-3" style="float: left; margin-right: 20px;" >
-					<select class=""  name="release"
-						aria-label="Default select example" >
-						<option value="">공개대상</option>
-						<option value="N1">전체공개</option>
-						<option value="N2">가이드공개</option>
-					</select> 
-				</div>  
-				
-		       	 <div  id="status" class="mb-3" style="float:left;">
-					<select class="" name="status"
-						aria-label="Default select example"  >
-						<option value="">글 저장상태</option>
-						<option value="T1">임시저장</option>
-						<option value="T2">저장완료</option>
-					</select> 
-				</div>
-			<div>
-				<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
-				<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+	<section class="notice">
+		<div class="page-title">
+			<div class="container">
+				<h3>공지사항</h3>
 			</div>
-	</div>
-			
-	<!--  가이드(A2)인 경우 검색 div  -->	
-	 <div  th:if="${session.sessionAuthority} == 'A2'">	
-			   	<div  id="noticeType"  class="mb-3" style="float: left; margin-left: 10%; margin-right:20px" >
-					<select class=""name="noticeType"
-						aria-label="Default select example"  >
-						<option value="">공지사항 종류</option>
-						<option value="n1">공지사항</option>
-						<option value="n2">이벤트</option>
-					</select> 
-				</div>   
-				
-				<div id="release" class="mb-3" style="float: left; margin-right: 20px;" >
-					<select class=""  name="release"
-						aria-label="Default select example" >
-						<option value="">공개대상</option>
-						<option value="N1">전체공개</option>
-						<option value="N2">가이드공개</option>
-					</select> 
-				</div>  
-				
-		       	
-			<div>
-				<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
-				<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-			</div>
-	</div>
-	
-	  <!--  일반회원(A1)인 경우 검색 div  -->
-     <div  th:if="${session.sessionAuthority} == 'A3'">
-			   	<div  id="noticeType"  class="mb-3" style="float: left; margin-left: 10%; margin-right:20px" >
-		    	
-					<select class=""name="noticeType"
-						aria-label="Default select example"  >
-						<option value="">공지사항 종류</option>
-						<option value="n1">공지사항</option>
-						<option value="n2">이벤트</option>
-					</select> 
-				</div>   
-				
-					       
-			<div>
-				<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
-				<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-			</div>
-	</div>
-   
-    <!-- notice list area -->
-    
-        <div class="container">
-            <table class="board-table">
-                <thead>
-                <tr>
-                    <th scope="col" class="th-num">번호</th>
-                    <th scope="col" class="th-title">제목</th>
-                    <th scope="col" class="th-writer">작성자</th>
-                    <th scope="col" class="th-date">등록일</th>
-                    <th scope="col" class="th-view">조회수</th>
-                </tr>
-                </thead>
-                <tbody>
-                
-           
-                </th:block>
-                
-              
-                
-                <th:block th:each="n : ${list}">
-                    <tr class="noticeInfo" th:attr="onmouseover='this.style.background=&quot;#dadada&quot;;', onmouseleave='this.style.background=&quot;#FFFFFF&quot;;' ">
-                        <td th:text="${n.noticeNumber}"></td>
-                        <td th:text="${n.title}"></td>
-                        <td th:text="${n.writerId}"></td>
-                        <td th:text="${n.registDate}"></td>
-                        <td th:text="${n.hit}"></td>
-                    </tr>
-                </th:block>
-                
-                </tbody>
-            </table>
-            
-	            <th:block th:if="${#lists.isEmpty(list)}">
-						<div align="center">
-							<span>게시글이 없습니다.</span>
-						</div>
-				</th:block>
-            
-            <div style="text-align : center;">
-<!-- 페이징 구문 -->
-		<!-- 검색키워드가 없을때 -->
-		<th:block th:if="${#strings.isEmpty(keyword)}">
-			<div style="text-align : center;" class="property-pagination">
-				<th:block th:if="${paging.nowPage != 1}">
-					<a th:href="@{seeAllMemberList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
-				</th:block>
-				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{seeAllMemberList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
-				</th:block>
-				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
-					<th:block th:if="${p eq paging.nowPage}">
-						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
-					</th:block>
-					<th:block th:if="${p ne paging.nowPage}">
-						<a th:href="@{seeAllMemberList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
-					</th:block>
-				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-					<a th:href="@{seeAllMemberList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
-				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage}">
-					<a th:href="@{seeAllMemberList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
-				</th:block>
-			</div>
-		</th:block>
-		<!-- 검색키워드가 있을때 -->
-		<th:block th:if="${!#strings.isEmpty(keyword)}">
-			<div style="text-align : center;" class="property-pagination">
-				<th:block th:if="${paging.nowPage != 1}">
-					<a th:href="@{searchAdminMember(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
-				</th:block>
-				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{searchAdminMember(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;</a>
-				</th:block>
-				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
-					<th:block th:if="${p eq paging.nowPage}">
-						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
-					</th:block>
-					<th:block th:if="${p ne paging.nowPage}">
-						<a th:href="@{searchAdminMember(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
-					</th:block>
-				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-					<a th:href="@{searchAdminMember(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
-				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage}">
-					<a th:href="@{searchAdminMember(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
-				</th:block>
-			</div>
-		</th:block>
 		</div>
- 
-            
-            <div class="bt_wrap">
-           <!--  <div th:if="${id == board.memberId || id == 'manager'}"> -->
-            <a href="/noticeWrite" class="on" th:if="${session.sessionAuthority} == 'A3'">등록&nbsp;</a>
-           </div>
-            </div>
-   <!--      </div> -->
 
-    
-    <div>
-        <!-- 히든폼 -->
-        <form id="frm2" action="boardSelect.do" method="post">
-            <input type="hidden" id="boardId" name="boardId">
-            <input type="hidden" id="boardSecret" name="boardSecret">
-        </form>
-    </div>
+		<!-- board seach area -->
 
-</section>
+		<br>
+		<!-- style='margin-left: 8%;' -->
+		<!--  관리자(A3)인 경우 검색 div  -->
+		<div th:if="${session.sessionAuthority} == 'A3'">
+			<div id="noticeType" class="mb-3"
+				style="float: left; margin-left: 10%; margin-right: 20px">
+
+				<select id="searchByNoticeType" class="" name="noticeType"
+					aria-label="Default select example">
+					<option value="">공지사항 종류</option>
+					<option value="n1">공지사항</option>
+					<option value="n2">이벤트</option>
+				</select>
+			</div>
+
+			<div id="release" class="mb-3"
+				style="float: left; margin-right: 20px;">
+				<select class="" name="release" aria-label="Default select example">
+					<option value="">공개대상</option>
+					<option value="N1">전체공개</option>
+					<option value="N2">가이드공개</option>
+				</select>
+			</div>
+
+			<div id="status" class="mb-3" style="float: left;">
+				<select class="" name="status" aria-label="Default select example">
+					<option value="">글 저장상태</option>
+					<option value="T1">임시저장</option>
+					<option value="T2">저장완료</option>
+				</select>
+			</div>
+			<div>
+				<input type="text" id="keyword" name="keyword"
+					placeholder="검색어를 입력해주세요.">
+				<button id="searchButton" class="feature-btn">
+					<i class="fa-solid fa-magnifying-glass"></i>
+				</button>
+			</div>
+		</div>
+
+		<!--  가이드(A2)인 경우 검색 div  -->
+		<div th:if="${session.sessionAuthority} == 'A2'">
+			<div id="noticeType" class="mb-3"
+				style="float: left; margin-left: 10%; margin-right: 20px">
+				<select class="" name="noticeType"
+					aria-label="Default select example">
+					<option value="">공지사항 종류</option>
+					<option value="n1">공지사항</option>
+					<option value="n2">이벤트</option>
+				</select>
+			</div>
+
+			<div id="release" class="mb-3"
+				style="float: left; margin-right: 20px;">
+				<select class="" name="release" aria-label="Default select example">
+					<option value="">공개대상</option>
+					<option value="N1">전체공개</option>
+					<option value="N2">가이드공개</option>
+				</select>
+			</div>
+
+
+			<div>
+				<input type="text" id="keyword" name="keyword"
+					placeholder="검색어를 입력해주세요.">
+				<button id="searchButton" class="feature-btn">
+					<i class="fa-solid fa-magnifying-glass"></i>
+				</button>
+			</div>
+		</div>
+		
+
+		<!-- 일반회원(A1)or 로그인x인 경우 검색 div  -->
+		<!--   <div  th:if="${session.sessionAuthority} == 'A1'"> -->
+		<div 
+			th:if="${session.sessionAuthority == 'A1' or session.sessionAuthority == null}">
+
+			<div id="noticeType" class="mb-3"
+				style="float: left; margin-left: 15%; margin-right: 20px">
+
+				<select id="searchByNoticeType" class="" name="noticeType"
+					aria-label="Default select example">
+					<option value="">공지사항 종류</option>
+					<option value="n1">공지사항</option>
+					<option value="n2">이벤트</option>
+				</select>
+			</div>
+
+
+			<div>
+				<input type="text" id="keyword" name="keyword"
+					placeholder="검색어를 입력해주세요.">
+				<button id="searchButton" class="feature-btn">
+					<i class="fa-solid fa-magnifying-glass"></i>
+				</button>
+			</div>
+		</div>
+
+		<!-- notice list area -->
+
+		<div class="container">
+			<table class="board-table">
+				<thead>
+					<tr>
+						<th scope="col" class="th-num">번호</th>
+						<th scope="col" class="th-title">제목</th>
+						<th scope="col" class="th-writer">작성자</th>
+						<th scope="col" class="th-date">등록일</th>
+						<th scope="col" class="th-view">조회수</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<th:block th:each="n : ${list}">
+						<tr class="noticeInfo"
+							th:attr="onmouseover='this.style.background=&quot;#dadada&quot;;', onmouseleave='this.style.background=&quot;#FFFFFF&quot;;' ">
+							<td th:text="${n.noticeNumber}"></td>
+							<td th:text="${n.title}"></td>
+							<td th:text="${n.writerId}"></td>
+							<td th:text="${n.registDate}"></td>
+							<td th:text="${n.hit}"></td>
+						</tr>
+					</th:block>
+
+				</tbody>
+			</table>
+
+			<th:block th:if="${#lists.isEmpty(list)}">
+				<div align="center">
+					<span>게시글이 없습니다.</span>
+				</div>
+			</th:block>
+
+			<div style="text-align: center;">
+				<!-- 페이징 구문 -->
+				<!-- 검색키워드가 없을때 -->
+				<th:block th:if="${#strings.isEmpty(keyword)}">
+					<div style="text-align: center;" class="property-pagination">
+						<th:block th:if="${paging.nowPage != 1}">
+							<a
+								th:href="@{noticeList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+						</th:block>
+						<th:block th:if="${paging.startPage != 1}">
+							<a
+								th:href="@{noticeList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+						</th:block>
+						<th:block
+							th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+							<th:block th:if="${p eq paging.nowPage}">
+								<a th:text="${p}"
+									style="background-color: #2cbdb8; color: white;"></a>
+							</th:block>
+							<th:block th:if="${p ne paging.nowPage}">
+								<a
+									th:href="@{noticeList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
+									th:text="${p}"></a>
+							</th:block>
+						</th:block>
+						<th:block
+							th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+							<a
+								th:href="@{noticeList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+						</th:block>
+						<th:block th:if="${paging.nowPage != paging.lastPage}">
+							<a
+								th:href="@{noticeList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+						</th:block>
+					</div>
+				</th:block>
+				<!-- 검색키워드가 있을때 -->
+				<th:block th:if="${!#strings.isEmpty(keyword)}">
+					<div style="text-align: center;" class="property-pagination">
+						<th:block th:if="${paging.nowPage != 1}">
+							<a
+								th:href="@{searchNotice(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, noticeType=${noticeType})}">&lt;&lt;</a>
+						</th:block>
+						<th:block th:if="${paging.startPage != 1}">
+							<a
+								th:href="@{searchNotice(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, noticeType=${noticeType})}">&lt;</a>
+						</th:block>
+						<th:block
+							th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+							<th:block th:if="${p eq paging.nowPage}">
+								<a th:text="${p}"
+									style="background-color: #2cbdb8; color: white;"></a>
+							</th:block>
+							<th:block th:if="${p ne paging.nowPage}">
+								<a
+									th:href="@{searchNotice(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, noticeType=${noticeType})}"
+									th:text="${p}"></a>
+							</th:block>
+						</th:block>
+						<th:block
+							th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+							<a
+								th:href="@{searchNotice(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, noticeType=${noticeType})}">&gt;</a>
+						</th:block>
+						<th:block th:if="${paging.nowPage != paging.lastPage}">
+							<a
+								th:href="@{searchNotice(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, noticeType=${noticeType})}">&gt;&gt;</a>
+						</th:block>
+					</div>
+				</th:block>
+			</div>
+
+
+			<div class="bt_wrap">
+				<!--  <div th:if="${id == board.memberId || id == 'manager'}"> -->
+				<a href="/noticeWrite" class="on"
+					th:if="${session.sessionAuthority} == 'A3'">등록&nbsp;</a>
+			</div>
+		</div>
+		<!--      </div> -->
+
+
+		<div>
+			<!-- 히든폼 -->
+			<form id="frm2" action="boardSelect.do" method="post">
+				<input type="hidden" id="boardId" name="boardId"> <input
+					type="hidden" id="boardSecret" name="boardSecret">
+			</form>
+		</div>
+
+	</section>
 
 
 
 
+	<script th:inline="javascript" type="text/javascript">
+		$(document).ready(function() {
 
+			$('.noticeInfo').on('mouseup', moveToNoticeDetail)
+			//일반회원의 검색
+			$('#searchButton').on('click', search);
+		});
+		//조건검색기능
+		function search(event) {
 
+			let value = $('#searchByNoticeType').val();
+			let keyword = $('#keyword').val();
+			location.href = '/searchNotice?noticeType=' + value + '&keyword='
+					+ keyword;
 
+		}
 
+		//클릭시 공지사항 상세 조회페이지로 이동
+		function moveToNoticeDetail(event) {
 
-<script th:inline="javascript" type="text/javascript">
-$(document).ready(function() {
-	// 승인 버튼 클릭 시 발생 이벤트 설정
-	$('#searchButton').on('click', search);
-	$('.noticeInfo').on('mouseup', moveToNoticeDetail)
-	$('#searchButton').on('click', search);
-});
-//조건검색기능
-function search(event){
-	
-	let value = $('#searchBy').val();
-	let keyword = $('#keyword').val();
-	location.href='/admin/searchAdminMember?searchBy='+value+'&keyword='+keyword;
-	
-}
+			// 상세보기 할 member의 id값 가져오기
+			let noticeNumber = $(event.currentTarget).find('td:eq(0)').text();
 
-//클릭시 공지사항 상세 조회페이지로 이동
-function moveToNoticeDetail(event){
-	
-	// 상세보기 할 member의 id값 가져오기
-	let noticeNumber = $(event.currentTarget).find('td:eq(0)').text();
-	
-	// 페이지 전환 실행
-	location.href=`/admin/seeNoticeDetail?noticeNumber=${noticeNumber}`;
-}
-</script>
+			// 페이지 전환 실행
+			location.href = `/admin/seeNoticeDetail?noticeNumber=${noticeNumber}`;
+		}
+	</script>
 
 </body>
 
