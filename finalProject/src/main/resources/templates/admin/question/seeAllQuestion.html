@@ -88,15 +88,28 @@
 									<span th:text="${l.questionTitle}"></span><br>
 									<span th:utext="|문의자ID : ${l.memberId}  ${#dates.format(l.questionDate, 'yyyy년MM월dd일')}"></span>
 									<p th:text="${l.questionContent}"></p>
-									<button type="button" th:id="|ansBtn${lStat.count}|" class="btn btn-primary btn-sm" data-visible="visible">답변하기</button>
+									<th:block th:if="${l.answerResult == '미답변'}">
+										<button type="button" th:id="|ansBtn${lStat.count}|" class="btn btn-primary btn-sm" data-visible="visible">답변하기</button>
+									</th:block>
+									<th:block th:if="${l.answerResult != '미답변'}">
+										<button type="button" th:id="|ansBtn${lStat.count}|" class="btn btn-primary btn-sm" data-visible="visible">답변보기</button>
+									</th:block>	
 									</td>
 								</tr>
 								<tr style="display: none;">
 									<td>
 										<form method="post" th:id="|form${lStat.count}|">
-											<span>ㄴ답변하기</span><br>
-											<textarea name="answerContent" class="form-control" rows="3" cols="90"></textarea>
-											<button class="answer-btn btn btn-primary btn-sm" type="button">답변완료</button>
+											<th:block th:if="${l.answerResult == '미답변'}">
+												<span>ㄴ답변하기</span><br>
+												<textarea name="answerContent" class="form-control" rows="3" cols="90"></textarea>
+											</th:block>
+											<th:block th:if="${l.answerResult != '미답변'}">
+												<p th:text="|답변일자 : ${#dates.format(l.answerDate, 'yyyy년MM월dd일')}|"></p>
+												<textarea name="answerContent" class="form-control" th:text="${l.answerContent}" rows="3" cols="90" readonly></textarea>
+											</th:block>
+											<th:block th:if="${l.answerResult == '미답변'}">	
+												<button class="answer-btn btn btn-primary btn-sm" type="button">답변완료</button>
+											</th:block>
 											<input type="hidden" name="questionId" th:value="${l.questionId}">
 											<input type="hidden" name="answerMemberId" th:value="${session.sessionId}">
 										</form>									
@@ -180,7 +193,7 @@
 		$('[id^="ansBtn"]').on('click', toggleVisible);
 		
 		// 
-		$('.answer-btn').on('click', ajaxSubmitAnswer)
+		$('.answer-btn').on('click', ajaxSubmitAnswer);
 	});
 	
 	// 답변하기 버튼 클릭 시 hidden 버튼 활성화
@@ -209,8 +222,18 @@
 		})
 		.done( data => {
 			console.log(data);
+			
+			let answerDate = (data.answerDate)
+			// 추가작업
+			$(this).closest('textarea').attr("readonly", "readonly")
+				   .closest('button').val('답변완료')
+				   .closest('form').append(`<p text="답변일자 : ${data.answer_date}"></p>`)
+				   .remove()
+			
 		})
 		.fail( reject => console.log(reject));
+		
+		
 		
 	}
 	

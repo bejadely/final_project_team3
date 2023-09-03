@@ -161,12 +161,15 @@ public class QuestionController {
 	// 문의 답변
 	@PostMapping("/admin/answerQuestion")
 	@ResponseBody
-	public String ajaxAnswerQuestion(QuestionVO questionVO) {
+	public QuestionVO ajaxAnswerQuestion(QuestionVO questionVO) {
 		
 		// 문의 답변 등록하기
+		questionVO = queService.insertAnswerToQuestion(questionVO);
+		
+		// 문의 결과 리턴하기
 		
 		
-		return "냠";
+		return questionVO;
 	}
 		
 		

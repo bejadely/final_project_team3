@@ -25,4 +25,7 @@ public interface QuestionService {
 	
 	// 일반문의글 전체 조회(관리자)
 	public Map<String, Object> selectAllQuestion(Integer nowPage, Integer cntPerPage);
+	
+	// 문의 답변 입력(관리자)
+	public QuestionVO insertAnswerToQuestion(QuestionVO questionVO);
 }

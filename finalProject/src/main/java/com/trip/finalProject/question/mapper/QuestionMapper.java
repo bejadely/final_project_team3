@@ -29,6 +29,9 @@ public interface QuestionMapper {
 	// 문의글 전체 조회(관리자)
 	public List<QuestionVO> selectAllQuestion(PagingVO pagingVO);
 	
+	// 문의 답변 입력(관리자)
+	public int insertAnswerToQuestion(QuestionVO questionVO);
+	
 	
 
 }
