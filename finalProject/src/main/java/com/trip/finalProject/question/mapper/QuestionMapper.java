@@ -18,5 +18,8 @@ public interface QuestionMapper {
 	public int updateQue(QuestionVO questionVO);
 	
 	public List<QuestionVO> selectAllQueMember(QuestionVO questionVO, PagingVO pagingVO);
+	
+	// 0903 창민 추가
+	public int insertQuestion(QuestionVO questionVO);
 
 }

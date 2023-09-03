@@ -18,5 +18,8 @@ public interface QuestionService {
 	public Map<String, String> updateQueInfo(QuestionVO questionVO);
 	//조회 / common 용
 	public List<QuestionVO> getQueAllMember(QuestionVO questionVO, PagingVO pagingVO);
-
+	
+	//0903 창민
+	// 문의글 등록
+	public String insertQuestion(QuestionVO questionVO);
 }

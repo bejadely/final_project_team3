@@ -84,5 +84,31 @@
 	    ) a
 	) WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
  	</select>
+ 	
+ 	<insert id="insertQuestion">
+ 		<selectKey keyProperty="questionId" resultType="String" order="BEFORE">
+			SELECT 'QUE' || (TO_NUMBER(NVL((SUBSTR(MAX(question_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM question
+			WHERE SUBSTR(question_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+ 		INSERT INTO question(
+					         QUESTION_ID
+					       , MEMBER_ID
+					       , QUESTION_DATE
+					       , QUESTION_TITLE
+					       , QUESTION_CONTENT
+					       , QUESTION_TYPE
+					       , ANSWER_RESULT
+							 ) 
+			 VALUES(
+					#{questionId}
+					, #{memberId}
+					, sysdate
+					, #{questionTitle}
+					, #{questionContent}
+					, #{questionType}
+					, 'K1'
+					)
+ 	</insert>
   
   </mapper>
