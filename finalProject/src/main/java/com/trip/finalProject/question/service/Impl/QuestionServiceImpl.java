@@ -58,6 +58,40 @@ public class QuestionServiceImpl implements QuestionService {
 		return queMapper.selectAllQueMember(questionVO, pagingVO);
 	}
 	
+	//0903 창민 추가
+	@Override
+	public String insertQuestion(QuestionVO questionVO) {
+		
+		// 문의글 타입 변환
+		String rowQuestionType = questionVO.getQuestionType();
+		
+		switch (rowQuestionType) {
+		case "패키지 문의":
+			questionVO.setQuestionType("Q2");
+			break;
+		case "특산물 문의":
+			questionVO.setQuestionType("Q3");
+			break;
+		case "숙박상품 문의":
+			questionVO.setQuestionType("Q4");
+			break;
+		default:
+			questionVO.setQuestionType("Q1");
+			break;
+		}
+		
+		// 문의글 등록
+		int result = queMapper.insertQuestion(questionVO);
+		
+		// 결과값 리턴
+		if(result > 0) {
+			return "success";
+		} else {
+			return "fail";
+		}
+		
+	}
+	
 	
 
 }
