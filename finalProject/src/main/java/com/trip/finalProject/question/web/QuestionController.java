@@ -138,13 +138,14 @@ public class QuestionController {
 	//문의 전체 조회
 	@GetMapping("/admin/seeAllQuestion")
 	public String seeAllPunish(Model model
+							 , QuestionVO questionVO
 							 , @RequestParam( name = "searchBy", defaultValue = "name" ) String searchBy
 							 , @RequestParam( name = "keyword", defaultValue = "" ) String keyword
 				             , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
 				             , @RequestParam( name = "cntPerPage", defaultValue = "10")Integer cntPerPage) {
 		
 		// 문의 내역 전체 조회
-		 Map<String, Object> map = queService.selectAllQuestion(nowPage, cntPerPage);
+		Map<String, Object> map = queService.selectAllQuestion(nowPage, cntPerPage);
 		
 		// 모든 회원 정보 모델에 담기
 		model.addAttribute("list", map.get("list"));
@@ -153,6 +154,33 @@ public class QuestionController {
 		// 검색어가 없을 경우를 대비한 구문
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("searchBy", searchBy);
+		
+		
+		return "admin/question/seeAllQuestion";
+	}
+	
+	// 문의 종류별 전체 조회
+	@GetMapping("/admin/searchQuestionByType")
+	public String searchByQuestionType(Model model
+							 , QuestionVO questionVO
+							 , @RequestParam( name = "searchBy", defaultValue = "name" ) String searchBy
+							 , @RequestParam( name = "keyword", defaultValue = "" ) String keyword
+				             , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
+				             , @RequestParam( name = "cntPerPage", defaultValue = "10")Integer cntPerPage) {
+		
+		// 문의 종류별 전체 조회
+		Map<String, Object> map = queService.searchQuestionByType(nowPage, cntPerPage, questionVO);
+		
+		// 모든 회원 정보 모델에 담기
+		model.addAttribute("list", map.get("list"));
+		model.addAttribute("paging", map.get("PagingVO"));
+		
+		// 검색어가 없을 경우를 대비한 구문
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("searchBy", searchBy);
+		
+		// 검색필터 저장을 위한 구문
+		model.addAttribute("rememberType", questionVO.getQuestionType());
 		
 		
 		return "admin/question/seeAllQuestion";

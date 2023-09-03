@@ -131,6 +131,26 @@ public class QuestionServiceImpl implements QuestionService {
 		
 		return queMapper.ajaxSelectOneQuestion(questionVO);
 	}
+
+	@Override
+	public Map<String, Object> searchQuestionByType(Integer nowPage, Integer cntPerPage, QuestionVO questionVO) {
+		// 문의 종류별 전체 조회
+		
+		// 전체 문의글 카운트
+		int total = queMapper.countAllQuestionByType(questionVO);
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		
+		// 전체 문의글 
+		List<QuestionVO> list = queMapper.selectAllQuestionByType(pagingVO, questionVO);
+		
+		// 컨트롤러에 값을 보내기 위한 Map 생성
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("list", list);
+		map.put("PagingVO", pagingVO);
+		
+		return map;
+	}
 	
 	
 
