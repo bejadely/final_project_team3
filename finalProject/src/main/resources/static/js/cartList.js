@@ -301,10 +301,10 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
 	        var row = $(this).closest("tr");
 	        var count = parseInt(row.find("input[type=text]").val());
 	        var price = parseFloat(row.find("td:eq(4)").text());
-	        //var value = row.find("input[type=hidden]").val() 
+	        var value = row.find("input[type=hidden]").val() 
 	        var cartTotal = count * price;
 			orderElements.push(row.find("td:eq(2)").text()); // 값을 배열에 추가	       
-	        //cartIdElements.push(value);
+	        cartIdElements.push(value);
 	        totalAmount += cartTotal;
 	        quantity += count;
 	    });	

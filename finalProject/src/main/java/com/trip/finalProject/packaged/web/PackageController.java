@@ -2,20 +2,26 @@ package com.trip.finalProject.packaged.web;
 
 
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.trip.finalProject.attachedFile.service.AttachedFileService;
 import com.trip.finalProject.attachedFile.service.AttachedFileVO;
+import com.trip.finalProject.packaged.service.PackageReviewVO;
 import com.trip.finalProject.packaged.service.PackageService;
 import com.trip.finalProject.packaged.service.PackageVO;
+import com.trip.finalProject.tourInfo.service.SpotDetailReviewVO;
 
 @Controller
 public class PackageController {
@@ -26,6 +32,9 @@ public class PackageController {
 	@Autowired
 	AttachedFileService attachedFileService;
 	
+	@Autowired
+    HttpSession session;
+	
 	@GetMapping("/packageInfo")
 	public String getpackageInfo(Model model, PackageVO packageVO) {
 		PackageVO findVO = packageService.packageInfo(packageVO);
@@ -35,8 +44,9 @@ public class PackageController {
 	}
 	
 	//ck-editor
-	@GetMapping("packageInsertForm")
-	public String package2() {
+	@GetMapping("/packageInsertForm")
+	public String package2(Model model) {
+		model.addAttribute("area",packageService.getLocationList());
 		return "package/packageInsertForm";
 	}
 
@@ -60,6 +70,54 @@ public class PackageController {
 		System.out.println(vo.getPostId());
 		return attachedFileService.getAttachList(vo);
 	}
+	
+
+    //모달창 내 정보+리뷰 가져오기
+    @GetMapping("/packageInfoReview")
+    @ResponseBody
+    public Map<String,Object> getDetailInfoReview(String postId) {
+
+        return packageService.getDetailInfoReviewList(postId);
+    }
+
+    //모달창 내 리뷰 가져오기
+    @GetMapping("/packageReview")
+    @ResponseBody
+    public List<PackageReviewVO> getDetailReview(String postId, int page) {
+
+        return packageService.getDetailReviewList(postId, page);
+    }
+
+    //모달창 내 리뷰 등록
+    @PostMapping("/packageReview")
+    @ResponseBody
+    public Map<String,Object> reviewInsert(PackageReviewVO packageReviewVO) throws Exception {
+        if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().replaceAll(" ", "").equals("")) {
+        	packageReviewVO.setWriterId(session.getAttribute("sessionId").toString());
+        } else {
+            throw new Exception("no login");
+        }
+
+        return packageService.insertReviewInfo(packageReviewVO);
+    }
+
+    //모달창 내 리뷰 삭제
+    @DeleteMapping("/packageReview")
+    @ResponseBody
+    public Map<String,Object> reviewDelete(String postId, String writerId, String reviewId) throws Exception {
+        String sessionId = "";
+        if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().replaceAll(" ", "").equals("")) {
+            sessionId =  session.getAttribute("sessionId").toString();
+        } else {
+            throw new Exception("no login");
+        }
+
+        if(!sessionId.equals(writerId)){
+            throw new Exception("not same");
+        }
+
+        return packageService.deleteReviewInfo(postId, reviewId);
+    }
 	
 	
 }

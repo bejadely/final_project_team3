@@ -82,11 +82,14 @@ ClassicEditor
 		$("button[type='submit']").on("click",function(event){
 				
 			event.preventDefault();
-	
+			var str="";
 			const data = editor.getData();
 			
 			let objData = serializeObject();
-			
+			var sigunguCode = $("#location > option:selected").attr("value1");
+			var areaCode = $("#location > option:selected").attr("value2");
+			str+=`<input type='hidden' name='sigunguCode' value='${sigunguCode}'>
+				 <input type ='hidden' name = 'areaCode' value='${areaCode}'>`
 			//sconsole.log(data);
 			const { tourTheme, name, price, startDate, endDate, deadlineDate, maxReservation,writerId } = objData;
 			var combinedData={
@@ -102,11 +105,12 @@ ClassicEditor
 			};
 			console.log(combinedData);
 			
-			var str="";
+			
 			$(".uploadResult ul li").each(function(i,obj){
 				var jobj = $(obj);
 				str += "<input type ='hidden' name='attachList["+i+"].originImg' value='"+jobj.data("filename")+"'>";
 				str += "<input type ='hidden' name='attachList["+i+"].savedImg' value='"+jobj.data("path")+"'>";
+				str += "<input type ='hidden' name='attachList["+i+"].memberId' value='[[${session.sessionId}]]'>";
 				str += "<input type ='hidden' name='attachList["+i+"].imgType' value='"+jobj.data("type")+"'>";
 				str += "<input type ='hidden' name='attachList["+i+"].loadingImg' value='"+jobj.data("loadingpath")+"'>";
 				
@@ -266,6 +270,13 @@ ClassicEditor
 					<option value="도시 여행">도시 여행</option>
 				</select>	
 			</div>	
+			<div>
+				<label>지역</label>
+				<select id="location">
+					<option value="">선택</option>
+					<option th:each = "a : ${area}"  th:value1="${a.sigunguCode}" th:value2="${a.areaCode}" th:text="${a.locationName}"></option>	
+				</select>
+			</div>
 			<div class="uploadDiv">
 				<input type="file" name="mainImage" id="mainImage" multiple/>
 			</div>
