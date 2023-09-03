@@ -282,9 +282,8 @@
     <!-- board seach area -->
   
     <br> <!-- style='margin-left: 8%;' -->
-      <div  th:if="${session.sessionAuthority} == 'A3'">
-		
-					
+    <!--  관리자(A3)인 경우 검색 div  -->
+     <div  th:if="${session.sessionAuthority} == 'A3'">
 			   	<div  id="noticeType"  class="mb-3" style="float: left; margin-left: 10%; margin-right:20px" >
 		    	
 					<select class=""name="noticeType"
@@ -316,10 +315,56 @@
 				<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
 				<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
 			</div>
+	</div>
+			
+	<!--  가이드(A2)인 경우 검색 div  -->	
+	 <div  th:if="${session.sessionAuthority} == 'A2'">	
+			   	<div  id="noticeType"  class="mb-3" style="float: left; margin-left: 10%; margin-right:20px" >
+					<select class=""name="noticeType"
+						aria-label="Default select example"  >
+						<option value="">공지사항 종류</option>
+						<option value="n1">공지사항</option>
+						<option value="n2">이벤트</option>
+					</select> 
+				</div>   
+				
+				<div id="release" class="mb-3" style="float: left; margin-right: 20px;" >
+					<select class=""  name="release"
+						aria-label="Default select example" >
+						<option value="">공개대상</option>
+						<option value="N1">전체공개</option>
+						<option value="N2">가이드공개</option>
+					</select> 
+				</div>  
+				
+		       	
+			<div>
+				<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
+				<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
 			</div>
+	</div>
+	
+	  <!--  일반회원(A1)인 경우 검색 div  -->
+     <div  th:if="${session.sessionAuthority} == 'A3'">
+			   	<div  id="noticeType"  class="mb-3" style="float: left; margin-left: 10%; margin-right:20px" >
+		    	
+					<select class=""name="noticeType"
+						aria-label="Default select example"  >
+						<option value="">공지사항 종류</option>
+						<option value="n1">공지사항</option>
+						<option value="n2">이벤트</option>
+					</select> 
+				</div>   
+				
+					       
+			<div>
+				<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
+				<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+			</div>
+	</div>
    
     <!-- notice list area -->
-    <div id="board-list">
+    
         <div class="container">
             <table class="board-table">
                 <thead>
