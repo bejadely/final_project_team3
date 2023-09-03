@@ -32,6 +32,7 @@ public interface QuestionMapper {
 	// 문의 답변 입력(관리자)
 	public int insertAnswerToQuestion(QuestionVO questionVO);
 	
+	// 문의 단건 조회(관리자 - ajax용)
+	public QuestionVO ajaxSelectOneQuestion(QuestionVO questionVO);
 	
-
 }
