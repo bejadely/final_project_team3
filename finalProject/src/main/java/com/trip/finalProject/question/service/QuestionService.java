@@ -22,4 +22,7 @@ public interface QuestionService {
 	//0903 창민
 	// 문의글 등록
 	public String insertQuestion(QuestionVO questionVO);
+	
+	// 일반문의글 전체 조회(관리자)
+	public Map<String, Object> selectAllQuestion(Integer nowPage, Integer cntPerPage);
 }

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/admin_layout}">
+<head>
+   <style>
+        body {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0069d9;
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            color: #ffffff;
+        }
+        
+        .ck.ck-editor {
+		width: 100%;
+		max-width: 1500px;
+		margin: 0 auto;
+		}
+		
+		.ck-editor__editable {
+			height: 50vh;
+		}
+    </style>
+</head>
+<!-- Content -->
+<div layout:fragment="content">
+	<div class="container">
+		<h5><b>문의 내역 조회</b></h5>
+		<br>
+		<div>
+			<!-- 선택시 아이작스 호출 할 것임( 전체문의 / 일반 문의 / 특산물 문의 ) -->
+			<select id="searchBy" name="searchBy">
+				<option value="name">이름으로 검색</option>
+				<option value="id">아이디로 검색</option>
+			</select>
+			<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
+			<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+		</div>
+		<div class="table-responsive">
+				<table class="table">
+					<thead>
+					</thead>
+					<th:block th:if="${!#lists.isEmpty(list)}">
+						<tbody>
+							<th:block th:each="l : ${list}">
+								<tr th:class="|questionInfo${lStat.count}|">
+									<td>
+									<button type="button" th:class="btn-success" th:text="${l.answerResult}"></button>
+									<span th:text="${l.questionTitle}"></span><br>
+									<span th:utext="|문의자ID : ${l.memberId}  ${#dates.format(l.questionDate, 'yyyy년MM월dd일')}"></span>
+									<p th:text="${l.questionContent}"></p>
+									<button type="button" th:id="|ansBtn${lStat.count}|" class="btn btn-primary btn-sm" data-visible="visible">답변하기</button>
+									</td>
+								</tr>
+								<tr style="display: none;">
+									<td>
+										<form method="post" th:id="|form${lStat.count}|">
+											<span>ㄴ답변하기</span><br>
+											<textarea name="answerContent" class="form-control" rows="3" cols="90"></textarea>
+											<button class="answer-btn btn btn-primary btn-sm" type="button">답변완료</button>
+											<input type="hidden" name="questionId" th:value="${l.questionId}">
+											<input type="hidden" name="answerMemberId" th:value="${session.sessionId}">
+										</form>									
+									</td>
+								</tr>
+							</th:block>
+						</tbody>
+					</th:block>
+				</table>
+			<th:block th:if="${#lists.isEmpty(list)}">
+				<div align="center">
+					<span>새로운 문의내역이 없습니다.</span>
+				</div>
+			</th:block>
+		</div>
+		<!-- 페이징 구문 -->
+		<!-- 검색키워드가 없을때 -->
+		<th:block th:if="${#strings.isEmpty(keyword)}">
+			<div style="text-align : center;" class="property-pagination">
+				<th:block th:if="${paging.nowPage != 1}">
+					<a th:href="@{seeAllMemberList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+				</th:block>
+				<th:block th:if="${paging.startPage != 1}">
+					<a th:href="@{seeAllMemberList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+				</th:block>
+				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+					<th:block th:if="${p eq paging.nowPage}">
+						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+					</th:block>
+					<th:block th:if="${p ne paging.nowPage}">
+						<a th:href="@{seeAllMemberList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+					</th:block>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+					<a th:href="@{seeAllMemberList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage}">
+					<a th:href="@{seeAllMemberList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+				</th:block>
+			</div>
+		</th:block>
+		<!-- 검색키워드가 있을때 -->
+		<th:block th:if="${!#strings.isEmpty(keyword)}">
+			<div style="text-align : center;" class="property-pagination">
+				<th:block th:if="${paging.nowPage != 1}">
+					<a th:href="@{searchAdminMember(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
+				</th:block>
+				<th:block th:if="${paging.startPage != 1}">
+					<a th:href="@{searchAdminMember(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;</a>
+				</th:block>
+				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+					<th:block th:if="${p eq paging.nowPage}">
+						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+					</th:block>
+					<th:block th:if="${p ne paging.nowPage}">
+						<a th:href="@{searchAdminMember(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
+					</th:block>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+					<a th:href="@{searchAdminMember(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage}">
+					<a th:href="@{searchAdminMember(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
+				</th:block>
+			</div>
+		</th:block>
+		
+	</div>
+	
+	<script th:inline="javascript" type="text/javascript">
+	
+	$(document).ready(function() {
+		// 이벤트 설정
+		$('#searchButton').on('click', search);
+		$('.memberInfo').on('mouseover', colorDarker)
+						.on('mouseleave', colorReset)
+						.on('click')
+						.on('mouseup', moveToMemberDetail);
+		
+		// 답변하기 버튼 누를 시 토글 활성화
+		$('[id^="ansBtn"]').on('click', toggleVisible);
+		
+		// 
+		$('.answer-btn').on('click', ajaxSubmitAnswer)
+	});
+	
+	// 답변하기 버튼 클릭 시 hidden 버튼 활성화
+	function toggleVisible(event){
+		
+		if($(this).attr("data-visible") == "visible" ){
+			$(this).attr("data-visible", "hidden")
+				   .closest('tr').next().css({"display": "table-row"});
+		} else {
+			$(this).attr("data-visible", "visible")
+			       .closest('tr').next().css({"display": "none"});
+		}
+		
+		
+	}
+	
+	// 답변하기 버튼 누를 시 답변 내용  이름 쓸 예정
+	function ajaxSubmitAnswer(event){
+		
+		let serializedForm = $(this).closest('form').serialize();
+		
+		$.ajax({
+			url : '/admin/answerQuestion',
+			type : 'post',
+			data : serializedForm
+		})
+		.done( data => {
+			console.log(data);
+		})
+		.fail( reject => console.log(reject));
+		
+	}
+	
+	
+	// 조건검색기능
+	function search(event){
+		
+		let value = $('#searchBy').val();
+		let keyword = $('#keyword').val();
+		location.href='/admin/searchAdminMember?searchBy='+value+'&keyword='+keyword;
+		
+	}
+	
+	// 마우스 오버 : 색상 어둡게
+	function colorDarker(event){
+		$(event.currentTarget).css({background: '#f2f4f5'})
+							  .css({cursor: 'pointer'});		
+	}
+	
+	
+	// 마우스릴리브 : 색상 원상복귀
+	function colorReset(event){
+		$(event.currentTarget).css({background: '#ffffff'});
+	}
+	
+	// 클릭시 회원상세정보 조회페이지로 이동
+	function moveToMemberDetail(event){
+		
+		// 상세보기 할 member의 id값 가져오기
+		let memberId = $(event.currentTarget).find('td:eq(0)').text();
+		
+		// 페이지 전환 실행
+		location.href=`seeMemberDetail?memberId=${memberId}`;
+	}
+	
+	</script>
+</div>
+
+</html>
