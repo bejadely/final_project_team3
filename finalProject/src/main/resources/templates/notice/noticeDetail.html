@@ -184,7 +184,7 @@ table {
 		</form>
 	</div>
 	
-    <div id='actionButton' align="center">
+    <div  th:if="${session.sessionAuthority} == 'A3'" id='actionButton' align="center">
    
     <!--  <div th:if="${id == board.memberId || id == 'manager'}"> -->
     		<!--  <input type="button" onclick="callFunction('E')" value="버튼"/>-->
