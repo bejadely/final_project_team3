@@ -176,9 +176,11 @@ public class TripController {
 	// 여행기록 메모 등록 
 	@PostMapping("/tripMemoInsert")
 	@ResponseBody
-	public String tripMemoInsert(TripVO tripVO, Model model) {
+	public String tripMemoInsert(@RequestBody TripVO[] memoDataArry) {
 		//여행메모 등록
-		tripService.InsertTripMemo(tripVO);
+		for (TripVO item : memoDataArry) {
+			tripService.InsertTripMemo(item);
+		}
 		return null;
 	}
 	
