@@ -11,7 +11,7 @@
 	<div class="container">
 		<h5><b>정산 내역 관리</b></h5>
 		<br>
-		<form action="/admin/calAtOnce" method="post">
+		<form id="frm" action="/admin/calAtOnce" method="post">
 			<a href="#">전체내역조회</a> <a href="#">정산대기중</a> <a href="#">정산완료</a>
 			
 			<div class="table-responsive">
@@ -31,7 +31,14 @@
 						<tbody>
 							<th:block th:each="l : ${list}">
 								<tr class="calInfo">
-									<td><input type="checkbox" class="form-control normalcheck"></td>
+									<td>
+										<input type="checkbox" class="form-control normalcheck">
+										<input type="hidden" name="calId" th:value="${l.calId}">
+										<input type="hidden" name="writerId" th:value="${l.writerId}">
+										<input type="hidden" name="calAmount" th:value="${l.calAmount}">
+										<input type="hidden" name="bankCode" th:value="${l.bankCode}">
+										<input type="hidden" name="accountNumber" th:value="${l.accountNumber}">
+									</td>
 									<td align="center" th:text="${l.calId}"></td>
 									<td align="center" th:text="${l.writerId}"></td>
 									<td align="center" th:text="${l.calAmount}"></td>
@@ -41,11 +48,7 @@
 								</tr>
 								<!-- checked된것을 제외한 애들의 input은 지우고 보낼거임 -->
 								<div>
-									<input type="hidden" name="calId" th:value="${l.calId}">
-									<input type="hidden" name="writerId" th:value="${l.writerId}">
-									<input type="hidden" name="calAmount" th:value="${l.calAmount}">
-									<input type="hidden" name="bankCode" th:value="${l.bankCode}">
-									<input type="hidden" name="accountNumber" th:value="${l.accountNumber}">
+									
 								</div>
 							</th:block>
 						</tbody>
@@ -56,7 +59,7 @@
 						<span>조회할 정산 내역이 없습니다.</span>
 					</div>
 				</th:block>
-				<button type="submit" class="feature-btn">일괄정산</button>
+				<button type="button" id="submit-btn" class="feature-btn">일괄정산</button>
 			</div>
 		</form>
 		<!-- 페이징 구문 -->
@@ -120,6 +123,7 @@
 		$('.reportInfo').on('mouseover', colorDarker)
 						.on('mouseleave', colorReset);
 		$('#allCheck').on('click', selectToggle);
+		$('#submit-btn').on('click', calAtOnce);
 	});
 	
 	// 셀렉트박스 toggle
@@ -130,6 +134,15 @@
 	        $('.normalcheck').prop("checked", false);
 	    }
 	}
+	
+	// 일괄수정 기능 수행하기
+	function calAtOnce(event){
+		
+		$('.normalcheck:not(:checked)').nextAll().remove();
+		$('#frm').submit();
+		
+		
+	}	
 	
 	// 조건검색기능
 	function search(event){
