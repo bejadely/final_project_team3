@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip.finalProject.tripMate.mapper.TripMateMapper">
+	<!-- 여행 메이트 글 전체 조회 -->
+	<select id="selectAllTripMate" resultType="TripMateVO">
+		SELECT *
+		FROM mate_recruit m LEFT OUTER JOIN 
+     		 attached_file a ON m.post_id = a.post_id
+     	WHERE a.member_id IS NOT NULL OR a.file_id IS NULL
+		ORDER BY m.post_id DESC
+	</select>
+	
+	<!-- 여행 메이트 글 상세 조회 -->
+	<select id="selectTripMateInfo" resultType="TripMateVO">
+		SELECT post_id,
+			   writer_id,
+			   mate_title,
+			   start_day,
+			   end_day,
+			   deadline,
+			   mate_content,
+			   mate_expense,
+			   mate_max,
+			   apply_num,
+			   hit,
+			   trip_area,
+			   write_date
+		FROM mate_recruit
+		WHERE post_id = #{postId}
+	</select>
+	
+	<!-- 여행 메이트 글 조회수 업데이트 -->
+	<update id="updateMateRecruitHit" parameterType="TripMateVO">
+		UPDATE mate_recruit
+		<set>
+			hit = NVL((hit), 0) + 1
+		</set>
+		WHERE post_id = #{postId}
+	</update>
+	
+	
+	<!-- 여행메이트 게시글 등록 -->
+	<insert id="insertEditor" parameterType="TripMateVO">
+		<selectKey keyProperty="postId" resultType="String" order="BEFORE">
+			SELECT 'MAT' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM mate_recruit
+			WHERE SUBSTR(post_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+		INSERT INTO mate_recruit
+						(
+							post_id
+							, mate_title
+							, mate_content
+							, mate_expense
+							, start_day
+							, end_day
+							, mate_style
+							, mate_tag
+							, mate_max
+							, complition
+							, write_date
+							, deadline
+							, writer_id
+							, trip_area
+						)
+					VALUES
+						(
+							#{postId}
+							, #{mateTitle}
+							, #{mateContent}
+							, #{mateExpense}
+							, #{startDay}
+							, #{endDay}
+							, #{mateStyle}
+							, #{mateTag}
+							, #{mateMax}
+							, 'C1'
+							, sysdate
+							, #{deadline}
+							, #{writerId}
+							, #{tripArea}						
+						)
+		
+	</insert>
+	
+	<!-- 여행메이트 게시글 수정 -->
+	<update id="updateTripMateRecruit" parameterType="TripMateVO">
+		UPDATE mate_recruit
+		<set>
+			mate_title = #{mateTitle},
+			mate_content = #{mateContent},
+		    mate_expense = #{mateExpense},
+			start_day = #{startDay},
+			end_day = #{endDay},
+			mate_style = #{mateStyle},
+			mate_tag = #{mateTag},
+			mate_max = #{mateMax},
+			deadline = #{deadline},
+			trip_area = #{tripArea}
+		</set>
+		WHERE post_id = #{postId}
+	</update>
+	
+	
+	<!-- 여행메이트 게시글 삭제 -->
+	<delete id="deleteTripMateRecruit" parameterType="TripMateVO">
+		DELETE FROM mate_recruit
+		WHERE post_id = #{postId}
+	</delete>
+	
+	<!-- 여행메이트 게시글 삭제 시 해당 게시글과 연결된 이미지 파일 같이 삭제 -->
+	<delete id="deleteAttachedFile" parameterType="TripMateVO">
+		DELETE FROM attached_file
+		WHERE post_id = #{postId}
+	</delete>
+	
+	<!-- 여행 게시글 신고 -->
+	<insert id="reportTripMate" parameterType="TripMateVO">
+		<selectKey keyProperty="reportId" resultType="String" order="BEFORE">
+			SELECT 'REP' || (TO_NUMBER(NVL((SUBSTR(MAX(report_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM report
+			WHERE SUBSTR(report_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+		INSERT INTO report
+						(
+							report_id
+							, reporter_id
+							, post_id
+							, punished_id
+							, report_date
+							, report_reason
+							, content
+							, result
+						)
+					VALUES
+						(
+							#{reportId}
+							, #{reporterId}
+							, #{postId}
+							, #{punishedId}
+							, sysdate
+							, #{reportReason}
+							, #{content}
+							, 'P1'
+						)
+	</insert>
+
+	<!-- 여행 메이트 신청 (등록된 게시글에 대한 여행메이트 신청) -->
+	<insert id="insertTripMateApply" parameterType="TripMateVO">
+		<selectKey keyProperty="applyId" resultType="String" order="BEFORE">
+			SELECT 'APL' || (TO_NUMBER(NVL((SUBSTR(MAX(apply_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM mate_apply
+			WHERE SUBSTR(apply_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+		INSERT INTO mate_apply
+						(
+							apply_id
+							, member_id
+							, post_id
+							, apply_day
+							, apply_info
+							, approve_status
+						)
+					VALUES
+						(
+							#{applyId}
+							, #{memberId}
+							, #{postId}
+							, sysdate
+							, #{applyInfo}
+							, 'a1'
+						)
+	</insert>
+	
+	<!-- 여행 메이트 신청시 게시글 작성자에게 알림-->
+	<insert id="sendAlert" parameterType="TripMateVO">
+		<selectKey keyProperty="alertId" resultType="String" order="BEFORE">
+			SELECT 'ALT' || (TO_NUMBER(NVL((SUBSTR(MAX(alert_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM alert
+			WHERE SUBSTR(alert_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+		INSERT INTO alert
+					(
+						alert_id
+						, alert_date
+						, content
+						, confirmation
+						, member_id
+						, post_id	
+					)
+				VALUES
+				    (
+				    	#{alertId}
+				    	, sysdate
+				    	, '등록한 메이트 모집글에 새로운 요청이 있습니다.'
+				    	, 'W2'
+				    	, #{memberId}
+				    	, #{postId}
+				    )
+	</insert>
+	
+	<!-- 여행 메이트 신청시 게시글의 신청자 수 update -->
+	<update id="updateMateRecruitApplyNum" parameterType="TripMateVO">
+		UPDATE mate_recruit
+		<set>
+			APPLY_NUM = NVL((APPLY_NUM), 0) + 1
+		</set>
+		WHERE post_id = #{postId}
+	</update>
+	
+	<!-- 여행 메이트 게시글의 신청자 수 조회 -->
+	<select id="selectMateRecruitApplyNum" resultType="TripMateVO">
+		SELECT apply_num, mate_max
+		FROM mate_recruit
+		WHERE post_id = #{postId}
+	</select>
+	
+	<!-- 마이페이지 -->
+	<!-- 내가 저장한 트립베이트 -->
+	<select id="myTripCount" resultType="int">
+		SELECT count(*)
+		FROM mate_recruit
+		WHERE writer_id = #{writerId}
+	</select>
+
+	<select id="myMateList" resultType="TripMateVO">
+		SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			 FROM(SELECT post_id,
+			 			 mate_title,
+			 			 start_day,
+			 		 	 end_day,
+			 			 mate_max,
+			 			 apply_num,
+			 			 code_val(complition) complition,
+			 			 write_date,
+			 			 deadline,
+			 			 hit,
+			 			 writer_id,
+			 			 trip_area		 
+				 FROM mate_recruit
+     			 WHERE writer_id = #{trVO.writerId}
+				 ORDER BY post_id DESC) a)
+		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
+	</select>
+	
+	<select id="myTripAppCount" resultType="int">
+		SELECT count(*)
+		FROM mate_recruit r left OUTER JOIN mate_apply a on r.post_id = a.post_id
+		WHERE a.member_id = #{memberId}
+	</select>
+
+	<select id="myMateAppList" resultType="TripMateVO">
+		SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			 FROM(SELECT  r.post_id,
+			 			 r.mate_title,
+			 			 r.start_day,
+			 		 	 r.end_day,
+			 			 r.mate_max,
+			 			 r.apply_num,
+			 			 code_val(r.complition) complition,
+			 			 r.write_date,
+			 			 r.deadline,
+			 			 r.hit,
+			 			 r.writer_id,
+			 			 r.trip_area,
+                         a.apply_id	 
+				 FROM mate_recruit r left OUTER JOIN mate_apply a on r.post_id = a.post_id
+     			 WHERE a.member_id = #{trVO.memberId}
+				 ORDER BY r.post_id DESC) a)
+		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
+	</select>
+	
+	<!-- 내가 신청한 메이트 취소  -->
+	<delete id="myTripCancle" parameterType="TripMateVO">
+		DELETE FROM mate_apply
+		WHERE apply_id = #{applyId}
+	</delete>
+	
+	<!-- 내가 작성한 메이트 글 상세 조회 -->
+	<select id="selectTripMateMyInfo" resultType="TripMateVO">
+  				 SELECT  r.post_id,
+			 			 r.mate_title,
+			 			 r.start_day,
+			 		 	 r.end_day,
+			 			 r.mate_max,
+			 			 r.apply_num,
+			 			 code_val(r.complition) complition,
+			 			 r.write_date,
+			 			 r.deadline,
+			 			 r.hit,
+			 			 r.writer_id,
+			 			 r.trip_area,
+                         a.apply_id,
+                         m.member_id,
+                         code_val(m.gender) gender,
+                         m.birth_date,
+                         m.nationality
+		FROM mate_recruit r left OUTER JOIN mate_apply a on r.post_id = a.post_id
+							right OUTER JOIN member m on a.member_id = m.member_id
+		WHERE r.post_id = #{postId}
+	</select>
+	<!-- 신청인원수 줄이기 -->
+	<update id="myTripnum" parameterType="TripMateVO">
+		UPDATE mate_recruit
+		<set>
+			apply_num = apply_num - 1
+		</set>
+		WHERE post_id = #{postId}
+	</update>
+	
+	<select id="memberInfo" resultType="TripMateVO">
+  				 SELECT  a.apply_id,
+  				 		 a.apply_info,
+  				 		 a.post_id,
+                         m.member_id,
+                         m.member_name,
+                         code_val(m.gender) gender,
+                         m.birth_date,
+                         m.phone_number,
+                         m.nationality
+		FROM mate_apply a right JOIN member m on a.member_id = m.member_id
+		WHERE m.member_id = #{memberId} AND a.post_id = #{postId}
+	</select>
+	
+	
+	
+</mapper>

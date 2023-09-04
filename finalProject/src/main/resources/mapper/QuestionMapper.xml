@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.trip.finalProject.question.mapper.QuestionMapper">
+  	 <!-- 페이징 -->
+ 	<select id="getTotalCount" resultType="int">
+ 		SELECT COUNT(*)
+ 		FROM question
+ 		WHERE answer_member_id = #{answerMemberId}
+ 	</select>
+ 	<!-- 전체조회 -->
+ 	<select id="selectAllQue" resultType="QuestionVO">
+	SELECT *
+	FROM (
+	    SELECT ROWNUM rn, a.*
+	    FROM (
+	        SELECT
+	            question_id,
+	            code_val(question_type),
+	            question_content,
+	            question_date,
+	            member_id,
+	            answer_result,
+	           	column1 answer_content,
+	            answer_date,
+	            answer_modify_date,
+	            answer_member_id
+	        FROM  question
+	        where answer_member_id = #{questionVO.answerMemberId}
+	        ORDER BY question_date DESC
+	    ) a
+	) WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+ 	</select>
+ 	<!-- 입력 -->
+ 	 <update id="insertQue" parameterType="QuestionVO">
+	 	update question
+	 	<set>
+	 		column1 = #{answerContent},
+	 		answer_date = sysdate,
+	 		
+	 	</set>
+		WHERE questionId = #{questionId}
+ 	</update>
+
+ 	<!-- 수정 -->
+ 	<update id="updateQue" parameterType="QuestionVO">
+	 	update question
+	 	<set>
+	 		answer_contexts = #{answerContexts},
+	 		answer_modify_date = sysdate
+	 	</set>
+		WHERE answer_member_id = #{answerMemberId}
+ 	</update>
+ 	<!-- 일반사용자 구성 -->
+ 	<!-- 페이징 -->
+ 	<select id="getTotalMember" resultType="int">
+ 	 	SELECT COUNT(*)
+ 		FROM question
+ 		WHERE member_id = #{memberId}
+ 	</select>
+ 	
+ 	<!-- 일반유저 -->
+ 	<!-- 전체조회 -->
+ 	<select id="selectAllQueMember" resultType="QuestionVO">
+	SELECT *
+	FROM (
+	    SELECT ROWNUM rn, a.*
+	    FROM (
+	        SELECT
+	            question_id,
+	            question_type,
+	            question_content,
+	            question_date,
+	            member_id,
+	            answer_result,
+	           	column1 answer_content,
+	            answer_date,
+	            answer_modify_date,
+	            answer_member_id
+	        FROM  question
+	        where member_id = #{questionVO.memberId}
+	        ORDER BY question_date DESC
+	    ) a
+	) WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+ 	</select>
+ 	
+ 	<!-- 문의글 등록 -->
+ 	<insert id="insertQuestion">
+ 		<selectKey keyProperty="questionId" resultType="String" order="BEFORE">
+			SELECT 'QUE' || (TO_NUMBER(NVL((SUBSTR(MAX(question_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM question
+			WHERE SUBSTR(question_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+ 		INSERT INTO question(
+					         QUESTION_ID
+					       , MEMBER_ID
+					       , QUESTION_DATE
+					       , QUESTION_TITLE
+					       , QUESTION_CONTENT
+					       , QUESTION_TYPE
+					       , ANSWER_RESULT
+							 ) 
+			 VALUES(
+					#{questionId}
+					, #{memberId}
+					, sysdate
+					, #{questionTitle}
+					, #{questionContent}
+					, #{questionType}
+					, 'K1'
+					)
+ 	</insert>
+ 	
+ 	<!-- 문의글 전체 카운트 -->
+ 	<select id="countAllQuestion">
+		SELECT COUNT(*)
+		  FROM question
+	</select>
+ 	
+ 	
+ 	<!-- 문의글 전체 조회(관리자용) -->
+ 	<select id="selectAllQuestion" resultType="QuestionVO">
+      SELECT *
+      FROM (SELECT ROWNUM rn, a.question_title
+						    , a.question_id
+						    , a.member_id
+						    , a.question_date
+						    , a.question_content
+						    , code_val(a.question_type) question_type
+						    , code_val(a.answer_result) answer_result 
+						    , a.product_id
+						    , a.answer_member_id
+						    , a.answer_modify_date
+						    , a.answer_date
+						    , a.answer_content
+                FROM(SELECT question_title
+						  , question_id
+						  , member_id
+						  , question_date
+						  , question_content
+						  , question_type
+						  , answer_result
+						  , product_id
+						  , answer_member_id
+						  , answer_modify_date
+						  , answer_date
+						  , answer_content
+                       FROM question
+                   ORDER BY question_date DESC) a )
+      WHERE rn BETWEEN #{start} AND #{end}
+ 	</select>
+ 	
+ 	<update id="insertAnswerToQuestion">
+ 		UPDATE question
+	    <set>
+		   answer_result = 'K2',
+		   answer_member_id = #{answerMemberId},
+		   answer_date = sysdate,
+		   answer_content = #{answerContent},
+	    </set> 
+		 WHERE question_id = #{questionId}
+ 	</update>
+ 	
+ 	<!-- 문의 단건 조회(ajax용) -->
+	<select id="ajaxSelectOneQuestion">
+		SELECT *
+		  FROM question
+		 WHERE question_id = #{questionId}
+	</select> 	
+  
+	<!-- 문의 종류에 따른 문의글 전체 카운트 -->  
+  	<select id="countAllQuestionByType">
+  		SELECT COUNT(*)
+		  FROM question
+		 WHERE question_type = #{questionType} 
+  	</select>
+  	
+  	<!-- 문의 종류에 따른 문의글 전체 조회 -->
+  	<select id="selectAllQuestionByType">
+  		 SELECT *
+	      FROM (SELECT ROWNUM rn, a.question_title
+							    , a.question_id
+							    , a.member_id
+							    , a.question_date
+							    , a.question_content
+							    , code_val(a.question_type) question_type
+							    , code_val(a.answer_result) answer_result 
+							    , a.product_id
+							    , a.answer_member_id
+							    , a.answer_modify_date
+							    , a.answer_date
+							    , a.answer_content
+	                FROM(SELECT question_title
+							  , question_id
+							  , member_id
+							  , question_date
+							  , question_content
+							  , question_type
+							  , answer_result
+							  , product_id
+							  , answer_member_id
+							  , answer_modify_date
+							  , answer_date
+							  , answer_content
+	                       FROM question
+	                      WHERE question_type = #{questionVO.questionType}
+	                   ORDER BY question_date DESC) a )
+	      WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+  	</select>
+  
+  </mapper>

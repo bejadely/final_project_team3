@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/myPage_layout}">
+<head>
+<meta charset="UTF-8">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+<title>문의사항</title>
+<style type="text/css">
+table, th,td {
+	border: 1px solid black;
+	text-align: center;
+	margin: 0 auto;
+}
+.hidden{
+	border: none;
+	text-align: center;
+	margin: 0 auto;
+}
+
+}
+</style>
+<script>
+$(document).ready(function() {
+	$("#mt").click(function() {
+		location.href="myMtList"	
+	})
+
+	$("#tr").click(function() {
+		location.href="myTrList"
+	})
+});
+</script>
+</head>
+<body>
+
+	<th:block layout:fragment="css"></th:block>
+	<th:block layout:fragment="script"></th:block>
+	<div layout:fragment="content" style="text-align: center;">
+	<form>
+		<h5>좋아요 목록</h5>
+		<button type="button" id="mt">여행메이트</button>
+		<button type="button" id="tr">여행기록</button>
+		<table>
+			<thead>
+				<tr>
+					<th>타이틀</th>
+					<th>여행날짜</th>
+					<th>마감날짜</th>
+					<th>여행지역</th>
+					<th>신청자 수</th>
+					<th>모집완료 여부</th>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="li : ${list}">
+					<tr class="list" th:onclick="|location.href='@{/tripMateInfo(postId=${li.postId})}'|">
+						<td th:text="${li.mateTitle}"></td>
+						<td th:text="${li.startDay} + '~' + ${li.endDay}"></td>
+						<td th:text="${li.deadline}"></td>
+						<td th:text="${li.tripArea}"></td>
+						<td th:text="${li.applyNum}"></td>
+						<td th:text="${li.complition}"></td>
+					</tr>
+				</th:block>
+			</tbody>
+			</table>
+		</form>
+		<div>
+			<th:block th:if="${paging.startPage != 1}">
+				<a th:href="@{myMtList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
+			</th:block>
+			<th:block th:if="${paging.startPage != 1}">
+				<a
+					th:href="@{myMtList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+			</th:block>
+			<th:block
+				th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+				<th:block th:if="${p eq paging.nowPage}">
+					<b th:text="${p}"></b>
+				</th:block>
+				<th:block th:if="${p ne paging.nowPage}">
+					<a
+						th:href="@{myMtList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
+						th:text="${p}"></a>
+				</th:block>
+			</th:block>
+			<th:block th:if="${paging.endPage != paging.lastPage}">
+				<a
+					th:href="@{myMtList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+			</th:block>
+			<th:block th:if="${paging.endPage != paging.lastPage}">
+				<a
+					th:href="@{myMtList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
+			</th:block>
+		</div>
+	</div>
+</body>
+</html>

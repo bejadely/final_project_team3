@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.trip.finalProject.statistics.mapper.StatisticsMapper">
+    <select id="getVisitorList" resultType="VisitorVO">
+      SELECT *
+      FROM chart_visitor
+      WHERE year_month = #{prevMonth}
+    </select>
+
+	<select id="getVisitorRank" resultType="VisitorVO">
+      <![CDATA[
+	      SELECT *
+			FROM (
+			    SELECT *
+			    FROM chart_visitor
+			    ORDER BY visitor_number DESC
+			    )
+			WHERE year_month = #{prevMonth}
+			AND ROWNUM <= 5
+		]]>
+    </select>
+    
+    <select id="getAttractionRank" resultType="AttractionVO">
+      <![CDATA[
+	      SELECT *
+			FROM (
+			    SELECT *
+			    FROM chart_attraction
+			    ORDER BY visitor_number DESC
+			    )
+			WHERE year_month = #{prevMonth}
+			AND ROWNUM <= 5
+		]]>
+    </select>
+
+    <select id="getFellowList" resultType="FellowVO">
+        SELECT *
+        FROM chart_fellow
+        WHERE area_code = #{areaCode}
+          AND sigungu_code = #{sigunguCode}
+          AND TO_DATE(year_month, 'YYYYMM') = ADD_MONTHS(TRUNC(SYSDATE, 'MONTH'), -1)
+        ORDER BY search_number DESC
+    </select>
+
+    <select id="getRestaurantList" resultType="RestaurantVO">
+        SELECT *
+        FROM chart_restaurant
+        WHERE area_code = #{areaCode}
+          AND sigungu_code = #{sigunguCode}
+          AND TO_DATE(year_month, 'YYYYMM') = ADD_MONTHS(TRUNC(SYSDATE, 'MONTH'), -1)
+        ORDER BY visitor_number DESC
+    </select>
+
+    <select id="getAttractionList" resultType="AttractionVO">
+        SELECT *
+        FROM chart_attraction
+        WHERE area_code = #{areaCode}
+          AND sigungu_code = #{sigunguCode}
+          AND TO_DATE(year_month, 'YYYYMM') = ADD_MONTHS(TRUNC(SYSDATE, 'MONTH'), -1)
+        ORDER BY visitor_number DESC
+    </select>
+
+    <select id="getTripList" resultType="TripDataVO">
+        SELECT *
+        FROM chart_trip
+        WHERE area_code = #{areaCode}
+          AND sigungu_code = #{sigunguCode}
+          AND TO_DATE(year_month, 'YYYYMM') = ADD_MONTHS(TRUNC(SYSDATE, 'MONTH'), -1)
+        ORDER BY search_number DESC
+    </select>
+
+    <select id="getSnsList" resultType="SnsVO">
+        SELECT *
+        FROM chart_sns
+        WHERE area_code = #{areaCode}
+          AND sigungu_code = #{sigunguCode}
+          AND TO_DATE(year_month, 'YYYYMM')
+              BETWEEN (TRUNC(SYSDATE, 'MONTH') - INTERVAL '7' MONTH)
+                  AND TRUNC(SYSDATE, 'MONTH') - INTERVAL '1' MONTH
+        ORDER BY year_month
+    </select>
+  </mapper>

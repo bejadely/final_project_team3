@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.trip.finalProject.buyList.mapper.BuyListMapper">
+  <select id="pkCount" resultType="int">
+  	SELECT COUNT(*)
+  	FROM purchase
+  	WHERE post_id LIKE 'PKG%'
+  </select>
+  
+  <select id="spCount" resultType="int">
+  	SELECT COUNT(*)
+  	FROM purchase
+  	WHERE post_id LIKE 'SPE%'
+  </select>
+  
+  <select id="pkAllLike" resultType="BuyListVO">
+  	SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			 FROM(SELECT p.order_detail_id,
+			 			 p.post_id,
+			 			 p.member_id,
+			 			 p.quantity,
+			 			 p.price pu_price,
+			 			 p.order_date,
+			 			 code_val(p.order_status) order_status,
+			 			 p.payment_id,
+			 		 	 p.tid,
+			 			 p.cid,
+			 			 p.cancel_amount,
+			 			 p.cancel_tax_free_amount, 
+			 			 r.start_date,
+			 			 r.price pk_price,
+			 			 r.end_date,
+			 			 r.deadline_date,
+			 			 r.tour_theme,
+                         r.name,
+			 			 code_val(r.completion) completion
+				  FROM purchase p LEFT JOIN package_regist r ON (p.post_id = r.post_id)
+				  WHERE p.post_id LIKE 'PKG%'
+				  ORDER BY p.post_id DESC) a)
+		WHERE rn BETWEEN #{start } AND #{end }
+  </select>
+  <select id="spAllLike" resultType="BuyListVO">
+  	  	SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			 FROM(SELECT p.order_detail_id,
+			 			 p.post_id,
+			 			 p.member_id,
+			 			 p.quantity,
+			 			 p.price,
+			 		 	 p.tid,
+			 			 p.cid,
+			 			 p.cancel_amount,
+			 			 p.cancel_tax_free_amount, 
+			 			 p.order_date,
+			 			 p.order_status,
+			 			 p.payment_id,
+			 			 r.title,
+			 			 r.type,
+			 			 o.specialty_type
+				  FROM purchase p LEFT JOIN specialties_regist r ON (p.post_id = r.post_id)
+				  				  LEFT JOIN SPECIALTIES_option o ON (p.post_id = o.post_id)
+				  WHERE p.post_id LIKE 'SPE%'
+				  ORDER BY p.post_id DESC) a)
+		WHERE rn BETWEEN #{start } AND #{end }
+  </select>
+  
+  <select id="selectPk" resultType="BuyListVO">
+  	SELECT p.order_detail_id,
+			 			 p.post_id,
+			 			 p.member_id,
+			 			 p.quantity,
+			 			 p.price pu_price,
+			 			 p.order_date,
+			 			 code_val(p.order_status) order_status,
+			 			 p.payment_id,
+			 		 	 p.tid,
+			 			 p.cid,
+			 			 p.cancel_amount,
+			 			 p.cancel_tax_free_amount, 
+			 			 r.start_date,
+			 			 r.price pk_price,
+			 			 r.end_date,
+			 			 r.deadline_date,
+			 			 r.tour_theme,
+                         r.name,
+			 			 code_val(r.completion) completion,
+			 			 f.loading_img
+	  FROM purchase p LEFT JOIN package_regist r ON (p.post_id = r.post_id)
+                                    JOIN attached_file f ON (p.post_id = f.post_id)
+	  WHERE f.img_type = 'U2' and p.order_detail_id = #{orderDetailId}
+  </select>
+  
+    <select id="selectSp" resultType="BuyListVO">
+  	  	SELECT p.order_detail_id,
+			 			 p.post_id,
+			 			 p.member_id,
+			 			 p.quantity,
+			 			 p.price pu_price,
+			 			 p.order_date,
+			 			 p.order_status,
+			 			 p.payment_id,
+			 			 p.tid,
+			 			 p.cid,
+			 			 p.cancel_amount,
+			 			 p.cancel_tax_free_amount, 
+			 			 r.title,
+			 			 r.type,
+			 			 o.specialty_type,
+			 			 o.price sp_price
+				  FROM purchase p LEFT JOIN SPECIALTIES_RESIGT r ON (p.post_id = r.post_id)
+				  				  LEFT JOIN SPECIALTIES_option o ON (p.post_id = o.post_id)
+				  WHERE p.post_id = #{postId}
+  </select>
+  </mapper>

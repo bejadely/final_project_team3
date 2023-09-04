@@ -1,0 +1,54 @@
+<html lang="ko" 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+    <!--headFragment 선언-->
+    <th:block th:fragment="bottomConfigFragment">
+		
+		<link th:href="@{https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap}" rel="stylesheet">
+          
+        <!-- 이 영역에 공통으로 사용할 css, js library를 선언한다. -->
+        <script th:src="@{/js/jquery-3.3.1.min.js}"></script>
+	    <script th:src="@{/js/bootstrap.min.js}"></script>
+	    <script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+	    <script th:src="@{/js/jquery.nice-select.min.js}"></script>
+	    <script th:src="@{/js/jquery.slicknav.js}"></script>
+	    <script th:src="@{/js/jquery-ui.min.js}"></script>
+	    <script th:src="@{/js/owl.carousel.min.js}"></script>
+	    <script th:src="@{/js/main.js}"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		
+		<!-- google translate api 를 사용하기 위한 스크립트 삽입 -->
+        <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+		
+		<script type="text/javascript">
+			/* 구글 번역 초기화 */
+			function googleTranslateElementInit() {new google.translate.TranslateElement({pageLanguage: 'ko',autoDisplay: true}, 'google_translate_element');}
+			
+			console.log(document.querySelector('.goog-te-combo'));
+			console.log(document.querySelector('.skiptranslate goog-te-gadget'));
+			
+			//document.querySelector('.skiptranslate goog-te-gadget').setAttribute("style", "display:none;")
+			
+			/* 새 UI 선택 클릭 이벤트가 발생하면
+		       감춤 처리한 구글 번역 콤보리스트에
+		       선택한 언어를 적용해 변경 이벤트를 발생시키는 코드  */
+			document.querySelector('.translation-links').addEventListener('click',function(event) {
+				let el = event.target;
+				if(el != null){
+					while(el.nodeName == 'FONT'){el = el.parentElement;}//data-lang 속성이 있는 태그 찾기
+					const tolang = el.dataset.lang; // 변경할 언어 코드 얻기
+					const gtcombo = document.querySelector('.goog-te-combo');
+					if (gtcombo == null) {
+						alert("Error: Could not find Google translate Combolist.");
+						return false;
+					}
+					gtcombo.value = tolang; // 변경할 언어 적용
+					gtcombo.dispatchEvent(new Event('change')); // 변경 이벤트 트리거
+				}
+				return false;
+			});
+		</script>
+		
+    </th:block>
+</html>

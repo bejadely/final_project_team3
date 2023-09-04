@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:th="http://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="@{layouts/default_layout}"
+   layout:fragment="content">
+<head>
+<meta charset="UTF-8">
+<title>여행 메이트 글 등록</title>
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css"></th:block>
+<!-- index.html 고유 스크립트 추가 -->
+<th:block layout:fragment="script"></th:block>
+<script src ="ckeditor5-build-classic/ckeditor.js"></script>
+<style>
+body {
+       background-color: #ffffff;
+       color: #000000;
+      }
+
+.text-center {
+       text-align: center;
+      }
+
+.form-control {
+       width: 100%;
+       padding: 10px;
+       border: 1px solid #ced4da;
+       border-radius: 4px;
+       box-sizing: border-box;
+      }
+
+.btn {
+       padding: 10px 20px;
+       font-size: 16px;
+       border-radius: 4px;
+      }
+
+.btn-primary {
+       background-color: #007bff;
+       border: none;
+       color: #ffffff;
+      }
+
+.btn-primary:hover {
+       background-color: #0069d9;
+       color: #ffffff;
+      }
+
+.btn-secondary {
+      background-color: #6c757d;
+      border: none;
+      color: #ffffff;
+      }
+
+.btn-secondary:hover {
+      background-color: #5a6268;
+      color: #ffffff;
+      }
+        
+.ck.ck-editor {
+     width: 100%;
+     max-width: 1500px;
+     margin: 0 auto;
+      }
+
+.ck-editor__editable {
+     height: 50vh;
+      }
+</style>
+</head>
+<body>
+   <div class="container">
+      <div class="text-center">
+           <br>
+               <h1>여행 메이트 글 등록</h1>
+           <br>
+        </div>
+        <div id="ls" class="text-center">
+           <form method="post" id="editorForm" enctype="multipart/form-data">
+            <input type="hidden" name="memberId" th:value="${session.sessionId}">
+              <div class="mb-3" style="float: left; margin-right: 20px;">
+                 <select class="" id="tripArea" name="tripArea" aria-label="Default select example"  >
+                  <option value="" selected="selected">여행 지역</option>
+                  <option value="대구">대구</option>
+                  <option value="부산">부산</option>
+                  <option value="포항">포항</option>
+                  <option value="안동">안동</option>
+                  <option value="경주">경주</option>
+                  <option value="울산">울산</option>
+                  <option value="통영">통영</option>
+                  <option value="거제">거제</option>
+               </select>
+              </div>
+              <div class="mb-3" style="float: left; margin-right: 20px;" >
+                 <select class="" id="mateStyle" name="mateStyle" aria-label="Default select example" >
+                  <option value="" selected="selected">여행 스타일</option>
+                  <option value="J1">계획적인 여행</option>
+                  <option value="J2">자유로운 여행</option>
+                  <option value="J3">역사 탐방</option>
+                  <option value="J4">맛집 탐방</option>
+                  <option value="J5">드라이브 여행</option>
+                  <option value="J6">배낭 여행</option>
+                  <option value="J7">기타</option>
+               </select>
+              </div>
+              <div> 
+                 <table class="table">
+                   <tr>
+                       <th style="text-align: left; width: 20%;">작성자</th>
+                       <td colspan="2">
+                           <input type="text" id="writerId" name="writerId" size="30" class="form-control" th:value="${session.sessionId}" readonly>
+                       </td>
+                       <th style="text-align: left; width: 20%;">등록일자</th>
+                       <td colspan="2">
+                           <input type="date" id="now_date" name="" size="30" class="form-control" readonly>
+                       </td>
+                   </tr>
+                      <tr>
+                       <th style="text-align: left; width: 20%;">타이틀</th>
+                         <td colspan="5">
+                           <input type="text" id="mateTitle" name="mateTitle" size="70" class="form-control">
+                       </td>
+                   </tr>
+                   <tr>
+                       <th style="text-align: left; width: 20%;">여행기간</th>
+                       <td colspan="2">
+                           <input type="date" id="startDay" name="startDay" size="30" class="form-control">
+                       </td>
+                       <td colspan="2">
+                           <input type="date" id="endDay" name="endDay" size="30" class="form-control">
+                       </td>
+                   </tr>
+                   <tr>
+                       <th style="text-align: left; width: 20%;">모집 마감일</th>
+                         <td colspan="5">
+                           <input type="date" id="deadline" name="deadline" size="50" class="form-control">
+                       </td>
+                   </tr>
+                   <tr>
+                       <th style="text-align: left; width: 20%;">예상 경비</th>
+                       <td colspan="2">
+                           <input type="number" id="mateExpense" name="mateExpense" size="30" class="form-control">
+                       </td>
+                       <th style="text-align: left; width: 20%;">모집 인원</th>
+                       <td colspan="2">
+                           <input type="number" id="mateMax" name="mateMax" size="30" class="form-control">
+                       </td>
+                   </tr>
+                   <tr>
+                       <th style="text-align: left; width: 20%;">메인 이미지</th>
+                         <td colspan="5">
+                           <input type="file" id="mainImage" name="mainImage" size="50" class="form-control">
+                           <button id ="uploadBtn">upload</button>
+                       </td>
+                   </tr>
+                </table>
+                </div>
+                <div class="uploadResult">
+            		<ul>
+            
+            		</ul>
+               <div id="editor">
+      
+               </div>
+              </div>
+              <div>
+               <button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>&nbsp;&nbsp;
+               <input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>&nbsp;&nbsp;
+               <button type="button" class="btn btn-primary mt-3 mx-2" onclick="location.href='tripMateList'">목록으로</button>
+              </div>
+           </form>
+        </div>
+   </div>
+   <script>
+      //현재 날짜 계산
+      document.getElementById('now_date').value = new Date().toISOString().substring(0, 10);
+      
+      $(document).ready(function() {   
+         ClassicEditor
+         .create(document.querySelector('#editor'), {
+         /* htmlEncodeOutput: false, */
+         ckfinder: {
+            uploadUrl : 'upload'   
+         }
+      })
+      .then(editor => {
+      
+      document.getElementById("cancelBtn").addEventListener("click",function(){
+         const data = editor.getData();
+         //Data 변수에 저장된 데이터를 파싱하여 이미지 태크를 찾음
+         const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
+         
+         const filenames = imgTags.map(img=> {
+            const src = img.getAttribute('src');
+            
+            return src.substring(src.lastIndexOf('/')+1);
+         });
+         console.log(filenames);
+         fetch(`/deleteImg`,{
+            method: 'POST',
+            headers:{
+               'Content-Type':'application/json'
+            },
+            body: JSON.stringify({ filenames })
+         })
+         .then(response => response.text())
+         .then(message => {
+            console.log(message);
+            editor.setData('');
+         })
+         
+      })
+      
+      
+      var formObj = $("#editorForm");
+      
+      $("button[type='submit']").on("click",function(event){
+            
+         event.preventDefault();
+   
+         const data = editor.getData();
+         
+         let objData = serializeObject();
+         
+         let writerId = "[[${session.sessionId}]]";
+         
+         //sconsole.log(data);
+         const { tripArea, mateStyle, mateTag, mateTitle, mateExpense, startDay, endDay, deadline, mateMax, mateContent } = objData;
+         var combinedData={
+            writerId : writerId,   
+            tripArea : tripArea,
+            mateStyle : mateStyle,
+            mateTag : mateTag,
+            mateTitle : mateTitle,
+            mateExpense : mateExpense,
+            startDay : startDay,
+            endDay : endDay,
+            deadline : deadline,
+            mateMax : mateMax,
+            mateContent: data
+         };
+         console.log(combinedData);
+         
+         var str="";
+         $(".uploadResult ul li").each(function(i,obj){
+            var jobj = $(obj);
+            str += "<input type ='hidden' name='attachList["+i+"].originImg' value='"+jobj.data("filename")+"'>";
+            str += "<input type ='hidden' name='attachList["+i+"].memberId' value='[[${session.sessionId}]]'>";
+            str += "<input type ='hidden' name='attachList["+i+"].savedImg' value='"+jobj.data("path")+"'>";
+            str += "<input type ='hidden' name='attachList["+i+"].imgType' value='"+jobj.data("type")+"'>";
+            str += "<input type ='hidden' name='attachList["+i+"].loadingImg' value='"+jobj.data("loadingpath")+"'>";
+            
+         });
+         str +="<input type='hidden' name='mateContent' value='"+combinedData.mateContent+"'>";
+         
+         
+         const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
+         
+         const filenames = imgTags.map(img=> {
+            const src = img.getAttribute('src');
+            
+            return src;
+         });      
+         $.each(filenames,function(i,obj){
+            str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
+         });
+         
+         formObj.append(str);
+         
+         // 등록 시 필수 항목이 미작성 되어있으면 alert 후 focuse로 해당 위치로 보내줌
+         let metTitle = document.getElementsByName('mateTitle')[0];
+         let metExpense = document.getElementsByName('mateExpense')[0];
+         let metStartDay = document.getElementsByName('startDay')[0];
+         let metEndDay = document.getElementsByName('endDay')[0];
+         let metDeadline = document.getElementsByName('deadline')[0];
+         let metMateMax = document.getElementsByName('mateMax')[0];
+         let metContent = document.getElementsByName('mateContent')[0];
+         let metTripArea = document.getElementsByName('tripArea')[0];
+         let metStyle = document.getElementsByName('mateStyle')[0];
+         
+         if (metTitle.value == '') {
+            alert('타이틀을 입력해주세요.')
+            metTitle.focus();
+            return;
+         }
+         
+         if (metExpense.value == '') {
+            alert('예상 경비를 입력해주세요.')
+            metExpense.focus();
+            return;
+         }
+         
+         if (metStartDay.value == '' || metEndDay.value == '') {
+            alert('여행 일정을 입력해주세요.')
+            metStartDay.focus();
+            return;
+         }
+         
+         if (metDeadline.value == '') {
+            alert('모집 마감일을 입력해주세요.')
+            metDeadline.focus();
+            return;
+         }
+         
+         if (metMateMax.value == '' || metEndDay.value == '') {
+            alert('모집 인원을 입력해주세요.')
+            metMateMax.focus();
+            return;
+         }
+         
+         if (metContent.value == '') {
+            alert('내용을 입력해주세요.')
+            metContent.focus();
+            return;
+         }
+         
+         if (metTripArea.value == '') {
+             alert('여행 지역을 선택 해주세요.')
+             metTripArea.focus();
+             return;
+          }
+         
+         if (metStyle.value == '') {
+             alert('여행 스타일을 지정해주세요.')
+             metStyle.focus();
+             return;
+          }
+         
+         //등록하기 클릭 시 등록할지 여부를 확인
+         if(confirm("등록 하시겠습니까?")){
+            document.getElementById('editorForm').action = "tripMateRecruitInsert";
+            document.getElementById('editorForm').submit();
+            alert("등록 되었습니다.");
+                 return;
+             }else{
+                   return;
+             }
+         
+      })
+   })
+   .catch(error => {
+      console.error(error);
+   });
+   
+   function serializeObject(){
+      let formData = $('form').serializeArray();
+      let formObject={};
+      $.each(formData, function(idx,obj){
+         formObject[obj.name] = obj.value;
+      });
+      
+      return formObject;
+   }
+   var cloneObj = $(".uploadDiv").clone();
+   
+   $(function(){
+      $("#uploadBtn").on('click',function(e){
+         e.preventDefault();
+         let imageData = new FormData();
+         
+         let inputTag = document.querySelector('input[name="mainImage"]');
+         
+         let files = inputTag.files;
+         
+         for(let i=0; i<files.length; i++){
+            console.log(files[i]);
+            imageData.append("mainImage",files[i]);
+         }
+      
+         $.ajax({
+            url:'mainImageUpload',
+            processData: false,
+            contentType: false,
+            data: imageData,
+            type:'POST',
+            dataType:'json',
+            success: function(result){
+               alert("성공");
+               
+               console.log(result);
+               
+               showUploadedFile(result);
+               
+               $(".uploadDiv").html(cloneObj.html());
+            }
+         });
+      });
+   });
+
+   $(".uploadResult").on("click","span",function(e){
+      var targetFile = $(this).data("file");
+      var clickedSpan = $(this);
+      $.ajax({
+         url:'deleteFile',
+         data: {savedImg: targetFile},
+         dataType: 'text',
+         type: 'POST',
+         success: function(result){
+            alert(result);
+            var currentNode = clickedSpan.closest("li");
+            var prevNode = currentNode.prev();
+            var nextNode = currentNode.next();
+            
+            currentNode.add(prevNode).add(nextNode).remove();
+            
+         }
+      })
+   })
+   
+   var uploadResult = $(".uploadResult ul");
+   
+   function showUploadedFile(uploadResultArr){
+      var str = "";
+      $(uploadResultArr).each(function(i,obj){
+         
+         var fileCallPath = encodeURIComponent(obj.savedImg);
+         
+         str += "<li style='width:500px; height:500px; text-align: center;' data-path='"+obj.savedImg+"'";
+         str +=" data-filename='"+obj.originImg+"' data-type='"+obj.imgType+"'";
+         str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div>";
+         str +="<span> " + obj.originImg +"</span>";
+         str +="<img src='display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
+      });
+      uploadResult.append(str);
+   }
+   
+   
+});
+</script>
+
+</body>
+</html>
