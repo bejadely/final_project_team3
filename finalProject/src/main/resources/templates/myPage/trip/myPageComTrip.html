@@ -2,7 +2,7 @@
 	<html xmlns="http://www.w3.org/1999/xhtml"
 		xmlns:th="http://www.thymeleaf.org"
 		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-		layout:decorate="@{layouts/default_layout}">
+		layout:decorate="@{layouts/myPage_layout}">
 	<head>
 	<meta charset="UTF-8">
 	<meta name="description" content="Azenta Template">
@@ -160,9 +160,9 @@
 				</thead>
 				<tbody>
 					<th:block th:each="trip : ${tripList}">
-						<tr class="question" th:onclick="|location.href='@{/tripRecordInfo(postId=${trip.postId})}'|">
+						<tr class="question" >
 							<td><input type="hidden" th:value="${trip.postId}"></td>
-							<td th:text="${trip.tripTitle}"></td>
+							<td th:text="${trip.tripTitle}" th:onclick="|location.href='@{/tripRecordInfo(postId=${trip.postId})}'|"></td>
 							<td><button type="button">수정</button></td>
 							<td><button type="button">삭제</button></td>
 	    					<td class="toggle">
@@ -177,25 +177,25 @@
 				<!-- 여행기록 페이징 -->
 				<div class="container" style="text-align: center">
 					<th:block th:if="${paging.startPage != 1}">
-						<a th:href="@{myPageTrip(nowPage=1, cntPerPage=${paging.cntPerPage})}" ><<</a>
+						<a th:href="@{/common/myPageTrip(nowPage=1, cntPerPage=${paging.cntPerPage})}" ><<</a>
 					</th:block>
 					<th:block th:if="${paging.startPage != 1}">
-						<a th:href="@{myPageTrip(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+						<a th:href="@{/common/myPageTrip(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 					</th:block>
 					<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
 						<th:block th:if="${p eq paging.nowPage}">
 							<b th:text="${p}"></b>
 						</th:block>
 						<th:block th:if="${p ne paging.nowPage}">
-							<a th:href="@{myPageTrip(nowPage=${p}, cntPerPage=${paging.cntPerPage})}" th:text="${p}"></a>
+							<a th:href="@{/common/myPageTrip(nowPage=${p}, cntPerPage=${paging.cntPerPage})}" th:text="${p}"></a>
 						</th:block>
 					</th:block>
 					<th:block
 						th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-						<a th:href="@{myPageTrip(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+						<a th:href="@{/common/myPageTrip(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 					</th:block>
 					<th:block th:if="${paging.endPage != paging.lastPage}">
-						<a th:href="@{myPageTrip(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
+						<a th:href="@{/common/myPageTrip(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
 					</th:block>
 				</div>
 			</section>

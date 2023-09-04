@@ -25,23 +25,25 @@ public class KakaoPayController {
 	
 	private final KakaoPayService kakaoPayService;
 	
-	@PostMapping("/ready")
-	public KakaoPayResponseVO readyToKakaoPay(PaymentVO vo,@RequestParam("quantity") int quantity,@RequestParam("postId")String postId) {
-		
-		return kakaoPayService.kakoPayReady(vo,quantity,postId);
+	@PostMapping("ready")
+	public KakaoPayResponseVO readyToKakaoPay(PaymentVO vo,@RequestParam("quantity") int quantity,@RequestParam("postId")String postId, String specialtyType) {
+		return kakaoPayService.kakoPayReady(vo,quantity,postId,specialtyType);
+
 	}
 	
-	@GetMapping("/success")
-	public ModelAndView afterPayRequest(@RequestParam("pg_token") String pgToken) {
-		KakaoApproveResponseVO approveResponse = kakaoPayService.approveResponse(pgToken);
+
+	@GetMapping("success")
+	public ModelAndView afterPayRequest(@RequestParam("pg_token") String pgToken, String specialtyType, String partner_order_id, String partner_user_id,String postId) {
+		KakaoApproveResponseVO approveResponse = kakaoPayService.approveResponse(pgToken,partner_order_id,partner_user_id);
 		// KakaoApproveResponseVO 객체의 tid 값을 가져오기
 		//String tid = approveResponseVO.getTid();
 		// tid 값을 출력
 		//mv.addObject("tid", approveResponse.getTid());
-		
-		
+		System.out.println(postId);
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("tid",approveResponse.getTid());
+		mv.addObject("specialtyType",specialtyType);
+		mv.addObject("postId",postId);
 		mv.setViewName("redirect:/payment/info");
 		
 		
@@ -63,11 +65,17 @@ public class KakaoPayController {
 		vo.setStatus(kakaoPayInfoResponseVO.getStatus());
 		vo.setTid(kakaoPayInfoResponseVO.getTid());
 		vo.setTotalAmount(kakaoPayInfoResponseVO.getAmount().getTotal());
+		
 		kakaoPayService.insertPayment(vo);
 		
+		//주문 상세 테이블 등록
+		System.out.println(kakaoPayInfoResponseVO);
+		kakaoPayInfoResponseVO.setSpecialtyType(approveResponse.getSpecialtyType());
 		kakaoPayInfoResponseVO.setPaymentId(vo.getPaymentId());
 		kakaoPayInfoResponseVO.setPrice(kakaoPayInfoResponseVO.getAmount().getTotal());
-		kakaoPayInfoResponseVO.setPostId(kakaoPayInfoResponseVO.getItem_code());
+		kakaoPayInfoResponseVO.setPostId(approveResponse.getPostId());
+		kakaoPayInfoResponseVO.setItem_code(kakaoPayInfoResponseVO.getItem_code());
+		kakaoPayInfoResponseVO.setItem_name(kakaoPayInfoResponseVO.getItem_name());
 		kakaoPayInfoResponseVO.setMemberId(kakaoPayInfoResponseVO.getPartner_user_id());
 		kakaoPayInfoResponseVO.setQuantity(kakaoPayInfoResponseVO.getQuantity());
 		kakaoPayInfoResponseVO.setOrderDate(kakaoPayInfoResponseVO.getApproved_at().replace("T", " "));
@@ -75,7 +83,8 @@ public class KakaoPayController {
 		kakaoPayInfoResponseVO.setCid(kakaoPayInfoResponseVO.getCid());
 		kakaoPayInfoResponseVO.setTid(kakaoPayInfoResponseVO.getTid());
 		kakaoPayInfoResponseVO.setCancelAmount(kakaoPayInfoResponseVO.getCancel_available_amount().getTotal());
-		kakaoPayInfoResponseVO.setCancelTaxfreeAmount(kakaoPayInfoResponseVO.getCancel_available_amount().getTax_free());
+		kakaoPayInfoResponseVO.setCancelTaxFreeAmount(kakaoPayInfoResponseVO.getCancel_available_amount().getTax_free());
+		
 		
 		System.out.println(kakaoPayInfoResponseVO);
 	    kakaoPayService.insertPurchase(kakaoPayInfoResponseVO);
@@ -87,8 +96,10 @@ public class KakaoPayController {
 	
 	@PostMapping("/refund")
 	public ModelAndView refund(KakaoPayInfoResponseVO vo) {
+		System.out.println(vo);
 		kakaoPayService.KakaoCancelResponse(vo);
-		ModelAndView mv = new ModelAndView("payment/kakaoPaySuccess");
+		kakaoPayService.updatePurchase(vo);
+		ModelAndView mv = new ModelAndView("/payment/kakaoRefundSuccess");
 		return mv;
 	}
 	

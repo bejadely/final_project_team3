@@ -62,10 +62,35 @@
 						,#{postId}
 					)
 	</insert>
+	
 	<select id="listSpecialties" resultType="SpecialtiesVO">
-		SELECT s.title, s.writer_id, s.post_id, a.loading_img
+		SELECT s.title, 
+				s.writer_id, 
+				s.post_id, 
+				a.loading_img
 		FROM specialties_regist s JOIN attached_file a ON s.post_id = a.post_id
 		WHERE a.img_type='U2'
 		
+	</select>
+	
+	<select id="sepcialtiesInfo" resultType="SpecialtiesVO">
+		SELECT post_id, 
+				title, 
+				content, 
+				code_val(type) type, 
+				writer_id,
+				area_code,
+				sigungu_code
+		FROM specialties_regist
+		WHERE post_id =#{postId}
+	
+	</select>
+	
+	<select id="findByPostId" resultType="SpecialtiesOptionVO">
+		SELECT option_id,
+				specialty_type,
+				price
+		FROM specialties_option
+		WHERE post_id = #{postId}
 	</select>
 </mapper>

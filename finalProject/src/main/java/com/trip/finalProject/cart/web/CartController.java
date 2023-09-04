@@ -64,7 +64,6 @@ public class CartController {
 	@ResponseBody
 	public Map<String, Object> cartDelete(String postId) {
 
-		System.out.println("postId : " + postId);
 		int r = cartService.deleteCartInfo(postId);
 		return Collections.singletonMap("result", r==1?true:false);
 	};
@@ -77,6 +76,12 @@ public class CartController {
 	    Map<String, Object> map = cartService.getQuanUpdate(cartVO);
 	    
 	    return map;
+	}
+	@PostMapping("/cartInsert")
+	@ResponseBody
+	public String cartInsert(CartVO cartVO) {
+		
+		return cartService.insertCartInfo(cartVO);
 	}
 	
 }

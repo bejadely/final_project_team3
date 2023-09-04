@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="@{layouts/default_layout}">
+	layout:decorate="@{layouts/myPage_layout}">
 <head>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
@@ -10,6 +10,7 @@
 <title>장바구니</title>
 <link rel="stylesheet" th:href="@{/css/cart.css}" type="text/css">
 <script>
+
 </script>
 </head>
 <body>
@@ -39,7 +40,7 @@
 		<div id="price">
 				
 		</div>
-		<button type="button">구매</button>
+		<button type="button" id="buyBtn">구매</button>
 		<button type="button" id="delBtn">삭제</button>
 		<div id="paging" class="property-pagination"></div>
 	</div>

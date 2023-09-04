@@ -101,13 +101,6 @@
             $(document).ready(function() {
                // 승인 버튼 클릭 시 발생 이벤트 설정
                initMap; 
-               $("#searchButton1").click(function() {
-                   performSearch('div1');
-               });
-
-               $("#searchButton2").click(function() {
-                   performSearch('div2');
-               });
             });
             
 
@@ -535,7 +528,7 @@
                                    + "<input type='hidden' name='mapLat' value = '" + mappingObj.mapLat + "'>"
                                    + "<input type='hidden' name='mapLng' value = '" + mappingObj.mapLng + "'>"
                                    + "</div>";
-                   
+						// 위에 여행일자 추가                   
                    mappingCoordinates.innerHTML += mappingString;
                    
                   //객체 생성
@@ -579,7 +572,6 @@
                 
                 
              }
-             
              
          </script>
    </div>
