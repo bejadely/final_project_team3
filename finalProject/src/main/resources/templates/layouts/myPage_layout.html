@@ -12,16 +12,47 @@
 </head>
 <body>
     <!-- header fragment 사용 -->
-    <th:block th:replace="fragments/admin_header :: headerFragment"></th:block>
+    <th:block th:replace="fragments/admin_header3_no_logo :: headerFragment"></th:block>
         
     <!-- aside + content -->    
     <section class="property-section spad">
         <div class="container">
+        	<div class="custom-top-margin"></div>
             <div class="row">
-                <div class="col-lg-3">
+                <div class="col-lg-3 custom-sidebar">
                     <div class="property-sidebar">
-                        <h4>관리자 마이페이지</h4>
                         <form action="#" class="sidebar-search">
+                            <div>
+		                        <h5 style="margin-bottom: 25px;"><b>마이 페이지</b></h5>
+	                            <h6 class="main-menu"><i class="fa-solid fa-user-gear fa-xl" style="color: #012970;"></i>내정보</h6>
+	                        	<div class="detail-menu">	
+	                        		<a href="/myPage"><h6><i class="fa-solid fa-angle-right fa-xs"></i>회원정보확인</h6></a>
+	                        	</div>
+	                        	<h6 class="main-menu"><i class="fa-solid fa-bullhorn fa-xl" style="color: #012970;"></i>상품 정보</h6>
+	                        	<div class="detail-menu">
+		                        	<a href="/common/buyPkList"><h6><i class="fa-solid fa-angle-right fa-xs"></i>구매한 상품</h6></a>
+		                        	<a href="/myMtList"><h6><i class="fa-solid fa-angle-right fa-xs"></i>관심 목록</h6></a>
+	                        	</div>
+	                        	<h6 class="main-menu"><i class="fa-regular fa-credit-card fa-xl"></i>여행</h6>
+	                        	<div class="detail-menu">
+		                        	<a href="/myPageTrip"><h6><i class="fa-solid fa-angle-right fa-xs"></i>여행기록</h6></a>
+		                        	<a href="/common/myPageMate"><h6><i class="fa-solid fa-angle-right fa-xs"></i>여행메이트</h6></a>
+	                        	</div>
+	                        	<h6 class="main-menu"><i class="fa-regular fa-comments fa-xl"></i>문의 내역</h6>
+	                        	<div class="detail-menu">
+		                        	<a href="/common/memberQue"><h6><i class="fa-solid fa-angle-right fa-xs"></i>작성한 문의 내역 보기</h6></a>
+		                        	<th:block th:if="${session.sessionAuthority == 'A2'}">
+		                        	<a href="/common/memberQue"><h6><i class="fa-solid fa-angle-right fa-xs" ></i>받은 문의 내역 보기</h6></a>
+		                        	</th:block>
+	                        	</div>
+	                        	<th:block th:if="${session.sessionAuthority == 'A2'}">
+	                        	<h6 class="main-menu"><i class="fa-regular fa-paste fa-xl"></i>판매현황</h6>
+	                        	<div class="detail-menu">
+		                        	<a href="/guide/packageSale"><h6><i class="fa-solid fa-angle-right fa-xs"></i>패키지 판매 현황</h6></a>
+	                        	</div>
+	                        	</th:block>
+                        	</div>
+                            <!-- 
                             <select>
                                 <option value="">회원관리</option>
                                 <option value="">- 회원정보관리</option>
@@ -43,23 +74,8 @@
                             <select>
                                 <option value="">공지 관리</option>
                             </select>
+                             -->
                             <!-- 작업중 -->
-                            <div>
-	                        	<h6><b>일반사용자</b></h6>
-	                        	<a href="/myPage"><h6>마이페이지</h6></a>
-	                        	<a href="/cartList "><h6>장바구니</h6></a>
-	                        	<a href="/common/buyPkList "><h6>구매내역 패키지</h6></a>
-	                        	<a href="/common/buySpList "><h6>구매내역 특산물</h6></a>
-	                        	<a href="/myMtList "><h6>여행메이트 좋아요</h6></a>
-	                        	<a href="/common/memberQue "><h6>멤버 문의글</h6></a>
-	                        	<a href="/myPageTrip "><h6>미완료 여행기록</h6></a>
-	                        	<a href="/myPageNotTrip "><h6>임시저장 여행기록</h6></a>
-	                        	<a href="/myPageComTrip "><h6>완료 여행기록</h6></a>
-	                        	<a href="/common/myPageTrip "><h6>여행메이트 게시글 전체 조회</h6></a>
-	                        	<h6><b>관리자</b></h6>
-	                        	<a href="/guideQue"><h6>관리자 문의글</h6></a>
-	                        	<a href="/guide/packageSale"><h6>패키지 판매 현황</h6></a>
-	                        </div>
                             
                         </form>
                     </div>
@@ -72,7 +88,7 @@
         </div>
     </section>
     <!-- footer fragment -->
-    <th:block th:replace="fragments/admin_footer :: footerFragment"></th:block>
+    <th:block th:replace="fragments/footer :: footerFragment"></th:block>
 </body>
-<th:block th:replace="fragments/admin_bottom_config :: bottomConfigFragment"></th:block>
+<th:block th:replace="fragments/bottom_config :: bottomConfigFragment"></th:block>
 </html>

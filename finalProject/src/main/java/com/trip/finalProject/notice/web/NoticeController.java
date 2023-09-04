@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.trip.finalProject.adminMember.service.AdminMemberVO;
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.notice.service.NoticeService;
 import com.trip.finalProject.notice.service.NoticeVO;
@@ -18,6 +20,7 @@ public class NoticeController {
 
 	@Autowired
 	private NoticeService noticeService;
+
 		
 	//공지사항 리스트 조회
 	@GetMapping("/noticeList")
@@ -82,6 +85,8 @@ public class NoticeController {
 	@PostMapping("/admin/modifyNoticeInfo")
 	public String modifyNoticeInfo(NoticeVO noticeVO, RedirectAttributes rtt) {
 		
+		System.out.println("인풋" + noticeVO);
+		
 		// 게시글 수정
 		String result = noticeService.modifyNoticeInfo(noticeVO);
 		
@@ -93,25 +98,57 @@ public class NoticeController {
 
 
 	
-	@GetMapping("/boardEdit")
-	public String boardEdit() {
-		return"notice/BoardList";
-	};
-	@GetMapping("/boardUpdate")
-	public String boardUpdate() {
-		return"notice/BoardList";
-	};
-	@GetMapping("/boardDelete")
-	public String boardDelete() {
-		return"notice/BoardList";
-	};
 	
-
-	@GetMapping("/notice") 
-	public String memberInsertForm() {
-		return"notice/noticeBoard";
+	
+	
+	// 특정 조건으로 공지사항 상세 검색
+	@GetMapping("/searchNotice")
+	public String searchAdminMember(@RequestParam( name = "noticeType" ) String noticeType
+								  , @RequestParam( name = "keyword" ) String keyword
+								  , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
+								  , @RequestParam( name = "cntPerPage", defaultValue = "10") Integer cntPerPage
+								  , Model model
+								  , NoticeVO noticeVO) {
+		
+		// 조건 파악 공지사항 or 이벤트
+		if(noticeType.equals("n1")) {
+			
+			// 전체 조회될 공지사항 타입이 n1인 수 카운트
+			int total = noticeService.countNoticeType1n();
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			
+			// 공지사항인 경우 검색기능 수행
+			noticeVO.setTitle(keyword);
+			List<NoticeVO> list = noticeService.searchNoticeByTitle1n(noticeVO, pagingVO);
+			model.addAttribute("list", list);
+			model.addAttribute("paging", pagingVO);
+			model.addAttribute("n1", noticeType);
+			
+			
+			
+			
+		} else if(noticeType.equals("n2")) {
+			  
+				// 전체 조회될 공지사항 타입이 n2인 수 카운트
+			int total = noticeService.countNoticeType2n();
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			  
+			  //이벤트인 경우 검색기능 수행
+			noticeVO.setTitle(keyword);
+			List<NoticeVO> list = noticeService.searchNoticeByTitle2n(noticeVO, pagingVO);
+			  model.addAttribute("list", list); 
+			  model.addAttribute("paging", pagingVO);
+			  model.addAttribute("n2", noticeType);
+			  
+			  }
+			 
+		
+		// 검색결과 기억을 위해 keyword와 searchBy 담기
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("noticeType", noticeType);
+		
+		return "/notice/noticeList";
 	}
-	
 
 	
 	

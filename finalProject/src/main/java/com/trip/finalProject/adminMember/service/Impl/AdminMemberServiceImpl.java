@@ -61,15 +61,15 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	}
 	
 	@Override
-	public int countName() {
+	public int countName(String keyword) {
 		// 이름 검색의 총 결과값 카운트
-		return amm.countName();
+		return amm.countName(keyword);
 	}
 
 	@Override
-	public int countId() {
+	public int countId(String keyword) {
 		// 아이디 검색의 총 결과값 카운트
-		return amm.countId();
+		return amm.countId(keyword);
 	}
 	
 	@Override

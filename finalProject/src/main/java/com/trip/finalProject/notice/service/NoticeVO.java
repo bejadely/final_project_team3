@@ -16,6 +16,7 @@ public class NoticeVO {
 	private String hit;
 	
 	private String page;
+
 	
 	
 	

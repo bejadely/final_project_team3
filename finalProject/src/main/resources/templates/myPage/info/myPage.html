@@ -9,7 +9,7 @@
 <!-- Content -->
 <div layout:fragment="content">
 		<div class="container">
-			<form action="/admin/modifyMemberInfoForm" th:object="${memberVO}" method="post">
+			<form action="/admin/modifyMemberInfoForm" th:object="${memberInfo}" method="post">
 				<h5><b>회원정보 상세 조회</b></h5>
 				<br><br>
 				<div class="table-responsive">
@@ -26,13 +26,6 @@
 							<tr>
 								<th width="150" align="center">이름</th>
 								<td width="400" align="center" th:text="*{memberName}"></td>
-								<th width="150" align="center">권한분류</th>
-								<th:block th:if="*{authority} != 'A5'">	
-									<td width="400" align="center" th:text="*{authority}"></td>
-								</th:block>	
-								<th:block th:if="*{authority} == 'A5'">	
-									<td width="400" align="center" th:text="|*{authority} (탈퇴 일자 : *{#strings.substring(withdrawalDate, 0, 10)})|"></td>
-								</th:block>	
 							</tr>
 							<tr>
 								<th width="150" align="center">성별</th>
@@ -60,7 +53,7 @@
 					</table>
 				</div>
 				<br><br>
-				<div class="table-responsive">
+				<div class="table-responsive" th:if="*{authority == 'A2'}">
 					<h6>계좌정보</h6>
 					<br>
 					<table id="accountInfo" class="table">
@@ -82,7 +75,7 @@
 					<input type="hidden" name="memberId" th:value="*{memberId}">
 				</div>
 				<div align="center">
-					<button type="submit" class="btn btn-primary btn-ghost">수정하기</button>
+					<button type="button" class="btn btn-primary btn-ghost">수정하기</button>
 					<button type="button" class="feature-btn">탈퇴처리</button>
 				</div>
 			</form>
@@ -91,90 +84,55 @@
 	<script th:inline="javascript" type="text/javascript">
 	
 	$(document).ready(function() {
-		// 이벤트 설정
-		$('#searchButton').on('click', search);
-		$('.memberInfo').on('mouseover', colorDarker)
-						.on('mouseleave', colorReset)
-						.on('click')
-						.on('mouseup', moveToMemberDetail);
-		// 작업중 : 수정해야함
-		$('button[type=button]').on('click', withdrawMember);
-	});
-	
-	// 조건검색기능
-	function search(event){
-		
-		let value = $('#searchBy').val();
-		let keyword = $('#keyword').val();
-		location.href='searchAdminMember?searchBy='+value+'&keyword='+keyword;
-		
-	}
-	
-	// 마우스 오버 : 색상 어둡게
-	function colorDarker(event){
-		$(event.currentTarget).css({background: '#f2f4f5'})
-							  .css({cursor: 'pointer'});		
-	}
-	
-	// 마우스릴리브 : 색상 원상복귀
-	function colorReset(event){
-		$(event.currentTarget).css({background: '#ffffff'});
-	}
-	
-	// 회원상세정보 조회페이지로 이동
-	function moveToMemberDetail(event){
-		
-		// 상세보기 할 member의 id값 가져오기
-		let memberId = $(event.currentTarget).find('td:eq(0)').text();
-		
-		// 페이지 전환 실행
-		location.href=`seeMemberDetail?employeeId=${memberId}`;
-	}
-	
-	// 회원 탈퇴 처리
-	function withdrawMember(){
-		
-		//e.stopPropagation();
-		
-		Swal.fire({
-		      title: '해당 회원을 탈퇴처리하시겠습니까?',
-		      icon: 'warning',
-		      showCancelButton: true,
-		      confirmButtonColor: '#3085d6',
-		      cancelButtonColor: '#d33',
-		      confirmButtonText: '승인',
-		      cancelButtonText: '취소',
-		      reverseButtons: true,
-		      
-	    }).then((result) => {
-	      if (result.isConfirmed) {
-	          
-	    	  //post방식으로 페이지 전환
-			  sendPost();
-	      }
-	    })
-	
-	// post 방식으로 보내기위한 함수 생성
-    function sendPost(){
-	    
-	    // form 생성 
-	  	let form = document.createElement('form');
-	    form.setAttribute('id', 'instantForm')
-	    form.setAttribute('method', 'post');
-	    form.setAttribute('action', '/admin/withdrawMember');
-	    
-	    // input 생성
-	    let input = document.createElement('input');
-	    input.setAttribute('name', 'memberId');
-	    input.setAttribute('value', [[${memberVO.memberId}]]);
-	    
-	    // 동적으로 생성한 태그 본문에 붙이기 및 폼 서브밋
-	    document.body.appendChild(form);
-	    document.getElementById('instantForm').appendChild(input);
-	    document.getElementById('instantForm').submit();
-		
-		}    
-	}
+		$(".btn.btn-primary.btn-ghost").click(function(e){
+
+			console.log("test");
+			e.stopPropagation();
+			
+			Swal.fire({
+				showCancelButton: true,
+				confirmButtonText: '수정하기',
+				cancelButtonText: '취소',
+			    reverseButtons: true,
+				input: 'text',
+				inputLabel: '비밀번호',
+				inputPlaceholder: '비밀번호를 입력해주세요.',
+				inputAttributes: {
+					maxlength: 150,
+					autocaptitalize: 'off',
+					autocorrect: 'off',
+					id: 'inputReason'
+				}
+				
+			      
+		    }).then((firstResult) => {
+		        if (firstResult.isConfirmed) {
+					
+		        Swal.fire({
+		        	title: '비밀번호를 다시 입력해주세요',
+				    icon: 'warning',
+				    showCancelButton: true,
+				    confirmButtonColor: '#3085d6',
+				    cancelButtonColor: '#d33',
+				    confirmButtonText: '승인',
+				    cancelButtonText: '취소',
+				    reverseButtons: true,
+			        
+		        }).then((secondResult) => {
+		        	
+		        	if(secondResult.isConfirmed){
+		        		let form = document.getElementById("form");
+						form.memberId.value = e.currentTarget.closest('tr').firstElementChild.textContent;
+						form.rejectReasonDetail.value = firstResult.value;
+						form.action = "rejectAuthRequest";
+						form.submit();
+		        	}
+		        })
+		        	
+		      }
+		    })		 
+		})
+	})
 	
 	</script>
 </div>

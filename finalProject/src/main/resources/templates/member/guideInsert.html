@@ -36,7 +36,8 @@ display: none;
 							<div class="card-body">
 								<a href="index.html"
 									class="text-nowrap logo-img text-center d-block py-3 w-100">
-<!-- 									<img src="../assets/images/logos/dark-logo.svg" width="180" alt="">-->								</a>
+							<!-- <img src="../assets/images/logos/dark-logo.svg" width="180" alt="">	 -->	
+							</a>			
 								<p class="text-center">회원가입</p>
 
 								<form name="insertForm" action="/guideInsert" method="post">
@@ -51,20 +52,21 @@ display: none;
 									<div class="mb-3">
 										<div class="main">
 											<label for="" class="form-label">비밀번호</label>
-											<i class="fa-solid fa-eye fa-xs"></i> <input type="password" name="password" placeholder="비밀번호" class="form-control" id="pw1" required>
+											<i class="fa-solid fa-eye-slash fa-xs"></i> <input type="password" name="password" placeholder="비밀번호" class="form-control" id="pw1" required>
+											<font id="pw" size="2"></font>
 										</div>
 									</div>
 
 										<div class="mb-3">
 											<div class="main">
-												<label for="" class="form-label">비밀번호 확인</label> <i class="fa-solid fa-eye fa-xs" ></i>								
-												<input type="password" name="" placeholder="" class="form-control" id="pw2" required>
+												<label for="" class="form-label">비밀번호 확인</label> <i class="fa-solid fa-eye-slash fa-xs" ></i>								
+												<input type="password" name="" placeholder="비밀번호 확인" class="form-control" id="pw2" required>
 											</div>
 										</div>
 
-										<div>
-											<button class="btn btn-default" type="button" name="confirmBtn" id="confirmBtn" onclick="confirmNumber()">비밀번호 확인</button>
-										</div>
+										<!-- <div>
+											<button class="btn btn-default" type="button" name="confirmBtn" id="confirmBtn" >비밀번호 확인</button>
+										</div> -->
 										<div class="mb-3">
 											<label for="" class="form-label">이름</label>
 											<input type="text" name="memberName" placeholder="이름" class="form-control" id="name" required >
@@ -93,7 +95,7 @@ display: none;
 											<label for="example" class="form-label">이메일</label> <input type="email" name="email" placeholder="이메일" class="form-control" id="email" required>
 										</div>
 									
-								
+												
 												<div style="float:left; width:33%;">
 												 		<label>은행코드</label>
 												 		<br>
@@ -121,19 +123,19 @@ display: none;
 												</div>
 											
 										<div class="mb-3" style="float:left; width:33%;">
-											<label for="" class="form-label">계좌번호</label>
+											<label for="" class="form-label">계좌번호(*본인의 계좌만 입력 가능합니다)</label>
 											<input type="text" class="form-control" id="accountNumber" name="accountNumber" placeholder="계좌번호 입력하세요" >
 										</div>
 										<div class="mb-3" style="float:left; width:33%;">
 											<label for="" class="form-label">예금주</label>
 											<input type="text" class="form-control" id="bankHolderInfo" name="bankHolderInfo" placeholder="이름" readonly >
 										</div>
-											<button type="button" id="accountHolderCheck" class="btn btn-default"  >예금주 조회</button>
-								
-									
+										    <button type="button" id="accountHolderCheck" class="btn btn-default">예금주 조회</button>
+										
 										<br>
+										<div>
 										<label for="example" class="form-label">주소</label> <input type="text" id="zipCode" name="zipCode" readonly="readonly" class="form-control" placeholder="우편번호" style="width: 33%;">
-								
+										</div>
 										
 										<div class="mb-3">
 											<input type="text" id="address" name="address" onclick="openZipSearch();" readonly="readonly" class="form-control" placeholder="기본주소" style="width: 50%;"> 
@@ -141,7 +143,7 @@ display: none;
 										</div>
 
 										<div class="mb-3">
-											<label for="" class="form-label">전화번호 &nbsp;  </label><button type="button" id="approveButton" class="btn btn-default"  >코드 발송</button>
+											<label for="" class="form-label">전화번호 &nbsp;  </label><button type="button" id="approveButton" class="btn btn-default" >코드 발송</button>
 											 <input type="text" class="form-control" name="to" id="phonenumber" placeholder="전화번호를 입력하세요" required>
 										</div>
 										
@@ -165,7 +167,7 @@ display: none;
 											<input type="radio" name="gender" value="G1">남										
 											<input type="radio" name="gender" value="G2">여
 										</div>
-										<input type="submit" value="회원가입" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">
+										<input  onclick="confirmNumber()" type="submit" value="회원가입" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">
 										</form>
 									</div>
 							</div>
@@ -241,35 +243,63 @@ display: none;
 <!-- 예금주 확인 -->
 	<script>
 
-		$(document).ready(function() {
-			$("#accountHolderCheck").click(function() {
-				var bank_code = $("#bankCode").val();
-				var bank_num = $("#accountNumber").val();
+	$(document).ready(function() {
+		$("#accountHolderCheck").click(function() {
+			var bank_code = $("#bankCode").val();
+			var bank_num = $("#accountNumber").val();
 
+			$.ajax({
+				url: "/check1",
+				type: 'post',
+				data: {
+					bank_code: bank_code,
+					bank_num: bank_num
+				},
+				/* contentType : application/json */
+			})
+			.done(function(data) {
+				//console.log("data :", data);
+				console.log("통신은 성공");
+				if (data.bankHolderInfo) {
+					$("#bankHolderInfo").val(data.bankHolderInfo);
+					var name1 = $("#name").val();
+					var name2 = $("#bankHolderInfo").val();
 
-				  $.ajax({
-				         url : "/check1", 
-				         type : 'post',
-				         data: { bank_code :bank_code,
-								bank_num : bank_num },
-				      /* 	 contentType : application/json */
-				      })
-				      .done( data => {
-				         //console.log("data :", data);
-				         console.log("통신은 성공");
-				         if(data.bankHolderInfo){
-				        	 $("#bankHolderInfo").val(data.bankHolderInfo);
-								//console.log("data",data);
-							} else if (data.errormsg) {
-								alert("Error: " + data.errormsg);
-							}
-				      });
+					if (name1 !== name2) { 
+						alert("이름이 다릅니다.");
+						$("#bankHolderInfo").val(""); // 이름이 다를 경우 값을 비워줍니다.
+					} else if (data.errormsg) {
+						alert("Error: " + data.errormsg);
+					}
+				}
+			})
+			.fail(function(reject) {
+				console.log("통신 실패");
 			});
 		});
-				   
-				   
-				  
-	</script>
+	});
+
+		
+				
+
+		<!-- 회원가입 폼 전송 시 계좌번호와 이름 같은지 체크-->
+	
+		/* function confirmName(){
+			var inputValue = document.getElementById("bankHolderInfo").value;
+	        var number1 = $("#name").val();
+	        var number2 = $("#bankHolderInfo").val();
+
+	        if(number1 != number2){
+	        	alert("이름이 다릅니다.");
+	        	var inputValue = document.getElementById("bankHolderInfo").value;
+	        	bankHolderInfoInput.value = "";
+	        	
+	        }
+	    } */
+		
+		   
+	</script>	  
+	
 	
 <!--  비밀번호 확인 -->
 	<script>
@@ -277,10 +307,8 @@ display: none;
         var number1 = $("#pw1").val();
         var number2 = $("#pw2").val();
 
-        if(number1 == number2){
-            alert("번호가 같습니다.");
-        }else{
-            alert("번호가 다릅니다.");
+        if(number1 != number2){
+        	alert("비밀번호가 다릅니다.");
         }
     }
 	
@@ -293,10 +321,10 @@ display: none;
 	        $('input').toggleClass('active');
 	        
 	        if($('input').hasClass('active')){
-	            $(this).attr('class',"fa-solid fa-eye-slash fa-xs")
+	            $(this).attr('class',"fa-solid fa-eye fa-xs")
 	            .next('input').attr('type',"text");
 	        }else{
-	            $(this).attr('class',"fa-solid fa-eye fa-xs")
+	            $(this).attr('class',"fa-solid fa-eye-slash fa-xs")
 	            .next('input').attr('type','password');
 	        }
 	    });

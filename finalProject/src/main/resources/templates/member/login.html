@@ -169,21 +169,19 @@ span {
  -->                </form>
                 
             <!--  가이드 로그인 -->
-                <form id="guide" action="" class="input-group">
-                    
-                    <input type="text" class="input-field" name="memberId" placeholder="아이디" ><!-- required -->
-                    <input type="password"  class="input-field"name="password" placeholder="비밀번호"><!-- required  -->
-             <!--        <input type="checkbox" class="checkbox"><span>Remember Password</span> -->
-             
-             <div id="find">
-              <a th:href="@{/member/memberInsert}"class="property-sub">아이디 찾기</a>
-              <span>&nbsp;|&nbsp;</span>
-           <a th:href="@{/member/memberInsert}"class="property-sub">비밀번호 찾기</a>
-           </div>
-                <br/>
-                <br/>
-                    <button type="submit" class="submit" > 로그인</button>
-            <a th:href="@{/member/guideInsert}"class="property-sub">회원가입</a>
+                 <form id="guide" action="/loginProc" method="post" class="input-group">      
+                    <input type="text" class="input-field" name="memberId" placeholder="아이디" id="id1"><!-- required -->
+                    <input type="password"  class="input-field"name="password" placeholder="비밀번호" id="pw1"><!-- required  -->  
+                   		 <font id="checkId1" size="2"></font>    
+		             <div id="find">
+		             		 <a th:href="@{/member/memberInsert}"class="property-sub">아이디 찾기</a>
+		              <span>&nbsp;|&nbsp;</span>
+		           			<a th:href="@{/member/memberInsert}"class="property-sub">비밀번호 찾기</a>
+		          	 </div>
+		                <br/>
+		                <br/>
+		                    <button type="submit" class="submit" > 로그인</button>
+		            <a th:href="@{/member/guideInsert}"class="property-sub">회원가입</a>
                 </form>
                
             </div>
@@ -215,6 +213,7 @@ span {
       //이벤트 핸들링 등록. HTML 요소가 모두 로딩된 이후에 이루어져야 하므로.
         $(document).ready(function(){
            $('#member').on('submit', loginAccountcheck);
+           $('#guide').on('submit', loginAccountcheck1);
         });
         
         
@@ -241,6 +240,7 @@ span {
                //$("#checkId").html('사용할 수 있는 아이디입니다.');
                //$("#checkId").attr('color','green');
                $('#member')[0].submit();
+               //$('#guide')[0].submit();
             }  
          },
          error : function(){
@@ -251,6 +251,40 @@ span {
       //$('#member').submit();
        
    }
+        
+        function loginAccountcheck1(event){      
+            event.preventDefault();            
+            let userId1 = $('#id1').val(); // input_id에 입력되는 값
+          let userPassword1 = $('#pw1').val();
+          $.ajax({
+             /* url : "IdCheckService", */
+             url : "/loginAccountCheck", 
+             type : "post",
+             data :  {memberId :userId1 , password:userPassword1},
+             dataType : 'json',
+             
+             success : function(result){
+                if(result == 0){
+                   
+                   $("#checkId1").html('아이디 또는 비밀번호가 틀렸습니다.');
+                   $("#checkId1").attr('color','red');//멈춰야함
+                                
+                } else{   
+                   //event.unbind();
+                   //$("#checkId").html('사용할 수 있는 아이디입니다.');
+                   //$("#checkId").attr('color','green');
+                   //$('#member')[0].submit();
+                  $('#guide')[0].submit();
+                }  
+             },
+             error : function(){
+                
+                alert("서버요청실패");
+             }
+          });
+          //$('#member').submit();
+           
+       }
  </script>
  
    

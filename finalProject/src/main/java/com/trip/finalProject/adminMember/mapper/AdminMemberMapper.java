@@ -23,10 +23,10 @@ public interface AdminMemberMapper {
 	public int withdrawMember(AdminMemberVO vo);
 	
 	// 이름 검색의 총 결과값 카운트
-	public int countName();
+	public int countName(String keyword);
 	
 	// 아이디 검색의 총 결과값 카운트
-	public int countId();
+	public int countId(String keyword);
 	
 	// 이름으로 회원 검색
 	public List<AdminMemberVO> searchMemberByName(AdminMemberVO adminMemberVO, PagingVO pagingVO);

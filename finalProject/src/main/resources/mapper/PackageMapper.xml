@@ -22,6 +22,10 @@
 						,max_reservation
 						,tour_theme
 						,reg_date
+						,area_code
+						,sigungu_code
+						,writer_id
+						,completion
 					)
 				values
 					(
@@ -35,12 +39,23 @@
 						,#{maxReservation}
 						,#{tourTheme}
 						,sysdate
+						,#{areaCode}
+						,#{sigunguCode}
+						,#{writerId}
+						,'D2'
 					)
 	</insert>
 	 
 
 	<select id="listPackage" resultType="PackageVO">
-		select p.name, p.tour_theme, p.price, a.saved_img, p.post_id, a.loading_img
+		select p.name, 
+				p.tour_theme, 
+				p.price, 
+				a.saved_img, 
+				p.post_id, 
+				a.loading_img,
+				code_val(p.completion) completion,
+				p.max_reservation
 		from package_regist p JOIN attached_file a ON p.post_id = a.post_id
 		WHERE a.img_type = 'U2'
 	</select>
@@ -50,6 +65,66 @@
 		FROM package_regist
 		WHERE post_id=#{postId}
 	</select>
+	<select id="listArea" parameterType="LocationVO">
+		SELECT area_code
+				,sigungu_code
+				,location_name
+		FROM location
+		
+	</select>
+	
+	
+	
+	 <select id="selectReview" resultType="PackageReviewVO">
+   SELECT *       FROM(SELECT ROWNUM rn, a.*             FROM(
+      SELECT *
+        FROM review
+       WHERE origin_post_id = #{postId}
+       ORDER BY review_id DESC
+   ) a			 )        WHERE rn BETWEEN (#{page }*5-4) AND (#{page }*5)
+    </select>
+
+    <select id="selectReviewTotalCount" resultType="String">
+        SELECT count(*)
+        FROM review
+        WHERE origin_post_id = #{postId}
+    </select>
+
+    <insert id="insertReviewInfo" parameterType="PackageReviewVO">
+        <selectKey keyProperty="reviewId" resultType="String" order="BEFORE">
+            SELECT 'RIV' || (TO_NUMBER(NVL((SUBSTR(MAX(review_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM review
+			WHERE SUBSTR(review_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+        </selectKey>
+        INSERT INTO review (review_id, 
+                            writer_id, 
+                            review_type, 
+                            origin_post_id, 
+                            grade, 
+                            content, 
+                            write_date)
+              VALUES (#{reviewId},
+                      #{writerId}, 
+                      'E1', 
+                      #{originPostId}, 
+                      #{grade}, 
+                      #{content}, 
+                      sysdate)
+    </insert>
+
+    <delete id="deleteReview" parameterType="PackageReviewVO">
+        DELETE FROM review
+        WHERE review_id=#{reviewId}
+    </delete>
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	<!-- 가이드용 ========================================================================== -->
 	<select id="guiListCount" resultType="int">

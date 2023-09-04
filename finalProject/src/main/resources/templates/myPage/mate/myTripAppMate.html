@@ -49,13 +49,22 @@ $(document).ready(function() {
 
 	   })
 
-	   
+	   $("#comButton").click(function(){
+		   location.href='/common/myPageMate'
+	   })
+	   $("#appButton").click(function(){
+		   location.href='/common/myPageAppMate'
+	   })
 	});
 
 </script>
 </head>
 <body>
 <div layout:fragment="content">
+	<div>
+		<button type="button" id="comButton">작성한 여행</button>
+		<button type="button" id="appButton">신청한 여행</button>	
+	</div>
 	<section>
 		<!-- 여행기록 section-->
 		<form method="post" >
