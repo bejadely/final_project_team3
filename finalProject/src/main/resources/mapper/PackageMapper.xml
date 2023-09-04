@@ -26,6 +26,7 @@
 						,sigungu_code
 						,writer_id
 						,completion
+						,delete_type
 					)
 				values
 					(
@@ -43,6 +44,7 @@
 						,#{sigunguCode}
 						,#{writerId}
 						,'D2'
+						,'N'
 					)
 	</insert>
 	 
@@ -56,8 +58,8 @@
 				a.loading_img,
 				code_val(p.completion) completion,
 				p.max_reservation
-		from package_regist p JOIN attached_file a ON p.post_id = a.post_id
-		WHERE a.img_type = 'U2'
+		from package_regist p JOIN attached_file a ON p.post_id = a.post_id 
+		WHERE a.img_type = 'U2' AND delete_type = 'N'
 	</select>
 	
 	<select id="packageInfo" resultType="PackageVO">
@@ -79,7 +81,7 @@
    SELECT *       FROM(SELECT ROWNUM rn, a.*             FROM(
       SELECT *
         FROM review
-       WHERE origin_post_id = #{postId}
+       WHERE origin_post_id = #{postId} AND delete_type = 'N'
        ORDER BY review_id DESC
    ) a			 )        WHERE rn BETWEEN (#{page }*5-4) AND (#{page }*5)
     </select>
@@ -130,7 +132,7 @@
 	<select id="guiListCount" resultType="int">
 		SELECT COUNT(*)
 		FROM package_regist
-		WHERE writer_id = #{writerId} AND completion = #{completion}
+		WHERE writer_id = #{writerId} AND completion = #{completion} AND delete_type = 'N'
 	</select>
 	
 	<select id="guiListPackage" resultType="PackageVO">
@@ -150,13 +152,14 @@
 				   reg_date
 			FROM package_regist
 			WHERE writer_id = #{pacVO.writerId} AND completion = #{pacVO.completion}
+				  AND delete_type = 'N'
 				 ORDER BY reg_date DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
 	</select>
 	<select id="guiListComCount" resultType="int">
 		SELECT COUNT(*)
 		FROM package_regist r RIGHT JOIN calculation c on r.post_id = c.post_id 
-		WHERE r.writer_id = #{writerId} AND c.cal_status = 'V2'
+		WHERE r.writer_id = #{writerId} AND c.cal_status = 'V2' AND delete_type = 'N'
 	</select>
 	
 	<select id="guiListComPackage" resultType="PackageVO">
@@ -176,6 +179,7 @@
 					    r.reg_date
 			FROM package_regist r RIGHT JOIN calculation c on r.post_id = c.post_id 
 			WHERE r.writer_id = #{pacVO.writerId} AND c.cal_status = 'V2'
+				  AND delete_type = 'N'
 				 ORDER BY reg_date DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
 	</select>
@@ -210,4 +214,12 @@
 		FROM purchase p LEFT JOIN member m on p.member_id = m.member_id 
 		WHERE p.post_id = #{postId}
 	</select>
+	
+	<update id="deletePackage" parameterType="PackageVO">
+	update package_regist
+	<set>
+		delete_type = 'Y'
+	</set>
+	WHERE post_id = #{postId}
+	</update>
 </mapper>

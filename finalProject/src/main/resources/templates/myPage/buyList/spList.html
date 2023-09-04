@@ -56,7 +56,7 @@ $(document).ready(function() {
 			</thead>
 			<tbody>
 				<th:block th:each="li : ${list}">
-					<tr class="list" th:onclick="|location.href='@{/packageInfo(postId=${li.postId})}'|">
+					<tr class="list" th:onclick="|location.href='@{/common/buySpSelect(orderDetailId=${li.orderDetailId})}'|">
 						<td th:text="${li.title}"></td>
 						<td th:text="${li.price}"></td>
 						<td th:text="${li.specialtyType}"></td>

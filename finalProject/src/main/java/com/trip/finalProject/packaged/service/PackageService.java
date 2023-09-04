@@ -41,5 +41,7 @@ public interface PackageService {
 	public PackageVO guidePacInfo(PackageVO pacVO);
 	//결제 회원 정보
 	public List<PackageVO> pacMember(PackageVO pacVO);
+	//패키지 삭제
+	public int deletePackage(String postId);
 
 }

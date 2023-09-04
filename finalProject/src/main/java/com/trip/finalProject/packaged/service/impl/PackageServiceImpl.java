@@ -105,10 +105,15 @@ public class PackageServiceImpl implements PackageService {
 	public List<PackageVO> pacMember(PackageVO pacVO) {
 		return packageMapper.pacMember(pacVO);
 	}
+	@Override
+	public int deletePackage(String postId) {
+		return packageMapper.deletePackage(postId);
+	}
 	
 	
 	
-
+	
+	
 	public List<LocationVO> getLocationList() {
 		// TODO Auto-generated method stub
 		return packageMapper.listArea();
@@ -181,4 +186,6 @@ public class PackageServiceImpl implements PackageService {
 
         return recentReviewInfo;
     }
+
+
 }

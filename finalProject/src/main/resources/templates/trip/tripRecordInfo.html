@@ -151,7 +151,7 @@ table {
 				내용 : [[${mo.content}]]
 				<h3> ----------</h3>
 			</div>
-			<button type="button" onclick="location.href='/tripRecordList'">목록으로</button>
+			<button type="button" id="back">목록으로</button>
 			<br>
 		</div>
 	</div>
@@ -261,6 +261,12 @@ table {
           
           // 선 생성 
           first_linePath.setMap(map);
+          
+      	$(document).ready(function() {  
+    		$("#back").click(function(){
+    			window.history.back()
+    		})
+    	})
           
 	</script>	
 </body>

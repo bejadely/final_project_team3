@@ -183,4 +183,9 @@ public class PackageController {
 		return "guide/package/packageDetail";
 	}
 	
+	@GetMapping("/guide/deletePackage")
+	public String deletePackage(String postId) {
+		return null;
+	}
+	
 }
