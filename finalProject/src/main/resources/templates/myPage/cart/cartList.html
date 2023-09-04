@@ -83,7 +83,7 @@ function handleClick(data) {
        });
        
        price = `<label>총 주문 금액 : </label>
-                <input type="text" id="result" readonly="readonly">`
+       <input type="text" id="result" readonly="readonly">`
        
        // tbody 내용을 업데이트
        thead.html(lmth);
@@ -283,7 +283,7 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
         let postIdData = check.data("postid");
         let cartId = check.closest("tr").find("input[type=hidden]").val();
         let url = "/cartDelete?cartId=" + cartId; // Use 'cartId'
-      console.log(url)
+		console.log(url)
 
         fetch(url)
             .then(response => response.text())

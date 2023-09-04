@@ -38,7 +38,7 @@ public class QuestionController {
 		questionVO.setAnswerMemberId(answerMemberId);
 		List<QuestionVO> guideQue = queService.getQueAll(questionVO, pagingVO);
 		
-		model.addAttribute("guideQue", guideQue);
+		model.addAttribute("list", guideQue);
 		model.addAttribute("paging", pagingVO);
 				
 		return"guide/question";
@@ -72,11 +72,9 @@ public class QuestionController {
 			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 			questionVO.setMemberId(memberId);
 			
-			System.out.println("test 1: " + questionVO.toString());
 			List<QuestionVO> memberQue = queService.getQueAllMember(questionVO, pagingVO);
-			System.out.println("test 2: " + memberQue);
 			
-			model.addAttribute("guideQue", memberQue);
+			model.addAttribute("list", memberQue);
 			model.addAttribute("paging", pagingVO);
 					
 			return"myPage/memberQuestion";

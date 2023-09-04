@@ -35,6 +35,7 @@ public class BuyListVO {
 	private String specialtyType;
 	private Integer discountRate;
 	private Integer spPrice;
+	private Integer Price;
 	//attached_fild
 	private String loadingImg;
 	
