@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 	<head>
 	<meta charset="UTF-8">
@@ -57,35 +58,24 @@
         </nav>
         <div class="nav-logo-right">
             <ul>
-                <li onclick="window.location.href='/member/login'">
-                    <i class="fa-sharp fa-solid fa-lock" ></i>
-                    <div class="info-text">
-                        <span>login & join</span>
-                        <p>로그인</p>
-                    </div>
-                </li>
-     <!--로그아웃<li onclick="window.location.href='/'">
-                             <i class="fa-solid fa-lock-open"></i>
-                             <div class="info-text">
-                       <span>logout</span>
-                       <p>로그아웃</p>
-                   </div>
-                </li>  -->    
-                   
-        <!--관리자<li onclick="window.location.href='/'">
-                    <i class="fa-solid fa-user-large"></i>
-                    <div class="info-text">
-                        <span>adminpage</span>
-                        <p>관리자페이지</p>
-                    </div>
-                </li>-->
-         <!--회원<li onclick="window.location.href='/'">
-      				<i class="fa-solid fa-user-large"></i>
-      				<div class="info-text">
-                        <span>mypage</span>
-                        <p>마이페이지</p>
-                    </div>
-                </li>-->
+                <th:block th:if="${session.sessionId == null}">	
+	                <li onclick="window.location.href='/member/login'">
+	                    <i class="fa-sharp fa-solid fa-lock" ></i>
+	                    <div class="info-text">
+	                        <span>login & join</span>
+	                        	<p>로그인</p>
+	                    </div>
+	                </li>
+                </th:block>
+                <th:block th:if="${session.sessionId != null}">	
+	                <li onclick="window.location.href='/logoutProc'">
+	                    <i class="fa-sharp fa-solid fa-lock" ></i>
+	                    <div class="info-text">
+	                        <span>login & join</span>
+	                        	<p>로그아웃</p>
+	                    </div>
+	                </li>
+                </th:block>
                 <li onclick="window.location.href='/'">
                    <i class="fa-solid fa-bell" ></i>
                     <div class="info-text">
@@ -120,6 +110,8 @@
                                 <li><a href="/">호텔예약</a></li>
                                 <li><a href="/">상품구매</a></li>
                                 <li><a href="/">패키지구매</a></li>
+                                <li sec:authorize="!hasRole('ROLE_A3')"><a href="/">마이페이지</a></li>
+                                <li sec:authorize="hasRole('ROLE_A3')"><a href="admin/seeAllMemberList">관리자페이지</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -159,34 +151,24 @@
                     <div class="col-lg-9">
                         <div class="nav-logo-right"> 
                             <ul>
-                                <li onclick="window.location.href='/member/login'">
-                                    <i class="fa-sharp fa-solid fa-lock"></i>
-                                    <div class="info-text">
-				                        <span>login & join</span>
-				                        <p>로그인</p>
-				                    </div>
-                                </li>
-                     <!--로그아웃<li onclick="window.location.href='/'">
-                                 <i class="fa-solid fa-lock-open"></i>
-                                 <div class="info-text">
-			                        <span>logout</span>
-			                        <p>로그아웃</p>
-			                    </div>
-                                </li>  -->
-             	        <!--관리자<li onclick="window.location.href='/'">
-                                 <i class="fa-solid fa-user-large"></i>
-                                 <div class="info-text">
-			                        <span>adminpage</span>
-			                        <p>관리자페이지</p>
-			                    </div>
-                                </li>  -->
-                   		<!--회원<li onclick="window.location.href='/'">
-                                 <i class="fa-solid fa-user-large"></i>
-                                 <div class="info-text">
-			                        <span>mypage</span>
-			                        <p>마이페이지</p>
-			                    </div>
-                                </li>  -->
+		                        <th:block th:if="${session.sessionId == null}">	
+	                                <li onclick="window.location.href='/member/login'">
+	                                    <i class="fa-sharp fa-solid fa-lock"></i>
+	                                    <div class="info-text">
+					                        <span>login & join</span>
+					                        	<p>로그인</p>
+					                    </div>
+	                                </li>
+		                        </th:block>
+		                        <th:block th:if="${session.sessionId != null}">	
+	                                <li onclick="window.location.href='/logoutProc'">
+	                                    <i class="fa-sharp fa-solid fa-lock"></i>
+	                                    <div class="info-text">
+					                        <span>login & join</span>
+					                        	<p>로그아웃</p>
+					                    </div>
+	                                </li>
+		                        </th:block>
                                 <li onclick="window.location.href='/">
                                     <i class="fa-solid fa-bell"><a href="/"></a></i>
                                     <div class="info-text">

@@ -93,4 +93,44 @@
 		FROM specialties_option
 		WHERE post_id = #{postId}
 	</select>
+	
+	<!-- 창민 -->
+	<!-- 특산물 전체 등록 수 카운트 -->
+	<select id="countAllSpecial">
+		SELECT COUNT(*)
+		  FROM specialties_regist
+	</select>
+	
+	<!-- 특산물 전체 조회 -->
+	<select id="selectAllSpecial" resultType="SpecialtiesVO">
+		SELECT *
+	      FROM (SELECT ROWNUM rn, a.post_id
+						        , a.title
+						        , a.content
+						        , code_val(a.type) type
+						        , a.writer_id
+						        , a.discount
+						        , a.sigungu_code
+						        , a.area_code
+						        , a.regist_date
+						        , a.saved_img
+	                FROM(SELECT s.post_id
+						      , s.title
+						      , s.content
+						      , s.type
+						      , s.writer_id
+						      , s.discount
+						      , s.sigungu_code
+						      , s.area_code
+							  , s.regist_date    
+						      , f.saved_img
+						      , p.sales_quantity
+	                       FROM specialties_regist s LEFT OUTER JOIN attached_file f
+	                         ON s.post_id = f.post_id LEFT OUTER JOIN (SELECT post_id, COUNT(*) sales_quantity
+														       			 FROM purchase
+														   			 GROUP BY post_id) p
+							 ON s.post_id = p.post_id
+	                   ORDER BY s.regist_date DESC) a )
+	      WHERE rn BETWEEN #{start} AND #{end}
+	</select>
 </mapper>
