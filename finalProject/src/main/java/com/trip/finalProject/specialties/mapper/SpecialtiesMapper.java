@@ -11,7 +11,7 @@ public interface SpecialtiesMapper {
 	public int insertSpecialites(SpecialtiesVO specialtiesVO);
 	
 	//특산물 정보
-	public SpecialtiesVO sepcialtiesInfo(SpecialtiesVO specialtiesVO);
+	public SpecialtiesVO sepcialtiesInfo(String postId);
 	
 	//특산물 리스트
 	public List<SpecialtiesVO> listSpecialties();
@@ -22,5 +22,5 @@ public interface SpecialtiesMapper {
 	//특산물 옵션 등록
 	public void insertSpecialtiesOption(SpecialtiesOptionVO specialtiesOptionVO);
 	
-	public List<SpecialtiesOptionVO> findByPostId(SpecialtiesOptionVO specialtiesVO);
+	public List<SpecialtiesOptionVO> findByPostId(String postId);
 }

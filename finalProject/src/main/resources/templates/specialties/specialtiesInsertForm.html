@@ -118,19 +118,6 @@ ClassicEditor
 			});
 			str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";
 			
-			/* $(".specialtiesOption > input[type='text']").each(function(i,obj){
-				
-				str+=`<input type = "text" 'name=optionList[i].type' value='obj.specialityType'>
-					<input type = "text" 'name=optionList[i].price' value='obj.price'>`;
-			}); */
-			/* $("#specialityType").each(function(i,obj){		
-				var type = $(obj).val();
-				str+=`<input type = 'text' name='optionList[i].type' value='${type}'>`;
-			});
-			$("#price").each(function(i,obj){
-				var price = $(obj).val();
-				str+=`<input type = 'text' name='optionList[i].price' value='${price}'>`;
-			}); */
 			
 			var specialtiesOption = $(".specialtiesOption");
 
@@ -217,9 +204,6 @@ ClassicEditor
 		});
 	});
 
-	/* document.getElementById("packageInfo").addEventListener("submit",function(event){
-		
-	}) */
 	
 	$(".uploadResult").on("click","span",function(e){
 		var targetFile = $(this).data("file");
@@ -238,9 +222,6 @@ ClassicEditor
 				
 				currentNode.add(prevNode).add(nextNode).remove();
 				
-				//clickedSpan.closest("li").prev().remove();
-				//clickedSpan.closest("li").next().remove();
-				//$(this).closest(li).load(window.location.href + "#div의 id");
 			}
 		})
 	})

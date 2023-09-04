@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/default_layout}"
+	layout:fragment="content">
+<head>
+<meta charset="UTF-8">
+<title>여행 메이트 상세 조회</title>
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css"></th:block>
+<!-- index.html 고유 스크립트 추가 -->
+<th:block layout:fragment="script"></th:block>
+<style>
+table, th,td {
+	border: 1px solid black;
+	text-align: center;
+	margin: 0 auto;
+}
+</style>
+</head>
+<body>
+	<div align="center">
+		<br>
+		<br>
+		<h1>패키지 정보</h1>
+		<br>
+	</div>
+	<div id="ls2" align="center">
+		<table border="1">
+		<thead>
+		<tr>
+			<th colspan="2">여행 타이틀</th>
+			<th>여행일정</th>
+			<th>마감날짜</th>
+			<th>패키지 금액</th>
+		</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>이미지</td>
+				<td th:text="${info.name}" ></td>
+				<td th:text="${#dates.format(info.startDate, 'yyyy-MM-dd')} + '~' + ${#dates.format(info.endDate, 'yyyy-MM-dd')}"></td>
+				<td th:text="${#dates.format(info.deadlineDate, 'yyyy-MM-dd')}">
+				<td th:text="${info.price}"></td>
+			</tr>
+		</tbody>
+			<tr>
+				<th width="100">신청 인원</th>
+				<td width="110" align="center" th:text="${info.nowReservation}"></td>
+				<th width="100">최대 인원</th>
+				<td width="110" align="center" id="applyNum" th:text="${info.maxReservation}"></td>
+			</tr>
+			<tr>
+				<th colspan="2">여행 내용</th>
+				<td colspan="6" align="center" th:text="${info.content}">
+				</td>
+			</tr>
+		</table>
+		<table>
+			<th:block th:each="m : ${member}">
+				<thead>
+				 <tr>
+				 	<th>이름</th>
+				 	<th>국적</th>
+				 	<th>성별</th>
+				 	<th>생년월일</th>
+				 	<th>구매갯수</th>
+				 	<th>구매가격</th>
+				 	<th>구매 날짜</th>
+				 	<th>주문상태</th>
+				 </tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td th:text="${m.name}"></td>
+						<td th:text="${m.nationality}"></td>
+						<td th:text="${m.gender}"></td>
+						<td th:text="${m.birthDate}"></td>
+						<td th:text="${m.quantity}"></td>
+						<td th:text="${m.price}"></td>
+						<td th:text="${m.orderDate}"></td>
+						<td th:text="${m.orderStatus}"></td>
+					</tr>
+				</tbody>
+			</th:block>
+		</table>
+		<button type="button" class="primary-btn">목록으로</button>
+	</div>
+	<script th:inline="javascript">
+	
+	$(document).ready(function() {  
+		$(".primary-btn").click(function(){
+			window.history.back()
+		})
+	})
+	</script>
+</body>
+</html>

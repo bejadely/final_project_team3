@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/default_layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<style>
+form {
+	text-align: center;
+}
+
+.contentStyle{
+	width:400px;
+	height:400px;
+	margin: 0 auto;
+}
+.pt img{
+	width:200px;
+	height:200px;
+}
+</style>
+
+</head>
+<body>
+
+<div layout:fragment="content">
+ <section class="property-details-section spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="pd-details-text">
+                    <h4>[[ ${info.title} ]]</h4>
+                        <div class="pd-details-social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-send"></i></a>
+                            <a href="#"><i class="fa fa-star"></i></a>
+                            <a href="#"><i class="fa fa-print"></i></a>
+                            <a href="#"><i class="fa fa-cloud-download"></i></a>
+                        </div>
+                        <div class="property-more-pic">
+                            <div class="product-pic-zoom">
+                               
+                            </div>
+                            <div class="product-thumbs">
+                                <div class="product-thumbs-track ps-slider owl-carousel">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                       
+                        
+                            <div class="pd-details-tab">
+                            <div class="tab-item">
+                                <ul class="nav" role="tablist">
+                                    <li>
+                                        <a class="active" data-toggle="tab" href="#tab-1" role="tab">패키지 정보</a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#tab-2" role="tab">패키지 내용</a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#tab-3" role="tab">Amenities</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="tab-item-content">
+                                <div class="tab-content">
+                                    <div class="tab-pane fade-in active" id="tab-1" role="tabpanel">
+                                        <div class="property-more-table">
+                                            <table class="left-table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="pt-name">Price</td>
+                                                        <td class="p-value">[[ ${info.price} ]]</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">특산물 종류</td>
+                                                        <td class="p-value">[[ ${info.type} ]]</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">작성자</td>
+                                                        <td class="p-value">[[ ${info.writerId} ]]</td>
+                                                    <tr>
+                                                        <td class="pt-name">여행 종료일</td>
+                                                        <td class="p-value"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">모집 마감일</td>
+                                                        <td class="p-value"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">모집 인원</td>
+                                                        <td class="p-value"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">Lot area</td>
+                                                        <td class="p-value">200 spft</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <table class="right-table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="pt-name">Agent</td>
+                                                        <td class="p-value">Adam Smith</td>
+                                                    </tr>
+                                                   <tr>
+                                                        <td class="pt-name">Reference</td>
+                                                        <td class="p-value">#2019</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">Contract type</td>
+                                                        <td class="p-value">Sale</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">Beds</td>
+                                                        <td class="p-value">4</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">Garages</td>
+                                                        <td class="p-value">2</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">Home area</td>
+                                                        <td class="p-value">1200 sqft</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="pt-name">Gara Size</td>
+                                                        <td class="p-value">200 sqft</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="tab-2" role="tabpanel">
+                                        <div class="pd-table-desc" th:utext="${info.content }" >
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="tab-3" role="tabpanel">
+                                        <div class="pd-table-amenities">
+                                            <p>Learn how to improve your playing quality and even overall understanding
+                                                of online gaming and how you perform while playing online. Gaming online
+                                                is a huge business nowadays and that means that there are millions of
+                                                people worldwide at online game sites all the time. Many are people just
+                                                like you and me that like to play online and have fun doing it. Some of
+                                                these people enjoy it so much, that they often do not even care about
+                                                improving their skill and raising their chances of winning.</p>
+                                            <p>Learn how to improve your playing quality and even overall understanding
+                                                of online gaming and how you perform while playing online. Gaming online
+                                                is a huge business nowadays and that means that there are millions of
+                                                people worldwide at online game sites all the time. Many are people just
+                                                like you and me that like to play online and have fun doing it. Some of
+                                                these people enjoy it so much, that they often do not even care about
+                                                improving their skill and raising their chances of winning.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    <!--<div class="pd-desc">
+                            <h4>패키지 설명</h4>
+                            <div th:utext="${info.content }" class="contentStyle"></div>
+                        </div>-->
+                    </div>
+                </div>
+               <div class="col-lg-3">
+                    <div class="property-sidebar">
+                        <h4>구매하기</h4>
+                            <div class="sidebar-btn">
+                                <div class="bt-item">
+                                    <input type="radio" name="kakaoPay" id="kakaoPay" >
+                                    <label for="kakaoPay">Buy</label>
+                                </div>
+                                <div class="bt-item">
+                                    <input type="radio" name="cartBtn" id="cartBtn">
+                                    <label for="cartBtn">Cart</label>
+                                </div>
+                            </div>
+                            
+                          
+							<!-- 옵션 정보 -->
+							<div class="form-horizontal" style="text-align: left;">
+								<label>옵션 : </label> 
+								<select class="form-control opt_select" name="selectedOpt">
+									<option th:each ="op : ${option}" th:value1="${op.specialtyType}" th:value2 ="${op.price}" th:text="${op.specialtyType + ' / ' + op.price}" ></option>
+								</select>
+							</div>
+							<div class="form-horizontal" style="text-align: left;">
+								<label>구매수량 : </label> 
+								<select class="form-control" id="select_count">
+								    <th:block th:each="count : ${#numbers.sequence(0, 20)}">
+								        <option th:value="${count}" th:text="${count}"></option>
+								    </th:block>
+								</select>
+							</div>	
+							<div class="selected_option" style="text-align: right;">
+							</div>
+							
+                    </div>
+                </div>
+            </div>
+             <input type="hidden" id="id" th:value="${session.sessionId}">
+        </div>
+        		
+    </section>
+    <!-- Property Details Section End -->
+
+
+<script>
+	var content = '[[${info.content }]]';
+	var postId = '[[${info.postId}]]';
+	var memberId = $("#id").val();
+	$(document).ready(function(){
+			
+		(function(){
+			$.getJSON("getAttachList",{postId:postId},function(arr){
+				var str="";
+				var str2="";
+				$(arr).each(function(i, attach){
+					if(i==0){
+						str+=`<img src="${attach.loadingImg}" class="product-big-img"  alt="">`	
+					}
+					else{
+						str2+=`<div class="pt" data-imgbigurl="${attach.loadingImg}"><img
+                            src="${attach.loadingImg}" alt=""></div>`
+					}
+				});
+				$(".product-pic-zoom").html(str);
+				$(".product-thumbs-track.ps-slider.owl-carousel").html(str2);
+			});
+		})();
+		   
+		
+		$(document).on('click', '.nice-select.form-control .option', function() {
+			var count = $(this).attr("data-value");
+			var price = $(".opt_select > option:selected").attr("value2");
+			var specialtyType = $(".opt_select > option:selected").attr("value1");
+			var opt = $(".opt_select").val();
+			
+			
+			
+			var finalPrice = count*price;
+			
+			var str = '';
+			
+			
+			str += '<p><label>수량 : </label><span class="count">&nbsp;' + count + '</span>&nbsp;&nbsp;&nbsp;';	
+			
+		
+			str += '<label>옵션 : </label><span class="specialtyType">&nbsp;' + opt + '</span>&nbsp;&nbsp;&nbsp;';	
+			str+=`<input type="hidden" class="specType" value="${specialtyType}">`
+			
+			str	+= '<label>가격 : </label><span>&nbsp;' + price + ' 원</span></p>';
+			str += '<h4><label>결제금액 : </label><span class="finalPrice">&nbsp;' + finalPrice + ' 원</span></h4>'; 
+			
+			
+			$(".selected_option").html(str);
+		});
+		
+		
+		
+	});
+	
+	    // 결제 버튼 클릭 이벤트 처리
+	    document.getElementById('kakaoPay').addEventListener('click', function() {
+	        // 여기에 결제 페이지로 이동하는 코드 추가
+	        // 예를 들어, window.location.href = '결제페이지URL';
+	       
+	        let totalAmount = parseInt($("span.finalPrice").text());
+	        let orderName = "[[ ${info.title} ]]";
+	        let postId = "[[ ${info.postId} ]]"
+	        let quantity = parseInt($("span.count").text());
+	     	let specialtyType = $(".specType").val();
+	     	console.log(totalAmount);
+	     	console.log(orderName);
+	     	console.log(postId);
+	     	console.log(quantity);
+	     	console.log(specialtyType);
+	     	console.log(memberId);
+	        $.ajax({
+	        	type:'post',
+	        	url:'payment/ready',
+	        	data:{
+	        		totalAmount: totalAmount,
+	        		orderName : orderName,
+	        		quantity : quantity,
+	        		postId: postId,
+	        		specialtyType: specialtyType,
+	        		partnerUserId : memberId
+	        	},
+	        	success:function(response){
+	        		location.href = response.next_redirect_pc_url
+	        	}
+	        	
+	        }); 
+	    });
+
+	    document.getElementById('cartBtn').addEventListener('click',function(){
+	    	let totalAmount = parseInt($("span.finalPrice").text());
+	        let orderName = "[[ ${info.title} ]]";
+	        let postId = "[[ ${info.postId} ]]"
+	        let quantity = parseInt($("span.count").text());
+	        let specialtyType = $(".specType").val();
+	    	$.ajax({
+	    		type:'post',
+	    		url:'/cartInsert',
+	    		data:{
+	    			price: totalAmount,
+	        		cartName : orderName,
+	        		quantity : quantity,
+	        		postId: postId,
+	        		optionId: specialtyType,
+	        		memberId : memberId			
+	    		},
+	    		success:function(message){
+	    			alert(message);
+	    		}
+	    	});
+	    });
+
+	    
+	    
+</script>
+</div>
+</body>
+</html>
