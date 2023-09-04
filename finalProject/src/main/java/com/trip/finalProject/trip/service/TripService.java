@@ -49,7 +49,7 @@ public interface TripService {
 	public int DeleteTripInfo(int postId);
 	
 	//여행메모 등록
-	public TripVO InsertTripMemo(TripVO tripVO);
+	public int InsertTripMemo(TripVO tripVO);
 	
 	//여행메모 데이터 조회
 	public List<TripVO> getMemoData(TripVO tripVO);

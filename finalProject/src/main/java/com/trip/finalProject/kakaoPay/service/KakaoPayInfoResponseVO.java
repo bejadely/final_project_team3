@@ -14,7 +14,7 @@ public class KakaoPayInfoResponseVO {
 	 private String orderDate;
 	 private String orderStatus;
 	 private String orderDetailId;
-	 
+	 private String specialtyType;
 	 
 	 private String tid; // 결제 고유 번호
 	 private String cid; // 가맹점 코드
@@ -36,8 +36,7 @@ public class KakaoPayInfoResponseVO {
 	 //취소 금액
 	 private int cancelAmount;
 	 //취소 비과세 금액
-	 private int cancelTaxfreeAmount;
-	 
+	 private int cancelTaxFreeAmount;
 	 @Data
 	 public class PaymentActionDetailsVO{
 		 private String aid; //Request 고유 번호
