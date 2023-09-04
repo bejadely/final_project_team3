@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/default_layout}" layout:fragment="content">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<head>
+<meta charset="UTF-8">
+<title>아이디 찾기/ 비밀번호 찾기</title>
+<!--    <link rel="stylesheet" href="style.css"> -->
+<style>
+* {
+	margin: 0; ,
+	padding: 0;
+	font-family: sans-serif;
+}
+
+.wrap {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+	background-image: url(/img/login/background.jpg);
+	background-position: center;
+	background-size: cover;
+	position: relate;
+}
+
+.form-wrap {
+	width: 380px;
+	height: 480px;
+	position: relative;
+	/*    margin: 6% auto; */
+	/*  margin-top: 6%; */
+	background: #fff;
+	/* padding: 5px; */
+	overflow: hidden;
+}
+
+.button-wrap {
+	width: 300px;
+	margin: 35px auto;
+	position: relative;
+	box-shadow: 0 0 600px 9px #fcae8f;
+	border-radius: 30px;
+}
+
+.togglebtn {
+	padding: 5px 10px;
+	margin-left: 8px;
+	/*  margin-right : 10px; */
+	cursor: pointer;
+	background: transparent;
+	border: 0;
+	outline: none;
+	position: relative;
+}
+
+#btn {
+	top: 0;
+	left: 0;
+	/* margin-top: 5px; */
+	position: absolute;
+	width: 150px;
+	height: 80%;
+	background: #1fa3d7;
+	border-radius: 30px;
+	transition: .5s;
+}
+
+.social-icons {
+	text-align: center;
+}
+
+.social-icons img {
+	padding: 5px;
+	width: 300px;
+	cursor: pointer;
+}
+
+.input-group {
+	top: 150px;
+	position: absolute;
+	width: 280px;
+	transition: .5s;
+}
+
+.input-field {
+	width: 100%;
+	padding: 10px 0;
+	/* margin: 5px 0; */
+	border: none;
+	border-bottom:  solid #999;
+	outline: none;
+	background: transparent;
+}
+
+.submit {
+	width: 100%;
+	padding: 5px 5px;
+	cursor: pointer;
+	display: block;
+	margin: auto;
+	background: #1fa3d7;
+	border: 0;
+	outline: none;
+	/*     border-radius: 30px; */
+}
+
+.checkbox {
+	margin: 30px 10px 30px 0;
+}
+
+span {
+	color: #777;
+	font-size: 12px;
+	bottom: 68px;
+	/* position: absolute; */
+}
+
+#member {
+	left: 50px;
+}
+
+#guide {
+	left: 450px;
+}
+
+#find {
+	text-align: center;
+}
+
+#find a.property-sub {
+	display: inline-block;
+}
+</style>
+</head>
+<body>
+
+
+	<div class="wrap">
+		<div class="form-wrap">
+			<div class="button-wrap">
+				<div id="btn"></div>
+				<button type="button" class="togglebtn" onclick="member()">&nbsp;&nbsp;아이디
+					찾기&nbsp;&nbsp;</button>
+				<button type="button" class="togglebtn" onclick="guide()">&nbsp;&nbsp;&nbsp;비밀번호
+					찾기</button>
+			</div>
+
+			<!-- 아이디 찾기 -->
+			<form id="member" action="" method="post"
+				class="input-group">
+			<div>
+			<h3>아이디 찾기</h3>
+			<p>계정에 등록된 휴대폰 번호를 인증하시면 사용중인 아이디를 알려드립니다."  </p>
+			</div>
+			<font id="checkId" size="2"></font>
+				<!-- required  -->
+				<font id="" size="2"></font>
+				<div class="mb-3">
+					<label for="" class="form-label"  style="float:left; margin-bottom: 0;">전화번호 &nbsp; </label>
+					<br>
+					<input type="text" class="form-control" name="to" id="phonenumber"
+						placeholder="전화번호를 입력하세요"  style="width: 60%;, float:left; margin-right:5px;" required>
+						
+					<button style="float:left, margin-left:5px; " type="button" id="approveButton" class="btn btn-default" >인증 요청
+						</button>
+					
+				</div>
+				<div id="codeCheck" class="mb-3" style="display: none">
+					<input type="text" class="form-control" name="smsCode" id="smsCode"
+						placeholder="코드 입력하세요"   style="width: 60%;, float:left; margin-right:5px;" required>
+					
+					<button  style="float:left, margin-left:5px; "  type="button" id="code" name="codeConfirmBtn"
+						class="btn btn-default" onclick="confirmCode()" value="">인증
+						</button>
+						<br>
+						<br>
+				</div>
+			</form>
+
+			<!--  가이드 로그인 -->
+			<form id="guide" action="/loginProc" method="post"
+				class="input-group">
+				<input type="text" class="input-field" name="memberId"
+					placeholder="아이디" id="id1">
+				<!-- required -->
+				<input type="password" class="input-field" name="password"
+					placeholder="비밀번호" id="pw1">
+				<!-- required  -->
+				<font id="checkId1" size="2"></font>
+				<div id="find">
+					<a th:href="@{/member/memberInsert}" class="property-sub">아이디
+						찾기</a> <span>&nbsp;|&nbsp;</span> <a th:href="@{/member/memberInsert}"
+						class="property-sub">비밀번호 찾기</a>
+				</div>
+				<br /> <br />
+				<button type="submit" class="submit">로그인</button>
+				<a th:href="@{/member/guideInsert}" class="property-sub">회원가입</a>
+					 <input type="hidden" id="numValue" value=""> 
+			</form>
+
+		</div>
+	</div>
+
+	<script>
+		var v = document.getElementById("kakao");
+		var w = document.getElementById("naver");
+		var x = document.getElementById("member");
+		var y = document.getElementById("guide");
+		var z = document.getElementById("btn");
+		function member() {
+			/*       v.style.left = "500px";
+			      w.style.left = "500px"; */
+			x.style.left = "50px";
+			y.style.left = "450px";
+			z.style.left = "0";
+		}
+		function guide() {
+			x.style.left = "-400px";
+			y.style.left = "50px";
+			z.style.left = "150px";
+		}
+	</script>
+
+	<!-- 로그인시 아이디 비밀번호 DB에 있는지 확인 -->
+	<script>
+		//이벤트 핸들링 등록. HTML 요소가 모두 로딩된 이후에 이루어져야 하므로.
+		$(document).ready(function() {
+			//$('#member').on('submit', loginAccountcheck);
+			//$('#guide').on('submit', loginAccountcheck1);
+			findAccountId();
+		});
+
+		
+
+	
+	</script>
+	
+	
+	<!--sms 코드 전송-->	
+	<script th:inline="javascript">
+   
+		$(document).ready(function() {
+		      // 승인 버튼. 클릭(이벤트)발생시  ajaxApprove메서드 실행 설정(핸들러)
+		      $('#approveButton').on('click',function(){
+		    	  ajaxApprove();
+		    	  sendCode();		    	  
+		    	  //아이디 찾기
+		    	  //$('#phoneNumber').on('submit', findAccountId);
+		    	 
+		      });
+		      
+	
+		   function ajaxApprove(event){
+			  console.log("sms 버튼 눌렀다.");
+			  
+		      // memberId 정의
+		 	let phonenumber = document.getElementById("phonenumber").value;
+		
+		     $.ajax({
+		         url : "/sms/send", 
+		         type : 'post',
+		         data: { to : phonenumber },
+		      })
+		      .done( data => {
+		         console.log("data :", data);
+		         console.log("통신은 성공");
+		         if(data != null && data.num != null){
+		            alert(`${phonenumber } 문자발송했습니다`); 
+           
+		            
+		            $("#numValue").val(data.num);
+		   
+		         } else {
+		            alert(`문자 발송 안됐습니다.`);
+		         }
+		      })
+		      .fail( reject => console.log(reject));
+		   };
+		   
+		   
+		   //코드 보내고 활성화 시킴
+		   function sendCode(){
+			    $("#codeCheck").css("display","block");
+			    }
+			
+	
+	
+		});
+		
+		function confirmCode(){
+			   
+			   var number1 = $("#smsCode").val();
+			   var number2 = $("#numValue").val();
+			   
+		        if (number1 == number2) { // 저장된 SMS 코드를 사용
+		            alert("인증되었습니다.")
+		        	findAccountId();
+		        	
+		        
+		        } else {
+		            alert("번호가 다릅니다.");
+		        }
+		    }
+		
+		
+		//아작스로 인증된 휴대전화 번호에 맞는 아이디 띄우기
+ 		
+	        
+	        
+	        function findAccountId(){      
+	        event.preventDefault();            
+	        let phoneNumberCheck = document.getElementById("phoneNumber").value; // input_id에 입력되는 값	
+	        console.log(phoneNumberCheck);
+	      $.ajax({
+	         /* url : "IdCheckService", */
+	         url : "/phoneNumberCheck", 
+	         type : "post",
+	         data :  {phoneNumber :phoneNumberCheck},
+	         dataType : 'json',
+	         
+	         success : function(result){
+	            if(result == 0){
+	               
+	               $("#checkId").html('없는 전화번호 입니다.');
+	               $("#checkId").attr('color','red');//멈춰야함
+	               
+	            
+	            } else{   
+	               //event.unbind();
+	               $("#checkId").html('[[${result}]]');
+	               $("#checkId").attr('color','green');
+	             
+	               //$('#guide')[0].submit();
+	            }  
+	         },
+	         error : function(){
+	            
+	            alert("서버요청실패");
+	         }
+	      });
+	      //$('#member').submit();
+	       
+	   }
+	</script>
+
+
+
+</body>
+</html>
+
