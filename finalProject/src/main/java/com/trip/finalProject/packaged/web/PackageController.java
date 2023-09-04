@@ -60,10 +60,53 @@ public class PackageController {
 	}
 	
 	@GetMapping("/packageList")
-	public String getPackageList(Model model) {
-		model.addAttribute("packageList",packageService.getPackageList());
+	public String getPackageList(Model model
+								, @RequestParam( name = "searchBy", defaultValue = "name" ) String searchBy
+								, @RequestParam( name = "keyword", defaultValue = "" ) String keyword
+					            , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
+					            , @RequestParam( name = "cntPerPage", defaultValue = "5")Integer cntPerPage) {
+		//패키지 수 카운트
+		int total = packageService.packageCount();
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		
+		List<PackageVO> packageList = packageService.getPackageList(pagingVO);
+		//패키지 정보 모델에 담음
+		model.addAttribute("packageList",packageList);
+		model.addAttribute("paging",pagingVO);
+		
+		model.addAttribute("area",packageService.getLocationList());
+		
+		//검색어가 없을 경우
+		model.addAttribute("keyword",keyword);
+		model.addAttribute("searchBy",searchBy);
 		return "package/packageList";
 	}
+	
+	//특정 조건으로 패키지 검색
+	@GetMapping("/searchPackage")
+	public String searchPackage(@RequestParam( name = "searchBy" ) String searchBy
+							  , @RequestParam( name = "keyword" ) String keyword
+							  , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
+							  , @RequestParam( name = "cntPerPage", defaultValue = "5") Integer cntPerPage
+							  , Model model
+							  ,PackageVO packageVO) {
+		//전체 조회될 패키지 수
+		int total = packageService.packageCountTitle(keyword);
+		
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		model.addAttribute("area",packageService.getLocationList());
+		//제목으로 검색기능 수행
+		packageVO.setName(keyword);
+		List<PackageVO> list = packageService.searchPackageByTitle(packageVO, pagingVO);
+		model.addAttribute("packageList",list);
+		model.addAttribute("paging",pagingVO);
+		// 검색결과 기억을 위해 keyword와 searchBy 담기
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("searchBy", searchBy);
+		
+		return "package/packageList";
+	}
+	
 	
 	@GetMapping("/getAttachList")
 	@ResponseBody

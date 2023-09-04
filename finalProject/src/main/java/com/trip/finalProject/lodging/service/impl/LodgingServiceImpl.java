@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.location.service.LocationVO;
 import com.trip.finalProject.lodging.mapper.LodgingMapper;
 import com.trip.finalProject.lodging.service.LodgingService;
@@ -35,10 +36,28 @@ public class LodgingServiceImpl implements LodgingService {
 	 }
 	 
 	 @Override
-	 public List<LodgingVO> getLodgingList(){
-		 return lodgingMapper.listLodging();
+	 public List<LodgingVO> getLodgingList(PagingVO pagingVO){
+		 return lodgingMapper.listLodging(pagingVO);
+	 }
+	 
+	 @Override
+	 public int lodgingCount() {
+		// TODO Auto-generated method stub
+		return lodgingMapper.lodgingCount();
+	 }
+	 
+	 @Override
+	 public int lodgingCountTitle(String keyword) {
+		// TODO Auto-generated method stub
+		return lodgingMapper.lodgingCountTitle(keyword);
 	 }
 
+	 @Override
+	 public List<LodgingVO> searchPackageByTitle(LodgingVO lodgingVO, PagingVO pagingVO) {
+		// TODO Auto-generated method stub
+		return lodgingMapper.searchPackageByTitle(lodgingVO,pagingVO);
+	 } 
+	 
 	@Override
 	public List<LocationVO> getLocationList() {
 		// TODO Auto-generated method stub
@@ -205,5 +224,11 @@ public class LodgingServiceImpl implements LodgingService {
             return null;
         }
     }
+
+	
+
+	
+
+	
 
 }

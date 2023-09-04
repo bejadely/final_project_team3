@@ -6,69 +6,63 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!-- index.html 고유 CSS 추가 -->
-<th:block layout:fragment="css">
-	<!--    <link rel="stylesheet" th:href="@{/css/page/home.css}" >-->
-</th:block>
-<!-- index.html 고유 스크립트 추가 -->
-<th:block layout:fragment="script">
-	<!--    <script th:src="@{/js/page/home.js}"></script>-->
-</th:block>
+<script>
+$(document).ready(function () {
+	var formObj = $(".sidebar-search");
+	
+	$("button[type='submit']").on("click",function(event){
+		var str='';
+		var sigunguCode = $("#location > option:selected").attr("value1");
+		var areaCode = $("#location > option:selected").attr("value2");
+		str+=`<input type='hidden' name='sigunguCode' value='${sigunguCode}'>
+			 <input type ='hidden' name = 'areaCode' value='${areaCode}'>`
+		formObj.append(str);
+	});
+});
+</script>
 </head>
 <body>
 <div layout:fragment="content">
 	<!-- Property Section Begin -->
 	<section class="property-section spad">
+	
 		<div class="container">
 			<div class="row">
+			
 				<div class="col-lg-3">
 					<div class="property-sidebar">
 						<h4>Search Property</h4>
-						<form action="#" class="sidebar-search">
-							<div class="sidebar-btn">
-								<div class="bt-item">
-									<input type="radio" name="s-type" id="st-buy" checked>
-									<label for="st-buy">Buy</label>
-								</div>
-								<div class="bt-item">
-									<input type="radio" name="s-type" id="st-rent"> <label
-										for="st-rent">Rent</label>
-								</div>
-							</div>
-							<select>
-								<option value="">Locations</option>
-							</select> <select>
-								<option value="">Status</option>
-							</select> <select>
-								<option value="">No of Bedroom</option>
-							</select> <select>
-								<option value="">No of Bathrooms</option>
-							</select> <select>
-								<option value="">No of Guest</option>
-							</select>
-							<div class="room-size-range">
-								<div class="price-text">
-									<label for="roomsizeRangeP">Size:</label> <input type="text"
-										id="roomsizeRangeP" readonly>
-								</div>
-								<div id="roomsize-range-P" class="slider"></div>
+						<form action="" class="sidebar-search">
+						<button type="submit" class="search-btn">Search Property</button>
+							<div>
+								<select id="searchBy" name="searchBy">
+									<option value="name">이름으로 검색</option>
+								</select>
+								<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
 							</div>
 							<div class="price-range-wrap">
 								<div class="price-text">
-									<label for="priceRangeP">Price:</label> <input type="text"
-										id="priceRangeP" readonly>
+									<label for="priceRangeP">Price:</label> <input type="text" id="priceRangeP" readonly>
 								</div>
 								<div id="price-range-P" class="slider"></div>
 							</div>
-							<button type="submit" class="search-btn">Search
-								Property</button>
+							<div>
+								<label for="location">지역</label>
+								<select id="location" class="location">
+									<option value="">선택</option>
+									<option th:each = "a : ${area}"  th:value1="${a.sigunguCode}" th:value2="${a.areaCode}" th:text="${a.locationName}"></option>	
+								</select>
+							</div>
+							
 						</form>
-					
 					</div>
+					
 				</div>
+				
 				<div class="col-lg-9">
 					<h4 class="property-title">Property</h4>
 					<div class="property-list">
+					<th:block th:if="${!#lists.isEmpty(packageList)}">
 						<th:block th:each="pck : ${packageList}">
 							<div th:onclick="|location.href='@{/packageInfo(postId=${pck.postId})}'|">
 								<div class="single-property-item">
@@ -103,19 +97,72 @@
 								</div>
 							</div>
 						</th:block>
+					</th:block>
+					<th:block th:if="${#lists.isEmpty(packageList)}">
+						<div align="center">
+							<span>조회된 패키지가 없습니다.</span>
+						</div>
+					</th:block>
+				</div>
+				
+			</div>
+				<!-- 페이징 구문 -->
+				<!-- 검색키워드가 없을때 -->
+				<th:block th:if="${#strings.isEmpty(keyword)}">
+					<div style="text-align : center;" class="property-pagination">
+						<th:block th:if="${paging.nowPage != 1}">
+							<a th:href="@{packageList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+						</th:block>
+						<th:block th:if="${paging.startPage != 1}">
+							<a th:href="@{packageList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+						</th:block>
+						<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+							<th:block th:if="${p eq paging.nowPage}">
+								<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+							</th:block>
+							<th:block th:if="${p ne paging.nowPage}">
+								<a th:href="@{packageList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+							</th:block>
+						</th:block>
+						<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+							<a th:href="@{packageList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+						</th:block>
+						<th:block th:if="${paging.nowPage != paging.lastPage}">
+							<a th:href="@{packageList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+						</th:block>
 					</div>
-				</div>
-				<div class="property-pagination">
-					<a href="#">1</a> <a href="#">2</a> <a href="#">3</a>
-				</div>
+				</th:block>
+				<!-- 검색키워드가 있을때 -->
+				<th:block th:if="${!#strings.isEmpty(keyword)}">
+					<div style="text-align : center;" class="property-pagination">
+						<th:block th:if="${paging.nowPage != 1}">
+							<a th:href="@{searchPackage(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
+						</th:block>
+						<th:block th:if="${paging.startPage != 1}">
+							<a th:href="@{searchPackage(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;</a>
+						</th:block>
+						<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+							<th:block th:if="${p eq paging.nowPage}">
+								<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+							</th:block>
+							<th:block th:if="${p ne paging.nowPage}">
+								<a th:href="@{searchPackage(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
+							</th:block>
+						</th:block>
+						<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+							<a th:href="@{searchPackage(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
+						</th:block>
+						<th:block th:if="${paging.nowPage != paging.lastPage}">
+							<a th:href="@{searchPackage(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
+						</th:block>
+					</div>
+				</th:block>
 			</div>
 		</div>
 	</section>
 </div>
 <!-- Property Section End -->
 
-<script>
 
-</script>
 </body>
 </html>

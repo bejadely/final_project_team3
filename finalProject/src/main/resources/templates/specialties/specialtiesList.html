@@ -18,6 +18,32 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 
 <!-- jQuery Modal -->
+<style>
+.searchDiv {
+    text-align: center;
+}
+
+/* <select> 요소의 스타일 설정 */
+#searchBy {
+    /* 가로 방향으로 가운데 정렬 */
+    display: block;
+    margin: 0 auto;
+}
+</style>
+<script>
+$(document).ready(function() {
+	// 이벤트 설정
+	$('#searchButton').on('click', search);
+});
+
+function search(event){
+	
+	let value = $('#searchBy').val();
+	let keyword = $('#keyword').val();
+	location.href='/searchSepcialties?searchBy='+value+'&keyword='+keyword;
+	
+}
+</script>
 </head>
 <body>
 	<div layout:fragment="content">
@@ -38,8 +64,14 @@
 				</div>
 			</div>
 		</section>
-		<!-- 여행메이트 글 section-->
 		<section class="blog-section blog-page spad">
+		<div class="searchDiv">
+			<select id="searchBy" name="searchBy">
+				<option value="name">이름으로 검색</option>
+			</select>
+			<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
+			<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+		</div>
 			<div class="container">
 				<div class="row">
 					<div th:each="list : ${specialtiesList}" th:onclick="|location.href='@{/specialtiesInfo(postId=${list.postId})}'|"
@@ -65,12 +97,60 @@
 						</div>
 					</div>
 				</div>
+				<!-- 페이징 구문 -->
+		<!-- 검색키워드가 없을때 -->
+		<th:block th:if="${#strings.isEmpty(keyword)}">
+			<div style="text-align : center;" class="property-pagination">
+				<th:block th:if="${paging.nowPage != 1}">
+					<a th:href="@{specialtiesList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+				</th:block>
+				<th:block th:if="${paging.startPage != 1}">
+					<a th:href="@{specialtiesList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+				</th:block>
+				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+					<th:block th:if="${p eq paging.nowPage}">
+						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+					</th:block>
+					<th:block th:if="${p ne paging.nowPage}">
+						<a th:href="@{specialtiesList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+					</th:block>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+					<a th:href="@{specialtiesList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage}">
+					<a th:href="@{specialtiesList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+				</th:block>
+			</div>
+		</th:block>
+		<!-- 검색키워드가 있을때 -->
+		<th:block th:if="${!#strings.isEmpty(keyword)}">
+			<div style="text-align : center;" class="property-pagination">
+				<th:block th:if="${paging.nowPage != 1}">
+					<a th:href="@{searchSepcialties(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
+				</th:block>
+				<th:block th:if="${paging.startPage != 1}">
+					<a th:href="@{searchSepcialties(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;</a>
+				</th:block>
+				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+					<th:block th:if="${p eq paging.nowPage}">
+						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+					</th:block>
+					<th:block th:if="${p ne paging.nowPage}">
+						<a th:href="@{searchSepcialties(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
+					</th:block>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+					<a th:href="@{searchSepcialties(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage}">
+					<a th:href="@{searchSepcialties(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
+				</th:block>
+			</div>
+		</th:block>
 			</div>
 		</section>
-		<!-- 여행메이트 글 section end -->
 	</div>
-	<script>
-		
-	</script>
+	
 </body>
 </html>
