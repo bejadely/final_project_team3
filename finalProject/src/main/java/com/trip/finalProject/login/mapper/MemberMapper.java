@@ -37,4 +37,7 @@ public interface MemberMapper {
 	 
 	 //관리자 회원가입
 	 public int insertGuide(MemberVO member);
+	 
+	 //입력한 전화번호로 회원 계정 찾기
+	 public MemberVO checkIdByPhoneNumber(String num);
 }

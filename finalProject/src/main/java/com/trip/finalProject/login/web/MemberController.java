@@ -193,8 +193,23 @@ public class MemberController {
 			return memberService.updateMember(memberVO);
 		}
 	  
-	  
-	 
+		
+		//아이디 찾기 
+		@GetMapping("/findAccount")
+		public String fintId() {
+			return"member/findAccount";
+		}
+		
+		//입력한 전화번호로 계정 ID 찾기
+		@ResponseBody
+		@PostMapping("/phoneNumberCheck")
+		public MemberVO phoneNumberCheck(String phoneNumber) {
+			MemberVO result=memberService.phoneNumberCheck(phoneNumber);
+			System.out.println("넘어왔나:"+phoneNumber);
+			return result;
+
+		}
+	
 	
  
 
