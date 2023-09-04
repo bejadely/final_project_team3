@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/myPage_layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+$(document).ready(function(){
+    // 버튼 클릭 이벤트 핸들러
+    $('button').click(function(event){
+    	event.preventDefault();
+    	
+        let memPas = $('#password').val();
+        let verPas = $('#verifyPassword').val();
+        
+        if (memPas != "") {
+            if (verPas == "") {
+                alert("비밀번호 확인을 해주세요");
+                $('#verifyPassword').focus();
+                return;
+            } else if (verPas != memPas) {
+                alert("비밀번호가 일치하지 않습니다.");
+                $('#verifyPassword').val('');
+                $('#verifyPassword').focus();
+                return;
+            }
+        }
+        console.log("확인");
+        ajaxMemberUpdate();
+    });
+        
+    
+        
+     // 폼 데이터 직렬화 함수
+        function serializeObject() {
+            let formData = $('form').serializeArray();
+            let formObj = {};
+            $.each(formData, function(idx, obj) {
+                formObj[obj.name] = obj.value;
+            });
+            return formObj;
+        }
+
+        // AJAX 요청 처리 함수
+        function ajaxMemberUpdate() {
+            let obj = serializeObject();
+
+            $.ajax({
+                url: 'myPageUpdate',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify(obj) // JSON 응답 처리 설정
+            }).done(data => {
+                console.log(data);
+                location.href="myPage";
+            }).fail(reject => console.log(reject));
+        };
+});
+	
+</script>
+</head>
+<body>
+	<div layout:fragment="content" style="text-align: center;">
+		<div>
+			<h3>내 정보 수정</h3>
+		</div>
+		<form>
+			<div>
+				<label>이름</label> 
+				<input type="text" th:value="${memberInfo.memberName}"	id="memebrName" name="memberName" readonly="readonly">
+			</div>
+			<div>
+				<label>아이디</label>
+				<input type="text" th:value="${memberInfo.memberId}" id="memberId" name="memberId" readonly="readonly">
+			</div>
+			<div>
+				<label>비밀번호</label>
+				<input type="text" id="password" name="password"><br>
+				<label>비밀번호 확인</label>
+				<input type="text" id="verifyPassword" name="verifyPassword"><br>
+			</div>
+			<div>
+				<label>주소</label> 
+				<input type="text" th:value="${memberInfo.address}" id="addr" name="addr"><br>
+				<label>상세주소</label>
+				<input type="text" th:value="${memberInfo.addressDetail}" id="addressDetail" name="addressDetail">
+			</div>
+			<div>
+				<label>이메일</label>
+				<input type="text" th:value="${memberInfo.email}" id="email" name="email">
+			</div>
+			<div>
+				<label>전화번호</label>
+				<input type="text" th:value="${memberInfo.phoneNumber}" id="phoneNumber" name="phoneNumber">
+			</div>
+			<div>
+				<label>국적</label>
+				<input type="text" th:value="${memberInfo.nationality}" readonly="readonly">
+			</div>
+			<div>
+				<label>성별</label>
+				<th:block th:if="${memberInfo.gender == 'G1'}">
+				<input type="checkbox" checked onClick="return false;">남자
+				<input type="checkbox" onClick="return false;">여자
+				</th:block>
+				<th:block th:if="${memberInfo.gender == 'G2'}">
+				<input type="checkbox" onClick="return false;">남자
+				<input type="checkbox" checked onClick="return false;">여자
+				</th:block>
+			</div>
+			<div>
+				<label>생년월일</label>
+				<input type="text" th:value="${memberInfo.birthDate}" readonly="readonly">
+			</div>
+			<button type="submit">완료</button>
+		</form>
+	</div>
+</body>
+</html>

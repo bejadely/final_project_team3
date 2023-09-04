@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/default_layout}">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- index.html 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+	<!--    <link rel="stylesheet" th:href="@{/css/page/home.css}" >-->
+</th:block>
+<!-- index.html 고유 스크립트 추가 -->
+<th:block layout:fragment="script">
+	<!--    <script th:src="@{/js/page/home.js}"></script>-->
+</th:block>
+<!-- getbootstrap cdn -->
+<link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+        crossorigin="anonymous">
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+
+<!-- jquery cdn -->
+<script
+        src="https://code.jquery.com/jquery-3.7.0.js"
+        integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+        crossorigin="anonymous"></script>
+<style>
+    .sb-text {
+        text-align: center;
+    }
+
+    @media (min-width: 1400px) {
+        .single-blog-item .sb-pic img {
+            height: 277px;
+        }
+    }
+
+    @media (min-width: 1200px) and (max-width: 1399px) {
+        .single-blog-item .sb-pic img {
+            height: 237px;
+        }
+    }
+
+    @media (min-width: 992px) and (max-width: 1199px) {
+        .single-blog-item .sb-pic img {
+            height: 197px;
+        }
+    }
+
+    @media (min-width: 768px) and (max-width: 991px) {
+        .single-blog-item .sb-pic img {
+            height: 224px;
+        }
+    }
+
+    @media (min-width: 576px) and (max-width: 767px) {
+        .single-blog-item .sb-pic img {
+            height: 344px;
+        }
+    }
+
+    .pointer {
+        cursor: pointer;
+    }
+    .review-content {
+        position: relative;
+        margin-bottom: 10px; /* 조절 가능한 여백 */
+    }
+
+    .review-content .writeDate {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .review-content .btn {
+        position: relative;
+        float: right;
+    }
+</style>
+<script>
+
+    $('#location').on('change', function () {
+        var selectedValue = $(this).find('option:selected').attr('value1'); // select 요소의 선택된 값을 가져옴
+        var selectedValue2 = $(this).find('option:selected').attr('value2'); // data-value2 속성을 가져옴
+
+        console.log(selectedValue);
+        console.log(selectedValue2);
+
+        var data = {
+            sigungucode: selectedValue,
+            areacode: selectedValue2
+        };
+
+        $.ajax({
+            type: 'GET',
+            url: '/areaList', // 서버의 검색 엔드포인트 URL로 변경해야 함
+            data: data,
+            success: function (data) {
+                // 서버로부터 받은 데이터를 사용하여 숙소 정보를 업데이트
+                // data 변수에 서버로부터 받은 숙소 정보가 포함됩니다.
+                console.log(data);
+            },
+            error: function (error) {
+                // 서버 요청 실패 시 처리
+            }
+        });
+    });
+
+//	모달창 : 로딩창 오버레이 none, block 처리 함수
+function toggleOverlayModal(display) {
+	display == 'block' ? $('.modal-overlay').attr('style','display: block;') : $('.modal-overlay').attr('style','display: none;');
+}
+
+//	카드 눌렀을 시 모달창 띄우는 함수
+$(document).on('click', '.single-property-item', function() {
+	toggleOverlayModal('block');
+	
+    let contentid = $(this).data('contentid');
+    let addr1 = $(this).data('address');
+    let title = $(this).find('.r-title').text();
+    let firstimage = $(this).find('img').attr('src');
+    console.log(contentid);
+
+    getLodgingDetailInfo(contentid, function(data) {
+        if(data) {
+            clearModal(); // 기존 데이터 삭제
+            appendLodgingDetailInfo(data, addr1, title, firstimage, contentid);
+            toggleOverlayModal('none');
+        }
+    });
+})
+
+function clearModal() {
+    $('.modalText').text('');
+    $('#modalImage').attr('src', '');
+    //$('#reviewCount').text('');
+    //$('.review-content').remove();
+   // $('#moreReview').removeClass('disabled');
+   // $('#moreReview').data('contentid', '');
+    //$('#moreReview').data('page', '1');
+}
+
+function getLodgingDetailInfo(contentid, callback) {
+    $.ajax({
+        type: 'GET',
+        url: '/infoReview',
+        data: {
+            'contentid': contentid   
+        }
+    })
+    .done(function (data, textStatus, jqXHR){
+        console.log('done');
+
+        callback(data);
+    })
+    .fail(function (jqXHR, textStatus, errorThrown){
+        console.log('fail');
+
+        callback(null);
+    })
+}
+
+function appendLodgingDetailInfo(data, addr1, title, firstimage, contentid) {
+    $('#exampleModalLabel').text(title);
+    $('#modalImage').attr('src', firstimage);
+    $('#modalAddress').text(addr1);
+    //$('#reviewCount').text(data.totalCount + '개의 리뷰');
+    //$('#reviewCount').data('totalCount', data.totalCount);
+   /*  if(data.totalCount == 0) {
+        $('#moreReview').addClass('disabled');
+    }
+    $('#moreReview').data('contentid', contentid); */
+
+    if(data.detailInfoMap.subfacility == null || data.detailInfoMap.subfacility.replaceAll(' ', '') == '') {
+        $('#subfacility').text('-');
+    } else {
+        $('#subfacility').text(data.detailInfoMap.subfacility);
+    }
+    if(data.detailInfoMap.homepage == null || data.detailInfoMap.homepage.replaceAll(' ', '') == '') {
+        $('#modalHomepage').text('-');
+    } else {
+        $('#modalHomepage').html(data.detailInfoMap.homepage);
+    }
+
+   /*  if(data.spotDetailReviewVoList.length > 0) {
+        appendReview(data.spotDetailReviewVoList, contentid);
+    } */
+}
+
+
+/* const myModalEl = document.getElementById('spotDetailInfoModal')
+myModalEl.addEventListener('hidden.bs.modal', event => {
+    // 모달창이 닫히면 무조건 모달 내부 데이터를 삭제해줌
+    clearModal();
+}) */
+
+
+//검색정보 보내기
+$('#button-addon2').on('click', function(e){
+    e.preventDefault();
+    let searchKeyWord = $('#search-input').val();
+    let areaCode = $('#locationTypeButton').data('areaCode');
+    let sigunguCode = $('#locationTypeButton').data('sigunguCode');
+
+    if(searchKeyWord.length<=1){
+        alert('1글자 이상 검색해주세요.');
+        return;
+    } else if($('#locationTypeButton').text() == '지역 선택') {
+        alert('지역을 선택해주세요.');
+        return;
+    }
+
+    window.location.href=window.location.origin + "/localTourInfo/search?searchKeyWord="+searchKeyWord+"&areaCode="+areaCode+"&sigunguCode="+sigunguCode;
+})
+
+$('#locationType li > a').on('click', function() {
+    // 버튼에 선택된 항목 텍스트 넣기
+    $('#locationTypeButton').text($(this).text());
+    $('#locationTypeButton').data('areaCode', $(this).data('areaCode'));
+    $('#locationTypeButton').data('sigunguCode', $(this).data('sigunguCode'));
+});
+
+
+</script>
+</head>
+<body>
+<div layout:fragment="content">
+	<!-- Property Section Begin -->
+	<section class="property-section spad">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-3">
+					<div class="property-sidebar">
+						<h4>Search Property</h4>
+						<form action="#" class="sidebar-search">
+							
+							<select id="location">
+								<option value="">선택</option>
+								<option th:each = "a : ${area}"  th:value1="${a.sigunguCode}" th:value2="${a.areaCode}" th:text="${a.locationName}"></option>	
+							</select>
+						
+							<button type="submit" class="search-btn">Search Property</button>
+						</form>
+						
+					</div>
+				</div>
+				<div class="col-lg-9">
+					<h4 class="property-title">숙소</h4>
+					<div class="property-list">
+						<th:block th:each="lod : ${lodgingList}" >
+							<div class="single-property-item" th:attr="data-contentid=${lod.contentid}, data-address=${lod.addr1}" data-bs-toggle="modal" data-bs-target="#spotDetailInfoModal">
+								<div class="row">
+									<div class="col-md-4">
+										<div class="property-pic">
+											<img th:src="${lod.firstimage}" alt="">
+										</div>
+									</div>
+									<div class="col-md-8">
+										<div class="property-text">
+											<div class="s-text">For Sale</div>
+											<th:h5 class="r-title">[[ ${lod.title} ]]</th:h5>
+											<div class="room-price">
+												<span>TEL:</span>
+												<h5>[[${lod.tel}]]</h5>
+											</div>
+											<th:div class="properties-location">
+												<i class="icon_pin"></i>[[ ${lod.addr1} ]]
+											</th:div>
+										</div>
+										<p>Lorem ipsum dolor sit amet, consectetur adipiscing
+											elit, sed do eiusmod tempor incididunt ut labore.</p>
+										<ul class="room-features">
+											<li><i class="fa fa-arrows"></i>
+												<p>5201 sqft</p></li>
+											<li><i class="fa fa-bed"></i>
+												<p>8 Bed Room</p></li>
+											<li><i class="fa fa-bath"></i>
+												<p>7 Baths Bed</p></li>
+											<li><i class="fa fa-car"></i>
+												<p>1 Garage</p></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+					</div>
+					</th:block>
+
+				</div>
+				<div class="property-pagination">
+					<a href="#">1</a> <a href="#">2</a> <a href="#">3</a>
+				</div>
+			</div>
+		</div>
+	</section>
+	 <!--모달창-->
+            <div class="modal fade" id="spotDetailInfoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 modalText" id="exampleModalLabel"></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <td colspan="3"><img id="modalImage" src="" style="width: 100%;"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" style="width: 25%">주소</th>
+                                    <td colspan="2" id="modalAddress" class="modalText"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" style="width: 25%">편의시설</th>
+                                    <td colspan="2" id="subfacility" class="subfacility"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" style="width: 25%">홈페이지</th>
+                                    <td colspan="2" id="modalHomepage" class="modalText"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <!--로딩창-->
+							<div class="modal-overlay" id="modal-loadingOverlay">
+								<div class="d-flex justify-content-center">
+									<div class="spinner-border text-primary" role="status">
+										<span class="visually-hidden">Loading...</span>
+									</div>
+								</div>
+							</div>
+                           
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+	
+</div>
+<!-- Property Section End -->
+
+
+</body>
+</html>

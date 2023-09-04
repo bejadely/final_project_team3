@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/admin_layout}">
+	<head>
+	</head>
+<!-- Content -->
+<div layout:fragment="content">
+		<div class="container">
+			<form id="frm" th:object="${reportVO}" method="post">
+				<h5><b>신고내역 상세 조회</b></h5>
+				<br><br>
+				<div class="table-responsive">
+					<h6>기본정보</h6>
+					<br>
+					<table id="defaultInfo" class="table">
+						<tbody>
+							<tr>
+								<th width="150" align="center">신고<br>접수번호</th>
+								<td width="400" align="center" th:text="*{reportId}"></td>
+								<th width="150" align="center">신고한회원</th>
+								<td width="400" align="center" th:text="*{reporterId}"></td>
+							</tr>
+							<tr>
+								<th width="150" align="center">신고사유</th>
+								<td width="400" align="center" th:text="*{reportReason}"></td>
+								<th width="150" align="center">신고일자</th>
+								<td width="400" align="center" th:text="*{#strings.substring(reportDate,0,10)}"></td>
+							</tr>
+							<tr>
+								<th width="150" align="center">신고당한글</th>
+								<!-- 작업중 -->
+								<td width="400" align="center" th:utext="|*{postId}<br><a href='#'>원본글 보러가기</a>|"></td>
+								<th width="150" align="center">신고<br>당한회원</th>
+								<td width="400" align="center" th:utext="|*{punishedId} <br> (제재횟수 : *{punishCount})|"></td>
+							</tr>
+							<tr>
+								<th width="150" align="center">신고내용</th>
+								<td colspan="3" width="400" align="center" th:text="*{content}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div>
+					<input type="hidden" name="reportId" th:value="*{reportId}">
+					<input type="hidden" name="punishedId" th:value="*{punishedId}">
+					<input type="hidden" name="result">
+					<input type="hidden" name="punishReason">
+				</div>
+				<div align="center">
+					<button type="button" class="feature-btn">제재 처리</button>
+					<button type="button" class="feature-btn">제재 미처리</button>
+					<button type="button" class="feature-btn">목록으로</button>
+				</div>
+			</form>
+		</div>
+	
+	
+	<script th:inline="javascript" type="text/javascript">
+	
+	console.log($($('button[type=button]')[2]));
+	
+	$(document).ready(function() {
+		// 이벤트 설정
+		//$('').on('click', search);
+		$($('button[type=button]')[0]).on('click', {result : 'P2'}, punishProcess);
+		$($('button[type=button]')[1]).on('click', {result : 'P3'}, punishProcess);
+		$($('button[type=button]')[2]).on('click', returnToBeforePage);
+	});
+	
+	// 이전페이지로 이동
+	function returnToBeforePage(){
+		location.href='/admin/seeAllReport';
+	}
+	
+	// 제재 처리 실행(swal 쓰면서 제재사유 클릭해야함)
+	function punishProcess(event){
+		
+		if(event.data.result == "P2"){
+			// 제재처리 하는 경우
+			Swal.fire({
+			    title: '제재 사유를 입력해주십시오',
+			    input: 'select',
+			    inputOptions: {
+				    R1 : '판매금지물품판매' ,
+				    R2 : '사기글',
+				    R3 : '거래/환불 분쟁',
+				    R4 : '욕설/비방',
+				    R5 : '도배',
+				    R6 : '음란성',
+				    R7 : '불법촬영물',
+				    R8 : '기타'
+			    },
+			    inputLabel: '제재 사유 선택',
+			    customClass: {
+				    input: 'inline-flex',
+				    inputLabel: 'inline-flex'
+			    },
+			    inputAttributes: {
+				  	maxlength: 150,
+				  	autocaptitalize: 'off',
+				  	autocorrect: 'off',
+				  	id: 'selectReason'
+			    },
+			    showCancelButton: true,
+				confirmButtonText: '제재처리',
+				cancelButtonText: '취소',
+			    reverseButtons: true,
+				
+		    }).then((firstResult) => {
+		        if (firstResult.isConfirmed) {
+					
+		        Swal.fire({
+		        	title: '해당 회원의 제재처리를 진행하시겠습니까?',
+				    icon: 'warning',
+				    showCancelButton: true,
+				    confirmButtonColor: '#3085d6',
+				    cancelButtonColor: '#d33',
+				    confirmButtonText: '승인',
+				    cancelButtonText: '취소',
+				    reverseButtons: true,
+			        
+		        }).then((secondResult) => {
+		        	
+		        	if(secondResult.isConfirmed){
+		        		// 함수에서 매개변수로 받는 event.data.result 값을 input 태그에 주입		
+		        		$('input[name="result"]').val(event.data.result);
+		        		$('input[name="punishReason"]').val(firstResult.value);
+		        		$('#frm').attr('action','/admin/punishProcess').submit();
+		        	}
+		        })
+		        	
+		      }
+		    })
+		} else {
+			// 제재 미처리인경우
+			Swal.fire({
+			      title: '해당 회원의 신고 요청을 반려하시겠습니까?',
+			      icon: 'warning',
+			      showCancelButton: true,
+			      confirmButtonColor: '#3085d6',
+			      cancelButtonColor: '#d33',
+			      confirmButtonText: '반려하기',
+			      cancelButtonText: '취소',
+			      reverseButtons: true,
+			      
+		    }).then((result) => {
+		      if (result.isConfirmed) {
+		    	  $('input[name="result"]').val(event.data.result);
+        		  $('#frm').attr('action','/admin/punishProcess').submit();
+		      }
+		    })
+		}
+	}
+	
+	</script>
+	
+</div>
+
+</html>

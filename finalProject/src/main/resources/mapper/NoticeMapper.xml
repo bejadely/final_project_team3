@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip.finalProject.notice.mapper.NoticeMapper"><!-- 구현! 메서드 명 만들어 놓은 것을 여기서 만들겠다. -->
+
+
+
+<!--  페이지별로 게시글 확인 row 개수에 따라 -->
+   <select id="SelectAllNoticeList" >
+		
+				SELECT *
+			  	FROM (SELECT ROWNUM rn, a.*
+			        	FROM(SELECT notice_Number,title,writer_Id,regist_Date,hit 
+							FROM notice  order by regist_Date desc) a )
+			  WHERE rn BETWEEN #{start} AND #{end}
+			  				
+		
+	</select>	
+	<!-- 전체 게시글 수 카운트 -->
+  		<select id="getAllNoticeCount">
+  			SELECT COUNT(*)
+  			  FROM notice
+  	</select>
+	
+
+	
+
+	
+<!-- 특정 게시글의 상세 정보를 조회하는 쿼리 글의 id를 사용해서 해당 게시글을 가져옴 -->	
+	<select id="getNoticeDetail" resultType="NoticeVO">
+		SELECT notice_number,
+				title,
+				content,
+				regist_date,
+				update_date, 
+       			code_val(status) status,
+       			code_val(release) release, 
+       			code_val(notice_type) notice_type, 
+       			writer_id, 
+       			hit
+		FROM notice
+		WHERE notice_number = #{noticeNumber}
+	
+<!-- 		code_val(authority) authority -->
+	</select>
+	
+<!-- 게시글 수정 -->	
+	<update id="modifyNoticeInfo" parameterType="NoticeVO">
+  			UPDATE notice
+  			<set> 				
+				title = #{title},					
+				content = #{content},							
+				update_date = sysdate,
+			</set>
+  			WHERE notice_number = #{noticeNumber}
+  	</update>
+  	
+  		
+  		
+  		
+		
+	
+
+	
+<!-- 새로운 게시글을 삽입하는 쿼리. 게시글 번호는 자동생성됨-->	
+	<insert id="noticeInsert" parameterType="NoticeVO" >
+		<selectKey keyProperty="noticeNumber" resultType = "int" order="BEFORE">
+			select NVL(max(notice_Number),0) +1 as notice_Number FROM notice
+		</selectKey>
+		INSERT INTO notice
+		VALUES(
+		#{noticeNumber},
+		#{title},
+		#{content}, 
+		sysdate,
+		null, 
+		#{status}, 
+		#{release}, 
+		#{noticeType},
+		#{writerId},
+		 0)
+	</insert>
+	
+
+<!-- 글 속성이 공지사항인 총 결과값 카운트 -->
+  		<select id="countNoticeType1n">
+  			SELECT COUNT(*)
+  			  FROM notice
+  			 WHERE notice_Type='n1'  and title LIKE '%${title}%'
+  		</select>
+  		
+  		<!-- 제목으로 게시글 검색 -->
+  		<select id="searchByNoticeByTitle1n" resultType="NoticeVO">
+ 		SELECT *
+		FROM(SELECT ROWNUM rn, a.notice_number
+						     , a.title
+						     , a.writer_Id						    
+						     , a.regist_date
+						     , a.hit
+						     <!-- , code_val(a.authority) authority -->
+			 FROM(SELECT notice_number
+				       , title
+				       ,writer_Id				       
+				       , regist_date
+				       ,hit
+				    FROM notice
+				   WHERE notice_Type='n1'  and  title LIKE '%${noticeVO.title}%'
+				ORDER BY regist_date DESC) a)
+		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+  		</select>
+
+
+
+
+<!-- 글 속성이 이벤트인 총 결과값 카운트 -->
+  		<select id="countNoticeType2n">
+  			SELECT COUNT(*)
+  			  FROM notice
+  			 WHERE notice_Type='n2'  and title LIKE '%${title}%'
+  		</select>
+  		
+  		<!-- 제목으로 게시글 검색 -->
+  		<select id="searchByNoticeByTitle2n" resultType="NoticeVO">
+ 		SELECT *
+		FROM(SELECT ROWNUM rn, a.notice_number
+						     , a.title
+						     , a.writer_Id						    
+						     , a.regist_date
+						     , a.hit
+						     <!-- , code_val(a.authority) authority -->
+			 FROM(SELECT notice_number
+				       , title
+				       ,writer_Id				       
+				       , regist_date
+				       ,hit
+				    FROM notice
+				   WHERE notice_Type='n2'  and  title LIKE '%${noticeVO.title}%'
+				ORDER BY regist_date DESC) a)
+		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+  		</select>
+
+
+
+
+
+	
+<!--  게시글 조회수 증가 -->	
+	<update id="boardView">
+		UPDATE board SET board_hit = board_hit+1 WHERE board_id = #{boardId}
+	</update>
+	
+
+	
+<!-- 게시글을 삭제하는 쿼리 -->	
+	<delete id="boardDelete">
+		DELETE FROM board WHERE board_id = #{boardId}
+	</delete>
+</mapper>
+

@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html lagn="ko" 
+<html lang="ko" 
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8" />
     <title>thymeleaf layout</title>
     <meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1, user-scalable=yes,initial-scale=1.0" />
     <th:block th:replace="fragments/head :: headFragment"></th:block>
+    
+	<script th:src="@{/js/bootstrap.min.js}"></script>
     </head>
 <body>
     <!-- header fragment 사용 -->
-    <th:block th:replace="fragments/header :: headerFragment"></th:block>
+    <th:block th:replace="fragments/admin_header :: headerFragment"></th:block>
     <!-- content fragment 사용 -->
     <th:block layout:fragment="content"></th:block>
     <!-- footer fragment 사용 -->

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.trip.finalProject.login.mapper.KakaoLoginMapper"><!-- 구현! 메서드 명 만들어 놓은 것을 여기서 만들겠다. -->
+
+
+<!-- <select id="findKakao" parameterType="java.util.HashMap" resultType="KakaoLoginVO">
+		select * 
+		from kakao_table 
+		where k_name=#{nickname} and k_email=#{email}
+</select>
+ -->
+<select id="findKakao" parameterType="java.util.HashMap" resultType="MemberVO">
+		select * 
+		from member 
+		where  Email=#{email}
+</select>
+	
+<!-- 정보 저장 --><!-- 동적으로 변하는 매개변수를 필요로 한다면, parameterType 속성을 사용하여 매개변수의 타입을 지정해주어야 합니다.  -->
+	 <!-- <insert id="insertKakaoLogin" parameterType="java.util.HashMap">
+		insert into 
+		kakao_table(k_name, k_email)
+			values
+			(#{nickname}, #{email})
+	</insert> --> 
+	
+	<insert id="insertKakaoLogin" parameterType="java.util.HashMap">
+		insert into member
+					(member_id,
+					password,
+					member_Name,
+					Email,
+					saved_profile_img,
+					AUTHORITY,
+					access_token,
+					refresh_token,
+					login_type,
+					birth_date,
+					gender,
+					sign_up_date)
+		values
+					(#{id},
+					#{password},
+					#{nickname},
+					#{email},					
+					#{profileImage},
+					'A1',
+					#{accessToken},
+					#{refreshToken},
+					'L2',
+					null,
+					null,
+					sysdate)
+	</insert>
+		
+	
+	
+</mapper>

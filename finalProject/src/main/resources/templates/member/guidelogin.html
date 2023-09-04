@@ -1,0 +1,419 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/default_layout}" layout:fragment="content">
+
+
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+</head>
+<style>
+<!-- 아이디 중복체크-->
+.id_ok{
+color:#008000;
+display: none;
+}
+
+.id_already{
+color:#6A82FB; 
+display: none;
+}
+</style>
+<body>
+	<script src="https://kit.fontawesome.com/d58c3728d1.js" crossorigin="anonymous"></script>
+
+	<div class="wrap">
+		<div
+			class="position-relative overflow-hidden radial-gradient min-vh-100 d-flex align-items-center justify-content-center">
+			<div class="d-flex align-items-center justify-content-center w-100">
+				<div class="row justify-content-center w-100">
+					<div class="col-md-8 col-lg-6 col-xxl-3">
+						<div class="card mb-0">
+							<div class="card-body">
+								<a href="index.html"
+									class="text-nowrap logo-img text-center d-block py-3 w-100">
+<!-- 									<img src="../assets/images/logos/dark-logo.svg" width="180" alt="">-->								</a>
+								<p class="text-center">회원가입</p>
+
+								<form name="insertForm" action="memberInsert" method="post">
+									<div class="mb-3">
+										<label for="" class="form-label">아이디</label>
+									<!-- 	<button class="btn btn-default">중복체크</button> -->
+										<input type="text" name="memberId" placeholder="아이디" class="form-control" id="id" aria-describedby="textHelp" required>
+									</div>
+									<div>
+										<font id="checkId" size="2"></font>
+									</div>
+									<div class="mb-3">
+										<div class="main">
+											<label for="" class="form-label">비밀번호</label>
+											<i class="fa-solid fa-eye fa-xs"></i> <input type="password" name="password" placeholder="비밀번호" class="form-control" id="pw1" required>
+										</div>
+									</div>
+
+										<div class="mb-3">
+											<div class="main">
+												<label for="" class="form-label">비밀번호 확인</label> <i class="fa-solid fa-eye fa-xs" ></i>								
+												<input type="password" name="" placeholder="" class="form-control" id="pw2" required>
+											</div>
+										</div>
+
+										<div>
+											<button class="btn btn-default" type="button" name="confirmBtn" id="confirmBtn" onclick="confirmNumber()">비밀번호 확인</button>
+										</div>
+										<div class="mb-3">
+											<label for="" class="form-label">이름</label>
+											<input type="text" name="memberName" placeholder="이름" class="form-control" id="name" required >
+										</div>
+
+										<a>국적</a>
+
+										<div class="mb-3">
+											<select class="" id="nationality" name="nationality"
+												aria-label="Default select example" required >
+												<option value="">국가선택</option>
+												<option value="대한민국">대한민국</option>
+												<option value="일본">일본</option>
+												<option value="중국">중국</option>
+												<option value="미국">미국</option>
+												<option value="캐나다">캐나다</option>
+												<option value="필리핀">필리핀</option>
+
+											</select> <br /> <br />
+
+										</div>
+
+
+
+										<div class="mb-3">
+											<label for="example" class="form-label">이메일</label> <input type="email" name="email" placeholder="이메일" class="form-control" id="email" required>
+										</div>
+									
+
+
+										<label for="example" class="form-label">주소</label> <input type="text" id="zipCode" name="zipCode" readonly="readonly" class="form-control" placeholder="우편번호" style="width: 250px;">
+								
+										
+										<div class="mb-3">
+											<input type="text" id="addr" name="addr" onclick="openZipSearch();" readonly="readonly" class="form-control" placeholder="기본주소"> 
+											<input type="text" id="addressDetail" name="addressDetail" class="form-control" placeholder="상세주소" style="width: 250px;">
+										</div>
+
+										<div class="mb-3">
+											<label for="" class="form-label">전화번호 &nbsp;  </label><button type="button" id="approveButton" class="btn btn-default"  >코드 발송</button>
+											 <input type="text" class="form-control" name="to" id="phonenumber" placeholder="전화번호를 입력하세요" required>
+											
+										</div>
+										
+										<div id="codeCheck" class="mb-3"  style="display: none">
+										 <input type="text" class="form-control" name="smsCode" id="smsCode" placeholder="코드 입력하세요" required>
+											<button type="button" id="code" name="codeConfirmBtn" class="btn btn-default" onclick="confirmCode()" value="">코드 확인</button>
+											
+										</div>
+										 <br>
+   										 
+									<!-- 		 <input type="hidden" id="numValue" value="${smsMap.num}"> -->
+
+
+
+
+										<div class="mb-3">
+											<label for="" class="form-label">생년월일</label> <input
+												type="date" name="birthDate" placeholder="생일"
+												class="form-control" id="birthday" required>
+										</div>
+										<!-- <div class="mb-3">
+											<label for="" class="form-label">성별</label> <input type="text" name="gender" placeholder="성별" class="form-control" id="gender">
+										</div> -->
+										<div>
+											<label for="" class="form-label">성별</label>
+										<br/>
+											<input type="radio" name="gender" value="G1">남										
+											<input type="radio" name="gender" value="G2">여
+										</div>
+										<input type="submit" value="회원가입" class="btn btn-primary w-100 py-8 fs-4 mb-4 rounded-2">
+										<div class="d-flex align-items-center justify-content-center">
+											<p class="fs-4 mb-0 fw-bold">Already have an Account?</p>
+											<a class="text-primary fw-bold ms-2" href="./authentication-login.html">Sign In</a>
+										</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+    <p th:text="${num}">난수</p>
+    
+		<!--  sms전송 -->
+		<a th:href="@{/send1}">sms</a> <a th:href="@{/sendemail}">이메일전송</a>
+
+
+		<form th:action="@{/check1}">
+
+			<table>
+				<!-- 	<tr class="form-group">
+				<td>은행코드</td>
+				<td><input type="text" class="form-control"  name="bank_code"
+					placeholder="은행코드 입력하세요"></td>
+			</tr> -->
+				<tr>
+
+					<td>은행코드 <select class="" id="bank_code" name="bank_code" aria-label="Default select example">
+							<option value="">은행선택</option>
+							<option value="004">국민은행</option>
+							<option value="020">우리은행</option>
+							<option value="088">신한은행</option>
+							<option value="003">기업은행</option>
+							<option value="023">SC제일은행</option>
+							<option value="011">농협은행</option>
+							<option value="005">외환은행</option>
+							<option value="090">카카오뱅크</option>
+							<option value="032">부산은행</option>
+							<option value="071">우체국</option>
+							<option value="031">대구은행</option>
+							<option value="037">전북은행</option>
+							<option value="035">제주은행</option>
+							<option value="007">수협은행</option>
+							<option value="027">씨티은행</option>
+							<option value="039">경남은행</option>
+					</select>
+					</td>
+
+				</tr>
+
+
+				<tr class="form-group">
+					<td>계좌번호</td>
+					<td><input type="text" class="form-control" id="bank_num" name="bank_num" placeholder="계좌번호 입력하세요"></td>
+				</tr>
+				<tr class="form-group">
+					<td>예금주</td>
+					<td><input type="text" class="form-control" id="bankHolderInfo" name="bankHolderInfo" placeholder="이름" readonly></td>
+				</tr>
+
+			</table>
+			<button class="btn btn-default">확인</button>
+		</form>
+	</div>
+
+
+
+<script>
+let hi = $('input:radio[name=gender]:checked').val();
+console.log(hi);
+</script>
+			
+
+	<!--  sms 아작스 -->
+	
+	<script th:inline="javascript">
+	
+	 
+	$(document).ready(function() {
+	      // 승인 버튼 클릭 시 발생 이벤트 설정
+	      $('#approveButton').on('click', ajaxApprove);
+	      $('#approveButton').on('click', sendCode);
+	   });
+	
+	  // 함수 정의
+	  var smsNum; // SMS 코드를 저장하기 위한 변수 선언
+	   function ajaxApprove(event){
+		   console.log("sms 버튼 눌렀다.");
+		  
+	      // memberId 정의
+	 	let receiverId = document.getElementById("phonenumber").value;
+	    // document.getElememtById("test").value(receiverId);
+	    
+
+	     $.ajax({
+	         url : "/sms/send", 
+	         type : 'post',
+	         data: { to : receiverId },
+	      /* 	 contentType : application/json */
+	      })
+	      .done( data => {
+	         console.log("data :", data);
+	         console.log("통신은 성공");
+	         if(data != null && data.num != null){
+	            alert(`${receiverId} 문자발송했습니다`); 
+	           /*  $("#smsCode").attr("value", data.num); */
+                smsNum = data.num; // SMS 코드를 변수에 저장
+	            
+	            //$("#Confirm").attr("value",${num});
+	         } else {
+	            alert(`문자 발송 안됐습니다.`);
+	         }
+	      })
+	      .fail( reject => console.log(reject));
+	   };
+	   
+	   function sendCode(){
+		    $("#codeCheck").css("display","block");}
+	   
+	   	    
+	   
+	   function confirmCode(){
+		   var number1 = $("#smsCode").val();
+
+	        if (number1 == smsNum) { // 저장된 SMS 코드를 사용
+	            alert("인증되었습니다.");
+	        } else {
+	            alert("번호가 다릅니다.");
+	        }
+	    }
+
+	</script>
+
+
+
+
+
+
+
+
+	<script>
+		$(document).ready(function() {
+			$("#check_button").click(function() {
+				var bank_code = $("#bank_code").val();
+				var bank_num = $("#bank_num").val();
+
+				$.get("/check1", {
+					bank_code : bank_code,
+					bank_num : bank_num
+				}, function(data) {
+					if (data.bankHolderInfo) {
+						// Update the input field value
+						$("#bankHolderInfo").val(data.bankHolderInfo);
+					} else if (data.errormsg) {
+						alert("Error: " + data.errormsg);
+					}
+				});
+			});
+		});
+	</script>
+	<!--  비밀번호 확인 -->
+	<script>
+	function confirmNumber(){
+        var number1 = $("#pw1").val();
+        var number2 = $("#pw2").val();
+
+        if(number1 == number2){
+            alert("번호가 같습니다.");
+        }else{
+            alert("번호가 다릅니다.");
+        }
+    }
+	
+	</script>
+
+	<!--  비밀번호 on/off  -->
+	<script>
+	$(document).ready(function(){
+	    $('.main i').on('click',function(){
+	        $('input').toggleClass('active');
+	        
+	        if($('input').hasClass('active')){
+	            $(this).attr('class',"fa-solid fa-eye-slash fa-xs")
+	            .next('input').attr('type',"text");
+	        }else{
+	            $(this).attr('class',"fa-solid fa-eye fa-xs")
+	            .next('input').attr('type','password');
+	        }
+	    });
+	});
+	
+	</script>
+
+
+
+
+
+	<!-- 주소 -->
+
+
+
+	<!--   주소 다음api -->
+	<script type="text/javascript"
+		src="https://code.jquery.com/jquery-1.10.2.min.js" /></script>
+	<script
+		src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script>
+function openZipSearch() {
+    new daum.Postcode({
+    	oncomplete: function(data) {     
+		var addr = ''; 
+		if (data.userSelectedType === 'R') { 
+			addr = data.roadAddress;
+		} else {
+			addr = data.jibunAddress;
+		}
+
+		$("#zipCode").val(data.zonecode);
+		$("#addr").val(addr);
+		$("#addressDetail").val("");
+		$("#addressDetail").focus();
+        }
+    }).open();
+}
+</script>
+
+
+
+
+
+
+<script>
+	$('#id').focusout(function(){
+		let userId = $('#id').val(); // input_id에 입력되는 값
+		
+		$.ajax({
+			/* url : "IdCheckService", */
+			url : "/idCheck", 
+			type : "post",
+			data :  {memberId :userId},
+			dataType : 'json',
+			success : function(result){
+				if(result == 0){
+					$("#checkId").html('사용할 수 있는 아이디입니다.');
+					$("#checkId").attr('color','green');
+					
+				} else{
+										
+					$("#checkId").html('사용할 수 없는 아이디입니다.');
+					$("#checkId").attr('color','red');
+				} 
+			},
+			error : function(){
+				alert("서버요청실패");
+			}
+		})
+		 
+	})
+ </script>
+ 
+ <!-- 회원가입 유효성 체크 -->
+ <script>
+function joinform_check() {
+  //변수에 담아주기
+  var uid = document.getElementById("uid");
+  var pwd = document.getElementById("pwd");
+  var repwd = document.getElementById("repwd");
+  var uname = document.getElementById("uname");
+  var female = document.getElementById("female");
+  var male = document.getElementById("male");
+  var mobile = document.getElementById("mobile");
+  var email_id = document.getElementById("email_id");
+  var agree = document.getElementById("agree");
+  
+  
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  <mapper namespace="com.trip.finalProject.adminMember.mapper.AdminMemberMapper">
+  		<!-- 회원 전체 조회 -->
+  		<select id="selectAllMemeber">
+  			SELECT *
+			  FROM (SELECT ROWNUM rn, a.member_id
+							        , a.member_name
+							        , a.password
+							        , a.nationality
+							        , a.email
+							        , a.zip_code
+							        , a.address
+							        , a.address_detail
+							        , a.phone_number
+							        , code_val(a.authority) authority
+							        , a.origin_profile_img
+							        , a.saved_profile_img
+							        , code_val(a.bank_code) bank_code
+							        , a.account_number
+							        , a.login_type
+							        , a.access_token
+							        , a.refresh_token
+							        , a.birth_date
+							        , a.gender
+							        , a.punish_count
+							        , a.sign_up_date
+							        , a.withdrawal_date
+				        FROM(SELECT member_id
+							      , member_name
+							      , password
+							      , nationality
+							      , email
+							      , zip_code
+							      , address
+							      , address_detail
+							      , phone_number
+							      , authority
+							      , origin_profile_img
+							      , saved_profile_img
+							      , bank_code
+							      , account_number
+							      , login_type
+							      , access_token
+							      , refresh_token
+							      , birth_date
+							      , gender
+							      , punish_count
+							      , sign_up_date
+							      , withdrawal_date
+				         FROM member
+				         ORDER BY sign_up_date DESC) a )
+			  WHERE rn BETWEEN #{start} AND #{end}
+  		</select>
+  		
+  		<!-- 전체 회원 수 카운트 -->
+  		<select id="getAllMemberCount">
+  			SELECT COUNT(*)
+  			  FROM member
+  		</select>
+  		
+  		<!-- 회원 상세 조회 -->
+  		<select id="getMemberDetail">
+  			SELECT member_id
+				 , member_name
+				 , password
+				 , nationality
+				 , email
+				 , zip_code
+				 , address
+				 , address_detail
+				 , phone_number
+				 , code_val(authority) authority
+				 , origin_profile_img
+				 , saved_profile_img
+				 , bank_code
+				 , account_number
+				 , login_type
+				 , access_token
+				 , refresh_token
+				 , birth_date
+				 , code_val(gender)
+				 , punish_count
+				 , sign_up_date
+				 , withdrawal_date
+  			  FROM member
+  			 WHERE member_id = #{memberId}
+  		</select>
+  		
+  		<!-- 회원 정보 수정 -->
+  		<update id="modifyMemberInfo" parameterType="AdminMemberVO">
+  			UPDATE member
+  			<set>
+  				<if test="memberId != null and !memberId.equals('')">
+					member_id = #{memberId},
+				</if>
+				<if test="signUpDate != null and !signUpDate.equals('')">
+					sign_up_date = #{signUpDate},
+				</if>
+				<if test="memberName != null and !memberName.equals('')">
+					member_name = #{memberName},
+				</if>
+				<if test="authority != null and !authority.equals('')">
+					authority = #{authority},
+				</if>
+				<if test="gender != null and !gender.equals('')">
+					gender = #{gender},			
+				</if>
+				<if test="birthDate != null and !birthDate.equals('')">
+					birth_date = #{birthDate},			
+				</if>
+				<if test="nationality != null and !nationality.equals('')">
+					nationality = #{nationality},
+				</if>
+				<if test="zipCode != null and !zipCode.equals('')">
+					zip_code = #{zipCode},
+				</if>
+				<if test="address != null and !address.equals('')">
+					address = #{address},
+				</if>
+				<if test="addressDetail != null and !addressDetail.equals('')">
+					address_detail = #{addressDetail},
+				</if>
+				<if test="email != null and !email.equals('')">
+					email = #{email},
+				</if>
+				<if test="phoneNumber != null and !phoneNumber.equals('')">
+					phone_number = #{phoneNumber},
+				</if>
+				<if test="bankCode != null and !bankCode.equals('')">
+					bank_code = #{bankCode},
+				</if>
+				<if test="accountNumber != null and !accountNumber.equals('')">
+					account_number = #{accountNumber},
+				</if>
+  			</set>
+  			WHERE member_id = #{memberId}
+  		</update>
+  		
+  		<!-- 회원 탈퇴 처리 -->
+  		<update id="withdrawMember">
+  			UPDATE member
+  			<set>
+  				authority = 'A5',
+  				withdrawal_date = sysdate,
+  			</set>
+  			 WHERE member_id = ${memberId}
+  		</update>
+  		
+  		<!-- 이름 검색의 총 결과값 카운트 -->
+  		<select id="countName" resultType="int" parameterType="String">
+  			SELECT COUNT(*)
+  			  FROM member
+  			 WHERE member_name LIKE '%${keyword}%'
+  		</select>
+  		
+  		<!-- 이름으로 회원 검색 -->
+  		<select id="searchMemberByName" resultType="AdminMemberVO">
+ 		SELECT *
+		FROM(SELECT ROWNUM rn, a.member_id
+						     , a.member_name
+						     , a.phone_number
+						     , a.nationality
+						     , code_val(a.authority) authority
+			 FROM(SELECT member_id
+				       , member_name
+				       , phone_number
+				       , nationality
+				       , authority
+				    FROM member
+				   WHERE member_name LIKE '%${adminMemberVO.memberName}%'
+				ORDER BY sign_up_date DESC) a)
+		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+  		</select>
+  		
+  		<!-- 아이디 검색의 총 결과값 카운트 -->
+  		<select id="countId" parameterType="String">
+  			SELECT COUNT(*)
+  			  FROM member
+  			 WHERE member_id LIKE '%${keyword}%'
+  		</select>
+  		
+  		<!-- 아이디로 회원 검색 -->
+  		<select id="searchMemberById" resultType="AdminMemberVO">
+ 		SELECT *
+		FROM(SELECT ROWNUM rn, a.member_id
+						     , a.member_name
+						     , a.phone_number
+						     , a.nationality
+						     , code_val(a.authority) authority
+			 FROM(SELECT member_id
+				       , member_name
+				       , phone_number
+				       , nationality
+				       , authority
+				    FROM member
+				   WHERE member_id LIKE '%${adminMemberVO.memberId}%'
+				ORDER BY sign_up_date DESC) a)
+		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+  		</select>
+  		
+  		<!-- 회원 단건 조회 -->
+  		<select id="selectMemberInfo" resultType="AdminMemberVO">
+  			SELECT 
+  		</select>
+  		
+  		<!-- 권한 승인 요청 회원 전체 조회 -->
+  		<select id="selectAllAuthRequest" resultType="AdminMemberVO">
+  			SELECT member_id
+  			     , member_name
+  			     , origin_profile_img
+  			     , saved_profile_img
+  			     , bank_code
+  			     , account_number
+  			  FROM member
+  			 WHERE authority = 'A4'
+  		  ORDER BY member_id DESC
+  		</select>
+  		
+  		<!-- 권한 승인 요청 승인 처리 -->
+  		<update id="approveAuthRequest">
+  			UPDATE member
+			   SET authority = 'A2'
+			 WHERE member_id = #{memberId}
+  		</update>
+  		
+  		<!-- 권한 승인 요청 반려 처리 -->
+  		<update id="rejectAuthRequest">
+  			UPDATE member
+			   SET authority = 'A1'
+			 WHERE member_id = #{memberId}
+  		</update>
+  		
+  		<!-- 제재카운트 1 증가 -->
+  		<update id="plusPunishCount">
+  			UPDATE member
+			   SET punish_count = punish_count + 1
+			 WHERE member_id = #{memberId}
+  		</update>
+  </mapper>

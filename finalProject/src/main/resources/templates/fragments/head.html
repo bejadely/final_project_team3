@@ -5,21 +5,30 @@
     <!--headFragment 선언-->
     <th:block th:fragment="headFragment">
 		
+		<meta name="description" content="Azenta Template">
+	    <meta name="keywords" content="Azenta, unica, creative, html">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+		
+		<!-- jQuery -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+		
 		<!-- googleFont -->
 		<link th:href="@{https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap}" rel="stylesheet">
           
         <!-- 이 영역에 공통으로 사용할 css, js library를 선언한다. -->
-        <link rel="stylesheet" th:href="@{css/bootstrap.min.css}" >
-        <link rel="stylesheet" th:href="@{css/font-awesome.min.css}" type="text/css">
-	    <link rel="stylesheet" th:href="@{css/elegant-icons.css}" type="text/css">
-	    <link rel="stylesheet" th:href="@{css/themify-icons.css}" type="text/css">
-	    <link rel="stylesheet" th:href="@{css/nice-select.css}" type="text/css">
-	    <link rel="stylesheet" th:href="@{css/jquery-ui.min.css}" type="text/css">
-	    <link rel="stylesheet" th:href="@{css/owl.carousel.min.css}" type="text/css">
-	    <link rel="stylesheet" th:href="@{css/magnific-popup.css}" type="text/css">
-	    <link rel="stylesheet" th:href="@{css/slicknav.min.css}" type="text/css">
-	    <link rel="stylesheet" th:href="@{css/style.css}" type="text/css">
-
+        <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" >
+        <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}" type="text/css">
+	    <link rel="stylesheet" th:href="@{/css/elegant-icons.css}" type="text/css">
+	    <link rel="stylesheet" th:href="@{/css/themify-icons.css}" type="text/css">
+	    <link rel="stylesheet" th:href="@{/css/nice-select.css}" type="text/css">
+	    <link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}" type="text/css">
+	    <link rel="stylesheet" th:href="@{/css/owl.carousel.min.css}" type="text/css">
+	    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}" type="text/css">
+	    <link rel="stylesheet" th:href="@{/css/slicknav.min.css}" type="text/css">
+	    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
+		<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.22/dist/sweetalert2.min.css" rel="stylesheet">
+	    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 	    
 	    <!-- fontawesome -->
 	    <script th:src="@{https://kit.fontawesome.com/d58c3728d1.js}" crossorigin="anonymous"></script>
@@ -29,6 +38,12 @@
 
         <!-- Content Page의 script fragment 삽입 -->
         <th:block layout:fragment="script"></th:block>
+        
+        <!-- 카카오 맵 관련 script -->
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=d37c7ea721a01188dd47b9d069964fe4&libraries=services"></script>
+        
+        <!-- sweetalert2 -->
+	    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.22/dist/sweetalert2.all.min.js"></script>
         
     </th:block>
 </html>
