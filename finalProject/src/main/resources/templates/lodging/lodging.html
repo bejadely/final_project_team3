@@ -202,30 +202,7 @@ myModalEl.addEventListener('hidden.bs.modal', event => {
 }) */
 
 
-//검색정보 보내기
-$('#button-addon2').on('click', function(e){
-    e.preventDefault();
-    let searchKeyWord = $('#search-input').val();
-    let areaCode = $('#locationTypeButton').data('areaCode');
-    let sigunguCode = $('#locationTypeButton').data('sigunguCode');
 
-    if(searchKeyWord.length<=1){
-        alert('1글자 이상 검색해주세요.');
-        return;
-    } else if($('#locationTypeButton').text() == '지역 선택') {
-        alert('지역을 선택해주세요.');
-        return;
-    }
-
-    window.location.href=window.location.origin + "/localTourInfo/search?searchKeyWord="+searchKeyWord+"&areaCode="+areaCode+"&sigunguCode="+sigunguCode;
-})
-
-$('#locationType li > a').on('click', function() {
-    // 버튼에 선택된 항목 텍스트 넣기
-    $('#locationTypeButton').text($(this).text());
-    $('#locationTypeButton').data('areaCode', $(this).data('areaCode'));
-    $('#locationTypeButton').data('sigunguCode', $(this).data('sigunguCode'));
-});
 
 
 </script>
@@ -239,17 +216,30 @@ $('#locationType li > a').on('click', function() {
 				<div class="col-lg-3">
 					<div class="property-sidebar">
 						<h4>Search Property</h4>
-						<form action="#" class="sidebar-search">
+						<form action="" class="sidebar-search">
+						<button type="submit" class="search-btn">Search Property</button>
+							<div>
+								<select id="searchBy" name="searchBy">
+									<option value="name">이름으로 검색</option>
+								</select>
+								<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
+							</div>
+							<div class="price-range-wrap">
+								<div class="price-text">
+									<label for="priceRangeP">Price:</label> <input type="text" id="priceRangeP" readonly>
+								</div>
+								<div id="price-range-P" class="slider"></div>
+							</div>
+							<div>
+								<label for="location">지역</label>
+								<select id="location" class="location">
+									<option value="">선택</option>
+									<option th:each = "a : ${area}"  th:value1="${a.sigunguCode}" th:value2="${a.areaCode}" th:text="${a.locationName}"></option>	
+								</select>
+							</div>
 							
-							<select id="location">
-								<option value="">선택</option>
-								<option th:each = "a : ${area}"  th:value1="${a.sigunguCode}" th:value2="${a.areaCode}" th:text="${a.locationName}"></option>	
-							</select>
-						
-							<button type="submit" class="search-btn">Search Property</button>
 						</form>
-						
-					</div>
+					</div>		
 				</div>
 				<div class="col-lg-9">
 					<h4 class="property-title">숙소</h4>
@@ -291,14 +281,64 @@ $('#locationType li > a').on('click', function() {
 							</div>
 					</div>
 					</th:block>
-
+					
 				</div>
-				<div class="property-pagination">
-					<a href="#">1</a> <a href="#">2</a> <a href="#">3</a>
-				</div>
+				
 			</div>
+			<!-- 페이징 구문 -->
+			<!-- 검색키워드가 없을때 -->
+			<th:block th:if="${#strings.isEmpty(keyword)}">
+				<div style="text-align : center;" class="property-pagination">
+					<th:block th:if="${paging.nowPage != 1}">
+						<a th:href="@{lodging(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+					</th:block>
+					<th:block th:if="${paging.startPage != 1}">
+						<a th:href="@{lodging(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+					</th:block>
+					<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+						<th:block th:if="${p eq paging.nowPage}">
+							<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+						</th:block>
+						<th:block th:if="${p ne paging.nowPage}">
+							<a th:href="@{lodging(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+						</th:block>
+					</th:block>
+					<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+						<a th:href="@{lodging(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					</th:block>
+					<th:block th:if="${paging.nowPage != paging.lastPage}">
+						<a th:href="@{lodging(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+					</th:block>
+				</div>
+			</th:block>
+			<!-- 검색키워드가 있을때 -->
+			<th:block th:if="${!#strings.isEmpty(keyword)}">
+				<div style="text-align : center;" class="property-pagination">
+					<th:block th:if="${paging.nowPage != 1}">
+						<a th:href="@{searchLodging(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
+					</th:block>
+					<th:block th:if="${paging.startPage != 1}">
+						<a th:href="@{searchLodging(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;</a>
+					</th:block>
+					<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+						<th:block th:if="${p eq paging.nowPage}">
+							<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+						</th:block>
+						<th:block th:if="${p ne paging.nowPage}">
+							<a th:href="@{searchLodging(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
+						</th:block>
+					</th:block>
+					<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+						<a th:href="@{searchLodging(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
+					</th:block>
+					<th:block th:if="${paging.nowPage != paging.lastPage}">
+						<a th:href="@{searchLodging(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
+					</th:block>
+				</div>
+			</th:block>
 		</div>
 	</section>
+</div>
 	 <!--모달창-->
             <div class="modal fade" id="spotDetailInfoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">

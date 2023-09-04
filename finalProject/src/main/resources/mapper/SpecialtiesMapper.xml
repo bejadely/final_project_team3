@@ -66,13 +66,46 @@
 	</insert>
 	
 	<select id="listSpecialties" resultType="SpecialtiesVO">
-		SELECT s.title, 
-				s.writer_id, 
-				s.post_id, 
-				a.loading_img
+		SELECT *
+		FROM(SELECT ROWNUM rn,b.*
+			 FROM(select s.title, 
+						 s.writer_id, 
+						 s.post_id, 
+						 a.loading_img
+				  FROM specialties_regist s JOIN attached_file a ON s.post_id = a.post_id
+				  WHERE a.img_type='U2'
+				  ORDER BY regist_date DESC)b) 
+		WHERE rn BETWEEN #{start} AND #{end}
+	
+	</select>
+	
+	<!-- 패키지 수 카운트 -->
+	<select id="specialtiesCount">
+		SELECT COUNT(*)
+		FROM specialties_regist s JOIN attached_file a ON s.post_id = a.post_id 
+		WHERE a.img_type = 'U2'
+	</select>
+	
+	<!-- 패키지 명 검색 결과 카운트 -->
+	<select id="specialtiesCountTitle" resultType="int" parameterType="String">
+		SELECT COUNT(*)
 		FROM specialties_regist s JOIN attached_file a ON s.post_id = a.post_id
-		WHERE a.img_type='U2'
-		
+		WHERE s.title LIKE '%${keyword}%' AND a.img_type = 'U2'
+	</select>
+	
+	<!-- 패키지 명 검색 -->
+	<select id="searchspecialtiesByTitle" resultType="SpecialtiesVO">
+		SELECT *
+		FROM(SELECT ROWNUM rn,b.*
+			 FROM(select s.title, 
+						 s.writer_id, 
+						 s.post_id, 
+						 a.loading_img
+				  FROM specialties_regist s JOIN attached_file a ON s.post_id = a.post_id
+				  WHERE s.title LIKE '%${specialtiesVO.title}%' AND a.img_type='U2'
+				  ORDER BY regist_date DESC)b) 
+		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end} 
+	
 	</select>
 	
 	<select id="sepcialtiesInfo" resultType="SpecialtiesVO">
