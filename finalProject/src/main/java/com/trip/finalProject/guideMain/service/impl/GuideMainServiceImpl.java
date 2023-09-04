@@ -2,12 +2,11 @@ package com.trip.finalProject.guideMain.service.impl;
 
 import java.util.List;
 
+import com.trip.finalProject.guideMain.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.trip.finalProject.guideMain.mapper.GuideMainMapper;
-import com.trip.finalProject.guideMain.service.GuideMainService;
-import com.trip.finalProject.guideMain.service.PackageRegistVO;
 
 @Service
 public class GuideMainServiceImpl implements GuideMainService {
@@ -19,6 +18,24 @@ public class GuideMainServiceImpl implements GuideMainService {
 	public List<PackageRegistVO> getPackageSaleInfo(String guideId) {
 		
 		return guideMainMapper.getPackageSaleInfo(guideId);
+	}
+
+	@Override
+	public List<GuideQuestionVO> getQuestionInfo(String guideId) {
+
+		return guideMainMapper.getQuestionInfo(guideId);
+	}
+
+	@Override
+	public List<CalculationVO> getCalculationInfo(String guideId) {
+
+		return guideMainMapper.getCalculationInfo(guideId);
+	}
+
+	@Override
+	public List<PackagePurchaseVO> getSaleChartInfo(String guideId) {
+
+		return guideMainMapper.getSaleChartInfo(guideId);
 	}
 
 }

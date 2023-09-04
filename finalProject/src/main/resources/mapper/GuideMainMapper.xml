@@ -6,11 +6,43 @@
   	<select id="getPackageSaleInfo" resultType="PackageRegistVO">
 	  	<![CDATA[
 	  	SELECT *
-		FROM (SELECT r.name, r.price, p.member_id, p.order_date, r.writer_id
+		FROM (SELECT r.name, r.tour_theme, r.price, p.member_id, p.order_date, r.writer_id
 				FROM package_regist r join purchase p on r.post_id=p.post_id
 			   WHERE writer_id=#{guideId}
 			ORDER BY p.order_date desc)
 		WHERE ROWNUM <= 5
 	  	]]>
   	</select>
+	<select id="getQuestionInfo" resultType="GuideQuestionVO">
+		<![CDATA[
+	  	SELECT *
+		FROM (SELECT q.question_title, p.name, code_val(q.answer_result) as "answerResult", q.question_date
+				FROM question q join package_regist p on q.product_id = p.post_id
+			   WHERE writer_id=#{guideId}
+			ORDER BY q.question_date desc)
+		WHERE ROWNUM <= 5
+	  	]]>
+	</select>
+	<select id="getCalculationInfo" resultType="CalculationVO">
+		<![CDATA[
+	  	SELECT *
+		FROM (SELECT c.cal_amount, p.name, code_val(c.cal_status) as "calStatus",c.cal_date
+				FROM calculation c join package_regist p on c.post_id=p.post_id
+			   WHERE writer_id=#{guideId}
+			ORDER BY c.cal_date desc)
+		WHERE ROWNUM <= 5
+	  	]]>
+	</select>
+	<select id="getSaleChartInfo" resultType="PackagePurchaseVO">
+		<![CDATA[
+			SELECT *
+			FROM (SELECT TO_CHAR(p.order_date, 'YYYY-MM') AS "orderMonth",
+						 SUM(p.price) AS "totalPrice"
+					FROM purchase p JOIN package_regist r ON p.post_id = r.post_id
+				   WHERE r.writer_id=#{guideId}
+				GROUP BY TO_CHAR(p.order_date, 'YYYY-MM')
+				ORDER BY TO_CHAR(p.order_date, 'YYYY-MM') ASC)
+			WHERE ROWNUM <= 6
+	  	]]>
+	</select>
   </mapper>

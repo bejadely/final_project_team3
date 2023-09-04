@@ -38,6 +38,9 @@
         .guide-main-nav .main-icon {
             margin-bottom: 20px; /* 아이콘과 텍스트 사이의 여백 조절 */
         }
+        .info{
+            min-height: 266px;
+        }
     </style>
 </head>
 <body>
@@ -67,9 +70,9 @@
         <div class="guide-main-info">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="rounded-box">
-                        <h6>판매 내역</h6>
-                        <table class="table table-sm">
+                    <div class="rounded-box info">
+                        <h6>패키지 판매</h6>
+                        <table class="table table-sm" th:if="${!#lists.isEmpty(packageSaleList)}">
                             <tr>
                                 <td>패키지명</td>
                                 <td>패키지테마</td>
@@ -80,14 +83,17 @@
                                 <td th:text="${packageSaleInfo.name}"></td>
                                 <td th:text="${packageSaleInfo.tourTheme}"></td>
                                 <td th:text="${packageSaleInfo.writerId}"></td>
-                                <td th:text="${packageSaleInfo.orderDate}"></td>
+                                <td th:text="${#dates.format(packageSaleInfo.orderDate, 'yyyy.MM.dd')}"></td>
                             </tr>
-                            
                         </table>
+                        <div th:if="${#lists.isEmpty(packageSaleList)}">
+                            <hr>
+                            <h6>판매 내역이 없습니다.</h6>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="rounded-box">
+                    <div class="rounded-box info">
                         <h6>매출 통계</h6>
                         <div id="chart"></div>
                     </div>
@@ -95,66 +101,96 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="rounded-box">
+                    <div class="rounded-box info">
                         <h6>입금 내역</h6>
-                        <table class="table table-sm">
+                        <table class="table table-sm" th:if="${!#lists.isEmpty(calculationList)}">
                             <tr>
                                 <td>패키지명</td>
-                                <td>정산금액</td>
-                                <td>정산상태</td>
+                                <td>정산금</td>
+                                <td>처리상태</td>
                                 <td>정산일자</td>
                             </tr>
-                            <tr>
-                                <td>투어</td>
-                                <td>10000원</td>
-                                <td>처리</td>
-                                <td>2023.09.02</td>
+                            <tr th:each="calculationInfo : ${calculationList}">
+                                <td th:text="${calculationInfo.name}"></td>
+                                <td th:text="${calculationInfo.calAmount}"></td>
+                                <td th:text="${calculationInfo.calStatus}"></td>
+                                <td th:text="${#dates.format(calculationInfo.calDate, 'yyyy.MM.dd')}"></td>
                             </tr>
                         </table>
+                        <div th:if="${#lists.isEmpty(calculationList)}">
+                            <hr>
+                            <h6>정산 내역이 없습니다.</h6>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="rounded-box">
+                    <div class="rounded-box info">
                         <h6>최근 문의</h6>
-                        <table class="table table-sm">
+                        <table class="table table-sm" th:if="${!#lists.isEmpty(questionList)}">
                             <tr>
                                 <td>문의명</td>
                                 <td>문의자명</td>
                                 <td>처리상태</td>
                                 <td>문의일자</td>
                             </tr>
-                            <tr>
-                                <td>알려주세요</td>
-                                <td>오유리</td>
-                                <td>미처리</td>
-                                <td>2023.09.02</td>
+                            <tr th:each="questionInfo : ${questionList}">
+                                <td th:text="${questionInfo.questionTitle}"></td>
+                                <td th:text="${questionInfo.name}"></td>
+                                <td th:text="${questionInfo.answerResult}"></td>
+                                <td th:text="${#dates.format(questionInfo.questionDate, 'yyyy.MM.dd')}"></td>
                             </tr>
                         </table>
+                        <div th:if="${#lists.isEmpty(questionList)}">
+                            <hr>
+                            <h6>문의 내역이 없습니다.</h6>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script>
+    <script th:inline="javascript">
+        let list = [[${saleChartList}]];
+
+        let dataColums = [];
+        dataColums.push("매출액");
+        for(let i = 0; i < list.length; i++) {
+            dataColums.push(list[i].totalPrice);
+        }
+
+        let orderMonthColums = [];
+        let orderMonthString = '';
+        for(let i = 0; i < list.length; i++) {
+            orderMonthString = list[i].orderMonth;
+            orderMonthColums.push(orderMonthString);
+        }
+
         let chart = bb.generate({
             data:{
                 columns:[
-                    ["sample", 30, 200, 100, 400, 150]
+                    dataColums
                 ],
                 type: "line",
+            },
+            size: {
+                height: 200 // 원하는 높이 (픽셀)를 설정합니다.
             },
             axis:{
                 x:{
                     type: "category",
-                    categories: [2023.02,2023.03,2023.04,2023.05,2023.06],
+                    categories: orderMonthColums,
                     label: "최근 5개월"
                 },
                 y:{
                     label: "매출액"
                 }
             },
-            bindto : "#chart"
+            bindto : "#chart",
+
+
         });
+
+
     </script>
 </div>
 </body>
