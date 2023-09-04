@@ -19,7 +19,7 @@
 </head>
 <body>
 	<div align="center">
-		<form name="tripData" method="post" th:object="${tripVO}">
+		<form id="tripData" method="post" th:object="${tripVO}">
 			<!-- 이전 페이지에서 입력한 정보를 가져와서 hidden으로 여행경로 최종 입력시 새로 추가된 테이터와 함께 보냄 -->
 			<input type="hidden" name="writerId" th:value="${session.sessionId}">
             <input type="hidden" name="postId" th:value="${tripVO.postId}">
@@ -62,9 +62,9 @@
 		<br>
 		<div align="center">
 			<!-- 임시저장 -> 임시저장 -->
-            <button type="submit" id="tsTripInsert">임시저장</button>
+            <button type="button" id="tsTripInsert">임시저장</button>
             <!-- 임시저장 -> 저장 -->
-            <button type="submit" id="tripInsert">등록</button>
+            <button type="button" id="tripInsert">등록</button>
             <button type="reset">취소</button>
             <!-- 임시저장 -> 해당 데이터 삭제 -->
             <!-- 목으로 버튼 클릭시 관련된 데이터들을 모두 삭제하고 목록 페이지로 이동 -->
@@ -75,19 +75,6 @@
     <script>
     	//dom을 실행하고 해당 function 실행
     	$(document).ready(function() {
-    	
-    	//저장, 임시저장 버튼 클릭시 id에 맞게 해당 action이 발생함
-        //여행기록 임시저장
-        $("#tsTripInsert").click(function() {
-           $("form").attr("action", "/tsTripRecordInsertUp");
-           
-           
-        });
-        
-        //여행기록 저장
-        $("#tripInsert").click(function() {
-           $("form").attr("action", "/tripRecordInsertUp");
-        });
     	
  		//이전 페이지에서 받아온 날짜 데이터를 활용해서 두 일수 사이의 값을 계산
    		var inDate = "[[ ${#dates.format(tripVO.startDay, 'yyyy-MM-dd')} ]]"; 
@@ -112,11 +99,14 @@
 		//이전 페이지에서 선택한 일정 만큼의 여행경로, 메모를 동적으로 추가해줌
         var inDate = "[[ ${#dates.format(tripVO.startDay, 'yyyy-MM-dd')} ]]"; 
 		var postData = "[[${tripVO.postId}]]";
+		
+		var memoDataArry = [];
 		for (let i = 0; i < resdays; i++) {
 			// 여행기록 작성시 가져온 start데이터를 통해 여행일을 각각 나타냄
 			const date3 = new Date(inDate);
 			//해당 구문을 통해 +1씩 증가시킴
 		    date3.setDate(date3.getDate() + i);
+			
        	    let addSchedule = `
        	    					<form="mmd${i+1}" method="post">
        	        					<div id="schedule${i+1}">
@@ -131,8 +121,6 @@
        	        						<br>
        	            					<textarea name="content" id="content${i+1}" cols="80" rows="5" placeholder="여행 메모를 입력해주세요." style="display:none;"></textarea>
        	            					<br>
-       	            					<button type="button" class="sendMemo" style="display:none;">메모 저장</button>
-       	            					<br>
        	            					<div class="showMapData">
        	            						
        	            					</div>
@@ -143,15 +131,30 @@
        	        					</div>
        	     					</form>
        	    				`;
+        		 
        	    $('#tripSchedule').append(addSchedule);
+       	    
+       		var textareaId = `#content${i+1}`;
+			var textareaValue = $(textareaId).val();
+       	    
+       	 	var memoDataObj = {
+       	 			
+				postId: postData,
+				tripDate: date3.toISOString().split('T')[0],
+				content: textareaValue
+				  
+       	 	};
+       	    
+       		//객체를 배열로 변환
+        	memoDataArry.push(memoDataObj);
+       	    
 		}
+		
 		
 		$(".openMemo").click(function(){
 			//가장 가까운 textarea의 스타일 속성이 display none에서 block로 변경
 			$(this).siblings("textarea").attr('style', 'display:block;');
 			$(this).attr('style', 'display:none;');
-			$(this).siblings(".sendMemo").attr('style', 'display:block;');
-			var content = $(this).next().attr("value");
 			
 		})
 		
@@ -211,7 +214,6 @@
     		 
     		 //저장한 여행경로를 초기화 시켜줌
     		 mapping = [];
-    		 deleteTripMarker();
     		 //검색결과 리스트 초기화
     		 $('#placesList').empty();
 		 });
@@ -257,9 +259,22 @@
             });
         }
 		
+		//저장, 임시저장 버튼 클릭시 id에 맞게 해당 action이 발생함
+        //여행기록 임시저장
+        $("#tsTripInsert").click(function() {
+           $("#tripData").attr("action", "/tsTripRecordInsertUp").submit();;
+           
+        });
+        
+        //여행기록 저장
+        $("#tripInsert").click(function() {
+           $("#tripData").attr("action", "/tripRecordInsertUp").submit();;
+           sendMemoData(memoDataArry);
+        });
 		
-		
-		
+
+        
+        
 		//지도 관련 스크립트 부분입니다.
 		// 마커를 담는 배열
         var markers = [];
