@@ -85,7 +85,7 @@ public class NaverLoginController {
 		
 		JSONObject jsonObj = (JSONObject) obj;
 		System.out.println("되는건가?");
-		System.out.println(jsonObj);
+		//System.out.println(jsonObj);
 		
 		//3. 데이터 파싱 
 		//Top레벨 단계 _response 파싱
@@ -96,6 +96,7 @@ public class NaverLoginController {
 		String gender = (String)response_obj.get("gender");
 		String nickname = (String)response_obj.get("nickname");
 		String id = (String)response_obj.get("id");
+		
 		/*
 		 * String accessToken= (String)response_obj.get("access_token"); String
 		 * refreshToken = (String)response_obj.get("refresh_token");
@@ -111,7 +112,8 @@ public class NaverLoginController {
         System.out.println("S:" + result);
 
         if (result == null) {
-            nm.insertNaverLogin(responseMap);
+        	
+            nm.insertNaverLogin(responseMap, oauthToken);
             result = nm.findNaver(responseMap);
         }
            
