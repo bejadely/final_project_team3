@@ -170,20 +170,24 @@ form {
                 </div>
                <div class="col-lg-3">
                     <div class="property-sidebar">
-                        <h4>구매하기</h4>
-                            
-                            
-                          
+                        <h4>구매하기</h4>     
 							<!-- 옵션 정보 -->
 							<div class="form-horizontal" style="text-align: left;">
 								<label>옵션  </label> 
 								<select class="form-control opt_select" name="selectedOpt">
-									<option th:each ="op : ${option}" th:value1="${op.specialtyType}" th:value2 ="${op.price}" th:text="${op.specialtyType + ' / ' + op.price}" ></option>
+									<option th:each ="op : ${option}" 
+											th:if="${op.discountRate == null}"
+											th:value1="${op.specialtyType}" th:value2 ="${op.price}" th:text="${op.specialtyType + ' / ' + op.price }" >
+									</option>
+									<option th:each ="op : ${option}"
+											th:unless="${op.discountRate == null}"
+											th:value1="${op.specialtyType}" th:value2 ="${op.price}" th:value3="${op.discountRate}" th:text="${op.specialtyType + ' / ' + op.price + '/ 할인율' + op.discountRate}"  >
+									</option>
 								</select>
 							</div>
 							<div class="form-horizontal" style="text-align: left;">
 								<label>구매수량  </label> 
-								<select class="form-control" id="select_count">
+								<select class="form-control count" id="select_count">
 								    <th:block th:each="count : ${#numbers.sequence(0, 20)}">
 								        <option th:value="${count}" th:text="${count}"></option>
 								    </th:block> 
@@ -278,18 +282,24 @@ form {
 		
 		
 		
-		$(document).on('click', '.nice-select.form-control .option', function() {
-			var count = $(this).attr("data-value");
+		$(document).on('click', '.nice-select.form-control', function() {
+			//var count = $(this).attr("data-value");
 			//var count = $(".current").text();
+			var count = $("div.count  li.selected").attr("data-value");
 			var price = $(".opt_select > option:selected").attr("value2");
 			var specialtyType = $(".opt_select > option:selected").attr("value1");
+			var discountRate = $(".opt_select > option:selected").attr("value3");
 			var opt = $(".opt_select").val();
-			
-			
-			
-			var finalPrice = count*price;
-			
+			var finalPrice = 0;
+			var discountPrice = 0;
 			var str = '';
+			if(discountRate !=null){
+				finalPrice = price * count*(1-(discountRate/100));
+				discountPrice = price * count * (discountRate/100);
+			}else{
+				finalPrice = price * count;
+			}
+			 
 			
 			
 			str += '<p><label>수량 : </label><span class="count">&nbsp;' + count + '</span>&nbsp;&nbsp;&nbsp;<br>';	
@@ -298,7 +308,8 @@ form {
 			str += '<label>옵션 : </label><span class="specialtyType">&nbsp;' + specialtyType + '</span>&nbsp;&nbsp;&nbsp;';	
 			str+=`<input type="hidden" class="specType" value="${specialtyType}"><br>`
 			
-			str	+= '<label>가격 : </label><span>&nbsp;' + price + ' 원</span></p>';
+			str	+= '<label>가격 : </label><span>&nbsp;' + price + ' 원</span><br>';
+			str += '<label>할인 금액: </label><span>&nbsp;' + discountPrice + '원</span></p>';
 			str += '<h4><label>결제금액 : </label><span class="finalPrice">&nbsp;' + finalPrice + ' 원</span></h4>'; 
 			
 			
