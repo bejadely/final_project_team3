@@ -2,6 +2,8 @@ package com.trip.finalProject.guideMain.service;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class PackageRegistVO {
 	private String name;
@@ -9,6 +11,6 @@ public class PackageRegistVO {
 	private int price;
 	private String memberIdString;
 	private String writerId;
-	private String orderDate;
+	private Date orderDate;
 	
 }
