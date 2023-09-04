@@ -3,7 +3,7 @@ package com.trip.finalProject.main.service;
 import lombok.Data;
 
 @Data
-public class mainSpecialtiesVO {
+public class MainSpecialtiesVO {
 	private String title;
 	private String price;
 	private String areaCode;
@@ -11,4 +11,7 @@ public class mainSpecialtiesVO {
 	private String discountRate;
 	private String type;
 	private String saleprice;
+	private String locationName;
+	private String writerId;
+	private String loadingImg;
 }
