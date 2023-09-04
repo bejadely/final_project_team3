@@ -56,12 +56,18 @@ public interface TripMapper {
 	public int insertTripMapping(TripVO tripVO);
 	
 	//여행경로 삭제
-	public int deleteTripMapping(TripVO tripVO);
+	//public int deleteTripMapping(TripVO tripVO);
 	
 	//여행경로 데이터 조회
 	public List<TripVO> selectMapData(TripVO tripVO);
 	
 	//여행기록 삭제
-	public int deleteTripInfo(int postId);
+	public int deleteTripInfo(TripVO tripVO);
+	
+	//여행기록 삭제시 해당 게시글과 관련된 여행경로 삭제
+	public int deleteMapData(TripVO tripVO);
+	
+	//여행기록 삭제시 해당 게시글과 관련된 여행메모 삭제
+	public int deleteMemoData(TripVO tripVO);
 	
 }

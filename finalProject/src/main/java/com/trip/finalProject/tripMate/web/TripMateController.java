@@ -71,6 +71,7 @@ public class TripMateController {
 	}
 	
 	//여행 메이트 게시글 삭제
+	@Transactional
 	@GetMapping("/mateRecruitDelete")
 	public String mateRecruitDelete(TripMateVO tripMateVO) {
 		//여행 메이트 글 삭제 시 해당 게시글과 관련된 첨부파일 테이블 데이터 삭제

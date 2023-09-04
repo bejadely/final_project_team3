@@ -141,24 +141,75 @@ table {
 	<!-- 여행 경로, 메모 영역 -->
 	<div align="center">
 		<div style="text-align: center;">
-         	<h5>여행 경로</h5>
-			<div th:each="mp : ${mapInfo}">
-				순번 : [[${mp.mapNo}]] 장소명 : [[${mp.mapName}]]
-				<h3> ----------</h3>
-			</div>
-			<h5>여행 메모</h5>
-			<div th:each="mo : ${memoInfo}">
-				내용 : [[${mo.content}]]
-				<h3> ----------</h3>
-			</div>
-			<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripInfo.writerId}" type="button" class="primary-btn" 
-			th:onclick="|location.href='@{/tripRecordDelete(postId=${tripInfo.postId})}'|">삭제</button>&nbsp;&nbsp;
-			<button type="button" onclick="location.href='/tripRecordList'">목록으로</button>
-			<br>
+			<form>
+				<br>
+				<h5>여행 메모</h5>
+				<div th:each="mo : ${memoInfo}">
+					내용 : [[${mo.content}]]
+					<h3> ----------</h3>
+					<button type="button" class="showMap">여행경로 보기</button>
+					<input type="hidden" name="tripDate" th:value="${mo.tripDate}">
+					<br>
+					<br>
+				</div>
+				<br>
+				<input type="hidden" id="postId" th:value="${tripInfo.postId}">
+				<!-- 수정버튼 미구현 -->
+				<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripInfo.writerId}" type="button" class="primary-btn" 
+				th:onclick="|location.href='@{/tripRecordModify(postId=${tripInfo.postId})}'|">수정</button>&nbsp;&nbsp;
+				
+				<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripInfo.writerId}" type="button" class="primary-btn" 
+				th:onclick="|location.href='@{/tripRecordDelete(postId=${tripInfo.postId})}'|">삭제</button>&nbsp;&nbsp;
+				<button type="button" onclick="location.href='/tripRecordList'">목록으로</button>
+				<br>
+			</form>
 		</div>
 	</div>
 	
 	<script th:inline="javascript">
+	$(document).ready(function(){
+		//db의 여행 정보를 불러오는 스크립트	
+		var postData = [[${tripInfo.postId}]];
+		
+		$(".showMap").click(function(){
+			var tData = $(this).siblings("input").val();
+
+			var parsedDate = new Date(tData);
+
+			var year = (parsedDate.getYear() - 100); // 연도에서 뒤의 2자리 추출
+			var month = (parsedDate.getMonth() + 1); // 월 (0부터 시작하므로 1을 더함)
+			var day = parsedDate.getDate(); // 일
+
+			// 월과 일을 두 자리로 만들기 (0을 추가)
+			if (month < 10) {
+			  month = '0' + month;
+			}
+			if (day < 10) {
+			  day = '0' + day;
+			}
+
+			var formattedDate = year + '/' + month + '/' + day;
+			
+			//console.log(tData);
+			var trData = tData.substring(0,10).replace("-", "/");
+			
+			console.log("경로 출력");
+			$.ajax({
+				url: '/mapInfoList',
+				type: 'Post',
+				data: {
+						postId : postData,
+						tripDate : formattedDate
+					  }
+			}).done(data => {
+				console.log(data);
+				
+			}).fail(reject => console.log(reject));
+			
+		})
+		
+		//지도 관련 스크립트	
+	
 		//마커를 담을 배열
 		var markers = [];
 		//db에 저장된 좌표를 담아줄 배열
@@ -200,8 +251,8 @@ table {
          }
          
          //DB에서 가져온 map 데이터
-         var mapList = [[${mapInfo}]];
-         	
+         var mapList = [[${tripMap}]];
+         
          //여행 경로 데이터에서 받아온 장소 데이터를 통해 지도위에 마커 생성
          var first_positions = [];
          $.each(mapList, function (index, obj){
@@ -227,7 +278,7 @@ table {
 
              kakao.maps.event.addListener(marker, 'click', marker_click(map, marker, infowindow));
              }
-
+         
          
           function marker_click(map, marker, infowindow) {
           	 return function() {
@@ -263,6 +314,7 @@ table {
           // 선 생성 
           first_linePath.setMap(map);
           
+	})
 	</script>	
 </body>
 </html>
