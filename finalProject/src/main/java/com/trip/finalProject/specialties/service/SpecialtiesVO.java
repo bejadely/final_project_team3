@@ -23,4 +23,7 @@ public class SpecialtiesVO {
 	
 	private List<AttachedFileVO> attachList;
 	private List<AttachedFileVO> editorAttachList;
+	
+	//0904 창민 추가
+	private Integer salesQuantity; // 판매수량을 담기 위한 필드
 }
