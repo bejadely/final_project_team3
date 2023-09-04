@@ -63,27 +63,47 @@ public class NaverLoginController {
 		System.out.println("여기는 callback");
 		OAuth2AccessToken oauthToken;
         oauthToken = naverLoginVO.getAccessToken(session, code, state);
- 
+        System.out.println(oauthToken);
         //1. 로그인 사용자 정보를 읽어온다.
 		apiResult = naverLoginVO.getUserProfile(oauthToken);  //String형식의 json데이터
 		
+		String accessToken = oauthToken.getAccessToken();
+
+		// refresh_token 가져오기
+		String refreshToken = oauthToken.getRefreshToken();
+
+		System.out.println("access_token: " + accessToken);
+		System.out.println("refresh_token: " + refreshToken);
+		
 		// json 구조
 	
-		
+		System.out.println("json구조");
 		//2. String형식인 apiResult를 json형태로 바꿈
 		JSONParser parser = new JSONParser();
+		
 		Object obj = parser.parse(apiResult);
+		
 		JSONObject jsonObj = (JSONObject) obj;
+		System.out.println("되는건가?");
+		System.out.println(jsonObj);
 		
 		//3. 데이터 파싱 
 		//Top레벨 단계 _response 파싱
 		JSONObject response_obj = (JSONObject)jsonObj.get("response");
 		//response의 nickname값 파싱
+		System.out.println(response_obj);
+		
+		String gender = (String)response_obj.get("gender");
 		String nickname = (String)response_obj.get("nickname");
 		String id = (String)response_obj.get("id");
+		/*
+		 * String accessToken= (String)response_obj.get("access_token"); String
+		 * refreshToken = (String)response_obj.get("refresh_token");
+		 */
+		
 		System.out.println(nickname);
 		System.out.println(id);
-		
+		System.out.println(gender);
 	
 		JSONObject responseMap = response_obj;
         
