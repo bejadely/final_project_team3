@@ -1,6 +1,8 @@
 package com.trip.finalProject.tripMate.web;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.trip.finalProject.attachedFile.service.AttachedFileService;
 import com.trip.finalProject.attachedFile.service.AttachedFileVO;
+import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.tripMate.service.TripMateService;
 import com.trip.finalProject.tripMate.service.TripMateVO;
 
@@ -72,7 +75,6 @@ public class TripMateController {
 	public String mateRecruitDelete(TripMateVO tripMateVO) {
 		//여행 메이트 글 삭제 시 해당 게시글과 관련된 첨부파일 테이블 데이터 삭제
 		tripMateService.deleteAttachedFile(tripMateVO);
-		
 		tripMateService.deleteTripMateRecruit(tripMateVO);
 		return "redirect:/tripMateList";
 	}
@@ -139,6 +141,90 @@ public class TripMateController {
 		tripMateService.sendAlert(tripMateVO);
 		
 		return "redirect:/tripMateList";			
+	}
+	
+	//마이페이지----------------------------------------------------------------------
+	//내가 적성한 메이트
+	@GetMapping("/common/myPageTrip")
+	public String tripMateList(Model model,
+			TripMateVO trVO,
+			@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
+			@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
+		String memberId = "1";
+		int total = tripMateService.myTripCount(memberId);
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		trVO.setWriterId(memberId);
+		List<TripMateVO> myTipPageList = tripMateService.myMateList(trVO, pagingVO);
+
+		model.addAttribute("list", myTipPageList);
+		model.addAttribute("paging", pagingVO);
+
+		return "myPage/mate/myTripMate";
+	}
+	
+	//내가 작성한 메이트 상세조회
+	//여행 메이트 게시글 상세 조회
+	@GetMapping("/common/tripMateMyInfo")
+	public String tripMateMyInfo(TripMateVO tripMateVO, Model model) {
+		
+		TripMateVO findVO = tripMateService.getTripMateInfo(tripMateVO);
+		List<TripMateVO> memberVO = tripMateService.getTripMateMyInfo(tripMateVO);
+		model.addAttribute("tripMateInfo", findVO);
+		model.addAttribute("member", memberVO);
+		
+		return "myPage/mate/tripMateMyInfo";
+	}
+	
+	
+	//신청한 메이트 조회
+	@GetMapping("/common/myPageAppTrip")
+	public String tripMateAppList(Model model,
+			TripMateVO trVO,
+			@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
+			@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
+		String memberId = "leesw";
+		int total = tripMateService.myTripAppCount(memberId);
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		trVO.setMemberId(memberId);
+		List<TripMateVO> myTipPageList = tripMateService.myMateAppList(trVO, pagingVO);
+		
+		model.addAttribute("list", myTipPageList);
+		model.addAttribute("paging", pagingVO);
+		
+		return "myPage/mate/myTripAppMate";
+	}
+	//신청한 메이트 취소
+	@PostMapping("common/myPageCancle")
+	public String tripMateCancle(TripMateVO tripVO
+			,@RequestParam("applyId") String applyId
+			, @RequestParam("postId") String postId) {
+		tripVO.setPostId(postId);
+		tripVO.setApplyId(applyId);
+		
+		tripMateService.myMateCancle(tripVO);
+		tripMateService.myTripnum(tripVO);
+		return "redirect:/common/myPageAppTrip";
+	}
+	
+	//ajax로 데이터 삭제
+	@PostMapping("common/myPageMyCancle")
+	@ResponseBody
+	public Map<String, Object> tripMyMateCancle(TripMateVO tripVO) {
+		HashMap<String, Object> map = new HashMap<>();
+		
+		tripMateService.myTripnum(tripVO);
+		tripMateService.myMateCancle(tripVO);
+		
+		map.put("data", tripVO);
+		
+		return map;
+	}
+	
+	//멤버 데이터 불러오기
+	@GetMapping("/common/ajaxMember")
+	@ResponseBody
+	public TripMateVO tripMemberInfo(TripMateVO tripVO) {
+		return tripMateService.memberInfo(tripVO);
 	}
 	
 }

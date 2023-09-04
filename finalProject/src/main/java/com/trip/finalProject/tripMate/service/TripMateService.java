@@ -1,6 +1,9 @@
 package com.trip.finalProject.tripMate.service;
 
 import java.util.List;
+import java.util.Map;
+
+import com.trip.finalProject.common.PagingVO;
 
 public interface TripMateService {
 	//여행 메이트 글 전체조회 - 페이징은 다른 기능이 어느정도 구현이 되고 나서 검색이 가능한 페이징으로 추가 해야함.
@@ -41,5 +44,30 @@ public interface TripMateService {
 	
 	//여행 메이트 게시글의 현재 신청자 수 조회
 	public int selectMateRecruitApplyNum(TripMateVO tripMateVO);
+	
+	//마이페이지-----------------------------------------------------------------------------------------------------
+	//내가 작성한 메이트 페이징
+	public int myTripCount(String memberId);
+	
+	//내가 작성한 메이트
+	public List<TripMateVO> myMateList(TripMateVO trVO, PagingVO pagingVO);
+	
+	//내가 작성한 메이트 게시글 상세조회
+	public List<TripMateVO> getTripMateMyInfo(TripMateVO tripMateVO);
+	
+	//내가 참여한 메이트 페이징
+	public int myTripAppCount(String memberId);
+	
+	//내가 참여한 메이트
+	public List<TripMateVO> myMateAppList(TripMateVO trVO, PagingVO pagingVO);
+	
+	//신청한 메이트 취소
+	public int myMateCancle(TripMateVO trVO);
+	
+	//메이트 인원수 줄이기
+	public int myTripnum(TripMateVO trVO);
+	
+	//참여한 메이트 정보 불러오기
+	public TripMateVO memberInfo(TripMateVO tripMateVO);
 	
 }

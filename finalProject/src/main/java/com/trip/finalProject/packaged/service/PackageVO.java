@@ -21,12 +21,29 @@ public class PackageVO {
 	private Date endDate;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date deadlineDate;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	private Date regDate;
 	private int maxReservation;
 	private String tourTheme;
 	private String savedImg;
 	private String imgType;
 	private String loadingImg;
+	private String writerId;
+	private String completion;
+	private int nowReservation;
 	
 	private List<AttachedFileVO> attachList;
 	private List<AttachedFileVO> editorAttachList;
+	
+	private String calStatus;
+	//멤버 테이블 정보
+	private String memberId;
+	private int quantity;
+	private Date orderDate;
+	private String memberName;
+	private String nationality;
+	private String gender;
+	private Date birthDate;
+	private String orderStatus;
+	
 }

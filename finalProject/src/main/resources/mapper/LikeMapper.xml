@@ -14,7 +14,7 @@
 	<select id="trCount" resultType="int">
 		SELECT COUNT(*)
 		FROM post_like
-		WHERE post_id Like 'TRR%'
+		WHERE post_id Like 'TRR%' AND member_id = #{memberId}
 	</select>
 
  	<!-- 여행메이트 -->
@@ -33,7 +33,7 @@
 			 			 r.trip_area
 			 			 
 				  FROM post_like l RIGHT JOIN mate_recruit r ON (l.post_id = r.post_id)
-				  WHERE l.post_id LIKE 'MAT%'
+				  WHERE l.post_id LIKE 'MAT%' AND member_id = #{memberId}
 				  ORDER BY l.post_id DESC) a)
 		WHERE rn BETWEEN #{start } AND #{end }
  	</select>
@@ -48,7 +48,7 @@
 			 			 r.start_day,
 			 			 r.end_day
 				  FROM post_like l RIGHT JOIN trip_record r ON (l.post_id = r.post_id) 
-				  WHERE l.post_id LIKE 'TRR%'
+				  WHERE l.post_id LIKE 'TRR%' AND member_id = #{memberId}
 				  ORDER BY l.post_id DESC) a)
 		WHERE rn BETWEEN #{start } AND #{end }
  	</select>
