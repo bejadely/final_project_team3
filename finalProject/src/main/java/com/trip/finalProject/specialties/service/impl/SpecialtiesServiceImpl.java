@@ -2,14 +2,12 @@ package com.trip.finalProject.specialties.service.impl;
 
 import java.util.List;
 
-import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.trip.finalProject.attachedFile.mapper.AttachedFileMapper;
 import com.trip.finalProject.location.service.LocationVO;
-import com.trip.finalProject.packaged.mapper.PackageMapper;
 import com.trip.finalProject.specialties.mapper.SpecialtiesMapper;
 import com.trip.finalProject.specialties.service.SpecialtiesOptionVO;
 import com.trip.finalProject.specialties.service.SpecialtiesService;
@@ -31,16 +29,16 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
 	
 	//옵션 정보 리스트
 	@Override
-	public List<SpecialtiesOptionVO> getOptionList(SpecialtiesOptionVO specialtiesOptionVO) {
+	public List<SpecialtiesOptionVO> getOptionList(String postId) {
 		// TODO Auto-generated method stub
-		return specialtiesMapper.findByPostId(specialtiesOptionVO);
+		return specialtiesMapper.findByPostId(postId);
 	}
 	
 	//특산물 정보
 	@Override
-	public SpecialtiesVO getSpecialtiesInfo(SpecialtiesVO specialtiesVO) {
+	public SpecialtiesVO getSpecialtiesInfo(String postId) {
 		// TODO Auto-generated method stub
-		return null;
+		return specialtiesMapper.sepcialtiesInfo(postId);
 	}
 	
 	//특산물 리스트

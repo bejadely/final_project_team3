@@ -16,7 +16,7 @@ public class CartVO {
 //	PRICE	NUMBER	No
 //	MEMBER_ID	VARCHAR2(14 BYTE)	No
 //	REG_DATE	DATE	Yes
-	private int cartId;
+	private String cartId;
 	private String postId;
 	private String optionId;
 	private Integer quantity;
@@ -25,5 +25,6 @@ public class CartVO {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date regDate;
 	private String cartName;
+
 	
 }

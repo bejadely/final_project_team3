@@ -12,10 +12,11 @@ public interface CartService {
 	//버튼조회
 	public List<CartVO> getAjaxCart(CartVO cartVO, PagingVO pagingVO);
 	//등록
-	public int insertCartInfo(CartVO cartVO);
+	public String insertCartInfo(CartVO cartVO);
 	//삭제
 	public int deleteCartInfo(String postId);
 	//수량 업데이트
 	public Map<String, Object> getQuanUpdate(CartVO cartVO);
+	
 
 }
