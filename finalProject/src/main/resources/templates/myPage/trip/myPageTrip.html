@@ -2,7 +2,7 @@
 	<html xmlns="http://www.w3.org/1999/xhtml"
 		xmlns:th="http://www.thymeleaf.org"
 		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-		layout:decorate="@{layouts/default_layout}">
+		layout:decorate="@{layouts/myPage_layout}">
 	<head>
 	<meta charset="UTF-8">
 	<meta name="description" content="Azenta Template">
@@ -136,7 +136,7 @@
 		            row.removeClass('checked'); // 체크 해제되었을 경우 해당 행에서 클래스 제거
 		        }
 		    });
-		   
+		   		   
 		});
 	</script>
 	</head>
@@ -161,9 +161,9 @@
 				</thead>
 				<tbody>
 					<th:block th:each="trip : ${tripList}">
-						<tr class="question" th:onclick="|location.href='@{/tripRecordInfo(postId=${trip.postId})}'|">
+						<tr class="question">
 							<td><input type="hidden" th:value="${trip.postId}"></td>
-							<td th:text="${trip.tripTitle}"></td>
+							<td th:text="${trip.tripTitle}"  th:onclick="|location.href='@{/tripRecordInfo(postId=${trip.postId})}'|"></td>
 							<td><button type="button" th:onclick="">수정</button></td>
 							<td><button type="button">삭제</button></td>
 	    					<td class="toggle">

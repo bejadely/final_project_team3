@@ -25,13 +25,22 @@ table, th,td {
 </style>
 <script>
 $(document).ready(function() {
-    $("#pk").click(function() {
-        location.href = "/common/buyPkList";
-    });
+	$("#sale").click(function() {
+		location.href="/guide/packageSale"	
+	})
 
-    $("#sp").click(function() {
-        location.href = "/common/buySpList";
-    });
+	$("#soldOut").click(function() {
+		location.href="/guide/packageSoldOut"
+	})
+	$("#com").click(function() {
+		location.href="/guide/packageCom"
+	})
+	$("#insert").click(function() {
+		location.href="/guide/packageCom"
+	})
+	$("#delete").click(function() {
+		location.href="/guide/packageCom"
+	})
 });
 </script>
 </head>
@@ -42,42 +51,47 @@ $(document).ready(function() {
 	<div layout:fragment="content" style="text-align: center;">
 	<form>
 		<h5>좋아요 목록</h5>
-		<button type="button" id="pk">패키지</button>
-		<button type="button" id="sp">특산물</button>
+		<button type="button" id="sale">모집중</button>
+		<button type="button" id="soldOut">모집완료</button>
+		<button type="button" id="com">판매완료</button>
 		<table>
 			<thead>
 				<tr>
 					<th>타이틀</th>
+					<th>가격</th>
 					<th>여행날짜</th>
 					<th>마감날짜</th>
 					<th>여행테마</th>
-					<th>모집완료 여부</th>
-					<th>결제여부</th>
-					<th>가격</th>
+					<th>인원</th>
+					<th>등록일</th>
+					<th>삭제</th>
 				</tr>
 			</thead>
 			<tbody>
 				<th:block th:each="li : ${list}">
-					<tr class="list" th:onclick="|location.href='@{/common/buyPkSelect(orderDetailId=${li.orderDetailId})}'|">
+					<tr class="list" th:onclick="|location.href='@{/guide/packageDetail(postId=${li.postId})}'|">
 						<td th:text="${li.name}"></td>
+						<td th:text="${li.price}"></td>
 						<td th:text="${#dates.format(li.startDate, 'yyyy-MM-dd')} + '~' + ${#dates.format(li.endDate, 'yyyy-MM-dd')}"></td>
 						<td th:text="${#dates.format(li.deadlineDate, 'yyyy-MM-dd')}"></td>
 						<td th:text="${li.tourTheme}"></td>
-						<td th:text="${li.completion}"></td>
-						<td th:text="${li.orderStatus}"></td>
-						<td th:text="${li.pkPrice}"></td>
+						<td th:text="${li.nowReservation} + '/' + ${li.maxReservation}"></td>
+						<td th:text="${#dates.format(li.regDate, 'yyyy-MM-dd')}"></td>
+						<td><button type="button">삭제</button></td>
 					</tr>
 				</th:block>
 			</tbody>
 			</table>
+			<button type="button" id="insert"></button>
+			<button type="button" id="delete"></button>
 		</form>
 		<div>
 			<th:block th:if="${paging.startPage != 1}">
-				<a th:href="@{common/buyPkList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
+				<a th:href="@{/guide/packageSale(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
 			</th:block>
 			<th:block th:if="${paging.startPage != 1}">
 				<a
-					th:href="@{common/buyPkList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+					th:href="@{/guide/packageSale(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 			</th:block>
 			<th:block
 				th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
@@ -86,17 +100,17 @@ $(document).ready(function() {
 				</th:block>
 				<th:block th:if="${p ne paging.nowPage}">
 					<a
-						th:href="@{common/buyPkList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
+						th:href="@{/guide/packageSale(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
 						th:text="${p}"></a>
 				</th:block>
 			</th:block>
 			<th:block th:if="${paging.endPage != paging.lastPage}">
 				<a
-					th:href="@{common/buyPkList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					th:href="@{/guide/packageSale(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 			</th:block>
 			<th:block th:if="${paging.endPage != paging.lastPage}">
 				<a
-					th:href="@{common/buyPkList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
+					th:href="@{/guide/packageSale(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
 			</th:block>
 		</div>
 	</div>

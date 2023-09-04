@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.trip.finalProject.attachedFile.mapper.AttachedFileMapper;
 import com.trip.finalProject.location.service.LocationVO;
+import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.packaged.mapper.PackageMapper;
 import com.trip.finalProject.packaged.service.PackageReviewVO;
 import com.trip.finalProject.packaged.service.PackageService;
@@ -30,15 +31,11 @@ public class PackageServiceImpl implements PackageService {
 	@Setter(onMethod_=@Autowired)
 	private AttachedFileMapper attachedFileMapper;
 	
-	private final int NUM_OF_ROWS = 10;
 
-    private final int NUM_OF_ROWS_SPOT = 12;
 
-    private final int ONE_NUM_OF_ROWS = 1;
 
     private final int FIRST_PAGE = 1;
 
-    private final int SPOT_DETAIL_CNT_PER_PAGE = 12;
 	
 	@Transactional
 	@Override
@@ -76,6 +73,41 @@ public class PackageServiceImpl implements PackageService {
 		// TODO Auto-generated method stub
 		return packageMapper.listPackage();
 	}
+	//가이드 페이지=====================================================================
+	//리스트 페이징용
+	@Override
+	public int guiListCount(PackageVO pacVO) {
+		return packageMapper.guiListCount(pacVO);
+	}
+	//리스트 불러오기
+	@Override
+	public List<PackageVO> guiListPackage(PackageVO pacVO, PagingVO pagingVO) {
+		return packageMapper.guiListPackage(pacVO, pagingVO);
+	}
+	//판매완료 페이징
+	@Override
+	public int guiListComCount(PackageVO pacVO) {
+		return packageMapper.guiListComCount(pacVO);
+	}
+	//판매완료 리스트
+	@Override
+	public List<PackageVO> guiListComPackage(PackageVO pacVO, PagingVO pagingVO) {
+		return packageMapper.guiListComPackage(pacVO, pagingVO);
+	}
+
+	//가이드 패키지 상세정보
+	@Override
+	public PackageVO guidePacInfo(PackageVO pacVO) {
+		return packageMapper.guidePacInfo(pacVO);
+	}
+
+	@Override
+	public List<PackageVO> pacMember(PackageVO pacVO) {
+		return packageMapper.pacMember(pacVO);
+	}
+	
+	
+	
 
 	public List<LocationVO> getLocationList() {
 		// TODO Auto-generated method stub
