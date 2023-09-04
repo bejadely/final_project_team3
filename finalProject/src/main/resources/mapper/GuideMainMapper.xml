@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.trip.finalProject.guideMain.mapper.GuideMainMapper">
+  	<select id="getPackageSaleInfo" resultType="PackageRegistVO">
+	  	<![CDATA[
+	  	SELECT *
+		FROM (SELECT r.name, r.price, p.member_id, p.order_date, r.writer_id
+				FROM package_regist r join purchase p on r.post_id=p.post_id
+			   WHERE writer_id=#{guideId}
+			ORDER BY p.order_date desc)
+		WHERE ROWNUM <= 5
+	  	]]>
+  	</select>
+  </mapper>

@@ -5,12 +5,12 @@ import lombok.Data;
 @Data
 public class MainSpecialtiesVO {
 	private String title;
-	private String price;
+	private int price;
 	private String areaCode;
 	private String sigunguCode;
-	private String discountRate;
+	private int discountRate;
 	private String type;
-	private String saleprice;
+	private int saleprice;
 	private String locationName;
 	private String writerId;
 	private String loadingImg;
