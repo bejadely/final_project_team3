@@ -63,7 +63,7 @@
  		<set>
  			quantity = #{quantity}
  		</set>
- 		WHERE post_id = #{postId}
+ 		WHERE cart_id = #{cartId}
  	</update>
  
  
