@@ -1,11 +1,66 @@
 $(document).ready(function(){
 function handleClick(data) {
 	
-	var postId = data.postId;
-    var nowPage = data.clickedPage;
-
-	let obj = { postId: postId, 
-				nowPage: nowPage };
+	    // 가져온 데이터를 순회하면서 처리	
+	    $.each(data, (index, cartItem) => {
+	    		html += "<tr>" +
+	            "<td><input type='checkbox' name='chk' data-cartid='" + cartItem.postId + "' /></td>" +
+	            "<td>"+"<input type='hidden' class='cartId' value='" + cartItem.cartId + "' />" + cartItem.cartName + "</td>" +
+	            "<td class='orderName'>" + cartItem.cartName + "</td>" +
+	            `<td>
+				    <button type="button" class="quantity-btn decrement-btn">-</button>
+				    <input type="text" class="quantity-input" name="productAmount" value="${cartItem.quantity}">
+				    <button type="button" class="quantity-btn increment-btn">+</button>
+				</td>` +
+	            "<td>" + cartItem.price + "</td>" +
+	            "<td><button class='delete-btn'>삭제</button></td>" +
+	            "</tr>";	        
+	    });
+	    
+	    price = `<label>총 주문 금액 : </label>
+			 <input type="text" id="result" readonly="readonly">`
+	    
+	    // tbody 내용을 업데이트
+	    thead.html(lmth);
+	    tbody.html(html);
+	    priceBody.html(price);
+	}
+   
+	    // 이벤트 핸들러 연결
+	    $("body").on("click", ".quantity-btn", function(e) {
+	    	e.stopImmediatePropagation();
+	    	var th = $(this);
+	    	var postId = th.parent().parent().find("td:eq(0)").find("input[name='chk']").data("cartid");
+	        var input = th.siblings(".quantity-input");
+	        var currentValue = parseInt(input.val());
+	        
+	        
+	        if ($(this).hasClass("increment-btn")) {
+	            input.val(currentValue + 1);
+	            
+	        } else if ($(this).hasClass("decrement-btn")) {
+	            if (currentValue > 1) {
+	                input.val(currentValue - 1);
+	                
+	            }
+	        }
+	        var result = input.val();
+	        
+	        
+ 	        $.ajax({
+	            url: 'updateQuantity',
+	            type: 'post',
+	            data: { postId : postId,
+	            		quantity : result
+	            	  }
+	            
+	        }).done(data => {
+	        
+	        	updateTotalAndPrice(data.quantity)
+	        		            
+	        }).fail(reject => console.log(reject));
+	    }); 
+>>>>>>> branch 'new_develep' of https://github.com/bejadely/final_project_team3.git
 	
 	
 	 $.ajax({
@@ -251,6 +306,7 @@ $("body").on("click", ".delete-btn", function() {
                 if(length == 0){
                 	page = Number(page) -1;
                 }
+<<<<<<< HEAD
             }
             var data = { postId: postId, clickedPage: page };
             handleClick(data);
@@ -288,3 +344,70 @@ ckb.each(function() {
 });
 }); 
 }); 
+=======
+                var data = { postId: postId, clickedPage: page };
+                handleClick(data);
+                     
+            });
+    });
+  }); 
+	 
+  	$("#buyBtn").click(function(){
+  		var totalAmount =0;
+  		var quantity = 0;
+  		var orderName= null;
+  		var orderElements = [];
+  		var th = $(this);
+	    var cartIdElements = [];
+	    var postId;
+  		// 체크된 체크박스를 찾는 루프
+	    $("tbody input[type=checkbox]:checked").each(function() {
+	        var row = $(this).closest("tr");
+	        var count = parseInt(row.find("input[type=text]").val());
+	        var price = parseFloat(row.find("td:eq(4)").text());
+	        var value = row.find("input[type=hidden]").val() 
+	        var cartTotal = count * price;
+			orderElements.push(row.find("td:eq(2)").text()); // 값을 배열에 추가	       
+	        console.log(orderElements);
+	        console.log(value);
+	        cartIdElements.push(value);
+	        totalAmount += cartTotal;
+	        quantity += count;
+	    });	
+	    
+	    	if(orderElements.length == 1) {
+				orderName = orderElements[0];		
+			}
+			else{
+				orderName = orderElements[0] + ' 외 ' + (orderElements.length - 1) + '건';
+			}		
+			
+
+			
+	        console.log(quantity);
+	        console.log(orderName);
+	        console.log(totalAmount);
+	        console.log(cartIdElements);
+	        
+	     $.ajax({
+	     	type:'post',
+	     	url:'payment/ready',
+	     	data:{
+	     		totalAmount: totalAmount,
+	     		orderName : orderName,
+	     		quantity : quantity,
+	     		postId: cartIdElements.join(',')
+	     		
+	     	},
+	     	success:function(response){
+	     		location.href = response.next_redirect_pc_url
+	     	}
+	       	
+	     }); 
+	        
+  	});
+  	
+ 
+  	
+  	
+>>>>>>> branch 'new_develep' of https://github.com/bejadely/final_project_team3.git
