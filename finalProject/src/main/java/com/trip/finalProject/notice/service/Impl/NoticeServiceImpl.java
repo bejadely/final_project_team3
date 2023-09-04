@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.notice.mapper.NoticeMapper;
 import com.trip.finalProject.notice.service.NoticeService;
@@ -44,11 +43,6 @@ public class NoticeServiceImpl implements NoticeService {
 		return noticeMapper.getNoticeDetail(vo);
 	}
 	
-	/*
-	 * @Override public NoticeVO modifyNoticeInfo(NoticeVO vo) { return
-	 * noticeMapper.modifyNoticeInfo(vo); }
-	 */
-
 	//게시글 등록
 	@Override
 	public int noticeInsert(NoticeVO vo) {
@@ -68,6 +62,29 @@ public class NoticeServiceImpl implements NoticeService {
 			return "fail";
 		}
 	}
+	//게시물 타입이 공지사항(n1)인 게시글 갯수 카운트
+	public int countNoticeType1n() {
+		return noticeMapper.countNoticeType1n(); 	
+	}
+	
+	//게시물 타입이 공지사항(n2)인 게시글 갯수 카운트
+		public int countNoticeType2n() {
+			return noticeMapper.countNoticeType2n(); 	
+		}
+	
+	
+	
+	@Override
+	public List<NoticeVO> searchNoticeByTitle1n(NoticeVO noticeVO, PagingVO pagingVO) {
+		// 공지사항인 글을 제목으로 검색
+		return noticeMapper.searchByNoticeByTitle1n(noticeVO, pagingVO);
+	} 
+	
+	@Override
+	public List<NoticeVO> searchNoticeByTitle2n(NoticeVO noticeVO, PagingVO pagingVO) {
+		// 이벤트인 글을 제목으로 검색
+		return noticeMapper.searchByNoticeByTitle2n(noticeVO, pagingVO);
+	} 
 	
 	@Override
 	public int boardUpdate(NoticeVO vo) {
