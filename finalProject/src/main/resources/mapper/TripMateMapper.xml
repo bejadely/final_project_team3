@@ -217,4 +217,115 @@
 		WHERE post_id = #{postId}
 	</select>
 	
+	<!-- 마이페이지 -->
+	<!-- 내가 저장한 트립베이트 -->
+	<select id="myTripCount" resultType="int">
+		SELECT count(*)
+		FROM mate_recruit
+		WHERE writer_id = #{writerId}
+	</select>
+
+	<select id="myMateList" resultType="TripMateVO">
+		SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			 FROM(SELECT post_id,
+			 			 mate_title,
+			 			 start_day,
+			 		 	 end_day,
+			 			 mate_max,
+			 			 apply_num,
+			 			 code_val(complition) complition,
+			 			 write_date,
+			 			 deadline,
+			 			 hit,
+			 			 writer_id,
+			 			 trip_area		 
+				 FROM mate_recruit
+     			 WHERE writer_id = #{trVO.writerId}
+				 ORDER BY post_id DESC) a)
+		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
+	</select>
+	
+	<select id="myTripAppCount" resultType="int">
+		SELECT count(*)
+		FROM mate_recruit r left OUTER JOIN mate_apply a on r.post_id = a.post_id
+		WHERE a.member_id = #{memberId}
+	</select>
+
+	<select id="myMateAppList" resultType="TripMateVO">
+		SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			 FROM(SELECT  r.post_id,
+			 			 r.mate_title,
+			 			 r.start_day,
+			 		 	 r.end_day,
+			 			 r.mate_max,
+			 			 r.apply_num,
+			 			 code_val(r.complition) complition,
+			 			 r.write_date,
+			 			 r.deadline,
+			 			 r.hit,
+			 			 r.writer_id,
+			 			 r.trip_area,
+                         a.apply_id	 
+				 FROM mate_recruit r left OUTER JOIN mate_apply a on r.post_id = a.post_id
+     			 WHERE a.member_id = #{trVO.memberId}
+				 ORDER BY r.post_id DESC) a)
+		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
+	</select>
+	
+	<!-- 내가 신청한 메이트 취소  -->
+	<delete id="myTripCancle" parameterType="TripMateVO">
+		DELETE FROM mate_apply
+		WHERE apply_id = #{applyId}
+	</delete>
+	
+	<!-- 내가 작성한 메이트 글 상세 조회 -->
+	<select id="selectTripMateMyInfo" resultType="TripMateVO">
+  				 SELECT  r.post_id,
+			 			 r.mate_title,
+			 			 r.start_day,
+			 		 	 r.end_day,
+			 			 r.mate_max,
+			 			 r.apply_num,
+			 			 code_val(r.complition) complition,
+			 			 r.write_date,
+			 			 r.deadline,
+			 			 r.hit,
+			 			 r.writer_id,
+			 			 r.trip_area,
+                         a.apply_id,
+                         m.member_id,
+                         code_val(m.gender) gender,
+                         m.birth_date,
+                         m.nationality
+		FROM mate_recruit r left OUTER JOIN mate_apply a on r.post_id = a.post_id
+							right OUTER JOIN member m on a.member_id = m.member_id
+		WHERE r.post_id = #{postId}
+	</select>
+	<!-- 신청인원수 줄이기 -->
+	<update id="myTripnum" parameterType="TripMateVO">
+		UPDATE mate_recruit
+		<set>
+			apply_num = apply_num - 1
+		</set>
+		WHERE post_id = #{postId}
+	</update>
+	
+	<select id="memberInfo" resultType="TripMateVO">
+  				 SELECT  a.apply_id,
+  				 		 a.apply_info,
+  				 		 a.post_id,
+                         m.member_id,
+                         m.member_name,
+                         code_val(m.gender) gender,
+                         m.birth_date,
+                         m.phone_number,
+                         m.nationality
+		FROM mate_apply a right JOIN member m on a.member_id = m.member_id
+		WHERE m.member_id = #{memberId} AND a.post_id = #{postId}
+	</select>
+	
+	
+	
 </mapper>

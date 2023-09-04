@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="@{layouts/default_layout}">
+	layout:decorate="@{layouts/myPage_layout}">
 <head>
 <meta charset="UTF-8">
 <script
@@ -60,8 +60,8 @@ $(document).ready(function() {
 				<th:block th:each="li : ${list}">
 					<tr class="list" th:onclick="|location.href='@{/common/buyPkSelect(orderDetailId=${li.orderDetailId})}'|">
 						<td th:text="${li.name}"></td>
-						<td th:text="${li.startDate} + '~' + ${li.endDate}"></td>
-						<td th:text="${li.deadlineDate}"></td>
+						<td th:text="${#dates.format(li.startDate, 'yyyy-MM-dd')} + '~' + ${#dates.format(li.endDate, 'yyyy-MM-dd')}"></td>
+						<td th:text="${#dates.format(li.deadlineDate, 'yyyy-MM-dd')}"></td>
 						<td th:text="${li.tourTheme}"></td>
 						<td th:text="${li.completion}"></td>
 						<td th:text="${li.orderStatus}"></td>
