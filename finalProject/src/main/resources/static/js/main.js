@@ -17,6 +17,8 @@
     $(window).on('load', function () {
         $(".loader").fadeOut();
         $("#preloder").delay(200).fadeOut("slow");
+        $('.detail-menu h6').on('mouseover', colorBrighter)
+						    .on('mouseleave', asideColorReset);
     });
 
     /*------------------
@@ -161,6 +163,25 @@
             slider.data("owl.carousel").to(number, 100, true);
         }
     }
+    
+    /*------------------
+		Custom Script
+	--------------------*/
+	
+	// 마우스 오버 : 색상 옅게
+	function colorBrighter(event){
+		$(event.currentTarget).css({background: '#eef2f8'})
+		  					  .css({cursor: 'pointer'})
+		  					  .css({color: '#012970'})
+		  					  .css({fontWeight: 'bold'});
+	}
+	
+	// 마우스 릴리브 : 사이드바 색상 원상복귀
+	function asideColorReset(event){
+		$(event.currentTarget).css({background: '#ffffff'})
+							  .css({color: '#111111'})
+							  .css({fontWeight: 'normal'});
+	}
 
     /*-------------------
 		Feature Slider
@@ -362,5 +383,5 @@
             });
         }
     });
-
+    
 })(jQuery);

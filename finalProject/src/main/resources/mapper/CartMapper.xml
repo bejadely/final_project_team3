@@ -24,9 +24,15 @@
  	
  	<!-- 등록 -->
  	<insert id="insertCartInfo" parameterType="CartVO">
+ 		<selectKey keyProperty="cartId" resultType="String" order="BEFORE">
+			SELECT 'CAT' || (TO_NUMBER(NVL((SUBSTR(MAX(cart_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM cart
+			WHERE SUBSTR(cart_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
  	INSERT INTO cart
  				(
  				cart_id
+ 				,cart_name
  				,post_id
  				,option_id
  				,quantity
@@ -37,11 +43,12 @@
  				VALUES
  				(
  				#{cartId}
+ 				,#{cartName}
  				,#{postId}
  				,#{optionId}
  				,#{quantity}
  				,#{price}
- 				,#{member_id}
+ 				,#{memberId}
  				,sysdate
  				)
  	</insert>

@@ -75,7 +75,8 @@ public class AdminMemberController {
 		if(searchBy.equals("name")) {
 			
 			// 전체 조회될 회원 수 카운트
-			int total = adminMemberService.countName();
+			int total = adminMemberService.countName(keyword);
+			
 			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 			
 			// 이름으로 검색기능 수행
@@ -87,7 +88,7 @@ public class AdminMemberController {
 		} else if(searchBy.equals("id")) {
 			
 			// 전체 조회될 회원 수 카운트
-			int total = adminMemberService.memberCount();
+			int total = adminMemberService.countId(keyword);
 			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 			
 			// 아이디로 검색기능 수행
