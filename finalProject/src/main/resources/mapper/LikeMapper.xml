@@ -33,9 +33,9 @@
 			 			 r.trip_area
 			 			 
 				  FROM post_like l RIGHT JOIN mate_recruit r ON (l.post_id = r.post_id)
-				  WHERE l.post_id LIKE 'MAT%' AND member_id = #{memberId}
+				  WHERE l.post_id LIKE 'MAT%' AND member_id = #{likeVO.memberId}
 				  ORDER BY l.post_id DESC) a)
-		WHERE rn BETWEEN #{start } AND #{end }
+		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
  	</select>
  	<!-- 여행기록 -->
  	<select id="trAllLike" resultType="LikeVO">
@@ -48,9 +48,9 @@
 			 			 r.start_day,
 			 			 r.end_day
 				  FROM post_like l RIGHT JOIN trip_record r ON (l.post_id = r.post_id) 
-				  WHERE l.post_id LIKE 'TRR%' AND member_id = #{memberId}
+				  WHERE l.post_id LIKE 'TRR%' AND member_id = #{likeVO.memberId}
 				  ORDER BY l.post_id DESC) a)
-		WHERE rn BETWEEN #{start } AND #{end }
+		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
  	</select>
 
 </mapper>

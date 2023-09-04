@@ -62,9 +62,8 @@ public class CartController {
 	//삭제
 	@GetMapping("cartDelete")
 	@ResponseBody
-	public Map<String, Object> cartDelete(String postId) {
-
-		int r = cartService.deleteCartInfo(postId);
+	public Map<String, Object> cartDelete(String cartId) {
+		int r = cartService.deleteCartInfo(cartId);
 		return Collections.singletonMap("result", r==1?true:false);
 	};
 	
