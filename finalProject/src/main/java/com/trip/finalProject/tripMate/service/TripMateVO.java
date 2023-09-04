@@ -18,6 +18,9 @@ public class TripMateVO {
 		private String password;
 		private String authority;
 		private int punishCount;
+		private String nationality;
+		private Date birthDate;
+		private String gender;
 		
 		//file upload관련
 		private String fileId;
