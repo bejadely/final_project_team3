@@ -3,13 +3,12 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="@{layouts/admin_layout}">
-<head>
-	<!-- <link rel="stylesheet" th:href="@{/css/bluetable.css}" > -->
-</head>
+	
 <!-- Content -->
+<!-- 기본 : 판매중인 상품 -->
 <div layout:fragment="content">
-	<div class="container text-break">
-		<h5><b>회원조회</b></h5>
+	<div class="container">
+		<h5><b>판매 상품 관리</b></h5>
 		<br>
 		<div>
 			<select id="searchBy" name="searchBy">
@@ -23,22 +22,23 @@
 			<table class="table">
 				<thead>
 					<tr>
-						<th width="300">회원ID</th>
-						<th>이름</th>
-						<th>연락처</th>
-						<th>국적</th>
-						<th>권한분류</th>
+						<th>상품등록번호</th>
+						<th>상품대표사진</th>
+						<th>상품명</th>
+						<th>상품분류</th>
+						<th>판매수량</th>
 					</tr>
 				</thead>
 				<th:block th:if="${!#lists.isEmpty(list)}">
 					<tbody>
 						<th:block th:each="l : ${list}">
-							<tr class="memberInfo">
-								<td th:text="${l.memberId}"></td>
-								<td th:text="${l.memberName}"></td>
-								<td th:text="${l.phoneNumber}"></td>
-								<td th:text="${l.nationality}"></td>
-								<td th:text="${l.authority}"></td>
+							<tr class="reportInfo">
+								<td align="center" th:text="${l.postId}"></td>
+								<td align="center"><img th:src="@{l.savedImg}" alt="상품 대표 이미지"></td>
+								<td align="center" th:text="${l.title}"></td>
+								<td align="center" th:text="${l.type}"></td>
+								<td align="center" th:text="${l.salesQuantity}"></td>
+								<td align="center" ></td>
 							</tr>
 						</th:block>
 					</tbody>
@@ -46,7 +46,7 @@
 			</table>
 			<th:block th:if="${#lists.isEmpty(list)}">
 				<div align="center">
-					<span>조회된 회원이 없습니다.</span>
+					<span>새로운 신고 접수 내역이 없습니다.</span>
 				</div>
 			</th:block>
 		</div>
@@ -55,31 +55,31 @@
 		<th:block th:if="${#strings.isEmpty(keyword)}">
 			<div style="text-align : center;" class="property-pagination">
 				<th:block th:if="${paging.nowPage != 1}">
-					<a th:href="@{seeAllMemberList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+					<a th:href="@{/admin/seeAllReport(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
 				</th:block>
 				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{seeAllMemberList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+					<a th:href="@{/admin/seeAllReport(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 				</th:block>
 				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
 					<th:block th:if="${p eq paging.nowPage}">
 						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
 					</th:block>
 					<th:block th:if="${p ne paging.nowPage}">
-						<a th:href="@{seeAllMemberList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+						<a th:href="@{/admin/seeAllReport(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
 					</th:block>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-					<a th:href="@{seeAllMemberList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					<a th:href="@{/admin/seeAllReport(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage}">
-					<a th:href="@{seeAllMemberList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+					<a th:href="@{/admin/seeAllReport(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
 				</th:block>
 			</div>
 		</th:block>
 		<!-- 검색키워드가 있을때 -->
 		<th:block th:if="${!#strings.isEmpty(keyword)}">
-			<div style="text-align : center;" class="property-pagination">
-				<th:block th:if="${paging.nowPage != 1}">
+			<div style="text-align : center;">
+				<th:block th:if="${paging.nowPage != 1}" class="property-pagination">
 					<a th:href="@{searchAdminMember(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
 				</th:block>
 				<th:block th:if="${paging.startPage != 1}">
@@ -87,7 +87,7 @@
 				</th:block>
 				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
 					<th:block th:if="${p eq paging.nowPage}">
-						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+						<a th:text="${p}"></a>
 					</th:block>
 					<th:block th:if="${p ne paging.nowPage}">
 						<a th:href="@{searchAdminMember(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
@@ -101,7 +101,6 @@
 				</th:block>
 			</div>
 		</th:block>
-		
 	</div>
 	
 	<script th:inline="javascript" type="text/javascript">
@@ -109,10 +108,10 @@
 	$(document).ready(function() {
 		// 이벤트 설정
 		$('#searchButton').on('click', search);
-		$('.memberInfo').on('mouseover', colorDarker)
+		$('.reportInfo').on('mouseover', colorDarker)
 						.on('mouseleave', colorReset)
 						.on('click')
-						.on('mouseup', moveToMemberDetail);
+						.on('mouseup', moveToReportDetail)
 	});
 	
 	// 조건검색기능
@@ -130,20 +129,37 @@
 							  .css({cursor: 'pointer'});		
 	}
 	
-	
 	// 마우스릴리브 : 색상 원상복귀
 	function colorReset(event){
 		$(event.currentTarget).css({background: '#ffffff'});
 	}
 	
-	// 클릭시 회원상세정보 조회페이지로 이동
-	function moveToMemberDetail(event){
+	// 클릭시 신고상세내역 조회페이지로 이동(구현중)
+	function moveToReportDetail(event){
 		
-		// 상세보기 할 member의 id값 가져오기
-		let memberId = $(event.currentTarget).find('td:eq(0)').text();
+		// 상세보기 할 report의 id값 가져오기
+		let reportId = $(event.currentTarget).find('td:eq(0)').text();
 		
 		// 페이지 전환 실행
-		location.href=`seeMemberDetail?memberId=${memberId}`;
+		location.href=`seeReportDetail?reportId=${reportId}`;
+	}
+	
+	
+	// 메시지 프린트
+	
+	printMessage([[${message}]]);
+		
+	function printMessage(message){
+		
+		if(message != null && message != ""){
+			
+			Swal.fire({
+				  icon: 'success',
+			      title: message,
+			    })	
+		
+		}
+		
 	}
 	
 	</script>

@@ -18,5 +18,20 @@ public interface QuestionService {
 	public Map<String, String> updateQueInfo(QuestionVO questionVO);
 	//조회 / common 용
 	public List<QuestionVO> getQueAllMember(QuestionVO questionVO, PagingVO pagingVO);
-
+	
+	//0903 창민
+	// 문의글 등록
+	public String insertQuestion(QuestionVO questionVO);
+	
+	// 일반문의글 전체 조회(관리자)
+	public Map<String, Object> selectAllQuestion(Integer nowPage, Integer cntPerPage);
+	
+	// 문의 답변 입력(관리자)
+	public QuestionVO insertAnswerToQuestion(QuestionVO questionVO);
+	
+	// 문의 단건 조회(관리자 - ajax)
+	public QuestionVO ajaxSelectOneQuestion(QuestionVO questionVO);
+	
+	// 타입별로 문의 조회
+	public Map<String, Object> searchQuestionByType(Integer nowPage, Integer cntPerPage, QuestionVO questionVO);
 }
