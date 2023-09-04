@@ -38,8 +38,18 @@ $(document).ready(function() {
 	$("#insert").click(function() {
 		location.href="/guide/packageCom"
 	})
-	$("#delete").click(function() {
-		location.href="/guide/packageCom"
+	$(".deletePac").click(function(e) {
+		e.stopPropagation()
+		var thi = $(this);
+		var postId = thi.val();
+		console.log(postId);
+		$.ajax({
+		       url: '/guide/deletePackage',
+		        type: 'get',
+		        data: {postId : postId}
+		       }).done(data => {
+		    	thi.parent().parent().remove();
+		       }).fail(reject => console.log(reject));
 	})
 });
 </script>
@@ -50,7 +60,7 @@ $(document).ready(function() {
 	<th:block layout:fragment="script"></th:block>
 	<div layout:fragment="content" style="text-align: center;">
 	<form>
-		<h5>좋아요 목록</h5>
+		<h5>패키지 판매 목록</h5>
 		<button type="button" id="sale">모집중</button>
 		<button type="button" id="soldOut">모집완료</button>
 		<button type="button" id="com">판매완료</button>
@@ -77,13 +87,12 @@ $(document).ready(function() {
 						<td th:text="${li.tourTheme}"></td>
 						<td th:text="${li.nowReservation} + '/' + ${li.maxReservation}"></td>
 						<td th:text="${#dates.format(li.regDate, 'yyyy-MM-dd')}"></td>
-						<td><button type="button">삭제</button></td>
+						<td><button type="button" class="deletePac" th:value="${li.postId}">삭제</button></td>
 					</tr>
 				</th:block>
 			</tbody>
 			</table>
-			<button type="button" id="insert"></button>
-			<button type="button" id="delete"></button>
+			<button type="button" id="insert" th:onclick="|location.href='@{/packageInsertForm}'|">등록</button>
 		</form>
 		<div>
 			<th:block th:if="${paging.startPage != 1}">

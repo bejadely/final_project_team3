@@ -1,6 +1,7 @@
 package com.trip.finalProject.packaged.web;
 
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -184,8 +185,10 @@ public class PackageController {
 	}
 	
 	@GetMapping("/guide/deletePackage")
-	public String deletePackage(String postId) {
-		return null;
+	@ResponseBody
+	public Map<String, Object> deletePackage(String postId) {
+		int r = packageService.deletePackage(postId);
+		return Collections.singletonMap("result", r==1?true:false);
 	}
 	
 }
