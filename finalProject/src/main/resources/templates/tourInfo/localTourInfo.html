@@ -137,6 +137,16 @@
 .nav-link:hover {
   color: black; 
 }
+  .btn.btn-outline-primary {
+    border-color: #2cbdb8;
+    color: #2cbdb8;
+  }
+.btn.btn-outline-primary:hover,
+.btn.btn-outline-primary:active {
+  background-color: #2cbdb8;
+  border-color: #2cbdb8;
+  color: white;
+}
 </style>
 </head>
 <body>
@@ -206,6 +216,14 @@
 				<button class="nav-link " id="geoje-tab" data-bs-toggle="tab" data-bs-target="#geoje-tab-pane" type="button" role="tab" aria-controls="geoje-tab-pane" aria-selected="false" data-area-code="36" data-sigungu-code="1">거제</button>
 			</li>
 		</ul>
+		<br>
+		<div class="btn-group" role="group" aria-label="Default button group">
+		  <button type="button" class="btn btn-outline-primary" data-content-type-id="12">여행지</button>
+		  <button type="button" class="btn btn-outline-primary" data-content-type-id="39">맛집</button>
+		  <button type="button" class="btn btn-outline-primary" data-content-type-id="38">쇼핑</button>
+		  <button type="button" class="btn btn-outline-primary" data-content-type-id="14">문화시설</button>
+		  <button type="button" class="btn btn-outline-primary" data-content-type-id="28">레포츠</button>
+		</div>	
 		<br>
 		<br>
 		<!-- 정보 케러셀 -->
@@ -728,6 +746,19 @@
 
 	// 지역별 상세 더보기를 위한 location, spot 정보 전송
 	$('.fa-square-plus').on('click', function(e){
+		e.preventDefault();
+		let areaCode=$('.nav-link.active').data('areaCode');
+		let sigunguCode='0';
+		let contentTypeId=$(this).data('contentTypeId');
+		if(areaCode == '35' || areaCode == '36') {
+			sigunguCode = $('.nav-link.active').data('sigunguCode');
+		}
+		window.location.href=window.location.origin + "/localTourInfo/spotDetail?page=1&areaCode="+areaCode+"&contentTypeId="+contentTypeId+"&sigunguCode="+sigunguCode;
+
+	})
+	
+	// 버튼 그룹에서 지역별 상세 더보기를 위한 location, spot 정보 전송
+	$('.btn-outline-primary').on('click', function(e){
 		e.preventDefault();
 		let areaCode=$('.nav-link.active').data('areaCode');
 		let sigunguCode='0';

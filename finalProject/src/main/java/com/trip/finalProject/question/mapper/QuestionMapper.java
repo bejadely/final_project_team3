@@ -18,5 +18,27 @@ public interface QuestionMapper {
 	public int updateQue(QuestionVO questionVO);
 	
 	public List<QuestionVO> selectAllQueMember(QuestionVO questionVO, PagingVO pagingVO);
-
+	
+	// 0903 창민 추가
+	// 문의글 등록(관리자)
+	public int insertQuestion(QuestionVO questionVO);
+	
+	// 문의글 전체 조회 카운트(관리자)
+	public int countAllQuestion();
+	
+	// 문의글 전체 조회(관리자)
+	public List<QuestionVO> selectAllQuestion(PagingVO pagingVO);
+	
+	// 문의 답변 입력(관리자)
+	public int insertAnswerToQuestion(QuestionVO questionVO);
+	
+	// 문의 단건 조회(관리자 - ajax용)
+	public QuestionVO ajaxSelectOneQuestion(QuestionVO questionVO);
+	
+	// 조건에 따른 문의글 카운트
+	public int countAllQuestionByType(QuestionVO questionVO);
+	
+	// 조건에 따른 문의글 전체 검색
+	public List<QuestionVO> selectAllQuestionByType(PagingVO pagingVO, QuestionVO questionVO);
+	
 }

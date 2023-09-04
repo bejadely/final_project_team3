@@ -68,7 +68,6 @@ public class ReportServiceImpl implements ReportService {
 		if(reportVO.getResult().equals("P2")) {
 			// 제재 처리
 			
-			
 			// 1. Member 제재횟수 + 1
 			int memberResult = adminMemberMapper.plusPunishCount(reportVO.getPunishedId());
 			
@@ -87,6 +86,8 @@ public class ReportServiceImpl implements ReportService {
 			// 5. 신고당한 게시자의 알림창에 추가
 			AlertVO alertVO = new AlertVO();
 			alertVO.setMemberId(punishVO.getPunishedId());
+			
+			// 작업중(1/2/3회에 따라 알림 다르게 보내고, 3회가 될시 자동탈퇴처리되게 하는 구문 만들기
 			alertVO.setContent("회원님께서 작성하신 글이 제재 처리되었습니다.<br>누적 제재 횟수가 3회에 도달할 시 자동 탈퇴 처리됨을 알려드립니다.<br>자세히보기..");
 			int alertResult =  alertMapper.insertAlert(alertVO);
 			
