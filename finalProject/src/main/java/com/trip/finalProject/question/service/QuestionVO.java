@@ -20,6 +20,7 @@ public class QuestionVO {
 	private String questionId;
 	private String questionType;
 	private String questionContent;
+	private String questionTitle;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date questionDate;
 	private String productId;
@@ -38,4 +39,7 @@ public class QuestionVO {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date answerModifyDate;
 	private String answerMemberId;
+	
+	//0903 창민 추가
+	private String prevUrl; // 이전페이지의 정보를 담는 변수
 }

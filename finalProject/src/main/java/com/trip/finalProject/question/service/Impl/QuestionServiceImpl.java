@@ -11,6 +11,7 @@ import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.question.mapper.QuestionMapper;
 import com.trip.finalProject.question.service.QuestionService;
 import com.trip.finalProject.question.service.QuestionVO;
+import com.trip.finalProject.report.service.PunishVO;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -56,6 +57,99 @@ public class QuestionServiceImpl implements QuestionService {
 	@Override
 	public List<QuestionVO> getQueAllMember(QuestionVO questionVO, PagingVO pagingVO) {
 		return queMapper.selectAllQueMember(questionVO, pagingVO);
+	}
+	
+	//0903 창민 추가
+	@Override
+	public String insertQuestion(QuestionVO questionVO) {
+		
+		// 문의글 타입 변환
+		String rowQuestionType = questionVO.getQuestionType();
+		
+		switch (rowQuestionType) {
+		case "패키지 문의":
+			questionVO.setQuestionType("Q2");
+			break;
+		case "특산물 문의":
+			questionVO.setQuestionType("Q3");
+			break;
+		case "숙박상품 문의":
+			questionVO.setQuestionType("Q4");
+			break;
+		default:
+			questionVO.setQuestionType("Q1");
+			break;
+		}
+		
+		// 문의글 등록
+		int result = queMapper.insertQuestion(questionVO);
+		
+		// 결과값 리턴
+		if(result > 0) {
+			return "success";
+		} else {
+			return "fail";
+		}
+		
+	}
+	
+	@Override
+	public Map<String, Object> selectAllQuestion(Integer nowPage, Integer cntPerPage) {
+		// 문의글 전체 조회(관리자)
+		
+		// 전체 문의글 카운트
+		int total = queMapper.countAllQuestion();
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		
+		// 전체 문의글 
+		List<QuestionVO> list = queMapper.selectAllQuestion(pagingVO);
+		
+		// 컨트롤러에 값을 보내기 위한 Map 생성
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("list", list);
+		map.put("PagingVO", pagingVO);
+		
+		return map;
+	}
+
+	@Override
+	public QuestionVO insertAnswerToQuestion(QuestionVO questionVO) {
+		// 문의 답변 입력(관리자)
+		int result = queMapper.insertAnswerToQuestion(questionVO);
+		
+		if(result > 0) {
+			return questionVO;
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public QuestionVO ajaxSelectOneQuestion(QuestionVO questionVO) {
+		// 문의 단건 조회(관리자 - ajax)
+		
+		return queMapper.ajaxSelectOneQuestion(questionVO);
+	}
+
+	@Override
+	public Map<String, Object> searchQuestionByType(Integer nowPage, Integer cntPerPage, QuestionVO questionVO) {
+		// 문의 종류별 전체 조회
+		
+		// 전체 문의글 카운트
+		int total = queMapper.countAllQuestionByType(questionVO);
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		
+		// 전체 문의글 
+		List<QuestionVO> list = queMapper.selectAllQuestionByType(pagingVO, questionVO);
+		
+		// 컨트롤러에 값을 보내기 위한 Map 생성
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("list", list);
+		map.put("PagingVO", pagingVO);
+		
+		return map;
 	}
 	
 	

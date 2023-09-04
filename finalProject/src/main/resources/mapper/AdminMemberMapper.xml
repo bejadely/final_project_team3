@@ -151,10 +151,10 @@
   		</update>
   		
   		<!-- 이름 검색의 총 결과값 카운트 -->
-  		<select id="countName">
+  		<select id="countName" resultType="int" parameterType="String">
   			SELECT COUNT(*)
   			  FROM member
-  			 WHERE member_name LIKE '%${memberName}%'
+  			 WHERE member_name LIKE '%${keyword}%'
   		</select>
   		
   		<!-- 이름으로 회원 검색 -->
@@ -177,10 +177,10 @@
   		</select>
   		
   		<!-- 아이디 검색의 총 결과값 카운트 -->
-  		<select id="countId">
+  		<select id="countId" parameterType="String">
   			SELECT COUNT(*)
   			  FROM member
-  			 WHERE member_id LIKE '%${memberId}%'
+  			 WHERE member_id LIKE '%${keyword}%'
   		</select>
   		
   		<!-- 아이디로 회원 검색 -->
