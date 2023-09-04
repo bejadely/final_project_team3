@@ -31,7 +31,6 @@ public class KakaoPayServiceImpl implements KakaoPayService {
 	
 	static final String cid = "TC0ONETIME";
 	static final String admin_Key = "7b4adfbd7d95d738f22c53a059516ffc";
-	static final String partner_order_id = UUID.randomUUID() + "user1";
 	
 	private KakaoPayResponseVO kakaoPayResponseVO;
 	
@@ -39,18 +38,19 @@ public class KakaoPayServiceImpl implements KakaoPayService {
 	@Override
 	public KakaoPayResponseVO kakoPayReady(PaymentVO vo, int quantity,String postId,String specialtyType) {
 		// TODO Auto-generated method stub
-		
+		System.out.println(vo.getPartnerUserId());
+		String partner_order_id = UUID.randomUUID() + vo.getPartnerUserId();
 		//서버로 요청할 Body
 		MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
 		parameters.add("cid", cid);
 		parameters.add("partner_order_id", partner_order_id);
-		parameters.add("partner_user_id", "user1");
+		parameters.add("partner_user_id", vo.getPartnerUserId());
         parameters.add("item_name", vo.getOrderName());
         parameters.add("item_code", postId);
         parameters.add("quantity", String.valueOf(quantity));
         parameters.add("total_amount", String.valueOf(vo.getTotalAmount()));
         parameters.add("tax_free_amount", String.valueOf(vo.getTotalAmount()));
-        parameters.add("approval_url", "http://localhost:8787/payment/success?specialtyType=" + specialtyType); // 성공 시 redirect url
+        parameters.add("approval_url", "http://localhost:8787/payment/success?specialtyType=" + specialtyType + "&partner_user_id=" + vo.getPartnerUserId() +"&partner_order_id="+ partner_order_id +"&postId="+postId); // 성공 시 redirect url
         parameters.add("cancel_url", "http://localhost:8787/payment/cancel"); // 취소 시 redirect url
         parameters.add("fail_url", "http://localhost:8787/payment/fail"); // 실패 시 redirect url
 		
@@ -67,13 +67,14 @@ public class KakaoPayServiceImpl implements KakaoPayService {
 	
     
     //결제 완료 승인
-    public KakaoApproveResponseVO approveResponse(String pgToken) {
-    	
+    public KakaoApproveResponseVO approveResponse(String pgToken, String partner_order_id, String partner_user_id) {
     	MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+    	System.out.println(partner_order_id);
+    	System.out.println(partner_user_id);
     	parameters.add("cid", cid);
     	parameters.add("tid", kakaoPayResponseVO.getTid());
     	parameters.add("partner_order_id",partner_order_id );
-    	parameters.add("partner_user_id", "user1");
+    	parameters.add("partner_user_id", partner_user_id);
     	parameters.add("pg_token", pgToken);
     	
     	// 파라미터, 헤더

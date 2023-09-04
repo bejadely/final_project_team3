@@ -1,10 +1,63 @@
 $(document).ready(function(){
 function handleClick(data) {
 	
+		var postId = data.postId;
+	    var nowPage = data.clickedPage;
+
+		let obj = { postId: postId, 
+					nowPage: nowPage };
+		
+    	
+		 $.ajax({
+            url: 'ajaxCartList',
+            type: 'post',
+            data:obj
+            
+        }).done(data => {
+        	paging(data.paging);
+            displayData(data.cartList);
+        }).fail(reject => console.log(reject));
+    }
+
+    // 클릭 이벤트 핸들러 자동 실행
+    $('#pakage').click(function() {
+    	var postId = 'PKG';
+        var data = { postId: postId }
+        handleClick(data);
+        
+    });
+
+    $('#mul').click(function() {
+    	var postId = 'SPE';
+        var clickedPage = '1';
+        var data = { postId: postId }
+        handleClick(data);
+    });
+    
+    // 데이터를 표시하는 함수
+	function displayData(data) {
+		 var html = ""; // 빈 문자열로 초기화
+		    var lmth = "";
+		    var price = "";
+		    var thead = $("thead");
+		    var tbody = $("tbody");
+		    var priceBody = $("#price");
+		    thead.empty();
+		    tbody.empty(); // tbody 내용 초기화  
+	    
+	    lmth += "<tr>" + 
+		"<th ><input type='checkbox' id='cbx_chkAll' /></th>" +
+		"<th scope='col' class='th-num'>상품사진</th>" +
+		"<th scope='col' class='th-num'>상품 명</th>" +
+		"<th scope='col' class='th-num'>상품수량</th>" +
+		"<th scope='col' class='th-num'>상품가격</th>" +
+		"<th >삭제</th>"+
+		"</tr>";
+	
 	    // 가져온 데이터를 순회하면서 처리	
 	    $.each(data, (index, cartItem) => {
 	    		html += "<tr>" +
-	            "<td><input type='checkbox' name='chk' data-cartid='" + cartItem.postId + "' /></td>" +
+	            "<td><input type='checkbox' name='chk' data-cartid='" + cartItem.cartId + "' /></td>" +
 	            "<td>"+"<input type='hidden' class='cartId' value='" + cartItem.cartId + "' />" + cartItem.cartName + "</td>" +
 	            "<td class='orderName'>" + cartItem.cartName + "</td>" +
 	            `<td>
@@ -60,7 +113,6 @@ function handleClick(data) {
 	        		            
 	        }).fail(reject => console.log(reject));
 	    }); 
->>>>>>> branch 'new_develep' of https://github.com/bejadely/final_project_team3.git
 	
 	
 	 $.ajax({
@@ -125,6 +177,13 @@ function displayData(data) {
             "</tr>";	        
     });
     
+    // 삭제 버튼 클릭 시 선택된 항목 삭제
+    $("body").on("click", ".delete-btn", function(e) {
+    	e.stopImmediatePropagation()
+        let row = $(this).closest("tr");
+        let cartId = row.find("input[name='chk']").data("cartid");
+        console.log(cartId);
+        let url = "/cartDelete?cartId=" + cartId;
     price = `<label>총 주문 금액 : </label>
 		 <input type="text" id="result" readonly="readonly">`
     
@@ -134,6 +193,13 @@ function displayData(data) {
     priceBody.html(price);
 }
 
+        fetch(url)
+            .then(response => response.text())
+            .then(text => {
+                var page = $('#paging').find('b').text();
+                var postId = cartId.substring(0, 3);
+                var tbody = $("tbody");
+                var length = tbody.children().length
     // 이벤트 핸들러 연결
     $("body").on("click", ".quantity-btn", function(e) {
     	e.stopImmediatePropagation();
@@ -238,6 +304,11 @@ $("#paging").on("click", "a", function(event) {
     handleClick(data); // 객체로 데이터를 함께 넘김
 });
 
+    ckb.each(function() {
+        let check = $(this);
+        let id = check.val();
+        let cartId = check.data("cartId"); // Retrieve cartId
+        let url = "/cartDelete?cartId=" + cartId; // Use 'cartId'
   
 $("#pakage").trigger('click');
 
@@ -286,32 +357,6 @@ $("tbody").on("click", "input[type=checkbox]", function() {
     
 });
 
-// 삭제 버튼 클릭 시 선택된 항목 삭제
-$("body").on("click", ".delete-btn", function() {
-    let row = $(this).closest("tr");
-    let cartId = row.find("input[name='chk']").data("cartid");
-    console.log(cartId)
-    let url = "/cartDelete?postId=" + cartId;
-
-    fetch(url)
-        .then(response => response.text())
-        .then(text => {
-            row.remove();
-            var page = $('#paging').find('b').text();
-            var postId = cartId.substring(0, 3);
-            var tbody = $("tbody");
-            var length = tbody.children().length
-            
-            if(page != 1){
-                if(length == 0){
-                	page = Number(page) -1;
-                }
-<<<<<<< HEAD
-            }
-            var data = { postId: postId, clickedPage: page };
-            handleClick(data);
-        });
-});
 
 // 삭제 버튼 클릭 시 선택된 항목 삭제
 $("#delBtn").click(function() {
@@ -344,7 +389,6 @@ ckb.each(function() {
 });
 }); 
 }); 
-=======
                 var data = { postId: postId, clickedPage: page };
                 handleClick(data);
                      
@@ -362,19 +406,18 @@ ckb.each(function() {
 	    var postId;
   		// 체크된 체크박스를 찾는 루프
 	    $("tbody input[type=checkbox]:checked").each(function() {
+	    	postId = "";
 	        var row = $(this).closest("tr");
 	        var count = parseInt(row.find("input[type=text]").val());
 	        var price = parseFloat(row.find("td:eq(4)").text());
 	        var value = row.find("input[type=hidden]").val() 
 	        var cartTotal = count * price;
 			orderElements.push(row.find("td:eq(2)").text()); // 값을 배열에 추가	       
-	        console.log(orderElements);
-	        console.log(value);
 	        cartIdElements.push(value);
 	        totalAmount += cartTotal;
 	        quantity += count;
 	    });	
-	    
+	    console.log(postId);
 	    	if(orderElements.length == 1) {
 				orderName = orderElements[0];		
 			}
@@ -384,30 +427,26 @@ ckb.each(function() {
 			
 
 			
-	        console.log(quantity);
-	        console.log(orderName);
-	        console.log(totalAmount);
-	        console.log(cartIdElements);
 	        
-	     $.ajax({
-	     	type:'post',
-	     	url:'payment/ready',
-	     	data:{
-	     		totalAmount: totalAmount,
-	     		orderName : orderName,
-	     		quantity : quantity,
-	     		postId: cartIdElements.join(',')
-	     		
-	     	},
-	     	success:function(response){
-	     		location.href = response.next_redirect_pc_url
-	     	}
-	       	
-	     }); 
+	    $.ajax({
+	    	type:'post',
+	    	url:'payment/ready',
+	    	data:{
+	    		totalAmount: totalAmount,
+	    		orderName : orderName,
+	    		quantity : quantity,
+	    		item_code: cartIdElements.join(',')
+	    		//post_id : 
+	    		
+	    	},
+	    	success:function(response){
+	    		location.href = response.next_redirect_pc_url
+	    	}
+	      	
+	    }); 
 	        
   	});
   	
  
   	
   	
->>>>>>> branch 'new_develep' of https://github.com/bejadely/final_project_team3.git
