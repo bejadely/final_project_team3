@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +24,9 @@ public class ApiController {
 	@Autowired
 	LodgingService lodgingService;
 	
+	@Value("${lodgingInfoApi.auth.key}")
+	private String API_KEY;
+	
 	@GetMapping("api")
 	public String callApi() throws IOException{
 		StringBuilder result = null;
@@ -35,7 +39,7 @@ public class ApiController {
 			result = new StringBuilder();
 			
 			String urlStr = "http://apis.data.go.kr/B551011/KorWithService1/areaBasedList1?"+
-							"serviceKey=SgpQI9OLDRYcTC13sHnzaFNafSGG1B3BPsdYE2JJoilJrPFXOJ5E0pPE%2FRfLYRoPx75dcdfbs7kKvxYFYxioSg%3D%3D"+
+							"serviceKey="+API_KEY+
 							"&numOfRows=1000"+
 							"&pageNo=1"+			
 							"&MobileOS=ETC"+

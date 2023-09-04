@@ -41,7 +41,7 @@ public class LodgingController {
 	
 	@GetMapping("/infoReview")
     @ResponseBody
-    public Map<String,Object> getSpotDetailInfoReview(String contentid) {
+    public Map<String,Object> getLodgingDetailInfoReview(String contentid) {
 
         return lodgingService.getDetailInfoReviewList(contentid);
     }
