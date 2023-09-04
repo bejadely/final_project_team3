@@ -1,13 +1,17 @@
 package com.trip.finalProject.specialties.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.trip.finalProject.attachedFile.mapper.AttachedFileMapper;
+import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.location.service.LocationVO;
+import com.trip.finalProject.report.service.ReportVO;
 import com.trip.finalProject.specialties.mapper.SpecialtiesMapper;
 import com.trip.finalProject.specialties.service.SpecialtiesOptionVO;
 import com.trip.finalProject.specialties.service.SpecialtiesService;
@@ -82,8 +86,29 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
 	//지역 정보 리스트
 	@Override
 	public List<LocationVO> getLocationList() {
-		// TODO Auto-generated method stub
+		
 		return specialtiesMapper.listArea();
+	}
+	
+	//0904창민
+	//특산물 전체 조회
+	@Override
+	public Map<String, Object> selectAllSpecial(Integer nowPage, Integer cntPerPage) {
+		
+		// 새로운 신고내역 카운트
+		int total = specialtiesMapper.countAllSpecial();
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		
+		// 새로운 신고내역 전체 조회
+		List<SpecialtiesVO> list = specialtiesMapper.selectAllSpecial(pagingVO);
+		
+		// 컨트롤러에 값을 보내기 위한 Map 생성
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("list", list);
+		map.put("PagingVO", pagingVO);
+		
+		return map;
 	}
 
 

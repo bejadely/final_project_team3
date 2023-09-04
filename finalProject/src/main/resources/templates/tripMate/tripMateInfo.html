@@ -193,18 +193,12 @@ table {
 			</table>
 		</form>
 	</div>
-	
+	<div id="cmtL">
+	</div>
 	<script th:inline="javascript">
 	$(document).ready(function() {  
-	
-		//ajax 댓글 리스트 출력
-		
-		function showComment(){
-			
-		}
-		
 		//ajax를 통해서 해당 게시글의 포스트 아이디를 보내서 결과 값을 리스트로 담아서 가져옴.
-	    $('#callCmt').click(function() {
+	    $("#callCmt").click(function() {
 			console.log("댓글리스트 출력");
 		    $.ajax({
 		            url: '/commentList',
@@ -212,10 +206,29 @@ table {
 		            data: {postId : [[${tripMateInfo.postId}]]}
 		           }).done(data => {
 		              //console.log(postId);
-		              //console.log(data);
+		              console.log(data);
 		              showComment(data);
 		           }).fail(reject => console.log(reject));
 		         })
+		         
+		 		
+	 		function showComment(data){
+		    	var html = ""; // 빈 문자열로 초기화
+		    	$.each(data.cmtList, (index, cmtList) => {
+		    	    html +=
+		    	        `
+		    	        <input type="text" name="cmtContent" value="${cmtList.cmtContent}">
+		    	        <input type="text" name="registDate" value="${cmtList.registDate}">
+		    	        <input type="text" name="writerId" value="${cmtList.writerId}">
+		    	        <input type="hidden" name="step" value="${cmtList.step}">
+		    	        <input type="hidden" name="postId" value="${cmtList.postId}">
+		    	        <input type="hidden" name="commentId" value="${cmtList.commentId}">
+		    	        <input type="hidden" name="cmtNum" value="${cmtList.cmtNum}">
+		    	        <br>
+		    	        `;
+		    	});
+		    	$("#cmtL").html(html);
+	 		}
 	
 	
 		//ajax 댓글 등록

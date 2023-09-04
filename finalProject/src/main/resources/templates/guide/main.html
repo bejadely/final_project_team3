@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="@{layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>가이드 메인 페이지</title>
+    <!-- billboard.js -->
+    <link rel="stylesheet" href="https://naver.github.io/billboard.js/release/latest/dist/theme/datalab.min.css">
+    <script src="https://naver.github.io/billboard.js/release/latest/dist/billboard.pkgd.min.js"></script>
+
+    <style>
+        .rounded-box {
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px;
+            border: 1px solid #CCCCCC;
+            padding-bottom: 0px;
+        }
+
+        .main-icon{
+            font-size: 5em;
+            color: #2cbdb8;
+        }
+        .guide-main-nav{
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            padding: 0;
+        }
+        .guide-main-nav li{
+            text-align: center;
+            flex: 1;
+            margin: 0;
+            padding: 10px;
+        }
+        .guide-main-nav .main-icon {
+            margin-bottom: 20px; /* 아이콘과 텍스트 사이의 여백 조절 */
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="rounded-box" >
+            <ul class="guide-main-nav">
+                <li onclick="window.location.href='/'">
+                    <i class="fa-solid fa-user main-icon"></i>
+                    <div>내 정 보</div>
+                </li>
+                <li onclick="window.location.href='/'">
+                    <i class="fa-solid fa-store main-icon"></i>
+                    <div>상품판매중</div>
+                </li>
+                <li onclick="window.location.href='/'">
+                    <i class="fa-solid fa-shop-lock main-icon"></i>
+                    <div>상품판매완료</div>
+                </li>
+                <li onclick="window.location.href='/'">
+                    <i class="fa-solid fa-clipboard-question main-icon"></i>
+                    <div>미답변내역</div>
+                </li>
+            </ul>
+        </div>
+        <br>
+        <div class="guide-main-info">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="rounded-box">
+                        <h6>판매 내역</h6>
+                        <table class="table table-sm">
+                            <tr>
+                                <td>패키지명</td>
+                                <td>패키지테마</td>
+                                <td>주문자명</td>
+                                <td>주문일자</td>
+                            </tr>
+                            <tr>
+                                <td>투어</td>
+                                <td>투어투어</td>
+                                <td>오유리</td>
+                                <td>2023.09.02</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="rounded-box">
+                        <h6>매출 통계</h6>
+                        <div id="chart"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="rounded-box">
+                        <h6>입금 내역</h6>
+                        <table class="table table-sm">
+                            <tr>
+                                <td>패키지명</td>
+                                <td>정산금액</td>
+                                <td>정산상태</td>
+                                <td>정산일자</td>
+                            </tr>
+                            <tr>
+                                <td>투어</td>
+                                <td>10000원</td>
+                                <td>처리</td>
+                                <td>2023.09.02</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="rounded-box">
+                        <h6>최근 문의</h6>
+                        <table class="table table-sm">
+                            <tr>
+                                <td>문의명</td>
+                                <td>문의자명</td>
+                                <td>처리상태</td>
+                                <td>문의일자</td>
+                            </tr>
+                            <tr>
+                                <td>알려주세요</td>
+                                <td>오유리</td>
+                                <td>미처리</td>
+                                <td>2023.09.02</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let chart = bb.generate({
+            data:{
+                columns:[
+                    ["sample", 30, 200, 100, 400, 150]
+                ],
+                type: "line",
+            },
+            axis:{
+                x:{
+                    type: "category",
+                    categories: [2023.02,2023.03,2023.04,2023.05,2023.06],
+                    label: "최근 5개월"
+                },
+                y:{
+                    label: "매출액"
+                }
+            },
+            bindto : "#chart"
+        });
+    </script>
+</div>
+</body>
+</html>

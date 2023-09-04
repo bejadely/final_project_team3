@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="@{layouts/default_layout}"
       	layout:fragment="content"> 
-
+<head>
    <style>
         body {
             background-color: #ffffff;
@@ -62,7 +62,6 @@
 		}
     </style>
 </head>
-<script src ="ckeditor5-build-classic/ckeditor.js"></script>
 <body>
     <div class="container">
         <div class="text-center">
@@ -71,44 +70,43 @@
         <br>
         </div>
         <div id="ls" class="text-center">
-            <form id="frm" action="/noticeProc" method="post">
+            <form id="frm" action="/common/insertQueProc" method="post">
                 <div>
                     <table class="table">
 	                    <tr>
-	                        <th style="text-align: left;">작성자</th>
-	                        <td colspan="3">
-								<input type="text" id="boardTitle" name="writerId" size="70" class="form-control" th:value="${session.sessionId}" readonly style="width: 33%;">
-	                        </td>
-	                     </tr>
-	                     <tr>
+	                        <th style="text-align: left; width: 200px;">작성자ID</th>
+	                        <td colspan="3" style="text-align: left;" th:text="${session.sessionId}"></td>
+	                    </tr>
+	                    <tr>
                             <th style="text-align: left;">작성일자</th>
-                            <td colspan="3">
-                                <input type="date" id="registDate" name="registDate" size="70"  class="form-control" readOnly style="width: 33%;">
+                            <td colspan="3" style="text-align: left;" th:text="${#calendars.format(#calendars.createNow(), 'yy년MM월dd일')}"></td>
+                        </tr>
+                        <tr>
+	                        <th style="text-align: left;">문의유형</th>
+	                        <td colspan="3" style="text-align: left;" th:text="${questionVO.questionType}"></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: left;">제목</th>
+                            <td colspan="3" style="text-align: left;">
+                            	<input type="text" id="questionTitle" name="questionTitle" class="form-control" placeholder="제목을 입력해주세요." required>
                             </td>
                         </tr>
                         <tr>
                             <th style="text-align: left;">내용</th>
                             <td colspan="3">
-                                <textarea rows="10" cols="=50" id="boardContent" name="content" placeholder="내용을 입력해주세요." required class="form-control"></textarea>
+                                <textarea rows="10" cols="=50" id="boardContent" name="questionContent" placeholder="내용을 입력해주세요." required class="form-control"></textarea>
                             </td>
-                            <td> <textarea  id="editor" placeholder="내용을 입력해주세요." ></textarea>
-                            </td>
-                            
-                        
-				
                         </tr>
                     </table>
                 </div>
                 <br>
-
+                <!-- 이전페이지로 돌아가기 위한 구문 -->
                 <div>
-                    <input type="hidden" name="boardS" id="boardS">
+                	<input type="hidden" name="prevUrl" th:value="${prevUrl}">
+                	<input type="hidden" name="memberId" th:value="${session.sessionId}">
+                	<input type="hidden" name="questionType" th:value="${questionVO.questionType}">
                 </div>
                 <div>
-                    <div align="left">
-                    <input type='checkbox' name="boardSecret" id="boardSecret" onclick="settingSecret()" value="N" class="form-check-input">
-                    
-                    </div>                
                     <div align="right">
                     <button type="submit" value="등록" class="btn btn-primary submitButton">등록</button>&nbsp;&nbsp;         
                     <input type="reset" value="취소" class="btn btn-secondary" id="cancelBtn">&nbsp;&nbsp;
@@ -119,9 +117,6 @@
             </form>
         </div>
     </div>
-	<script>
-        document.getElementById('registDate').value = new Date().toISOString().substring(0, 10);
-   	</script>
 </body>
 
 
@@ -136,8 +131,6 @@
 $(document).ready(function() {
 		// 승인 버튼 클릭 시 발생 이벤트 설정
 		$('.submitButton').on('click', go);
-		 // $('#frm').on('submit', loginAccountcheck);
-	/* 	$('.rejectButton').on('click', authReject); */
 });	
 	
 		
@@ -145,15 +138,14 @@ $(document).ready(function() {
 	function go(e){
 		e.preventDefault();
 		
-	
 		Swal.fire({
 			
-		      title: '저장하시겠습니까',
+		      title: '문의글을 등록하시겠습니까?',
 		      icon: 'question',
 		      showCancelButton: true,
 		      confirmButtonColor: '#3085d6',
 		      cancelButtonColor: '#d33',
-		      confirmButtonText: '저장',
+		      confirmButtonText: '등록하기',
 		      cancelButtonText: '취소',
 		    
 	    }).then((result) => {
@@ -161,125 +153,11 @@ $(document).ready(function() {
 		      if (result.isConfirmed) {
 		          
 		    	  //post방식으로 페이지 전환
-				  console.log('hi');
 				  document.getElementById('frm').submit();
 				
-		      }else{
-		    	  console.log('Nope')
-		    	  return;
 		      }
 		    });
-		 
-	   	    
 	} 	
-	//ck-editor
-	
-	
-	ClassicEditor
-	.create(document.querySelector('#editor'), {
-		 htmlEncodeOutput: false, 
-		ckfinder: {
-			uploadUrl : 'upload'	
-		}
-	
-		
-	})
-	.then(editor => {
-		console.log('Editor was initialized');
-		
-		document.getElementById("cancelBtn").addEventListener("click",function(){
-			const data = editor.getData();
-			//Data 변수에 저장된 데이터를 파싱하여 이미지 태크를 찾음
-			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
-			
-			const filenames = imgTags.map(img=> {
-				const src = img.getAttribute('src');
-				
-				return src.substring(src.lastIndexOf('/')+1);
-			});
-			console.log(filenames);
-			fetch(`/deleteImg`,{
-				method: 'POST',
-				headers:{
-					'Content-Type':'application/json'
-				},
-				body: JSON.stringify({ filenames })
-			})
-			.then(response => response.text())
-			.then(message => {
-				console.log(message);
-				editor.setData('');
-			})
-			
-		})
-		
-		
-		var formObj = $("#frm");
-		
-		//document.getElementById("editorForm").addEventListener("submit",function(event){
-		$("button[type='submit']").on("click",function(event){
-				
-			event.preventDefault();
-	
-			const data = editor.getData();
-			
-			let objData = serializeObject();
-			
-			
-			//작성 내용
-			console.log(data);
-			
-			//서버로 넘어가는 데이터 값들
-			const {  writerId, registDate, title} = objData;
-			var combinedData={
-				content: data,
-				writerId: writerId,
-				registDate: registDate,
-				title: title
-			};
-			console.log(combinedData);
-	
-			
-			var str="";
-			
-			str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";
-			
-			
-			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
-			
-			const filenames = imgTags.map(img=> {
-				const src = img.getAttribute('src');
-				
-				return src;
-			});		
-			$.each(filenames,function(i,obj){
-				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
-			});
-	
-			formObj.append(str);
-			
-			
-			
-			
-		})
-		//////////////////////////////////////////////////////////////////////
-	})
-	.catch(error => {
-		console.error(error);
-	});
-		
-	function serializeObject(){
-		let formData = $('form').serializeArray();
-		let formObject={};
-		$.each(formData, function(idx,obj){
-			//let field = obj.name;
-			//let val= obj.value;
-			formObject[obj.name] = obj.value;
-			//formObject[field] = val;
-		});
-		
-		return formObject;
-	} 
 </script>
 
 

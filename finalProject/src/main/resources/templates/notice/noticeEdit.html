@@ -90,8 +90,8 @@
         </div>
         <div id="ls" class="text-center">
             <form id="frm" action="/admin/modifyNoticeInfo" th:object="${noticeVO}" method="post">
-               	<div class="mb-3" style="float: left; margin-right: 20px;" >
-					<select class="" id="noticeType" name="noticeType"
+               	<div class="mb-3" id="noticeType" style="float: left; margin-right: 20px;" >
+					<select class=""name="noticeType"
 						aria-label="Default select example"  >
 						<option value="">공지사항 종류</option>
 						<option value="n1">공지사항</option>
@@ -99,17 +99,17 @@
 					</select> 
 				</div>  
 				
-				<div class="mb-3" style="float: left; margin-right: 20px;" >
-					<select class="" id="release" name="release"
+				<div class="mb-3" id="release" style="float: left; margin-right: 20px;" >
+					<select class=""  name="release"
 						aria-label="Default select example" >
 						<option value="">공개대상</option>
-						<option value="N1">전체</option>
-						<option value="N2">가이드</option>
+						<option value="N1">전체공개</option>
+						<option value="N2">가이드공개</option>
 					</select> 
 				</div>  
 				
-		       	 <div class="mb-3" style="float:left;">
-					<select class="" id="status" name="status"
+		       	 <div class="mb-3" id="status" style="float:left;">
+					<select class="" name="status"
 						aria-label="Default select example"  >
 						<option value="">글 저장상태</option>
 						<option value="T1">임시저장</option>
@@ -157,7 +157,7 @@
                 <br>
 
                 <div>
-                    <input type="hidden" id="순번" name="noticeNumber" th:value="3">
+                    <input type="hidden" id="순번" name="noticeNumber" th:value="${noticeVO.noticeNumber}">
                 </div>
                 <div>
                     <div align="left">
@@ -185,7 +185,75 @@
 
 
 
-<script>
+<script th:inline="javascript">
+
+
+$(document).ready(function() {
+
+
+ 	//저장상태
+ 	setStatus();
+ 	//공개대상
+ 	setRelease();
+ 	//공지종류
+ 	setNoticeType();
+ });
+
+
+
+//저장상태 한글로 표시	
+function setStatus(){
+		
+		// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
+		let defaultStatus = [[${noticeVO.status}]];
+		
+		// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
+		$('#status').find('span').text(defaultStatus);
+		
+		// selected 처리되어있던 option을 일반 옵션으로 변경
+		$('#status').find('.option.selected').attr("class", "option");
+		
+		// 불러온 저장상태 값에 해당하는 option을 selected 및 focus 처리
+		$('.option[data-value="'+defaultStatus+'"]').attr("class", "option selected focus");
+	}
+
+//공개대상 한글로 표시	
+function setRelease(){
+
+
+	// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
+	let defaultRelease = [[${noticeVO.release}]];
+	console.log([[${noticeVO.release}]]);
+	
+	
+	// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
+	$('#release').find('span').text(defaultRelease);
+	
+	// selected 처리되어있던 option을 일반 옵션으로 변경
+	$('#release').find('.option.selected').attr("class", "option");
+	
+	// 불러온 저장상태 값에 해당하는 option을 selected 및 focus 처리
+	$('.option[data-value="'+defaultRelease+'"]').attr("class", "option selected focus");
+}
+
+//공지종류 한글로 표시	
+function setNoticeType(){
+		
+		// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
+		let defaultNoticeType = [[${noticeVO.noticeType}]];
+		console.log([[${noticeVO.noticeType}]]);
+		// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
+		$('#noticeType').find('span').text(defaultNoticeType);
+		
+		// selected 처리되어있던 option을 일반 옵션으로 변경
+		$('#noticeType').find('.option.selected').attr("class", "option");
+		
+		// 불러온 저장상태 값에 해당하는 option을 selected 및 focus 처리
+		$('.option[data-value="'+defaultNoticeType+'"]').attr("class", "option selected focus");
+	}
+
+
+
  
 
 $(document).ready(function() {
@@ -284,7 +352,7 @@ $(document).ready(function() {
 			console.log(data);
 			
 			//서버로 넘어가는 데이터 값들
-			const {  writerId, registDate, title} = objData;
+			const { writerId, registDate, title} = objData;
 			var combinedData={
 				content: data,
 				writerId: writerId,
@@ -336,6 +404,10 @@ $(document).ready(function() {
 		
 		return formObject;
 	}
+	
+	
+	
+	
 </script>
 
 
