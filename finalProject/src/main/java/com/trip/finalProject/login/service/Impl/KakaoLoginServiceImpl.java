@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,10 +28,11 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
 	
 	
 	//로그인 성공하면 authorize_code 받아옴
-   public String getAccessToken (String authorize_code) {
+   public Map<String, String>  getAccessToken (String authorize_code) {
       String access_Token = "";
       String refresh_Token = "";
       String reqURL = "https://kauth.kakao.com/oauth/token";
+      
 
       try {
     	  //java.net.URL 클래스
@@ -88,18 +90,23 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
          System.out.println("refresh_token : " + refresh_Token);
             
          
+    
          //메모리 누수를 방지
          br.close();
          bw.close();
       } catch (IOException e) {
          e.printStackTrace();
       }
-      return access_Token;
+      
+      Map<String, String> token = new HashMap<>();
+      token.put("access_token", access_Token);
+      token.put("refresh_token", refresh_Token);
+      return token;
    }
    
    
   
-   public MemberVO getUserInfo(String access_Token) {
+   public MemberVO getUserInfo(String access_Token, String refresh_Token) {
 
       HashMap<String, Object>userInfo = new HashMap<String, Object>();
 
@@ -138,6 +145,10 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
          userInfo.put("email", email);
          userInfo.put("thumbnailImage", thumbnailImage);
          userInfo.put("profileImage", profileImage);
+         userInfo.put("profileImage", profileImage);
+         userInfo.put("access_Token", access_Token);
+         userInfo.put("refresh_Token", refresh_Token);
+         userInfo.put("refresh_Token", profileImage);
 		/* userInfo.put("birthday", birthday); */
          
          
@@ -155,7 +166,7 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
       
       
       //return userInfo;
-   // catch 아래 코드 추가.
+   // catch 아래 코드 추가. 여기에 토큰도 같이 넣자
    		MemberVO result = km.findKakao(userInfo);
    		
    		// 위 코드는 먼저 정보가 저장되있는지 확인하는 코드.
