@@ -92,7 +92,8 @@
 		SELECT writer_id,
 			   trip_title,
 			   start_day,
-			   end_day
+			   end_day,
+			   regist_day
 		FROM trip_record
 		WHERE post_id = #{postId}
 	</select>
@@ -188,7 +189,6 @@
 		INSERT INTO trip_record_memo
 						(
 							memo_id
-							, memo_no
 							, content
 							, memo_date
 							, post_id
@@ -197,9 +197,8 @@
 				   VALUES
 				        (
 							#{memoId}
-							, #{memoNo}
 							, #{content}
-							, #{memoDate}
+							, sysdate
 							, #{postId}
 							, #{tripDate}
 				        )
@@ -208,7 +207,6 @@
 	<!-- 여행 메모 조회 -->
 	<select id="selectMemoData" resultType="TripVO">
 		SELECT m.trip_date
-				, m.memo_no
 				, m.content
 		FROM trip_record t JOIN trip_record_memo m 
 							ON t.post_id = m.post_id
