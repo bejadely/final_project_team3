@@ -128,10 +128,10 @@ $(document).on('click', '.single-property-item', function() {
     let firstimage = $(this).find('img').attr('src');
     console.log(contentid);
 
-    getLodgingDetailInfoReview(contentid, function(data) {
+    getLodgingDetailInfo(contentid, function(data) {
         if(data) {
             clearModal(); // 기존 데이터 삭제
-            appendSpotDetailInfoReview(data, addr1, title, firstimage, contentid);
+            appendLodgingDetailInfo(data, addr1, title, firstimage, contentid);
             toggleOverlayModal('none');
         }
     });
@@ -147,7 +147,7 @@ function clearModal() {
     //$('#moreReview').data('page', '1');
 }
 
-function getLodgingDetailInfoReview(contentid, callback) {
+function getLodgingDetailInfo(contentid, callback) {
     $.ajax({
         type: 'GET',
         url: '/infoReview',
@@ -167,7 +167,7 @@ function getLodgingDetailInfoReview(contentid, callback) {
     })
 }
 
-function appendSpotDetailInfoReview(data, addr1, title, firstimage, contentid) {
+function appendLodgingDetailInfo(data, addr1, title, firstimage, contentid) {
     $('#exampleModalLabel').text(title);
     $('#modalImage').attr('src', firstimage);
     $('#modalAddress').text(addr1);
@@ -194,32 +194,6 @@ function appendSpotDetailInfoReview(data, addr1, title, firstimage, contentid) {
     } */
 }
 
-//모달창 리뷰 페이징
-$(document).on('click', '#moreReview', function () {
-    let contentId = $(this).data('contentId');
-    let page = $(this).data('page');
-
-    page = Number(page)+1;
-
-    $.ajax({
-        type: 'GET',
-        url: '/localTourInfo/review',
-        data: {
-            'contentId' : contentId,
-            'page' : page
-        }
-    })
-    .done(function(data, textStatus, jqXHR) {
-        console.log('done');
-
-        appendReview(data, contentId);
-        changeInfoMoreReviewButton(page);
-    })
-    .fail(function(jqXHR, textStatus, errorThrown) {
-        console.log('fail');
-
-    })
-});
 
 /* const myModalEl = document.getElementById('spotDetailInfoModal')
 myModalEl.addEventListener('hidden.bs.modal', event => {
@@ -227,150 +201,6 @@ myModalEl.addEventListener('hidden.bs.modal', event => {
     clearModal();
 }) */
 
-function appendReview(data, contentId) {
-    let node = ``;
-    for(let i = 0; i < data.length; i++) {
-        let stars = '';
-        for(let j = 1; j <= 5; j++) {
-            if(j <= data[i].grade) {
-                stars += '★';
-            } else {
-                stars += '☆';
-            }
-        }
-
-        let date = data[i].writeDate.substring(0,10);
-
-        node += `
-            <div class="review-content">
-                <p>
-                    <span class="writerId">${data[i].writerId}</span>
-                    <span class="grade">${stars}</span>
-                    <span class="writeDate" style="float: right;">${date}&emsp;
-                        <button type="button" class="btn btn-secondary btn-sm deleteReview" data-content-id="${contentId}" data-review-id="${data[i].reviewId}">삭제</button>
-                    </span>
-                    <br>
-                    <span class="content">${data[i].content}</span>
-                </p>
-            </div>
-        `;
-    }
-    $('#afterReview').before(node);
-}
-
-function changeInfoMoreReviewButton(page) {
-    $('#moreReview').data('page', page);
-
-    let totalCount = $('#reviewCount').data('totalCount');
-    let reviewCount = $('.review-content').length;
-
-    if(totalCount == reviewCount) {
-        $('#moreReview').addClass('disabled');
-    }
-}
-
-//리뷰 등록
-$(document).on('click', '#addReview', function() {
-    let contentId = $('#moreReview').data('contentId');
-
-    let checkedgrade = $('input[name=inlineRadioOptions]:checked').val();
-    if(checkedgrade == null) {
-        alert("점수를 체크해주세요.");
-        return;
-    }
-
-    let reviewContent = $('#reviewInput').val();
-    if(reviewContent == null || reviewContent.replaceAll(' ', '') == '') {
-        alert("내용을 입력해주세요.");
-        return;
-    }
-    //  ajax 들어가서 로그인 되어있는지 먼저 확인 - 안되면 바로 fail throw new Exception(); 예외 일부러 발생시켜주기
-    $.ajax({
-        type: 'POST',
-        url: '/localTourInfo/review',
-        data : {
-            'grade' : checkedgrade,
-            'content' : reviewContent,
-            'originPostId' : contentId
-        }
-    })
-    .done(function (data, textStatus, jqXHR){
-        console.log('done');
-
-        //  data는 totalCount이고, x개의 리뷰를 바꿔야함
-        $('#reviewCount').text(data.totalCount + '개의 리뷰');
-        $('#reviewCount').data('totalCount', data.totalCount);
-
-        $('.review-content').remove();
-        appendReview(data.recentReviewList, contentId);
-
-        changeInfoMoreReviewButton(1);
-        clearInput();
-
-        alert('리뷰가 등록되었습니다.');
-    })
-    .fail(function (jqXHR, textStatus, errorThrown) {
-        console.log('fail');
-
-        let errorMessage = JSON.parse(jqXHR.responseText).message;
-        if(errorMessage == 'no login') {
-            alert('로그인을 해주세요.');
-        } else if(errorMessage == 'not insert') {
-            alert('리뷰가 등록되지 않았습니다.');
-        }
-    })
-
-})
-
-//리뷰 삭제
-$(document).on('click', '.deleteReview', function() {
-
-    let contentId = $(this).data('contentId');
-    let writerId = $(this).parent().siblings('.writerId').text();
-    let reviewId = $(this).data('reviewId');
-
-    //  ajax로 가서 session에 저장된 아이디랑 writerId랑 같은지 확인 - 같지 않다면 fail 
-    $.ajax({
-        type: 'DELETE',
-        url: "/localTourInfo/review",
-        data: {
-            'contentId' : contentId,
-            'writerId' : writerId,
-            'reviewId' : reviewId
-        }
-    })
-    .done(function (data, textStatus, jqXHR){
-        console.log('done');
-
-        $('#reviewCount').text(data.totalCount + '개의 리뷰');
-        $('#reviewCount').data('totalCount', data.totalCount);
-
-        $('.review-content').remove();
-        appendReview(data.recentReviewList, contentId);
-
-        changeInfoMoreReviewButton(1);
-
-        alert('리뷰가 삭제되었습니다.');
-    })
-    .fail(function (data, textStatus, jqXHR) {
-        console.log('fail');
-
-        let errorMessage = JSON.parse(jqXHR.responseText).message;
-        if(errorMessage == 'no login') {
-            alert('로그인을 해주세요.');
-        } else if(errorMessage == 'not same') {
-            alert('본인의 리뷰만 삭제할 수 있습니다.');
-        } else if(errorMessage == 'not delete') {
-            alert('리뷰가 삭제되지 않았습니다.');
-        }
-    })
-
-})
-
-function clearInput() {
-    $('#reviewInput').val('');
-    $('#inlineRadio5').prop('checked', true);
-}
 
 //검색정보 보내기
 $('#button-addon2').on('click', function(e){
@@ -424,8 +254,8 @@ $('#locationType li > a').on('click', function() {
 				<div class="col-lg-9">
 					<h4 class="property-title">숙소</h4>
 					<div class="property-list">
-						<th:block th:each="lod : ${lodgingList}" data-bs-toggle="modal" data-bs-target="#spotDetailInfoModal">
-							<div class="single-property-item" th:attr="data-contentid=${lod.contentid}, data-address=${lod.addr1}" >
+						<th:block th:each="lod : ${lodgingList}" >
+							<div class="single-property-item" th:attr="data-contentid=${lod.contentid}, data-address=${lod.addr1}" data-bs-toggle="modal" data-bs-target="#spotDetailInfoModal">
 								<div class="row">
 									<div class="col-md-4">
 										<div class="property-pic">
@@ -505,44 +335,7 @@ $('#locationType li > a').on('click', function() {
 									</div>
 								</div>
 							</div>
-                            <!-- 모달창 내 리뷰 -->
-                            <div class="review">
-                                <h7 id="reviewCount"></h7>
-                                <hr>
-                                <hr id="afterReview">
-                                <div class="d-grid gap-2 col-6 mx-auto">
-                                    <button class="btn btn-outline-info justify-content-center" id="moreReview" type="button"
-                                            data-page="1" >
-                                        더보기
-                                    </button>
-                                </div>
-                                <hr>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1">
-                                    <label class="form-check-label" for="inlineRadio1">1점</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2">
-                                    <label class="form-check-label" for="inlineRadio2">2점</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="3">
-                                    <label class="form-check-label" for="inlineRadio3">3점</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="4">
-                                    <label class="form-check-label" for="inlineRadio4">4점</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="5" th:checked="true">
-                                    <label class="form-check-label" for="inlineRadio5">5점</label>
-                                </div>
-                                <div class="input-group mb-3">
-                                    <input id="reviewInput" type="text" class="form-control" placeholder="추억을 남겨보세요!" aria-label="추억을 남겨보세요!" aria-describedby="button-addon2">
-                                    <button class="btn btn-outline-secondary" type="button" id="addReview">리뷰 등록</button>
-                                </div>
-                            </div>
-                        </div>
+                           
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                         </div>

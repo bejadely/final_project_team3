@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -24,7 +25,9 @@ import com.trip.finalProject.tourInfo.service.SpotDetailReviewVO;
 public class LodgingServiceImpl implements LodgingService {
 	 @Autowired
 	 LodgingMapper lodgingMapper;	 
-
+	 
+	 @Value("${lodgingInfoApi.auth.key}")
+	 private String API_KEY;
 	 
 	 @Override
 	 public int insertLodgingInfo(LodgingVO lodginVO) {
@@ -89,7 +92,7 @@ public class LodgingServiceImpl implements LodgingService {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("http://apis.data.go.kr/B551011/KorWithService1/detailCommon1");
-        stringBuilder.append("?serviceKey=" + "SgpQI9OLDRYcTC13sHnzaFNafSGG1B3BPsdYE2JJoilJrPFXOJ5E0pPE%2FRfLYRoPx75dcdfbs7kKvxYFYxioSg%3D%3D");
+        stringBuilder.append("?serviceKey=" + API_KEY);
         stringBuilder.append("&MobileApp=" + "AppTest");    //  고정값
         stringBuilder.append("&MobileOS=" + "ETC"); //  고정값
         stringBuilder.append("&contentId=" + contentid);
@@ -146,7 +149,7 @@ public class LodgingServiceImpl implements LodgingService {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("http://apis.data.go.kr/B551011/KorWithService1/detailIntro1");
-        stringBuilder.append("?serviceKey=" + "SgpQI9OLDRYcTC13sHnzaFNafSGG1B3BPsdYE2JJoilJrPFXOJ5E0pPE%2FRfLYRoPx75dcdfbs7kKvxYFYxioSg%3D%3D");
+        stringBuilder.append("?serviceKey=" + API_KEY);
         stringBuilder.append("&MobileApp=" + "AppTest");    //  고정값
         stringBuilder.append("&MobileOS=" + "ETC"); //  고정값
         stringBuilder.append("&contentId=" + contentid);
