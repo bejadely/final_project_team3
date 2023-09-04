@@ -93,7 +93,6 @@ ClassicEditor
 			const data = editor.getData();
 			
 			let objData = serializeObject();
-			console.log(objData);
 			//sconsole.log(data);
 			const { title, writerId,type } = objData;
 			var combinedData={
@@ -104,7 +103,6 @@ ClassicEditor
 		        writerId: writerId,
 		        type:type
 			};
-			console.log(combinedData);
 			
 			
 			$(".uploadResult ul li").each(function(i,obj){
@@ -125,9 +123,11 @@ ClassicEditor
 			    var type = $(obj).val();
 			    var priceInput = $(obj).closest(".specialtiesOption").find(".price").eq(i);
 			    var price = $(priceInput).val();
-				console.log(priceInput);
-			    str += `<input type='text' name='optionList[${i}].specialtyType' value='${type}'>
-			            <input type='text' name='optionList[${i}].price' value='${price}'>`;
+			    var discountInput = $(obj).closest(".specialtiesOption").find(".discountRate").eq(i);
+			    var discountRate = $(discountInput).val();
+			    str += `<input type='hidden' name='optionList[${i}].specialtyType' value='${type}'>
+			            <input type='hidden' name='optionList[${i}].price' value='${price}'>
+			            <input type='hidden' name='optionList[${i}].discountRate' value='${discountRate}'>`;
 			});
 			
 			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
@@ -179,7 +179,6 @@ ClassicEditor
 			let files = inputTag.files;
 			
 			for(let i=0; i<files.length; i++){
-				console.log(files[i]);
 				imageData.append("mainImage",files[i]);
 			}
 		
@@ -193,7 +192,6 @@ ClassicEditor
 				success: function(result){
 					alert("성공");
 					
-					console.log(result);
 					
 					showUploadedFile(result);
 					
@@ -257,14 +255,27 @@ ClassicEditor
 		
 		Swal.fire({
 		      title: '특산물 옵션 추가',
-		      html:`<label>옵션명</label><input type="text" id="optionType"><br>
-					<label>가격</label><input type="number" id="optionPrice"><br>`,
+		      html:` <div class="form-floating mb-3">
+				 		<input type="text" class="form-control" id="optionType">
+				  		<label for="floatingInput">옵션명</label>
+					</div>
+					<div class="form-floating">
+				  		<input type="number" class="form-control" id="optionPrice" >
+				  		<label for="floatingPrice">가격</label>
+					</div>
+					
+					<div class="form-floating">
+				  		<input type="number" class="form-control" id="optionDiscount" >
+				  		<label for="floatingDiscount">할인율</label>
+					</div>`,
 		      showCancelButton: true,
 		      confirmButtonColor: '#3085d6',
 		      cancelButtonColor: '#d33',
 		      confirmButtonText: '추가',
 		      cancelButtonText: '취소',
 		      reverseButtons: true,
+		      
+		
 		      
 	    }).then((result) => {
 	      if (result.isConfirmed) {
@@ -273,12 +284,19 @@ ClassicEditor
 	    	  //sweetalert2에서 입력된 값을 가지고옴	
 		      const optionType = document.getElementById('optionType').value;
 			  const optionPrice = document.getElementById('optionPrice').value;
+			  const optionDiscount = document.getElementById('optionDiscount').value;
 			  
 		      let form = document.getElementById("editorForm");
 			  let str="";
 			  str +=`<div class="option"><input type="checkbox" class="deleteCheckbox" >
 			  		<label>옵션</label><input type="text" class="specialtype" name="" value="${optionType}" readonly>
-				  	<label>가격</label><input type="text" class="price" name="" value="${optionPrice}"readonly><br>`;			  
+				  	<label>가격</label><input type="text" class="price" name="" value="${optionPrice}"readonly><br>`
+				  	
+		  	  if (optionDiscount !== '' && parseFloat(optionDiscount) !== 0) {
+		        str += `<label>할인율</label><input type="number" class="discountRate" name="" value="${optionDiscount}" readonly><br>`;
+		      }else{
+		    	str += `<input type="hidden" class="discountRate" name="" value="" readonly><br>`;  		  
+		      }
 			  specialtiesOption.append(str);
 	      }
 	    })

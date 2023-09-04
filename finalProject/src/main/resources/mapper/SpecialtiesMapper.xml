@@ -53,6 +53,7 @@
 						,specialty_type
 						,price
 						,post_id
+						,discount_rate
 					)
 				VALUES
 					(
@@ -60,6 +61,7 @@
 						,#{specialtyType}
 						,#{price}
 						,#{postId}
+						,#{discountRate}
 					)
 	</insert>
 	
