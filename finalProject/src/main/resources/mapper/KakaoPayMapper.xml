@@ -53,7 +53,10 @@
 						,price
 						,order_date
 						<choose>
-				    		<when test='postId.substring(0,2).equals("PKG") and orderStatus.equals("SUCCESS_PAYMENT")' >
+				    		<when test='postId.substring(0,3).equals("PKG") and orderStatus.equals("SUCCESS_PAYMENT")' >
+				    			,order_status
+				    		</when>
+				    		<when test='postId.substring(0,3).equals("SPE") and orderStatus.equals("SUCCESS_PAYMENT")'>
 				    			,order_status
 				    		</when> 
 				    		<otherwise>
@@ -66,6 +69,8 @@
 						,specialty_type
 						,cancel_amount
 						,cancel_tax_free_amount
+						,item_code
+						,item_name
 
 					)
 				    VALUES
@@ -80,6 +85,9 @@
 				    		<when test='postId.substring(0,3).equals("PKG") and orderStatus.equals("SUCCESS_PAYMENT")'>
 				    			,'B1'
 				    		</when> 
+				    		<when test='postId.substring(0,3).equals("SPE") and orderStatus.equals("SUCCESS_PAYMENT")'>
+				    			,'B7'
+				    		</when>
 				    		<otherwise>
 				    			,'B8'
 				    		</otherwise>
@@ -90,6 +98,8 @@
 				    	,#{specialtyType}
 				    	,#{cancelAmount}
 				    	,#{cancelTaxFreeAmount}
+				    	,#{item_code}
+				    	,#{item_name}
 				    )
 	</insert>
 	<update id="updatePurchaseStatus" parameterType="KakaoPayInfoResponseVO">

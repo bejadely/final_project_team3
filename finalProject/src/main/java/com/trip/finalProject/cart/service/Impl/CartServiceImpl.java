@@ -29,8 +29,16 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public int insertCartInfo(CartVO cartVO) {
-		return cartMapper.insertCartInfo(cartVO);
+	public String insertCartInfo(CartVO cartVO) {
+		int result= cartMapper.insertCartInfo(cartVO);
+		String message = null;
+		if(result>0) {
+			message="장바구니에 등록했습니다";
+		}else {
+			message="실패했습니다";
+		}
+		
+		return message;
 	}
 
 	@Override

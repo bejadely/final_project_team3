@@ -177,8 +177,8 @@ form {
                                     <label for="kakaoPay">Buy</label>
                                 </div>
                                 <div class="bt-item">
-                                    <input type="radio" name="s-type" id="st-rent">
-                                    <label for="st-rent">Cart</label>
+                                    <input type="radio" name="cartBtn" id="cartBtn">
+                                    <label for="cartBtn">Cart</label>
                                 </div>
                             </div>
                             
@@ -204,6 +204,7 @@ form {
                     </div>
                 </div>
             </div>
+             <input type="hidden" id="id" th:value="${session.sessionId}">
         </div>
         		
     </section>
@@ -213,7 +214,7 @@ form {
 <script>
 	var content = '[[${info.content }]]';
 	var postId = '[[${info.postId}]]';
-	
+	var memberId = $("#id").val();
 	$(document).ready(function(){
 			
 		(function(){
@@ -280,7 +281,7 @@ form {
 	     	console.log(postId);
 	     	console.log(quantity);
 	     	console.log(specialtyType);
-	     	
+	     	console.log(memberId);
 	        $.ajax({
 	        	type:'post',
 	        	url:'payment/ready',
@@ -289,7 +290,8 @@ form {
 	        		orderName : orderName,
 	        		quantity : quantity,
 	        		postId: postId,
-	        		specialtyType: specialtyType
+	        		specialtyType: specialtyType,
+	        		partnerUserId : memberId
 	        	},
 	        	success:function(response){
 	        		location.href = response.next_redirect_pc_url
@@ -298,7 +300,29 @@ form {
 	        }); 
 	    });
 
-	    
+	    document.getElementById('cartBtn').addEventListener('click',function(){
+	    	let totalAmount = parseInt($("span.finalPrice").text());
+	        let orderName = "[[ ${info.title} ]]";
+	        let postId = "[[ ${info.postId} ]]"
+	        let quantity = parseInt($("span.count").text());
+	        let specialtyType = $(".specType").val();
+	    	$.ajax({
+	    		type:'post',
+	    		url:'/cartInsert',
+	    		data:{
+	    			price: totalAmount,
+	        		cartName : orderName,
+	        		quantity : quantity,
+	        		postId: postId,
+	        		optionId: specialtyType,
+	        		memberId : memberId			
+	    		},
+	    		success:function(message){
+	    			alert(message);
+	    		}
+	    	});
+	    });
+
 	    
 	    
 </script>

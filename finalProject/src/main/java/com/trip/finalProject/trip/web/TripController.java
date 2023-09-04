@@ -140,6 +140,7 @@ public class TripController {
 	// 여행기록 등록 - 임시저장 상태에서 저장상태로 상태 업데이트
 	@PostMapping("/tripRecordInsertUp")
 	public String tripRecordInsertProcess(TripVO tripVO) {
+		//여행기록 저장상태 변경
 		tripService.InsertTripInfo(tripVO);
 		return "redirect:/tripRecordList";
 	}
@@ -174,14 +175,11 @@ public class TripController {
 
 	// 여행기록 메모 등록 
 	@PostMapping("/tripMemoInsert")
+	@ResponseBody
 	public String tripMemoInsert(TripVO tripVO, Model model) {
-		
-		//TripVO result = tripService.TsInsertTripInfo(tripVO);
-		
-		//model.addAttribute("tripVO", result);
-		
+		//여행메모 등록
+		tripService.InsertTripMemo(tripVO);
 		return null;
-		//return "trip/tripRecordInsertForm";
 	}
 	
 	
