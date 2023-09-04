@@ -151,6 +151,8 @@ table {
 				내용 : [[${mo.content}]]
 				<h3> ----------</h3>
 			</div>
+			<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripInfo.writerId}" type="button" class="primary-btn" 
+			th:onclick="|location.href='@{/tripRecordDelete(postId=${tripInfo.postId})}'|">삭제</button>&nbsp;&nbsp;
 			<button type="button" onclick="location.href='/tripRecordList'">목록으로</button>
 			<br>
 		</div>

@@ -91,7 +91,6 @@
 			return Math.abs(diffDate / (1000 * 60 * 60 * 24));
 		}
 		
-		
 		//두 날짜 사이의 일수
 		//여행 시작일도 포함이 되어야 함으로 결과값에 +1을 해줘야함.
 		var resdays = getDateDiff(inDate, outDate) + 1;
@@ -133,21 +132,7 @@
        	    				`;
         		 
        	    $('#tripSchedule').append(addSchedule);
-       	    
-       		var textareaId = `#content${i+1}`;
-			var textareaValue = $(textareaId).val();
-       	    
-       	 	var memoDataObj = {
-       	 			
-				postId: postData,
-				tripDate: date3.toISOString().split('T')[0],
-				content: textareaValue
-				  
-       	 	};
-       	    
-       		//객체를 배열로 변환
-        	memoDataArry.push(memoDataObj);
-       	    
+     	    
 		}
 		
 		
@@ -160,8 +145,6 @@
 		
 		$(".mapping").click(function() {
 			var tDate = $(this).parent().find("input[name=tripDate]").attr("value");
-			console.log(tDate);
-			
 			removeMarker();
 			
 			//선 삭제를 위한 구문이지만 삭제가 안됨 수정해야함
@@ -178,7 +161,6 @@
     		mappingCoordinates.html(""); 
     
     		var mapDataArry = [];
-    		//console.log("test1" + mappingString);	
     		for (var i = 0; i < mapping.length; i++) {
         		 var mappingObj = mapping[i];
         
@@ -203,14 +185,10 @@
             						postId: postData,
             						tripDate: tDate
         						  };
-        		 //console.log(mapDataObj);
       			 //객체를 배열로 변환
         		 mapDataArry.push(mapDataObj);
-        		 //console.log(mapDataArry);
     		 }
-    		 //console.log(mapDataObj);
     		 sendMappingData(mapDataArry);
-    		 //console.log(JSON.stringify(mapDataArry));
     		 
     		 //저장한 여행경로를 초기화 시켜줌
     		 mapping = [];
@@ -240,7 +218,27 @@
         }
 		
 		//ajax를 통해 해당 일자의 여행메모를 db에 저장
-		function sendMemoData(data) {   
+		function sendMemoData(data) {  
+			
+			const date4 = new Date(inDate);
+			
+			for(var i=0; i<resdays; i++){
+				//해당 구문을 통해 +1씩 증가시킴
+		    	date4.setDate(date4.getDate() + i);
+		    	date4.toISOString().split('T')[0]
+				var textareaId = $(`#content${i+1}`);
+				var textareaValue = textareaId.val();
+       	 		var memoDataObj = {
+       	 			
+					postId: postData,
+					tripDate: date4.toISOString().split('T')[0],
+					content: textareaValue
+				  
+       	 		};
+       			//객체를 배열로 변환
+        		memoDataArry.push(memoDataObj);
+			}
+       		
          	fetch('/tripMemoInsert', {
             	method: 'POST',
                 headers: {
@@ -273,8 +271,6 @@
         });
 		
 
-        
-        
 		//지도 관련 스크립트 부분입니다.
 		// 마커를 담는 배열
         var markers = [];
