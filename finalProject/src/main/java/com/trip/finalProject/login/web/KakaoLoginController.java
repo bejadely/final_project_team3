@@ -1,6 +1,8 @@
 package com.trip.finalProject.login.web;
 
 
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +30,13 @@ public class KakaoLoginController {
    public String kakaoLogin(@RequestParam(value = "code", required = false) String code) throws Exception {
       System.out.println("##Controller#######" + code);
       //접근 토큰을 받아옴 
-      String access_Token = ks.getAccessToken(code);
+      Map<String, String> map = ks.getAccessToken(code);
+      
+      String access_Token = map.get("access_token");
+      String refresh_Token = map.get("refresh_Token");
         
        //다시 서비스에 있는 메서드 실행함 그리고 DB에 정보 없으면 insert .xml실행 
-      MemberVO userInfo = ks.getUserInfo(access_Token); //getUserInfo 메서드 호출해서 시행함.
+      MemberVO userInfo = ks.getUserInfo(access_Token,refresh_Token); //getUserInfo 메서드 호출해서 시행함.
      System.out.println("====Controller================================ ");
       System.out.println("###access_Token#### : " + access_Token);
       System.out.println("###nickname#### : " + userInfo.getMemberName());

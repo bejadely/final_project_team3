@@ -18,5 +18,6 @@ public class KakaoApproveResponseVO {
     private String approved_at; // 결제 승인 시간
     private String payload; // 결제 승인 요청에 대해 저장 값, 요청 시 전달 내용
     
+    private String postId;
     private String specialtyType;
 }
