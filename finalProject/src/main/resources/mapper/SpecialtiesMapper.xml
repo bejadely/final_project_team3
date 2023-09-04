@@ -124,8 +124,12 @@
 						      , s.area_code
 							  , s.regist_date    
 						      , f.saved_img
-	                       FROM specialties_regist s JOIN attached_file f
-	                         ON s.post_id = f.post_id
+						      , p.sales_quantity
+	                       FROM specialties_regist s LEFT OUTER JOIN attached_file f
+	                         ON s.post_id = f.post_id LEFT OUTER JOIN (SELECT post_id, COUNT(*) sales_quantity
+														       			 FROM purchase
+														   			 GROUP BY post_id) p
+							 ON s.post_id = p.post_id
 	                   ORDER BY s.regist_date DESC) a )
 	      WHERE rn BETWEEN #{start} AND #{end}
 	</select>

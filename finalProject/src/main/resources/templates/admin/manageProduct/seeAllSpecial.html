@@ -27,7 +27,6 @@
 						<th>상품명</th>
 						<th>상품분류</th>
 						<th>판매수량</th>
-						<th>할인여부</th>
 					</tr>
 				</thead>
 				<th:block th:if="${!#lists.isEmpty(list)}">
@@ -38,7 +37,7 @@
 								<td align="center"><img th:src="@{l.savedImg}" alt="상품 대표 이미지"></td>
 								<td align="center" th:text="${l.title}"></td>
 								<td align="center" th:text="${l.type}"></td>
-								<td align="center" ></td>
+								<td align="center" th:text="${l.salesQuantity}"></td>
 								<td align="center" ></td>
 							</tr>
 						</th:block>
