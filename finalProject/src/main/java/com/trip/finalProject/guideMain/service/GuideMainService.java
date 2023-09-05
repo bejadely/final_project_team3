@@ -8,7 +8,7 @@ public interface GuideMainService {
 
     List<GuideQuestionVO> getQuestionInfo(String guideId);
 
-    List<CalculationVO> getCalculationInfo(String guideId);
+    List<PackageCalculationVO> getCalculationInfo(String guideId);
 
     List<PackagePurchaseVO> getMonthSaleChartInfo(String guideId);
 

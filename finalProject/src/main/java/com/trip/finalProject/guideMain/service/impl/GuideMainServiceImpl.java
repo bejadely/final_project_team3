@@ -27,7 +27,7 @@ public class GuideMainServiceImpl implements GuideMainService {
 	}
 
 	@Override
-	public List<CalculationVO> getCalculationInfo(String guideId) {
+	public List<PackageCalculationVO> getCalculationInfo(String guideId) {
 
 		return guideMainMapper.getCalculationInfo(guideId);
 	}
