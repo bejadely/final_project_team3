@@ -112,6 +112,6 @@
 			 			 o.price sp_price
 				  FROM purchase p LEFT JOIN SPECIALTIES_RESIGT r ON (p.post_id = r.post_id)
 				  				  LEFT JOIN SPECIALTIES_option o ON (p.post_id = o.post_id)
-				  WHERE p.post_id = #{postId}
+				  WHERE f.img_type = 'U2' and p.order_detail_id = #{orderDetailId}
   </select>
   </mapper>

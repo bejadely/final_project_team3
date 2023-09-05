@@ -24,4 +24,6 @@ public interface CartMapper {
 	//삭제
 	public int deleteCartInfo(String postId);
 
+	public List<CartVO> cartInfo(String[] cartId);
+
 }

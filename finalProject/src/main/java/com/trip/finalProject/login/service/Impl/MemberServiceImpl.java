@@ -115,19 +115,15 @@ public class MemberServiceImpl implements MemberService {
 
 		//회원정보 수정
 		@Override
-		public Map<String, String> updateMember(MemberVO memberVO) {
-			Map<String, String> map = new HashMap<>();
+		public String updateMember(MemberVO memberVO) {
 			
-			map.put("회원 정보", String.valueOf(memberVO.getMemberId()));
+			int result = memberMapper.updateMember(memberVO);
 			
-			int result  = memberMapper.updateMember(memberVO);
-			if(result > 0) {
-				map.put("결과", "Success");
-			}else {
-				map.put("결과", "fail");
-			}		
-			
-			return map;
+			if(result > 1) {
+				return "success";
+			} else {
+				return "fail";
+			}
 		}
 
 		

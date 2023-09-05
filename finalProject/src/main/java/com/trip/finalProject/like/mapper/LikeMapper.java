@@ -13,9 +13,9 @@ public interface LikeMapper {
 	public int trCount(String memberId);
 	
 	//패키지 조회
-	public List<LikeVO> mtAllLike(PagingVO pagingVO);
+	public List<LikeVO> mtAllLike(LikeVO likeVO,PagingVO pagingVO);
 	
 	//여행기록 조회
-	public List<LikeVO> trAllLike(PagingVO pagingVO);
+	public List<LikeVO> trAllLike(LikeVO likeVO,PagingVO pagingVO);
 
 }
