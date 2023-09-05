@@ -23,7 +23,7 @@
 		WHERE ROWNUM <= 5
 	  	]]>
 	</select>
-	<select id="getCalculationInfo" resultType="CalculationVO">
+	<select id="getCalculationInfo" resultType="PackageCalculationVO">
 		<![CDATA[
 	  	SELECT *
 		FROM (SELECT c.cal_amount, p.name, code_val(c.cal_status) as "calStatus",c.cal_date
