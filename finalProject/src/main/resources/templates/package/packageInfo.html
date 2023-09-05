@@ -210,45 +210,47 @@ form {
 							</div>
                     </div>
                 </div>
+            
             </div>
+            <!-- 리뷰 -->
+	        <div class="review">
+	            <h7 id="reviewCount"></h7>
+	            <hr>
+	            <hr id="afterReview">
+	            <div class="d-grid gap-2 col-6 mx-auto">
+	                <button class="btn btn-outline-info justify-content-center" id="moreReview" type="button"
+	                        data-page="1" >
+	                    더보기
+	                </button>
+	            </div>
+	            <hr>
+	            <div class="form-check form-check-inline">
+	                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1">
+	                <label class="form-check-label" for="inlineRadio1">1점</label>
+	            </div>
+	            <div class="form-check form-check-inline">
+	                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2">
+	                <label class="form-check-label" for="inlineRadio2">2점</label>
+	            </div>
+	            <div class="form-check form-check-inline">
+	                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="3">
+	                <label class="form-check-label" for="inlineRadio3">3점</label>
+	            </div>
+	            <div class="form-check form-check-inline">
+	                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="4">
+	                <label class="form-check-label" for="inlineRadio4">4점</label>
+	            </div>
+	            <div class="form-check form-check-inline">
+	                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="5" th:checked="true">
+	                <label class="form-check-label" for="inlineRadio5">5점</label>
+	            </div>
+	            <div class="input-group mb-3">
+	                <input id="reviewInput" type="text" class="form-control" placeholder="리뷰 작성" aria-label="추억을 남겨보세요!" aria-describedby="button-addon2">
+	                <button class="btn btn-outline-secondary" type="button" id="addReview">리뷰 등록</button>
+	            </div>
+	        </div>	
         </div>
-        	 <!-- 모달창 내 리뷰 -->
-        <div class="review">
-            <h7 id="reviewCount"></h7>
-            <hr>
-            <hr id="afterReview">
-            <div class="d-grid gap-2 col-6 mx-auto">
-                <button class="btn btn-outline-info justify-content-center" id="moreReview" type="button"
-                        data-page="1" >
-                    더보기
-                </button>
-            </div>
-            <hr>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1">
-                <label class="form-check-label" for="inlineRadio1">1점</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2">
-                <label class="form-check-label" for="inlineRadio2">2점</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="3">
-                <label class="form-check-label" for="inlineRadio3">3점</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="4">
-                <label class="form-check-label" for="inlineRadio4">4점</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="5" th:checked="true">
-                <label class="form-check-label" for="inlineRadio5">5점</label>
-            </div>
-            <div class="input-group mb-3">
-                <input id="reviewInput" type="text" class="form-control" placeholder="추억을 남겨보세요!" aria-label="추억을 남겨보세요!" aria-describedby="button-addon2">
-                <button class="btn btn-outline-secondary" type="button" id="addReview">리뷰 등록</button>
-            </div>
-        </div>	
+        
         		
     </section>
     <!-- Property Details Section End -->
@@ -343,7 +345,10 @@ form {
 	        let orderName = "[[ ${info.name} ]]";
 	        let postId = "[[ ${info.postId} ]]"
 	        let quantity = parseInt(document.getElementById('quantity').value);
-	     
+	     console.log(totalAmount)
+	     console.log(orderName)
+	     console.log(quantity)
+	     console.log(memberId)
 	        $.ajax({
 	        	type:'post',
 	        	url:'payment/ready',
@@ -370,7 +375,7 @@ form {
 	    	console.log(memberId);
 	    	$.ajax({
 	    		type:'post',
-	    		url:'/cartInsert',
+	    		url:'/common/cartInsert',
 	    		data:{
 	    			price: totalAmount,
 	        		cartName : orderName,
@@ -503,7 +508,7 @@ form {
 	        //  ajax 들어가서 로그인 되어있는지 먼저 확인 - 안되면 바로 fail throw new Exception(); 예외 일부러 발생시켜주기
 	        $.ajax({
 	            type: 'POST',
-	            url: '/packageReview',
+	            url: '/common/packageReview',
 	            data : {
 	                'grade' : checkedgrade,
 	                'content' : reviewContent,
@@ -546,7 +551,7 @@ form {
 	        //  ajax로 가서 session에 저장된 아이디랑 writerId랑 같은지 확인 - 같지 않다면 fail 
 	        $.ajax({
 	            type: 'DELETE',
-	            url: "/packageReview",
+	            url: "/common/packageReview",
 	            data: {
 	                'postId' : postId,
 	                'writerId' : writerId,

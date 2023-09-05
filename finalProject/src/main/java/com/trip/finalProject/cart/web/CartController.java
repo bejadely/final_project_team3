@@ -28,7 +28,7 @@ public class CartController {
 	CartService cartService;
 
 	//전체조회
-	@GetMapping("cartList")
+	@GetMapping("/common/cartList")
 	public String cartList(Model model){
 	
 		
@@ -36,7 +36,7 @@ public class CartController {
 	};
 	
 	
-	@PostMapping("ajaxCartList")
+	@PostMapping("/common/ajaxCartList")
 	@ResponseBody
 	public Map<String, Object> ajaxCart(CartVO cartVO
 			  ,@RequestParam(value="cntPerPage", defaultValue="10") Integer cntPerPage
@@ -60,15 +60,14 @@ public class CartController {
 	}
 	
 	//삭제
-	@GetMapping("cartDelete")
+	@GetMapping("/common/cartDelete")
 	@ResponseBody
-	public Map<String, Object> cartDelete(String postId) {
-
-		int r = cartService.deleteCartInfo(postId);
+	public Map<String, Object> cartDelete(String cartId) {
+		int r = cartService.deleteCartInfo(cartId);
 		return Collections.singletonMap("result", r==1?true:false);
 	};
 	
-	@PostMapping("/updateQuantity")
+	@PostMapping("/common/updateQuantity")
 	@ResponseBody
 	public Map<String, Object> quanUpdate(CartVO cartVO){
 		cartVO.getPostId();
@@ -77,7 +76,7 @@ public class CartController {
 	    
 	    return map;
 	}
-	@PostMapping("/cartInsert")
+	@PostMapping("/common/cartInsert")
 	@ResponseBody
 	public String cartInsert(CartVO cartVO) {
 		

@@ -36,13 +36,42 @@
 	</insert>
 
 	<select id="listLodging" resultType="LodgingVO">
-		SELECT title
-			   ,addr1
-			   ,first_image
-			   ,tel
-			   ,content_id
+		SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			FROM(SELECT title
+			   			,addr1
+			   			,first_image
+			   			,tel
+			   			,content_id
+				FROM lodging
+				ORDER BY area_code,sigungu_code)a)
+		WHERE rn BETWEEN #{start} AND #{end}
+		
+	</select>
+	<select id="lodgingCount">
+		SELECT COUNT(*)
 		FROM lodging
-		ORDER BY area_code,sigungu_code
+	</select>
+	
+	<select id="lodgingCountTitle">
+		SELECT COUNT(*)
+		FROM lodging
+		WHERE title LIKE '%${keyword}%'
+	</select>
+	
+	<select id="searchPackageByTitle" resultType="LodgingVO">
+		SELECT *
+		FROM(SELECT ROWNUM rn, a.*
+			FROM(SELECT title
+			   			,addr1
+			   			,first_image
+			   			,tel
+			   			,content_id
+				FROM lodging
+				WHERE title LIKE '%${lodgingVO.title}%'
+				ORDER BY area_code,sigungu_code)a)
+		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+		
 	</select>
 	
 	<select id="listArea" parameterType="LocationVO">

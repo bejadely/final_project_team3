@@ -17,10 +17,21 @@ public interface PackageMapper {
 	public PackageVO packageInfo(PackageVO packageVO);
 	
 	//패키지 리스트
-	public List<PackageVO> listPackage();
+	public List<PackageVO> listPackage(PagingVO pagingvo);
 	
 	//지역 리스트
 	public List<LocationVO> listArea();
+	
+	//패키지 수 카운트
+	public int getPackageCount();
+	
+	//패키지 명 검색 결과 카운트
+	public int packageCountTitle(String keyword);
+
+
+	//패키지 명 검색
+	public List<PackageVO> searchPackageByTitle(PackageVO packageVO, PagingVO pagingVO);
+
 	
 	 //리뷰 조회
     List<PackageReviewVO> selectReview(String postId, int page);
@@ -47,5 +58,11 @@ public interface PackageMapper {
 	public PackageVO guidePacInfo(PackageVO pacVO);
 	//결제 회원 정보
 	public List<PackageVO> pacMember(PackageVO pacVO);
+	//패키지 삭제
+	public int deletePackage(String postId);
+
+	
+
+	
 
 }
