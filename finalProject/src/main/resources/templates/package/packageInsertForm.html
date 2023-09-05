@@ -12,7 +12,7 @@
 <!-- <script src="https://cdn.ckeditor.com/ckeditor5/12.4.0/classic/ckeditor.js">
 </script>
  -->
-<script src ="ckeditor5-build-classic/ckeditor.js"></script>
+<script src ="/ckeditor5-build-classic/ckeditor.js"></script>
 <style>
 .ck.ck-editor {
 	width: 80%;
@@ -41,7 +41,7 @@ ClassicEditor
 	.create(document.querySelector('#editor'), {
 		/* htmlEncodeOutput: false, */
 		ckfinder: {
-			uploadUrl : 'upload'	
+			uploadUrl : '/common/upload'	
 		}
 	
 		
@@ -60,7 +60,7 @@ ClassicEditor
 				return src.substring(src.lastIndexOf('/')+1);
 			});
 			console.log(filenames);
-			fetch(`/deleteImg`,{
+			fetch(`/common/deleteImg`,{
 				method: 'POST',
 				headers:{
 					'Content-Type':'application/json'
@@ -142,7 +142,7 @@ ClassicEditor
 			
 			
 			formObj.append(str);
-			document.getElementById('editorForm').action = "register";
+			document.getElementById('editorForm').action = "/guide/register";
 			document.getElementById('editorForm').submit();
 			
 			
@@ -184,7 +184,7 @@ ClassicEditor
 			}
 		
 			$.ajax({
-				url:'mainImageUpload',
+				url:'/common/mainImageUpload',
 				processData: false,
 				contentType: false,
 				data: imageData,
@@ -212,7 +212,7 @@ ClassicEditor
 		var targetFile = $(this).data("file");
 		var clickedSpan = $(this);
 		$.ajax({
-			url:'deleteFile',
+			url:'/common/deleteFile',
 			data: {savedImg: targetFile},
 			dataType: 'text',
 			type: 'POST',
@@ -247,7 +247,7 @@ ClassicEditor
 			str +=" data-filename='"+obj.originImg+"' data-type='"+obj.imgType+"'";
 			str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div>";
 			str +="<span> " + obj.originImg +"</span>";
-			str +="<img src='display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
+			str +="<img src='/display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
 		});
 		uploadResult.append(str);
 	}

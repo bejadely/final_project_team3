@@ -51,7 +51,7 @@ public class UploadController {
     
 	
 	//에디터 이미지 업로드
-	@PostMapping("upload")
+	@PostMapping("/common/upload")
 	public ModelAndView image(MultipartHttpServletRequest request)
 			throws Exception {
 		//String uploadPathUrl = null;
@@ -119,7 +119,7 @@ public class UploadController {
 	
 	
 	//첨부파일 이미지 업로드
-	@PostMapping("mainImageUpload")
+	@PostMapping("/common/mainImageUpload")
 	@ResponseBody
 	public List<AttachedFileVO> uploadMainFile(MultipartFile[] mainImage){
 		
@@ -190,7 +190,7 @@ public class UploadController {
 		return savePath.replace(File.separator, "/");
 	}
 	
-	@GetMapping("display")
+	@GetMapping("/display")
 	@ResponseBody
 	public ResponseEntity<byte[]> getFile(String savedImg){
 	
@@ -215,7 +215,7 @@ public class UploadController {
 		
 	}
 
-	@PostMapping("deleteFile")
+	@PostMapping("/common/deleteFile")
 	@ResponseBody
 	public ResponseEntity<String> deleteFile(String savedImg){
 		File file;
@@ -234,7 +234,7 @@ public class UploadController {
 	}
 
 
-	@PostMapping("/deleteImg")
+	@PostMapping("/common/deleteImg")
 	public ResponseEntity<String> deleteImages(@RequestBody Map<String, List<String>> requestData) throws Exception {
 		List<String> filenames = requestData.get("filenames");
 		
@@ -242,8 +242,7 @@ public class UploadController {
 		try {
 			for (String filename : filenames) {
 				File imageFile = new File(uploadPath + "/" + filename);
-				
-					
+				System.out.println(imageFile);
 				if (imageFile.exists() && imageFile.delete()) {
 					System.out.println("Image deleted: " + filename);
 				} else {

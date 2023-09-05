@@ -24,14 +24,14 @@ public class SpecialtiesController {
 	@Autowired
 	CommonMapper commonMapper;
 	
-	@GetMapping("/specialtiesInsertForm")
+	@GetMapping("/admin/specialtiesInsertForm")
 	public String package2(Model model) {
 		model.addAttribute("S",commonMapper.selectCode("S"));
 		model.addAttribute("area",specialtiesService.getLocationList());
 		return "specialties/specialtiesInsertForm";
 	}
 	
-	@PostMapping("/specialtiesInsert")
+	@PostMapping("/admin/specialtiesInsert")
 	public String specialtiesInsert(SpecialtiesVO specialtiesVO) {
 		specialtiesService.insertSepcialties(specialtiesVO);
 		
