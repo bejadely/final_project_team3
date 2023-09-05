@@ -249,7 +249,8 @@
 	<!-- 여행경로 삭제 -->
 	<delete id="deleteTripMapping" parameterType="TripVO">
 		DELETE FROM map
-		WHERE map_id = #{mapId}
+		WHERE post_id = #{postId} 
+		  AND trip_date = #{tripDate} 
 	</delete>
 	
 	<!-- 여행경로 조회 -->

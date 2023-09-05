@@ -161,17 +161,17 @@ table {
 		</table>
 	</div>
 	<div align="center">
-		<form id="sendData" action="tripMateApplyForm" method="post">
+		<form id="sendData" action="/common/tripMateApplyForm" method="post">
 			<input type="hidden" name="postId" th:value="${tripMateInfo.postId}">
 			<input type="hidden" name="mateWriter" th:value="${tripMateInfo.writerId}">
 			<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="submit" class="primary-btn">
 			신청하기</button>&nbsp;&nbsp;
 			<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="button" class="primary-btn" 
-			th:onclick="|location.href='@{/mateRecruitReportForm(postId=${tripMateInfo.postId})}'|">신고하기</button>&nbsp;&nbsp;
+			th:onclick="|location.href='@{/common/mateRecruitReportForm(postId=${tripMateInfo.postId})}'|">신고하기</button>&nbsp;&nbsp;
 			<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button" class="primary-btn" 
-			th:onclick="|location.href='@{/mateRecruitUpdateForm(postId=${tripMateInfo.postId})}'|">수정</button>&nbsp;&nbsp;
+			th:onclick="|location.href='@{/common/mateRecruitUpdateForm(postId=${tripMateInfo.postId})}'|">수정</button>&nbsp;&nbsp;
 			<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button" class="primary-btn" 
-			th:onclick="|location.href='@{/mateRecruitDelete(postId=${tripMateInfo.postId})}'|">삭제</button>&nbsp;&nbsp;
+			th:onclick="|location.href='@{/common/mateRecruitDelete(postId=${tripMateInfo.postId})}'|">삭제</button>&nbsp;&nbsp;
 			<button type="button" class="primary-btn" onclick="location.href='tripMateList'">목록으로</button>
 		</form>
 	</div>

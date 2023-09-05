@@ -1,7 +1,6 @@
 package com.trip.finalProject.trip.mapper;
 
 import java.util.List;
-import java.util.Map;
 
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.trip.service.TripVO;
@@ -56,7 +55,7 @@ public interface TripMapper {
 	public int insertTripMapping(TripVO tripVO);
 	
 	//여행경로 삭제
-	//public int deleteTripMapping(TripVO tripVO);
+	public int deleteTripMapping(TripVO tripVO);
 	
 	//여행경로 데이터 조회
 	public List<TripVO> selectMapData(TripVO tripVO);

@@ -166,10 +166,10 @@ public class TripServiceImpl implements TripService {
 
 
 	//여행경로 삭제
-	//@Override
-	//public int deleteTripMapping(TripVO tripVO) {
-	//	return tripMapper.deleteTripMapping(tripVO);
-	//}
+	@Override
+	public int deleteTripMapping(TripVO tripVO) {
+		return tripMapper.deleteTripMapping(tripVO);
+	}
 
 
 	
