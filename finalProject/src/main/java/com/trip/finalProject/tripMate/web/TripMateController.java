@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.trip.finalProject.attachedFile.service.AttachedFileService;
@@ -162,10 +159,35 @@ public class TripMateController {
             throw new Exception("no login");
         }
 		
-		System.out.println("컨트롤러");
-		System.out.println(postCommentVO);
-		
 		return tripMateService.insertCommentInfo(postCommentVO);
+	}
+
+	@DeleteMapping("/deleteComment")
+	@ResponseBody
+	public Map<String,Object> commentDelete(PostCommentVO postCommentVO) throws Exception {
+		String sessionId = "";
+		if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().replaceAll(" ", "").equals("")) {
+			sessionId =  session.getAttribute("sessionId").toString();
+		} else {
+			throw new Exception("no login");
+		}
+		if(!sessionId.equals(postCommentVO.getWriterId())){
+			throw new Exception("not same");
+		}
+
+		return tripMateService.deleteComment(postCommentVO);
+	}
+
+	@PostMapping("/insertCommentReply")
+	@ResponseBody
+	public Map<String, Object> insertCommentReply(PostCommentVO postCommentVO) throws Exception{
+		if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().replaceAll(" ", "").equals("")) {
+			postCommentVO.setWriterId(session.getAttribute("sessionId").toString());
+		} else {
+			throw new Exception("no login");
+		}
+
+		return tripMateService.insertCommentReplyInfo(postCommentVO);
 	}
 	
 	//마이페이지----------------------------------------------------------------------

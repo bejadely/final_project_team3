@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.trip.finalProject.attachedFile.mapper.AttachedFileMapper;
 import com.trip.finalProject.common.PagingVO;
-import com.trip.finalProject.tourInfo.service.SpotDetailReviewVO;
 import com.trip.finalProject.tripMate.mapper.TripMateMapper;
 import com.trip.finalProject.tripMate.service.PostCommentVO;
 import com.trip.finalProject.tripMate.service.TripMateService;
@@ -194,8 +193,43 @@ public class TripMateServiceImpl implements TripMateService {
 		return recentCommentInfo;
 	}
 
-	
-	
+	@Override
+	public Map<String, Object> deleteComment(PostCommentVO postCommentVO) throws Exception {
+		Map<String, Object> recentCommentInfo = new HashMap<>();
+
+		int returnValue = tripMateMapper.deleteComment(postCommentVO.getCommentId());
+		if(returnValue != 1 ){
+			throw new Exception("not delete");
+		}
+
+		List<PostCommentVO> commentList = tripMateMapper.selectCommentInfo(postCommentVO.getPostId());
+		recentCommentInfo.put("commentList", commentList);
+
+		int totalCount = tripMateMapper.getTotalCount(postCommentVO.getPostId());
+		recentCommentInfo.put("totalCount", totalCount);
+
+		return recentCommentInfo;
+	}
+
+	@Override
+	public Map<String, Object> insertCommentReplyInfo(PostCommentVO postCommentVO) throws Exception {
+		Map<String, Object> recentCommentInfo = new HashMap<>();
+
+		int returnValue = tripMateMapper.insertCommentReplyInfo(postCommentVO);
+		if(returnValue == 0) {
+			throw new Exception("not insert");
+		}
+
+		//새정보
+		List<PostCommentVO> commentList = tripMateMapper.selectCommentInfo(postCommentVO.getPostId());
+		recentCommentInfo.put("commentList", commentList);
+
+		//새정보
+		int totalCount = tripMateMapper.getTotalCount(postCommentVO.getPostId());
+		recentCommentInfo.put("totalCount", totalCount);
+
+		return recentCommentInfo;
+	}
 
 
 }
