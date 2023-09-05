@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.trip.finalProject.attachedFile.service.AttachedFileService;
 import com.trip.finalProject.attachedFile.service.AttachedFileVO;
 import com.trip.finalProject.common.PagingVO;
+import com.trip.finalProject.tripMate.service.PostCommentVO;
 import com.trip.finalProject.tripMate.service.TripMateService;
 import com.trip.finalProject.tripMate.service.TripMateVO;
 
@@ -28,6 +30,9 @@ public class TripMateController {
 	
 	@Autowired
 	AttachedFileService attachedFileService;
+	
+	@Autowired
+	HttpSession session;
 	
 	//여행 메이트 게시글 전체 조회
 	@GetMapping("/tripMateList")
@@ -148,6 +153,20 @@ public class TripMateController {
 		return "redirect:/tripMateList";			
 	}
 	
+	@PostMapping("/insertComment")
+	@ResponseBody
+	public Map<String, Object> commentInsert(PostCommentVO postCommentVO) throws Exception{
+		if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().replaceAll(" ", "").equals("")) {
+			postCommentVO.setWriterId(session.getAttribute("sessionId").toString());
+        } else {
+            throw new Exception("no login");
+        }
+		
+		System.out.println("컨트롤러");
+		System.out.println(postCommentVO);
+		
+		return tripMateService.insertCommentInfo(postCommentVO);
+	}
 	
 	//마이페이지----------------------------------------------------------------------
 	//내가 적성한 메이트
