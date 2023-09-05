@@ -12,7 +12,7 @@
 </head>
 <body>
     <!-- header fragment 사용 -->
-    <th:block th:replace="fragments/admin_header3_no_logo :: headerFragment"></th:block>
+    <th:block th:replace="fragments/admin_header :: headerFragment"></th:block>
         
     <!-- aside + content -->    
     <section class="property-section spad">
@@ -26,23 +26,23 @@
 		                        <h5 style="margin-bottom: 25px;"><b>마이 페이지</b></h5>
 	                            <h6 class="main-menu"><i class="fa-solid fa-user-gear fa-xl" style="color: #012970;"></i>내정보</h6>
 	                        	<div class="detail-menu">	
-	                        		<a href="/myPage"><h6><i class="fa-solid fa-angle-right fa-xs"></i>회원정보확인</h6></a>
+	                        		<a href="/common/myPage"><h6><i class="fa-solid fa-angle-right fa-xs"></i>회원정보확인</h6></a>
 	                        	</div>
 	                        	<h6 class="main-menu"><i class="fa-solid fa-bullhorn fa-xl" style="color: #012970;"></i>상품 정보</h6>
 	                        	<div class="detail-menu">
 		                        	<a href="/common/buyPkList"><h6><i class="fa-solid fa-angle-right fa-xs"></i>구매한 상품</h6></a>
-		                        	<a href="/myMtList"><h6><i class="fa-solid fa-angle-right fa-xs"></i>관심 목록</h6></a>
+		                        	<a href="/common/myMtList"><h6><i class="fa-solid fa-angle-right fa-xs"></i>관심 목록</h6></a>
 	                        	</div>
 	                        	<h6 class="main-menu"><i class="fa-regular fa-credit-card fa-xl"></i>여행</h6>
 	                        	<div class="detail-menu">
-		                        	<a href="/myPageTrip"><h6><i class="fa-solid fa-angle-right fa-xs"></i>여행기록</h6></a>
+		                        	<a href="/common/myPageTrip"><h6><i class="fa-solid fa-angle-right fa-xs"></i>여행기록</h6></a>
 		                        	<a href="/common/myPageMate"><h6><i class="fa-solid fa-angle-right fa-xs"></i>여행메이트</h6></a>
 	                        	</div>
 	                        	<h6 class="main-menu"><i class="fa-regular fa-comments fa-xl"></i>문의 내역</h6>
 	                        	<div class="detail-menu">
 		                        	<a href="/common/memberQue"><h6><i class="fa-solid fa-angle-right fa-xs"></i>작성한 문의 내역 보기</h6></a>
 		                        	<th:block th:if="${session.sessionAuthority == 'A2'}">
-		                        	<a href="/common/memberQue"><h6><i class="fa-solid fa-angle-right fa-xs" ></i>받은 문의 내역 보기</h6></a>
+		                        	<a href="/guide/guideQue"><h6><i class="fa-solid fa-angle-right fa-xs" ></i>받은 문의 내역 보기</h6></a>
 		                        	</th:block>
 	                        	</div>
 	                        	<th:block th:if="${session.sessionAuthority == 'A2'}">

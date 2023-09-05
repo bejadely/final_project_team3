@@ -27,7 +27,7 @@ public class QuestionController {
 	QuestionService queService;
 	
 	//전체조회
-	@GetMapping("guideQue")
+	@GetMapping("/guide/guideQue")
 	public String quideQue(Model model
 			  , QuestionVO questionVO
 			  ,@RequestParam(value="nowPage", defaultValue="1") Integer nowPage
@@ -44,14 +44,14 @@ public class QuestionController {
 		return"guide/question";
 	}
 	//등록 - process
-		@PostMapping("queInsert")
+		@PostMapping("/common/queInsert")
 		@ResponseBody
 		public Map<String, String> empInsertProcess(@RequestBody QuestionVO queVO) {
 			return queService.insertQueInfo(queVO);
 		}
 		
 		//수정 - process
-		@PostMapping("queUpdate")
+		@PostMapping("/common/queUpdate")
 		@ResponseBody
 		public Map<String, String> empUpdateProcess(@RequestBody QuestionVO queVO) {
 			return queService.updateQueInfo(queVO);
@@ -59,7 +59,7 @@ public class QuestionController {
 		
 	//일반사용자
 	//전체 조회	
-		@GetMapping("common/memberQue")
+		@GetMapping("/common/memberQue")
 		public String memberQue(Model model
 				  ,QuestionVO questionVO
 				  ,@RequestParam(value="nowPage", defaultValue="1") Integer nowPage

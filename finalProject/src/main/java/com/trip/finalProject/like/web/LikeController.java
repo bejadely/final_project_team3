@@ -21,7 +21,7 @@ public class LikeController {
 	LikeService liService;
 	
 	// 여행메이트 전체 조회
-	@GetMapping("myMtList")
+	@GetMapping("/common/myMtList")
 	public String paList(Model model,
 			LikeVO likeVO,
 			@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
@@ -39,7 +39,7 @@ public class LikeController {
 	}
 	
 	// 여행계획 전체 조회
-	@GetMapping("myTrList")
+	@GetMapping("/common/myTrList")
 	public String trList(Model model
 			, LikeVO likeVO
 			, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage

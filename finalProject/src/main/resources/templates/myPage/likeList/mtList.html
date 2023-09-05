@@ -26,11 +26,11 @@ table, th,td {
 <script>
 $(document).ready(function() {
 	$("#mt").click(function() {
-		location.href="myMtList"	
+		location.href="/common/myMtList"	
 	})
 
 	$("#tr").click(function() {
-		location.href="myTrList"
+		location.href="/common/myTrList"
 	})
 });
 </script>
@@ -69,13 +69,13 @@ $(document).ready(function() {
 			</tbody>
 			</table>
 		</form>
-		<div>
-			<th:block th:if="${paging.startPage != 1}">
-				<a th:href="@{myMtList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
+		<div class="property-pagination">
+			<th:block th:if="${paging.startPage != 1}" >
+				<a th:href="@{/common/myMtList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
 			</th:block>
 			<th:block th:if="${paging.startPage != 1}">
 				<a
-					th:href="@{myMtList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+					th:href="@{/common/myMtList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 			</th:block>
 			<th:block
 				th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
@@ -84,17 +84,17 @@ $(document).ready(function() {
 				</th:block>
 				<th:block th:if="${p ne paging.nowPage}">
 					<a
-						th:href="@{myMtList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
+						th:href="@{/common/myMtList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
 						th:text="${p}"></a>
 				</th:block>
 			</th:block>
 			<th:block th:if="${paging.endPage != paging.lastPage}">
 				<a
-					th:href="@{myMtList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					th:href="@{/common/myMtList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 			</th:block>
 			<th:block th:if="${paging.endPage != paging.lastPage}">
 				<a
-					th:href="@{myMtList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
+					th:href="@{/common/myMtList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
 			</th:block>
 		</div>
 	</div>
