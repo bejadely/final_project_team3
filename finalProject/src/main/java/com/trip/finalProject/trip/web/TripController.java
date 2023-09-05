@@ -160,13 +160,24 @@ public class TripController {
 	}
 	
 	//여행기록 수정 - form
-	@GetMapping("/common/tripRecordModify")
+	@GetMapping("/common/tripRecordModifyForm")
 	public String tripRecordModifyForm(TripVO tripVO, Model model) {
-		TripVO vo = tripService.getTripInfo(tripVO);
+		TripVO findVO = tripService.getTripInfo(tripVO);
+		//여행 기록 데이터
+		model.addAttribute("tripInfo", findVO);
+		//여행 메모 데이터
+		List<TripVO> memoInfo = tripService.getMemoData(tripVO);
+		model.addAttribute("memoInfo", memoInfo);
+		
 		return "trip/tripRecordModifyForm";
 	}
 	
 	//여행기록 수정 - process
+	@PostMapping("/common/tripRecordModify")
+	public String tripRecordmodify(TripVO tripVO) {
+		
+		return "redirect:/tripRecordList";
+	}
 	
 	// 여행기록 게시글 삭제
 	@Transactional
