@@ -1,335 +1,460 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="@{layouts/default_layout}"
-	layout:fragment="content">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="@{layouts/default_layout}"
+      layout:fragment="content">
 <head>
-<meta charset="UTF-8">
-<title>여행 메이트 상세 조회</title>
-<!-- index.html 고유 CSS 추가 -->
-<th:block layout:fragment="css"></th:block>
-<!-- index.html 고유 스크립트 추가 -->
-<th:block layout:fragment="script"></th:block>
-<style>
-body {
-	background-color: #fff;
-	font-family: 'Roboto', sans-serif;
-	font-weight: 400;
-	color: #333;
-}
+    <meta charset="UTF-8">
+    <title>여행 메이트 상세 조회</title>
+    <!-- index.html 고유 CSS 추가 -->
+    <th:block layout:fragment="css"></th:block>
+    <!-- index.html 고유 스크립트 추가 -->
+    <th:block layout:fragment="script"></th:block>
+    <style>
+        body {
+            background-color: #fff;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+            color: #333;
+        }
 
-h1 {
-	color: #333;
-}
+        h1 {
+            color: #333;
+        }
 
-table {
-	width: 100%;
-	border-collapse: collapse;
-	margin-bottom: 20px;
-}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
 
-th, td {
-	padding: 10px;
-	text-align: left;
-	border: 1px solid #ddd;
-}
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
 
-th {
-	background-color: #f5f5f5;
-}
+        th {
+            background-color: #f5f5f5;
+        }
 
-textarea {
-	width: 100%;
-	padding: 10px;
-	border: 1px solid #ddd;
-	resize: none;
-}
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            resize: none;
+        }
 
-button {
-	background-color: #333;
-	color: #fff;
-	border: none;
-	padding: 10px 20px;
-	cursor: pointer;
-}
+        button {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
 
-button:hover {
-	background-color: #222;
-}
+        button:hover {
+            background-color: #222;
+        }
 
-p {
-    padding: 5px;
-    margin-bottom: 5px;
-    margin-left : 10px;
-}
+        p {
+            padding: 5px;
+            margin-bottom: 5px;
+            margin-left: 10px;
+        }
 
-table {
-	width: 100%;
-	border-collapse: collapse;
-	margin-bottom: 20px;
-	margin: 10px;
-	padding: 10px;
-}
-    .report-form {
-        display: inline;
-        background-color: #f2f2f2;
-        padding: 10px;
-        border-radius: 5px;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            margin: 10px;
+            padding: 10px;
+        }
 
-    .report-form label {
-        font-weight: bold;
-    }
+        .report-form {
+            display: inline;
+            background-color: #f2f2f2;
+            padding: 10px;
+            border-radius: 5px;
+        }
 
-    .report-form select {
-        width: 200px;
-        padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 3px;
-    }
+        .report-form label {
+            font-weight: bold;
+        }
 
-    .report-form input[type="submit"] {
-        background-color: #333;
-        color: white;
-        padding: 8px 16px;
-        border: 1px solid black;
-        border-radius: 0;
-        cursor: pointer;
-    }
+        .report-form select {
+            width: 200px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
 
-    .report-form input[type="submit"]:hover {
-        background-color: #222;
-    }
-    
-    #comment_table  {
-    	width: 100%;
-    	border-top: 1px solid rgba(50, 50, 50, 0.2);
-    	border-collapse: collapse;
-  	}
-  
-	#comment_table th, td {
-		background-color: white;
-    	border-bottom: 1px solid rgba(50, 50, 50, 0.2);
-    	padding: 10px;
-    	margin: 10px;
-  	}
+        .report-form input[type="submit"] {
+            background-color: #333;
+            color: white;
+            padding: 8px 16px;
+            border: 1px solid black;
+            border-radius: 0;
+            cursor: pointer;
+        }
 
-	#comment_table td a {
-		text-decoration: none;
-  	}
-  .btn-custom {
-    display: flex;
-    justify-content: flex-end;
-}
-</style>
+        .report-form input[type="submit"]:hover {
+            background-color: #222;
+        }
+
+        #comment_table {
+            width: 100%;
+            border-top: 1px solid rgba(50, 50, 50, 0.2);
+            border-collapse: collapse;
+        }
+
+        #comment_table th, td {
+            background-color: white;
+            border-bottom: 1px solid rgba(50, 50, 50, 0.2);
+            padding: 10px;
+            margin: 10px;
+        }
+
+        #comment_table td a {
+            text-decoration: none;
+        }
+
+        .btn-custom {
+            display: flex;
+            justify-content: flex-end;
+        }
+    </style>
 </head>
 <body>
-	<div align="center">
-		<br>
-		<br>
-		<h1>여행 메이트 글 상세보기</h1>
-		<br>
-	</div>
-	<div id="ls2" align="center">
-		<table border="1" style="width: 80%;">
-			<tr>
-				<th width="70">여행 지역</th>
-				<td width="50" align="center" th:text="${tripMateInfo?.tripArea}" ></td>
-				<th width="100">작성자</th>
-				<td width="150" align="center" th:text="${tripMateInfo.writerId}"></td>
-				<th width="100">등록일자</th>
-				<td width="150" align="center" th:text="${#dates.format(tripMateInfo.writeDate, 'yy년 MM월 dd일 hh:mm:ss')}"></td>
-				<th width="100">조회수</th>
-				<td width="70" align="center" th:text="${tripMateInfo.hit}"></td>
-			</tr>
-			<tr>
-				<th colspan="2">여행 타이틀</th>
-				<td colspan="6" align="center" th:text="${tripMateInfo.mateTitle}">
-				</td>
-			</tr>
-			<tr>
-				<th colspan="1">여행 기간</th>
-				<td colspan="3" align="center">[[${#dates.format(tripMateInfo.startDay, 'yy년 MM월 dd일')}]] ~ [[${#dates.format(tripMateInfo.endDay, 'yy년 MM월 dd일')}]]</td>
-				<th width="100">모집 인원</th>
-				<td width="110" align="center" th:text="${tripMateInfo.mateMax}"></td>
-				<th width="100">신청 인원</th>
-				<td width="110" align="center" th:text="${tripMateInfo.applyNum}"></td>
-			</tr>
-			<tr>
-				<td colspan="8">
-				<th:textarea rows="30" th:utext="${tripMateInfo.mateContent}" readonly ></th:textarea>
-				</td>
-			</tr>
-		</table>
-	</div>
-	<div align="center">
-		<form id="sendData" action="/common/tripMateApplyForm" method="post">
-			<input type="hidden" class="postId" name="postId" th:value="${tripMateInfo.postId}">
-			<input type="hidden" name="mateWriter" th:value="${tripMateInfo.writerId}">
-			<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="submit" class="primary-btn">
-			신청하기</button>&nbsp;&nbsp;
-			<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="button" class="primary-btn" 
-			th:onclick="|location.href='@{/common/mateRecruitReportForm(postId=${tripMateInfo.postId})}'|">신고하기</button>&nbsp;&nbsp;
-			<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button" class="primary-btn" 
-			th:onclick="|location.href='@{/common/mateRecruitUpdateForm(postId=${tripMateInfo.postId})}'|">수정</button>&nbsp;&nbsp;
-			<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button" class="primary-btn" 
-			th:onclick="|location.href='@{/common/mateRecruitDelete(postId=${tripMateInfo.postId})}'|">삭제</button>&nbsp;&nbsp;
-			<button type="button" class="primary-btn" onclick="location.href='tripMateList'">목록으로</button>
-		</form>
-	</div>
-	<br>
-	<!-- 댓글 기능 -->
-	<div class="row">
-                <div class="col-lg-10 offset-lg-1">
-                    <div class="comment-option">
-                        <h4 class="commentCount">0건의 리뷰</h4>
-                        <hr id="afterComment">
-                        <!-- 댓글 -->
-                        <div class="comment-container" th:each="commentInfo : ${commentList}" th:attr="data-origin-comment-id=${commentInfo.originCommentId}">
-                        <div class="single-comment-item first-comment" th:if="${commentInfo.commentId}==${commentInfo.originCommentId}" >
-                            <div class="sc-text col-12">
+<div align="center">
+    <br>
+    <br>
+    <h1>여행 메이트 글 상세보기</h1>
+    <br>
+</div>
+<div id="ls2" align="center">
+    <table border="1" style="width: 80%;">
+        <tr>
+            <th width="70">여행 지역</th>
+            <td width="50" align="center" th:text="${tripMateInfo?.tripArea}"></td>
+            <th width="100">작성자</th>
+            <td width="150" align="center" th:text="${tripMateInfo.writerId}"></td>
+            <th width="100">등록일자</th>
+            <td width="150" align="center"
+                th:text="${#dates.format(tripMateInfo.writeDate, 'yy년 MM월 dd일 hh:mm:ss')}"></td>
+            <th width="100">조회수</th>
+            <td width="70" align="center" th:text="${tripMateInfo.hit}"></td>
+        </tr>
+        <tr>
+            <th colspan="2">여행 타이틀</th>
+            <td colspan="6" align="center" th:text="${tripMateInfo.mateTitle}">
+            </td>
+        </tr>
+        <tr>
+            <th colspan="1">여행 기간</th>
+            <td colspan="3" align="center">[[${#dates.format(tripMateInfo.startDay, 'yy년 MM월 dd일')}]] ~
+                [[${#dates.format(tripMateInfo.endDay, 'yy년 MM월 dd일')}]]
+            </td>
+            <th width="100">모집 인원</th>
+            <td width="110" align="center" th:text="${tripMateInfo.mateMax}"></td>
+            <th width="100">신청 인원</th>
+            <td width="110" align="center" th:text="${tripMateInfo.applyNum}"></td>
+        </tr>
+        <tr>
+            <td colspan="8">
+                <th:textarea rows="30" th:utext="${tripMateInfo.mateContent}" readonly></th:textarea>
+            </td>
+        </tr>
+    </table>
+</div>
+<div align="center">
+    <form id="sendData" action="/common/tripMateApplyForm" method="post">
+        <input type="hidden" class="postId" name="postId" th:value="${tripMateInfo.postId}">
+        <input type="hidden" name="mateWriter" th:value="${tripMateInfo.writerId}">
+        <button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="submit"
+                class="primary-btn">
+            신청하기
+        </button>&nbsp;&nbsp;
+        <button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="button"
+                class="primary-btn"
+                th:onclick="|location.href='@{/common/mateRecruitReportForm(postId=${tripMateInfo.postId})}'|">신고하기
+        </button>&nbsp;&nbsp;
+        <button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button"
+                class="primary-btn"
+                th:onclick="|location.href='@{/common/mateRecruitUpdateForm(postId=${tripMateInfo.postId})}'|">수정
+        </button>&nbsp;&nbsp;
+        <button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button"
+                class="primary-btn"
+                th:onclick="|location.href='@{/common/mateRecruitDelete(postId=${tripMateInfo.postId})}'|">삭제
+        </button>&nbsp;&nbsp;
+        <button type="button" class="primary-btn" onclick="location.href='tripMateList'">목록으로</button>
+    </form>
+</div>
+<br>
+<!-- 댓글 기능 -->
+<div class="row">
+    <div class="col-lg-10 offset-lg-1">
+        <div class="comment-option">
+            <h4 class="commentCount">0건의 리뷰</h4>
+            <hr id="afterComment">
+            <!-- 댓글 -->
+            <div class="comment-container" th:each="commentInfo : ${commentList}"
+                 th:attr="data-origin-comment-id=${commentInfo.originCommentId}, data-comment-id=${commentInfo.commentId}, data-writer-id=${commentInfo.writerId}">
+                <div class="single-comment-item first-comment"
+                     th:if="${commentInfo.commentId}==${commentInfo.originCommentId}">
+                    <div class="sc-text col-12">
+                        <span th:text="${#dates.format(commentInfo.registDate, 'yyyy.MM.dd')}"></span>
+                        <h5 th:text="${commentInfo.writerId}"></h5>
+                        <p th:text="${commentInfo.content}"></p>
+                        <div class="input-group mb-3 col-11">
+                            <input type="text" class="form-control insert-input" placeholder="답글 달기"
+                                   aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <button class="btn btn-outline-secondary insert-btn" type="button" id="button-addon2">등록</button>
+                        </div>
+                        &emsp;<a class="comment-btn update-btn">수정</a>
+                        &emsp;<a class="comment-btn del-btn">삭제</a>
+                    </div>
+                </div>
+                <!-- 대댓글 -->
+                <div class="row" th:if="${commentInfo.commentId}!=${commentInfo.originCommentId}">
+                    <div class="col-lg-11 offset-lg-1">
+                        <div class="single-comment-item reply-comment">
+                            <div class="sc-text">
                                 <span th:text="${#dates.format(commentInfo.registDate, 'yyyy.MM.dd')}"></span>
                                 <h5 th:text="${commentInfo.writerId}"></h5>
                                 <p th:text="${commentInfo.content}"></p>
-                            <div class="input-group mb-3 col-11">
-								<input type="text" class="form-control " placeholder="답글 달기" aria-label="Recipient's username" aria-describedby="button-addon2">
-								<button class="btn btn-outline-secondary" type="button" id="button-addon2">등록</button>
-							</div>
-							&emsp;<a href="#" class="comment-btn update-btn">수정</a>
-                            &emsp;<a href="#" class="comment-btn del-btn">삭제</a>
+                                &emsp;<a class="comment-btn update-btn">수정</a>
+                                &emsp;<a class="comment-btn del-btn">삭제</a>
                             </div>
                         </div>
-                        <!-- 대댓글 -->
-                        <div class="row" th:if="${commentInfo.commentId}!=${commentInfo.originCommentId}">
-                            <div class="col-lg-11 offset-lg-1">
-                                <div class="single-comment-item reply-comment">
-                                    <div class="sc-text">
-                                        <span th:text="${#dates.format(commentInfo.registDate, 'yyyy.MM.dd')}"></span>
-		                                <h5 th:text="${commentInfo.writerId}"></h5>
-		                                <p th:text="${commentInfo.content}"></p>
-                                        &emsp;<a href="#" class="comment-btn update-btn">수정</a>
-                                		&emsp;<a href="#" class="comment-btn del-btn">삭제</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-              
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-10 offset-lg-1">
-                    <div class="leave-comment">
-                        <h6>&nbsp;궁금한 점 남겨보아요</h6>
-                        <form action="#">
-                        	<input type="text" id="commentInput" placeholder="내용">
-						    <div class="btn-custom">
-						        <button type="button" class="site-btn" id="search">등록하기</button>
-						    </div>
-						</form>
-                    </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-10 offset-lg-1">
+        <div class="leave-comment">
+            <h6>&nbsp;궁금한 점 남겨보아요</h6>
+            <form action="#">
+                <input type="text" id="commentInput" placeholder="내용">
+                <div class="btn-custom">
+                    <button type="button" class="site-btn" id="search">등록하기</button>
                 </div>
-            </div>
-	<div id="cmtL">
-	</div>
-	<script>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="cmtL">
+</div>
+<script th:inline="javascript">
 
-	//댓글 등록
-	$(document).on('click', '#search', function() {
-		
+    //댓글 등록
+    $(document).on('click', '#search', function () {
+
         let postId = $('.postId').val();
-        let originCommentId = $('.comment-container').data('originCommentId');
-        let content=$('#commentInput').val();
-        
-        
+        let content = $('#commentInput').val();
+
         let commentContent = $('#commentInput').val();
-        if(commentContent == null || commentContent.replaceAll(' ', '') == '') {
+        if (commentContent == null || commentContent.replaceAll(' ', '') == '') {
             alert("내용을 입력해주세요.");
             return;
-            
-        
+
+
         }
         //  ajax 들어가서 로그인 되어있는지 먼저 확인 - 안되면 바로 fail throw new Exception(); 예외 일부러 발생시켜주기
-        $.ajax({
-            type: 'POST',
-            url: '/insertComment',
-            data : {
-            	'postId' : postId,
-                'originCommentId' : originCommentId,
-                'content' : content
+        insertComment(postId, content, function (data) {
+            if (data) {
+                let totalCount = $('.commentCount').text();
+                $('.commentCount').html(data.totalCount + '개의 댓글');
+
+                clearComment();
+                appendComment(data.commentList);
+
+                alert('댓글이 등록되었습니다.');
+            } else {
+
             }
-        })
-        .done(function (data, textStatus, jqXHR){
-            console.log('done');
-
-            let totalCount=$('.commentCount').text(data.totalCount + '개의 리뷰');
-            $('.commentCount').html(totalCount);
-            
-            clearInput();
-
-            alert('댓글이 등록되었습니다.');
-        })
-        .fail(function (jqXHR, textStatus, errorThrown) {
-            console.log('fail');
-
-            let errorMessage = JSON.parse(jqXHR.responseText).message;
-            if(errorMessage == 'no login') {
-                alert('로그인을 해주세요.');
-            } else if(errorMessage == 'not insert') {
-                alert('댓글이 등록되지 않았습니다.');
-            }
-        })
-
+        });
     })
 
-	function clearInput() {
-            $('#commentInput').val('');
-        }
-	
-	function appendComment(data, postId) {
+	$(document).on('click', '.del-btn', function() {
+        let postId = $('.postId').val();
+		let commentId = $(this).parents('.comment-container').data('commentId');
+		let writerId = $(this).parents('.comment-container').data('writerId');
+
+		deleteComment(postId, commentId, writerId, function(data) {
+			if(data) {
+				let totalCount = $('.commentCount').text();
+				$('.commentCount').html(data.totalCount + '개의 댓글');
+
+				clearComment();
+				appendComment(data.commentList);
+
+				alert('댓글이 삭제되었습니다.');
+			} else {
+
+			}
+		});
+	})
+
+    $(document).on('click', '.insert-btn', function() {
+        let postId = $('.postId').val();
+        let originCommentId = $(this).parents('.comment-container').data('originCommentId');
+        let content = $(this).siblings('.insert-input').val();
+
+        insertCommentReply(postId, originCommentId, content, function(data) {
+           if(data) {
+               console.log('data');
+               console.log(data);
+               let totalCount = $('.commentCount').text();
+               $('.commentCount').html(data.totalCount + '개의 댓글');
+
+               clearComment();
+               appendComment(data.commentList);
+
+               alert('대댓글이 등록되었습니다.');
+           } else {
+
+           }
+        });
+    })
+
+    function clearComment() {
+        $('.comment-container').remove();
+    }
+
+    function appendComment(data) {
         let node = ``;
-        for(let i = 0; i < data.length; i++) {
-        	if (data[i].commentId == data[i].originCommentId) {
-        		node = `
-                <div class="comment-container">
-                    <div class="single-comment-item first-comment">
-                        <div class="sc-text col-12">
-                            <span>${data[i].registDate}</span>
-                            <h5>${data[i].writerId}</h5>
-                            <p>${data[i].content}</p>
-                            <div class="input-group mb-3 col-11">
-                                <input type="text" class="form-control" placeholder="답글 달기" aria-label="Recipient's username" aria-describedby="button-addon2">
-                                <button class="btn btn-outline-secondary" type="button" id="button-addon2">등록</button>
-                            </div>
-                            &emsp;<a href="#" class="comment-btn update-btn">수정</a>
-                            &emsp;<a href="#" class="comment-btn del-btn">삭제</a>
-                        </div>
-                    </div>
-                </div>
-            `;
-        	}else{
-        		node = `
+        for (let i = 0; i < data.length; i++) {
+            let registDate = data[i].registDate.toLocaleString('ko-KR').substr(0, 10);
+			node += `
+				<div class="comment-container" data-origin-comment-id="${data[i].originCommentId}" data-comment-id="${data[i].commentId}" data-writer-id="${data[i].writerId}" >
+			`;
+            if (data[i].commentId == data[i].originCommentId) {
+                node += `
+					<div class="single-comment-item first-comment">
+						<div class="sc-text col-12">
+							<span>${registDate}</span>
+							<h5>${data[i].writerId}</h5>
+							<p>${data[i].content}</p>
+							<div class="input-group mb-3 col-11">
+								<input type="text" class="form-control insert-input" placeholder="답글 달기" aria-label="Recipient's username" aria-describedby="button-addon2">
+								<button class="btn btn-outline-secondary insert-btn" type="button" id="button-addon2">등록</button>
+							</div>
+							&emsp;<a class="comment-btn update-btn">수정</a>
+							<a class="comment-btn del-btn">삭제</a>
+						</div>
+					</div>
+            	`;
+            } else {
+                node += `
                     <div class="row">
                         <div class="col-lg-11 offset-lg-1">
                             <div class="single-comment-item reply-comment">
                                 <div class="sc-text">
-                                    <span>${data[i].registDate}</span>
+                                    <span>${registDate}</span>
                                     <h5>${data[i].writerId}</h5>
                                     <p>${data[i].content}</p>
-                                    &emsp;<a href="#" class="comment-btn update-btn">수정</a>
-                                    &emsp;<a href="#" class="comment-btn del-btn">삭제</a>
+                                    <a class="comment-btn update-btn">수정</a>
+                                    <a class="comment-btn del-btn">삭제</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 `;
             }
-            
+			node += `
+				</div>
+			`;
         }
-        $('#afterComment').before(node);
+        $('#afterComment').after(node);
     }
-	</script>
+
+    function insertComment(postId, content, callback) {
+        $.ajax({
+            type: 'POST',
+            url: '/insertComment',
+            data: {
+                'postId': postId,
+                'content': content
+            }
+        })
+		.done(function (data, textStatus, jqXHR) {
+			console.log('done');
+
+			callback(data);
+		})
+		.fail(function (jqXHR, textStatus, errorThrown) {
+			console.log('fail');
+
+			let errorMessage = JSON.parse(jqXHR.responseText).message;
+			if (errorMessage == 'no login') {
+				alert('로그인을 해주세요.');
+			} else if (errorMessage == 'not insert') {
+				alert('댓글이 등록되지 않았습니다.');
+			}
+		})
+    }
+
+	function deleteComment(postId, commentId, writerId, callback) {
+		$.ajax({
+			type: 'DELETE',
+			url: '/deleteComment',
+			data: {
+                'postId': postId,
+				'commentId': commentId,
+				'writerId': writerId
+			}
+		})
+		.done(function (data, textStatus, jqXHR) {
+			console.log('done');
+
+			callback(data);
+		})
+		.fail(function (jqXHR, textStatus, errorThrown) {
+			console.log('fail');
+
+			let errorMessage = JSON.parse(jqXHR.responseText).message;
+			if (errorMessage == 'no login') {
+				alert('로그인을 해주세요.');
+			} else if (errorMessage == 'not insert') {
+				alert('댓글이 등록되지 않았습니다.');
+			} else if(errorMessage == 'not same') {
+                alert('본인의 댓글만 삭제할 수 있습니다.');
+            }
+		})
+	}
+
+    function insertCommentReply(postId, originCommentId, content, callback) {
+        $.ajax({
+            type: 'POST',
+            url: '/insertCommentReply',
+            data: {
+                'postId': postId,
+                'originCommentId': originCommentId,
+                'content': content
+            }
+        })
+        .done(function (data, textStatus, jqXHR) {
+            console.log('done');
+
+            callback(data);
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            console.log('fail');
+
+            let errorMessage = JSON.parse(jqXHR.responseText).message;
+            if (errorMessage == 'no login') {
+                alert('로그인을 해주세요.');
+            } else if (errorMessage == 'not insert') {
+                alert('대댓글이 등록되지 않았습니다.');
+            }
+        })
+    }
+
+</script>
 </body>
 </html>

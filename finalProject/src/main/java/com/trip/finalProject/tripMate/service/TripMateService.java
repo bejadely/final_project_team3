@@ -74,5 +74,8 @@ public interface TripMateService {
 	public List<PostCommentVO> getCommentInfo(TripMateVO tripMateVO);
 
 	public Map<String, Object> insertCommentInfo(PostCommentVO postCommentVO) throws Exception;
-	
+
+    Map<String, Object> deleteComment(PostCommentVO postCommentVO) throws Exception;
+
+	public Map<String, Object> insertCommentReplyInfo(PostCommentVO postCommentVO) throws Exception;
 }
