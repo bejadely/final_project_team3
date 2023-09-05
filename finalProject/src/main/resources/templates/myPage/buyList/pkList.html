@@ -20,8 +20,6 @@ table, th,td {
 	text-align: center;
 	margin: 0 auto;
 }
-
-}
 </style>
 <script>
 $(document).ready(function() {
@@ -41,7 +39,7 @@ $(document).ready(function() {
 	<th:block layout:fragment="script"></th:block>
 	<div layout:fragment="content" style="text-align: center;">
 	<form>
-		<h5>좋아요 목록</h5>
+		<h5>구매 목록</h5>
 		<button type="button" id="pk">패키지</button>
 		<button type="button" id="sp">특산물</button>
 		<table>
@@ -71,13 +69,13 @@ $(document).ready(function() {
 			</tbody>
 			</table>
 		</form>
-		<div>
+		<div class="property-pagination">
 			<th:block th:if="${paging.startPage != 1}">
-				<a th:href="@{common/buyPkList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
+				<a th:href="@{/common/buyPkList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
 			</th:block>
 			<th:block th:if="${paging.startPage != 1}">
 				<a
-					th:href="@{common/buyPkList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+					th:href="@{/common/buyPkList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 			</th:block>
 			<th:block
 				th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
@@ -86,17 +84,17 @@ $(document).ready(function() {
 				</th:block>
 				<th:block th:if="${p ne paging.nowPage}">
 					<a
-						th:href="@{common/buyPkList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
+						th:href="@{/common/buyPkList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
 						th:text="${p}"></a>
 				</th:block>
 			</th:block>
 			<th:block th:if="${paging.endPage != paging.lastPage}">
 				<a
-					th:href="@{common/buyPkList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					th:href="@{/common/buyPkList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 			</th:block>
 			<th:block th:if="${paging.endPage != paging.lastPage}">
 				<a
-					th:href="@{common/buyPkList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
+					th:href="@{/common/buyPkList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
 			</th:block>
 		</div>
 	</div>

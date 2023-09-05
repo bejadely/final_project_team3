@@ -19,7 +19,7 @@
 </head>
 <body>
 	<div align="center">
-		<form name="tripData" method="post" th:object="${tripVO}">
+		<form id="tripData" method="post" th:object="${tripVO}">
 			<!-- 이전 페이지에서 입력한 정보를 가져와서 hidden으로 여행경로 최종 입력시 새로 추가된 테이터와 함께 보냄 -->
 			<input type="hidden" name="writerId" th:value="${session.sessionId}">
             <input type="hidden" name="postId" th:value="${tripVO.postId}">
@@ -62,32 +62,22 @@
 		<br>
 		<div align="center">
 			<!-- 임시저장 -> 임시저장 -->
-            <button type="submit" id="tsTripInsert">임시저장</button>
+            <button type="button" id="tsTripInsert">임시저장</button>
             <!-- 임시저장 -> 저장 -->
-            <button type="submit" id="tripInsert">등록</button>
+            <button type="button" id="tripInsert">등록</button>
             <button type="reset">취소</button>
             <!-- 임시저장 -> 해당 데이터 삭제 -->
             <!-- 목으로 버튼 클릭시 관련된 데이터들을 모두 삭제하고 목록 페이지로 이동 -->
-            <button type="button" onclick="location.href='tripRecordList'">목록으로</button>			
+            <form method="get">
+            	<input type="hidden" name="postId" th:value="${tripVO.postId}">
+	            <button type="button" th:onclick="|location.href='@{/common/tripRecordDelete(postId=${tripVO.postId})}'|">목록으로</button>			
+			</form>
 		</div>
 	</div>
 	
     <script>
     	//dom을 실행하고 해당 function 실행
     	$(document).ready(function() {
-    	
-    	//저장, 임시저장 버튼 클릭시 id에 맞게 해당 action이 발생함
-        //여행기록 임시저장
-        $("#tsTripInsert").click(function() {
-           $("form").attr("action", "/tsTripRecordInsertUp");
-           
-           
-        });
-        
-        //여행기록 저장
-        $("#tripInsert").click(function() {
-           $("form").attr("action", "/tripRecordInsertUp");
-        });
     	
  		//이전 페이지에서 받아온 날짜 데이터를 활용해서 두 일수 사이의 값을 계산
    		var inDate = "[[ ${#dates.format(tripVO.startDay, 'yyyy-MM-dd')} ]]"; 
@@ -104,7 +94,6 @@
 			return Math.abs(diffDate / (1000 * 60 * 60 * 24));
 		}
 		
-		
 		//두 날짜 사이의 일수
 		//여행 시작일도 포함이 되어야 함으로 결과값에 +1을 해줘야함.
 		var resdays = getDateDiff(inDate, outDate) + 1;
@@ -112,11 +101,14 @@
 		//이전 페이지에서 선택한 일정 만큼의 여행경로, 메모를 동적으로 추가해줌
         var inDate = "[[ ${#dates.format(tripVO.startDay, 'yyyy-MM-dd')} ]]"; 
 		var postData = "[[${tripVO.postId}]]";
+		
+		var memoDataArry = [];
 		for (let i = 0; i < resdays; i++) {
 			// 여행기록 작성시 가져온 start데이터를 통해 여행일을 각각 나타냄
 			const date3 = new Date(inDate);
 			//해당 구문을 통해 +1씩 증가시킴
 		    date3.setDate(date3.getDate() + i);
+			
        	    let addSchedule = `
        	    					<form="mmd${i+1}" method="post">
        	        					<div id="schedule${i+1}">
@@ -131,41 +123,38 @@
        	        						<br>
        	            					<textarea name="content" id="content${i+1}" cols="80" rows="5" placeholder="여행 메모를 입력해주세요." style="display:none;"></textarea>
        	            					<br>
-       	            					<button type="button" class="sendMemo" style="display:none;">메모 저장</button>
-       	            					<br>
        	            					<div class="showMapData">
        	            						
        	            					</div>
        	            					<button class="mapping" type="button" style="display:block;"> 경로 선택 완료 </button>
        	            					<button class="showShow" type="button" style="display:none;"> 경로 보기 </button>
-       	            					<button class="updateMapping" type="button" style="display:none;"> 경로 수정 </button>
+       	            					<button class="modifyMapping" type="button" style="display:none;"> 경로 수정 </button>
        	            					<br>
        	        					</div>
        	     					</form>
        	    				`;
+        		 
        	    $('#tripSchedule').append(addSchedule);
+     	    
 		}
+		
 		
 		$(".openMemo").click(function(){
 			//가장 가까운 textarea의 스타일 속성이 display none에서 block로 변경
 			$(this).siblings("textarea").attr('style', 'display:block;');
 			$(this).attr('style', 'display:none;');
-			$(this).siblings(".sendMemo").attr('style', 'display:block;');
-			var content = $(this).next().attr("value");
 			
 		})
 		
 		$(".mapping").click(function() {
 			var tDate = $(this).parent().find("input[name=tripDate]").attr("value");
-			console.log(tDate);
-			
 			removeMarker();
 			
 			//선 삭제를 위한 구문이지만 삭제가 안됨 수정해야함
 			
 			$(this).attr('style', 'display:none;');
 			$(this).siblings(".showShow").attr('style', 'display:block;');
-			$(this).siblings(".updateMapping").attr('style', 'display:block;');
+			$(this).siblings(".modifyMapping").attr('style', 'display:block;');
 			$(this).siblings(".keyword").attr('style', 'display:none;');
 			$(this).siblings(".searchPlaces").attr('style', 'display:none;');
     		var mappingCoordinates = $(this).prev(".showMapData");
@@ -175,7 +164,6 @@
     		mappingCoordinates.html(""); 
     
     		var mapDataArry = [];
-    		//console.log("test1" + mappingString);	
     		for (var i = 0; i < mapping.length; i++) {
         		 var mappingObj = mapping[i];
         
@@ -200,26 +188,83 @@
             						postId: postData,
             						tripDate: tDate
         						  };
-        		 //console.log(mapDataObj);
       			 //객체를 배열로 변환
         		 mapDataArry.push(mapDataObj);
-        		 //console.log(mapDataArry);
     		 }
-    		 //console.log(mapDataObj);
     		 sendMappingData(mapDataArry);
-    		 //console.log(JSON.stringify(mapDataArry));
     		 
     		 //저장한 여행경로를 초기화 시켜줌
     		 mapping = [];
-    		 deleteTripMarker();
     		 //검색결과 리스트 초기화
     		 $('#placesList').empty();
 		 });
 		
+		//여행경로 수정버튼 클릭시 여행경로를 삭제 후 다시 저장해야함
+		$(".modifyMapping").click(function(){
+			tDate = $(this).parent().find("input[name=tripDate]").attr("value");
+			$.ajax({
+				url: '/common/mapDeleteList',
+				type: 'post',
+				data: { 
+						postId : postData,
+						tripDate : tDate 
+					  }
+				
+			}).done(data => {
+				//console.log("경로 삭제 완료");
+				mapDb = data.tripMap;
+				
+				//ajax를 통해 받은 여행경로 데이터의 첫번째 위도와 경도를 찾아서 그 값을 지도의 중심좌표로 설정
+				var firstMapLat = mapDb[0].mapLat;
+		        var firstMapLng = mapDb[0].mapLng;
+		        
+		        
+			}).fail(reject => console.log(reject));
+			$(this).siblings(".keyword").attr('style', 'display:block;');
+			$(this).siblings(".searchPlaces").attr('style', 'display:block;');
+			$(this).siblings(".mapping").attr('style', 'display:block;');
+			
+		})
+		
+		//경로보기 버튼 클릭시 지도에 해당 일자의 여행경로를 나타냄
+		$(".showShow").click(function(){
+			
+			//날짜 형식을 db에 저장된 형식과 같게 yy/MM/dd형식으로 변경
+			tDate = $(this).parent().find("input[name=tripDate]").attr("value");
+			
+			var parsedDate = new Date(tDate);
+			var year = (parsedDate.getYear() - 100); // 연도에서 뒤의 2자리 추출
+			var month = (parsedDate.getMonth() + 1); // 월 (0부터 시작하므로 1을 더함)
+			var day = parsedDate.getDate(); // 일
+
+			// 월과 일을 두 자리로 만들기 (0을 추가)
+			if (month < 10) {
+			  month = '0' + month;
+			}
+			if (day < 10) {
+			  day = '0' + day;
+			}
+
+			var formattedDate = year + '/' + month + '/' + day;
+			
+			$.ajax({
+				url: '/mapInfoList',
+				type: 'post',
+				data: {
+						postId : postData,
+						tripDate : formattedDate
+					  }
+				
+			}).done(data => {
+				console.log(data);
+			}).fail(reject => console.log(reject));
+			
+		});
+		
 		
 		//ajax를 통해 해당 일자의 여행경로를 db에 저장
 		function sendMappingData(data) {   
-         	fetch('/tripMappingInsert', {
+         	fetch('/common/tripMappingInsert', {
             	method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -238,8 +283,28 @@
         }
 		
 		//ajax를 통해 해당 일자의 여행메모를 db에 저장
-		function sendMemoData(data) {   
-         	fetch('/tripMemoInsert', {
+		function sendMemoData(data) {  
+			
+			const date4 = new Date(inDate);
+			
+			for(var i=0; i<resdays; i++){
+				//해당 구문을 통해 +1씩 증가시킴
+		    	date4.setDate(date4.getDate() + i);
+		    	date4.toISOString().split('T')[0]
+				var textareaId = $(`#content${i+1}`);
+				var textareaValue = textareaId.val();
+       	 		var memoDataObj = {
+       	 			
+					postId: postData,
+					tripDate: date4.toISOString().split('T')[0],
+					content: textareaValue
+				  
+       	 		};
+       			//객체를 배열로 변환
+        		memoDataArry.push(memoDataObj);
+			}
+       		
+         	fetch('/common/tripMemoInsert', {
             	method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -257,8 +322,18 @@
             });
         }
 		
-		
-		
+		//저장, 임시저장 버튼 클릭시 id에 맞게 해당 action이 발생함
+        //여행기록 임시저장
+        $("#tsTripInsert").click(function() {
+           $("#tripData").attr("action", "/common/tsTripRecordInsertUp").submit();;
+           
+        });
+        
+        //여행기록 저장
+        $("#tripInsert").click(function() {
+           $("#tripData").attr("action", "/common/tripRecordInsertUp").submit();;
+           sendMemoData(memoDataArry);
+        });
 		
 		//지도 관련 스크립트 부분입니다.
 		// 마커를 담는 배열

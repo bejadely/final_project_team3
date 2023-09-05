@@ -38,11 +38,21 @@ $(document).ready(function() {
 	       var prevPageUrl = location.href = 'cartList?nowPage=' + prevPage + '&cntPerPage=' + selected;
 	       window.location.href = prevPageUrl; // 자동으로 이동
 	   }
+	   $("#comButton").click(function(){
+		   location.href='/common/myPageMate'
+	   })
+	   $("#appButton").click(function(){
+		   location.href='/common/myPageAppMate'
+	   })
 	});
 </script>
 </head>
 <body>
 <div layout:fragment="content">
+	<div>
+		<button type="button" id="comButton">작성한 여행</button>
+		<button type="button" id="appButton">신청한 여행</button>
+	</div>
 	<section>
 		<!-- 여행기록 section-->
 		<table>
@@ -70,27 +80,27 @@ $(document).ready(function() {
 			</tbody>
 			</table>
 			<!-- 여행기록 페이징 -->
-			<div class="container" style="text-align: center">
+			<div style="text-align: center" class="property-pagination">
 				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{myPageNotTrip(nowPage=1, cntPerPage=${paging.cntPerPage})}" ><<</a>
+					<a th:href="@{/common/myPageMate(nowPage=1, cntPerPage=${paging.cntPerPage})}" ><<</a>
 				</th:block>
 				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{myPageNotTrip(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+					<a th:href="@{/common/myPageMate(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 				</th:block>
 				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
 					<th:block th:if="${p eq paging.nowPage}">
 						<b th:text="${p}"></b>
 					</th:block>
 					<th:block th:if="${p ne paging.nowPage}">
-						<a th:href="@{myPageNotTrip(nowPage=${p}, cntPerPage=${paging.cntPerPage})}" th:text="${p}"></a>
+						<a th:href="@{/common/myPageMate(nowPage=${p}, cntPerPage=${paging.cntPerPage})}" th:text="${p}"></a>
 					</th:block>
 				</th:block>
 				<th:block
 					th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-					<a th:href="@{myPageNotTrip(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					<a th:href="@{/common/myPageMate(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 				</th:block>
 				<th:block th:if="${paging.endPage != paging.lastPage}">
-					<a th:href="@{myPageNotTrip(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
+					<a th:href="@{/common/myPageMate(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
 				</th:block>
 			</div>
 		</section>

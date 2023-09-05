@@ -1,7 +1,6 @@
 package com.trip.finalProject.tripMate.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.trip.finalProject.common.PagingVO;
 
@@ -69,5 +68,8 @@ public interface TripMateService {
 	
 	//참여한 메이트 정보 불러오기
 	public TripMateVO memberInfo(TripMateVO tripMateVO);
+
+	//댓글, 대댓글 가져오기
+	public List<PostCommentVO> getCommentInfo(TripMateVO tripMateVO);
 	
 }
