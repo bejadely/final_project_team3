@@ -16,7 +16,7 @@
 		FROM(SELECT ROWNUM rn, a.*
 			 FROM(SELECT *
 				  FROM cart
-				  WHERE post_id LIKE '${cartVO.postId}%'
+				  WHERE post_id LIKE '${cartVO.postId}%' AND delete_type ='Y'
 				  ORDER BY reg_date DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
  	</select>
@@ -39,6 +39,7 @@
  				,price
  				,member_id
  				,reg_date
+ 				,delete_type
  				)
  				VALUES
  				(
@@ -50,6 +51,7 @@
  				,#{price}
  				,#{memberId}
  				,sysdate
+ 				,'N'
  				)
  	</insert>
  	<!-- 삭제 -->
@@ -70,5 +72,15 @@
  	<select id="cartInfo">
  		SELECT *
  		FROM cart
+ 		WHERE cart_id = #{cartId}
  	</select>
+ 	
+ 	<!-- 카트 soft delete -->
+ 	<update id="deleteCart" parameterType="CartVO">
+ 	update cart
+ 	<set>
+ 		delete_type='Y'
+ 	</set>
+ 	WHERE cart_id = #{cartId}
+ 	</update>
  </mapper>
