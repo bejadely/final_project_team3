@@ -126,7 +126,7 @@ span {
 	left: 50px;
 }
 
-#guide {
+#updatePasword {
 	left: 450px;
 }
 
@@ -148,12 +148,12 @@ span {
 				<div id="btn"></div>
 				<button type="button" class="togglebtn" onclick="member()">&nbsp;&nbsp;아이디
 					찾기&nbsp;&nbsp;</button>
-				<button type="button" class="togglebtn" onclick="guide()">&nbsp;&nbsp;&nbsp;비밀번호
+				<button type="button" class="togglebtn" onclick="updatePasword()">&nbsp;&nbsp;&nbsp;비밀번호
 					찾기</button>
 			</div>
 
 			<!-- 아이디 찾기 -->
-			<form id="member" action="" method="post" class="input-group">
+			<form id="member"  class="input-group">
 				<div>
 					<h3>아이디 찾기</h3>
 					<p style="font-size: 95%;">"계정에 등록된 휴대폰 번호를 인증하시면 사용중인 계정 아이디를
@@ -185,8 +185,8 @@ span {
 				</div>
 			</form>
 
-			<!--  가이드 로그인 -->
-			<form id="guide" action="/loginProc" method="post" class="input-group">
+			<!--  비밀번호 찾기 -->
+			<form id="updatePasword" action="/updatePasword" method="post" class="input-group">
 				<div>
 					<h3>비밀번호 찾기</h3>
 					<p style="font-size: 95%;">"계정에 등록된 이메일 인증을 해주세요. "</p>
@@ -194,13 +194,15 @@ span {
 				
 				<!-- required  -->
 				<font id="checkId1" size="2"></font>
+				
 				<div id="mail_input" name="mail_input">
 					<!--서버로 보낼 데이터 (input에 넣은 이메일을 서버로 보냄)  -->
-					<input type="text" name="mail" id="mail" value=""
+					<input  type="text" name="email" id="mail" value=""
 						placeholder="이메일 입력" style="width: 60%; , float: left; margin-right: 5px;"  class="form-control">
 					<button type="button" id="sendBtn" name="sendBtn"
 						onclick="sendNumber()" class="btn btn-default">인증요청</button>
 				</div>
+				
 				<br>
 				<div id="mail_number" name="mail_number" style="display: none">
 					<input type="text" name="number" id="number"  style="width: 60%; , float: left; margin-right: 5px;"class="form-control"  placeholder="인증번호 입력">
@@ -217,19 +219,19 @@ span {
 	</div>
 
 	<script>
+	//슬라이드
 		var v = document.getElementById("kakao");
 		var w = document.getElementById("naver");
 		var x = document.getElementById("member");
-		var y = document.getElementById("guide");
+		var y = document.getElementById("updatePasword");
 		var z = document.getElementById("btn");
 		function member() {
-			/*       v.style.left = "500px";
-			      w.style.left = "500px"; */
 			x.style.left = "50px";
 			y.style.left = "450px";
 			z.style.left = "0";
 		}
-		function guide() {
+		
+		function updatePasword() {
 			x.style.left = "-400px";
 			y.style.left = "50px";
 			z.style.left = "150px";
@@ -243,13 +245,8 @@ span {
 			//$('#member').on('submit', loginAccountcheck);
 			//$('#guide').on('submit', loginAccountcheck1);
 			findAccountId();
-			UpdatePassword();
-			
+			UpdatePasswordForm();			
 		});
-
-		
-
-	
 	</script>
 
 
@@ -263,11 +260,9 @@ span {
 		    	  ajaxApprove();
 		    	  sendCode();		    	  
 		    	  //아이디 찾기
-		    	  //$('#phoneNumber').on('submit', findAccountId);
-		    	 
+		    	  //$('#phoneNumber').on('submit', findAccountId);	    	 
 		      });
-		});
-		      
+		});	      
 	
 		   function ajaxApprove(){
 			  console.log("sms 버튼 눌렀다.");
@@ -295,18 +290,14 @@ span {
 		      .fail( reject => console.log(reject));
 		   };
 		   
-	 
-		   
+
 		   
 		   //코드 보내고 활성화 시킴
 		   function sendCode(){
 			    $("#codeCheck").css("display","block");
 			    }
-			
-
-		
-		function confirmCode(){
-			   
+		   
+			function confirmCode(){			   
 			   var number1 = $("#smsCode").val();
 			   var number2 = $("#numValue").val();
 			   
@@ -321,12 +312,12 @@ span {
 		        }
 		    }
 		
+		
 		//아작스로 인증된 휴대전화 번호에 맞는 아이디 띄우기
 	        function findAccountId(){      
 	        //preventDefault();            
 	        let phoneNumberCheck = document.getElementById("Number").value; // input_id에 입력되는 값	
 	        console.log(phoneNumberCheck);
-		
 		
 	      $.ajax({
 	         /* url : "IdCheckService", */
@@ -347,13 +338,11 @@ span {
 	            } else{   
 	               //event.unbind();
 	               $("#checkId").html('회원님의 아이디는<h3 style="display: inline;">'+result.memberId+'</h3>입니다.');
-	               $("#checkId").attr('color','green');
-	             
+	               $("#checkId").attr('color','green');	             
 	               //$('#guide')[0].submit();
 	            }  
 	         },
-	         error : function(){
-	            
+	         error : function(){	            
 	            //alert("서버요청실패");
 	         }
 	      });
@@ -363,7 +352,7 @@ span {
 		
 		
 	     
-	      
+	      // 이메일 코드 인증
 	            function sendNumber(){
 	                $("#mail_number").css("display","block");
 	                $.ajax({
@@ -385,10 +374,16 @@ span {
 
 	                if(number1 == number2){
 	                    alert("인증되었습니다.");
-	                    UpdatePassword();
+	                    var updateForm  = document .getElementById( "updatePasword" );
+	                    updateForm.submit();
 	                }else{
 	                    alert("번호가 다릅니다.");
 	                }
+	            }
+	            
+	            function UpdatePassword(){
+	
+	            	
 	            }
 	      
 	</script>
