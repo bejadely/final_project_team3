@@ -40,4 +40,7 @@ public interface MemberService {
 	
 	//휴대폰 번호로 계정 찾기
 	MemberVO phoneNumberCheck(String phoneNumber);
+	
+	//비밀번호 찾기 중 비밀번호 업데이트
+	public MemberVO editPassword(MemberVO vo);
 }
