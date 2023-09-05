@@ -43,7 +43,7 @@ public class TripController {
 	}
 	
 	//여행기록 개인 조회/계획중 여행 - myPgae(재운)
-	@GetMapping("myPageTrip")
+	@GetMapping("/common/myPageTrip")
 	public String maPageTrip(Model model
 			  ,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 			  ,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
@@ -58,7 +58,7 @@ public class TripController {
 	}
 	
 	//여행기록 개인 조회/임시저장 - myPgae(재운)
-	@GetMapping("myPageNotTrip")
+	@GetMapping("/common/myPageNotTrip")
 	public String maPageNotTrip(Model model
 			,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 			,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
@@ -73,7 +73,7 @@ public class TripController {
 	}
 	
 	//여행기록 개인 조회/완료된 여행 - myPgae(재운)
-	@GetMapping("myPageComTrip")
+	@GetMapping("/common/myPageComTrip")
 	public String maPageComTrip(Model model
 			,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 			,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {

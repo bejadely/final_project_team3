@@ -283,8 +283,6 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
         let postIdData = check.data("postid");
         let cartId = check.closest("tr").find("input[type=hidden]").val();
         let url = "/common/cartDelete?cartId=" + cartId; // Use 'cartId'
-      console.log(url)
-
         fetch(url)
             .then(response => response.text())
             .then(text => {
