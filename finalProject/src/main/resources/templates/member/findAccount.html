@@ -3,7 +3,8 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="@{layouts/default_layout}" layout:fragment="content">
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
 <head>
 <meta charset="UTF-8">
@@ -93,7 +94,7 @@
 	padding: 10px 0;
 	/* margin: 5px 0; */
 	border: none;
-	border-bottom:  solid #999;
+	border-bottom: solid #999;
 	outline: none;
 	background: transparent;
 }
@@ -152,56 +153,64 @@ span {
 			</div>
 
 			<!-- 아이디 찾기 -->
-			<form id="member" action="" method="post"
-				class="input-group">
-			<div>
-			<h3>아이디 찾기</h3>
-			<p>계정에 등록된 휴대폰 번호를 인증하시면 사용중인 아이디를 알려드립니다."  </p>
-			</div>
-			<font id="checkId" size="2"></font>
+			<form id="member" action="" method="post" class="input-group">
+				<div>
+					<h3>아이디 찾기</h3>
+					<p style="font-size: 95%;">"계정에 등록된 휴대폰 번호를 인증하시면 사용중인 계정 아이디를
+						알려드려요."</p>
+				</div>
+				<font id="checkId" size="2"></font>
 				<!-- required  -->
 				<font id="" size="2"></font>
 				<div class="mb-3">
-					<label for="" class="form-label"  style="float:left; margin-bottom: 0;">전화번호 &nbsp; </label>
-					<br>
-					<input type="text" class="form-control" name="to" id="phonenumber"
-						placeholder="전화번호를 입력하세요"  style="width: 60%;, float:left; margin-right:5px;" required>
-						
-					<button style="float:left, margin-left:5px; " type="button" id="approveButton" class="btn btn-default" >인증 요청
-						</button>
-					
+					<br> <label for="" class="form-label"
+						style="float: left; margin-bottom: 0;">전화번호 &nbsp; </label> <br>
+					<input type="text" class="form-control" name="to" id="Number"
+						placeholder="전화번호를 입력하세요"
+						style="width: 60%; , float: left; margin-right: 5px;" required>
+
+					<button style="float: left, margin-left:5px;" type="button"
+						id="approveButton" class="btn btn-default">인증 요청</button>
+
 				</div>
 				<div id="codeCheck" class="mb-3" style="display: none">
 					<input type="text" class="form-control" name="smsCode" id="smsCode"
-						placeholder="코드 입력하세요"   style="width: 60%;, float:left; margin-right:5px;" required>
-					
-					<button  style="float:left, margin-left:5px; "  type="button" id="code" name="codeConfirmBtn"
-						class="btn btn-default" onclick="confirmCode()" value="">인증
-						</button>
-						<br>
-						<br>
+						placeholder="코드 입력하세요"
+						style="width: 60%; , float: left; margin-right: 5px;" required>
+
+					<button style="float: left, margin-left:5px;" type="button"
+						id="code" name="codeConfirmBtn" class="btn btn-default"
+						onclick="confirmCode()" value="">인증</button>
+					<br> <br>
 				</div>
 			</form>
 
 			<!--  가이드 로그인 -->
-			<form id="guide" action="/loginProc" method="post"
-				class="input-group">
-				<input type="text" class="input-field" name="memberId"
-					placeholder="아이디" id="id1">
-				<!-- required -->
-				<input type="password" class="input-field" name="password"
-					placeholder="비밀번호" id="pw1">
+			<form id="guide" action="/loginProc" method="post" class="input-group">
+				<div>
+					<h3>비밀번호 찾기</h3>
+					<p style="font-size: 95%;">"계정에 등록된 이메일 인증을 해주세요. "</p>
+				</div>
+				
 				<!-- required  -->
 				<font id="checkId1" size="2"></font>
-				<div id="find">
-					<a th:href="@{/member/memberInsert}" class="property-sub">아이디
-						찾기</a> <span>&nbsp;|&nbsp;</span> <a th:href="@{/member/memberInsert}"
-						class="property-sub">비밀번호 찾기</a>
+				<div id="mail_input" name="mail_input">
+					<!--서버로 보낼 데이터 (input에 넣은 이메일을 서버로 보냄)  -->
+					<input type="text" name="mail" id="mail" value=""
+						placeholder="이메일 입력" style="width: 60%; , float: left; margin-right: 5px;"  class="form-control">
+					<button type="button" id="sendBtn" name="sendBtn"
+						onclick="sendNumber()" class="btn btn-default">인증요청</button>
 				</div>
-				<br /> <br />
-				<button type="submit" class="submit">로그인</button>
-				<a th:href="@{/member/guideInsert}" class="property-sub">회원가입</a>
-					 <input type="hidden" id="numValue" value=""> 
+				<br>
+				<div id="mail_number" name="mail_number" style="display: none">
+					<input type="text" name="number" id="number"  style="width: 60%; , float: left; margin-right: 5px;"class="form-control"  placeholder="인증번호 입력">
+					<button type="button" name="confirmBtn" id="confirmBtn"
+						onclick="confirmNumber()" class="btn btn-default"> 인증</button>
+				</div>
+				<br> <input type="text" id="Confirm" name="Confirm"
+					style="display: none" value="">
+
+
 			</form>
 
 		</div>
@@ -234,15 +243,18 @@ span {
 			//$('#member').on('submit', loginAccountcheck);
 			//$('#guide').on('submit', loginAccountcheck1);
 			findAccountId();
+			UpdatePassword();
+			
 		});
 
 		
 
 	
 	</script>
-	
-	
-	<!--sms 코드 전송-->	
+
+
+	<!--sms 코드 전송-->
+	   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script th:inline="javascript">
    
 		$(document).ready(function() {
@@ -254,28 +266,28 @@ span {
 		    	  //$('#phoneNumber').on('submit', findAccountId);
 		    	 
 		      });
+		});
 		      
 	
-		   function ajaxApprove(event){
+		   function ajaxApprove(){
 			  console.log("sms 버튼 눌렀다.");
 			  
 		      // memberId 정의
-		 	let phonenumber = document.getElementById("phonenumber").value;
+		 	let phonenumber = document.getElementById("Number").value;
 		
 		     $.ajax({
 		         url : "/sms/send", 
 		         type : 'post',
-		         data: { to : phonenumber },
+		         data: { 
+		        	 to : phonenumber 
+		        	 },
 		      })
 		      .done( data => {
 		         console.log("data :", data);
 		         console.log("통신은 성공");
 		         if(data != null && data.num != null){
 		            alert(`${phonenumber } 문자발송했습니다`); 
-           
-		            
-		            $("#numValue").val(data.num);
-		   
+		            $("#numValue").val(data.num);		   
 		         } else {
 		            alert(`문자 발송 안됐습니다.`);
 		         }
@@ -283,15 +295,15 @@ span {
 		      .fail( reject => console.log(reject));
 		   };
 		   
+	 
+		   
 		   
 		   //코드 보내고 활성화 시킴
 		   function sendCode(){
 			    $("#codeCheck").css("display","block");
 			    }
 			
-	
-	
-		});
+
 		
 		function confirmCode(){
 			   
@@ -300,23 +312,22 @@ span {
 			   
 		        if (number1 == number2) { // 저장된 SMS 코드를 사용
 		            alert("인증되었습니다.")
+		            //console.log(NumberCheck);
 		        	findAccountId();
-		        	
+		           
 		        
 		        } else {
 		            alert("번호가 다릅니다.");
 		        }
 		    }
 		
-		
 		//아작스로 인증된 휴대전화 번호에 맞는 아이디 띄우기
- 		
-	        
-	        
 	        function findAccountId(){      
-	        event.preventDefault();            
-	        let phoneNumberCheck = document.getElementById("phoneNumber").value; // input_id에 입력되는 값	
+	        //preventDefault();            
+	        let phoneNumberCheck = document.getElementById("Number").value; // input_id에 입력되는 값	
 	        console.log(phoneNumberCheck);
+		
+		
 	      $.ajax({
 	         /* url : "IdCheckService", */
 	         url : "/phoneNumberCheck", 
@@ -325,7 +336,9 @@ span {
 	         dataType : 'json',
 	         
 	         success : function(result){
+	        	 console.log(result);
 	            if(result == 0){
+	          	
 	               
 	               $("#checkId").html('없는 전화번호 입니다.');
 	               $("#checkId").attr('color','red');//멈춰야함
@@ -333,7 +346,7 @@ span {
 	            
 	            } else{   
 	               //event.unbind();
-	               $("#checkId").html('[[${result}]]');
+	               $("#checkId").html('회원님의 아이디는<h3 style="display: inline;">'+result.memberId+'</h3>입니다.');
 	               $("#checkId").attr('color','green');
 	             
 	               //$('#guide')[0].submit();
@@ -341,12 +354,43 @@ span {
 	         },
 	         error : function(){
 	            
-	            alert("서버요청실패");
+	            //alert("서버요청실패");
 	         }
 	      });
 	      //$('#member').submit();
-	       
-	   }
+		}
+	   
+		
+		
+	     
+	      
+	            function sendNumber(){
+	                $("#mail_number").css("display","block");
+	                $.ajax({
+	                    url:"/mail",
+	                    type:"post",
+	                    //받아오는 데이터 형식
+	                    dataType:"json",
+	                    data:{"mail" : $("#mail").val()},
+	                    success: function(data){
+	                        alert("인증번호 발송했습니다.");
+	                        $("#Confirm").attr("value",data);
+	                    }
+	                });
+	            }
+
+	            function confirmNumber(){
+	                var number1 = $("#number").val();
+	                var number2 = $("#Confirm").val();
+
+	                if(number1 == number2){
+	                    alert("인증되었습니다.");
+	                    UpdatePassword();
+	                }else{
+	                    alert("번호가 다릅니다.");
+	                }
+	            }
+	      
 	</script>
 
 

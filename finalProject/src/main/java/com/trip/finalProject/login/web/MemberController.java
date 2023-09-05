@@ -1,7 +1,6 @@
 package com.trip.finalProject.login.web;
-	
-import java.util.Map;
 
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -204,9 +203,8 @@ public class MemberController {
 		@ResponseBody
 		@PostMapping("/phoneNumberCheck")
 		public MemberVO phoneNumberCheck(String phoneNumber) {
-			MemberVO result=memberService.phoneNumberCheck(phoneNumber);
-			System.out.println("넘어왔나:"+phoneNumber);
-			return result;
+			
+			return memberService.phoneNumberCheck(phoneNumber);
 
 		}
 	
