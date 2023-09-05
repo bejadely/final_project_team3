@@ -11,7 +11,7 @@
   			 WHERE cal_status = 'V1'
   		</select>
   		
-  		<!-- 미정산 내역 전체 조회 -->
+  		<!-- 이번달 정산해줘야할 미정산 내역 전체 조회 - 정산요청 들어오는 시점 : 해당 패키지여행의 여행 시작일 -->
   		<select id="selectNotCalList" resultType="CalculationVO">
 			SELECT *
 			  FROM (SELECT ROWNUM rn, a.cal_id
@@ -21,6 +21,7 @@
 							        , a.cal_date
 							        , a.writer_id
 							        , a.bank_code
+							        , a.start_date
 							        , a.account_number
 				        FROM(SELECT c.cal_id
 							      , c.cal_amount
@@ -28,11 +29,13 @@
 							      , c.post_id
 							      , c.cal_date
 							      , p.writer_id
+							      , p.start_date
 							      , code_val(m.bank_code) bank_code
 							      , account_number
 							   FROM calculation c JOIN package_regist p ON c.post_id = p.post_id
 							                      JOIN member m ON p.writer_id = m.member_id
-							   WHERE c.cal_status = 'V1'
+							   WHERE c.cal_status = 'V1' 
+							     AND SUBSTR(p.start_date, 4, 2) = SUBSTR(sysdate, 4, 2)
 							ORDER BY c.cal_id DESC) a )
 			  WHERE rn BETWEEN #{start} AND #{end}  		
   		</select>
@@ -46,4 +49,42 @@
   			</set>
   			 WHERE cal_id = #{calId}
   		</update>
+  		
+  		<!-- 특정월 정산 내역 카운트 -->
+  		<select id="countCompCalList">
+  			SELECT COUNT(*)
+  			  FROM calculation
+  			 WHERE cal_status = 'V2'
+  			   AND SUBSTR(cal_date, 4, 2) = #{searchMonth}
+   		</select>
+  		
+  		<!-- 특정월 정산 내역 조회 -->
+  		<select id="selectCompCalList" resultType="CalculationVO">
+			SELECT *
+			  FROM (SELECT ROWNUM rn, a.cal_id
+							        , a.cal_amount
+							        , a.cal_status
+							        , a.post_id
+							        , a.cal_date
+							        , a.writer_id
+							        , a.bank_code
+							        , a.start_date
+							        , a.account_number
+				        FROM(SELECT c.cal_id
+							      , c.cal_amount
+							      , code_val(c.cal_status) cal_status
+							      , c.post_id
+							      , c.cal_date
+							      , p.writer_id
+							      , p.start_date
+							      , code_val(m.bank_code) bank_code
+							      , account_number
+							   FROM calculation c JOIN package_regist p ON c.post_id = p.post_id
+							                      JOIN member m ON p.writer_id = m.member_id
+							   WHERE c.cal_status = 'V2' 
+							     AND SUBSTR(c.cal_date, 4, 2) = #{searchMonth}
+							ORDER BY c.cal_id DESC) a )
+			  WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}  		
+  		</select>
+  		
   </mapper>

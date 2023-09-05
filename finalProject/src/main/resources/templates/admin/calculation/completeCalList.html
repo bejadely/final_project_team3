@@ -9,7 +9,7 @@
 <!-- 기간에 따라 정산내역 조회 다르게 할 수 있게 필터 걸어주자 -->
 <div layout:fragment="content">
 	<div class="container">
-		<h5><b>정산 관리</b></h5>
+		<h5><b>정산 완료 내역</b></h5>
 		<br>
 		<form id="frm" action="/admin/calAtOnce" method="post">
 			<a href="/admin/selectNotCalList">정산대기중</a> / <a href="/admin/selectCompCalList">정산완료내역</a>
@@ -18,30 +18,23 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th><input type="checkbox" id="allCheck" class="form-control"></th>
 							<th>정산분류번호</th>
 							<th>가이드ID</th>
 							<th>패키지등록번호</th>
 							<th>정산예정금액</th>
 							<th>계좌번호</th>
+							<th>정산일자</th>
 						</tr>
 					</thead>
 					<th:block th:if="${!#lists.isEmpty(list)}">
 						<tbody>
 							<th:block th:each="l : ${list}">
 								<tr class="calInfo">
-									<td>
-										<input type="checkbox" class="form-control normalcheck">
-										<input type="hidden" name="calId" th:value="${l.calId}">
-										<input type="hidden" name="writerId" th:value="${l.writerId}">
-										<input type="hidden" name="calAmount" th:value="${l.calAmount}">
-										<input type="hidden" name="bankCode" th:value="${l.bankCode}">
-										<input type="hidden" name="accountNumber" th:value="${l.accountNumber}">
-									</td>
 									<td align="center" th:text="${l.calId}"></td>
 									<td align="center" th:text="${l.writerId}"></td>
 									<td align="center" th:text="${l.postId}"></td>
 									<td align="center" th:text="|${#numbers.formatInteger(l.calAmount, 0, 'COMMA')}원|"></td>
+									<td align="center" th:text="|${l.bankCode} ${l.accountNumber}|"></td>
 									<td align="center" th:text="|${l.bankCode} ${l.accountNumber}|"></td>
 								</tr>
 								<!-- checked된것을 제외한 애들의 input은 지우고 보낼거임 -->
@@ -54,11 +47,9 @@
 				</table>
 				<th:block th:if="${#lists.isEmpty(list)}">
 					<div align="center">
-						<!-- <span>조회할 정산 내역이 없습니다.</span> -->
-						<span>새로운 정산 대기내역이 없습니다.</span>
+						<span>조회할 정산 내역이 없습니다.</span>
 					</div>
 				</th:block>
-				<button type="button" id="submit-btn" class="feature-btn">일괄정산</button>
 			</div>
 		</form>
 		<!-- 페이징 구문 -->
@@ -66,24 +57,24 @@
 		<th:block th:if="${#strings.isEmpty(keyword)}">
 			<div style="text-align : center;" class="property-pagination">
 				<th:block th:if="${paging.nowPage != 1}">
-					<a th:href="@{/admin/seeAllReport(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+					<a th:href="@{/admin/selectCompCalList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
 				</th:block>
 				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{/admin/seeAllReport(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+					<a th:href="@{/admin/selectCompCalList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 				</th:block>
 				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
 					<th:block th:if="${p eq paging.nowPage}">
 						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
 					</th:block>
 					<th:block th:if="${p ne paging.nowPage}">
-						<a th:href="@{/admin/seeAllReport(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+						<a th:href="@{/admin/selectCompCalList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
 					</th:block>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-					<a th:href="@{/admin/seeAllReport(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					<a th:href="@{/admin/selectCompCalList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage}">
-					<a th:href="@{/admin/seeAllReport(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+					<a th:href="@{/admin/selectCompCalList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
 				</th:block>
 			</div>
 		</th:block>
@@ -124,24 +115,6 @@
 		$('#allCheck').on('click', selectToggle);
 		$('#submit-btn').on('click', calAtOnce);
 	});
-	
-	// 셀렉트박스 toggle
-	function selectToggle(event) {
-	    if ($('#allCheck').prop("checked")) {
-	        $('.normalcheck').prop("checked", true);
-	    } else {
-	        $('.normalcheck').prop("checked", false);
-	    }
-	}
-	
-	// 일괄수정 기능 수행하기
-	function calAtOnce(event){
-		
-		$('.normalcheck:not(:checked)').nextAll().remove();
-		$('#frm').submit();
-		
-		
-	}	
 	
 	// 조건검색기능
 	function search(event){
