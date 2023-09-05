@@ -64,7 +64,7 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public List<CartVO> cartInfo(String[] cartId) {
+	public List<CartVO> cartInfo(String cartId) {
 		// TODO Auto-generated method stub
 		return cartMapper.cartInfo(cartId);
 	}

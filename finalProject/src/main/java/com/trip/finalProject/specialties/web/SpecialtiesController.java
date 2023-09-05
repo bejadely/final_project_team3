@@ -3,6 +3,8 @@ package com.trip.finalProject.specialties.web;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +25,9 @@ public class SpecialtiesController {
 	
 	@Autowired
 	CommonMapper commonMapper;
+	
+	@Autowired
+	HttpSession session;
 	
 	@GetMapping("/admin/specialtiesInsertForm")
 	public String package2(Model model) {
@@ -86,6 +91,24 @@ public class SpecialtiesController {
 	
 	@GetMapping("/specialtiesInfo")
 	public String getSpecialtiesInfo(Model model, String postId) {
+		SpecialtiesVO vo = specialtiesService.getSpecialtiesInfo(postId);
+		List<SpecialtiesOptionVO> optionVO = specialtiesService.getOptionList(postId);
+		
+		String authority = session.getAttribute("sessionAuthority") == null ? null : session.getAttribute("sessionAuthority").toString().replaceAll(" ", "");
+		if(authority != null && authority.equals("A3")) {
+			model.addAttribute("isAdminLogin",true);
+			
+		}else {
+			model.addAttribute("isAdminLogin",false);
+		}
+		
+		model.addAttribute("info",vo);
+		model.addAttribute("option", optionVO);
+		return "specialties/specialtiesInfo";
+	}
+	
+	@GetMapping("/admin/specialtiesUpdate")
+	public String specialtiesUpdateForm(Model model, String postId) {
 		SpecialtiesVO vo = specialtiesService.getSpecialtiesInfo(postId);
 		List<SpecialtiesOptionVO> optionVO = specialtiesService.getOptionList(postId);
 		model.addAttribute("info",vo);
