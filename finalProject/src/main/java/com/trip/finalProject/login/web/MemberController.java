@@ -205,7 +205,14 @@ public class MemberController {
 		public MemberVO phoneNumberCheck(String phoneNumber) {
 			
 			return memberService.phoneNumberCheck(phoneNumber);
-
+		}
+		
+		
+		@PostMapping("/updatePasword")
+		public String updatePassword(MemberVO memberVO) {
+			//memberService.insertMemberInfo(memberVO);
+		System.out.println(memberVO);
+			return "member/updatePassword";
 		}
 	
 	
