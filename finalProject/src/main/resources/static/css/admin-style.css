@@ -1757,6 +1757,23 @@ h1 {
 	transition: all 0.3s;
 	margin-right: 6px;
 }
+
+.property-pagination b {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ebebeb;
+    line-height: 40px;
+    text-align: center;
+    font-size: 16px;
+    color: #aaaab3;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+    margin-right: 6px;
+    background-color: #2cbdb8;
+    color: white;
+}
 .property-pagination a:hover {
 	background: #2cbdb8;
 	border-color: #2cbdb8;

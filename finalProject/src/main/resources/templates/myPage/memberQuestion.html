@@ -4,178 +4,288 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="@{layouts/myPage_layout}">
 <head>
-<meta charset="UTF-8">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-
-<title>문의사항</title>
-<style type="text/css">
-table, th,td {
-	border: 1px solid black;
-	text-align: center;
-	margin: 0 auto;
-}
-.hidden{
-	border: none;
-	text-align: center;
-	margin: 0 auto;
-	display:none;
-}
-
-}
-</style>
-<script>
-$(document).ready(function() {
-	let list = [];
-    
-    $('.question').click(function(){
-        var tr = $(this).closest('tr'); // 부모 <tr> 요소 선택
-        var hiddenRows = tr.nextAll('.hidden:first, .hidden:eq(1)');
-        
-        if (hiddenRows.is(':visible')) {
-            hiddenRows.hide();
-        } else {
-            hiddenRows.show();
+   <style>
+        body {
+            background-color: #ffffff;
+            color: #000000;
         }
-    });
-     //미답변 입력
-    $('.insert').click(function(){
-    	var tr = $(this).closest('tr');
-    	var td = tr.parent();
-    	
-    	var answerContexts = tr.find('input[type=text]').val();
-    	var questionId = tr.prev().prev().find('input[type=hidden]').val();
-    	console.log(answerContexts);
-    	console.log(questionId);
-    	
-    	var obj = {};
-        obj["questionId"] = questionId; // question_id 값을 설정
-        obj["answerContexts"] = answerContexts;
-        
-    	
-    	console.log(obj);
-    	
-    	$.ajax({
-            url: 'queInsert',
-            type: 'post',
-            contentType: 'application/json',
-            data: JSON.stringify(obj) // JSON 응답 처리 설정
-        }).done(data => {
-            console.log(data);
-            top.document.location.reload();
-            
-        }).fail(reject => console.log(reject));
-    });
-     //업데이트
-    $('.update').click(function(){
-    	var tr = $(this).closest('tr');
-    	var td = tr.parent();
-    	
-    	var answerContexts = tr.find('input[type=text]').val();
-    	var answerId = tr.prev().find('input[type=hidden]').val();
-    	console.log(answerContexts);
-    	console.log(answerId);
-    	
-    	var obj = {};
-        obj["answerId"] = answerId; // question_id 값을 설정
-        obj["answerContexts"] = answerContexts;
-        
-    	
-    	console.log(obj);
-    	
-    	$.ajax({
-            url: 'queUpdate',
-            type: 'post',
-            contentType: 'application/json',
-            data: JSON.stringify(obj) // JSON 응답 처리 설정
-        }).done(data => {
-            console.log(data);
-            top.document.location.reload();
-        }).fail(reject => console.log(reject));
-  
-    });
-});
-</script>
-</head>
-<body>
 
-	<th:block layout:fragment="css"></th:block>
-	<th:block layout:fragment="script"></th:block>
-	<div layout:fragment="content" style="text-align: center;">
-	<form>
-		<table>
-			<thead>
-				<tr>
-					<th>제목</th>
-					<th>등록일</th>
-					<th>답변일</th>
-					<th>답변여부</th>
-				</tr>
-			</thead>
-			<tbody>
-				<th:block th:each="que: ${guideQue}">
-					<tr class="question">
-						<td th:if="${que.answerModifyDate == null}" th:text="${que.questionContent}"><input type="hidden" th:value="${que.questionId}"></td>
-						<td th:if="${que.answerModifyDate != null}" th:text="${que.questionContent(수정됨)}"><input type="hidden" th:value="${que.questionId}"></td>
-						<td th:text="${que.questionDate}"></td>
-						<td th:if="${que.answerDate == null}">답변이 없습니다</td>
-						<td th:if="${que.answerModifyDate == null and que.answerDate != null}" th:value="${que.answerDate}">
-						<td th:if="${que.answerModifyDate != null}" th:value="${que.answerModifyDate}"></td>
-						<td th:if="${que.answerResult == 'k1'}" class="answer">미답변</td>
-						<td th:if="${que.answerResult == 'k2'}" class="answer">답변완료</td>
-					</tr>
-					
-					<tr class="hidden">
-						<td colspan="4">
-							<input type="hidden" th:value="${que.answerId}">
-							<label>내용</label>
-							<th:textarea rows="9" cols="70">[[${que.questionContent}]]</th:textarea>
-						</td>
-					</tr>
-					<tr class="hidden">
-						<td colspan="4">
-							<th:blcok th:if="${que.answerContent == null}">
-								답변이 없습니다.
-							</th:blcok>
-							<th:block th:if="${que.answerContent != null}">
-							<label>답변</label>
-							<th:textarea rows="9" cols="70" readonly="readonly">[[${que.answerContent}]]</th:textarea>
-							</th:block>							
-						</td>
-					</tr>
-					
-				</th:block>
-					</tbody>
-			</table>
-		</form>
+        .text-center {
+            text-align: center;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0069d9;
+            color: #ffffff;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            color: #ffffff;
+        }
+        
+        .ck.ck-editor {
+		width: 100%;
+		max-width: 1500px;
+		margin: 0 auto;
+		}
+		
+		.ck-editor__editable {
+			height: 50vh;
+		}
+    </style>
+</head>
+<!-- Content -->
+<div layout:fragment="content">
+	<div class="container">
+		<h5><b>문의 내역 조회</b></h5>
+		<br>
 		<div>
-			<th:block th:if="${paging.startPage != 1}">
-				<a th:href="@{guideQue(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
-			</th:block>
-			<th:block th:if="${paging.startPage != 1}">
-				<a
-					th:href="@{guideQue(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
-			</th:block>
-			<th:block
-				th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
-				<th:block th:if="${p eq paging.nowPage}">
-					<b th:text="${p}"></b>
-				</th:block>
-				<th:block th:if="${p ne paging.nowPage}">
-					<a
-						th:href="@{guideQue(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
-						th:text="${p}"></a>
-				</th:block>
-			</th:block>
-			<th:block th:if="${paging.endPage != paging.lastPage}">
-				<a
-					th:href="@{guideQue(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
-			</th:block>
-			<th:block th:if="${paging.endPage != paging.lastPage}">
-				<a
-					th:href="@{guideQue(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
+			<select id="questionType" name="questionType">
+				<option value="">문의 분류</option>
+				<option value="Q1">일반문의</option>
+				<option value="Q3">특산물 문의</option>
+				<option value="Q4">숙박상품 문의</option>
+			</select>
+		</div>
+		<div class="table-responsive">
+				<table class="table">
+					<thead>
+					</thead>
+					<th:block th:if="${!#lists.isEmpty(list)}">
+						<tbody>
+							<th:block th:each="l : ${list}">
+								<tr th:class="|questionInfo${lStat.count}|">
+									<td>
+									<button type="button" th:class="btn-success" th:text="${l.answerResult}"></button>
+									<span th:text="${l.questionTitle}"></span><br>
+									<p th:text="${l.questionContent}"></p>
+									<th:block th:if="${l.answerResult != '미답변'}">
+										<button type="button" th:id="|ansBtn${lStat.count}|" class="btn btn-primary btn-sm" data-visible="visible">답변보기</button>
+									</th:block>	
+									</td>
+								</tr>
+								<tr style="display: none;">
+									<td>
+										<form method="post" th:id="|form${lStat.count}|">
+											<th:block th:if="${l.answerResult == '미답변'}">
+												<span>ㄴ답변하기</span><br>
+												<textarea name="answerContent" class="form-control" rows="3" cols="90"></textarea>
+											</th:block>
+											<th:block th:if="${l.answerResult != '미답변'}">
+												<p th:text="|답변일자 : ${#dates.format(l.answerDate, 'yyyy.MM.dd HH:mm')}|"></p>
+												<textarea name="answerContent" class="form-control" th:text="${l.answerContent}" rows="3" cols="90" readonly></textarea>
+											</th:block>
+											<th:block th:if="${l.answerResult == '미답변'}">	
+												<button class="answer-btn btn btn-primary btn-sm" type="button">답변완료</button>
+											</th:block>
+											<input type="hidden" name="questionId" th:value="${l.questionId}">
+											<input type="hidden" name="answerMemberId" th:value="${session.sessionId}">
+										</form>									
+									</td>
+								</tr>
+							</th:block>
+						</tbody>
+					</th:block>
+				</table>
+			<th:block th:if="${#lists.isEmpty(list)}">
+				<div align="center">
+					<span>새로운 문의내역이 없습니다.</span>
+				</div>
 			</th:block>
 		</div>
+		<!-- 페이징 구문 -->
+		<!-- 검색키워드가 없을때 -->
+		<th:block th:if="${#strings.isEmpty(keyword)}">
+			<div style="text-align : center;" class="property-pagination">
+				<th:block th:if="${paging.nowPage != 1}">
+					<a th:href="@{/common/memberQue(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+				</th:block>
+				<th:block th:if="${paging.startPage != 1}">
+					<a th:href="@{/common/memberQue(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+				</th:block>
+				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+					<th:block th:if="${p eq paging.nowPage}">
+						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+					</th:block>
+					<th:block th:if="${p ne paging.nowPage}">
+						<a th:href="@{/common/memberQue(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+					</th:block>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+					<a th:href="@{/common/memberQue(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage}">
+					<a th:href="@{/common/memberQue(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+				</th:block>
+			</div>
+		</th:block>
 	</div>
-</body>
+	
+	<script th:inline="javascript" type="text/javascript">
+	
+	$(document).ready(function() {
+		// 이벤트 설정
+		$('#searchButton').on('click', search);
+		$('.memberInfo').on('mouseover', colorDarker)
+						.on('mouseleave', colorReset)
+						.on('click')
+						.on('mouseup', moveToMemberDetail);
+		$('#questionType').on('change', searchType);
+		
+		// 답변하기 버튼 누를 시 토글 활성화
+		$('[id^="ansBtn"]').on('click', toggleVisible);
+		
+		// ajax 활용 답변 완료 시 해당 답변 바로 페이지에 반영
+		$('.answer-btn').on('click', ajaxSubmitAnswer);
+		rememberSearchingMemory();
+	});
+	
+	// selectbox 선택시 조건 검색 바로 실행
+	function searchType(event){
+		
+		let value = $('#questionType').val();
+		location.href='/admin/searchQuestionByType?questionType='+value;
+		
+	}
+	
+	// 답변하기 버튼 클릭 시 hidden 버튼 활성화
+	function toggleVisible(event){
+		
+		if($(this).attr("data-visible") == "visible" ){
+			$(this).attr("data-visible", "hidden")
+				   .closest('tr').next().css({"display": "table-row"});
+		} else {
+			$(this).attr("data-visible", "visible")
+			       .closest('tr').next().css({"display": "none"});
+		}
+		
+		
+	}
+	
+	// 답변하기 버튼 누를 시 답변 입력사항 바로 반영
+	function ajaxSubmitAnswer(event){
+		
+		let serializedForm = $(this).closest('form').serialize();
+		
+		$.ajax({
+			url : '/admin/answerQuestion',
+			type : 'post',
+			data : serializedForm
+		})
+		.done( data => {
+			console.log(data);
+			// 추가작업
+			
+			let answerDate = formatDate(data.answerDate);
+			let form = $(this).closest('form');
+			let html = `
+				<p>답변일자 : ${answerDate}</p>
+				<textarea name="answerContent" class="form-control" rows="3" cols="90" readonly>${data.answerContent}</textarea>
+			`
+			$(this).closest('tr').prev().find('button').eq(0).text('답변완료');
+			$(this).closest('tr').prev().find('button').eq(1).text('답변보기');
+			form.empty();
+			form.html(html);
+			
+		})
+		.fail( reject => console.log(reject));
+		
+		
+		
+	}
+	// 날짜 변환 함수
+	function formatDate(date) {
+	    
+	    var d = new Date(date),
+	    
+	    month = '' + (d.getMonth() + 1) , 
+	    day = '' + d.getDate(), 
+	    year = d.getFullYear();
+	    hour = (d.toTimeString().split(' ')[0]).substring(0, 5);
+	    
+	    if (month.length < 2) month = '0' + month; 
+	    if (day.length < 2) day = '0' + day; 
+	    
+	    return ([year, month, day].join('.')) + ' ' + hour;
+	}
+	
+	// 조건검색기능
+	function search(event){
+		
+		let value = $('#searchBy').val();
+		let keyword = $('#keyword').val();
+		location.href='/admin/searchAdminMember?searchBy='+value+'&keyword='+keyword;
+		
+	}
+	
+	// 마우스 오버 : 색상 어둡게
+	function colorDarker(event){
+		$(event.currentTarget).css({background: '#f2f4f5'})
+							  .css({cursor: 'pointer'});		
+	}
+	
+	
+	// 마우스릴리브 : 색상 원상복귀
+	function colorReset(event){
+		$(event.currentTarget).css({background: '#ffffff'});
+	}
+	
+	// 클릭시 회원상세정보 조회페이지로 이동
+	function moveToMemberDetail(event){
+		
+		// 상세보기 할 member의 id값 가져오기
+		let memberId = $(event.currentTarget).find('td:eq(0)').text();
+		
+		// 페이지 전환 실행
+		location.href=`seeMemberDetail?memberId=${memberId}`;
+	}
+	
+	// 만약 조건 검색을 했다면 해당 검색조건 기억
+	function rememberSearchingMemory(){
+		
+		if([[${rememberType}]] != null){
+			// 기본으로 설정할 타입 설정
+			let defaultType = [[${rememberType}]];
+			
+			// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
+			$('#questionType').next().find('span').text($('.option[data-value="'+defaultType+'"]').text());
+			
+			// selected 처리되어있던 option을 일반 옵션으로 변경
+			$('#questionType').next().find('.option.selected').attr("class", "option");
+			
+			// 불러온 값에 해당하는 option을 selected 및 focus 처리
+			$('.option[data-value="'+defaultType+'"]').attr("class", "option selected focus");
+		}
+	}
+	
+	</script>
+</div>
+
 </html>

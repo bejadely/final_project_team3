@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.trip.finalProject.attachedFile.mapper.AttachedFileMapper;
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.tripMate.mapper.TripMateMapper;
+import com.trip.finalProject.tripMate.service.PostCommentVO;
 import com.trip.finalProject.tripMate.service.TripMateService;
 import com.trip.finalProject.tripMate.service.TripMateVO;
 
@@ -120,6 +121,12 @@ public class TripMateServiceImpl implements TripMateService {
 		return result;
 	}
 
+	//댓글, 대댓글 가져오기
+	@Override
+	public List<PostCommentVO> getCommentInfo(TripMateVO tripMateVO) {
+		
+		return tripMateMapper.getCommentInfo(tripMateVO);
+	}
 	
 	//마이페이지--------------------------------------------------------------------------------------
 	//내가 작성한 마이페이지 페이징
@@ -165,6 +172,8 @@ public class TripMateServiceImpl implements TripMateService {
 	public int myTripnum(TripMateVO trVO) {
 		return tripMateMapper.myTripnum(trVO);
 	}
+
+	
 	
 
 

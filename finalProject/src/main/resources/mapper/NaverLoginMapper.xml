@@ -10,7 +10,7 @@
 		where  member_id=#{id}
 </select>
 
-<insert id="insertNaverLogin" parameterType="java.util.HashMap">
+<insert id="insertNaverLogin" >
 	<!-- 	insert into 
 		member(member_id, member_name , BIRTH_DATE,GENDER, sign_up_date )
 			values
@@ -22,24 +22,28 @@
 					Email,
 					saved_profile_img,
 					AUTHORITY,
-			<!-- 		access_token,
-					refresh_token, -->
+					access_token,
+					refresh_token,			
 					login_type,
 					birth_date,
 					gender,
 					sign_up_date)
 		values
-					(#{id},
+					(#{responseMap.id},
 				<!-- 	#{password}, -->
-					#{nickname},
-					#{email},					
-					#{profileImage},
+					#{responseMap.nickname},
+					#{responseMap.email},					
+					#{responseMap.profileImage},
 					'A1',
-				<!-- 	#{accessToken},
-					#{refreshToken}, -->
+					#{oauthToken.accessToken},
+					#{oauthToken.refreshToken},
 					'L3',
 					null,
-					null,
+					CASE
+				        WHEN #{responseMap.gender} = 'M' THEN 'G1'
+				        WHEN #{responseMap.gender} = 'F' THEN 'G2'
+				        ELSE NULL
+				    END,
 					sysdate)
 	</insert>
   

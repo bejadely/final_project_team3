@@ -12,7 +12,7 @@ public interface MemberService {
 	public MemberVO memberInfo(MemberVO memberVO);
 	
 	//회원정보 수정
-	public Map<String, String> updateMember(MemberVO memberVO);
+	public String updateMember(MemberVO memberVO);
 
 	
 	//회원등록(가입)
@@ -37,5 +37,7 @@ public interface MemberService {
 	/* idCheck(id) */
 	
 	public MemberVO singleLogin(MemberVO vo);
-
+	
+	//휴대폰 번호로 계정 찾기
+	MemberVO phoneNumberCheck(String phoneNumber);
 }

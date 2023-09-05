@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.common.mapper.CommonMapper;
 import com.trip.finalProject.specialties.service.SpecialtiesOptionVO;
 import com.trip.finalProject.specialties.service.SpecialtiesService;
@@ -23,14 +24,14 @@ public class SpecialtiesController {
 	@Autowired
 	CommonMapper commonMapper;
 	
-	@GetMapping("/specialtiesInsertForm")
+	@GetMapping("/admin/specialtiesInsertForm")
 	public String package2(Model model) {
 		model.addAttribute("S",commonMapper.selectCode("S"));
 		model.addAttribute("area",specialtiesService.getLocationList());
 		return "specialties/specialtiesInsertForm";
 	}
 	
-	@PostMapping("/specialtiesInsert")
+	@PostMapping("/admin/specialtiesInsert")
 	public String specialtiesInsert(SpecialtiesVO specialtiesVO) {
 		specialtiesService.insertSepcialties(specialtiesVO);
 		
@@ -38,10 +39,50 @@ public class SpecialtiesController {
 	}
 	
 	@GetMapping("/specialtiesList")
-	public String specialtiesList(Model model) {
-		model.addAttribute("specialtiesList",specialtiesService.getSpecialtiesList());
+	public String specialtiesList(Model model
+								, @RequestParam( name = "searchBy", defaultValue = "name" ) String searchBy
+								, @RequestParam( name = "keyword", defaultValue = "" ) String keyword
+					            , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
+					            , @RequestParam( name = "cntPerPage", defaultValue = "6")Integer cntPerPage) {
+		int total = specialtiesService.specialitesCount();
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		
+		List<SpecialtiesVO> specialtiesList = specialtiesService.getSpecialtiesList(pagingVO);
+		
+		model.addAttribute("specialtiesList",specialtiesList);
+		model.addAttribute("paging",pagingVO);
+		
+		model.addAttribute("keyword",keyword);
+		model.addAttribute("searchBy",searchBy);
 		return "specialties/specialtiesList";
 	}
+	
+	//특정 조건으로 패키지 검색
+	@GetMapping("/searchSepcialties")
+	public String searchSepcialties(@RequestParam( name = "searchBy" ) String searchBy
+								  , @RequestParam( name = "keyword" ) String keyword
+								  , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
+								  , @RequestParam( name = "cntPerPage", defaultValue = "6") Integer cntPerPage
+								  , Model model
+								  ,SpecialtiesVO specialtiesVO) {
+		//전체 조회될 패키지 수
+		int total = specialtiesService.specialtiesCountTitle(keyword);
+		
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		//제목으로 검색기능 수행
+		specialtiesVO.setTitle(keyword);
+		List<SpecialtiesVO> list = specialtiesService.searchspecialtiesByTitle(specialtiesVO, pagingVO);
+		model.addAttribute("specialtiesList",list);
+		model.addAttribute("paging",pagingVO);
+		// 검색결과 기억을 위해 keyword와 searchBy 담기
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("searchBy", searchBy);
+		
+		return "specialties/specialtiesList";
+	}
+	
+	
+	
 	
 	@GetMapping("/specialtiesInfo")
 	public String getSpecialtiesInfo(Model model, String postId) {
