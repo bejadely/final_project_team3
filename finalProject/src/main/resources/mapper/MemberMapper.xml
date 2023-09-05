@@ -133,7 +133,28 @@
     
     <!-- 회원정보 불러오기 -->
 	<select id="memebrInfo" resultType="MemberVO">
-	SELECT *
+	SELECT member_id
+		 , member_name
+		 , password
+		 , nationality
+		 , email
+		 , zip_code
+		 , address
+		 , address_detail
+		 , phone_number
+		 , code_val(authority) authority
+		 , origin_profile_img
+		 , saved_profile_img
+		 , bank_code
+		 , account_number
+		 , login_type
+		 , access_token
+		 , refresh_token
+		 , birth_date
+		 , code_val(gender) gender
+		 , punish_count
+		 , sign_up_date
+		 , withdrawal_date
 	FROM member
 	WHERE member_id = #{memberId}
 	</select>
@@ -145,10 +166,13 @@
 			<if test="password != null and !password.equals('')">
 				password = #{password},			
 			</if>
+			zip_code = #{zipCode},
 			address = #{address},
 			address_detail=#{addressDetail},
 			email = #{email},
-			phone_number = #{phoneNumber}
+			phone_number = #{phoneNumber},
+			bank_code=#{bankCode},
+			account_number = #{accountNumber}
 		</set>
 		WHERE member_id = #{memberId}	
 	</update>

@@ -215,7 +215,8 @@ public class UploadController {
 		
 	}
 
-	@PostMapping("/deleteFile")
+
+	@PostMapping("/common/deleteFile")
 	@ResponseBody
 	public ResponseEntity<String> deleteFile(String savedImg){
 		File file;
@@ -234,7 +235,7 @@ public class UploadController {
 	}
 
 
-	@PostMapping("/deleteImg")
+	@PostMapping("/common/deleteImg")
 	public ResponseEntity<String> deleteImages(@RequestBody Map<String, List<String>> requestData) throws Exception {
 		List<String> filenames = requestData.get("filenames");
 		
@@ -242,8 +243,7 @@ public class UploadController {
 		try {
 			for (String filename : filenames) {
 				File imageFile = new File(uploadPath + "/" + filename);
-				
-					
+				System.out.println(imageFile);
 				if (imageFile.exists() && imageFile.delete()) {
 					System.out.println("Image deleted: " + filename);
 				} else {

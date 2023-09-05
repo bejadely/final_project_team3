@@ -7,7 +7,7 @@ public class SpecialtiesOptionVO {
 	private String optionId;
 	private String specialtyType;
 	private int price;
-	private Integer discount_rate;
+	private Integer discountRate;
 	private String postId;
 	
 }

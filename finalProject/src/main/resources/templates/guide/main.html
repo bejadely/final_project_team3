@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="@{layouts/default_layout}">
+      layout:decorate="@{layouts/myPage_layout}">
 <head>
     <meta charset="UTF-8">
     <title>가이드 메인 페이지</title>
@@ -13,7 +13,7 @@
     <style>
         .rounded-box {
             border-radius: 10px;
-            padding: 20px;
+            padding: 10px;
             margin: 10px;
             border: 1px solid #CCCCCC;
             padding-bottom: 0px;
@@ -38,6 +38,23 @@
         .guide-main-nav .main-icon {
             margin-bottom: 20px; /* 아이콘과 텍스트 사이의 여백 조절 */
         }
+        .info{
+            min-height: 266px;
+        }
+        .table-sm{
+        	font-size: 12px;
+        }
+        .data-container {
+	        display: flex;
+	        justify-content: space-between;
+	        align-items: center;
+	    }
+	    .h6 {
+	        flex: 1; 
+	    }
+	    .icon {
+	        color: #2cbdb8;
+	    }
     </style>
 </head>
 <body>
@@ -45,21 +62,23 @@
     <div class="container">
         <div class="rounded-box" >
             <ul class="guide-main-nav">
-                <li onclick="window.location.href='/'">
+                <li onclick="window.location.href='/common/myPage'">
                     <i class="fa-solid fa-user main-icon"></i>
                     <div>내 정 보</div>
                 </li>
-                <li onclick="window.location.href='/'">
+                <li onclick="window.location.href='/guide/packageSale'">
                     <i class="fa-solid fa-store main-icon"></i>
-                    <div>상품판매중</div>
+                    <div>판매중패키지</div>
+                    <div th:text="|판매중 ${packageSalingCount}건|"></div>
                 </li>
-                <li onclick="window.location.href='/'">
+                <li onclick="window.location.href='/guide/packageCom'">
                     <i class="fa-solid fa-shop-lock main-icon"></i>
-                    <div>상품판매완료</div>
+                    <div>판매완료패키지</div>
+                    <div th:text="|판매완료 ${packageSaledCount}건|"></div>
                 </li>
-                <li onclick="window.location.href='/'">
+                <li onclick="window.location.href='/guide/guideQue'">
                     <i class="fa-solid fa-clipboard-question main-icon"></i>
-                    <div>미답변내역</div>
+                    <div th:text="|미답변 ${unansweredQuestion}건|"></div>
                 </li>
             </ul>
         </div>
@@ -67,93 +86,158 @@
         <div class="guide-main-info">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="rounded-box">
-                        <h6>판매 내역</h6>
-                        <table class="table table-sm">
-                            <tr>
-                                <td>패키지명</td>
-                                <td>패키지테마</td>
-                                <td>주문자명</td>
-                                <td>주문일자</td>
-                            </tr>
-                            <tr>
-                                <td>투어</td>
-                                <td>투어투어</td>
-                                <td>오유리</td>
-                                <td>2023.09.02</td>
-                            </tr>
-                        </table>
+                    <div class="rounded-box info">
+                    	<div class="data-container">
+	                        <h6 class="h6">패키지별 매출 통계</h6>
+	                    </div>
+                        <div id="donutChart"></div>
+                        <div th:if="${#lists.isEmpty(saleMonthChartList)}">
+                            <hr>
+                            <h6>통계 내역이 없습니다.</h6>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="rounded-box">
-                        <h6>매출 통계</h6>
+                    <div class="rounded-box info">
+                        <div class="data-container">
+	                       <h6 class="h6">월별 매출 통계</h6>
+	                     </div>
                         <div id="chart"></div>
+                        <div th:if="${#lists.isEmpty(packageSaleChartList)}">
+                            <hr>
+                            <h6>통계 내역이 없습니다.</h6>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="rounded-box">
-                        <h6>입금 내역</h6>
-                        <table class="table table-sm">
+                    <div class="rounded-box info">
+                        <div class="data-container">
+	                       <h6 class="h6">입금 내역</h6>
+	                       <i class="fa-solid fa-magnifying-glass-plus fa-lg icon" style="color: #2cbdb8;"></i>
+	                     </div>
+                        <table class="table table-sm" th:if="${!#lists.isEmpty(calculationList)}">
                             <tr>
                                 <td>패키지명</td>
-                                <td>정산금액</td>
-                                <td>정산상태</td>
+                                <td>정산금</td>
+                                <td>처리상태</td>
                                 <td>정산일자</td>
                             </tr>
-                            <tr>
-                                <td>투어</td>
-                                <td>10000원</td>
-                                <td>처리</td>
-                                <td>2023.09.02</td>
+                            <tr th:each="calculationInfo : ${calculationList}">
+                                <td th:text="${calculationInfo.name}"></td>
+                                <td th:text="${calculationInfo.calAmount}"></td>
+                                <td th:text="${calculationInfo.calStatus}"></td>
+                                <td th:text="${#dates.format(calculationInfo.calDate, 'yyyy.MM.dd')}"></td>
                             </tr>
                         </table>
+                        <div th:if="${#lists.isEmpty(calculationList)}">
+                            <hr>
+                            <h6>정산 내역이 없습니다.</h6>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="rounded-box">
-                        <h6>최근 문의</h6>
-                        <table class="table table-sm">
+                    <div class="rounded-box info">
+                        <div class="data-container">
+	                       <h6 class="h6">최근 문의</h6>
+	                       <i class="fa-solid fa-magnifying-glass-plus fa-lg icon" style="color: #2cbdb8;"></i>
+	                     </div>
+                        <table class="table table-sm" th:if="${!#lists.isEmpty(questionList)}">
                             <tr>
                                 <td>문의명</td>
                                 <td>문의자명</td>
                                 <td>처리상태</td>
                                 <td>문의일자</td>
                             </tr>
-                            <tr>
-                                <td>알려주세요</td>
-                                <td>오유리</td>
-                                <td>미처리</td>
-                                <td>2023.09.02</td>
+                            <tr th:each="questionInfo : ${questionList}">
+                                <td th:text="${questionInfo.questionTitle}"></td>
+                                <td th:text="${questionInfo.name}"></td>
+                                <td th:text="${questionInfo.answerResult}"></td>
+                                <td th:text="${#dates.format(questionInfo.questionDate, 'yyyy.MM.dd')}"></td>
                             </tr>
                         </table>
+                        <div th:if="${#lists.isEmpty(questionList)}">
+                            <hr>
+                            <h6>문의 내역이 없습니다.</h6>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script>
+    <script th:inline="javascript">
+        let list = [[${saleMonthChartList}]];
+
+        let dataColums = [];
+        dataColums.push("매출액");
+        for(let i = 0; i < list.length; i++) {
+            dataColums.push(list[i].totalPrice);
+        }
+
+        let orderMonthColums = [];
+        let orderMonthString = '';
+        for(let i = 0; i < list.length; i++) {
+            orderMonthString = list[i].orderMonth;
+            orderMonthColums.push(orderMonthString);
+        }
+
         let chart = bb.generate({
             data:{
                 columns:[
-                    ["sample", 30, 200, 100, 400, 150]
+                    dataColums
                 ],
                 type: "line",
             },
             axis:{
                 x:{
                     type: "category",
-                    categories: [2023.02,2023.03,2023.04,2023.05,2023.06],
+                    categories: orderMonthColums,
                     label: "최근 5개월"
                 },
                 y:{
                     label: "매출액"
                 }
             },
-            bindto : "#chart"
+            bindto : "#chart",
+
+
         });
+
+       let dountList=[[${packageSaleChartList}]];
+       
+       let dountColums=[];
+       
+       for(let i = 0; i < dountList.length; i++) {
+    	   let dountObject=[];
+    	   dountObject.push(dountList[i].name);
+    	   dountObject.push(dountList[i].price);
+    	   
+    	   dountColums.push(dountObject);
+       }
+       
+        console.log(dountColums);
+       let donutChart = bb.generate({
+    	   data: {
+    	     columns: 
+    	    	 dountColums
+    	     ,
+    	     type: "donut",
+    	     onclick: function(d, i) {
+	    	 	console.log("onclick", d, i);
+	    	    },
+	    	 onover: function(d, i) {
+	    	 	console.log("onover", d, i);
+	    	    },
+	    	 onout: function(d, i) {
+	    	 	console.log("onout", d, i);
+	    	    }
+	    	   },
+	    	 donut: {
+	    	     title: "금달 패키지 판매율"
+	    	   },
+	    	 bindto: "#donutChart"
+    	 });
     </script>
 </div>
 </body>
