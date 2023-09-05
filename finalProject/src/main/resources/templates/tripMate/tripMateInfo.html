@@ -118,7 +118,10 @@ table {
 	#comment_table td a {
 		text-decoration: none;
   	}
-  
+  .btn-custom {
+    display: flex;
+    justify-content: flex-end;
+}
 </style>
 </head>
 <body>
@@ -175,24 +178,59 @@ table {
 			<button type="button" class="primary-btn" onclick="location.href='tripMateList'">목록으로</button>
 		</form>
 	</div>
+	<br>
 	<!-- 댓글 기능 -->
-	<div align="center">
-		<form id="form" method="post">
-			<table id="comment_table" style="font-size:0.9em; text-align: center;width: 1070px; margin: 0 auto; height : 60px; background-color: white;">
-				<tr>
-					<td>
-					<input type="hidden" id="postId" th:value="${tripMateInfo.postId}">
-					<input type="hidden" id="writerId" th:value="${session.sessionId}">
-					</td>
-					<td colspan="3"><textarea rows="3" cols="50" id="cmtContent"></textarea></td>
-					<td>
-						<input type="button" id="cmtSave" value="댓글작성">
-						<input type="button" id="callCmt" value="댓글보기">
-					</td>
-				</tr>
-			</table>
-		</form>
-	</div>
+	<div class="row">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="comment-option">
+                        <h4>0 건의 댓글</h4>
+                        <!-- 댓글 -->
+                        <div class="comment-container" th:each="commentInfo : ${commentList}" >
+                        <div class="single-comment-item first-comment" th:if="${commentInfo.commentId}==${commentInfo.originCommentId}" >
+                            <div class="sc-text col-12">
+                                <span th:text="${#dates.format(commentInfo.registDate, 'yyyy.MM.dd')}"></span>
+                                <h5 th:text="${commentInfo.writerId}"></h5>
+                                <p th:text="${commentInfo.content}"></p>
+                            <div class="input-group mb-3 col-11">
+								<input type="text" class="form-control" placeholder="답글 달기" aria-label="Recipient's username" aria-describedby="button-addon2">
+								<button class="btn btn-outline-secondary" type="button" id="button-addon2">등록</button>
+							</div>
+							&emsp;<a href="#" class="comment-btn update-btn">수정</a>
+                            &emsp;<a href="#" class="comment-btn del-btn">삭제</a>
+                            </div>
+                        </div>
+                        <!-- 대댓글 -->
+                        <div class="row" th:if="${commentInfo.commentId}!=${commentInfo.originCommentId}">
+                            <div class="col-lg-11 offset-lg-1">
+                                <div class="single-comment-item reply-comment">
+                                    <div class="sc-text">
+                                        <span th:text="${#dates.format(commentInfo.registDate, 'yyyy.MM.dd')}"></span>
+		                                <h5 th:text="${commentInfo.writerId}"></h5>
+		                                <p th:text="${commentInfo.content}"></p>
+                                        &emsp;<a href="#" class="comment-btn update-btn">수정</a>
+                                		&emsp;<a href="#" class="comment-btn del-btn">삭제</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+              
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-10 offset-lg-1">
+                    <div class="leave-comment">
+                        <h6>&nbsp;궁금한 점 남겨보아요</h6>
+                        <form action="#">
+                        	<input type="text" placeholder="내용">
+						    <div class="btn-custom">
+						        <button type="submit" class="site-btn">등록하기</button>
+						    </div>
+						</form>
+                    </div>
+                </div>
+            </div>
 	<div id="cmtL">
 	</div>
 	<script th:inline="javascript">
