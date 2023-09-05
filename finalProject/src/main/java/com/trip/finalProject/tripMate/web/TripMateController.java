@@ -151,7 +151,7 @@ public class TripMateController {
 	
 	//마이페이지----------------------------------------------------------------------
 	//내가 적성한 메이트
-	@GetMapping("/common/myPageTrip")
+	@GetMapping("/common/myPageMate")
 	public String tripMateList(Model model,
 			TripMateVO trVO,
 			@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
@@ -183,7 +183,7 @@ public class TripMateController {
 	
 	
 	//신청한 메이트 조회
-	@GetMapping("/common/myPageAppTrip")
+	@GetMapping("/common/myPageAppMate")
 	public String tripMateAppList(Model model,
 			TripMateVO trVO,
 			@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
