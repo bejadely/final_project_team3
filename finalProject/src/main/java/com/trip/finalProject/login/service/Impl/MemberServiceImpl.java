@@ -85,6 +85,16 @@ public class MemberServiceImpl implements MemberService {
 		return result; 
 			
 		}
+	 	
+	 //휴대폰 번호로 아이디 찾기
+
+	 
+	 @Override
+		public MemberVO phoneNumberCheck(String num) {
+			MemberVO result = memberMapper.checkIdByPhoneNumber(num);
+			return result;
+	} 
+	 
 	 
 		
 		//회원정보 불러이기
@@ -110,8 +120,7 @@ public class MemberServiceImpl implements MemberService {
 			return map;
 		}
 
-
-
+		
 
 		@Override
 		public MemberVO singleLogin(MemberVO vo) {

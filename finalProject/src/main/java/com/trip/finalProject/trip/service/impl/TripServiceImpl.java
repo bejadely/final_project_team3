@@ -140,17 +140,30 @@ public class TripServiceImpl implements TripService {
 	
 	//여행기록 삭제
 	@Override
-	public int DeleteTripInfo(int postId) {
-		int result = tripMapper.deleteTripInfo(postId);
+	public int deleteTripInfo(TripVO tripVO) {
+		int result = tripMapper.deleteTripInfo(tripVO);
 		
 		return result;
 	}
 
+	//여행기록 삭제시 해당 게시글과 관련된 여행경로 삭제
+	@Override
+	public int deleteMapData(TripVO tripVO) {
+		return tripMapper.deleteMapData(tripVO);
+	}
+	
+	//여행기록 삭제시 해당 게시글과 관련된 여행메모 삭제
+	@Override
+	public int deleteMemoData(TripVO tripVO) {
+		return tripMapper.deleteMemoData(tripVO);
+	}
+	
 	//여행경로 데이터 조회
 	@Override
 	public List<TripVO> getMapData(TripVO tripVO) {
 		return tripMapper.selectMapData(tripVO);
 	}
+
 
 	//여행경로 삭제
 	@Override
