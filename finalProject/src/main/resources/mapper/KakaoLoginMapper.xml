@@ -25,7 +25,7 @@
 			(#{nickname}, #{email})
 	</insert> --> 
 	
-	<insert id="insertKakaoLogin" parameterType="java.util.HashMap">
+	<update id="insertKakaoLogin" parameterType="java.util.HashMap">
 		insert into member
 					(member_id,
 					password,
@@ -46,13 +46,32 @@
 					#{email},					
 					#{profileImage},
 					'A1',
-					#{accessToken},
-					#{refreshToken},
+					#{access_Token},
+					#{refresh_Token},
 					'L2',
 					null,
-					null,
+					CASE
+				        WHEN #{gender} = 'male' THEN 'G1'
+				        WHEN #{gender} = 'female' THEN 'G2'
+				        ELSE NULL
+				    END,
+					
 					sysdate)
-	</insert>
+	</update>
+	
+	<update id="updateKakaoLogin" parameterType="java.util.HashMap" >
+		UPDATE member
+    SET
+        password = #{password},
+        member_Name = #{nickname},
+        Email = #{email},
+        saved_profile_img = #{profileImage},
+        access_token = #{access_Token},
+        refresh_token = #{refresh_Token},
+        sign_up_date = sysdate
+    WHERE
+        member_id = TO_CHAR(#{id})
+	</update>
 		
 	
 	

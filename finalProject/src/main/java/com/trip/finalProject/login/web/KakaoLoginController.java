@@ -33,8 +33,9 @@ public class KakaoLoginController {
       Map<String, String> map = ks.getAccessToken(code);
       
       String access_Token = map.get("access_token");
-      String refresh_Token = map.get("refresh_Token");
-        
+      String refresh_Token = map.get("refresh_token");
+      System.out.println("###제발access_Token#### : " + access_Token);
+      System.out.println("###제발refresh_Token#### : " + refresh_Token);
        //다시 서비스에 있는 메서드 실행함 그리고 DB에 정보 없으면 insert .xml실행 
       MemberVO userInfo = ks.getUserInfo(access_Token,refresh_Token); //getUserInfo 메서드 호출해서 시행함.
      System.out.println("====Controller================================ ");
