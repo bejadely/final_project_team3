@@ -21,16 +21,16 @@ public class LikeController {
 	LikeService liService;
 	
 	// 여행메이트 전체 조회
-	@GetMapping("myMtList")
-	public String paList(Model model, 
+	@GetMapping("/common/myMtList")
+	public String paList(Model model,
+			LikeVO likeVO,
 			@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
 			@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
 		String memberId = "1";
 		int total = liService.mtCountInfo(memberId);
-		System.out.println("토탈 :" + total);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-		System.out.println("total: "+pagingVO);
-		List<LikeVO> paList = liService.mtAllLikeInfo(pagingVO);
+		likeVO.setMemberId(memberId);
+		List<LikeVO> paList = liService.mtAllLikeInfo(likeVO, pagingVO);
 
 		model.addAttribute("list", paList);
 		model.addAttribute("paging", pagingVO);
@@ -39,14 +39,16 @@ public class LikeController {
 	}
 	
 	// 여행계획 전체 조회
-	@GetMapping("myTrList")
-	public String trList(Model model, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
-			@RequestParam(value = "cntPerPage", defaultValue = "12") Integer cntPerPage) {
-		LikeVO likeVO = new LikeVO();
+	@GetMapping("/common/myTrList")
+	public String trList(Model model
+			, LikeVO likeVO
+			, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
+			, @RequestParam(value = "cntPerPage", defaultValue = "12") Integer cntPerPage) {
 		String memberId = likeVO.getMemberId();
 		int total = liService.trCountInfo(memberId);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-		List<LikeVO> paList = liService.trAllLikeInfo(pagingVO);
+		likeVO.setMemberId(memberId);
+		List<LikeVO> paList = liService.trAllLikeInfo(likeVO, pagingVO);
 
 		model.addAttribute("list", paList);
 		model.addAttribute("paging", pagingVO);

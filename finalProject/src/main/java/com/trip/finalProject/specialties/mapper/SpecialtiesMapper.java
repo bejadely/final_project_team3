@@ -15,7 +15,9 @@ public interface SpecialtiesMapper {
 	public SpecialtiesVO sepcialtiesInfo(String postId);
 	
 	//특산물 리스트
-	public List<SpecialtiesVO> listSpecialties();
+	public List<SpecialtiesVO> listSpecialties(PagingVO pagingVO);
+	
+	public int specialtiesCount();
 	
 	//지역 리스트
 	public List<LocationVO> listArea();
@@ -31,6 +33,12 @@ public interface SpecialtiesMapper {
 	
 	//특산물 전체 조회
 	public List<SpecialtiesVO> selectAllSpecial(PagingVO pagingVO);
+
+	public int specialtiesCountTitle(String keyword);
+
+	public List<SpecialtiesVO> searchspecialtiesByTitle(SpecialtiesVO specialtiesVO, PagingVO pagingVO);
+
+	
 	
 	
 }

@@ -17,6 +17,7 @@ public class PaymentVO {
 	private String partnerOrderId;
 	private String pgToken;
 	private Date approvedAt;
+	private String itemCode;
 	
 	
 }

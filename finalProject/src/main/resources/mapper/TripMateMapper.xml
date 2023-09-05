@@ -326,6 +326,11 @@
 		WHERE m.member_id = #{memberId} AND a.post_id = #{postId}
 	</select>
 	
-	
+	<select id="getCommentInfo" resultType="PostCommentVO">
+		SELECT comment_id, post_id, origin_comment_id, writer_id, content, regist_date
+		  FROM post_comment
+		 WHERE post_id=#{postId}
+	  ORDER BY origin_comment_id, regist_date, comment_id
+	</select>
 	
 </mapper>
