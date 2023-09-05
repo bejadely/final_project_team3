@@ -11,6 +11,7 @@
 	<div class="container">
 		<h5><b>정산 완료 내역</b></h5>
 		<br>
+		<h2 style="text-align: center;" th:text="|${searchMonth}월|"></h2>
 		<form id="frm" action="/admin/calAtOnce" method="post">
 			<a href="/admin/selectNotCalList">정산대기중</a> / <a href="/admin/selectCompCalList">정산완료내역</a>
 			
@@ -35,12 +36,8 @@
 									<td align="center" th:text="${l.postId}"></td>
 									<td align="center" th:text="|${#numbers.formatInteger(l.calAmount, 0, 'COMMA')}원|"></td>
 									<td align="center" th:text="|${l.bankCode} ${l.accountNumber}|"></td>
-									<td align="center" th:text="|${l.bankCode} ${l.accountNumber}|"></td>
+									<td align="center" th:text="|${#strings.substring(l.calDate, 0, 10)}|"></td>
 								</tr>
-								<!-- checked된것을 제외한 애들의 input은 지우고 보낼거임 -->
-								<div>
-									
-								</div>
 							</th:block>
 						</tbody>
 					</th:block>
@@ -148,9 +145,7 @@
 				  icon: 'success',
 			      title: message,
 			    })	
-		
 		}
-		
 	}
 	
 	</script>
