@@ -35,7 +35,7 @@
 							   FROM calculation c JOIN package_regist p ON c.post_id = p.post_id
 							                      JOIN member m ON p.writer_id = m.member_id
 							   WHERE c.cal_status = 'V1' 
-							     AND SUBSTR(p.start_date, 4, 2) = SUBSTR(sysdate, 4, 2)
+							     AND SUBSTR(p.start_date, 1, 4) = SUBSTR(sysdate, 1, 4)
 							ORDER BY c.cal_id DESC) a )
 			  WHERE rn BETWEEN #{start} AND #{end}  		
   		</select>
@@ -55,6 +55,7 @@
   			SELECT COUNT(*)
   			  FROM calculation
   			 WHERE cal_status = 'V2'
+  			   AND SUBSTR(cal_date, 1, 2) = #{searchYear}
   			   AND SUBSTR(cal_date, 4, 2) = #{searchMonth}
    		</select>
   		
@@ -82,6 +83,7 @@
 							   FROM calculation c JOIN package_regist p ON c.post_id = p.post_id
 							                      JOIN member m ON p.writer_id = m.member_id
 							   WHERE c.cal_status = 'V2' 
+							     AND SUBSTR(c.cal_date, 1, 2) = #{searchYear}
 							     AND SUBSTR(c.cal_date, 4, 2) = #{searchMonth}
 							ORDER BY c.cal_id DESC) a )
 			  WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}  		
