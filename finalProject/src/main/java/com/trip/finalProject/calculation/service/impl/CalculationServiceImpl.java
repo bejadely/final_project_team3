@@ -20,6 +20,7 @@ public class CalculationServiceImpl implements CalculationService {
 	CalculationMapper calculationMapper;
 	
 	// 미정산 내역 전체 조회
+	@Override
 	public Map<String, Object> selectNotCalList(Integer nowPage, Integer cntPerPage) {
 			
 		// 미정산 내역 카운트
@@ -63,6 +64,28 @@ public class CalculationServiceImpl implements CalculationService {
 			return "일괄 정산이 성공적으로 이루지지 않았습니다.\n다시 시도해 주세요.";
 		}
 		
+	}
+	
+	
+	@Override
+	public Map<String, Object> selectCompCalList(Integer nowPage, Integer cntPerPage, Integer searchMonth) {
+		
+		// 특정월 정산내역 전체 조회
+		
+		// 특정월 내역 카운트
+		int total = calculationMapper.countCompCalList(searchMonth);
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		
+		// 미정산 내역 전체 조회
+		List<CalculationVO> list = calculationMapper.selectCompCalList(pagingVO, searchMonth);
+		
+		// 컨트롤러에 값을 보내기 위한 Map 생성
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("list", list);
+		map.put("PagingVO", pagingVO);
+		
+		return map;
 	}
 	
 }

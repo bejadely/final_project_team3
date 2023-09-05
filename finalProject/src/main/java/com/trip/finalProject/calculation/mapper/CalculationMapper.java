@@ -15,5 +15,10 @@ public interface CalculationMapper {
 	
 	// 정산 처리( 단일 / 일괄작업 모두 수행 )
 	public int calProc(String calId);
+	
+	// 특정월 정산 내역 카운트
+	public int countCompCalList(Integer searchMonth);
 
+	// 특정월 정산 내역 전체 조회
+	public List<CalculationVO> selectCompCalList(PagingVO pagingVO, Integer searchMonth);
 }
