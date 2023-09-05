@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.trip.finalProject.attachedFile.mapper.AttachedFileMapper;
 import com.trip.finalProject.common.PagingVO;
+import com.trip.finalProject.tourInfo.service.SpotDetailReviewVO;
 import com.trip.finalProject.tripMate.mapper.TripMateMapper;
 import com.trip.finalProject.tripMate.service.PostCommentVO;
 import com.trip.finalProject.tripMate.service.TripMateService;
@@ -171,6 +172,26 @@ public class TripMateServiceImpl implements TripMateService {
 	@Override
 	public int myTripnum(TripMateVO trVO) {
 		return tripMateMapper.myTripnum(trVO);
+	}
+
+	@Override
+	public Map<String, Object> insertCommentInfo(PostCommentVO postCommentVO) throws Exception {
+		Map<String, Object> recentCommentInfo = new HashMap<>();
+
+        int returnValue = tripMateMapper.insertCommentInfo(postCommentVO);
+        if(returnValue == 0) {
+            throw new Exception("not insert");
+        }
+		
+        //새정보
+        List<PostCommentVO> commentList = tripMateMapper.selectCommentInfo(postCommentVO.getPostId());
+        recentCommentInfo.put("commentList", commentList);
+
+        //새정보
+        int totalCount = tripMateMapper.getTotalCount(postCommentVO.getPostId());
+        recentCommentInfo.put("totalCount", totalCount);
+        
+		return recentCommentInfo;
 	}
 
 	

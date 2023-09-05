@@ -70,4 +70,10 @@ public interface TripMateMapper {
 
 	public List<PostCommentVO> getCommentInfo(TripMateVO tripMateVO);
 
+	public int insertCommentInfo(PostCommentVO postCommentVO);
+
+	public int getTotalCount(String postId);
+
+	public List<PostCommentVO> selectCommentInfo(String postId);
+
 }

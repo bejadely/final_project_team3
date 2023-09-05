@@ -135,7 +135,7 @@ table {
 		<table border="1" style="width: 80%;">
 			<tr>
 				<th width="70">여행 지역</th>
-				<td width="50" align="center" th:text="${tripMateInfo.tripArea}" ></td>
+				<td width="50" align="center" th:text="${tripMateInfo?.tripArea}" ></td>
 				<th width="100">작성자</th>
 				<td width="150" align="center" th:text="${tripMateInfo.writerId}"></td>
 				<th width="100">등록일자</th>
@@ -165,7 +165,7 @@ table {
 	</div>
 	<div align="center">
 		<form id="sendData" action="/common/tripMateApplyForm" method="post">
-			<input type="hidden" name="postId" th:value="${tripMateInfo.postId}">
+			<input type="hidden" class="postId" name="postId" th:value="${tripMateInfo.postId}">
 			<input type="hidden" name="mateWriter" th:value="${tripMateInfo.writerId}">
 			<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="submit" class="primary-btn">
 			신청하기</button>&nbsp;&nbsp;
@@ -183,16 +183,17 @@ table {
 	<div class="row">
                 <div class="col-lg-10 offset-lg-1">
                     <div class="comment-option">
-                        <h4>0 건의 댓글</h4>
+                        <h4 class="commentCount">0건의 리뷰</h4>
+                        <hr id="afterComment">
                         <!-- 댓글 -->
-                        <div class="comment-container" th:each="commentInfo : ${commentList}" >
+                        <div class="comment-container" th:each="commentInfo : ${commentList}" th:attr="data-origin-comment-id=${commentInfo.originCommentId}">
                         <div class="single-comment-item first-comment" th:if="${commentInfo.commentId}==${commentInfo.originCommentId}" >
                             <div class="sc-text col-12">
                                 <span th:text="${#dates.format(commentInfo.registDate, 'yyyy.MM.dd')}"></span>
                                 <h5 th:text="${commentInfo.writerId}"></h5>
                                 <p th:text="${commentInfo.content}"></p>
                             <div class="input-group mb-3 col-11">
-								<input type="text" class="form-control" placeholder="답글 달기" aria-label="Recipient's username" aria-describedby="button-addon2">
+								<input type="text" class="form-control " placeholder="답글 달기" aria-label="Recipient's username" aria-describedby="button-addon2">
 								<button class="btn btn-outline-secondary" type="button" id="button-addon2">등록</button>
 							</div>
 							&emsp;<a href="#" class="comment-btn update-btn">수정</a>
@@ -223,9 +224,9 @@ table {
                     <div class="leave-comment">
                         <h6>&nbsp;궁금한 점 남겨보아요</h6>
                         <form action="#">
-                        	<input type="text" placeholder="내용">
+                        	<input type="text" id="commentInput" placeholder="내용">
 						    <div class="btn-custom">
-						        <button type="submit" class="site-btn">등록하기</button>
+						        <button type="button" class="site-btn" id="search">등록하기</button>
 						    </div>
 						</form>
                     </div>
@@ -233,83 +234,102 @@ table {
             </div>
 	<div id="cmtL">
 	</div>
-	<script th:inline="javascript">
-	$(document).ready(function() {  
-		//ajax를 통해서 해당 게시글의 포스트 아이디를 보내서 결과 값을 리스트로 담아서 가져옴.
-	    $("#callCmt").click(function() {
-			//console.log("댓글리스트 출력");
-		    $.ajax({
-		            url: '/commentList',
-		            type: 'get',
-		            data: {postId : [[${tripMateInfo.postId}]]}
-		           }).done(data => {
-		              //console.log(postId);
-		              console.log(data);
-		              showComment(data);
-		           }).fail(reject => console.log(reject));
-		         })
-		         
-		 		
-	 		function showComment(data){
-		    	var html = ""; // 빈 문자열로 초기화
-		    	$.each(data.cmtList, (index, cmtList) => {
-		    	    html +=
-		    	        `
-		    	        <input type="text" name="cmtContent" value="${cmtList.cmtContent}">
-		    	        <input type="text" name="registDate" value="${cmtList.registDate}">
-		    	        <input type="text" name="writerId" value="${cmtList.writerId}">
-		    	        <input type="hidden" name="step" value="${cmtList.step}">
-		    	        <input type="hidden" name="postId" value="${cmtList.postId}">
-		    	        <input type="hidden" name="commentId" value="${cmtList.commentId}">
-		    	        <input type="hidden" name="cmtNum" value="${cmtList.cmtNum}">
-		    	        <br>
-		    	        `;
-		    	});
-		    	$("#cmtL").html(html);
-	 		}
-	
-	
-		//ajax 댓글 등록
-		$("#cmtSave").click(function() {
-			//session에 아이디 값이 없으면 로그인 페이지 호출
-			if ('${session.sessionId}' == "") {
-				alert("로그인이 필요합니다.")
-				location.href="/member/login"
-			}else{
-				var writer = [[${session.sessionId}]];
-				var content = $("#cmtContent").val();
-				var postId = $("#postId").val();
-				var step = 0; //(부모)댓글일 경우 step 는 0
-				var obj = {
-						writerId : writer,
-						cmtContent : content,
-						postId : postId,
-						step : step,
-				}
-		
-				//댓글 내용이 미 작성시 알림호출 후 포커스 이동 
-				if(content=="") {
-					alert("댓글 내용을 입력하세요.");
-					$("#cmtContent").focus();
-				}else{
-					//댓글 내용이 존재하면 ajax를 통해 저장 기능 실행
-					$.ajax({
-						url: '/insertComment',
-						type: 'post',
-						data: obj
-					}).done(data => {
-						alert("댓글이 등록 되었습니다.");
-						$("#cmtContent").val("");  
-					}).fail(reject => console.log(reject));
-				}
-			}
-		})
+	<script>
 
+	//댓글 등록
+	$(document).on('click', '#search', function() {
 		
-		
-		
-	})
+        let postId = $('.postId').val();
+        let originCommentId = $('.comment-container').data('originCommentId');
+        let content=$('#commentInput').val();
+        
+        
+        let commentContent = $('#commentInput').val();
+        if(commentContent == null || commentContent.replaceAll(' ', '') == '') {
+            alert("내용을 입력해주세요.");
+            return;
+            
+        
+        }
+        //  ajax 들어가서 로그인 되어있는지 먼저 확인 - 안되면 바로 fail throw new Exception(); 예외 일부러 발생시켜주기
+        $.ajax({
+            type: 'POST',
+            url: '/insertComment',
+            data : {
+            	'postId' : postId,
+                'originCommentId' : originCommentId,
+                'content' : content
+            }
+        })
+        .done(function (data, textStatus, jqXHR){
+            console.log('done');
+
+            let totalCount=$('.commentCount').text(data.totalCount + '개의 리뷰');
+            $('.commentCount').html(totalCount);
+            
+            clearInput();
+
+            alert('댓글이 등록되었습니다.');
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            console.log('fail');
+
+            let errorMessage = JSON.parse(jqXHR.responseText).message;
+            if(errorMessage == 'no login') {
+                alert('로그인을 해주세요.');
+            } else if(errorMessage == 'not insert') {
+                alert('댓글이 등록되지 않았습니다.');
+            }
+        })
+
+    })
+
+	function clearInput() {
+            $('#commentInput').val('');
+        }
 	
+	function appendComment(data, postId) {
+        let node = ``;
+        for(let i = 0; i < data.length; i++) {
+        	if (data[i].commentId == data[i].originCommentId) {
+        		node = `
+                <div class="comment-container">
+                    <div class="single-comment-item first-comment">
+                        <div class="sc-text col-12">
+                            <span>${data[i].registDate}</span>
+                            <h5>${data[i].writerId}</h5>
+                            <p>${data[i].content}</p>
+                            <div class="input-group mb-3 col-11">
+                                <input type="text" class="form-control" placeholder="답글 달기" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                <button class="btn btn-outline-secondary" type="button" id="button-addon2">등록</button>
+                            </div>
+                            &emsp;<a href="#" class="comment-btn update-btn">수정</a>
+                            &emsp;<a href="#" class="comment-btn del-btn">삭제</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        	}else{
+        		node = `
+                    <div class="row">
+                        <div class="col-lg-11 offset-lg-1">
+                            <div class="single-comment-item reply-comment">
+                                <div class="sc-text">
+                                    <span>${data[i].registDate}</span>
+                                    <h5>${data[i].writerId}</h5>
+                                    <p>${data[i].content}</p>
+                                    &emsp;<a href="#" class="comment-btn update-btn">수정</a>
+                                    &emsp;<a href="#" class="comment-btn del-btn">삭제</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+        }
+        $('#afterComment').before(node);
+    }
 	</script>
 </body>
 </html>

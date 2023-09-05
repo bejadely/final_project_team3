@@ -333,4 +333,36 @@
 	  ORDER BY origin_comment_id, regist_date, comment_id
 	</select>
 	
+	<insert id="insertCommentInfo" parameterType="PostCommentVO">
+		<selectKey keyProperty="comentId" resultType="String" order="BEFORE">
+            SELECT 'CMT' || (TO_NUMBER(NVL((SUBSTR(MAX(comment_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM post_comment
+			WHERE SUBSTR(review_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+        </selectKey>
+        	INSERT INTO post_comment (comment_id, 
+		                            post_id, 
+		                            origin_comment_id, 
+		                            writer_id, 
+		                            content, 
+		                            regist_date)
+		              VALUES (#{comentId},
+		                      #{postId}, 
+		                      #{originCommentId}
+		                      #{writerId}, 
+		                      #{content}, 
+		                      sysdate)
+	</insert>
+	
+	<select id="getTotalCount" resultType="int">
+		SELECT count(*)
+        FROM post_comment
+        WHERE post_id = #{postId}
+	</select>
+	
+	<select id="selectCommentInfo" resultType="PostCommentVO">
+		SELECT comment_id, post_id, origin_comment_id, writer_id, content, regist_date
+		  FROM post_comment
+		 WHERE post_id=#{postId}
+	  ORDER BY origin_comment_id, regist_date, comment_id
+	</select>
 </mapper>
