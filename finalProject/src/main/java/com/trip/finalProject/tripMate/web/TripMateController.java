@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,9 @@ public class TripMateController {
 		TripMateVO findVO = tripMateService.getTripMateInfo(tripMateVO);
 		
 		model.addAttribute("tripMateInfo", findVO);
+		
+		//댓글, 대댓글 리스트 가져오기
+		model.addAttribute("commentList", tripMateService.getCommentInfo(tripMateVO));
 		
 		return "tripMate/tripMateInfo";
 	}
@@ -144,9 +148,10 @@ public class TripMateController {
 		return "redirect:/tripMateList";			
 	}
 	
+	
 	//마이페이지----------------------------------------------------------------------
 	//내가 적성한 메이트
-	@GetMapping("/common/myPageTrip")
+	@GetMapping("/common/myPageMate")
 	public String tripMateList(Model model,
 			TripMateVO trVO,
 			@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
@@ -178,7 +183,7 @@ public class TripMateController {
 	
 	
 	//신청한 메이트 조회
-	@GetMapping("/common/myPageAppTrip")
+	@GetMapping("/common/myPageAppMate")
 	public String tripMateAppList(Model model,
 			TripMateVO trVO,
 			@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,

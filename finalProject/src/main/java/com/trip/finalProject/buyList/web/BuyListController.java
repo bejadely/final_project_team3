@@ -28,7 +28,6 @@ public class BuyListController {
 			String memberId = "1";
 			int total = buyService.pkCountInfo(memberId);
 			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-			System.out.println("total: "+pagingVO);
 			List<BuyListVO> buyList = buyService.pkAllLikeInfo(pagingVO);
 
 			model.addAttribute("list", buyList);
@@ -63,6 +62,7 @@ public class BuyListController {
 		@GetMapping("/common/buySpSelect")
 		public String selectSp(BuyListVO buyVO,Model model) {
 			BuyListVO findVo = buyService.selectSpInfo(buyVO);
+			System.out.println("testtest : " + findVo);
 			model.addAttribute("list", findVo);
 						
 			return "myPage/buyList/detailBuySpInfo";
