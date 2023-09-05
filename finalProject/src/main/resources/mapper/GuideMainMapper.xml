@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.trip.finalProject.guideMain.mapper.GuideMainMapper">
+  	<select id="getPackageSaleInfo" resultType="PackageRegistVO">
+	  	<![CDATA[
+	  	SELECT *
+		FROM (SELECT r.name, r.tour_theme, r.price, p.member_id, p.order_date, r.writer_id
+				FROM package_regist r join purchase p on r.post_id=p.post_id
+			   WHERE writer_id=#{guideId}
+			ORDER BY p.order_date desc)
+		WHERE ROWNUM <= 5
+	  	]]>
+  	</select>
+	<select id="getQuestionInfo" resultType="GuideQuestionVO">
+		<![CDATA[
+	  	SELECT *
+		FROM (SELECT q.question_title, p.name, code_val(q.answer_result) as "answerResult", q.question_date
+				FROM question q join package_regist p on q.product_id = p.post_id
+			   WHERE writer_id=#{guideId}
+			ORDER BY q.question_date desc)
+		WHERE ROWNUM <= 5
+	  	]]>
+	</select>
+	<select id="getCalculationInfo" resultType="PackageCalculationVO">
+		<![CDATA[
+	  	SELECT *
+		FROM (SELECT c.cal_amount, p.name, code_val(c.cal_status) as "calStatus",c.cal_date
+				FROM calculation c join package_regist p on c.post_id=p.post_id
+			   WHERE writer_id=#{guideId}
+			ORDER BY c.cal_date desc)
+		WHERE ROWNUM <= 5
+	  	]]>
+	</select>
+	<select id="getMonthSaleChartInfo" resultType="PackagePurchaseVO">
+		<![CDATA[
+			SELECT *
+			FROM (SELECT TO_CHAR(p.order_date, 'YYYY-MM') AS "orderMonth",
+						 SUM(p.price) AS "totalPrice"
+					FROM purchase p JOIN package_regist r ON p.post_id = r.post_id
+				   WHERE r.writer_id=#{guideId}
+				GROUP BY TO_CHAR(p.order_date, 'YYYY-MM')
+				ORDER BY TO_CHAR(p.order_date, 'YYYY-MM') ASC)
+			WHERE ROWNUM <= 6
+	  	]]>
+	</select>
+	<select id="getPackageSalingCountInfo" resultType="int">
+		SELECT count(*) as "count"
+		  FROM package_regist
+		 WHERE writer_id=#{guideId}
+		   AND completion='D2'
+	</select>
+	<select id="getPackageSaledCountInfo" resultType="int">
+		SELECT count(*) as "count"
+		  FROM package_regist
+		 WHERE writer_id=#{guideId}
+		   AND completion='D1'
+	</select>
+	<select id="getUnanswereQuestion" resultType="int">
+		SELECT count(*) as "count"
+		  FROM package_regist p join question q on p.post_id=q.product_id
+		 WHERE p.writer_id = #{guideId}
+		   AND answer_result='K1'
+	</select>
+	<select id="getPackageSaleChartInfo" resultType="PackageRegistVO">
+		SELECT sum(p.price) as "price", r.name
+		  FROM package_regist r join purchase p on r.post_id = p.post_id
+		 WHERE writer_id=#{guideId}
+		   AND extract(month from r.start_date) = extract(month from sysdate)
+	  GROUP BY r.name
+	</select>
+  </mapper>

@@ -215,6 +215,7 @@ public class UploadController {
 		
 	}
 
+
 	@PostMapping("/common/deleteFile")
 	@ResponseBody
 	public ResponseEntity<String> deleteFile(String savedImg){
