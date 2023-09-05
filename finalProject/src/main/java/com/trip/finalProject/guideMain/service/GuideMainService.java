@@ -10,5 +10,13 @@ public interface GuideMainService {
 
     List<CalculationVO> getCalculationInfo(String guideId);
 
-    List<PackagePurchaseVO> getSaleChartInfo(String guideId);
+    List<PackagePurchaseVO> getMonthSaleChartInfo(String guideId);
+
+	int getPackageSalingCountInfo(String guideId);
+
+	int getPackageSaledCountInfo(String guideId);
+
+	int getUnanswereQuestion(String guideId);
+
+	List<PackageRegistVO> getPackageSaleChartInfo(String guideId);
 }

@@ -15,5 +15,13 @@ public interface GuideMainMapper {
 
     List<CalculationVO> getCalculationInfo(String guideId);
 
-    List<PackagePurchaseVO> getSaleChartInfo(String guideId);
+    List<PackagePurchaseVO> getMonthSaleChartInfo(String guideId);
+
+	public int getPackageSalingCountInfo(String guideId);
+
+	public int getPackageSaledCountInfo(String guideId);
+
+	public int getUnanswereQuestion(String guideId);
+
+	public List<PackageRegistVO> getPackageSaleChartInfo(String guideId);
 }
