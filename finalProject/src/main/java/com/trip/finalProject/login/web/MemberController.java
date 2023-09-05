@@ -1,7 +1,6 @@
 package com.trip.finalProject.login.web;
-	
-import java.util.Map;
 
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -196,8 +195,29 @@ public class MemberController {
 			return "redirect:/common/myPage?memberId=" + memberVO.getMemberId();
 		}
 	  
-	  
-	 
+		
+		//아이디 찾기 
+		@GetMapping("/findAccount")
+		public String fintId() {
+			return"member/findAccount";
+		}
+		
+		//입력한 전화번호로 계정 ID 찾기
+		@ResponseBody
+		@PostMapping("/phoneNumberCheck")
+		public MemberVO phoneNumberCheck(String phoneNumber) {
+			
+			return memberService.phoneNumberCheck(phoneNumber);
+		}
+		
+		
+		@PostMapping("/updatePasword")
+		public String updatePassword(MemberVO memberVO) {
+			//memberService.insertMemberInfo(memberVO);
+		System.out.println(memberVO);
+			return "member/updatePassword";
+		}
+	
 	
  
 

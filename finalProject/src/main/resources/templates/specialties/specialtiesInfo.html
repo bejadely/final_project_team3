@@ -170,8 +170,32 @@ form {
                 </div>
                <div class="col-lg-3">
                     <div class="property-sidebar">
-                        <h4>구매하기</h4>
-                            <div class="sidebar-btn">
+                        <h4>구매하기</h4>     
+							<!-- 옵션 정보 -->
+							<div class="form-horizontal" style="text-align: left;">
+								<label>옵션  </label> 
+								<select class="form-control opt_select" name="selectedOpt">
+									<option th:each ="op : ${option}" 
+											th:if="${op.discountRate == null}"
+											th:value1="${op.specialtyType}" th:value2 ="${op.price}" th:text="${op.specialtyType + ' / ' + op.price }" >
+									</option>
+									<option th:each ="op : ${option}"
+											th:unless="${op.discountRate == null}"
+											th:value1="${op.specialtyType}" th:value2 ="${op.price}" th:value3="${op.discountRate}" th:text="${op.specialtyType + ' / ' + op.price + '/ 할인율' + op.discountRate}"  >
+									</option>
+								</select>
+							</div>
+							<div class="form-horizontal" style="text-align: left;">
+								<label>구매수량  </label> 
+								<select class="form-control count" id="select_count">
+								    <th:block th:each="count : ${#numbers.sequence(0, 20)}">
+								        <option th:value="${count}" th:text="${count}"></option>
+								    </th:block> 
+								</select>
+							</div>	
+							<div class="selected_option" style="text-align: right;">
+							</div>
+							<div class="sidebar-btn">
                                 <div class="bt-item">
                                     <input type="radio" name="kakaoPay" id="kakaoPay" >
                                     <label for="kakaoPay">Buy</label>
@@ -181,29 +205,49 @@ form {
                                     <label for="cartBtn">Cart</label>
                                 </div>
                             </div>
-                            
-                          
-							<!-- 옵션 정보 -->
-							<div class="form-horizontal" style="text-align: left;">
-								<label>옵션 : </label> 
-								<select class="form-control opt_select" name="selectedOpt">
-									<option th:each ="op : ${option}" th:value1="${op.specialtyType}" th:value2 ="${op.price}" th:text="${op.specialtyType + ' / ' + op.price}" ></option>
-								</select>
-							</div>
-							<div class="form-horizontal" style="text-align: left;">
-								<label>구매수량 : </label> 
-								<select class="form-control" id="select_count">
-								    <th:block th:each="count : ${#numbers.sequence(0, 20)}">
-								        <option th:value="${count}" th:text="${count}"></option>
-								    </th:block>
-								</select>
-							</div>	
-							<div class="selected_option" style="text-align: right;">
-							</div>
 							
                     </div>
                 </div>
+                <!-- 리뷰 -->
+        <div class="review">
+            <h7 id="reviewCount"></h7>
+            <hr>
+             <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1">
+                <label class="form-check-label" for="inlineRadio1">1점</label>
             </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2">
+                <label class="form-check-label" for="inlineRadio2">2점</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="3">
+                <label class="form-check-label" for="inlineRadio3">3점</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="4">
+                <label class="form-check-label" for="inlineRadio4">4점</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="5" th:checked="true">
+                <label class="form-check-label" for="inlineRadio5">5점</label>
+            </div>
+            <div class="input-group mb-3">
+                <input id="reviewInput" type="text" class="form-control" placeholder="리뷰 작성" aria-label="추억을 남겨보세요!" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" type="button" id="addReview">리뷰 등록</button>
+            </div>
+            <hr id="afterReview">
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <button class="btn btn-outline-info justify-content-center" id="moreReview" type="button"
+                        data-page="1" >
+                    더보기
+                </button>
+            </div>
+            <hr>
+           
+        </div>	
+        		
+             </div>
              <input type="hidden" id="id" th:value="${session.sessionId}">
         </div>
         		
@@ -236,26 +280,36 @@ form {
 		})();
 		   
 		
-		$(document).on('click', '.nice-select.form-control .option', function() {
-			var count = $(this).attr("data-value");
+		
+		
+		$(document).on('click', '.nice-select.form-control', function() {
+			//var count = $(this).attr("data-value");
+			//var count = $(".current").text();
+			var count = $("div.count  li.selected").attr("data-value");
 			var price = $(".opt_select > option:selected").attr("value2");
 			var specialtyType = $(".opt_select > option:selected").attr("value1");
+			var discountRate = $(".opt_select > option:selected").attr("value3");
 			var opt = $(".opt_select").val();
-			
-			
-			
-			var finalPrice = count*price;
-			
+			var finalPrice = 0;
+			var discountPrice = 0;
 			var str = '';
+			if(discountRate !=null){
+				finalPrice = price * count*(1-(discountRate/100));
+				discountPrice = price * count * (discountRate/100);
+			}else{
+				finalPrice = price * count;
+			}
+			 
 			
 			
-			str += '<p><label>수량 : </label><span class="count">&nbsp;' + count + '</span>&nbsp;&nbsp;&nbsp;';	
+			str += '<p><label>수량 : </label><span class="count">&nbsp;' + count + '</span>&nbsp;&nbsp;&nbsp;<br>';	
 			
 		
-			str += '<label>옵션 : </label><span class="specialtyType">&nbsp;' + opt + '</span>&nbsp;&nbsp;&nbsp;';	
-			str+=`<input type="hidden" class="specType" value="${specialtyType}">`
+			str += '<label>옵션 : </label><span class="specialtyType">&nbsp;' + specialtyType + '</span>&nbsp;&nbsp;&nbsp;';	
+			str+=`<input type="hidden" class="specType" value="${specialtyType}"><br>`
 			
-			str	+= '<label>가격 : </label><span>&nbsp;' + price + ' 원</span></p>';
+			str	+= '<label>가격 : </label><span>&nbsp;' + price + ' 원</span><br>';
+			str += '<label>할인 금액: </label><span>&nbsp;' + discountPrice + '원</span></p>';
 			str += '<h4><label>결제금액 : </label><span class="finalPrice">&nbsp;' + finalPrice + ' 원</span></h4>'; 
 			
 			
@@ -284,7 +338,7 @@ form {
 	     	console.log(memberId);
 	        $.ajax({
 	        	type:'post',
-	        	url:'payment/ready',
+	        	url:'/common/payment/ready',
 	        	data:{
 	        		totalAmount: totalAmount,
 	        		orderName : orderName,
@@ -308,7 +362,7 @@ form {
 	        let specialtyType = $(".specType").val();
 	    	$.ajax({
 	    		type:'post',
-	    		url:'/cartInsert',
+	    		url:'/common/cartInsert',
 	    		data:{
 	    			price: totalAmount,
 	        		cartName : orderName,
@@ -322,7 +376,210 @@ form {
 	    		}
 	    	});
 	    });
+	    
+	    
+	    //리뷰
+	    function getPackageDetailInfoReview(postId, callback) {
+            $.ajax({
+                type: 'GET',
+                url: '/packageInfoReview',
+                data: {
+                    'postId': postId
+                }
+            })
+            .done(function (data, textStatus, jqXHR){
+                console.log('done');
 
+                callback(data);
+            })
+            .fail(function (jqXHR, textStatus, errorThrown){
+                console.log('fail');
+
+                callback(null);
+            })
+        }
+	    
+	    function appendPackageDetailInfoReview(data, postId) {
+	        $('#reviewCount').text(data.totalCount + '개의 리뷰');
+	        $('#reviewCount').data('totalCount', data.totalCount);
+	        if(data.totalCount == 0) {
+	            $('#moreReview').addClass('disabled');
+	        }
+	        $('#moreReview').data('postId', postId);
+	
+	        if(data.packageDetailReviewVoList.length > 0) {
+	            appendReview(data.packageDetailReviewVoList, postId);
+	        }
+	    }
+	
+	    //모달창 리뷰 페이징
+	    $(document).on('click', '#moreReview', function () {
+	        let page = $(this).data('page');
+	
+	        page = Number(page)+1;
+	
+	        $.ajax({
+	            type: 'GET',
+	            url: '/packageReview',
+	            data: {
+	                'postId' : postId,
+	                'page' : page
+	            }
+	        })
+	        .done(function(data, textStatus, jqXHR) {
+	            console.log('done');
+	
+	            appendReview(data, postId);
+	            changeInfoMoreReviewButton(page);
+	        })
+	        .fail(function(jqXHR, textStatus, errorThrown) {
+	            console.log('fail');
+	
+	        })
+	    });
+	
+	    function appendReview(data, postId) {
+	        let node = ``;
+	        for(let i = 0; i < data.length; i++) {
+	            let stars = '';
+	            for(let j = 1; j <= 5; j++) {
+	                if(j <= data[i].grade) {
+	                    stars += '★';
+	                } else {
+	                    stars += '☆';
+	                }
+	            }
+	
+	            let date = data[i].writeDate.substring(0,10);
+	
+	            node += `
+	                <div class="review-content">
+	                    <p>
+	                        <span class="writerId">${data[i].writerId}</span>
+	                        <span class="grade">${stars}</span>
+	                        <span class="writeDate" style="float: right;">${date}&emsp;
+	                            <button type="button" class="btn btn-secondary btn-sm deleteReview" data-content-id="${postId}" data-review-id="${data[i].reviewId}">삭제</button>
+	                        </span>
+	                        <br>
+	                        <span class="content">${data[i].content}</span>
+	                    </p>
+	                </div>
+	            `;
+	        }
+	        $('#afterReview').before(node);
+	    }
+	
+	    function changeInfoMoreReviewButton(page) {
+	        $('#moreReview').data('page', page);
+	
+	        let totalCount = $('#reviewCount').data('totalCount');
+	        let reviewCount = $('.review-content').length;
+	
+	        if(totalCount == reviewCount) {
+	            $('#moreReview').addClass('disabled');
+	        }
+	    }
+	
+	    //리뷰 등록
+	    $(document).on('click', '#addReview', function() {
+	        let contentId = $('#moreReview').data('postId');
+	
+	        let checkedgrade = $('input[name=inlineRadioOptions]:checked').val();
+	        if(checkedgrade == null) {
+	            alert("점수를 체크해주세요.");
+	            return;
+	        }
+	
+	        let reviewContent = $('#reviewInput').val();
+	        if(reviewContent == null|| reviewContent.replaceAll(' ', '') == '') {
+	            alert("내용을 입력해주세요.");
+	            return;
+	        }
+	        //  ajax 들어가서 로그인 되어있는지 먼저 확인 - 안되면 바로 fail throw new Exception(); 예외 일부러 발생시켜주기
+	        $.ajax({
+	            type: 'POST',
+	            url: '/common/packageReview',
+	            data : {
+	                'grade' : checkedgrade,
+	                'content' : reviewContent,
+	                'originPostId' : postId
+	            }
+	        })
+	        .done(function (data, textStatus, jqXHR){
+	            console.log('done');
+	
+	            //  data는 totalCount이고, x개의 리뷰를 바꿔야함
+	            $('#reviewCount').text(data.totalCount + '개의 리뷰');
+	            $('#reviewCount').data('totalCount', data.totalCount);
+	
+	            $('.review-content').remove();
+	            appendReview(data.recentReviewList, postId);
+	
+	            changeInfoMoreReviewButton(1);
+	            clearInput();
+	
+	            alert('리뷰가 등록되었습니다.');
+	        })
+	        .fail(function (jqXHR, textStatus, errorThrown) {
+	            console.log('fail');
+	
+	            let errorMessage = JSON.parse(jqXHR.responseText).message;
+	            if(errorMessage == 'no login') {
+	                alert('로그인을 해주세요.');
+	            } else if(errorMessage == 'not insert') {
+	                alert('리뷰가 등록되지 않았습니다.');
+	            }
+	        })
+	
+	    })
+	
+	    //리뷰 삭제
+	    $(document).on('click', '.deleteReview', function() {
+	
+	        let writerId = $(this).parent().siblings('.writerId').text();
+	        let reviewId = $(this).data('reviewId');
+	        //  ajax로 가서 session에 저장된 아이디랑 writerId랑 같은지 확인 - 같지 않다면 fail 
+	        $.ajax({
+	            type: 'DELETE',
+	            url: "/common/packageReview",
+	            data: {
+	                'postId' : postId,
+	                'writerId' : writerId,
+	                'reviewId' : reviewId
+	            }
+	        })
+	        .done(function (data, textStatus, jqXHR){
+	            console.log('done');
+	
+	            $('#reviewCount').text(data.totalCount + '개의 리뷰');
+	            $('#reviewCount').data('totalCount', data.totalCount);
+	
+	            $('.review-content').remove();
+	            appendReview(data.recentReviewList, postId);
+	
+	            changeInfoMoreReviewButton(1);
+	
+	            alert('리뷰가 삭제되었습니다.');
+	        })
+	        .fail(function (data, textStatus, jqXHR) {
+	            console.log('fail');
+	
+	            let errorMessage = JSON.parse(jqXHR.responseText).message;
+	            if(errorMessage == 'no login') {
+	                alert('로그인을 해주세요.');
+	            } else if(errorMessage == 'not same') {
+	                alert('본인의 리뷰만 삭제할 수 있습니다.');
+	            } else if(errorMessage == 'not delete') {
+	                alert('리뷰가 삭제되지 않았습니다.');
+	            }
+	        })
+	
+	    })
+	
+	    function clearInput() {
+	        $('#reviewInput').val('');
+	        $('#inlineRadio5').prop('checked', true);
+	    }
 	    
 	    
 </script>

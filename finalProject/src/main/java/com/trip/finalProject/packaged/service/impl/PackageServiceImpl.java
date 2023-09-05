@@ -9,13 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.trip.finalProject.attachedFile.mapper.AttachedFileMapper;
-import com.trip.finalProject.location.service.LocationVO;
 import com.trip.finalProject.common.PagingVO;
+import com.trip.finalProject.location.service.LocationVO;
 import com.trip.finalProject.packaged.mapper.PackageMapper;
 import com.trip.finalProject.packaged.service.PackageReviewVO;
 import com.trip.finalProject.packaged.service.PackageService;
 import com.trip.finalProject.packaged.service.PackageVO;
-import com.trip.finalProject.tourInfo.service.SpotDetailReviewVO;
 
 import lombok.Setter;
 
@@ -36,7 +35,7 @@ public class PackageServiceImpl implements PackageService {
 
     private final int FIRST_PAGE = 1;
 
-	
+	//패키지 등록
 	@Transactional
 	@Override
 	public void register(PackageVO vo) {
@@ -56,23 +55,45 @@ public class PackageServiceImpl implements PackageService {
 				attach.setPostId(vo.getPostId());
 				attachedFileMapper.insertAttachedFile(attach);
 			});
-		}
-			
-		
-				
+		}			
 	}
-	
+	//패키지 상세 정보
 	@Override
 	public PackageVO packageInfo(PackageVO packageVO) {
 		// TODO Auto-generated method stub
 		return packageMapper.packageInfo(packageVO);
 	}
-
+	
+	//패키지 리스트
 	@Override
-	public List<PackageVO> getPackageList() {
+	public List<PackageVO> getPackageList(PagingVO pagingVO) {
 		// TODO Auto-generated method stub
-		return packageMapper.listPackage();
+		return packageMapper.listPackage(pagingVO);
 	}
+	//패키지 수 카운트
+	@Override
+	public int packageCount() {
+		// TODO Auto-generated method stub
+		return packageMapper.getPackageCount();
+	}
+	
+	//패키지 명 검색 카운트
+	@Override
+	public int packageCountTitle(String keyword) {
+		// TODO Auto-generated method stub
+		return packageMapper.packageCountTitle(keyword);
+	}
+	
+	
+	//패키지 명 검색
+	@Override
+	public List<PackageVO> searchPackageByTitle(PackageVO packageVO, PagingVO pagingVO) {
+		// TODO Auto-generated method stub
+		return packageMapper.searchPackageByTitle(packageVO, pagingVO);
+	}
+	
+	
+	
 	//가이드 페이지=====================================================================
 	//리스트 페이징용
 	@Override
@@ -186,6 +207,9 @@ public class PackageServiceImpl implements PackageService {
 
         return recentReviewInfo;
     }
+	
+
+	
 
 
 }

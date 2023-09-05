@@ -83,7 +83,7 @@ function handleClick(data) {
        });
        
        price = `<label>총 주문 금액 : </label>
-          		<input type="text" id="result" readonly="readonly">`
+                <input type="text" id="result" readonly="readonly">`
        
        // tbody 내용을 업데이트
        thead.html(lmth);
@@ -283,8 +283,6 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
         let postIdData = check.data("postid");
         let cartId = check.closest("tr").find("input[type=hidden]").val();
         let url = "/common/cartDelete?cartId=" + cartId; // Use 'cartId'
-		console.log(url)
-
         fetch(url)
             .then(response => response.text())
             .then(text => {
@@ -306,23 +304,25 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
   }); 
     
      $("#buyBtn").click(function(){
-        var totalAmount =0;
-        var quantity = 0;
-        var orderName= null;
-        var orderElements = [];
-        var th = $(this);
+       var totalAmount =0;
+       var quantity = 0;
+       var orderName= null;
+       var orderElements = [];
+       var th = $(this);
        var cartIdElements = [];
        var postId;
+       var memberId = $("#id").val();
+       var option = null;
         // 체크된 체크박스를 찾는 루프
        $("tbody input[type=checkbox]:checked").each(function() {
            var row = $(this).closest("tr");
-           var postId = $(this).data("postid");
+           postId = $(this).data("postid");
            var count = parseInt(row.find("input[type=text]").val());
            var price = parseFloat(row.find("td:eq(4)").text());
            var value = row.find("input[class=cartId]").val();
-           var option = row.find("input[class=cartOption]").val();
+           option = row.find("input[class=cartOption]").val();
            var cartTotal = count * price;
-         orderElements.push(row.find("td:eq(2)").text()); // 값을 배열에 추가          
+           orderElements.push(row.find("td:eq(2)").text()); // 값을 배열에 추가          
            cartIdElements.push(value);
            totalAmount += cartTotal;
            quantity += count;
@@ -338,17 +338,19 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
 
          
            
-       $.ajax({
-          type:'post',
-          url:'payment/ready',
-          data:{
-             totalAmount: totalAmount,
-             orderName : orderName,
-             quantity : quantity,
-             item_code: cartIdElements.join(',')
-             //post_id : 
-             
-          },
+         $.ajax({
+            type:'post',
+            url:'/payment/ready',
+            data:{
+               totalAmount: totalAmount,
+               orderName : orderName,
+               quantity : quantity,
+               itemCode: cartIdElements.join(','),
+               postId: postId,
+               partnerUserId: memberId,
+               specialtyType: option 
+               
+               },
           success:function(response){
              location.href = response.next_redirect_pc_url
           }
@@ -362,7 +364,7 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
 </head>
 <body>
    <div layout:fragment="content" id="cartAllList" style="text-align: center;">
-
+<input type="hidden" id="id" th:value="${session.sessionId}">
       <div class="sidebar-btn">
          <div class="bt-item">
             <input type="radio" name="s-type" id="pakage" checked>

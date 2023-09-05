@@ -46,7 +46,7 @@ public class KakaoPayServiceImpl implements KakaoPayService {
 		parameters.add("partner_order_id", partner_order_id);
 		parameters.add("partner_user_id", vo.getPartnerUserId());
         parameters.add("item_name", vo.getOrderName());
-        parameters.add("item_code", postId);
+        parameters.add("item_code", vo.getItemCode());
         parameters.add("quantity", String.valueOf(quantity));
         parameters.add("total_amount", String.valueOf(vo.getTotalAmount()));
         parameters.add("tax_free_amount", String.valueOf(vo.getTotalAmount()));

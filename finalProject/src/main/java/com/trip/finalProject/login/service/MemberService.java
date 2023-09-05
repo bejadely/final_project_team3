@@ -37,5 +37,7 @@ public interface MemberService {
 	/* idCheck(id) */
 	
 	public MemberVO singleLogin(MemberVO vo);
-
+	
+	//휴대폰 번호로 계정 찾기
+	MemberVO phoneNumberCheck(String phoneNumber);
 }
