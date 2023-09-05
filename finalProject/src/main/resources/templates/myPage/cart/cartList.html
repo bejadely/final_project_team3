@@ -21,7 +21,7 @@ function handleClick(data) {
       
        
        $.ajax({
-            url: 'ajaxCartList',
+            url: '/common/ajaxCartList',
             type: 'post',
             data:obj
             
@@ -71,7 +71,7 @@ function handleClick(data) {
              html += "<tr>" +
                "<td><input type='checkbox' name='chk' data-postid='" + cartItem.postId + "' /></td>" +
                "<td>"+"<input type='hidden' class='cartId' value='" + cartItem.cartId + "' />" + cartItem.cartName + "</td>" +
-               "<td class='orderName'>" + cartItem.cartName + "</td>" +
+               "<td>"+"<input type='hidden' class='cartOption' value='" + cartItem.optionId + "' />" + cartItem.cartName + "</td>" +
                `<td>
                 <button type="button" class="quantity-btn decrement-btn">-</button>
                 <input type="text" class="quantity-input" name="productAmount" value="${cartItem.quantity}">
@@ -113,7 +113,7 @@ function handleClick(data) {
            
            
             $.ajax({
-               url: 'updateQuantity',
+               url: '/common/updateQuantity',
                type: 'post',
                data: { cartId : cartId,
                      quantity : result
@@ -252,7 +252,7 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
         
         console.log(postIdData);
         
-        let url = "/cartDelete?cartId=" + cartId;
+        let url = "/common/cartDelete?cartId=" + cartId;
 
         fetch(url)
             .then(response => response.text())
@@ -282,7 +282,7 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
         let check = $(this);
         let postIdData = check.data("postid");
         let cartId = check.closest("tr").find("input[type=hidden]").val();
-        let url = "/cartDelete?cartId=" + cartId; // Use 'cartId'
+        let url = "/common/cartDelete?cartId=" + cartId; // Use 'cartId'
 		console.log(url)
 
         fetch(url)
@@ -319,7 +319,8 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
            var postId = $(this).data("postid");
            var count = parseInt(row.find("input[type=text]").val());
            var price = parseFloat(row.find("td:eq(4)").text());
-           var value = row.find("input[type=hidden]").val();
+           var value = row.find("input[class=cartId]").val();
+           var option = row.find("input[class=cartOption]").val();
            var cartTotal = count * price;
          orderElements.push(row.find("td:eq(2)").text()); // 값을 배열에 추가          
            cartIdElements.push(value);

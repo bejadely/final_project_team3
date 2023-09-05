@@ -67,7 +67,7 @@ $(document).ready(function() {
 			</tbody>
 			</table>
 		</form>
-		<div>
+		<div class="property-pagination">
 			<th:block th:if="${paging.startPage != 1}">
 				<a th:href="@{common/buySpList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
 			</th:block>

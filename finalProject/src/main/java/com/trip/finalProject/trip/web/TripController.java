@@ -41,7 +41,7 @@ public class TripController {
 	}
 	
 	//여행기록 개인 조회/계획중 여행 - myPgae(재운)
-	@GetMapping("myPageTrip")
+	@GetMapping("/common/myPageTrip")
 	public String maPageTrip(Model model
 			  ,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 			  ,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
@@ -56,7 +56,7 @@ public class TripController {
 	}
 	
 	//여행기록 개인 조회/임시저장 - myPgae(재운)
-	@GetMapping("myPageNotTrip")
+	@GetMapping("/common/myPageNotTrip")
 	public String maPageNotTrip(Model model
 			,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 			,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
@@ -71,7 +71,7 @@ public class TripController {
 	}
 	
 	//여행기록 개인 조회/완료된 여행 - myPgae(재운)
-	@GetMapping("myPageComTrip")
+	@GetMapping("/common/myPageComTrip")
 	public String maPageComTrip(Model model
 			,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 			,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
@@ -100,13 +100,13 @@ public class TripController {
 	
 	
 	//여행기록 등록 - form
-	@GetMapping("/tripRecordInsert")
+	@GetMapping("/common/tripRecordInsert")
 	public String tripRecordInsertForm(Model model) {
 		model.addAttribute("tripVO", new TripVO());
 		return "trip/tripRecordInsert";
 	}
 	// 여행기록 상세조회
-	@GetMapping("/tripRecordInfo")
+	@GetMapping("/common/tripRecordInfo")
 	public String tripRecordInfo(TripVO tripVO, Model model) {
 		TripVO findVO = tripService.getTripInfo(tripVO);
 		
@@ -138,7 +138,7 @@ public class TripController {
 	}
 
 	// 여행기록 등록 - 임시저장 상태에서 저장상태로 상태 업데이트
-	@PostMapping("/tripRecordInsertUp")
+	@PostMapping("/common/tripRecordInsertUp")
 	public String tripRecordInsertProcess(TripVO tripVO) {
 		//여행기록 저장상태 변경
 		tripService.InsertTripInfo(tripVO);
