@@ -50,6 +50,17 @@
   			 WHERE cal_id = #{calId}
   		</update>
   		
+  		<!-- 매월 정산 처리 -->
+  		<update id="quartzCalMonthlyProc" parameterType="String">
+  			UPDATE calculation
+  			<set>
+  				cal_status = 'V2',
+  				cal_date = sysdate,
+  			</set>
+  			 WHERE SUBSTR(cal_id, 4, 4) = SUBSTR(REPLACE(SYSDATE, '/', ''), 1, 4)
+  		</update>
+  		
+  		
   		<!-- 특정월 정산 내역 카운트 -->
   		<select id="countCompCalList">
   			SELECT COUNT(*)
