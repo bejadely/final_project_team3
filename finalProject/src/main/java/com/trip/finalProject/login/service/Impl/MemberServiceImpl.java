@@ -98,9 +98,9 @@ public class MemberServiceImpl implements MemberService {
 	 //비밀번호 찾기 중 비밀번호 수정하기
 	 
 	 @Override
-	 public MemberVO editPassword(MemberVO vo) {
+	 public int editPassword(MemberVO vo) {
 		
-			MemberVO result = memberMapper.editPassword(vo);
+			int result = memberMapper.editPassword(vo);
 			return result;
 		 
 	 }
