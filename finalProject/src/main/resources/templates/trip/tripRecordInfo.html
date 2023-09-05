@@ -157,10 +157,8 @@ table {
 				</div>
 				<br>
 				<input type="hidden" id="postId" th:value="${tripInfo.postId}">
-				<!-- 수정버튼 미구현 -->
 				<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripInfo.writerId}" type="button" class="primary-btn" 
 				th:onclick="|location.href='@{/common/tripRecordModify(postId=${tripInfo.postId})}'|">수정</button>&nbsp;&nbsp;
-				
 				<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripInfo.writerId}" type="button" class="primary-btn" 
 				th:onclick="|location.href='@{/common/tripRecordDelete(postId=${tripInfo.postId})}'|">삭제</button>&nbsp;&nbsp;
 				<button type="button" onclick="location.href='/tripRecordList'">목록으로</button>
