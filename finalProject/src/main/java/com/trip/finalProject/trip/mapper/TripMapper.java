@@ -1,7 +1,6 @@
 package com.trip.finalProject.trip.mapper;
 
 import java.util.List;
-import java.util.Map;
 
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.trip.service.TripVO;
@@ -62,6 +61,12 @@ public interface TripMapper {
 	public List<TripVO> selectMapData(TripVO tripVO);
 	
 	//여행기록 삭제
-	public int deleteTripInfo(int postId);
+	public int deleteTripInfo(TripVO tripVO);
+	
+	//여행기록 삭제시 해당 게시글과 관련된 여행경로 삭제
+	public int deleteMapData(TripVO tripVO);
+	
+	//여행기록 삭제시 해당 게시글과 관련된 여행메모 삭제
+	public int deleteMemoData(TripVO tripVO);
 	
 }

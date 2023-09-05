@@ -18,8 +18,7 @@ public class TripVO {
 	private String postId;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date uploadDate;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date tripDate;
+	private String tripDate;
 	
 	//member
 	private String memberId;
