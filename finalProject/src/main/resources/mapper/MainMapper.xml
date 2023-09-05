@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.trip.finalProject.main.mapper.MainMapper">
+  	<select id="getSpecialtiesInfo" resultType="MainSpecialtiesVO">
+	  	SELECT o.price*((100-o.discount_rate)/100) as "saleprice", 
+	  		r.title, 
+	  		o.price, 
+	  		r.area_code, 
+	  		r.sigungu_code, 
+	  		o.discount_rate, 
+	  		code_val(r.type) as "type",
+            a.loading_img,
+            r.writer_id
+		FROM specialties_regist r 
+            join specialties_option o on r.post_id=o.post_id
+            join attached_file a on r.post_id=a.post_id
+		WHERE r.discount = 'I2'
+        AND img_type='U2'
+  	</select>
+  </mapper>
