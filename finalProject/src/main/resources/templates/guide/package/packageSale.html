@@ -92,7 +92,7 @@ $(document).ready(function() {
 			</table>
 			<button type="button" id="insert" th:onclick="|location.href='@{/packageInsertForm}'|">등록</button>
 		</form>
-		<div>
+		<div class="property-pagination">
 			<th:block th:if="${paging.startPage != 1}">
 				<a th:href="@{/guide/packageSale(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
 			</th:block>
