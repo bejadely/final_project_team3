@@ -75,6 +75,7 @@ public class CalculationController {
 			model.addAttribute("list", map.get("list"));
 			model.addAttribute("paging", map.get("PagingVO"));
 			model.addAttribute("searchMonth", searchMonth);
+			model.addAttribute("searchYear", searchYear);
 			
 			
 			return "admin/calculation/completeCalList";

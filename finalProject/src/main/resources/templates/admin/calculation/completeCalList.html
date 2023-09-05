@@ -5,13 +5,26 @@
 	layout:decorate="@{layouts/admin_layout}">
 	
 <!-- Content -->
-<!-- 기본 : 판매중인 상품 -->
 <!-- 기간에 따라 정산내역 조회 다르게 할 수 있게 필터 걸어주자 -->
 <div layout:fragment="content">
 	<div class="container">
 		<h5><b>정산 완료 내역</b></h5>
 		<br>
+		<th:block th:if="${searchMonth-1 > 0}">
+			<a th:href="@{/admin/selectCompCalList(searchYear=${searchYear}, searchMonth=${searchMonth-1})}">이전월</a>
+		</th:block>
+		<th:block th:if="${searchMonth-1 <= 0}">
+			<a th:href="@{/admin/selectCompCalList(searchYear=${searchYear-1}, searchMonth=12)}">이전월</a>
+		</th:block>
+		<th:block th:if="${searchMonth+1 > 12}">
+			<a th:href="@{/admin/selectCompCalList(searchYear=${searchYear+1}, searchMonth=1)}">다음월</a>
+		</th:block>
+		<th:block th:if="${searchMonth+1 <= 12}">
+			<a th:href="@{/admin/selectCompCalList(searchYear=${searchYear}, searchMonth=${searchMonth+1})}">다음월</a>
+		</th:block>
 		<h2 style="text-align: center;" th:text="|${searchMonth}월|"></h2>
+		<!-- 작성중 : 서버에서 불러오는 yyyy형태로 변환하는게 좋음 -->
+		<p style="text-align: center;" th:text="|20${searchYear}년|"></p>
 		<form id="frm" action="/admin/calAtOnce" method="post">
 			<a href="/admin/selectNotCalList">정산대기중</a> / <a href="/admin/selectCompCalList">정산완료내역</a>
 			
