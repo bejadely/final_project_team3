@@ -3,6 +3,7 @@ package com.trip.finalProject.tripMate.mapper;
 import java.util.List;
 
 import com.trip.finalProject.common.PagingVO;
+import com.trip.finalProject.tripMate.service.PostCommentVO;
 import com.trip.finalProject.tripMate.service.TripMateVO;
 
 public interface TripMateMapper {
@@ -66,5 +67,7 @@ public interface TripMateMapper {
 	
 	//참여한 메이트 정보 불러오기
 	public TripMateVO memberInfo(TripMateVO tripMateVO);
+
+	public List<PostCommentVO> getCommentInfo(TripMateVO tripMateVO);
 
 }

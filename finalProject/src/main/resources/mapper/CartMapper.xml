@@ -66,5 +66,9 @@
  		WHERE cart_id = #{cartId}
  	</update>
  
- 
+ 	<!-- 카드 정보 리스트 -->
+ 	<select id="cartInfo">
+ 		SELECT *
+ 		FROM cart
+ 	</select>
  </mapper>

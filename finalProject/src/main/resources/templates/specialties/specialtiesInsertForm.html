@@ -12,7 +12,7 @@
 <!-- <script src="https://cdn.ckeditor.com/ckeditor5/12.4.0/classic/ckeditor.js">
 </script>
  -->
-<script src ="ckeditor5-build-classic/ckeditor.js"></script>
+<script src ="/ckeditor5-build-classic/ckeditor.js"></script>
 <style>
 .ck.ck-editor {
 	width: 80%;
@@ -41,7 +41,7 @@ ClassicEditor
 	.create(document.querySelector('#editor'), {
 		/* htmlEncodeOutput: false, */
 		ckfinder: {
-			uploadUrl : 'upload'	
+			uploadUrl : '/common/upload'	
 		}
 	
 		
@@ -56,11 +56,12 @@ ClassicEditor
 			
 			const filenames = imgTags.map(img=> {
 				const src = img.getAttribute('src');
-				
-				return src.substring(src.lastIndexOf('/')+1);
+				console.log(src);
+				const substringToExtract = "/upload"
+				return src.split(substringToExtract)[1];
 			});
 			console.log(filenames);
-			fetch(`/deleteImg`,{
+			fetch(`/common/deleteImg`,{
 				method: 'POST',
 				headers:{
 					'Content-Type':'application/json'
@@ -93,7 +94,6 @@ ClassicEditor
 			const data = editor.getData();
 			
 			let objData = serializeObject();
-			console.log(objData);
 			//sconsole.log(data);
 			const { title, writerId,type } = objData;
 			var combinedData={
@@ -104,7 +104,6 @@ ClassicEditor
 		        writerId: writerId,
 		        type:type
 			};
-			console.log(combinedData);
 			
 			
 			$(".uploadResult ul li").each(function(i,obj){
@@ -125,9 +124,11 @@ ClassicEditor
 			    var type = $(obj).val();
 			    var priceInput = $(obj).closest(".specialtiesOption").find(".price").eq(i);
 			    var price = $(priceInput).val();
-				console.log(priceInput);
-			    str += `<input type='text' name='optionList[${i}].specialtyType' value='${type}'>
-			            <input type='text' name='optionList[${i}].price' value='${price}'>`;
+			    var discountInput = $(obj).closest(".specialtiesOption").find(".discountRate").eq(i);
+			    var discountRate = $(discountInput).val();
+			    str += `<input type='hidden' name='optionList[${i}].specialtyType' value='${type}'>
+			            <input type='hidden' name='optionList[${i}].price' value='${price}'>
+			            <input type='hidden' name='optionList[${i}].discountRate' value='${discountRate}'>`;
 			});
 			
 			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
@@ -142,7 +143,7 @@ ClassicEditor
 			});
 			
 			formObj.append(str);
-			document.getElementById('editorForm').action = "specialtiesInsert";
+			document.getElementById('editorForm').action = "/admin/specialtiesInsert";
 			document.getElementById('editorForm').submit();
 			
 			
@@ -179,12 +180,11 @@ ClassicEditor
 			let files = inputTag.files;
 			
 			for(let i=0; i<files.length; i++){
-				console.log(files[i]);
 				imageData.append("mainImage",files[i]);
 			}
 		
 			$.ajax({
-				url:'mainImageUpload',
+				url:'/common/mainImageUpload',
 				processData: false,
 				contentType: false,
 				data: imageData,
@@ -193,7 +193,6 @@ ClassicEditor
 				success: function(result){
 					alert("성공");
 					
-					console.log(result);
 					
 					showUploadedFile(result);
 					
@@ -209,7 +208,7 @@ ClassicEditor
 		var targetFile = $(this).data("file");
 		var clickedSpan = $(this);
 		$.ajax({
-			url:'deleteFile',
+			url:'/common/deleteFile',
 			data: {savedImg: targetFile},
 			dataType: 'text',
 			type: 'POST',
@@ -241,7 +240,7 @@ ClassicEditor
 			str +=" data-filename='"+obj.originImg+"' data-type='"+obj.imgType+"'";
 			str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div>";
 			str +="<span> " + obj.originImg +"</span>";
-			str +="<img src='display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
+			str +="<img src='/display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
 		});
 		uploadResult.append(str);
 	}
@@ -257,14 +256,27 @@ ClassicEditor
 		
 		Swal.fire({
 		      title: '특산물 옵션 추가',
-		      html:`<label>옵션명</label><input type="text" id="optionType"><br>
-					<label>가격</label><input type="number" id="optionPrice"><br>`,
+		      html:` <div class="form-floating mb-3">
+				 		<input type="text" class="form-control" id="optionType">
+				  		<label for="floatingInput">옵션명</label>
+					</div>
+					<div class="form-floating">
+				  		<input type="number" class="form-control" id="optionPrice" >
+				  		<label for="floatingPrice">가격</label>
+					</div>
+					
+					<div class="form-floating">
+				  		<input type="number" class="form-control" id="optionDiscount" >
+				  		<label for="floatingDiscount">할인율</label>
+					</div>`,
 		      showCancelButton: true,
 		      confirmButtonColor: '#3085d6',
 		      cancelButtonColor: '#d33',
 		      confirmButtonText: '추가',
 		      cancelButtonText: '취소',
 		      reverseButtons: true,
+		      
+		
 		      
 	    }).then((result) => {
 	      if (result.isConfirmed) {
@@ -273,12 +285,19 @@ ClassicEditor
 	    	  //sweetalert2에서 입력된 값을 가지고옴	
 		      const optionType = document.getElementById('optionType').value;
 			  const optionPrice = document.getElementById('optionPrice').value;
+			  const optionDiscount = document.getElementById('optionDiscount').value;
 			  
 		      let form = document.getElementById("editorForm");
 			  let str="";
 			  str +=`<div class="option"><input type="checkbox" class="deleteCheckbox" >
 			  		<label>옵션</label><input type="text" class="specialtype" name="" value="${optionType}" readonly>
-				  	<label>가격</label><input type="text" class="price" name="" value="${optionPrice}"readonly><br>`;			  
+				  	<label>가격</label><input type="text" class="price" name="" value="${optionPrice}"readonly><br>`
+				  	
+		  	  if (optionDiscount !== '' && parseFloat(optionDiscount) !== 0) {
+		        str += `<label>할인율</label><input type="number" class="discountRate" name="" value="${optionDiscount}" readonly><br>`;
+		      }else{
+		    	str += `<input type="hidden" class="discountRate" name="" value="" readonly><br>`;  		  
+		      }
 			  specialtiesOption.append(str);
 	      }
 	    })
@@ -349,7 +368,6 @@ ClassicEditor
 		</div>
 		<button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>
 		<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>
-			<input type="hidden" name="writerId" value=""/>
 	</form>
 
 </div>

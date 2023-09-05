@@ -3,9 +3,11 @@ package com.trip.finalProject.trip.web;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -105,28 +107,41 @@ public class TripController {
 		model.addAttribute("tripVO", new TripVO());
 		return "trip/tripRecordInsert";
 	}
+	
 	// 여행기록 상세조회
-	@GetMapping("/common/tripRecordInfo")
+	@Transactional
+	@GetMapping("/tripRecordInfo")
 	public String tripRecordInfo(TripVO tripVO, Model model) {
 		TripVO findVO = tripService.getTripInfo(tripVO);
 		
 		//여행 기록 데이터
 		model.addAttribute("tripInfo", findVO);
-		
-		//여행 경로 데이터
-		List<TripVO> mapInfo = tripService.getMapData(tripVO);
-		model.addAttribute("mapInfo", mapInfo);
 
 		//여행 메모 데이터
 		List<TripVO> memoInfo = tripService.getMemoData(tripVO);
+		//System.out.println(memoInfo);
 		model.addAttribute("memoInfo", memoInfo);
 		
 		return "trip/tripRecordInfo";
 	}
-
+	
+	//ajax 해당 게시글의 여행경로 데이터 불러오기
+	@PostMapping("/mapInfoList")
+	@ResponseBody
+	public Map<String, Object> mapInfoList(TripVO tripVO) {
+		tripVO.getPostId();
+		tripVO.getTripDate();
+		//tripService.getMapData(tripVO);
+		
+		List<TripVO> mapDataList = tripService.getMapData(tripVO);
+		Map<String, Object> map = new HashedMap<String, Object>();
+		map.put("tripMap", mapDataList);
+		return map;
+	}
+	
 	// 여행기록 등록 - 여행기록 작성하기 버튼 클릭 시 실행되는 메소드
 	// form 호출 시 해당 내용을 임시저장을 시킴(post_id를 가져오기 위함) 
-	@PostMapping("/tripRecordInsertForm")
+	@PostMapping("/common/tripRecordInsertForm")
 	public String tripRecordInsertForm(TripVO tripVO, Model model) {
 		
 		// 여행기록 테이블에 데이터 삽입
@@ -146,45 +161,41 @@ public class TripController {
 	}
 
 	// 여행기록 임시저장 - 임시 저장인 상태로 다시 업데이트
-	@PostMapping("/tsTripRecordInsertUp")
+	@PostMapping("/common/tsTripRecordInsertUp")
 	public String tsTripRecordInsertProcess(TripVO tripVO) {
 		tripService.TsTripInfo(tripVO);
 		return "redirect:/tripRecordList";
 	}
-
-	// 여행기록 지도 맵핑 - form
-	@GetMapping("/tripMappingInsertForm")
-	public String tripMappingInsertForm(TripVO tripVO, Model model) {
-		model.addAttribute("tripVO", tripVO);
-		return "trip/tripMappingInsertForm";
-	}
 	
-//	//여행경로 저장
-//	@PostMapping("tripMappingInsert")
-//	public String tripMappingInsert(TripVO tripVO) {
-//		tripService.InsertTripMapping(tripVO);
-//		
-//		return "redirect:/tripRecordList";
-//	}
-//	// 여행기록 지도 맵핑 - 처리
-//	@PostMapping("tripMappingInsert")
-//	public String tripMappingInsertProcess(TripVO tripVO) {
-//		tripService.TsInsertTripInfo(tripVO);
-//		return "redirect:/tripInsertForm";
-//	}
+	// 여행기록 게시글 삭제
+	@Transactional
+	@GetMapping("/common/tripRecordDelete")
+	public String tripRecordDelete(TripVO tripVO) {
+		//여행기록 게시글 삭제
+		tripService.deleteTripInfo(tripVO);
+		
+		//해당 게시글의 여행경로 삭제
+		tripService.deleteMapData(tripVO);
+		
+		//해당 게시글의 여행메모 삭제
+		tripService.deleteMemoData(tripVO);
+		
+		return "redirect:/tripRecordList";
+	}
 
 	// 여행기록 메모 등록 
-	@PostMapping("/tripMemoInsert")
+	@PostMapping("/common/tripMemoInsert")
 	@ResponseBody
-	public String tripMemoInsert(TripVO tripVO, Model model) {
+	public String tripMemoInsert(@RequestBody TripVO[] memoDataArry) {
 		//여행메모 등록
-		tripService.InsertTripMemo(tripVO);
+		for (TripVO item : memoDataArry) {
+			tripService.InsertTripMemo(item);
+		}
 		return null;
 	}
 	
-	
 	// 여행 경로 저장 (ajax)
-    @PostMapping("/tripMappingInsert")
+    @PostMapping("/common/tripMappingInsert")
     @ResponseBody
     public String receiveMappingData(@RequestBody TripVO[] mapDataArry) {
     	for (TripVO item : mapDataArry) {
@@ -192,13 +203,16 @@ public class TripController {
         	//System.out.println(item);
         }
         return null;
-        //return "redirect:/tripInsertForm";
     }
     
-    //여행경로 삭제
-    //@PostMapping("tripMappingDelete")
-    //@ResponseBody
-    
+    // 여행 경로 삭제 (ajax)
+    @PostMapping("/common/mapDeleteList")
+    @ResponseBody
+    public TripVO tripMapDel(TripVO tripVO) {
+    	
+    	tripService.deleteMapData(tripVO);
+    	return null;
+    }
     
     
     

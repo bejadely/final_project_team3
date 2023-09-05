@@ -63,6 +63,7 @@ display: none;
 												<input type="password" name="" placeholder="비밀번호 확인" class="form-control" id="pw2" required>
 											</div>
 										</div>
+											<font id="checkPw" size="2"></font>
 
 										<!-- <div>
 											<button class="btn btn-default" type="button" name="confirmBtn" id="confirmBtn" >비밀번호 확인</button>
@@ -303,15 +304,39 @@ display: none;
 	
 <!--  비밀번호 확인 -->
 	<script>
-	function confirmNumber(){
+	$('#pw1').focusout(function(){		
         var number1 = $("#pw1").val();
         var number2 = $("#pw2").val();
 
-        if(number1 != number2){
-        	alert("비밀번호가 다릅니다.");
+        if(number1 == number2){
+			$("#checkPw").html('번호가 같습니다.');
+			$("#checkPw").attr('color','green');
+        }else{
+        	$("#checkPw").html('번호가 다릅니다.');
+			$("#checkPw").attr('color','red');
         }
-    }
+    }	
 	
+);
+	
+	
+	$('#pw2').focusout(function(){
+	        var number1 = $("#pw1").val();
+	        var number2 = $("#pw2").val();
+	
+	        if(number1 == number2){
+				$("#checkPw").html('번호가 같습니다.');
+				$("#checkPw").attr('color','green');
+	        }else{
+	        	$("#checkPw").html('번호가 다릅니다.');
+				$("#checkPw").attr('color','red');
+	        }
+	    }	
+		
+	);
+		
+		
+
 	</script>
 
 <!--  비밀번호 on/off  -->
