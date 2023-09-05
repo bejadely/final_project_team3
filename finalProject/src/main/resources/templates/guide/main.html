@@ -41,6 +41,20 @@
         .info{
             min-height: 266px;
         }
+        .table-sm{
+        	font-size: 12px;
+        }
+        .data-container {
+	        display: flex;
+	        justify-content: space-between;
+	        align-items: center;
+	    }
+	    .h6 {
+	        flex: 1; 
+	    }
+	    .icon {
+	        color: #2cbdb8;
+	    }
     </style>
 </head>
 <body>
@@ -54,15 +68,15 @@
                 </li>
                 <li onclick="window.location.href='/'">
                     <i class="fa-solid fa-store main-icon"></i>
-                    <div>상품판매중</div>
+                    <div th:text="|판매중 ${packageSalingCount}건|"></div>
                 </li>
                 <li onclick="window.location.href='/'">
                     <i class="fa-solid fa-shop-lock main-icon"></i>
-                    <div>상품판매완료</div>
+                    <div th:text="|판매완료 ${packageSaledCount}건|"></div>
                 </li>
-                <li onclick="window.location.href='/'">
+                <li onclick="window.location.href='/guideQue'">
                     <i class="fa-solid fa-clipboard-question main-icon"></i>
-                    <div>미답변내역</div>
+                    <div th:text="|미답변 ${unansweredQuestion}건|"></div>
                 </li>
             </ul>
         </div>
@@ -71,38 +85,36 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="rounded-box info">
-                        <h6>패키지 판매</h6>
-                        <table class="table table-sm" th:if="${!#lists.isEmpty(packageSaleList)}">
-                            <tr>
-                                <td>패키지명</td>
-                                <td>패키지테마</td>
-                                <td>주문자명</td>
-                                <td>주문일자</td>
-                            </tr>
-                            <tr th:each="packageSaleInfo : ${packageSaleList}">
-                                <td th:text="${packageSaleInfo.name}"></td>
-                                <td th:text="${packageSaleInfo.tourTheme}"></td>
-                                <td th:text="${packageSaleInfo.writerId}"></td>
-                                <td th:text="${#dates.format(packageSaleInfo.orderDate, 'yyyy.MM.dd')}"></td>
-                            </tr>
-                        </table>
-                        <div th:if="${#lists.isEmpty(packageSaleList)}">
+                    	<div class="data-container">
+	                        <h6 class="h6">패키지별 매출 통계</h6>
+	                    </div>
+                        <div id="donutChart"></div>
+                        <div th:if="${#lists.isEmpty(saleMonthChartList)}">
                             <hr>
-                            <h6>판매 내역이 없습니다.</h6>
+                            <h6>통계 내역이 없습니다.</h6>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="rounded-box info">
-                        <h6>매출 통계</h6>
+                        <div class="data-container">
+	                       <h6 class="h6">월별 매출 통계</h6>
+	                     </div>
                         <div id="chart"></div>
+                        <div th:if="${#lists.isEmpty(packageSaleChartList)}">
+                            <hr>
+                            <h6>통계 내역이 없습니다.</h6>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="rounded-box info">
-                        <h6>입금 내역</h6>
+                        <div class="data-container">
+	                       <h6 class="h6">입금 내역</h6>
+	                       <i class="fa-solid fa-magnifying-glass-plus fa-lg icon" style="color: #2cbdb8;"></i>
+	                     </div>
                         <table class="table table-sm" th:if="${!#lists.isEmpty(calculationList)}">
                             <tr>
                                 <td>패키지명</td>
@@ -125,7 +137,10 @@
                 </div>
                 <div class="col-md-6">
                     <div class="rounded-box info">
-                        <h6>최근 문의</h6>
+                        <div class="data-container">
+	                       <h6 class="h6">최근 문의</h6>
+	                       <i class="fa-solid fa-magnifying-glass-plus fa-lg icon" style="color: #2cbdb8;"></i>
+	                     </div>
                         <table class="table table-sm" th:if="${!#lists.isEmpty(questionList)}">
                             <tr>
                                 <td>문의명</td>
@@ -150,7 +165,7 @@
         </div>
     </div>
     <script th:inline="javascript">
-        let list = [[${saleChartList}]];
+        let list = [[${saleMonthChartList}]];
 
         let dataColums = [];
         dataColums.push("매출액");
@@ -172,9 +187,6 @@
                 ],
                 type: "line",
             },
-            size: {
-                height: 200 // 원하는 높이 (픽셀)를 설정합니다.
-            },
             axis:{
                 x:{
                     type: "category",
@@ -190,7 +202,40 @@
 
         });
 
-
+       let dountList=[[${packageSaleChartList}]];
+       
+       let dountColums=[];
+       
+       for(let i = 0; i < dountList.length; i++) {
+    	   let dountObject=[];
+    	   dountObject.push(dountList[i].name);
+    	   dountObject.push(dountList[i].price);
+    	   
+    	   dountColums.push(dountObject);
+       }
+       
+        console.log(dountColums);
+       let donutChart = bb.generate({
+    	   data: {
+    	     columns: 
+    	    	 dountColums
+    	     ,
+    	     type: "donut",
+    	     onclick: function(d, i) {
+	    	 	console.log("onclick", d, i);
+	    	    },
+	    	 onover: function(d, i) {
+	    	 	console.log("onover", d, i);
+	    	    },
+	    	 onout: function(d, i) {
+	    	 	console.log("onout", d, i);
+	    	    }
+	    	   },
+	    	 donut: {
+	    	     title: "금달 패키지 판매율"
+	    	   },
+	    	 bindto: "#donutChart"
+    	 });
     </script>
 </div>
 </body>

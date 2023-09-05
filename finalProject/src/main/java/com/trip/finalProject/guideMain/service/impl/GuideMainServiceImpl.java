@@ -33,9 +33,33 @@ public class GuideMainServiceImpl implements GuideMainService {
 	}
 
 	@Override
-	public List<PackagePurchaseVO> getSaleChartInfo(String guideId) {
+	public List<PackagePurchaseVO> getMonthSaleChartInfo(String guideId) {
 
-		return guideMainMapper.getSaleChartInfo(guideId);
+		return guideMainMapper.getMonthSaleChartInfo(guideId);
+	}
+
+	@Override
+	public int getPackageSalingCountInfo(String guideId) {
+		
+		return guideMainMapper.getPackageSalingCountInfo(guideId);
+	}
+
+	@Override
+	public int getPackageSaledCountInfo(String guideId) {
+		
+		return guideMainMapper.getPackageSaledCountInfo(guideId);
+	}
+
+	@Override
+	public int getUnanswereQuestion(String guideId) {
+		
+		return guideMainMapper.getUnanswereQuestion(guideId);
+	}
+
+	@Override
+	public List<PackageRegistVO> getPackageSaleChartInfo(String guideId) {
+		
+		return guideMainMapper.getPackageSaleChartInfo(guideId);
 	}
 
 }
