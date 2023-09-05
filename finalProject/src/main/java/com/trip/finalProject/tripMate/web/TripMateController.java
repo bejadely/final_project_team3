@@ -49,13 +49,13 @@ public class TripMateController {
 	}
 	
 	//여행 메이트 게시글 등록 - form
-	@GetMapping("/tripMateRecruitForm")
+	@GetMapping("/common/tripMateRecruitForm")
 	public String tripMateRecruitForm(Model model) {
 		return "tripMate/tripMateRecruitForm";
 	}
 	
 	//여행 메이트 게시글 등록 - process
-	@PostMapping("/tripMateRecruitInsert")
+	@PostMapping("/common/tripMateRecruitInsert")
 	public ModelAndView tripMateRecruitInsert(TripMateVO tripMateVO) {
 		tripMateService.insertTripMateRecruit(tripMateVO);
 		ModelAndView mv = new ModelAndView("redirect:/tripMateList");
@@ -72,7 +72,7 @@ public class TripMateController {
 	
 	//여행 메이트 게시글 삭제
 	@Transactional
-	@GetMapping("/mateRecruitDelete")
+	@GetMapping("/common/mateRecruitDelete")
 	public String mateRecruitDelete(TripMateVO tripMateVO) {
 		//여행 메이트 글 삭제 시 해당 게시글과 관련된 첨부파일 테이블 데이터 삭제
 		tripMateService.deleteAttachedFile(tripMateVO);
@@ -82,7 +82,7 @@ public class TripMateController {
 	
 	
 	//여행 메이트 게시글 수정 - form
-	@GetMapping("/mateRecruitUpdateForm")
+	@GetMapping("/common/mateRecruitUpdateForm")
 	public String mateRecruitUpdateForm(TripMateVO tripMateVO, Model model) {
 		TripMateVO findVO = tripMateService.getTripMateInfo(tripMateVO);
 		model.addAttribute("tripMateVO", findVO);
@@ -91,14 +91,14 @@ public class TripMateController {
 	
 	
 	//여행 메이트 게시글 수정 - process
-	@PostMapping("/mateRecruitUpdate")
+	@PostMapping("/common/mateRecruitUpdate")
 	public String mateRecruitUpdateProcess(TripMateVO tripMateVO){
 		tripMateService.updateTripMateRecruit(tripMateVO);
 		return "redirect:/tripMateList";
 	}
 	
 	//여행 메이트 게시글 신고 - form
-	@GetMapping("/mateRecruitReportForm")
+	@GetMapping("/common/mateRecruitReportForm")
 	public String mateRecruitReportForm(TripMateVO tripMateVO, Model model) {
 		TripMateVO findVO = tripMateService.getTripMateInfo(tripMateVO);
 		model.addAttribute("tripMateVO", findVO);
@@ -106,14 +106,14 @@ public class TripMateController {
 	}
 	
 	//여행 메이트 게시글 신고 - process
-	@PostMapping("/mateRecruitReport")
+	@PostMapping("/common/mateRecruitReport")
 	public String mateRecruitReport(TripMateVO tripMateVO) {
 		tripMateService.reportTripMate(tripMateVO);
 		return "redirect:/tripMateList";
 	}
 	
 	//여행 메이트 신청 - form
-	@PostMapping("/tripMateApplyForm")
+	@PostMapping("/common/tripMateApplyForm")
 	public String tripMateApplyForm(TripMateVO trvo,  
 			@RequestParam(name="mateWriter") String mateWriter, Model model) {
 		trvo.setMemberId(mateWriter);
@@ -126,7 +126,7 @@ public class TripMateController {
 	
 	//여행 메이트 신청 - process
 	@Transactional
-	@PostMapping("/tripMateApplyInsert")
+	@PostMapping("/common/tripMateApplyInsert")
 	public String tripMateApplyInsert(TripMateVO tripMateVO, 
 			@RequestParam(name="mateWriter") String mateWriter, Model model) {
 		//최대 인원, 신청 인원 조회

@@ -102,7 +102,7 @@ public class TripController {
 	
 	
 	//여행기록 등록 - form
-	@GetMapping("/tripRecordInsert")
+	@GetMapping("/common/tripRecordInsert")
 	public String tripRecordInsertForm(Model model) {
 		model.addAttribute("tripVO", new TripVO());
 		return "trip/tripRecordInsert";
@@ -116,10 +116,6 @@ public class TripController {
 		
 		//여행 기록 데이터
 		model.addAttribute("tripInfo", findVO);
-		
-		//여행 경로 데이터
-		//List<TripVO> mapInfo = tripService.getMapData(tripVO);
-		//model.addAttribute("mapInfo", mapInfo);
 
 		//여행 메모 데이터
 		List<TripVO> memoInfo = tripService.getMemoData(tripVO);
@@ -143,11 +139,9 @@ public class TripController {
 		return map;
 	}
 	
-	
-
 	// 여행기록 등록 - 여행기록 작성하기 버튼 클릭 시 실행되는 메소드
 	// form 호출 시 해당 내용을 임시저장을 시킴(post_id를 가져오기 위함) 
-	@PostMapping("/tripRecordInsertForm")
+	@PostMapping("/common/tripRecordInsertForm")
 	public String tripRecordInsertForm(TripVO tripVO, Model model) {
 		
 		// 여행기록 테이블에 데이터 삽입
@@ -159,7 +153,7 @@ public class TripController {
 	}
 
 	// 여행기록 등록 - 임시저장 상태에서 저장상태로 상태 업데이트
-	@PostMapping("/tripRecordInsertUp")
+	@PostMapping("/common/tripRecordInsertUp")
 	public String tripRecordInsertProcess(TripVO tripVO) {
 		//여행기록 저장상태 변경
 		tripService.InsertTripInfo(tripVO);
@@ -167,7 +161,7 @@ public class TripController {
 	}
 
 	// 여행기록 임시저장 - 임시 저장인 상태로 다시 업데이트
-	@PostMapping("/tsTripRecordInsertUp")
+	@PostMapping("/common/tsTripRecordInsertUp")
 	public String tsTripRecordInsertProcess(TripVO tripVO) {
 		tripService.TsTripInfo(tripVO);
 		return "redirect:/tripRecordList";
@@ -175,7 +169,7 @@ public class TripController {
 	
 	// 여행기록 게시글 삭제
 	@Transactional
-	@GetMapping("/tripRecordDelete")
+	@GetMapping("/common/tripRecordDelete")
 	public String tripRecordDelete(TripVO tripVO) {
 		//여행기록 게시글 삭제
 		tripService.deleteTripInfo(tripVO);
@@ -189,15 +183,8 @@ public class TripController {
 		return "redirect:/tripRecordList";
 	}
 
-	// 여행기록 지도 맵핑 - form
-	@GetMapping("/tripMappingInsertForm")
-	public String tripMappingInsertForm(TripVO tripVO, Model model) {
-		model.addAttribute("tripVO", tripVO);
-		return "trip/tripMappingInsertForm";
-	}
-	
 	// 여행기록 메모 등록 
-	@PostMapping("/tripMemoInsert")
+	@PostMapping("/common/tripMemoInsert")
 	@ResponseBody
 	public String tripMemoInsert(@RequestBody TripVO[] memoDataArry) {
 		//여행메모 등록
@@ -208,7 +195,7 @@ public class TripController {
 	}
 	
 	// 여행 경로 저장 (ajax)
-    @PostMapping("/tripMappingInsert")
+    @PostMapping("/common/tripMappingInsert")
     @ResponseBody
     public String receiveMappingData(@RequestBody TripVO[] mapDataArry) {
     	for (TripVO item : mapDataArry) {
@@ -216,13 +203,16 @@ public class TripController {
         	//System.out.println(item);
         }
         return null;
-        //return "redirect:/tripInsertForm";
     }
     
-    //여행경로 삭제
-    //@PostMapping("tripMappingDelete")
-    //@ResponseBody
-    
+    // 여행 경로 삭제 (ajax)
+    @PostMapping("/common/mapDeleteList")
+    @ResponseBody
+    public TripVO tripMapDel(TripVO tripVO) {
+    	
+    	tripService.deleteMapData(tripVO);
+    	return null;
+    }
     
     
     

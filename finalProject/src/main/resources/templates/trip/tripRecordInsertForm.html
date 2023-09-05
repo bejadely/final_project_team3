@@ -68,7 +68,10 @@
             <button type="reset">취소</button>
             <!-- 임시저장 -> 해당 데이터 삭제 -->
             <!-- 목으로 버튼 클릭시 관련된 데이터들을 모두 삭제하고 목록 페이지로 이동 -->
-            <button type="button" onclick="location.href='tripRecordList'">목록으로</button>			
+            <form method="get">
+            	<input type="hidden" name="postId" th:value="${tripVO.postId}">
+	            <button type="button" th:onclick="|location.href='@{/common/tripRecordDelete(postId=${tripVO.postId})}'|">목록으로</button>			
+			</form>
 		</div>
 	</div>
 	
@@ -125,7 +128,7 @@
        	            					</div>
        	            					<button class="mapping" type="button" style="display:block;"> 경로 선택 완료 </button>
        	            					<button class="showShow" type="button" style="display:none;"> 경로 보기 </button>
-       	            					<button class="updateMapping" type="button" style="display:none;"> 경로 수정 </button>
+       	            					<button class="modifyMapping" type="button" style="display:none;"> 경로 수정 </button>
        	            					<br>
        	        					</div>
        	     					</form>
@@ -151,7 +154,7 @@
 			
 			$(this).attr('style', 'display:none;');
 			$(this).siblings(".showShow").attr('style', 'display:block;');
-			$(this).siblings(".updateMapping").attr('style', 'display:block;');
+			$(this).siblings(".modifyMapping").attr('style', 'display:block;');
 			$(this).siblings(".keyword").attr('style', 'display:none;');
 			$(this).siblings(".searchPlaces").attr('style', 'display:none;');
     		var mappingCoordinates = $(this).prev(".showMapData");
@@ -196,10 +199,72 @@
     		 $('#placesList').empty();
 		 });
 		
+		//여행경로 수정버튼 클릭시 여행경로를 삭제 후 다시 저장해야함
+		$(".modifyMapping").click(function(){
+			tDate = $(this).parent().find("input[name=tripDate]").attr("value");
+			$.ajax({
+				url: '/common/mapDeleteList',
+				type: 'post',
+				data: { 
+						postId : postData,
+						tripDate : tDate 
+					  }
+				
+			}).done(data => {
+				//console.log("경로 삭제 완료");
+				mapDb = data.tripMap;
+				
+				//ajax를 통해 받은 여행경로 데이터의 첫번째 위도와 경도를 찾아서 그 값을 지도의 중심좌표로 설정
+				var firstMapLat = mapDb[0].mapLat;
+		        var firstMapLng = mapDb[0].mapLng;
+		        
+		        
+			}).fail(reject => console.log(reject));
+			$(this).siblings(".keyword").attr('style', 'display:block;');
+			$(this).siblings(".searchPlaces").attr('style', 'display:block;');
+			$(this).siblings(".mapping").attr('style', 'display:block;');
+			
+		})
+		
+		//경로보기 버튼 클릭시 지도에 해당 일자의 여행경로를 나타냄
+		$(".showShow").click(function(){
+			
+			//날짜 형식을 db에 저장된 형식과 같게 yy/MM/dd형식으로 변경
+			tDate = $(this).parent().find("input[name=tripDate]").attr("value");
+			
+			var parsedDate = new Date(tDate);
+			var year = (parsedDate.getYear() - 100); // 연도에서 뒤의 2자리 추출
+			var month = (parsedDate.getMonth() + 1); // 월 (0부터 시작하므로 1을 더함)
+			var day = parsedDate.getDate(); // 일
+
+			// 월과 일을 두 자리로 만들기 (0을 추가)
+			if (month < 10) {
+			  month = '0' + month;
+			}
+			if (day < 10) {
+			  day = '0' + day;
+			}
+
+			var formattedDate = year + '/' + month + '/' + day;
+			
+			$.ajax({
+				url: '/mapInfoList',
+				type: 'post',
+				data: {
+						postId : postData,
+						tripDate : formattedDate
+					  }
+				
+			}).done(data => {
+				console.log(data);
+			}).fail(reject => console.log(reject));
+			
+		});
+		
 		
 		//ajax를 통해 해당 일자의 여행경로를 db에 저장
 		function sendMappingData(data) {   
-         	fetch('/tripMappingInsert', {
+         	fetch('/common/tripMappingInsert', {
             	method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -239,7 +304,7 @@
         		memoDataArry.push(memoDataObj);
 			}
        		
-         	fetch('/tripMemoInsert', {
+         	fetch('/common/tripMemoInsert', {
             	method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -260,17 +325,16 @@
 		//저장, 임시저장 버튼 클릭시 id에 맞게 해당 action이 발생함
         //여행기록 임시저장
         $("#tsTripInsert").click(function() {
-           $("#tripData").attr("action", "/tsTripRecordInsertUp").submit();;
+           $("#tripData").attr("action", "/common/tsTripRecordInsertUp").submit();;
            
         });
         
         //여행기록 저장
         $("#tripInsert").click(function() {
-           $("#tripData").attr("action", "/tripRecordInsertUp").submit();;
+           $("#tripData").attr("action", "/common/tripRecordInsertUp").submit();;
            sendMemoData(memoDataArry);
         });
 		
-
 		//지도 관련 스크립트 부분입니다.
 		// 마커를 담는 배열
         var markers = [];
