@@ -100,14 +100,6 @@ public class TripController {
 	    return map;
 	}
 	
-	
-	//여행기록 등록 - form
-	@GetMapping("/common/tripRecordInsert")
-	public String tripRecordInsertForm(Model model) {
-		model.addAttribute("tripVO", new TripVO());
-		return "trip/tripRecordInsert";
-	}
-	
 	// 여행기록 상세조회
 	@Transactional
 	@GetMapping("/tripRecordInfo")
@@ -166,6 +158,15 @@ public class TripController {
 		tripService.TsTripInfo(tripVO);
 		return "redirect:/tripRecordList";
 	}
+	
+	//여행기록 수정 - form
+	@GetMapping("/common/tripRecordModify")
+	public String tripRecordModifyForm(TripVO tripVO, Model model) {
+		TripVO vo = tripService.getTripInfo(tripVO);
+		return "trip/tripRecordModifyForm";
+	}
+	
+	//여행기록 수정 - process
 	
 	// 여행기록 게시글 삭제
 	@Transactional
