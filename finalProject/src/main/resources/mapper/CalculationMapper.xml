@@ -50,14 +50,14 @@
   			 WHERE cal_id = #{calId}
   		</update>
   		
-  		<!-- 매월 정산 처리 -->
+  		<!-- 매월 정산 처리(직전월 정산 대기 내용 모두 정산처리) -->
   		<update id="quartzCalMonthlyProc" parameterType="String">
   			UPDATE calculation
   			<set>
   				cal_status = 'V2',
   				cal_date = sysdate,
   			</set>
-  			 WHERE SUBSTR(cal_id, 4, 4) = SUBSTR(REPLACE(SYSDATE, '/', ''), 1, 4)
+  			 WHERE SUBSTR(cal_id, 4, 4) = SUBSTR(REPLACE(ADD_MONTHS(SYSDATE, -1), '/', ''), 1, 4)
   		</update>
   		
   		

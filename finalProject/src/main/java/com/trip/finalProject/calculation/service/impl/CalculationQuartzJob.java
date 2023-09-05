@@ -20,7 +20,7 @@ public class CalculationQuartzJob extends QuartzJobBean{
 		try {
 			int result = calculationMapper.quartzCalMonthlyProc();
 
-			if(result >= 0) {
+			if(result > 0) {
 				// 작업중 : 로그남기기 / 관리자들에게 알림 날리기
 				System.out.println("월말정산이 완료되었습니다.");
 			}

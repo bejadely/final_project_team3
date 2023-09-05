@@ -32,7 +32,8 @@ public class JobConfig {
 		
 		try {
 	        // 크론형식 지정 후 스케줄 시작
-			scheduler.scheduleJob(jobDetail, runJobTrigger("0/10 * * * * ?"));
+			// 매월 1일 1:00에 직전월 미정산내역 자동 일괄 정산 처리
+			scheduler.scheduleJob(jobDetail, runJobTrigger("0 1 1 * * ?"));
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
