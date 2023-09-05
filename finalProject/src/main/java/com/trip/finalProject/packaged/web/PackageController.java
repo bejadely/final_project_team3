@@ -45,14 +45,14 @@ public class PackageController {
 	}
 	
 	//ck-editor
-	@GetMapping("/packageInsertForm")
+	@GetMapping("/guide/packageInsertForm")
 	public String package2(Model model) {
 		model.addAttribute("area",packageService.getLocationList());
 		return "package/packageInsertForm";
 	}
 
 	
-	@PostMapping("/register")
+	@PostMapping("/guide/register")
 	public ModelAndView register(PackageVO vo) {	
 		packageService.register(vo);
 		ModelAndView mv = new ModelAndView("redirect:/packageList");

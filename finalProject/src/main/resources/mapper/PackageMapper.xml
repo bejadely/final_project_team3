@@ -120,7 +120,7 @@
    SELECT *       FROM(SELECT ROWNUM rn, a.*             FROM(
       SELECT *
         FROM review
-       WHERE origin_post_id = #{postId} AND delete_type = 'N'
+       WHERE origin_post_id = #{postId}
        ORDER BY review_id DESC
    ) a			 )        WHERE rn BETWEEN (#{page }*5-4) AND (#{page }*5)
     </select>

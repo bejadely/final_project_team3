@@ -23,7 +23,7 @@ public class LodgingController {
 	@Autowired
 	LodgingService lodgingService;
 	
-	@GetMapping("lodging")
+	@GetMapping("/lodging")
 	public String lodgingList(Model model
 							, @RequestParam( name = "searchBy", defaultValue = "name" ) String searchBy
 							, @RequestParam( name = "keyword", defaultValue = "" ) String keyword
@@ -70,10 +70,7 @@ public class LodgingController {
 			return "lodging/lodging";
 		}
 	
-	@GetMapping("apitest")
-	public String apitest() {
-		return"lodging/apitest";
-	}
+	
 	
 	@GetMapping("/areaList")
 	@ResponseBody

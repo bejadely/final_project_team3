@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script>
-$(document).ready(function () {
+/* $(document).ready(function () {
 	var formObj = $(".sidebar-search");
 	
 	$("button[type='submit']").on("click",function(event){
@@ -18,7 +18,7 @@ $(document).ready(function () {
 			 <input type ='hidden' name = 'areaCode' value='${areaCode}'>`
 		formObj.append(str);
 	});
-});
+}); */
 </script>
 </head>
 <body>
@@ -32,7 +32,7 @@ $(document).ready(function () {
 				<div class="col-lg-3">
 					<div class="property-sidebar">
 						<h4>Search Property</h4>
-						<form action="" class="sidebar-search">
+						<form action="/searchPackage" class="sidebar-search">
 						<button type="submit" class="search-btn">Search Property</button>
 							<div>
 								<select id="searchBy" name="searchBy">

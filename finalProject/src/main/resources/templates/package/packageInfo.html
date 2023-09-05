@@ -345,7 +345,10 @@ form {
 	        let orderName = "[[ ${info.name} ]]";
 	        let postId = "[[ ${info.postId} ]]"
 	        let quantity = parseInt(document.getElementById('quantity').value);
-	     
+	     console.log(totalAmount)
+	     console.log(orderName)
+	     console.log(quantity)
+	     console.log(memberId)
 	        $.ajax({
 	        	type:'post',
 	        	url:'payment/ready',
@@ -372,7 +375,7 @@ form {
 	    	console.log(memberId);
 	    	$.ajax({
 	    		type:'post',
-	    		url:'/cartInsert',
+	    		url:'/common/cartInsert',
 	    		data:{
 	    			price: totalAmount,
 	        		cartName : orderName,
@@ -505,7 +508,7 @@ form {
 	        //  ajax 들어가서 로그인 되어있는지 먼저 확인 - 안되면 바로 fail throw new Exception(); 예외 일부러 발생시켜주기
 	        $.ajax({
 	            type: 'POST',
-	            url: '/packageReview',
+	            url: '/common/packageReview',
 	            data : {
 	                'grade' : checkedgrade,
 	                'content' : reviewContent,
@@ -548,7 +551,7 @@ form {
 	        //  ajax로 가서 session에 저장된 아이디랑 writerId랑 같은지 확인 - 같지 않다면 fail 
 	        $.ajax({
 	            type: 'DELETE',
-	            url: "/packageReview",
+	            url: "/common/packageReview",
 	            data: {
 	                'postId' : postId,
 	                'writerId' : writerId,

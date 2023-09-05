@@ -18,5 +18,7 @@ public interface CartService {
 	//수량 업데이트
 	public Map<String, Object> getQuanUpdate(CartVO cartVO);
 	
+	//카트 상세 정보 조회
+	public List<CartVO> cartInfo(String[] cartId);
 
 }
