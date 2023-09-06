@@ -8,7 +8,7 @@
 		SELECT member_id, 
 		       password password,
 		       authority 
-		FROM member
-		WHERE member_id = #{memberId}
+		  FROM member
+	 	 WHERE member_id = #{memberId}
 	</select>
   </mapper>
