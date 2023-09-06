@@ -93,7 +93,8 @@
 			   trip_title,
 			   start_day,
 			   end_day,
-			   regist_day
+			   regist_day,
+			   post_id
 		FROM trip_record
 		WHERE post_id = #{postId}
 	</select>
@@ -211,6 +212,7 @@
 		FROM trip_record t JOIN trip_record_memo m 
 							ON t.post_id = m.post_id
 		WHERE t.post_id = #{postId}
+		ORDER BY m.trip_date
 	</select>
 	
 	<!-- 여행기록 등록 - 여행 경로 맵핑-->
@@ -247,24 +249,42 @@
 	<!-- 여행경로 삭제 -->
 	<delete id="deleteTripMapping" parameterType="TripVO">
 		DELETE FROM map
-		WHERE map_id = #{mapId}
+		WHERE post_id = #{postId} 
+		  AND trip_date = #{tripDate} 
 	</delete>
 	
 	<!-- 여행경로 조회 -->
 	<select id="selectMapData" resultType="TripVO">
 		SELECT m.map_no
+				, m.map_id
 				, m.map_name
 				, m.map_lat
 				, m.map_lng
 				, m.trip_date
+				, m.post_id
 		FROM map m JOIN trip_record t 
            			ON m.post_id = t.post_id 
 		WHERE t.post_id = #{postId}
+		  AND TO_CHAR(m.trip_date) = #{tripDate}
+		ORDER BY m.trip_date, m.map_no
 	</select>
 	
 	<!-- 여행기록 삭제 -->
-	<delete id="deleteTripInfo" parameterType="String">
+	<delete id="deleteTripInfo" parameterType="TripVO">
+		DELETE FROM trip_record
+		WHERE post_id = #{postId}
+	</delete>
 	
+	<!-- 여행기록 삭제시 해당 게시글과 관련된 여행경로 삭제 -->
+	<delete id="deleteMapData" parameterType="TripVO">
+		DELETE FROM map
+		WHERE post_id = #{postId}
+	</delete>
+	
+	<!-- 여행기록 삭제시 해당 게시글과 관련된 여행메모 삭제 -->
+	<delete id="deleteMemoData" parameterType="TripVO">
+		DELETE FROM trip_record_memo
+		WHERE post_id = #{postId}
 	</delete>
 
 </mapper>

@@ -15,7 +15,7 @@
 		href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap"
 		rel="stylesheet">
 	<style type="text/css">
-	table, th,td {
+	table, th,td {	
 		border: 1px solid black;
 		text-align: center;
 		margin: 0 auto;
@@ -81,11 +81,11 @@
 	<script type="text/javascript">
 	function pageChange(str){
 		   if(str == 'my'){
-			   location.href='/myPageTrip'
+			   location.href='/common/myPageTrip'
 		   }else if(str == 'com'){
-			   location.href='/myPageComTrip'
+			   location.href='/common/myPageComTrip'
 		   }else{
-			   location.href='/myPageNotTrip'
+			   location.href='/common/myPageNotTrip'
 		   }
 		   
 	   }
@@ -176,27 +176,27 @@
 				</tbody>
 				</table>
 				<!-- 여행기록 페이징 -->
-				<div class="container" style="text-align: center">
+				<div style="text-align: center" class="property-pagination">
 					<th:block th:if="${paging.startPage != 1}">
-						<a th:href="@{myPageTrip(nowPage=1, cntPerPage=${paging.cntPerPage})}" ><<</a>
+						<a th:href="@{/common/myPageTrip(nowPage=1, cntPerPage=${paging.cntPerPage})}" ><<</a>
 					</th:block>
 					<th:block th:if="${paging.startPage != 1}">
-						<a th:href="@{myPageTrip(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+						<a th:href="@{/common/myPageTrip(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 					</th:block>
 					<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
 						<th:block th:if="${p eq paging.nowPage}">
 							<b th:text="${p}"></b>
 						</th:block>
 						<th:block th:if="${p ne paging.nowPage}">
-							<a th:href="@{myPageTrip(nowPage=${p}, cntPerPage=${paging.cntPerPage})}" th:text="${p}"></a>
+							<a th:href="@{/common/myPageTrip(nowPage=${p}, cntPerPage=${paging.cntPerPage})}" th:text="${p}"></a>
 						</th:block>
 					</th:block>
 					<th:block
 						th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-						<a th:href="@{myPageTrip(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+						<a th:href="@{/common/myPageTrip(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 					</th:block>
 					<th:block th:if="${paging.endPage != paging.lastPage}">
-						<a th:href="@{myPageTrip(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
+						<a th:href="@{/common/myPageTrip(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
 					</th:block>
 				</div>
 			</section>

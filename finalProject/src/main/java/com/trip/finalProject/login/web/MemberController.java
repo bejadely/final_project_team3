@@ -1,7 +1,6 @@
 package com.trip.finalProject.login.web;
-	
-import java.util.Map;
 
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.trip.finalProject.login.service.MemberService;
 import com.trip.finalProject.login.service.MemberVO;
@@ -168,7 +168,7 @@ public class MemberController {
 	  
 	  
 		//회원정보 가져오기
-		@GetMapping("myPage")
+		@GetMapping("/common/myPage")
 		public String memberInfo(MemberVO memberVO, Model model,HttpServletRequest request) {
 			memberVO.setMemberId(session.getAttribute("sessionId").toString());  //to do 
 			MemberVO findVO = memberService.memberInfo(memberVO);
@@ -177,7 +177,7 @@ public class MemberController {
 		}
 		
 		//회원수정 폼 호출
-		@GetMapping("myPageUpdate")
+		@GetMapping("/common/myPageUpdate")
 		public String memberUpdate(MemberVO memberVO, Model model) {
 			memberVO.setMemberId(session.getAttribute("sessionId").toString());
 			MemberVO findVO = memberService.memberInfo(memberVO);
@@ -186,15 +186,38 @@ public class MemberController {
 		}
 		
 		//회원수정 프로세서
-		@PostMapping("myPageUpdate")
-		@ResponseBody
-		public Map<String, String> memberUpdatePro(@RequestBody MemberVO memberVO){
+		@PostMapping("/common/myPageUpdate")
+		public String memberUpdatePro(MemberVO memberVO, RedirectAttributes rtt){
 			memberVO.setMemberId(session.getAttribute("sessionId").toString());
-			return memberService.updateMember(memberVO);
+			System.out.println("tstst : " + memberVO );
+			String result = memberService.updateMember(memberVO);
+			rtt.addFlashAttribute("result", result);
+			return "redirect:/common/myPage?memberId=" + memberVO.getMemberId();
 		}
 	  
-	  
-	 
+		
+		//아이디 찾기 
+		@GetMapping("/findAccount")
+		public String fintId() {
+			return"member/findAccount";
+		}
+		
+		//입력한 전화번호로 계정 ID 찾기
+		@ResponseBody
+		@PostMapping("/phoneNumberCheck")
+		public MemberVO phoneNumberCheck(String phoneNumber) {
+			
+			return memberService.phoneNumberCheck(phoneNumber);
+		}
+		
+		
+		@PostMapping("/updatePasword")
+		public String updatePassword(MemberVO memberVO) {
+			//memberService.insertMemberInfo(memberVO);
+		System.out.println(memberVO);
+			return "member/updatePassword";
+		}
+	
 	
  
 

@@ -4,6 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.trip.finalProject.packaged.mapper.PackageMapper"> 
 	
+	<!-- 패키지 등록 -->
 	 <insert id="insertEditor" parameterType="PackageVO">
 		<selectKey keyProperty="postId" resultType="String" order="BEFORE">
 			SELECT 'PKG' || (TO_NUMBER(NVL((SUBSTR(MAX(post_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
@@ -26,6 +27,7 @@
 						,sigungu_code
 						,writer_id
 						,completion
+						,delete_type
 					)
 				values
 					(
@@ -43,21 +45,26 @@
 						,#{sigunguCode}
 						,#{writerId}
 						,'D2'
+						,'N'
 					)
 	</insert>
 	 
 
-	<select id="listPackage" resultType="PackageVO">
-		select p.name, 
-				p.tour_theme, 
-				p.price, 
-				a.saved_img, 
-				p.post_id, 
-				a.loading_img,
-				code_val(p.completion) completion,
+	<select id="listPackage">
+		SELECT *
+		FROM(SELECT ROWNUM rn,b.*
+			 FROM(select p.name, 
+						p.tour_theme, 
+						p.price, 
+						a.saved_img, 
+						p.post_id, 
+						a.loading_img,
+						code_val(p.completion) completion,
 				p.max_reservation
-		from package_regist p JOIN attached_file a ON p.post_id = a.post_id
-		WHERE a.img_type = 'U2'
+				from package_regist p JOIN attached_file a ON p.post_id = a.post_id 
+				WHERE a.img_type = 'U2' AND delete_type = 'N'
+				ORDER BY reg_date DESC)b) 
+		WHERE rn BETWEEN #{start} AND #{end}
 	</select>
 	
 	<select id="packageInfo" resultType="PackageVO">
@@ -65,6 +72,7 @@
 		FROM package_regist
 		WHERE post_id=#{postId}
 	</select>
+	
 	<select id="listArea" parameterType="LocationVO">
 		SELECT area_code
 				,sigungu_code
@@ -73,6 +81,39 @@
 		
 	</select>
 	
+	<!-- 패키지 수 카운트 -->
+	<select id="getPackageCount">
+		SELECT COUNT(*)
+		FROM package_regist p JOIN attached_file a ON p.post_id = a.post_id 
+		WHERE a.img_type = 'U2' AND delete_type = 'N'
+	</select>
+	
+	<!-- 패키지 명 검색 결과 카운트 -->
+	<select id="packageCountTitle" resultType="int" parameterType="String">
+		SELECT COUNT(*)
+		FROM package_regist p JOIN attached_file a ON p.post_id = a.post_id
+		WHERE name LIKE '%${keyword}%' AND a.img_type = 'U2' AND delete_type = 'N'
+	</select>
+	
+	<!-- 패키지 명 검색 -->
+	<select id="searchPackageByTitle" resultType="PackageVO">
+		SELECT *
+		FROM(SELECT ROWNUM rn,b.*
+			 FROM(select p.name, 
+						p.tour_theme, 
+						p.price, 
+						a.saved_img, 
+						p.post_id, 
+						a.loading_img,
+						code_val(p.completion) completion,
+						p.max_reservation
+				from package_regist p JOIN attached_file a ON p.post_id = a.post_id 
+				WHERE p.name LIKE '%${packageVO.name}%' AND a.img_type = 'U2' AND delete_type = 'N'
+				ORDER BY reg_date DESC)b) 
+		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+			 
+	
+	</select>
 	
 	
 	 <select id="selectReview" resultType="PackageReviewVO">
@@ -130,7 +171,7 @@
 	<select id="guiListCount" resultType="int">
 		SELECT COUNT(*)
 		FROM package_regist
-		WHERE writer_id = #{writerId} AND completion = #{completion}
+		WHERE writer_id = #{writerId} AND completion = #{completion} AND delete_type = 'N'
 	</select>
 	
 	<select id="guiListPackage" resultType="PackageVO">
@@ -150,13 +191,14 @@
 				   reg_date
 			FROM package_regist
 			WHERE writer_id = #{pacVO.writerId} AND completion = #{pacVO.completion}
+				  AND delete_type = 'N'
 				 ORDER BY reg_date DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
 	</select>
 	<select id="guiListComCount" resultType="int">
 		SELECT COUNT(*)
 		FROM package_regist r RIGHT JOIN calculation c on r.post_id = c.post_id 
-		WHERE r.writer_id = #{writerId} AND c.cal_status = 'V2'
+		WHERE r.writer_id = #{writerId} AND c.cal_status = 'V2' AND delete_type = 'N'
 	</select>
 	
 	<select id="guiListComPackage" resultType="PackageVO">
@@ -176,6 +218,7 @@
 					    r.reg_date
 			FROM package_regist r RIGHT JOIN calculation c on r.post_id = c.post_id 
 			WHERE r.writer_id = #{pacVO.writerId} AND c.cal_status = 'V2'
+				  AND delete_type = 'N'
 				 ORDER BY reg_date DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
 	</select>
@@ -210,4 +253,12 @@
 		FROM purchase p LEFT JOIN member m on p.member_id = m.member_id 
 		WHERE p.post_id = #{postId}
 	</select>
+	
+	<update id="deletePackage" parameterType="PackageVO">
+	update package_regist
+	<set>
+		delete_type = 'Y'
+	</set>
+	WHERE post_id = #{postId}
+	</update>
 </mapper>

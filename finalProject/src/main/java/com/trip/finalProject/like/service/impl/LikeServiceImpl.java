@@ -27,13 +27,13 @@ public class LikeServiceImpl implements LikeService {
 	}
 
 	@Override
-	public List<LikeVO> mtAllLikeInfo(PagingVO pagingVO) {
-		return likeMapper.mtAllLike(pagingVO);
+	public List<LikeVO> mtAllLikeInfo(LikeVO likeVO,PagingVO pagingVO) {
+		return likeMapper.mtAllLike(likeVO, pagingVO);
 	}
 
 	@Override
-	public List<LikeVO> trAllLikeInfo(PagingVO pagingVO) {
-		return likeMapper.trAllLike(pagingVO);
+	public List<LikeVO> trAllLikeInfo(LikeVO likeVO,PagingVO pagingVO) {
+		return likeMapper.trAllLike(likeVO, pagingVO);
 	}
 
 }

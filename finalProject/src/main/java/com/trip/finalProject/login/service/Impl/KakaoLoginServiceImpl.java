@@ -101,6 +101,11 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
       Map<String, String> token = new HashMap<>();
       token.put("access_token", access_Token);
       token.put("refresh_token", refresh_Token);
+      
+      System.out.println("카카오서비스 맨 마지막 ");
+ 
+      System.out.println("access_token : " + access_Token);
+      System.out.println("refresh_token : " + refresh_Token);
       return token;
    }
    
@@ -135,12 +140,15 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
 
          String nickname = properties.get("nickname").asText();
          String email = kakao_account.get("email").asText();
+         String gender = kakao_account.get("gender").asText();
+         String birthday = kakao_account.get("birthday").asText();
          String thumbnailImage = properties.get("thumbnail_image").asText();
          String profileImage = properties.get("profile_image").asText();
          //String birthday = properties.get("birthday").asText();
          
 	       
          Long id = jsonNode.get("id").asLong();
+         userInfo.put("id", id);
          userInfo.put("nickname", nickname);
          userInfo.put("email", email);
          userInfo.put("thumbnailImage", thumbnailImage);
@@ -149,6 +157,8 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
          userInfo.put("access_Token", access_Token);
          userInfo.put("refresh_Token", refresh_Token);
          userInfo.put("refresh_Token", profileImage);
+         userInfo.put("gender", gender);
+         userInfo.put("birthday", birthday);
 		/* userInfo.put("birthday", birthday); */
          
          
@@ -156,8 +166,8 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
          System.out.println("********");
          System.out.println("###id#### : " + id);
          System.out.println("###프로필### : " + profileImage);
-         System.out.println("###닉네임### : " + nickname);
-			                
+         System.out.println("###엑세스토큰### : " + access_Token);
+         System.out.println("###리프레쉬토큰### : " + refresh_Token);	                
          userInfo.put("id", id);
 
       } catch (IOException e) {
@@ -173,14 +183,50 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
    		System.out.println("S:" + result);
    		
    		if(result==null) {
-   		// result가 null이면 DB에 정보가 없다는 것-> 정보를 저장.
-   			km.insertKakaoLogin(userInfo);
-   			
-   			return km.findKakao(userInfo);
+   		km.insertKakaoLogin(userInfo);
+   		return km.findKakao(userInfo);
    		
-   		} else {
+   		}else {
+   			km.updateKakaoLogin(userInfo);
    			return result;
-   			// 정보가 이미 있기 때문에 result를 리턴함. 이미 회원가입이 되어있으므로 S가  null이 아님. insert실행 안함.
+   		
+   		// result가 null이면 DB에 정보가 없다는 것-> 정보를 저장.
+   				
+
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+
+
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   			
+   		
    		}
            
    }

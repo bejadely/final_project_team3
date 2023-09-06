@@ -41,7 +41,7 @@ $(document).ready(function() {
 	<th:block layout:fragment="script"></th:block>
 	<div layout:fragment="content" style="text-align: center;">
 	<form>
-		<h5>좋아요 목록</h5>
+		<h5>구매 목록</h5>
 		<button type="button" id="pk">패키지</button>
 		<button type="button" id="sp">특산물</button>
 		<table>
@@ -56,7 +56,7 @@ $(document).ready(function() {
 			</thead>
 			<tbody>
 				<th:block th:each="li : ${list}">
-					<tr class="list" th:onclick="|location.href='@{/packageInfo(postId=${li.postId})}'|">
+					<tr class="list" th:onclick="|location.href='@{/common/buySpSelect(orderDetailId=${li.orderDetailId})}'|">
 						<td th:text="${li.title}"></td>
 						<td th:text="${li.price}"></td>
 						<td th:text="${li.specialtyType}"></td>
@@ -67,7 +67,7 @@ $(document).ready(function() {
 			</tbody>
 			</table>
 		</form>
-		<div>
+		<div class="property-pagination">
 			<th:block th:if="${paging.startPage != 1}">
 				<a th:href="@{common/buySpList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
 			</th:block>

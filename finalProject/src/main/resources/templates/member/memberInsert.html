@@ -46,13 +46,13 @@
 										<div class="mb-3">
 											<div class="main">
 												<label for="" class="form-label">비밀번호 확인</label> <i class="fa-solid fa-eye-slash fa-xs" ></i>								
-												<input type="password" name="" placeholder="" class="form-control" id="pw2" required>
+												<input type="password" name="" placeholder="비밀번호 확인" class="form-control"  id="pw2" required>
 											</div>
 										</div>
-
-										<div>
+													<font id="checkPw" size="2"></font>
+									<!-- 	<div>
 											<button class="btn btn-default" type="button" name="confirmBtn" id="confirmBtn" onclick="confirmNumber()">비밀번호 확인</button>
-										</div>
+										</div> -->
 										<div class="mb-3">
 											<label for="" class="form-label">이름</label>
 											<input type="text" name="memberName" placeholder="이름" class="form-control" id="name" required >
@@ -180,21 +180,7 @@
 			
 	
 	
-		});
-		
-		function confirmCode(){
-			   
-			   var number1 = $("#smsCode").val();
-			   var number2 = $("#numValue").val();
-			   
-		        if (number1 == number2) { // 저장된 SMS 코드를 사용
-		            alert("인증되었습니다.");
-		        } else {
-		            alert("번호가 다릅니다.");
-		        }
-		    }
-		
-		
+		});		
 	</script>
 	
 
@@ -202,16 +188,39 @@
 	
 	<!--  비밀번호 확인 -->
 	<script>
-		function confirmNumber(){
+	$('#pw1').focusout(function(){		
+        var number1 = $("#pw1").val();
+        var number2 = $("#pw2").val();
+
+        if(number1 == number2){
+			$("#checkPw").html('번호가 같습니다.');
+			$("#checkPw").attr('color','green');
+        }else{
+        	$("#checkPw").html('번호가 다릅니다.');
+			$("#checkPw").attr('color','red');
+        }
+    }	
+	
+);
+	
+	
+	$('#pw2').focusout(function(){
 	        var number1 = $("#pw1").val();
 	        var number2 = $("#pw2").val();
 	
 	        if(number1 == number2){
-	            alert("번호가 같습니다.");
+				$("#checkPw").html('번호가 같습니다.');
+				$("#checkPw").attr('color','green');
 	        }else{
-	            alert("번호가 다릅니다.");
+	        	$("#checkPw").html('번호가 다릅니다.');
+				$("#checkPw").attr('color','red');
 	        }
-	    }		
+	    }	
+		
+	);
+		
+		
+
 	</script>
 
 
