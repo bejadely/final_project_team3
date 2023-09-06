@@ -88,8 +88,10 @@
                     	<div class="data-container">
 	                        <h6 class="h6">패키지별 매출 통계</h6>
 	                    </div>
-                        <div id="donutChart"></div>
-                        <div th:if="${#lists.isEmpty(saleMonthChartList)}">
+	                    <div th:if="${!#lists.isEmpty(packageSaleChartList)}">
+                        	<div id="donutChart" ></div>
+                        </div>
+                        <div th:unless="${!#lists.isEmpty(packageSaleChartList)}">
                             <hr>
                             <h6>통계 내역이 없습니다.</h6>
                         </div>
@@ -100,11 +102,13 @@
                         <div class="data-container">
 	                       <h6 class="h6">월별 매출 통계</h6>
 	                     </div>
-                        <div id="chart"></div>
-                        <div th:if="${#lists.isEmpty(packageSaleChartList)}">
+	                     <th:block th:if="${!#lists.isEmpty(saleMonthChartList)}">
+                        	<div id="chart" ></div>
+                        </th:block>
+                        <th:block th:if="${#lists.isEmpty(saleMonthChartList)}">
                             <hr>
                             <h6>통계 내역이 없습니다.</h6>
-                        </div>
+                        </th:block>
                     </div>
                 </div>
             </div>
@@ -180,7 +184,7 @@
             orderMonthColums.push(orderMonthString);
         }
 
-        let chart = bb.generate({
+        let chart = aa.generate({
             data:{
                 columns:[
                     dataColums
@@ -230,9 +234,6 @@
 	    	 onout: function(d, i) {
 	    	 	console.log("onout", d, i);
 	    	    }
-	    	   },
-	    	 donut: {
-	    	     title: "금달 패키지 판매율"
 	    	   },
 	    	 bindto: "#donutChart"
     	 });

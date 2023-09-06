@@ -51,6 +51,9 @@ public class TripMateController {
 		//댓글, 대댓글 리스트 가져오기
 		model.addAttribute("commentList", tripMateService.getCommentInfo(tripMateVO));
 		
+		//댓글 갯수 가져오기
+		model.addAttribute("commentNum", tripMateService.getCommentNumInfo(tripMateVO));
+		
 		return "tripMate/tripMateInfo";
 	}
 	
@@ -188,6 +191,22 @@ public class TripMateController {
 		}
 
 		return tripMateService.insertCommentReplyInfo(postCommentVO);
+	}
+	
+	@PostMapping("/modifyComment")
+	@ResponseBody
+	public Map<String, Object> commentModify(PostCommentVO postCommentVO) throws Exception{
+		String sessionId = "";
+		if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().replaceAll(" ", "").equals("")) {
+			sessionId =  session.getAttribute("sessionId").toString();
+		} else {
+			throw new Exception("no login");
+		}
+		if(!sessionId.equals(postCommentVO.getWriterId())){
+			throw new Exception("not same");
+		}
+		
+		return tripMateService.modifyCommentInfo(postCommentVO);
 	}
 	
 	//마이페이지----------------------------------------------------------------------

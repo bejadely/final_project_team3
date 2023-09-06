@@ -366,8 +366,14 @@
 	  ORDER BY origin_comment_id, regist_date, comment_id
 	</select>
 
-	<delete id="deleteComment" parameterType="SpotDetailReviewVO">
+	<delete id="deleteComment" parameterType="PostCommentVO">
 		DELETE FROM post_comment
 		WHERE comment_id=#{commentId}
 	</delete>
+	
+	<update id="modifyCommentInfo" parameterType="PostCommentVO">
+		UPDATE post_comment
+        SET content=#{content}
+        WHERE comment_id=#{commentId}
+	</update>
 </mapper>
