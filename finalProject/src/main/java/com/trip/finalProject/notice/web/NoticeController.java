@@ -34,27 +34,28 @@ public class NoticeController {
 	// 모든 리스트 모델에 담기
 			model.addAttribute("list", list);
 			model.addAttribute("paging", pagingVO);
-	return"notice/NoticeList";
+	return"/notice/NoticeList";
 	};
 	
 	//공지사항 게시글 상세보기
-	@GetMapping("/admin/seeNoticeDetail")
+	@GetMapping("/seeNoticeDetail")
 	public String selectNoticeDetail(NoticeVO noticeVO, Model model) {
 		
+		//공지사항 조회수 증가
+		noticeService.updateNoticeHit(noticeVO);
 		// 공지사항 상세조회 실행
 		noticeVO = noticeService.getNoticeDetail(noticeVO);
 		model.addAttribute("noticeVO", noticeVO);
 		System.out.println(noticeVO);
+		
+
+		
 		return "notice/noticeDetail";
 		
 	}
 	
 	
-	//검색
-	@GetMapping("/noticeSearch")
-	public String boardSearch() {
-		return"notice/BoardList";
-	};
+	
 
 	
 	//공지사항 작성 폼 불러옴
