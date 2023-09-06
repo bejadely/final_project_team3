@@ -11,6 +11,6 @@ public interface CalculationService {
 	public String calAtOnce(CalculationVO calculationVO);
 	
 	// 특정월 정산 내역 조회
-	public Map<String, Object> selectCompCalList(Integer nowPage, Integer cntPerPage, Integer searchMonth);
+	public Map<String, Object> selectCompCalList(Integer nowPage, Integer cntPerPage, Integer searchYear, Integer searchMonth);
 	
 }
