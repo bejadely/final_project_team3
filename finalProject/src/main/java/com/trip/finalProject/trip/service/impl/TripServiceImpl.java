@@ -156,6 +156,12 @@ public class TripServiceImpl implements TripService {
 		return tripMapper.insertTripMemo(tripVO);
 	}
 	
+	//여행메모 수정
+	@Override
+	public int modifyTripMemo(TripVO tripVO) {
+		return tripMapper.modifyMemoData(tripVO);
+	}
+	
 	//여행메모 데이터 조회
 	@Override
 	public List<TripVO> getMemoData(TripVO tripVO) {

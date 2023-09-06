@@ -253,6 +253,15 @@ public class TripController {
 		return null;
 	}
 	
+	// 여행 메모 수정 (ajax)
+    @PostMapping("/common/modifyMemo")
+    @ResponseBody
+    public TripVO tripMemoModify(TripVO tripVO) {
+    	tripService.modifyTripMemo(tripVO);
+    	return null;
+    }
+	
+	
 	// 여행 경로 저장 (ajax)
     @PostMapping("/common/tripMappingInsert")
     @ResponseBody
