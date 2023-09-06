@@ -115,6 +115,19 @@ public class PackageController {
 		return attachedFileService.getAttachList(vo);
 	}
 	
+	@GetMapping("/guide/packageUpdateForm")
+	public String packageUpdateForm(Model model, PackageVO packageVO) {
+		PackageVO vo = packageService.packageInfo(packageVO);
+		model.addAttribute("info",vo);
+		model.addAttribute("area",packageService.getLocationList());
+		return "package/packageUpdateForm";
+	}
+	@PostMapping("/guide/packageUpdate")
+	public String packageUpdate(PackageVO packageVO) {
+		packageService.packageUpdate(packageVO);
+		return "package/packageList";
+	}
+	
 
     //모달창 내 정보+리뷰 가져오기
     @GetMapping("/packageInfoReview")
