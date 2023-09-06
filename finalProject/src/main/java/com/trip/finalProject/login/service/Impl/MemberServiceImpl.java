@@ -1,12 +1,10 @@
 package com.trip.finalProject.login.service.Impl;
 
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.trip.finalProject.login.mapper.MemberMapper;
@@ -20,10 +18,21 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	MemberMapper memberMapper;
 	
+	@Autowired
+	PasswordEncoder passwordEncoder;
+	
 	//일반회원 회원가입
 	@Override
 	public String insertMemberInfo(MemberVO memberVO) {
-
+		
+		//0907 창민 추가 - 암호화
+		String encodePassword = passwordEncoder.encode(memberVO.getPassword());
+		
+		System.out.println("암호화 잘되냐" + encodePassword);
+		
+		// 암호화된 키를 memberVO에 재저장
+		memberVO.setPassword(encodePassword);
+		
 		int result = memberMapper.insertMember(memberVO);
 		if(result ==1) {
 			return memberVO.getMemberId();
