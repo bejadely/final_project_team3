@@ -103,7 +103,7 @@
 	                       <h6 class="h6">월별 매출 통계</h6>
 	                     </div>
 	                     <th:block th:if="${!#lists.isEmpty(saleMonthChartList)}">
-                        	<div id="chart" ></div>
+                        	<div id="chart"></div>
                         </th:block>
                         <th:block th:if="${#lists.isEmpty(saleMonthChartList)}">
                             <hr>
@@ -184,27 +184,29 @@
             orderMonthColums.push(orderMonthString);
         }
 
-        let chart = aa.generate({
-            data:{
-                columns:[
-                    dataColums
-                ],
-                type: "line",
-            },
-            axis:{
-                x:{
-                    type: "category",
-                    categories: orderMonthColums,
-                    label: "최근 5개월"
+        if([[${saleMonthChartList}]].length > 0) {
+            let chart = bb.generate({
+                data:{
+                    columns:[
+                        dataColums
+                    ],
+                    type: "line",
                 },
-                y:{
-                    label: "매출액"
-                }
-            },
-            bindto : "#chart",
+                axis:{
+                    x:{
+                        type: "category",
+                        categories: orderMonthColums,
+                        label: "최근 5개월"
+                    },
+                    y:{
+                        label: "매출액"
+                    }
+                },
+                bindto : "#chart",
 
 
-        });
+            });
+        }
 
        let dountList=[[${packageSaleChartList}]];
        
@@ -219,24 +221,27 @@
        }
        
         console.log(dountColums);
-       let donutChart = bb.generate({
-    	   data: {
-    	     columns: 
-    	    	 dountColums
-    	     ,
-    	     type: "donut",
-    	     onclick: function(d, i) {
-	    	 	console.log("onclick", d, i);
-	    	    },
-	    	 onover: function(d, i) {
-	    	 	console.log("onover", d, i);
-	    	    },
-	    	 onout: function(d, i) {
-	    	 	console.log("onout", d, i);
-	    	    }
-	    	   },
-	    	 bindto: "#donutChart"
-    	 });
+        if([[${packageSaleChartList}]].length > 0) {
+            let donutChart = bb.generate({
+                data: {
+                    columns:
+                    dountColums
+                    ,
+                    type: "donut",
+                    onclick: function(d, i) {
+                        console.log("onclick", d, i);
+                    },
+                    onover: function(d, i) {
+                        console.log("onover", d, i);
+                    },
+                    onout: function(d, i) {
+                        console.log("onout", d, i);
+                    }
+                },
+                bindto: "#donutChart"
+            });
+        }
+
     </script>
 </div>
 </body>

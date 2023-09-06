@@ -193,7 +193,7 @@
 </div>
 <br>
 <!-- 댓글 기능 -->
-<div class="row">
+<div class="row comment-div">
     <div class="col-lg-10 offset-lg-1">
         <div class="comment-option">
             <h4 class="commentCount" th:text="|${commentNum}건의 댓글|"></h4>
@@ -244,8 +244,8 @@
         </div>
     </div>
 </div>
-<div class="btn-custom">
-    <button type="button" class="site-btn add-comment" id="add-btn" style="margin: 0 auto;">댓글 더보기</button>
+<div class="btn-custom more-comment-div" th:if="${commentNum > 5}">
+    <button type="button" class="site-btn add-comment" th:attr="data-page='1'" id="add-btn" style="margin: 0 auto;">댓글 더보기</button>
 </div>
 <br>
 <div class="row">
@@ -282,7 +282,7 @@
         insertComment(postId, content, function (data) {
             if (data) {
                 let totalCount = $('.commentCount').text();
-                $('.commentCount').html(data.totalCount + '개의 댓글');
+                $('.commentCount').html(data.totalCount + '건의 댓글');
 
                 clearComment();
                 appendComment(data.commentList);
@@ -302,7 +302,7 @@
 		deleteComment(postId, commentId, writerId, function(data) {
 			if(data) {
 				let totalCount = $('.commentCount').text();
-				$('.commentCount').html(data.totalCount + '개의 댓글');
+				$('.commentCount').html(data.totalCount + '건의 댓글');
 
 				clearComment();
 				appendComment(data.commentList);
@@ -324,7 +324,7 @@
                console.log('data');
                console.log(data);
                let totalCount = $('.commentCount').text();
-               $('.commentCount').html(data.totalCount + '개의 댓글');
+               $('.commentCount').html(data.totalCount + '건의 댓글');
 
                clearComment();
                appendComment(data.commentList);
@@ -333,6 +333,22 @@
            } else {
 
            }
+        });
+    })
+
+    $(document).on('click', '#add-btn', function() {
+        let nowPage = $(this).data('page');
+        let nextPage = Number(nowPage) + 1;
+        let postId = $('.postId').val();
+
+        getComment(nextPage, postId, function(data) {
+            if(data) {
+                checkLastPage(nextPage);
+                appendMoreComment(data);
+                $(this).data('page', nextPage);
+            } else {
+
+            }
         });
     })
 
@@ -354,10 +370,16 @@
 							<span>${registDate}</span>
 							<h5>${data[i].writerId}</h5>
 							<p>${data[i].content}</p>
-							<div class="input-group mb-3 col-11">
-								<input type="text" class="form-control insert-input" placeholder="답글 달기" aria-label="Recipient's username" aria-describedby="button-addon2">
-								<button class="btn btn-outline-secondary insert-btn" type="button" id="button-addon2">등록</button>
-							</div>
+                            <div class="input-group mb-3 col-11 modify-div" style="display: none;">
+                                <input type="text" class="form-control modify-input"
+                                       aria-label="Recipient's username" aria-describedby="button-addon2">
+                                <button class="btn btn-outline-secondary modify-btn" type="button" id="button-addon2">수정</button>
+                            </div>
+                            <div class="input-group mb-3 col-11" >
+                                <input type="text" class="form-control insert-input" placeholder="답글 달기"
+                                       aria-label="Recipient's username" aria-describedby="button-addon2">
+                                <button class="btn btn-outline-secondary insert-btn" type="button" id="button-addon2">등록</button>
+                            </div>
 							&emsp;<a class="comment-btn update-btn">수정</a>
 							<a class="comment-btn del-btn">삭제</a>
 						</div>
@@ -366,13 +388,18 @@
             } else {
                 node += `
                     <div class="row">
-                        <div class="col-lg-11 offset-lg-1">
+                        <div class="col-lg-12 offset-lg-1">
                             <div class="single-comment-item reply-comment">
-                                <div class="sc-text">
+                                <div class="sc-text col-11">
                                     <span>${registDate}</span>
                                     <h5>${data[i].writerId}</h5>
                                     <p>${data[i].content}</p>
-                                    <a class="comment-btn update-btn">수정</a>
+                                    <div class="input-group mb-3 col-11 reply-modify-div" style="display: none;">
+                                        <input type="text" class="form-control reply-modify-input"
+                                            aria-label="Recipient's username" aria-describedby="button-addon2">
+                                        <button class="btn btn-outline-secondary reply-modify-btn" type="button" id="button-addon2">수정</button>
+                                    </div>
+                                    <a class="comment-btn reply-update-btn">수정</a>
                                     <a class="comment-btn del-btn">삭제</a>
                                 </div>
                             </div>
@@ -385,6 +412,70 @@
 			`;
         }
         $('#afterComment').after(node);
+
+        let commentCount = Number($('.commentCount').text().replace('건의 댓글', ''));
+        if(commentCount > 5) {
+            $('#add-btn').css('display', 'block');
+            $('#add-btn').data('page', '1');
+        }
+    }
+
+    function appendMoreComment(data) {
+        let node = ``;
+        for (let i = 0; i < data.length; i++) {
+            let registDate = data[i].registDate.toLocaleString('ko-KR').substr(0, 10);
+            node += `
+				<div class="comment-container" data-origin-comment-id="${data[i].originCommentId}" data-comment-id="${data[i].commentId}" data-writer-id="${data[i].writerId}" >
+			`;
+            if (data[i].commentId == data[i].originCommentId) {
+                node += `
+					<div class="single-comment-item first-comment">
+						<div class="sc-text col-12">
+							<span>${registDate}</span>
+							<h5>${data[i].writerId}</h5>
+							<p>${data[i].content}</p>
+                            <div class="input-group mb-3 col-11 modify-div" style="display: none;">
+                                <input type="text" class="form-control modify-input"
+                                       aria-label="Recipient's username" aria-describedby="button-addon2">
+                                <button class="btn btn-outline-secondary modify-btn" type="button" id="button-addon2">수정</button>
+                            </div>
+                            <div class="input-group mb-3 col-11" >
+                                <input type="text" class="form-control insert-input" placeholder="답글 달기"
+                                       aria-label="Recipient's username" aria-describedby="button-addon2">
+                                <button class="btn btn-outline-secondary insert-btn" type="button" id="button-addon2">등록</button>
+                            </div>
+							&emsp;<a class="comment-btn update-btn">수정</a>
+							<a class="comment-btn del-btn">삭제</a>
+						</div>
+					</div>
+            	`;
+            } else {
+                node += `
+                    <div class="row">
+                        <div class="col-lg-12 offset-lg-1">
+                            <div class="single-comment-item reply-comment">
+                                <div class="sc-text col-11">
+                                    <span>${registDate}</span>
+                                    <h5>${data[i].writerId}</h5>
+                                    <p>${data[i].content}</p>
+                                    <div class="input-group mb-3 col-11 reply-modify-div" style="display: none;">
+                                        <input type="text" class="form-control reply-modify-input"
+                                            aria-label="Recipient's username" aria-describedby="button-addon2">
+                                        <button class="btn btn-outline-secondary reply-modify-btn" type="button" id="button-addon2">수정</button>
+                                    </div>
+                                    <a class="comment-btn reply-update-btn">수정</a>
+                                    <a class="comment-btn del-btn">삭제</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            node += `
+				</div>
+			`;
+        }
+        $('.comment-option').children().last().after(node);
     }
 
     function insertComment(postId, content, callback) {
@@ -493,8 +584,9 @@
          
          modifyComment(postId, commentId, writerId, content, function (data) {
              if (data) {
+                 console.log(data);
                  let totalCount = $('.commentCount').text();
-                 $('.commentCount').html(data.totalCount + '개의 댓글');
+                 $('.commentCount').html(data.totalCount + '건의 댓글');
 
                  clearComment();
                  appendComment(data.commentList);
@@ -561,8 +653,9 @@
          
          modifyComment(postId, commentId, writerId, content, function (data) {
              if (data) {
+                 console.log(data);
                  let totalCount = $('.commentCount').text();
-                 $('.commentCount').html(data.totalCount + '개의 댓글');
+                 $('.commentCount').html(data.totalCount + '건의 댓글');
 
                  clearComment();
                  appendComment(data.commentList);
@@ -603,6 +696,35 @@
      		})
          }
     });
+
+    function getComment(page, postId, callback) {
+        $.ajax({
+            type: 'GET',
+            url: '/getComment',
+            data: {
+                'postId': postId,
+                'page': page
+            }
+        })
+        .done(function (data, textStatus, jqXHR) {
+            console.log('done');
+
+            callback(data);
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+            console.log('fail');
+
+
+        })
+    }
+
+    function checkLastPage(page) {
+        let commentCount = Number($('.commentCount').text().replace('건의 댓글', ''));
+        let lastPage = (Math.floor(commentCount/5)) + (commentCount%5 == 0 ? 0 : 1);
+        if(page == lastPage) {
+            $('#add-btn').css('display', 'none');
+        }
+    }
 </script>
 </body>
 </html>

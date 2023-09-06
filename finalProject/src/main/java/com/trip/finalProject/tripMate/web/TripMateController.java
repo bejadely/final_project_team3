@@ -30,6 +30,8 @@ public class TripMateController {
 	
 	@Autowired
 	HttpSession session;
+
+	private final String FIRST_PAGE = "1";
 	
 	//여행 메이트 게시글 전체 조회
 	@GetMapping("/tripMateList")
@@ -40,7 +42,10 @@ public class TripMateController {
 	
 	//여행 메이트 게시글 상세 조회
 	@GetMapping("/tripMateInfo")
-	public String tripMateInfo(TripMateVO tripMateVO, Model model) {
+	public String tripMateInfo(String postId, Model model) {
+		TripMateVO tripMateVO = new TripMateVO();
+		tripMateVO.setPostId(postId);
+
 		//조회수 카운트
 		tripMateService.updateMateRecruitHit(tripMateVO);
 		
@@ -49,12 +54,18 @@ public class TripMateController {
 		model.addAttribute("tripMateInfo", findVO);
 		
 		//댓글, 대댓글 리스트 가져오기
-		model.addAttribute("commentList", tripMateService.getCommentInfo(tripMateVO));
+		model.addAttribute("commentList", tripMateService.getCommentInfo(postId, FIRST_PAGE));
 		
 		//댓글 갯수 가져오기
 		model.addAttribute("commentNum", tripMateService.getCommentNumInfo(tripMateVO));
 		
 		return "tripMate/tripMateInfo";
+	}
+
+	@GetMapping("/getComment")
+	@ResponseBody
+	public List<PostCommentVO> getComment(String postId, String page) {
+		return tripMateService.getCommentInfo(postId, page);
 	}
 	
 	//여행 메이트 게시글 등록 - form

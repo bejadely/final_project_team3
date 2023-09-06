@@ -123,9 +123,9 @@ public class TripMateServiceImpl implements TripMateService {
 
 	//댓글, 대댓글 가져오기
 	@Override
-	public List<PostCommentVO> getCommentInfo(TripMateVO tripMateVO) {
+	public List<PostCommentVO> getCommentInfo(String postId, String page) {
 		
-		return tripMateMapper.getCommentInfo(tripMateVO);
+		return tripMateMapper.getCommentInfo(postId, page);
 	}
 	
 	//마이페이지--------------------------------------------------------------------------------------
