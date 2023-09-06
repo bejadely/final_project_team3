@@ -6,7 +6,7 @@
   		<!-- 회원 인가 처리 -->
   		<select id="getMember" resultType="MemberVO">
 		SELECT member_id, 
-		       '{noop}' || password password,
+		       password password,
 		       authority 
 		FROM member
 		WHERE member_id = #{memberId}
