@@ -15,20 +15,21 @@
  	 <select id="getPerCount" resultType="int">
  		SELECT COUNT(*)
  		FROM trip_record
+ 		WHERE writer_id = #{writerId}
  	</select>
  	
  	<!-- 마이페이지 페이징 - 미완료 여행/임시저장-->
  	 <select id="getPerNotCount" resultType="int">
  		SELECT COUNT(*)
  		FROM trip_record
- 		WHERE end_day > sysdate AND trip_save='T2'
+ 		WHERE end_day > sysdate AND trip_save='T2' AND writer_id = #{writerId}
  	</select>
  	
  	 <!-- 마이페이지 페이징 - 미완료 여행-->
  	 <select id="getPerComCount" resultType="int">
  	 <![CDATA[ SELECT COUNT(*)
  		FROM trip_record
- 		WHERE end_day < sysdate ]]>
+ 		WHERE end_day < sysdate AND writer_id = #{writerId}]]>
  		
  	</select>
 	
@@ -51,9 +52,9 @@
 		FROM(SELECT ROWNUM rn, a.*
 			 FROM(SELECT *
 				  FROM trip_record
-				  WHERE end_day > sysdate AND trip_save='T1'
+				  WHERE end_day > sysdate AND trip_save='T1' AND writer_id = #{tripVO.writerId}
 				  ORDER BY regist_day DESC) a)
-		WHERE rn BETWEEN #{start } AND #{end }
+		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
 	</select>
 	
 	<!-- 저장 정보 업데이트 -->
@@ -70,9 +71,9 @@
 		FROM(SELECT ROWNUM rn, a.*
 			 FROM(SELECT *
 				  FROM trip_record
-				  WHERE end_day > sysdate AND trip_save='T2'
+				  WHERE end_day > sysdate AND trip_save='T2' AND writer_id = #{tripVO.writerId}
 				  ORDER BY regist_day DESC) a)
-		WHERE rn BETWEEN #{start } AND #{end }
+		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
 	</select>
 	
 	<!-- 마이페이지 여행 기록 불러오기 - 완료된 여행(재운) -->
@@ -81,9 +82,9 @@
 		FROM(SELECT ROWNUM rn, a.*
 			 FROM(SELECT *
 				  FROM trip_record
-				  WHERE end_day < sysdate 
+				  WHERE end_day < sysdate AND writer_id = #{tripVO.writerId}
 				  ORDER BY regist_day DESC) a)
-		WHERE rn BETWEEN #{start } AND #{end } ]]>		
+		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end } ]]>		
 		
 	</select>
 	
