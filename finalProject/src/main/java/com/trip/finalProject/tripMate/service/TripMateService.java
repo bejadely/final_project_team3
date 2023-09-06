@@ -71,7 +71,7 @@ public interface TripMateService {
 	public TripMateVO memberInfo(TripMateVO tripMateVO);
 
 	//댓글, 대댓글 관련
-	public List<PostCommentVO> getCommentInfo(TripMateVO tripMateVO);
+	public List<PostCommentVO> getCommentInfo(String postId, String page);
 
 	public Map<String, Object> insertCommentInfo(PostCommentVO postCommentVO) throws Exception;
 

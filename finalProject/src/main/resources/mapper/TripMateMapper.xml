@@ -327,10 +327,16 @@
 	</select>
 	
 	<select id="getCommentInfo" resultType="PostCommentVO">
-		SELECT comment_id, post_id, origin_comment_id, writer_id, content, regist_date
-		  FROM post_comment
-		 WHERE post_id=#{postId}
-	  ORDER BY origin_comment_id, regist_date, comment_id
+		SELECT *
+			FROM (SELECT ROWNUM rn, a.*
+				FROM (
+					SELECT *
+					FROM post_comment
+					WHERE post_id = #{postId}
+					ORDER BY origin_comment_id, regist_date, comment_id
+					) a
+			)
+		WHERE rn BETWEEN (#{page}*5-4) AND (#{page}*5)
 	</select>
 	
 	<insert id="insertCommentInfo" parameterType="PostCommentVO">
@@ -360,10 +366,16 @@
 	</select>
 	
 	<select id="selectCommentInfo" resultType="PostCommentVO">
-		SELECT comment_id, post_id, origin_comment_id, writer_id, content, regist_date
-		  FROM post_comment
-		 WHERE post_id=#{postId}
-	  ORDER BY origin_comment_id, regist_date, comment_id
+		SELECT *
+			FROM (SELECT ROWNUM rn, a.*
+				FROM (
+					SELECT *
+					FROM post_comment
+					WHERE post_id = #{postId}
+					ORDER BY origin_comment_id, regist_date, comment_id
+				) a
+			)
+		WHERE rn BETWEEN 1 AND 5
 	</select>
 
 	<delete id="deleteComment" parameterType="PostCommentVO">
