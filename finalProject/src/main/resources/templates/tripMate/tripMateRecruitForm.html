@@ -140,29 +140,31 @@ body {
                    <tr>
                        <th style="text-align: left; width: 20%;">예상 경비</th>
                        <td colspan="2">
-                           <input type="number" id="mateExpense" name="mateExpense" size="30" class="form-control">
+                       	   <input type="text" id="mateExpense" name="mateExpense" size="30" class="form-control" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');">
                        </td>
                        <th style="text-align: left; width: 20%;">모집 인원</th>
                        <td colspan="2">
-                           <input type="number" id="mateMax" name="mateMax" size="30" class="form-control">
+                           <input type="number" id="mateMax" name="mateMax" size="30" class="form-control"  min="1" max="50">
                        </td>
                    </tr>
                    <tr>
                        <th style="text-align: left; width: 20%;">메인 이미지</th>
                          <td colspan="5">
                            <input type="file" id="mainImage" name="mainImage" size="50" class="form-control">
-                           <button id ="uploadBtn">upload</button>
+                           <input type="button" class="btn btn-secondary mt-3 mx-2" id ="uploadBtn" value="upload">
                        </td>
                    </tr>
                 </table>
                 </div>
-                <div class="uploadResult">
-            		<ul>
+                <div class="uploadResult" align="center">
+      				<div style="display:none;">
+            			<ul>
             
-            		</ul>
-               <div id="editor">
+            			</ul>
+            		</div>
+               		<div id="editor">
       
-               </div>
+               		</div>
               </div>
               <div>
                <button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>&nbsp;&nbsp;
@@ -173,6 +175,12 @@ body {
         </div>
    </div>
    <script>
+   
+   	   //숫자 컴마로 표현, 숫자만 입력 가능
+   	   document.getElementById("mateExpense").addEventListener("keyup", function (e) {
+   		  $(this).val($(this).val().replace(/\,/g, '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,'));
+	   });
+	   
       //현재 날짜 계산
       document.getElementById('now_date').value = new Date().toISOString().substring(0, 10);
       

@@ -6,7 +6,28 @@ import com.trip.finalProject.common.PagingVO;
 
 public interface TripMateService {
 	//여행 메이트 글 전체조회 - 페이징은 다른 기능이 어느정도 구현이 되고 나서 검색이 가능한 페이징으로 추가 해야함.
-	public List<TripMateVO> getTripMateAll();
+	public List<TripMateVO> getTripMateAll(PagingVO pagingVO);
+	
+	//전체 여행메이트 글 수 카운트
+	public int mateCount();
+
+	//여행 지역으로 검색
+	public List<TripMateVO> searchMateByTripArea(TripMateVO tripMateVO, PagingVO pagingVO);
+	
+	//여행 지역으로 여행메이트 글 수 카운트
+	public int countTripArea(String keyword);
+	
+	//여행 타이틀로 검색
+	public List<TripMateVO> searchMateByTripTitle(TripMateVO tripMateVO, PagingVO pagingVO);
+	
+	//여행 메이트 게시글 제목으로 글 수 카운트
+	public int countTripTitle(String keyword);
+	
+	//게시글 작성자로 아이디로 검색
+	public List<TripMateVO> searchMateByTripWriterId(TripMateVO tripMateVO, PagingVO pagingVO);
+	
+	//여행 메이트 작성자 아이디로 글 수 카운트
+	public int countTripWrtierId(String keyword);
 	
 	//여행 메이트 게시글 상세조회
 	public TripMateVO getTripMateInfo(TripMateVO tripMateVO);

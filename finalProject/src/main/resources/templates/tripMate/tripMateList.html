@@ -40,6 +40,17 @@
 		</section>
 		<!-- 여행메이트 글 section-->
 		<section class="blog-section blog-page spad">
+			<div>
+				<select id="searchBy" name="searchBy">
+					<option value="tripArea">여행지역으로 검색</option>
+					<option value="mateTitle">타이틀로 검색</option>
+					<option value="writerId">아이디로 검색</option>
+				</select>
+				<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
+				<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+			</div>
+		</section>
+		<section class="blog-section blog-page spad">
 			<div class="container">
 				<div class="row">
 					<div th:each="tripMateInfo : ${tripMateList}" th:onclick="|location.href='@{/tripMateInfo(postId=${tripMateInfo.postId})}'|"
@@ -82,11 +93,73 @@
 					</div>
 				</div>
 			</div>
+			<!-- 페이징 구문 -->
+			<!-- 검색키워드가 없을때 -->
+			<th:block th:if="${#strings.isEmpty(keyword)}">
+			<div style="text-align : center;" class="property-pagination">
+				<th:block th:if="${paging.nowPage != 1}">
+					<a th:href="@{tripMateList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+				</th:block>
+				<th:block th:if="${paging.startPage != 1}">
+					<a th:href="@{tripMateList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+				</th:block>
+				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+					<th:block th:if="${p eq paging.nowPage}">
+						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+					</th:block>
+					<th:block th:if="${p ne paging.nowPage}">
+						<a th:href="@{tripMateList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+					</th:block>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+					<a th:href="@{tripMateList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage}">
+					<a th:href="@{tripMateList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+				</th:block>
+			</div>
+			</th:block>
+			<!-- 검색키워드가 있을때 -->
+			<th:block th:if="${!#strings.isEmpty(keyword)}">
+			<div style="text-align : center;" class="property-pagination">
+				<th:block th:if="${paging.nowPage != 1}">
+					<a th:href="@{searchTripMate(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
+				</th:block>
+				<th:block th:if="${paging.startPage != 1}">
+					<a th:href="@{searchTripMate(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;</a>
+				</th:block>
+				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+					<th:block th:if="${p eq paging.nowPage}">
+						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+					</th:block>
+					<th:block th:if="${p ne paging.nowPage}">
+						<a th:href="@{searchTripMate(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
+					</th:block>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+					<a th:href="@{searchTripMate(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage}">
+					<a th:href="@{searchTripMate(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
+				</th:block>
+			</div>
+			</th:block>
 		</section>
 		<!-- 여행메이트 글 section end -->
-	</div>
-	<script>
-		
+	<script th:inline="javascript" type="text/javascript">
+		$(document).ready(function() {
+			// 이벤트 설정
+			$('#searchButton').on('click', search);
+		});
+	
+		// 조건검색기능
+		function search(event){
+			console.log("1111");	
+			let value = $('#searchBy').val();
+			let keyword = $('#keyword').val();
+			location.href='/searchTripMate?searchBy='+value+'&keyword='+keyword;
+		}
 	</script>
+	</div>
 </body>
 </html>
