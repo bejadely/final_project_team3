@@ -212,7 +212,6 @@
 		      $('#approveButton').on('click',function(){
 		    	  ajaxApprove();
 		    	    sendCode();	 	    
-		    	    
 		      });
 		  
 
@@ -286,12 +285,17 @@
 				/* contentType : application/json */
 			})
 			.done(function(data) {
-				//console.log("data :", data);
+				if (data.bankHolderInfo==null){
+					alert('정보를 확인할 수 없습니다.');
+				}				
+				console.log("data :", data);
 				console.log("통신은 성공");
-				if (data.bankHolderInfo) {
+				if (data.bankHolderInfo) {					
 					$("#bankHolderInfo").val(data.bankHolderInfo);
 					var name1 = $("#name").val();
 					var name2 = $("#bankHolderInfo").val();
+				
+			
 
 					if (name1 !== name2) { 
 						alert("이름이 다릅니다.");
