@@ -149,20 +149,21 @@ table {
 				<h5>여행 메모</h5>
 				<hr>
 				<div th:each="mo : ${memoInfo}">
-					내용 : [[${mo.content}]]
+					<textarea name="content" cols="80" rows="5" th:text="${mo.content}"></textarea>
 					<h3> ----------</h3>
-					<button type="button" class="showMap">여행경로 보기</button>
+					<button type="button" id="showMap" class="btn btn-secondary">여행경로 보기</button>
 					<input type="hidden" name="tripDate" th:value="${mo.tripDate}">
 					<br>
 					<br>
 				</div>
 				<br>
 				<input type="hidden" id="postId" th:value="${tripInfo.postId}">
-				<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripInfo.writerId}" type="button" class="primary-btn" 
+				<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripInfo.writerId}" type="button" class="btn btn-primary mt-3 mx-2"
 				th:onclick="|location.href='@{/common/tripRecordModifyForm(postId=${tripInfo.postId})}'|">수정</button>&nbsp;&nbsp;
-				<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripInfo.writerId}" type="button" class="primary-btn" 
+				<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripInfo.writerId}" type="button" class="btn btn-secondary mt-3 mx-2" 
 				th:onclick="|location.href='@{/common/tripRecordDelete(postId=${tripInfo.postId})}'|">삭제</button>&nbsp;&nbsp;
-				<button type="button" onclick="location.href='/tripRecordList'">목록으로</button>
+				<button type="button" onclick="location.href='/tripRecordList'" class="btn btn-primary mt-3 mx-2">목록으로</button>
+				<br>
 				<br>
 			</form>
 
@@ -172,7 +173,7 @@ table {
 	<script th:inline="javascript">
 	$(document).ready(function(){
 
-		$(".showMap").click(function(){
+		$(".btn.btn-secondary#showMap").click(function(){
 			
 			//여행경로보기 버튼 클릭시 지도영역div 나타냄
 			$("#mapDiv").attr('style', 'display:block');

@@ -60,6 +60,9 @@ public interface TripMapper {
 	//여행메모 저장
 	public int insertTripMemo(TripVO tripVO);
 	
+	//여행메모 수정
+	public int modifyMemoData(TripVO tripVO);
+	
 	//여행메모 데이터 조회
 	public List<TripVO> selectMemoData(TripVO tripVO);
 	

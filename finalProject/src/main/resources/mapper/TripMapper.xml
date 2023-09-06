@@ -220,6 +220,17 @@
 				        )
 	</insert>
 	
+	<!-- 여행메모 수정 -->
+	<update id="modifyMemoData" parameterType="TripVO">
+		UPDATE trip_record_memo
+		<set>
+			content = #{content},
+		</set>
+		WHERE post_id = #{postId} 
+		  AND trip_date = #{tripDate}
+	</update>
+	
+	
 	<!-- 여행 메모 조회 -->
 	<select id="selectMemoData" resultType="TripVO">
 		SELECT m.trip_date
