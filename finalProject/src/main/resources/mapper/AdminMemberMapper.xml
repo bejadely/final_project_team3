@@ -25,7 +25,7 @@
 							        , a.access_token
 							        , a.refresh_token
 							        , a.birth_date
-							        , a.gender
+							        , code_val(a.gender) gender
 							        , a.punish_count
 							        , a.sign_up_date
 							        , a.withdrawal_date
@@ -67,22 +67,22 @@
   			SELECT member_id
 				 , member_name
 				 , password
-				 , nationality
+				 , NVL(code_val(nationality), '-') nationality
 				 , email
-				 , zip_code
+				 , NVL(zip_code, '-') zip_code
 				 , address
 				 , address_detail
 				 , phone_number
 				 , code_val(authority) authority
 				 , origin_profile_img
 				 , saved_profile_img
-				 , bank_code
-				 , account_number
+				 , NVL(code_val(bank_code), '-') bank_code
+				 , NVL(account_number, '-') account_number
 				 , login_type
 				 , access_token
 				 , refresh_token
 				 , birth_date
-				 , code_val(gender)
+				 , code_val(gender) gender
 				 , punish_count
 				 , sign_up_date
 				 , withdrawal_date

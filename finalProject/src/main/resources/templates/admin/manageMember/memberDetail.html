@@ -38,7 +38,12 @@
 								<th width="150" align="center">성별</th>
 								<td width="400" align="center" th:text="*{gender}"></td>
 								<th width="150" align="center">생년월일</th>
-								<td width="400" align="center" th:text="*{#strings.substring(birthDate,0,10)}"></td>
+								<th:block th:if="*{birthDate != null}">
+									<td width="400" align="center" th:text="*{#strings.substring(birthDate,0,10)}"></td>
+								</th:block>
+								<th:block th:if="*{birthDate == null}">
+									<td width="400" align="center">-</td>
+								</th:block>
 							</tr>
 							<tr>
 								<th width="150" align="center">국적</th>
@@ -48,7 +53,12 @@
 							</tr>
 							<tr>
 								<th width="150" align="center">주소</th>
-								<td colspan="3" width="400" align="center" th:utext="|(*{zipCode}) <br> *{address} *{addressDetail}|"></td>
+								<th:block th:if="*{!#strings.equals(zipCode, '-')}">
+									<td colspan="3" width="400" align="center" th:utext="|(*{zipCode}) <br> *{address} *{addressDetail}|"></td>
+								</th:block>
+								<th:block th:if="*{#strings.equals(zipCode, '-')}">
+									<td colspan="3" width="400" align="center">-</td>
+								</th:block>	
 							</tr>
 							<tr>
 								<th width="150" align="center">이메일</th>
