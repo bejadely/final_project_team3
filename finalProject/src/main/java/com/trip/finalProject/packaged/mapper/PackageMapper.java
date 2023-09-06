@@ -60,6 +60,8 @@ public interface PackageMapper {
 	public List<PackageVO> pacMember(PackageVO pacVO);
 	//패키지 삭제
 	public int deletePackage(String postId);
+	//패키지 수정
+	public void updatePackage(PackageVO packageVO);
 
 	
 

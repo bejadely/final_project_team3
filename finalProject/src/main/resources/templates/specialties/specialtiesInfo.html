@@ -208,9 +208,14 @@ form {
 							
                     </div>
                 </div>
-                <div class="updateBtn">
-                	<button type="button" class="btn btn-outline-dark">수정하기</button>
+                <div>
+	                <input type="hidden" id="sessionAuthority" th:value="${session.sessionAuthority}">
+	                <button th:if="${session.sessionAuthority} != null and ${session.sessionAuthority} == 'A3'" type="button" class="btn btn-outline-dark" 
+					th:onclick="|location.href='@{/admin/specialtiesUpdateForm(postId=${info.postId})}'|">수정</button>&nbsp;&nbsp;
                 </div>
+				
+               
+                
                 <!-- 리뷰 -->
         <div class="review">
             <h7 id="reviewCount"></h7>
@@ -259,10 +264,7 @@ form {
 
 
 <script>
-	const isAdminLogin = [[${isAdminLogin}]];
-	if(isAdminLogin) {
-	    $('.updateBtn').attr('style', 'display:block;');
-	}
+
 
 	var content = '[[${info.content }]]';
 	var postId = '[[${info.postId}]]';

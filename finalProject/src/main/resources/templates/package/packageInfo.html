@@ -210,7 +210,11 @@ form {
 							</div>
                     </div>
                 </div>
-            
+            	<div>
+	                <input type="hidden" id="sessionAuthority" th:value="${session.sessionAuthority}">
+	                <button th:if="${session.sessionAuthority} != null and ${session.sessionAuthority} == 'A2'" type="button" class="btn btn-outline-dark" 
+					th:onclick="|location.href='@{/guide/packageUpdateForm(postId=${info.postId})}'|">수정</button>&nbsp;&nbsp;
+                </div>
             </div>
             <!-- 리뷰 -->
 	        <div class="review">

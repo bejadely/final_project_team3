@@ -130,6 +130,11 @@
 		WHERE post_id = #{postId}
 	</select>
 	
+	<delete id="deleteOption">
+		DELETE FROM specialties_option
+		WHERE post_id = #{postId}
+	</delete>
+	
 	<!-- 창민 -->
 	<!-- 특산물 전체 등록 수 카운트 -->
 	<select id="countAllSpecial">

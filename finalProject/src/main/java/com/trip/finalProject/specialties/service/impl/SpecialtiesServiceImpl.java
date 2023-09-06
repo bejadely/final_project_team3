@@ -76,11 +76,11 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
 	@Override
 	public void insertSepcialties(SpecialtiesVO specialtiesVO) {
 		// TODO Auto-generated method stub
-		mapper.insertSpecialites(specialtiesVO);
+		mapper.updateSpecialites(specialtiesVO);
 		
 		specialtiesVO.getOptionList().forEach(option->{
-			option.setPostId(specialtiesVO.getPostId());
-			mapper.insertSpecialtiesOption(option);
+		option.setPostId(specialtiesVO.getPostId());
+		mapper.insertSpecialtiesOption(option);
 		});
 		
 		if(specialtiesVO.getAttachList()==null || specialtiesVO.getAttachList().size()<=0) {
@@ -100,6 +100,35 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
 			});
 		}
 		
+	}
+	//첨부파일 삭제
+	@Override
+	public void updateSepcialties(SpecialtiesVO specialtiesVO) {
+		// TODO Auto-generated method stub
+		attachedFileMapper.delete(specialtiesVO.getPostId());
+		specialtiesMapper.deleteOption(specialtiesVO.getPostId());
+		mapper.insertSpecialites(specialtiesVO);
+		if(specialtiesVO.getOptionList()!=null || specialtiesVO.getOptionList().size()>0) {
+			specialtiesVO.getOptionList().forEach(attach->{
+				attach.setPostId(specialtiesVO.getPostId());
+				specialtiesMapper.insertSpecialtiesOption(attach);
+			});
+		}
+		
+		if(specialtiesVO.getAttachList()!=null || specialtiesVO.getAttachList().size()>0) {
+			specialtiesVO.getAttachList().forEach(attach->{
+				attach.setPostId(specialtiesVO.getPostId());
+				attachedFileMapper.insertAttachedFile(attach);
+			});
+		}
+		if(specialtiesVO.getEditorAttachList()==null || specialtiesVO.getEditorAttachList().size()<=0) {
+			return;
+		}else {
+			specialtiesVO.getEditorAttachList().forEach(attach->{
+				attach.setPostId(specialtiesVO.getPostId());
+				attachedFileMapper.insertAttachedFile(attach);
+			});
+		}
 	}
 	
 	//지역 정보 리스트
@@ -129,6 +158,8 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
 		
 		return map;
 	}
+
+	
 
 
 

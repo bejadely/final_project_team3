@@ -49,6 +49,24 @@
 					)
 	</insert>
 	 
+	<update id="updatePackage" parameterType="PackageVO">
+		UPDATE package_regist
+		<set>
+			content = #{content}
+			,name = #{name}
+			,price = #{price}
+			,start_date = #{startDate}
+			,end_date = #{endDate}
+			,deadline_date = #{deadlineDate}
+			,max_reservation = #{maxReservation}
+			,tour_theme = #{tourTheme}
+			,reg_date = #{regDate}
+			,area_code = #{areaCode}
+			,sigungu_code = #{sigunguCode}
+		</set>
+		WHERE post_id = #{postId}
+	</update>
+	
 
 	<select id="listPackage">
 		SELECT *
@@ -157,8 +175,6 @@
         DELETE FROM review
         WHERE review_id=#{reviewId}
     </delete>
-	
-	
 	
 	
 	

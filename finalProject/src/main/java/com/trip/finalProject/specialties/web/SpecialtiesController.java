@@ -11,7 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.trip.finalProject.attachedFile.service.AttachedFileVO;
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.common.mapper.CommonMapper;
 import com.trip.finalProject.specialties.service.SpecialtiesOptionVO;
@@ -22,6 +24,7 @@ import com.trip.finalProject.specialties.service.SpecialtiesVO;
 public class SpecialtiesController {
 	@Autowired
 	SpecialtiesService specialtiesService;
+	
 	
 	@Autowired
 	CommonMapper commonMapper;
@@ -94,28 +97,45 @@ public class SpecialtiesController {
 		SpecialtiesVO vo = specialtiesService.getSpecialtiesInfo(postId);
 		List<SpecialtiesOptionVO> optionVO = specialtiesService.getOptionList(postId);
 		
-		String authority = session.getAttribute("sessionAuthority") == null ? null : session.getAttribute("sessionAuthority").toString().replaceAll(" ", "");
-		if(authority != null && authority.equals("A3")) {
-			model.addAttribute("isAdminLogin",true);
-			
-		}else {
-			model.addAttribute("isAdminLogin",false);
-		}
+		/*
+		 * String authority = session.getAttribute("sessionAuthority") == null ? null :
+		 * session.getAttribute("sessionAuthority").toString().replaceAll(" ", "");
+		 * if(authority != null && authority.equals("A3")) {
+		 * model.addAttribute("isAdminLogin",true);
+		 * 
+		 * }else { model.addAttribute("isAdminLogin",false); }
+		 */
 		
 		model.addAttribute("info",vo);
 		model.addAttribute("option", optionVO);
 		return "specialties/specialtiesInfo";
 	}
 	
-	@GetMapping("/admin/specialtiesUpdate")
+	@GetMapping("/getOptionList")
+	@ResponseBody
+	public List<SpecialtiesOptionVO> getOptionList(String postId){
+	    List<SpecialtiesOptionVO> list = specialtiesService.getOptionList(postId);
+	    System.out.println(list);
+		return list; 
+	}
+	
+	@GetMapping("/admin/specialtiesUpdateForm")
 	public String specialtiesUpdateForm(Model model, String postId) {
 		SpecialtiesVO vo = specialtiesService.getSpecialtiesInfo(postId);
 		List<SpecialtiesOptionVO> optionVO = specialtiesService.getOptionList(postId);
 		model.addAttribute("info",vo);
 		model.addAttribute("option", optionVO);
-		return "specialties/specialtiesInfo";
+		model.addAttribute("S",commonMapper.selectCode("S"));
+		model.addAttribute("area",specialtiesService.getLocationList());
+		return "specialties/specialtiesUpdateForm";
 	}
 	
+	@PostMapping("/admin/specialtiesUpdate")
+	public String specialtiesUpdate(SpecialtiesVO specialtiesVO) {
+		specialtiesService.updateSepcialties(specialtiesVO);
+		
+		return "redirect:/specialtiesList";
+	}
 	//0904 창민 추가
 	//특산물 전체 조회
 	@GetMapping("/admin/seeAllSpecial")

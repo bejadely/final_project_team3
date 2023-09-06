@@ -80,7 +80,6 @@ ClassicEditor
 		
 		var formObj = $("#editorForm");
 		
-		//document.getElementById("editorForm").addEventListener("submit",function(event){
 		$("button[type='submit']").on("click",function(event){
 			event.preventDefault();
 			var str="";	
@@ -90,13 +89,11 @@ ClassicEditor
 			str+=`<input type='hidden' name='sigunguCode' value='${sigunguCode}'>
 				 <input type ='hidden' name = 'areaCode' value='${areaCode}'>
 				 <input type ='hidden' name = 'postId' value='${postId}'>`
-			//console.log(sigunguCode);
-			//console.log(areaCode);
+
 	
 			const data = editor.getData();
 			
 			let objData = serializeObject();
-			//sconsole.log(data);
 			const { title, writerId,type } = objData;
 			var combinedData={
 				content: data,
@@ -121,19 +118,6 @@ ClassicEditor
 			str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";
 			
 			
-			var specialtiesOption = $(".specialtiesOption");
-
-			$(".specialtype").each(function(i, obj) {
-			    var type = $(obj).val();
-			    var priceInput = $(obj).closest(".specialtiesOption").find(".price").eq(i);
-			    var price = $(priceInput).val();
-			    var discountInput = $(obj).closest(".specialtiesOption").find(".discountRate").eq(i);
-			    var discountRate = $(discountInput).val();
-			    str += `<input type='hidden' name='optionList[${i}].specialtyType' value='${type}'>
-			            <input type='hidden' name='optionList[${i}].price' value='${price}'>
-			            <input type='hidden' name='optionList[${i}].discountRate' value='${discountRate}'>`;
-			});
-			
 			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
 			
 			const filenames = imgTags.map(img=> {
@@ -146,7 +130,7 @@ ClassicEditor
 			});
 			
 			formObj.append(str);
-			document.getElementById('editorForm').action = "/admin/specialtiesUpdate";
+			document.getElementById('editorForm').action = "/guide/packageUpdate";
 			document.getElementById('editorForm').submit();
 			
 			
@@ -163,10 +147,7 @@ ClassicEditor
 		let formData = $('form').serializeArray();
 		let formObject={};
 		$.each(formData, function(idx,obj){
-			//let field = obj.name;
-			//let val= obj.value;
 			formObject[obj.name] = obj.value;
-			//formObject[field] = val;
 		});
 		
 		return formObject;
@@ -202,7 +183,6 @@ ClassicEditor
 					$(".uploadDiv").html(cloneObj.html());
 				}
 			});
-			//readURL(this);	
 		});
 	});
 
@@ -219,23 +199,6 @@ ClassicEditor
 		
 		currentNode.add(prevNode).add(nextNode).remove();
 		}
-	
-		/* $.ajax({
-			url:'/common/deleteFile',
-			data: {savedImg: targetFile},
-			dataType: 'text',
-			type: 'POST',
-			success: function(result){
-				alert(result);
-				//$(this).closest("li").load();
-				var currentNode = clickedSpan.closest("li");
-				var prevNode = currentNode.prev();
-				var nextNode = currentNode.next();
-				
-				currentNode.add(prevNode).add(nextNode).remove();
-				
-			}
-		}) */
 	})
 	
 	var uploadResult = $(".uploadResult ul");
@@ -280,106 +243,6 @@ ClassicEditor
 	}
 	
 
-	$(document).ready(function() {
-		$('.optionInsert').on('click', insertOption);
-		$('.optionDelete').on('click', deleteOption);
-	});
-	
-	// 옵션 추가 버튼
-	function insertOption(e){
-		
-		e.stopPropagation();
-		
-		Swal.fire({
-		      title: '특산물 옵션 추가',
-		      html:` <div class="form-floating mb-3">
-				 		<input type="text" class="form-control" id="optionType">
-				  		<label for="floatingInput">옵션명</label>
-					</div>
-					<div class="form-floating">
-				  		<input type="number" class="form-control" id="optionPrice" >
-				  		<label for="floatingPrice">가격</label>
-					</div>
-					
-					<div class="form-floating">
-				  		<input type="number" class="form-control" id="discountRate" >
-				  		<label for="floatingDiscount">할인율</label>
-					</div>`,
-		      showCancelButton: true,
-		      confirmButtonColor: '#3085d6',
-		      cancelButtonColor: '#d33',
-		      confirmButtonText: '추가',
-		      cancelButtonText: '취소',
-		      reverseButtons: true,
-		      
-		
-		      
-	    }).then((result) => {
-	      if (result.isConfirmed) {
-	    	  var specialtiesOption = $(".specialtiesOption");  
-	      
-	    	  //sweetalert2에서 입력된 값을 가지고옴	
-		      const optionType = document.getElementById('optionType').value;
-			  const optionPrice = document.getElementById('optionPrice').value;
-			  const discountRate = document.getElementById('discountRate').value;
-			  
-		      let form = document.getElementById("editorForm");
-			  let str="";
-			  str +=`<div class="option"><input type="checkbox" class="deleteCheckbox" >
-			  		<label>옵션</label><input type="text" class="specialtype" name="" value="${optionType}" readonly>
-				  	<label>가격</label><input type="text" class="price" name="" value="${optionPrice}"readonly><br>`
-				  	
-		  	  if (discountRate !== '' && parseFloat(discountRate) !== 0) {
-		        str += `<label>할인율</label><input type="number" class="discountRate" name="" value="${discountRate}" readonly><br>`;
-		      }else{
-		    	str += `<input type="hidden" class="discountRate" name="" value="" readonly><br>`;  		  
-		      }
-			  specialtiesOption.append(str);
-	      }
-	    })	
-	};
-	  
-    (function(){
-		
-		$.getJSON("/getOptionList",{postId:postId},function(arr){
-			$(arr).each(function(i, obj){
-				  console.log(obj.discountRate);
-				  var specialtiesOption = $(".specialtiesOption");  
-			      console.log("=============");
-		    	  //sweetalert2에서 입력된 값을 가지고옴	
-			      let form = document.getElementById("editorForm");
-			      var str="";
-				  str +=`<div class="option"><input type="checkbox" class="deleteCheckbox" >
-				  		<label>옵션</label><input type="text" class="specialtype" name="" value="${obj.specialtyType}" readonly>
-					  	<label>가격</label><input type="text" class="price" name="" value="${obj.price}"readonly><br>`
-					  	
-			  	  if (obj.discountRate != '' && parseInt(obj.discountRate) != 0 && obj.discountRate != null) {
-			        str += `<label>할인율</label><input type="number" class="discountRate" name="" value="${obj.discountRate}" readonly><br>`;
-			      }else{
-			    	str += `<input type="hidden" class="discountRate" name="" value="" readonly><br>`;  		  
-			      }
-				  specialtiesOption.append(str);	
-			});
-		});
-	})();
-    
-	function deleteOption(e){
-		e.preventDefault();
-		/* $("input[type=checkbox]:checked").each(function() {
-	        var label = $(this).closest("label");
-	        var specialtiesType = label.find("input[type=text]");
-	        console.log(label);
-	        console.log(specialtiesType)
-	       label.remove();
-	       specialtiesType.remove();
-	    }); */
-		 $("input[type=checkbox]:checked").each(function() {
-			    $(this).closest(".option").remove();
-			  });
-	};
-	
-	
-	
 	
 });
 </script>
@@ -390,12 +253,14 @@ ClassicEditor
 		<div id="specialtiesInfo">	
 			<input type="hidden" name="writerId" th:value="${session.sessionId}">
 			<div>
-				<label>특산물 종류</label>
-				<select name="type" id="type">
-					<option value="">선택</option>
-					<option th:each = "s : ${S}"  th:value="${s.detailCode}" th:text="${s.value}"></option>		
+				<label>테마</label>
+				<select name="tourTheme" id="tourTheme">
+					<option value="맛집 투어">맛집 투어</option>
+					<option value="관광 명소 투어">관광 명소 투어</option>
+					<option value="쇼핑 여행">쇼핑 여행</option>
+					<option value="도시 여행">도시 여행</option>
 				</select>	
-			</div>
+			</div>	
 			<div>
 				<label>지역</label>
 				<select id="location">
@@ -416,14 +281,33 @@ ClassicEditor
 				</ul>
 			</div>
 			<div>
-				<label>특산물 명</label>
-				<input type="text" placeholder="특산물 명" name=title id="title"/>
+				<label>패키지 명</label>
+				<input type="text" placeholder="패키지 명" name="name" id="name"/>
 			</div>
-			<div class="specialtiesOption">
+			
+			<div>
+				<label>패키지 가격</label>
+				<input type="text" placeholder="판매가" name="price" id="price"/>
 			</div>
 			<div>
-				<button type="button" class="optionInsert" name="optionInsert">옵션추가</button>  
-				<button type="button" class="optionDelete" name="optionDelete">옵션삭제</button>
+			
+			</div>
+			<div>
+				<p>패키지 기간</p>
+				<label>시작일</label>
+				<input type="date" name="startDate" id="startDate"/>
+				<label> ~ 종료일</label>
+				<input type="date" name="endDate" id="endDate"/>
+			</div>
+			
+			<div>
+				<label>모집 종료일</label>
+				<input type="date" name="deadlineDate" id="deadlineDate"/>
+			</div>
+			
+			<div>
+				<label>모집 인원</label>
+				<input type="number" name ="maxReservation" id="maxReservation"/>
 			</div>
 			
 		</div>
