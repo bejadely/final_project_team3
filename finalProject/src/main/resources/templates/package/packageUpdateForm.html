@@ -31,13 +31,21 @@ form {
 	margin: 0 auto;
 }
 
+.input-group {
+    width: 400px; /* 파일 입력 필드와 버튼의 전체 너비 조절 */
+}
+.img-thumbnail{
+	width:400px;
+	height:400px;
+}
+
 </style>
 <!-- CKEditor -->
 <!-- <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script> -->
 <script>
 var postId = '[[${info.postId}]]';
 $(document).ready(function() {	
-
+	setDefaultTourTheme()
 ClassicEditor
 	.create(document.querySelector('#editor'), {
 		/* htmlEncodeOutput: false, */
@@ -213,11 +221,11 @@ ClassicEditor
 				var fileCallPath = encodeURIComponent(`${obj.savedImg}`);
 			
 				if(i==0){		
-					str +="<li data-path='"+obj.savedImg+"'";
+					str +="<data-path='"+obj.savedImg+"'";
 					str +=" data-filename='"+obj.originImg+"' data-type='U2'";
 					str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div>";
-					str +="<span> " + obj.originImg +"</span>";
-					str +="<img src='/display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
+					//str +="<span> " + obj.originImg +"</span>";
+					str +="<img src='/display?savedImg="+fileCallPath+"' class='img-thumbnail'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
 				}
 			});
 			uploadResult.append(str);
@@ -234,7 +242,7 @@ ClassicEditor
 			//str += "<li><img src='display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"<li>";
 			
 			str += "<li data-path='"+obj.savedImg+"'";
-			str +=" data-filename='"+obj.originImg+"' data-type='"+obj.imgType+"'";
+			str +="<li data-filename='"+obj.originImg+"' data-type='"+obj.imgType+"'";
 			str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div>";
 			str +="<span> " + obj.originImg +"</span>";
 			str +="<img src='/display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
@@ -242,9 +250,24 @@ ClassicEditor
 		uploadResult.append(str);
 	}
 	
-
+	    
+	
 	
 });
+function setDefaultTourTheme(){
+    
+    // 기본으로 설정할 국적 설정(컨트롤러에서 불러온 회원의 기본 국적 설정값)
+    let defaultTourTheme = '[[ ${info.tourTheme} ]]';
+    console.log(defaultTourTheme);
+    // select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
+    $('#tourTheme').find('span').text(defaultTourTheme);
+    
+    // selected 처리되어있던 option을 일반 옵션으로 변경
+    $('#tourTheme').find('.option.selected').attr("class", "option");
+    
+    // 불러온 국적값에 해당하는 option을 selected 및 focus 처리
+    $('.option[data-value="'+defaultTourTheme+'"]').attr("class", "option selected focus");
+} 
 </script>
 </head>
 <body>
@@ -271,23 +294,27 @@ ClassicEditor
 			<div class="product-pic-zoom">
                                
             </div>
-			<div class="uploadDiv">
-				<input type="file" name="mainImage" id="mainImage" multiple/>
-			</div>
-			<button id ="uploadBtn">upload</button>
-			<div class="uploadResult">
+            <div class="uploadResult">
 				<ul>
 					
 				</ul>
 			</div>
+			<div class="uploadDiv input-group">
+				<!-- <input type="file" name="mainImage" id="mainImage" class="form-control form-control-sm" multiple/>
+				<button id ="uploadBtn">upload</button> -->
+				
+  				<input type="file" class="form-control" name="mainImage" id="mainImage" aria-describedby="inputGroupFileAddon03" aria-label="Upload" multiple/>
+				<button class="btn btn-outline-secondary" type="button" id="uploadBtn">Button</button>
+			</div>
+			
 			<div>
 				<label>패키지 명</label>
-				<input type="text" placeholder="패키지 명" name="name" id="name"/>
+				<input type="text" placeholder="패키지 명" name="name" id="name" th:value=${info.name}/>
 			</div>
 			
 			<div>
 				<label>패키지 가격</label>
-				<input type="text" placeholder="판매가" name="price" id="price"/>
+				<input type="text" placeholder="판매가" name="price" id="price" th:value=${info.price}/>
 			</div>
 			<div>
 			
@@ -295,19 +322,18 @@ ClassicEditor
 			<div>
 				<p>패키지 기간</p>
 				<label>시작일</label>
-				<input type="date" name="startDate" id="startDate"/>
+				<input type="date" name="startDate" id="startDate" th:value="${#dates.format(info.startDate,'yyyy-MM-dd')}"/>
 				<label> ~ 종료일</label>
-				<input type="date" name="endDate" id="endDate"/>
+				<input type="date" name="endDate" id="endDate" th:value="${#dates.format(info.endDate,'yyyy-MM-dd')}"/>
 			</div>
 			
 			<div>
 				<label>모집 종료일</label>
-				<input type="date" name="deadlineDate" id="deadlineDate"/>
+				<input type="date" name="deadlineDate" id="deadlineDate" th:value="${#dates.format(info.deadlineDate,'yyyy-MM-dd')}"/>
 			</div>
-			
 			<div>
 				<label>모집 인원</label>
-				<input type="number" name ="maxReservation" id="maxReservation"/>
+				<input type="number" name ="maxReservation" id="maxReservation" th:value="${info.maxReservation}"/>
 			</div>
 			
 		</div>

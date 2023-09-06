@@ -125,7 +125,7 @@ public class PackageController {
 	@PostMapping("/guide/packageUpdate")
 	public String packageUpdate(PackageVO packageVO) {
 		packageService.packageUpdate(packageVO);
-		return "package/packageList";
+		return "redirect:/packageList";
 	}
 	
 
