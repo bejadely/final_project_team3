@@ -30,15 +30,62 @@ public class TripController {
 
 	// 여행기록 전체 조회
 	@GetMapping("/tripRecordList")
-	public String tirpRecordList(Model model, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
-			@RequestParam(value = "cntPerPage", defaultValue = "12") Integer cntPerPage) {
+	public String tirpRecordList(Model model
+							  , @RequestParam( name = "searchBy", defaultValue = "name" ) String searchBy
+							  , @RequestParam( name = "keyword", defaultValue = "" ) String keyword
+							  , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
+							  , @RequestParam( name = "cntPerPage", defaultValue = "12")Integer cntPerPage ) {
+		
 		int total = tripService.tripRecordCount();
+		
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-		List<TripVO> tripRecordList = tripService.getTripAll(pagingVO);
-
-		model.addAttribute("tripRecordList", tripRecordList);
+		
+		List<TripVO> list = tripService.getTripAll(pagingVO);
+		model.addAttribute("tripRecordList", list);
 		model.addAttribute("paging", pagingVO);
+		
+		// 검색어가 없을 경우를 대비한 구문
+	    model.addAttribute("keyword", keyword);
+	    model.addAttribute("searchBy", searchBy);
 
+		return "trip/tripRecordList";
+	}
+	
+	//특정 조건으로 여행기록 조회
+	@GetMapping("/searchTripRecord")
+	public String searchTripRecord(@RequestParam( name = "searchBy" ) String searchBy
+								 , @RequestParam( name = "keyword" ) String keyword
+								 , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
+								 , @RequestParam( name = "cntPerPage", defaultValue = "12") Integer cntPerPage
+								 , Model model
+								 , TripVO tripVO) {
+		
+		//조건 설정
+		if(searchBy.equals("writerId")) {
+			//해당 작성자의 게시글 카운트
+			int total = tripService.tripWriterIdCount(keyword);
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			
+			//해당 아이디로 검색
+			tripVO.setWriterId(keyword);
+			List<TripVO> list = tripService.getWriterAll(tripVO, pagingVO);
+			model.addAttribute("tripRecordList", list);
+			model.addAttribute("paging", pagingVO);
+		} else if(searchBy.equals("tripTitle")) {
+			//해당 타이틀로 게시글 카운트
+			int total = tripService.tripTitleCount(keyword);
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			
+			//해당 타이틀로 검색
+			tripVO.setTripTitle(keyword);
+			List<TripVO> list = tripService.getTitleAll(tripVO, pagingVO);
+			model.addAttribute("tripRecordList", list);
+			model.addAttribute("paging", pagingVO);
+		}
+		// 검색결과 기억을 위해 keyword와 searchBy 담기
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("searchBy", searchBy);
+				
 		return "trip/tripRecordList";
 	}
 	
@@ -175,7 +222,7 @@ public class TripController {
 	//여행기록 수정 - process
 	@PostMapping("/common/tripRecordModify")
 	public String tripRecordmodify(TripVO tripVO) {
-		
+		tripService.modifyTripRecord(tripVO);
 		return "redirect:/tripRecordList";
 	}
 	

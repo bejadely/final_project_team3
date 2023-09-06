@@ -9,6 +9,12 @@ public interface TripMapper {
 	//여행기록 전체조회 페이징용
 	public int getTotalCount();
 	
+	//여행기록 전체조회 아이디
+	public int getWriterIdCount(String keyword);
+	
+	//여행기록 전체조회 타이틀
+	public int getTitleCount(String keyword);
+	
 	//마이페이지 페이징
 	public int getPerCount();
 	
@@ -20,6 +26,12 @@ public interface TripMapper {
 
 	//여행기록 전체 조회
 	public List<TripVO>	selectAllTrip(PagingVO pagingVO);
+	
+	//여행기록 전체 조회 아이디
+	public List<TripVO> selectAllWriter(TripVO tripVO, PagingVO pagingVO);
+	
+	//여행기록 전체 조회 타이틀
+	public List<TripVO> selectAllTitle(TripVO tripVO, PagingVO pagingVO);
 	
 	//여행기록 회원 조회 - 미완료 여행
 	public List<TripVO> selectPerTrip(PagingVO pagingVO);
@@ -59,6 +71,9 @@ public interface TripMapper {
 	
 	//여행경로 데이터 조회
 	public List<TripVO> selectMapData(TripVO tripVO);
+	
+	//여행기록 수정
+	public int modifyTripInfo(TripVO tripVO);
 	
 	//여행기록 삭제
 	public int deleteTripInfo(TripVO tripVO);
