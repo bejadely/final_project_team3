@@ -196,7 +196,7 @@
 <div class="row">
     <div class="col-lg-10 offset-lg-1">
         <div class="comment-option">
-            <h4 class="commentCount">0건의 리뷰</h4>
+            <h4 class="commentCount" th:text="|${commentNum}건의 댓글|"></h4>
             <hr id="afterComment">
             <!-- 댓글 -->
             <div class="comment-container" th:each="commentInfo : ${commentList}"
@@ -207,7 +207,12 @@
                         <span th:text="${#dates.format(commentInfo.registDate, 'yyyy.MM.dd')}"></span>
                         <h5 th:text="${commentInfo.writerId}"></h5>
                         <p th:text="${commentInfo.content}"></p>
-                        <div class="input-group mb-3 col-11">
+                        <div class="input-group mb-3 col-11 modify-div" style="display: none;">
+                            <input type="text" class="form-control modify-input" 
+                                   aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <button class="btn btn-outline-secondary modify-btn" type="button" id="button-addon2">수정</button>
+                        </div>
+                        <div class="input-group mb-3 col-11" >
                             <input type="text" class="form-control insert-input" placeholder="답글 달기"
                                    aria-label="Recipient's username" aria-describedby="button-addon2">
                             <button class="btn btn-outline-secondary insert-btn" type="button" id="button-addon2">등록</button>
@@ -218,13 +223,18 @@
                 </div>
                 <!-- 대댓글 -->
                 <div class="row" th:if="${commentInfo.commentId}!=${commentInfo.originCommentId}">
-                    <div class="col-lg-11 offset-lg-1">
+                    <div class="col-lg-12 offset-lg-1">
                         <div class="single-comment-item reply-comment">
-                            <div class="sc-text">
+                            <div class="sc-text col-11">
                                 <span th:text="${#dates.format(commentInfo.registDate, 'yyyy.MM.dd')}"></span>
                                 <h5 th:text="${commentInfo.writerId}"></h5>
                                 <p th:text="${commentInfo.content}"></p>
-                                &emsp;<a class="comment-btn update-btn">수정</a>
+                                <div class="input-group mb-3 col-11 reply-modify-div" style="display: none;">
+		                            <input type="text" class="form-control reply-modify-input" 
+		                                   aria-label="Recipient's username" aria-describedby="button-addon2">
+		                            <button class="btn btn-outline-secondary reply-modify-btn" type="button" id="button-addon2">수정</button>
+		                        </div>
+                                &emsp;<a class="comment-btn reply-update-btn">수정</a>
                                 &emsp;<a class="comment-btn del-btn">삭제</a>
                             </div>
                         </div>
@@ -234,6 +244,10 @@
         </div>
     </div>
 </div>
+<div class="btn-custom">
+    <button type="button" class="site-btn add-comment" id="add-btn" style="margin: 0 auto;">댓글 더보기</button>
+</div>
+<br>
 <div class="row">
     <div class="col-lg-10 offset-lg-1">
         <div class="leave-comment">
@@ -455,6 +469,140 @@
         })
     }
 
+    //댓글 수정폼 띄우기
+     $(document).on('click', '.update-btn', function (){
+    	 $(this).hide();
+    	 
+    	 let modifyInput = $(this).siblings('.modify-div');
+    	 modifyInput.css('display', '');
+    	 
+     });
+    
+    $(document).on('click', '.modify-btn', function (){
+    	
+   	 	 let postId = $('.postId').val();
+		 let commentId = $(this).parents('.comment-container').data('commentId');
+		 let writerId = $(this).parents('.comment-container').data('writerId');
+		 let content = $(this).parent().find('.modify-input').val();
+		 
+         if (content == null || content.replaceAll(' ', '') == '') {
+             alert("내용을 입력해주세요.");
+             return;
+         }
+         
+         
+         modifyComment(postId, commentId, writerId, content, function (data) {
+             if (data) {
+                 let totalCount = $('.commentCount').text();
+                 $('.commentCount').html(data.totalCount + '개의 댓글');
+
+                 clearComment();
+                 appendComment(data.commentList);
+
+                 alert('댓글이 수정되었습니다.');
+             } else {
+
+             }
+         });
+         
+         function modifyComment(postId, commentId, writerId, content, callback) {
+        	 $.ajax({
+     			type: 'POST',
+     			url: '/modifyComment',
+     			data: {
+                     'postId': postId,
+     				 'commentId': commentId,
+     				 'writerId': writerId,
+     				 'content' : content
+     			}
+     		})
+     		.done(function (data, textStatus, jqXHR) {
+     			console.log('done');
+
+     			callback(data);
+     		})
+     		.fail(function (jqXHR, textStatus, errorThrown) {
+     			console.log('fail');
+
+     			let errorMessage = JSON.parse(jqXHR.responseText).message;
+     			if (errorMessage == 'no login') {
+     				alert('로그인을 해주세요.');
+     			} else if (errorMessage == 'not modify') {
+     				alert('댓글이 수정되지 않았습니다.');
+     			} else if(errorMessage == 'not same') {
+                     alert('본인의 댓글만 수정할 수 있습니다.');
+                }
+     		})
+         }
+    });
+    
+   
+    //대댓글 수정폼 띄우기
+     $(document).on('click', '.reply-update-btn', function (){
+		 $(this).hide();
+    	 
+    	 let replyModifyInput = $(this).siblings('.reply-modify-div');
+    	 replyModifyInput.css('display', '');
+ 		 
+     });
+    
+    //대댓글 수정하기
+    $(document).on('click', '.reply-modify-btn', function (){
+    	
+   	 	 let postId = $('.postId').val();
+		 let commentId = $(this).parents('.comment-container').data('commentId');
+		 let writerId = $(this).parents('.comment-container').data('writerId');
+		 let content = $(this).parent().find('.reply-modify-input').val();
+		 
+         if (content == null || content.replaceAll(' ', '') == '') {
+             alert("내용을 입력해주세요.");
+             return;
+         }
+         
+         modifyComment(postId, commentId, writerId, content, function (data) {
+             if (data) {
+                 let totalCount = $('.commentCount').text();
+                 $('.commentCount').html(data.totalCount + '개의 댓글');
+
+                 clearComment();
+                 appendComment(data.commentList);
+
+                 alert('댓글이 수정되었습니다.');
+             } else {
+
+             }
+         });
+         
+         function modifyComment(postId, commentId, writerId, content, callback) {
+        	 $.ajax({
+     			type: 'POST',
+     			url: '/modifyComment',
+     			data: {
+                     'postId': postId,
+     				 'commentId': commentId,
+     				 'writerId': writerId,
+     				 'content' : content
+     			}
+     		})
+     		.done(function (data, textStatus, jqXHR) {
+     			console.log('done');
+
+     			callback(data);
+     		})
+     		.fail(function (jqXHR, textStatus, errorThrown) {
+     			console.log('fail');
+
+     			let errorMessage = JSON.parse(jqXHR.responseText).message;
+     			if (errorMessage == 'no login') {
+     				alert('로그인을 해주세요.');
+     			} else if (errorMessage == 'not modify') {
+     				alert('댓글이 수정되지 않았습니다.');
+     			} else if(errorMessage == 'not same') {
+                     alert('본인의 댓글만 수정할 수 있습니다.');
+                }
+     		})
+         }
+    });
 </script>
 </body>
 </html>

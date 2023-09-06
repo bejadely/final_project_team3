@@ -70,7 +70,7 @@ public interface TripMateService {
 	//참여한 메이트 정보 불러오기
 	public TripMateVO memberInfo(TripMateVO tripMateVO);
 
-	//댓글, 대댓글 가져오기
+	//댓글, 대댓글 관련
 	public List<PostCommentVO> getCommentInfo(TripMateVO tripMateVO);
 
 	public Map<String, Object> insertCommentInfo(PostCommentVO postCommentVO) throws Exception;
@@ -78,4 +78,8 @@ public interface TripMateService {
     Map<String, Object> deleteComment(PostCommentVO postCommentVO) throws Exception;
 
 	public Map<String, Object> insertCommentReplyInfo(PostCommentVO postCommentVO) throws Exception;
+
+	public Map<String, Object> modifyCommentInfo(PostCommentVO postCommentVO) throws Exception;
+
+	public int getCommentNumInfo(TripMateVO tripMateVO);
 }

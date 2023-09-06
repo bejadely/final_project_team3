@@ -231,5 +231,29 @@ public class TripMateServiceImpl implements TripMateService {
 		return recentCommentInfo;
 	}
 
+	@Override
+	public Map<String, Object> modifyCommentInfo(PostCommentVO postCommentVO) throws Exception {
+		Map<String, Object> recentCommentInfo = new HashMap<>();
+
+		int returnValue = tripMateMapper.modifyCommentInfo(postCommentVO);
+		if(returnValue != 1 ){
+			throw new Exception("not modify");
+		}
+
+		List<PostCommentVO> commentList = tripMateMapper.selectCommentInfo(postCommentVO.getPostId());
+		recentCommentInfo.put("commentList", commentList);
+
+		int totalCount = tripMateMapper.getTotalCount(postCommentVO.getPostId());
+		recentCommentInfo.put("totalCount", totalCount);
+
+		return recentCommentInfo;
+	}
+
+	@Override
+	public int getCommentNumInfo(TripMateVO tripMateVO) {
+		
+		return tripMateMapper.getTotalCount(tripMateVO.getPostId());
+	}
+
 
 }
