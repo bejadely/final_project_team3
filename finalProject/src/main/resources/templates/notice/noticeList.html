@@ -233,7 +233,7 @@ section.notice {
 	border-left: 1px solid #ddd;
 }
 
-.bt_wrap {
+ .bt_wrap {
 	margin-top: 30px;
 	text-align: center;
 	font-size: 0;
@@ -263,7 +263,7 @@ section.notice {
 #board-list .bt_wrap {
 	text-align: right;
 	padding-right: 20%;
-}
+} 
 </style>
 
 </head>
@@ -488,8 +488,10 @@ section.notice {
 
 			<div class="bt_wrap">
 				<!--  <div th:if="${id == board.memberId || id == 'manager'}"> -->
-				<a href="/noticeWrite" class="on"
+				<a href="/noticeWrite" class="btn btn-primary submitButton"
 					th:if="${session.sessionAuthority} == 'A3'">등록&nbsp;</a>
+		 <input type="button" th:if="${session.sessionAuthority} == 'A3'" value="등록" onclick="location.href='/noticeWrite'" class="btn btn-secondary">
+					
 			</div>
 		</div>
 		<!--      </div> -->
@@ -533,6 +535,7 @@ section.notice {
 
 			// 페이지 전환 실행
 			location.href = `/seeNoticeDetail?noticeNumber=${noticeNumber}`;
+			
 		}
 	</script>
 
