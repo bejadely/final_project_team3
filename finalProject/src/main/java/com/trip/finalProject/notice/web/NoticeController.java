@@ -94,7 +94,7 @@ public class NoticeController {
 		// 리다이렉트 어트리뷰트에 결과값 담기(성공 : success / 실패 : fail)
 		rtt.addFlashAttribute("result", result);
 		
-		return "redirect:seeNoticeDetail?noticeNumber=" + noticeVO.getNoticeNumber();
+		return "redirect:/seeNoticeDetail?noticeNumber=" + noticeVO.getNoticeNumber();
 	}
 
 
