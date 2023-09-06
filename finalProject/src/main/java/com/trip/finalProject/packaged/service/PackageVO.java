@@ -33,6 +33,8 @@ public class PackageVO {
 	private String writerId;
 	private String completion;
 	private int nowReservation;
+	private String locationName;
+	private String deleteType;
 	
 	private List<AttachedFileVO> attachList;
 	private List<AttachedFileVO> editorAttachList;

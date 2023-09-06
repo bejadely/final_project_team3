@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/admin_layout}">
+	
+<!-- Content -->
+<!-- 기간에 따라 정산내역 조회 다르게 할 수 있게 필터 걸어주자 -->
+<div layout:fragment="content">
+	<div class="container">
+		<h5><b>정산 완료 내역</b></h5>
+		<br>
+		<th:block th:if="${searchMonth-1 > 0}">
+			<a th:href="@{/admin/selectCompCalList(searchYear=${searchYear}, searchMonth=${searchMonth-1})}">이전월</a>
+		</th:block>
+		<th:block th:if="${searchMonth-1 <= 0}">
+			<a th:href="@{/admin/selectCompCalList(searchYear=${searchYear-1}, searchMonth=12)}">이전월</a>
+		</th:block>
+		<th:block th:if="${searchMonth+1 > 12}">
+			<a th:href="@{/admin/selectCompCalList(searchYear=${searchYear+1}, searchMonth=1)}">다음월</a>
+		</th:block>
+		<th:block th:if="${searchMonth+1 <= 12}">
+			<a th:href="@{/admin/selectCompCalList(searchYear=${searchYear}, searchMonth=${searchMonth+1})}">다음월</a>
+		</th:block>
+		<h2 style="text-align: center;" th:text="|${searchMonth}월|"></h2>
+		<!-- 작성중 : 서버에서 불러오는 yyyy형태로 변환하는게 좋음 -->
+		<p style="text-align: center;" th:text="|20${searchYear}년|"></p>
+		<form id="frm" action="/admin/calAtOnce" method="post">
+			<a href="/admin/selectNotCalList">정산대기중</a> / <a href="/admin/selectCompCalList">정산완료내역</a>
+			
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>정산분류번호</th>
+							<th>가이드ID</th>
+							<th>패키지등록번호</th>
+							<th>정산예정금액</th>
+							<th>계좌번호</th>
+							<th>정산일자</th>
+						</tr>
+					</thead>
+					<th:block th:if="${!#lists.isEmpty(list)}">
+						<tbody>
+							<th:block th:each="l : ${list}">
+								<tr class="calInfo">
+									<td align="center" th:text="${l.calId}"></td>
+									<td align="center" th:text="${l.writerId}"></td>
+									<td align="center" th:text="${l.postId}"></td>
+									<td align="center" th:text="|${#numbers.formatInteger(l.calAmount, 0, 'COMMA')}원|"></td>
+									<td align="center" th:text="|${l.bankCode} ${l.accountNumber}|"></td>
+									<td align="center" th:text="|${#strings.substring(l.calDate, 0, 10)}|"></td>
+								</tr>
+							</th:block>
+						</tbody>
+					</th:block>
+				</table>
+				<th:block th:if="${#lists.isEmpty(list)}">
+					<div align="center">
+						<span>조회할 정산 내역이 없습니다.</span>
+					</div>
+				</th:block>
+			</div>
+		</form>
+		<!-- 페이징 구문 -->
+		<!-- 검색키워드가 없을때 -->
+		<th:block th:if="${#strings.isEmpty(keyword)}">
+			<div style="text-align : center;" class="property-pagination">
+				<th:block th:if="${paging.nowPage != 1}">
+					<a th:href="@{/admin/selectCompCalList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+				</th:block>
+				<th:block th:if="${paging.startPage != 1}">
+					<a th:href="@{/admin/selectCompCalList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+				</th:block>
+				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+					<th:block th:if="${p eq paging.nowPage}">
+						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+					</th:block>
+					<th:block th:if="${p ne paging.nowPage}">
+						<a th:href="@{/admin/selectCompCalList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+					</th:block>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+					<a th:href="@{/admin/selectCompCalList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage}">
+					<a th:href="@{/admin/selectCompCalList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+				</th:block>
+			</div>
+		</th:block>
+		<!-- 검색키워드가 있을때 -->
+		<th:block th:if="${!#strings.isEmpty(keyword)}">
+			<div style="text-align : center;">
+				<th:block th:if="${paging.nowPage != 1}" class="property-pagination">
+					<a th:href="@{searchAdminMember(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
+				</th:block>
+				<th:block th:if="${paging.startPage != 1}">
+					<a th:href="@{searchAdminMember(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;</a>
+				</th:block>
+				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+					<th:block th:if="${p eq paging.nowPage}">
+						<a th:text="${p}"></a>
+					</th:block>
+					<th:block th:if="${p ne paging.nowPage}">
+						<a th:href="@{searchAdminMember(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
+					</th:block>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+					<a th:href="@{searchAdminMember(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
+				</th:block>
+				<th:block th:if="${paging.nowPage != paging.lastPage}">
+					<a th:href="@{searchAdminMember(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
+				</th:block>
+			</div>
+		</th:block>
+	</div>
+	
+	<script th:inline="javascript" type="text/javascript">
+	
+	$(document).ready(function() {
+		// 이벤트 설정
+		$('#searchButton').on('click', search);
+		$('.reportInfo').on('mouseover', colorDarker)
+						.on('mouseleave', colorReset);
+		$('#allCheck').on('click', selectToggle);
+		$('#submit-btn').on('click', calAtOnce);
+	});
+	
+	// 조건검색기능
+	function search(event){
+		
+		let value = $('#searchBy').val();
+		let keyword = $('#keyword').val();
+		location.href='/admin/searchAdminMember?searchBy='+value+'&keyword='+keyword;
+		
+	}
+	
+	// 마우스 오버 : 색상 어둡게
+	function colorDarker(event){
+		$(event.currentTarget).css({background: '#f2f4f5'})
+							  .css({cursor: 'pointer'});		
+	}
+	
+	// 마우스릴리브 : 색상 원상복귀
+	function colorReset(event){
+		$(event.currentTarget).css({background: '#ffffff'});
+	}
+	
+	// 메시지 프린트
+	
+	printMessage([[${message}]]);
+		
+	function printMessage(message){
+		
+		if(message != null && message != ""){
+			
+			Swal.fire({
+				  icon: 'success',
+			      title: message,
+			    })	
+		}
+	}
+	
+	</script>
+</div>
+
+</html>
