@@ -67,7 +67,7 @@
   			SELECT member_id
 				 , member_name
 				 , password
-				 , NVL(code_val(nationality), '-') nationality
+				 , nationality
 				 , email
 				 , NVL(zip_code, '-') zip_code
 				 , address
