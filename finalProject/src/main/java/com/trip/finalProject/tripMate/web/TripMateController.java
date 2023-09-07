@@ -33,10 +33,88 @@ public class TripMateController {
 	
 	//여행 메이트 게시글 전체 조회
 	@GetMapping("/tripMateList")
-	public String tripMateList(Model model) {
-		model.addAttribute("tripMateList", tripMateService.getTripMateAll());
+	public String tripMateList(Model model
+			 				, @RequestParam( name = "searchBy", defaultValue = "name" ) String searchBy
+			 				, @RequestParam( name = "keyword", defaultValue = "" ) String keyword
+			 				, @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
+			 				, @RequestParam( name = "cntPerPage", defaultValue = "12")Integer cntPerPage ) {
+		
+		int total = tripMateService.mateCount();
+		
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		
+		List<TripMateVO> list = tripMateService.getTripMateAll(pagingVO);
+		model.addAttribute("tripMateList", list);
+		model.addAttribute("paging", pagingVO);
+		
+		// 검색어가 없을 경우를 대비한 구문
+	    model.addAttribute("keyword", keyword);
+	    model.addAttribute("searchBy", searchBy);
+		
 		return "tripMate/tripMateList";
 	}
+	
+	//특정 조건으로 여행 메이트 게시글 조회
+	@GetMapping("/searchTripMate")
+	public String searchTripMate(@RequestParam( name = "searchBy" ) String searchBy
+			  					, @RequestParam( name = "keyword" ) String keyword
+			  					, @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
+			  					, @RequestParam( name = "cntPerPage", defaultValue = "12") Integer cntPerPage
+			  					, Model model
+			  					, TripMateVO tripMateVO) {
+		//조건 설정
+		if(searchBy.equals("tripArea")) {
+			//여행지역 전체 카운트 수
+			int total = tripMateService.countTripArea(keyword);
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			
+			//여행 지역으로 검색
+			tripMateVO.setTripArea(keyword);
+			List<TripMateVO> list = tripMateService.searchMateByTripArea(tripMateVO, pagingVO);
+			model.addAttribute("tripMateList", list);
+			model.addAttribute("paging", pagingVO);
+			
+		} else if(searchBy.equals("mateStyle")) {
+			//여행스타일 전체 카운트 수
+			int total = tripMateService.countTripStyle(keyword);
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			
+			//여행 타이틀로 검색
+			tripMateVO.setMateStyle(keyword);
+			List<TripMateVO> list = tripMateService.searchMateByStyle(tripMateVO, pagingVO);
+			model.addAttribute("tripMateList", list);
+			model.addAttribute("paging", pagingVO);
+			
+		} else if(searchBy.equals("mateTitle")) {
+			//여행타이틀 전체 카운트 수
+			int total = tripMateService.countTripTitle(keyword);
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			
+			//여행 타이틀로 검색
+			tripMateVO.setMateTitle(keyword);
+			List<TripMateVO> list = tripMateService.searchMateByTripTitle(tripMateVO, pagingVO);
+			model.addAttribute("tripMateList", list);
+			model.addAttribute("paging", pagingVO);
+			
+		} else if(searchBy.equals("writerId")) {
+			//작성자 아이디 전체 카운트 수
+			int total = tripMateService.countTripWrtierId(keyword);
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			
+			//작성자 아이디로 검색
+			tripMateVO.setWriterId(keyword);
+			List<TripMateVO> list = tripMateService.searchMateByTripWriterId(tripMateVO, pagingVO);
+			model.addAttribute("tripMateList", list);
+			model.addAttribute("paging", pagingVO);
+		} 
+		// 검색결과 기억을 위해 keyword와 searchBy 담기
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("searchBy", searchBy);
+		
+		return "tripMate/tripMateList";
+	}
+	
+	
 	
 	//여행 메이트 게시글 상세 조회
 	@GetMapping("/tripMateInfo")

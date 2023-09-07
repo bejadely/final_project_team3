@@ -5,12 +5,112 @@
 <mapper namespace="com.trip.finalProject.tripMate.mapper.TripMateMapper">
 	<!-- 여행 메이트 글 전체 조회 -->
 	<select id="selectAllTripMate" resultType="TripMateVO">
-		SELECT *
-		FROM mate_recruit m LEFT OUTER JOIN 
-     		 attached_file a ON m.post_id = a.post_id
-     	WHERE a.member_id IS NOT NULL OR a.file_id IS NULL
-		ORDER BY m.post_id DESC
+	SELECT *
+	FROM(SELECT ROWNUM rn, a.*
+		 FROM(SELECT *
+		 	  FROM mate_recruit m LEFT OUTER JOIN 
+     		 	   attached_file a ON m.post_id = a.post_id
+     		  WHERE a.member_id IS NOT NULL 
+     		  	 OR a.file_id IS NULL
+     		  ORDER BY m.post_id DESC) a)
+	WHERE rn BETWEEN #{start} AND #{end}
 	</select>
+	
+	<!-- 전체 여행메이트 글 수 카운트 -->
+	<select id="getAllMateListCount">
+	SELECT COUNT(*)
+	FROM mate_recruit
+	</select>
+	
+	<!-- 해당 여행지역 글 전체 조회  -->
+	<select id="searchMateByTripArea" resultType="TripMateVO">
+	SELECT *
+	FROM(SELECT ROWNUM rn, a.*
+		 FROM(SELECT *
+		 	  FROM mate_recruit m LEFT OUTER JOIN 
+     		 	   attached_file a ON m.post_id = a.post_id
+     		  WHERE a.member_id IS NOT NULL 
+     		  	AND m.trip_area LIKE '%${tripMateVO.tripArea}%'
+     		  	 OR a.file_id IS NULL
+     		  	AND m.trip_area LIKE '%${tripMateVO.tripArea}%'
+     		  ORDER BY m.post_id DESC) a)
+	WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+	</select>
+	
+	<!-- 여행 지역의 총 결과값 카운트 -->
+  	<select id="countTripArea" resultType="int" parameterType="String">
+  	SELECT COUNT(*)
+  	FROM mate_recruit
+  	WHERE trip_area LIKE '%${keyword}%'
+  	</select>
+  	
+  	<!-- 해당 여행스타일 글 전체 조회  -->
+	<select id="searchMateByStyle" resultType="TripMateVO">
+	SELECT *
+	FROM(SELECT ROWNUM rn, a.*
+		 FROM(SELECT *
+		 	  FROM mate_recruit m LEFT OUTER JOIN 
+     		 	   attached_file a ON m.post_id = a.post_id
+     		  WHERE a.member_id IS NOT NULL 
+     		  	AND m.mate_style LIKE '%${tripMateVO.mateStyle}%'
+     		  	 OR a.file_id IS NULL
+     		  	AND m.mate_style LIKE '%${tripMateVO.mateStyle}%'
+     		  ORDER BY m.post_id DESC) a)
+	WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+	</select>
+	
+	<!-- 여행 스타일의 총 결과값 카운트 -->
+  	<select id="countTripStyle" resultType="int" parameterType="String">
+  	SELECT COUNT(*)
+  	FROM mate_recruit
+  	WHERE mate_style LIKE '%${keyword}%'
+  	</select>
+  	
+  	
+  	<!-- 해당 여행타이틀 글 전체 조회  -->
+	<select id="searchMateByTripTitle" resultType="TripMateVO">
+	SELECT *
+	FROM(SELECT ROWNUM rn, a.*
+		 FROM(SELECT *
+		 	  FROM mate_recruit m LEFT OUTER JOIN 
+     		 	   attached_file a ON m.post_id = a.post_id
+     		  WHERE a.member_id IS NOT NULL 
+     		  	AND m.mate_title LIKE '%${tripMateVO.mateTitle}%'
+     		  	 OR a.file_id IS NULL
+     		  	AND m.mate_title LIKE '%${tripMateVO.mateTitle}%'
+     		  ORDER BY m.post_id DESC) a)
+	WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+	</select>
+  	
+  	<!-- 여행 타이틀의 총 결과값 카운트 -->
+  	<select id="countTripTitle" resultType="int" parameterType="String">
+  	SELECT COUNT(*)
+  	FROM mate_recruit
+  	WHERE mate_title LIKE '%${keyword}%'
+  	</select>
+  	
+  	<!-- 해당 작성자의 글 전체 조회  -->
+	<select id="searchMateByTripWriterId" resultType="TripMateVO">
+	SELECT *
+	FROM(SELECT ROWNUM rn, a.*
+		 FROM(SELECT *
+		 	  FROM mate_recruit m LEFT OUTER JOIN 
+     		 	   attached_file a ON m.post_id = a.post_id
+     		  WHERE a.member_id IS NOT NULL 
+     		  	AND m.writer_id LIKE '%${tripMateVO.writerId}%'
+     		  	 OR a.file_id IS NULL
+     		  	AND m.writer_id LIKE '%${tripMateVO.writerId}%'
+     		  ORDER BY m.post_id DESC) a)
+	WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+	</select>
+  	
+  	<!-- 작성자 아이디의 총 결과값 카운트 -->
+  	<select id="countTripWrtierId" resultType="int" parameterType="String">
+  	SELECT COUNT(*)
+  	FROM mate_recruit
+  	WHERE writer_id LIKE '%${keyword}%'
+  	</select>
+	
 	
 	<!-- 여행 메이트 글 상세 조회 -->
 	<select id="selectTripMateInfo" resultType="TripMateVO">
@@ -91,16 +191,36 @@
 	<update id="updateTripMateRecruit" parameterType="TripMateVO">
 		UPDATE mate_recruit
 		<set>
-			mate_title = #{mateTitle},
-			mate_content = #{mateContent},
-		    mate_expense = #{mateExpense},
-			start_day = #{startDay},
-			end_day = #{endDay},
-			mate_style = #{mateStyle},
-			mate_tag = #{mateTag},
-			mate_max = #{mateMax},
-			deadline = #{deadline},
-			trip_area = #{tripArea}
+			<if test="mateTitle != null and !tripTitle.equals('')">
+				mate_title = #{mateTitle},
+			</if>
+			<if test="mateContent != null and !mateContent.equals('')">
+				mate_content = #{mateContent},
+			</if>
+			<if test="mateExpense != null and mateExpense > 0">
+		    	mate_expense = #{mateExpense},
+		    </if>
+		    <if test="startDay != null">
+				start_day = #{startDay},
+			</if>
+			<if test="endDay != null">
+				end_day = #{endDay},
+			</if>
+			<if test="mateStyle != null and !mateStyle.equals('')">
+				mate_style = #{mateStyle},
+			</if>
+			<if test="mateTag != null and !mateTag.equals('')">
+				mate_tag = #{mateTag},
+			</if>
+			<if test="mateMax != null and mateMax > 0">
+				mate_max = #{mateMax},
+			</if>
+			<if test="deadline != null">
+				deadline = #{deadline},
+			</if>
+			<if test="tripArea != null and !tripArea.equals('')">
+				trip_area = #{tripArea}
+			</if>
 		</set>
 		WHERE post_id = #{postId}
 	</update>
