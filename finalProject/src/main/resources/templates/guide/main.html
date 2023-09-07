@@ -90,8 +90,10 @@
                     	<div class="data-container">
 	                        <h6 class="h6">패키지별 매출 통계</h6>
 	                    </div>
-                        <div id="donutChart"></div>
-                        <div th:if="${#lists.isEmpty(saleMonthChartList)}">
+	                    <div th:if="${!#lists.isEmpty(packageSaleChartList)}">
+                        	<div id="donutChart" ></div>
+                        </div>
+                        <div th:unless="${!#lists.isEmpty(packageSaleChartList)}">
                             <hr>
                             <h6>통계 내역이 없습니다.</h6>
                         </div>
@@ -102,11 +104,13 @@
                         <div class="data-container">
 	                       <h6 class="h6">월별 매출 통계</h6>
 	                     </div>
-                        <div id="chart"></div>
-                        <div th:if="${#lists.isEmpty(packageSaleChartList)}">
+	                     <th:block th:if="${!#lists.isEmpty(saleMonthChartList)}">
+                        	<div id="chart"></div>
+                        </th:block>
+                        <th:block th:if="${#lists.isEmpty(saleMonthChartList)}">
                             <hr>
                             <h6>통계 내역이 없습니다.</h6>
-                        </div>
+                        </th:block>
                     </div>
                 </div>
             </div>
@@ -182,27 +186,29 @@
             orderMonthColums.push(orderMonthString);
         }
 
-        let chart = bb.generate({
-            data:{
-                columns:[
-                    dataColums
-                ],
-                type: "line",
-            },
-            axis:{
-                x:{
-                    type: "category",
-                    categories: orderMonthColums,
-                    label: "최근 5개월"
+        if([[${saleMonthChartList}]].length > 0) {
+            let chart = bb.generate({
+                data:{
+                    columns:[
+                        dataColums
+                    ],
+                    type: "line",
                 },
-                y:{
-                    label: "매출액"
-                }
-            },
-            bindto : "#chart",
+                axis:{
+                    x:{
+                        type: "category",
+                        categories: orderMonthColums,
+                        label: "최근 5개월"
+                    },
+                    y:{
+                        label: "매출액"
+                    }
+                },
+                bindto : "#chart",
 
 
-        });
+            });
+        }
 
        let dountList=[[${packageSaleChartList}]];
        
@@ -217,27 +223,27 @@
        }
        
         console.log(dountColums);
-       let donutChart = bb.generate({
-    	   data: {
-    	     columns: 
-    	    	 dountColums
-    	     ,
-    	     type: "donut",
-    	     onclick: function(d, i) {
-	    	 	console.log("onclick", d, i);
-	    	    },
-	    	 onover: function(d, i) {
-	    	 	console.log("onover", d, i);
-	    	    },
-	    	 onout: function(d, i) {
-	    	 	console.log("onout", d, i);
-	    	    }
-	    	   },
-	    	 donut: {
-	    	     title: "금달 패키지 판매율"
-	    	   },
-	    	 bindto: "#donutChart"
-    	 });
+        if([[${packageSaleChartList}]].length > 0) {
+            let donutChart = bb.generate({
+                data: {
+                    columns:
+                    dountColums
+                    ,
+                    type: "donut",
+                    onclick: function(d, i) {
+                        console.log("onclick", d, i);
+                    },
+                    onover: function(d, i) {
+                        console.log("onover", d, i);
+                    },
+                    onout: function(d, i) {
+                        console.log("onout", d, i);
+                    }
+                },
+                bindto: "#donutChart"
+            });
+        }
+
     </script>
 </div>
 </body>

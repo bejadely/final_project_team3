@@ -126,12 +126,16 @@ public class AdminMemberController {
 		// 회원 상세조회 실행
 		memberVO = adminMemberService.getMemberDetail(memberVO);
 		
-		// 권한 분류값을 가져오기 위한 Mapper 호출
+		// 필요한 코드리스트 불러오기
 		List<Map<String, String>> authList = commonMapper.selectCode("A");
+		List<Map<String, String>> genderList = commonMapper.selectCode("G");
+		List<Map<String, String>> bankCodeList = commonMapper.selectCode("0");
 		
 		// 결과값 모델에 담기
 		model.addAttribute("memberVO", memberVO);
 		model.addAttribute("authList", authList);
+		model.addAttribute("genderList", genderList);
+		model.addAttribute("bankCodeList", bankCodeList);
 		
 		return "admin/manageMember/modifyMemberInfoForm";
 	}

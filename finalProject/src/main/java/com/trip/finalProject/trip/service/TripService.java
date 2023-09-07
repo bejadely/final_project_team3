@@ -16,13 +16,13 @@ public interface TripService {
     public int tripTitleCount(String keyword);
     
     //마이페이지 페이징용
-    public int tripPerCount();
+    public int tripPerCount(String writerId);
     
     //마이페이지 페이징용 - 임시저장
-    public int tripPerNotCount();
+    public int tripPerNotCount(String writerId);
     
     //마이페이지 페이징용 - 완료된 여행
-    public int tripPerComCount();
+    public int tripPerComCount(String writerId);
 	
 	//여행기록 전체 조회
 	public List<TripVO> getTripAll(PagingVO pagingVO);
@@ -34,16 +34,16 @@ public interface TripService {
 	public List<TripVO> getTitleAll(TripVO tripVO, PagingVO pagingVO);
 	
 	//여행기록 회원 조회 - 미완료 여행
-	public List<TripVO> getTripPer(PagingVO pagingVO);
+	public List<TripVO> getTripPer(TripVO tripVO, PagingVO pagingVO);
 	
 	//여행 저장 기록 업데이트
 	public Map<String, Object> getUpdateDis(TripVO tripVO);
 
 	//여행기록 회원 조회 - 임시저장
-	public List<TripVO> getTripPerNot(PagingVO pagingVO);
+	public List<TripVO> getTripPerNot(TripVO tripVO, PagingVO pagingVO);
 	
 	//여행기록 회원 조회 - 미완료 여행
-	public List<TripVO> getTripPerCom(PagingVO pagingVO);
+	public List<TripVO> getTripPerCom(TripVO tripVO,PagingVO pagingVO);
 	
 	//여행기록 상세조회
 	public TripVO getTripInfo(TripVO tripVO);

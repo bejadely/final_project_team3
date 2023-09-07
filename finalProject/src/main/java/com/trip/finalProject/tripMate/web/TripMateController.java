@@ -4,21 +4,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.trip.finalProject.attachedFile.service.AttachedFileService;
 import com.trip.finalProject.attachedFile.service.AttachedFileVO;
 import com.trip.finalProject.common.PagingVO;
-import com.trip.finalProject.trip.service.TripService;
+import com.trip.finalProject.tripMate.service.PostCommentVO;
 import com.trip.finalProject.tripMate.service.TripMateService;
 import com.trip.finalProject.tripMate.service.TripMateVO;
 
@@ -26,9 +24,12 @@ import com.trip.finalProject.tripMate.service.TripMateVO;
 public class TripMateController {
 	@Autowired
 	TripMateService tripMateService;
-	
+	@Autowired
+	HttpSession session;
 	@Autowired
 	AttachedFileService attachedFileService;
+
+	private final String FIRST_PAGE = "1";
 	
 	//여행 메이트 게시글 전체 조회
 	@GetMapping("/tripMateList")
@@ -117,7 +118,10 @@ public class TripMateController {
 	
 	//여행 메이트 게시글 상세 조회
 	@GetMapping("/tripMateInfo")
-	public String tripMateInfo(TripMateVO tripMateVO, Model model) {
+	public String tripMateInfo(String postId, Model model) {
+		TripMateVO tripMateVO = new TripMateVO();
+		tripMateVO.setPostId(postId);
+
 		//조회수 카운트
 		tripMateService.updateMateRecruitHit(tripMateVO);
 		
@@ -126,9 +130,18 @@ public class TripMateController {
 		model.addAttribute("tripMateInfo", findVO);
 		
 		//댓글, 대댓글 리스트 가져오기
-		model.addAttribute("commentList", tripMateService.getCommentInfo(tripMateVO));
+		model.addAttribute("commentList", tripMateService.getCommentInfo(postId, FIRST_PAGE));
+		
+		//댓글 갯수 가져오기
+		model.addAttribute("commentNum", tripMateService.getCommentNumInfo(tripMateVO));
 		
 		return "tripMate/tripMateInfo";
+	}
+
+	@GetMapping("/getComment")
+	@ResponseBody
+	public List<PostCommentVO> getComment(String postId, String page) {
+		return tripMateService.getCommentInfo(postId, page);
 	}
 	
 	//여행 메이트 게시글 등록 - form
@@ -227,6 +240,61 @@ public class TripMateController {
 		return "redirect:/tripMateList";			
 	}
 	
+	@PostMapping("/insertComment")
+	@ResponseBody
+	public Map<String, Object> commentInsert(PostCommentVO postCommentVO) throws Exception{
+		if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().replaceAll(" ", "").equals("")) {
+			postCommentVO.setWriterId(session.getAttribute("sessionId").toString());
+        } else {
+            throw new Exception("no login");
+        }
+		
+		return tripMateService.insertCommentInfo(postCommentVO);
+	}
+
+	@DeleteMapping("/deleteComment")
+	@ResponseBody
+	public Map<String,Object> commentDelete(PostCommentVO postCommentVO) throws Exception {
+		String sessionId = "";
+		if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().replaceAll(" ", "").equals("")) {
+			sessionId =  session.getAttribute("sessionId").toString();
+		} else {
+			throw new Exception("no login");
+		}
+		if(!sessionId.equals(postCommentVO.getWriterId())){
+			throw new Exception("not same");
+		}
+
+		return tripMateService.deleteComment(postCommentVO);
+	}
+
+	@PostMapping("/insertCommentReply")
+	@ResponseBody
+	public Map<String, Object> insertCommentReply(PostCommentVO postCommentVO) throws Exception{
+		if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().replaceAll(" ", "").equals("")) {
+			postCommentVO.setWriterId(session.getAttribute("sessionId").toString());
+		} else {
+			throw new Exception("no login");
+		}
+
+		return tripMateService.insertCommentReplyInfo(postCommentVO);
+	}
+	
+	@PostMapping("/modifyComment")
+	@ResponseBody
+	public Map<String, Object> commentModify(PostCommentVO postCommentVO) throws Exception{
+		String sessionId = "";
+		if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().replaceAll(" ", "").equals("")) {
+			sessionId =  session.getAttribute("sessionId").toString();
+		} else {
+			throw new Exception("no login");
+		}
+		if(!sessionId.equals(postCommentVO.getWriterId())){
+			throw new Exception("not same");
+		}
+		
+		return tripMateService.modifyCommentInfo(postCommentVO);
+	}
 	
 	//마이페이지----------------------------------------------------------------------
 	//내가 적성한 메이트
@@ -235,7 +303,7 @@ public class TripMateController {
 			TripMateVO trVO,
 			@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
 			@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
-		String memberId = "1";
+		String memberId = session.getAttribute("sessionId").toString();
 		int total = tripMateService.myTripCount(memberId);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 		trVO.setWriterId(memberId);
@@ -267,7 +335,7 @@ public class TripMateController {
 			TripMateVO trVO,
 			@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
 			@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
-		String memberId = "leesw";
+		String memberId = session.getAttribute("sessionId").toString();
 		int total = tripMateService.myTripAppCount(memberId);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 		trVO.setMemberId(memberId);
@@ -285,10 +353,11 @@ public class TripMateController {
 			, @RequestParam("postId") String postId) {
 		tripVO.setPostId(postId);
 		tripVO.setApplyId(applyId);
+		tripVO.setMemberId(session.getAttribute("sessionId").toString());
 		
 		tripMateService.myMateCancle(tripVO);
 		tripMateService.myTripnum(tripVO);
-		return "redirect:/common/myPageAppTrip";
+		return "redirect:/common/myPageAppMate";
 	}
 	
 	//ajax로 데이터 삭제
