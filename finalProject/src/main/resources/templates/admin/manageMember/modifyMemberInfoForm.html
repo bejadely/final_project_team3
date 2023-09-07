@@ -71,7 +71,7 @@
 										<th:block th:if="*{#strings.isEmpty(zipCode)}">
 											<input style="margin-bottom: 3px;" type="text" name="zipCode" class="zip form-control" placeholder="우편번호" readonly>
 										</th:block>	
-										<input style="margin-bottom: 3px;" type="text" name="address" class="zip form-control" th:value="*{address}" readonly>
+										<input style="margin-bottom: 3px;" type="text" name="address" class="zip form-control" th:value="*{address}" placeholder="주소" readonly>
 										<input type="text" name="addressDetail" class="form-control" th:value="*{addressDetail}" placeholder="상세주소">
 									</div>
 									<div class="col-lg-1">
