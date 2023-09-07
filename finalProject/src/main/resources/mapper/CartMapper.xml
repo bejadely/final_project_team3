@@ -7,7 +7,7 @@
  	<select id="getPostIdCount" resultType="int">
 	    SELECT COUNT(*)
 	    FROM cart
-	    WHERE post_id LIKE '${postId}%'
+	    WHERE post_id LIKE '${postId}%' AND member_id = #{memberId} AND delete_type='N'
 	</select>
  	
  	 <!-- 버튼조회 -->
@@ -16,7 +16,7 @@
 		FROM(SELECT ROWNUM rn, a.*
 			 FROM(SELECT *
 				  FROM cart
-				  WHERE post_id LIKE '${cartVO.postId}%'
+				  WHERE post_id LIKE '${cartVO.postId}%' AND member_id = #{cartVO.memberId} AND delete_type='N'
 				  ORDER BY reg_date DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
  	</select>
@@ -39,6 +39,7 @@
  				,price
  				,member_id
  				,reg_date
+ 				,delete_type
  				)
  				VALUES
  				(
@@ -50,21 +51,29 @@
  				,#{price}
  				,#{memberId}
  				,sysdate
+ 				,'N'
  				)
  	</insert>
  	<!-- 삭제 -->
- 	<delete id="deleteCartInfo" parameterType="CartVO">
- 		DELETE FROM cart
+ 	 <update id="deleteCartInfo" parameterType="CartVO">
+ 		UPDATE cart 
+ 		<set>
+ 			delete_type = 'Y'
+ 		</set>
  		WHERE cart_id = #{cartId}
- 	</delete>
+ 	</update>
  	<!-- 수량 업데이트 -->
  	<update id="quanUpdate" parameterType="CartVO">
  		UPDATE cart 
  		<set>
  			quantity = #{quantity}
  		</set>
- 		WHERE post_id = #{postId}
+ 		WHERE cart_id = #{cartId}
  	</update>
  
- 
+ 	<!-- 카드 정보 리스트 -->
+ 	<select id="cartInfo">
+ 		SELECT *
+ 		FROM cart
+ 	</select>
  </mapper>

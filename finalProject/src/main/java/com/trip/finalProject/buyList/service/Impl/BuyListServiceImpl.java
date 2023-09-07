@@ -28,13 +28,13 @@ public class BuyListServiceImpl implements BuyListService {
 	}
 
 	@Override
-	public List<BuyListVO> pkAllLikeInfo(PagingVO pagingVO) {
-		return buyMapper.pkAllLike(pagingVO);
+	public List<BuyListVO> pkAllLikeInfo(BuyListVO buyVO, PagingVO pagingVO) {
+		return buyMapper.pkAllLike(buyVO, pagingVO);
 	}
 
 	@Override
-	public List<BuyListVO> spAllLikeInfo(PagingVO pagingVO) {
-		return buyMapper.spAllLike(pagingVO);
+	public List<BuyListVO> spAllLikeInfo(BuyListVO buyVO, PagingVO pagingVO) {
+		return buyMapper.spAllLike(buyVO, pagingVO);
 	}
 
 	@Override

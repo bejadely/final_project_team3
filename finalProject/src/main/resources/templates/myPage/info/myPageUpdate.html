@@ -2,120 +2,472 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="@{layouts/myPage_layout}">
+	layout:decorate="@{layouts/admin_layout}">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script>
-$(document).ready(function(){
-    // 버튼 클릭 이벤트 핸들러
-    $('button').click(function(event){
+<style type="text/css">
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* 공통 스타일 */
+#btnWrap,
+#btnWrapBank {
+  width: 500px;
+  margin: 100px auto;
+}
+
+#popupBtn,
+#popupBtnBank {
+  width: 150px;
+  height: 50px;
+  padding: 10px 5px;
+}
+
+#modalWrap,
+#modalWrapBank {
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: none;
+}
+
+/* 전화번호 확인 모달 스타일 */
+#modalBody {
+  width: 500px;
+  height: 300px;
+  padding: 30px;
+  margin: 0 auto;
+  border: 1px solid #777;
+  background-color: #fff;
+}
+
+/* 계좌번호 확인 모달 스타일 */
+#modalBodyBank {
+  width: 500px;
+  height: 350px;
+  padding: 10px;
+  margin: 0 auto;
+  border: 1px solid #777;
+  background-color: #fff;
+}
+
+</style>
+</head>
+	
+<!-- Content -->
+<div layout:fragment="content">
+		<div class="container">
+			<form id="update" th:object="${memberInfo}" method="post">
+				<h5><b>회원정보 수정</b></h5>
+				<br><br>
+				<div class="table-responsive">
+					<h6>기본정보</h6>
+					<br>
+					<table id="defaultInfo" class="table">
+						<tbody>
+							<tr>
+								<th width="150" align="center">아이디</th>
+								<td width="400" align="center" th:text="*{memberId}"></td>
+								<th width="150" align="center">가입일자</th>
+								<td width="400" align="center" th:text="*{#strings.substring(signUpDate, 0, 10)}"></td>
+							</tr>
+							<tr>
+								<th width="150" align="center">이름</th>
+								<td width="400" align="center" id="name" th:text="*{memberName}"></td>
+							</tr>
+							<tr>
+								<th width="150" align="center">비밀번호</th>
+								<td width="400" align="center"><input type="password" name="password" id="password"></td>
+								<th width="150" align="center">비밀번호 확인</th>
+								<td width="400" align="center"><input type="password" id="passwordInfo"></td>
+							</tr>
+							<tr>
+								<th width="150" align="center">성별</th>
+								<td width="400" align="center" th:text="*{gender}"></td>
+								<th width="150" align="center">생년월일</th>
+								<td width="400" align="center" th:text="*{#strings.substring(birthDate, 0, 10)}"></td>
+							</tr>
+							<tr>
+								<th width="150" align="center">국적</th>
+								<td id="nationality" width="400" align="center" th:text="*{nationality}"></td>
+								<th width="150" align="center">제재횟수</th>
+								<td width="400" align="center" th:text="*{punishCount}"></td>
+							</tr>
+							<tr align="left">
+								<th width="150" align="center">주소</th>
+								<td colspan="3" width="400" align="center">
+								<input type="text" name="zipCode" class="zip" th:value="*{zipCode}" readonly>
+								<button type="button" id="zip" class="feature-btn">우편번호 찾기</button><br>
+								<input type="text" name="address" class="zip" th:value="*{address}" readonly><br>
+								<input type="text" name="addressDetail" class="zipDetail" th:value="*{addressDetail}" placeholder="상세주소">
+								</td>
+							</tr>
+							<tr>
+								<th width="150" align="center">이메일</th>
+								<td width="400" align="center"><input type="email" name="email" th:value="*{email}"></td>
+								<th width="150" align="center">연락처</th>
+								<td width="400" align="center"><input type="text" name="phoneNumber" id="phoneNumber" th:value="*{phoneNumber}" readonly="readonly"><button type='button' class='feature-btn' id='phoneChange'>변경</button>
+								
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="table-responsive" th:if="${session.sessionAuthority == 'A2'}">
+					<h6>계좌정보</h6>
+						<table id="accountInfo" class="table">
+						<tbody>
+							<tr>
+								<th width="150" align="center">은행명</th>
+								<td id="bank" width="400" th:text="*{bankCode}"></td>	
+								<th width="150" align="center">예금주</th>
+								<td width="400" align="center">
+									<input type="text" id="bankHolderName" name="bankHolderName" th:value="*{memberName}">
+								</td>
+							</tr>
+							<tr>
+								<th width="150" align="center">계좌번호</th>
+								<td colspan="3" align="center">
+								<input type="text" id="accountNumber" name="accountNumber"  th:value="*{accountNumber}">
+								</td>
+							</tr>
+							<tr>
+   								<td align="right"><button type="button" id="bankCodeSelect">계좌변경</button></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- 계좌번호 확인 모달 -->
+				<div id="modalWrapBank">
+				  <div id="modalContentBank">
+				    <div id="modalBodyBank">
+					    <div id="modalDataBank">
+							<div>
+							<br>
+							    <label for="type">은행명</label>
+							    <select class="type" id="modalType" name="bankCode">
+							        <option value="">선택</option>
+							        <option th:each="b : ${B}" th:value="${b.detailCode}" th:text="${b.value}">옵션 텍스트</option>
+							    </select>
+							    <br>
+							    <br>
+							    <label for="bankHolderInfo">예금주</label>
+							    <input type="text" class="form-control" id="bankHolderNameInfo" name="bankHolderNameInfo" readonly>
+							</div>
+							<div>
+							    <label for="accountNumber">계좌번호</label>
+							    <input type="text" class="form-control" id="accountNumberInfo" name="accountNumberInfo" >
+							    <button type="button" id="accountHolderCheck" class="btn btn-default">예금주 조회</button>
+							</div>
+					     </div>
+				     <button type="button" id="closeBtnBank" class="feature-btn">취소</button>
+				     <button type="button" id="bankChange" class="feature-btn" style="display:none;">변경</button>	
+				    </div>
+				  </div>
+				</div>
+			</form>
+				<div align="center">
+					<button type="button" id="submit" class="feature-btn">수정완료</button>
+					<button id="returnPage" type="button" class="feature-btn">이전으로</button>
+				</div>
+				<!-- 전화번호 확인 모달 -->
+				<div id="modalWrap">
+				  <div id="modalContent">
+				    <div id="modalBody">
+				     <div id="modalData">
+				    	<div class="mb-3">
+							<label for="" class="form-label">전화번호 &nbsp;  </label> <button type="button" id="approveButton" class="feature-btn" style="text-align:right;">코드 발송</button>
+							<input type="text" class="form-control" name="to" id="phoneSubmit" placeholder="전화번호를 입력하세요" required>
+						</div>
+						<div id="codeCheck" class="mb-3"  style="display: none">
+							<input type="text" class="form-control" name="smsCode" id="smsCode" placeholder="코드 입력하세요" required>
+							<button type="button" id="code" name="codeConfirmBtn" class="btn btn-default" value="">코드 확인</button>
+						</div>
+						<input type="hidden" id="numValue" value="">
+				     </div>
+				     <button type="button" id="closeBtn" class="feature-btn">취소</button>
+				     <button type="button" id="phone" class="feature-btn" style="display:none;">변경</button>	
+				    </div>
+				  </div>
+				</div>
+				
+		</div>
+	
+	<!-- Daum 주소 API -->
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<!-- 페이지 기능 Script -->
+	<script th:inline="javascript" type="text/javascript">
+	
+	$(document).ready(function() {
+		// 이벤트 설정
+		$('#zip').on('click', openDaumAddrApi);
+		$('.zip').on('click', openDaumAddrApi);
+		$('#returnPage').on('click', returnToBeforePage);
+		
+		//전화변호 변경 모달 관련 부분
+		var btn = $("#btnWrap");
+		const modal = document.getElementById('modalWrap');
+		const closeBtn = document.getElementById('closeBtn');
+		
+		$("#phoneChange").on("click",function() {
+			modal.style.display = 'block';
+		  closeBtn.onclick = function() {
+		    modal.style.display = 'none';
+		  }
+		  window.onclick = function(event) {
+		    if (event.target == modal) {
+		      modal.style.display = "none";
+		    }
+		  }
+		});
+		//계좌번호 조회 모달
+		var btnBank = $("#btnWrapBank");
+		const modalBank = document.getElementById('modalWrapBank');
+		const closeBtnBank = document.getElementById('closeBtnBank');
+		
+		$("#bankCodeSelect").on("click",function() {
+		    $("#bankHolderNameInfo").val("");
+		    $("#accountNumberInfo").val("")
+		    $("#modalType option:selected").text("");
+		    $("#modalType option:selected").val("");
+			
+			modalBank.style.display = 'block';
+			closeBtnBank.onclick = function() {
+		    modalBank.style.display = 'none';
+		  }
+		  window.onclick = function(event) {
+		    if (event.target == modal) {
+		      modalBank.style.display = "none";
+		    }
+		  }
+		});
+		
+		//전화번호 변경 관련 스크립트
+		// 승인 버튼. 클릭(이벤트)발생시  ajaxApprove메서드 실행 설정(핸들러)
+	      $('#approveButton').on('click',function(){
+	    	  if($("#phoneSubmit").val() == ""){
+					Swal.fire({
+			        	title: '전화번호를 입력하세요',
+					    icon: 'error',
+					    confirmButtonText: '확인',
+					    confirmButtonColor: '#3085d6',
+					    })
+	    	  }else{
+	    	  ajaxApprove();
+	    	  sendCode();	
+	    	  }
+	      });
+	    
+	   function ajaxApprove(event){
+		  console.log("sms 버튼 눌렀다.");
+		// memberId 정의
+	 	let phonenumber = $("#phoneSubmit").val();
+		console.log(phonenumber)
+	
+	     $.ajax({
+	         url : "/sms/send", 
+	         type : 'post',
+	         data: { to : phonenumber },
+	      })
+	      .done( data => {
+	         if(data != null && data.num != null){
+	            alert(`${phonenumber } 문자발송했습니다`); 
+	            $("#numValue").val(data.num);
+	         } else {
+	            alert(`문자 발송 안됐습니다.`);
+	         }
+	      })
+	      .fail( reject => console.log(reject));
+	   };
+	   
+	   $("#code").click(function(){
+			   var number1 = $("#smsCode").val();
+			   var number2 = $("#numValue").val();
+		        if (number1 == number2) { // 저장된 SMS 코드를 사용
+		            alert("인증되었습니다.");
+		        	$("#phone").attr("style", "display:block");
+		        } else {
+		            alert("번호가 다릅니다.");
+		            $("#smsCode").focus()
+		            
+		        }
+	   })
+	   
+	   $("#phone").on("click", function(){
+		   console.log("됨");
+		    var code = $("#phoneSubmit").val();
+		    console.log(code)
+		    $("#phoneNumber").val(code);
+		    $("#phoneSubmit").val(""); // 전화번호 입력 필드 초기화
+		    $("#smsCode").val("");
+		    $("#smsCode").attr("style", "display:none");
+		    $("#phone").attr("style", "display:none");
+		    $("#code").attr("style", "display:none");
+		    modal.style.display = 'none';
+	   })
+	   
+	   
+	   //코드 보내고 활성화 시킴
+	function sendCode(){
+	    $("#codeCheck").css("display","block");
+    }
+		
+    $('#submit').click(function(event){
     	event.preventDefault();
     	
         let memPas = $('#password').val();
-        let verPas = $('#verifyPassword').val();
+        let verPas = $('#passwordInfo').val();
         
         if (memPas != "") {
             if (verPas == "") {
                 alert("비밀번호 확인을 해주세요");
-                $('#verifyPassword').focus();
+                $('#passwordInfo').focus();
                 return;
             } else if (verPas != memPas) {
                 alert("비밀번호가 일치하지 않습니다.");
-                $('#verifyPassword').val('');
-                $('#verifyPassword').focus();
+                $('#passwordInfo').val('');
+                $('#passwordInfo').focus();
                 return;
             }
         }
         console.log("확인");
-        ajaxMemberUpdate();
+        // 폼 제출
+        $("#update").attr("action", "/common/myPageUpdate").submit();
     });
-        
+
     
-        
-     // 폼 데이터 직렬화 함수
-        function serializeObject() {
-            let formData = $('form').serializeArray();
-            let formObj = {};
-            $.each(formData, function(idx, obj) {
-                formObj[obj.name] = obj.value;
-            });
-            return formObj;
-        }
+    //계좌번호 확인
+    $("#accountHolderCheck").click(function() {
+    	var bank_code = $("#modalType option:selected").val();
+		var bank_num = $("#accountNumberInfo").val();
+		
+		if (bank_code =="" && bank_num == "") {
+		    Swal.fire({
+		        title: '은행과 계좌번호를 선택해주세요',
+		        icon: 'error',
+		        confirmButtonText: '확인',
+		        confirmButtonColor: '#3085d6',
+		    });
+		} else if (bank_num == "") {
+		    Swal.fire({
+		        title: '계좌번호를 입력해주세요',
+		        icon: 'error',
+		        confirmButtonText: '확인',
+		        confirmButtonColor: '#3085d6',
+		    });
+		} else if (bank_code == "") {
+		    Swal.fire({
+		        title: '은행을 선택해주세요',
+		        icon: 'error',
+		        confirmButtonText: '확인',
+		        confirmButtonColor: '#3085d6',
+		    });
+		}
 
-        // AJAX 요청 처리 함수
-        function ajaxMemberUpdate() {
-            let obj = serializeObject();
+		$.ajax({
+			url: "/check1",
+			type: 'post',
+			data: {
+				bank_code: bank_code,
+				bank_num: bank_num
+			},
+		})
+		.done(function(data) {
+			if (bank_code !="" && bank_num != "") {
+			if(data.bankHolderInfo == null){
+				Swal.fire({
+		        	title: '계좌정보를 찾을수가 없습니다.',
+				    icon: 'error',
+				    confirmButtonText: '확인',
+				    confirmButtonColor: '#3085d6',
+				    })
+				   $("#accountNumberInfo").val("");
+				}
+			}
+			if (data.bankHolderInfo) {
 
-            $.ajax({
-                url: 'myPageUpdate',
-                type: 'post',
-                contentType: 'application/json',
-                data: JSON.stringify(obj) // JSON 응답 처리 설정
-            }).done(data => {
-                console.log(data);
-                location.href="myPage";
-            }).fail(reject => console.log(reject));
-        };
-});
+				$("#bankHolderNameInfo").val(data.bankHolderInfo);
+				var name1 = $("#name").text();
+				var name2 = $("#bankHolderNameInfo").val();
+				Swal.fire({
+		        	title: '계좌를 확인했습니다.',
+				    icon: 'success',
+				    confirmButtonText: '확인',
+				    confirmButtonColor: '#3085d6',
+				    })
+				if (name1 !== name2) { 
+					Swal.fire({
+			        	title: '이름이 다릅니다. \n 본인의 계좌를 임력해주세요',
+					    icon: 'error',
+					    confirmButtonText: '확인',
+					    confirmButtonColor: '#3085d6',
+					    })
+					$("#bankHolderNameInfo").val(""); // 이름이 다를 경우 값을 비워줍니다.
+				} else if (data.errormsg) {
+					alert("Error: " + data.errormsg);
+				}
+				$("#bankChange").attr("style", "display:block");
+			}
+		})
+		.fail(function(reject) {
+			console.log("실패")
+			
+		});
+	});
+    
+    //계좌번호 조회 후 변경 버튼 눌렀을 시 작동하는 구문
+    $("#bankChange").on("click", function(){
+		    var name = $("#bankHolderNameInfo").val();
+		    var account = $("#accountNumberInfo").val()
+		    var bankName = $("#modalType option:selected").text();
+		    $("#bankHolderName").val(name)
+		    $("#accountNumber").val(account)
+		    $("#bank").text(bankName);
+		    modalBank.style.display = 'none';
+	   })
+
+	});
 	
-</script>
-</head>
-<body>
-	<div layout:fragment="content" style="text-align: center;">
-		<div>
-			<h3>내 정보 수정</h3>
-		</div>
-		<form>
-			<div>
-				<label>이름</label> 
-				<input type="text" th:value="${memberInfo.memberName}"	id="memebrName" name="memberName" readonly="readonly">
-			</div>
-			<div>
-				<label>아이디</label>
-				<input type="text" th:value="${memberInfo.memberId}" id="memberId" name="memberId" readonly="readonly">
-			</div>
-			<div>
-				<label>비밀번호</label>
-				<input type="text" id="password" name="password"><br>
-				<label>비밀번호 확인</label>
-				<input type="text" id="verifyPassword" name="verifyPassword"><br>
-			</div>
-			<div>
-				<label>주소</label> 
-				<input type="text" th:value="${memberInfo.address}" id="addr" name="addr"><br>
-				<label>상세주소</label>
-				<input type="text" th:value="${memberInfo.addressDetail}" id="addressDetail" name="addressDetail">
-			</div>
-			<div>
-				<label>이메일</label>
-				<input type="text" th:value="${memberInfo.email}" id="email" name="email">
-			</div>
-			<div>
-				<label>전화번호</label>
-				<input type="text" th:value="${memberInfo.phoneNumber}" id="phoneNumber" name="phoneNumber">
-			</div>
-			<div>
-				<label>국적</label>
-				<input type="text" th:value="${memberInfo.nationality}" readonly="readonly">
-			</div>
-			<div>
-				<label>성별</label>
-				<th:block th:if="${memberInfo.gender == 'G1'}">
-				<input type="checkbox" checked onClick="return false;">남자
-				<input type="checkbox" onClick="return false;">여자
-				</th:block>
-				<th:block th:if="${memberInfo.gender == 'G2'}">
-				<input type="checkbox" onClick="return false;">남자
-				<input type="checkbox" checked onClick="return false;">여자
-				</th:block>
-			</div>
-			<div>
-				<label>생년월일</label>
-				<input type="text" th:value="${memberInfo.birthDate}" readonly="readonly">
-			</div>
-			<button type="submit">완료</button>
-		</form>
-	</div>
-</body>
+	// daum 주소 api 호출
+	function openDaumAddrApi(){
+		
+		// daum api 팝업창을 생성하고 호출
+		new daum.Postcode({
+	        oncomplete: function(data) {
+	            
+	            // 사용자가 선택한 주소값 넣기
+	            $('input[name=zipCode]').val(data.zonecode);
+	            
+	            if (data.userSelectedType === 'R') { 
+	            	// 사용자가 도로명 주소를 선택했을 경우
+	            	$('input[name=address]').val(data.roadAddress);    
+                } else {
+                	// 사용자가 지번 주소를 선택했을 경우
+                	$('input[name=address]').val(data.jibunAddress);
+                }
+	            
+	            // 상세주소 입력란을 비우고 포커스를 상세주소 입력란으로 옮기기
+	            $('input[name=addressDetail]').val("")
+	            							  .focus();
+	            
+	        }
+	    }).open();
+	}
+	
+	// 이전페이지로 이동
+	function returnToBeforePage(){
+		location.href='/common/myPage?memberId='+[[${memberInfo.memberId}]];
+	}	
+	
+	</script>
+	
+</div>
 </html>

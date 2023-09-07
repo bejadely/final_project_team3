@@ -76,10 +76,10 @@ table, th,td {
 						<td th:text="${m.name}"></td>
 						<td th:text="${m.nationality}"></td>
 						<td th:text="${m.gender}"></td>
-						<td th:text="${m.birthDate}"></td>
+						<td th:text="${#dates.format(m.birthDate, 'yyyy-MM-dd')}"></td>
 						<td th:text="${m.quantity}"></td>
 						<td th:text="${m.price}"></td>
-						<td th:text="${m.orderDate}"></td>
+						<td th:text="${#dates.format(m.orderDate, 'yyyy-MM-dd')}"></td>
 						<td th:text="${m.orderStatus}"></td>
 					</tr>
 				</tbody>

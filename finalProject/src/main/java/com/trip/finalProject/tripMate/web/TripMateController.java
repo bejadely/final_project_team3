@@ -24,7 +24,8 @@ import com.trip.finalProject.tripMate.service.TripMateVO;
 public class TripMateController {
 	@Autowired
 	TripMateService tripMateService;
-	
+	@Autowired
+	HttpSession session;
 	@Autowired
 	AttachedFileService attachedFileService;
 	
@@ -222,12 +223,12 @@ public class TripMateController {
 	
 	//마이페이지----------------------------------------------------------------------
 	//내가 적성한 메이트
-	@GetMapping("/common/myPageTrip")
+	@GetMapping("/common/myPageMate")
 	public String tripMateList(Model model,
 			TripMateVO trVO,
 			@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
 			@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
-		String memberId = "1";
+		String memberId = session.getAttribute("sessionId").toString();
 		int total = tripMateService.myTripCount(memberId);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 		trVO.setWriterId(memberId);
@@ -254,12 +255,12 @@ public class TripMateController {
 	
 	
 	//신청한 메이트 조회
-	@GetMapping("/common/myPageAppTrip")
+	@GetMapping("/common/myPageAppMate")
 	public String tripMateAppList(Model model,
 			TripMateVO trVO,
 			@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
 			@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
-		String memberId = "leesw";
+		String memberId = session.getAttribute("sessionId").toString();
 		int total = tripMateService.myTripAppCount(memberId);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 		trVO.setMemberId(memberId);
@@ -277,10 +278,11 @@ public class TripMateController {
 			, @RequestParam("postId") String postId) {
 		tripVO.setPostId(postId);
 		tripVO.setApplyId(applyId);
+		tripVO.setMemberId(session.getAttribute("sessionId").toString());
 		
 		tripMateService.myMateCancle(tripVO);
 		tripMateService.myTripnum(tripVO);
-		return "redirect:/common/myPageAppTrip";
+		return "redirect:/common/myPageAppMate";
 	}
 	
 	//ajax로 데이터 삭제

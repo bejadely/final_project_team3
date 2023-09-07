@@ -19,8 +19,8 @@ public class CartServiceImpl implements CartService {
 	CartMapper cartMapper;
 
 	@Override
-	public int postIdCount(String postId) {
-		return cartMapper.getPostIdCount(postId);
+	public int postIdCount(CartVO cartVO) {
+		return cartMapper.getPostIdCount(cartVO);
 	}
 
 	@Override
@@ -61,6 +61,12 @@ public class CartServiceImpl implements CartService {
 		}		
 		
 		return map;	
+	}
+
+	@Override
+	public List<CartVO> cartInfo(String[] cartId) {
+		// TODO Auto-generated method stub
+		return cartMapper.cartInfo(cartId);
 	}
 	
 	

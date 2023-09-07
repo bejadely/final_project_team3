@@ -3,6 +3,8 @@ package com.trip.finalProject.trip.web;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +26,8 @@ import com.trip.finalProject.trip.service.TripVO;
 public class TripController {
 	@Autowired
 	TripService tripService;
+	@Autowired
+	HttpSession session;
 
 	@Value("${kakao.map.key}")
 	String kakaoMap;
@@ -43,13 +47,16 @@ public class TripController {
 	}
 	
 	//여행기록 개인 조회/계획중 여행 - myPgae(재운)
-	@GetMapping("myPageTrip")
+	@GetMapping("/common/myPageTrip")
 	public String maPageTrip(Model model
+			  ,TripVO tripVO
 			  ,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 			  ,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
-		int total = tripService.tripPerCount();
+		String writerId = session.getAttribute("sessionId").toString();
+		int total = tripService.tripPerCount(writerId);
+		tripVO.setWriterId(writerId);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-		List<TripVO> tripList = tripService.getTripPer(pagingVO);
+		List<TripVO> tripList = tripService.getTripPer(tripVO, pagingVO);
 		
 		model.addAttribute("tripList", tripList);
 		model.addAttribute("paging", pagingVO);
@@ -58,13 +65,16 @@ public class TripController {
 	}
 	
 	//여행기록 개인 조회/임시저장 - myPgae(재운)
-	@GetMapping("myPageNotTrip")
+	@GetMapping("/common/myPageNotTrip")
 	public String maPageNotTrip(Model model
+			,TripVO tripVO
 			,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 			,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
-		int total = tripService.tripPerNotCount();
+		String writerId = session.getAttribute("sessionId").toString();
+		int total = tripService.tripPerNotCount(writerId);
+		tripVO.setWriterId(writerId);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-		List<TripVO> tripList = tripService.getTripPerNot(pagingVO);
+		List<TripVO> tripList = tripService.getTripPerNot(tripVO, pagingVO);
 		
 		model.addAttribute("tripList", tripList);
 		model.addAttribute("paging", pagingVO);
@@ -73,13 +83,16 @@ public class TripController {
 	}
 	
 	//여행기록 개인 조회/완료된 여행 - myPgae(재운)
-	@GetMapping("myPageComTrip")
+	@GetMapping("/common/myPageComTrip")
 	public String maPageComTrip(Model model
+			,TripVO tripVO
 			,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 			,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
-		int total = tripService.tripPerComCount();
+		String writerId = session.getAttribute("sessionId").toString();
+		int total = tripService.tripPerComCount(writerId);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-		List<TripVO> tripList = tripService.getTripPerCom(pagingVO);
+		tripVO.setWriterId(writerId);
+		List<TripVO> tripList = tripService.getTripPerCom(tripVO, pagingVO);
 		
 		model.addAttribute("tripList", tripList);
 		model.addAttribute("paging", pagingVO);

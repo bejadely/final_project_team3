@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.trip.finalProject.attachedFile.mapper.AttachedFileMapper;
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.location.service.LocationVO;
-import com.trip.finalProject.report.service.ReportVO;
 import com.trip.finalProject.specialties.mapper.SpecialtiesMapper;
 import com.trip.finalProject.specialties.service.SpecialtiesOptionVO;
 import com.trip.finalProject.specialties.service.SpecialtiesService;
@@ -47,10 +46,30 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
 	
 	//특산물 리스트
 	@Override
-	public List<SpecialtiesVO> getSpecialtiesList() {
+	public List<SpecialtiesVO> getSpecialtiesList(PagingVO pagingVO) {
 		// TODO Auto-generated method stub
-		return specialtiesMapper.listSpecialties();
+		return specialtiesMapper.listSpecialties(pagingVO);
 	}
+	
+	@Override
+	public int specialitesCount() {
+		// TODO Auto-generated method stub
+		return specialtiesMapper.specialtiesCount();
+	}
+	
+	@Override
+	public int specialtiesCountTitle(String keyword) {
+		// TODO Auto-generated method stub
+		return specialtiesMapper.specialtiesCountTitle(keyword);
+	}
+
+	@Override
+	public List<SpecialtiesVO> searchspecialtiesByTitle(SpecialtiesVO specialtiesVO, PagingVO pagingVO) {
+		// TODO Auto-generated method stub
+		return specialtiesMapper.searchspecialtiesByTitle(specialtiesVO,pagingVO);
+	}
+
+
 	
 	//특산물, 옵션, 첨부파일 등록
 	@Transactional
@@ -110,6 +129,9 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
 		
 		return map;
 	}
+
+
+
 
 
 
