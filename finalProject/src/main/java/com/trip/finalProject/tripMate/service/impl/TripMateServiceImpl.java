@@ -1,7 +1,5 @@
 package com.trip.finalProject.tripMate.service.impl;
 
-import static org.hamcrest.CoreMatchers.nullValue;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -49,9 +47,64 @@ public class TripMateServiceImpl implements TripMateService {
 	
 	//여행 메이트 게시글 전체 조회
 	@Override
-	public List<TripMateVO> getTripMateAll() {
-		return tripMateMapper.selectAllTripMate();
+	public List<TripMateVO> getTripMateAll(PagingVO pagingVO) {
+		return tripMateMapper.selectAllTripMate(pagingVO);
 	}
+	
+	//전체 여행 메이트 글 수 카운트
+	@Override
+	public int mateCount() {
+		return tripMateMapper.getAllMateListCount();
+	}
+	
+	//여행 지역으로 검색
+	@Override
+	public List<TripMateVO> searchMateByTripArea(TripMateVO tripMateVO, PagingVO pagingVO) {
+		return tripMateMapper.searchMateByTripArea(tripMateVO, pagingVO);
+	}
+	
+	//여행 지역으로 여행메이트 글 수 카운트
+	@Override
+	public int countTripArea(String keyword) {
+		return tripMateMapper.countTripArea(keyword);
+	}
+	
+	//여행 스타일로 검색
+	@Override
+	public List<TripMateVO> searchMateByStyle(TripMateVO tripMateVO, PagingVO pagingVO) {
+		return tripMateMapper.searchMateByStyle(tripMateVO, pagingVO);
+	}
+			
+	//여행 스타일로 여행메이트 글 수 카운트
+	@Override
+	public int countTripStyle(String keyword) {
+		return tripMateMapper.countTripStyle(keyword);
+	}
+	
+	//여행 타이틀로 검색
+	@Override
+	public List<TripMateVO> searchMateByTripTitle(TripMateVO tripMateVO, PagingVO pagingVO) {
+		return tripMateMapper.searchMateByTripTitle(tripMateVO, pagingVO);
+	}
+		
+	//여행 메이트 게시글 제목으로 글 수 카운트
+	@Override
+	public int countTripTitle(String keyword) {
+		return tripMateMapper.countTripTitle(keyword);
+	}
+	
+	//게시글 작성자로 아이디로 검색
+	@Override
+	public List<TripMateVO> searchMateByTripWriterId(TripMateVO tripMateVO, PagingVO pagingVO) {
+		return tripMateMapper.searchMateByTripWriterId(tripMateVO, pagingVO);
+	}	
+		
+	//여행 메이트 작성자 아이디로 글 수 카운트
+	@Override
+	public int countTripWrtierId(String keyword) {
+		return tripMateMapper.countTripWrtierId(keyword);
+	}
+	
 
 	//여행 메이트 게시글 상세 조회
 	@Override
