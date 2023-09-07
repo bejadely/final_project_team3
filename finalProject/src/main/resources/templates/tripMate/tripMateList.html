@@ -91,7 +91,7 @@
 											<br>
 											모집 마감일 : <span class="fa" th:text="${#dates.format(tripMateInfo.deadline, 'yy년 MM월 dd일')}"></span>
 											<br>
-											모집 현황 : <span class="fa" th:text="${tripMateInfo.mateMax}"></span> / <span class="fa" th:text="${tripMateInfo.applyNum}"></span>
+											모집 현황 : <span class="fa" th:text="${tripMateInfo.applyNum}"></span> / <span class="fa" th:text="${tripMateInfo.mateMax}"></span>
 											<br>
 										</li>
 									</ul>
@@ -99,8 +99,17 @@
 							</div>
 						</div>
 					</div>
+					<th:block th:if="${#lists.isEmpty(tripMateList)}">
+						<div align="center">
+							<br>
+							<h5>조회된 결과가 없습니다.</h5>
+							<br>
+							<br>
+						</div>
+					</th:block>
 				</div>
 			</div>
+			
 			<!-- 페이징 구문 -->
 			<!-- 검색키워드가 없을때 -->
 			<th:block th:if="${#strings.isEmpty(keyword)}">
