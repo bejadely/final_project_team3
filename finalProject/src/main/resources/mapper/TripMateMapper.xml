@@ -126,7 +126,8 @@
 			   apply_num,
 			   hit,
 			   trip_area,
-			   write_date
+			   write_date,
+			   mate_style
 		FROM mate_recruit
 		WHERE post_id = #{postId}
 	</select>

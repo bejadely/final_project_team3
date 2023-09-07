@@ -123,6 +123,14 @@
 							</div>
 						</div>
 					</div>
+					<th:block th:if="${#lists.isEmpty(tripRecordList)}">
+						<div align="center">
+							<br>
+							<h5>조회된 결과가 없습니다.</h5>
+							<br>
+							<br>
+						</div>
+					</th:block>
 				</div>
 			</div>
 			<!-- 페이징 구문 -->
@@ -186,9 +194,17 @@
 
 	// 조건검색기능
 	function search(event){
-		console.log("1111");	
 		let value = $('#searchBy').val();
 		let keyword = $('#keyword').val();
+		
+		if(!keyword.replace(/^\s+|\s+$/g, '')){
+			Swal.fire({
+				  icon: 'warning',
+			      title: '키워드를 입력해주세요.',
+			    })
+			    return;
+		}
+		
 		location.href='/searchTripRecord?searchBy='+value+'&keyword='+keyword;
 	}
 	

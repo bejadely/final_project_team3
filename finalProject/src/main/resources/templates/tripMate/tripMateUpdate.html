@@ -110,11 +110,14 @@ body {
     					<tr>
         					<th style="text-align: left; width: 20%;">작성자</th>
         					<td colspan="2">
-            					<input type="text" id="writerId" name="writerId" size="30" class="form-control" th:value="${session.sessionId}" readonly>
+        						<label for="writerId" class="form-control" style="text-align: left;">
+        							[[${session.sessionId}]]
+        						</label>
+            					<input type="hidden" id="writerId" name="writerId" size="30" class="form-control" th:value="${session.sessionId}" readonly>
         					</td>
         					<th style="text-align: left; width: 20%;">수정일자</th>
-        					<td colspan="2">
-            					<input type="date" id="now_date" name="" size="30" class="form-control" readonly>
+        					<td colspan="2" id="modifyDayCell">
+            					<input type="hidden" id="now_date" name="modifyDate" size="30" class="form-control" readonly>
         					</td>
     					</tr>
    	 					<tr>
@@ -171,6 +174,20 @@ body {
 	<script>
 		//현재 날짜 계산
 		document.getElementById('now_date').value = new Date().toISOString().substring(0, 10);
+		
+		//오늘의 날짜를 동적으로 생성한 label태그에 넣어주는 부분
+		var nowDate = new Date().toISOString().substring(0, 10);
+	    
+		var modifyDayCell = document.getElementById('modifyDayCell');
+	    
+		var label = document.createElement('label');
+	    
+		label.setAttribute('for', 'modifyDate');
+	    label.classList.add('form-control');
+	    label.style.textAlign = 'left';
+	    label.textContent = nowDate;
+	    modifyDayCell.appendChild(label);
+		
 		
 		$(document).ready(function() {	
 			ClassicEditor
