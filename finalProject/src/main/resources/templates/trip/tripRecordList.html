@@ -102,6 +102,9 @@
 						<div class="single-blog-item">
 							<div class="sb-pic">
 								<img th:src="${tripInfo.writerId}" alt="이미지">
+								<!-- <img th:if="${not #strings.isEmpty(tripInfo.loadingImg)}" th:src="${tripInfo.loadingImg}" alt="이미지" style="height:237px;">
+                            	<img th:unless="${not #strings.isEmpty(tripInfo.loadingImg)}" th:src="@{/img/no-image.png}" alt="이미지">
+								-->
 							</div>
 							<div class="sb-text">
 								<ul>
@@ -161,14 +164,14 @@
 					<th:block th:if="${p eq paging.nowPage}">
 						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
 					</th:block>
-					<th:block th:if="${p ne paging.nowPage}">
+					<th:block th:if="${p ne paging.nowPage and p > 0}">
 						<a th:href="@{searchTripRecord(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
 					</th:block>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
 					<a th:href="@{searchTripRecord(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
 				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage}">
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
 					<a th:href="@{searchTripRecord(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
 				</th:block>
 			</div>

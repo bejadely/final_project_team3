@@ -43,6 +43,7 @@
 		<div style="float:right; margin-right: 150px;">
 			<select id="searchBy" name="searchBy">
 				<option value="tripArea">여행지역으로 검색</option>
+				<!-- <option value="mateStyle">여행스타일로 검색</option> -->
 				<option value="mateTitle">타이틀로 검색</option>
 				<option value="writerId">아이디로 검색</option>
 			</select>&nbsp;
@@ -57,37 +58,44 @@
 						class="col-lg-4 col-md-6">
 						<div class="single-blog-item">
 							<div class="sb-pic">
-								<img style="width: 300px; height: 250px;" th:src="${tripMateInfo.loadingImg}" alt="이미지">
+								<img th:if="${not #strings.isEmpty(tripMateInfo.loadingImg)}" th:src="${tripMateInfo.loadingImg}" alt="이미지" style="height:277px;">
+                            	<img th:unless="${not #strings.isEmpty(tripMateInfo.loadingImg)}" th:src="@{/img/no-image.png}" alt="이미지">
 							</div>
 							<div class="sb-text">
-								<ul>
-									<li>
-										<i class="fa fa-user"></i>
-										<span th:text="${tripMateInfo.writerId}"></span>
-									</li>
-									<li>
-										<i class="fa fa-clock-o"></i>
-										<span th:text="${#dates.format(tripMateInfo.writeDate, 'yy년 MM월 dd일')}"></span>
-									</li>
-									<li>
-										<i class="fa"></i>
-										조회수 : <span th:text="${tripMateInfo.hit}"></span>
-									</li>
-								</ul>
-								<h5>
-									<a th:text="${tripMateInfo.mateTitle}"></a>
-								</h5>
-								<ul>
-									<li>
-										<span class="fa" th:text="${#dates.format(tripMateInfo.startDay, 'yy년 MM월 dd일')}"></span>
-										~ <span class="fa" th:text="${#dates.format(tripMateInfo.endDay, 'yy년 MM월 dd일')}"></span>
-										<br>
-										모집 인원 : <span class="fa" th:text="${tripMateInfo.mateMax}"></span>
-										<br>
-										신청 인원 : <span class="fa" th:text="${tripMateInfo.applyNum}"></span>
-									<li>
-									</li>
-								</ul>
+								<div align="center">
+									<ul>
+										<li>
+											<i class="fa fa-user"></i>
+											<span th:text="${tripMateInfo.writerId}"></span>
+										</li>
+										<li>
+											<i class="fa fa-clock-o"></i>
+											<span th:text="${#dates.format(tripMateInfo.writeDate, 'yy년 MM월 dd일')}"></span>
+										</li>
+										<li>
+											<i class="fa"></i>
+											조회수 : <span th:text="${tripMateInfo.hit}"></span>
+										</li>
+									</ul>
+									</div>
+									<div align="center">
+									<h5>
+										<a th:text="${tripMateInfo.mateTitle}"></a>
+									</h5>
+									</div>
+									<div align="center">
+									<ul>
+										<li>
+											<span class="fa" th:text="${#dates.format(tripMateInfo.startDay, 'yy년 MM월 dd일')}"></span>
+											~ <span class="fa" th:text="${#dates.format(tripMateInfo.endDay, 'yy년 MM월 dd일')}"></span>
+											<br>
+											모집 마감일 : <span class="fa" th:text="${#dates.format(tripMateInfo.deadline, 'yy년 MM월 dd일')}"></span>
+											<br>
+											모집 현황 : <span class="fa" th:text="${tripMateInfo.mateMax}"></span> / <span class="fa" th:text="${tripMateInfo.applyNum}"></span>
+											<br>
+										</li>
+									</ul>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -132,14 +140,14 @@
 					<th:block th:if="${p eq paging.nowPage}">
 						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
 					</th:block>
-					<th:block th:if="${p ne paging.nowPage}">
+					<th:block th:if="${p ne paging.nowPage and p > 0}">
 						<a th:href="@{searchTripMate(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
 					</th:block>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
 					<a th:href="@{searchTripMate(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
 				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage}">
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
 					<a th:href="@{searchTripMate(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
 				</th:block>
 			</div>
@@ -154,10 +162,19 @@
 	
 		// 조건검색기능
 		function search(event){
-			console.log("1111");	
 			let value = $('#searchBy').val();
 			let keyword = $('#keyword').val();
+			
+			if(!keyword.replace(/^\s+|\s+$/g, '')){
+				Swal.fire({
+					  icon: 'warning',
+				      title: '키워드를 입력해주세요.',
+				    })
+				    return;
+			}
+			
 			location.href='/searchTripMate?searchBy='+value+'&keyword='+keyword;
+			
 		}
 	</script>
 	</div>
