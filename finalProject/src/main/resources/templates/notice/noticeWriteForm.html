@@ -196,10 +196,27 @@ $(document).ready(function() {
 	
 });	
 	
+	
+/* 	
+function noticeTypeCheck(){
+	   var noticeType = $("#noticeType").val();
+	  
+
+     if (noticeType==null) { // 저장된 SMS 코드를 사용
+         alert("공지사항 종류 정하세요.");
+     } 
+ } */
+	
 		
 	// 승인 버튼 클릭 시 발생 이벤트
 	function go(e){
 		e.preventDefault();
+		 /* var noticeType = $("#noticeType").val(); */
+		  
+
+		 if ($("#noticeType option:selected").val() == null) { // 저장된 SMS 코드를 사용
+	         alert("공지사항 종류 정하세요.");
+	     } 
 		
 	
 		Swal.fire({
@@ -307,6 +324,9 @@ ClassicEditor
 		
 		return formObject;
 	}
+	
+	
+	
 	
 	
 	
