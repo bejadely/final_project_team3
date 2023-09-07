@@ -10,85 +10,95 @@
 
 <title>문의사항</title>
 <style type="text/css">
-.hidden{
+.hidden {
 	border: none;
 	text-align: center;
 	margin: 0 auto;
 }
-
 </style>
 <script>
-$(document).ready(function() {
-	$("#sale").click(function() {
-		location.href="/guide/packageSale"	
-	})
-	$("#com").click(function() {
-		location.href="/guide/packageCom"
-	})
-	
-	$(".deletePac").click(function(e) {
-		e.stopPropagation()
-		var thi = $(this);
-		var postId = thi.val();
-		location.href="/guide/deleteSalePackage?postId="+postId
-	})
-	$('.reportInfo').on('mouseover', colorDarker)
-					.on('mouseleave', colorReset)
-});
+	$(document).ready(
+			function() {
+				$("#sale").click(function() {
+					location.href = "/guide/packageSale"
+				})
+				$("#com").click(function() {
+					location.href = "/guide/packageCom"
+				})
 
-//마우스 오버 : 색상 어둡게
-function colorDarker(event){
-	$(event.currentTarget).css({background: '#f2f4f5'})
-						  .css({cursor: 'pointer'});		
-}
+				$(".deletePac").click(function(e) {
+					e.stopPropagation()
+					var thi = $(this);
+					var postId = thi.val();
+					location.href = "/guide/deleteSalePackage?postId=" + postId
+				})
+				$('.reportInfo').on('mouseover', colorDarker)
+								.on('mouseleave', colorReset)
+			});
 
-// 마우스릴리브 : 색상 원상복귀
-function colorReset(event){
-	$(event.currentTarget).css({background: '#ffffff'});
-}
+	//마우스 오버 : 색상 어둡게
+	function colorDarker(event) {
+		$(event.currentTarget).css({
+			background : '#f2f4f5'
+		}).css({
+			cursor : 'pointer'
+		});
+	}
+
+	// 마우스릴리브 : 색상 원상복귀
+	function colorReset(event) {
+		$(event.currentTarget).css({
+			background : '#ffffff'
+		});
+	}
 </script>
 </head>
 <body>
-	<div layout:fragment="content" style=" text-align: center">
-	<div class="table-responsive" style="width: 1000px;" >
-	<form>
-		<h5>패키지 판매 목록</h5>
-		<button type="button" id="sale">모집중</button>
-		<button type="button" id="com">판매완료</button>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>타이틀</th>
-					<th>가격</th>
-					<th>여행날짜</th>
-					<th>마감날짜</th>
-					<th>여행테마</th>
-					<th>인원</th>
-					<th>등록일</th>
-					<th>삭제</th>
-				</tr>
-			</thead>
-			<tbody>
-				<th:block th:each="li : ${list}">
-					<tr class="reportInfo" th:onclick="|location.href='@{/guide/packageDetail(postId=${li.postId})}'|">
-						<td th:text="${li.name}"></td>
-						<td th:text="${li.price}"></td>
-						<td th:text="${#dates.format(li.startDate, 'yyyy-MM-dd')} + '~' + ${#dates.format(li.endDate, 'yyyy-MM-dd')}"></td>
-						<td th:text="${#dates.format(li.deadlineDate, 'yyyy-MM-dd')}"></td>
-						<td th:text="${li.tourTheme}"></td>
-						<td th:text="${li.nowReservation} + '/' + ${li.maxReservation}"></td>
-						<td th:text="${#dates.format(li.regDate, 'yyyy-MM-dd')}"></td>
-						<td><button type="button" class="deletePac" th:value="${li.postId}">삭제</button></td>
-					</tr>
-				</th:block>
-			</tbody>
-			</table>
-			<button type="button" id="insert" th:onclick="|location.href='@{/packageInsertForm}'|">등록</button>
-		</form>
-		
-			<div class="property-pagination">
+	<div layout:fragment="content">
+		<div class="table-responsive">
+			<form>
+				<h5>패키지 판매 목록</h5>
+				<button type="button" id="sale">모집중</button>
+				<button type="button" id="com">판매완료</button>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>타이틀</th>
+							<th>가격</th>
+							<th>여행날짜</th>
+							<th>마감날짜</th>
+							<th>여행테마</th>
+							<th>인원</th>
+							<th>등록일</th>
+							<th>삭제</th>
+						</tr>
+					</thead>
+					<tbody>
+						<th:block th:each="li : ${list}">
+							<tr class="reportInfo"
+								th:onclick="|location.href='@{/guide/packageDetail(postId=${li.postId})}'|">
+								<td th:text="${li.name}"></td>
+								<td th:text="${li.price}"></td>
+								<td
+									th:text="${#dates.format(li.startDate, 'yyyy-MM-dd')} + '~' + ${#dates.format(li.endDate, 'yyyy-MM-dd')}"></td>
+								<td th:text="${#dates.format(li.deadlineDate, 'yyyy-MM-dd')}"></td>
+								<td th:text="${li.tourTheme}"></td>
+								<td th:text="${li.nowReservation} + '/' + ${li.maxReservation}"></td>
+								<td th:text="${#dates.format(li.regDate, 'yyyy-MM-dd')}"></td>
+								<td><button type="button" class="deletePac"
+										th:value="${li.postId}">삭제</button></td>
+							</tr>
+						</th:block>
+					</tbody>
+				</table>
+				<button type="button" id="insert" class="feature-btn"
+					th:onclick="|location.href='@{/packageInsertForm}'|">등록</button>
+			</form>
+		</div>
+		<div class="property-pagination">
 			<th:block th:if="${paging.startPage != 1}">
-				<a th:href="@{/guide/packageSale(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
+				<a
+					th:href="@{/guide/packageSale(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
 			</th:block>
 			<th:block th:if="${paging.startPage != 1}">
 				<a
@@ -100,18 +110,22 @@ function colorReset(event){
 					<b th:text="${p}"></b>
 				</th:block>
 				<th:block th:if="${p ne paging.nowPage and p > 0}">
-					<a	th:href="@{/guide/packageSale(nowPage=${p}, cntPerPage=${paging.cntPerPage})}" th:text="${p}"></a>
+					<a
+						th:href="@{/guide/packageSale(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
+						th:text="${p}"></a>
 				</th:block>
 			</th:block>
-			<th:block th:if="${paging.endPage != paging.lastPage and paging.lastPage > 5}">
+			<th:block
+				th:if="${paging.endPage != paging.lastPage and paging.lastPage > 5}">
 				<a
 					th:href="@{/guide/packageSale(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 			</th:block>
-			<th:block th:if="${paging.endPage != paging.lastPage and paging.lastPage > 5 }">
+			<th:block
+				th:if="${paging.endPage != paging.lastPage and paging.lastPage > 5 }">
 				<a
 					th:href="@{/guide/packageSale(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
 			</th:block>
-			</div>
+
 		</div>
 	</div>
 </body>

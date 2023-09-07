@@ -28,12 +28,10 @@ $(document).ready(function() {
 	       window.location.href = prevPageUrl; // 자동으로 이동
 	   }
 	   
-	   $('.cancle').click(function(event){
+	   $('.feature-btn').click(function(event){
 		   event.stopPropagation();
 		   var applyId = $(this).attr('value');// 버튼의 'th:value' 속성 값을 가져옵니다.
 		   var postId = $(this).parent().parent().find("td:eq(0)").attr("value");
-	        console.log('버튼이 클릭되었습니다. applyId: ' + applyId);
-	        console.log("postId : " + postId)
 	        
 	        var form = $("<form action='/common/myPageCancle' method='post'></form>");
 	        form.append("<input type='hidden' name='applyId' value='" + applyId + "'>");
@@ -105,7 +103,7 @@ $(document).ready(function() {
 			    					<td th:text="${l.applyNum} + '/' +${l.mateMax}"></td>
 			    					<td th:text="${l.complition}"></td>
 			    					<td th:text="${l.hit}"></td>
-			    					<td><button type="button" class="cancle" th:value="${l.applyId}">취소</button></td>
+			    					<td><button type="button" class="feature-btn" th:value="${l.applyId}">취소</button></td>
 								</tr>
 							</th:block>
 					</tbody>

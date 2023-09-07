@@ -10,9 +10,23 @@
 <title>장바구니</title>
 <link rel="stylesheet" th:href="@{/css/admin-style.css}" type="text/css">
 <link rel="stylesheet" th:href="@{/css/cart.css}" type="text/css">
+<style type="text/css">
+</style>
 <script>
 $(document).ready(function(){
 function handleClick(data) {
+	
+		$('body').on('click', '.post', function(e) {
+			e.stopImmediatePropagation();
+			var post = $(this).parent().find('[type=checkbox]').data('postid');
+			var postFirst = post.substring(0, 3);
+		    if(postFirst == "SPE"){
+		    	location.href='/specialtiesInfo?postId='+post
+		    }else{
+		    	location.href='/packageInfo?postId='+post
+		    }
+		});
+		
       
       var postId = data.postId;
        var nowPage = data.clickedPage;
@@ -61,7 +75,7 @@ function handleClick(data) {
        lmth += "<tr>" + 
       "<th><input type='checkbox' id='cbx_chkAll' /></th>" +
       "<th >상품사진</th>" +
-      "<th>상품 명</th>" +
+      `<th style='width:40%'>상품 명</th>` +
       "<th>상품수량</th>" +
       "<th>상품가격</th>" +
       "<th >삭제</th>"+
@@ -71,8 +85,8 @@ function handleClick(data) {
        $.each(data, (index, cartItem) => {
              html += "<tr class='reportInfo'>" +
                "<td><input type='checkbox' name='chk' data-postid='" + cartItem.postId + "' /></td>" +
-               "<td>"+"<input type='hidden' class='cartId' value='" + cartItem.cartId + "' />" + cartItem.cartName + "</td>" +
-               "<td>"+"<input type='hidden' class='cartOption' value='" + cartItem.optionId + "' />" + cartItem.cartName + "</td>" +
+               "<td class='post'>"+"<input type='hidden' class='cartId' value='" + cartItem.cartId + "' />" + cartItem.cartName + "</td>" +
+               "<td class='post' style='width:40%'>"+"<input type='hidden' class='cartOption' value='" + cartItem.optionId + "' />" + cartItem.cartName + "</td>" +
                `<td>
                 <button type="button" class="quantity-btn decrement-btn">-</button>
                 <input type="text" class="quantity-input" name="productAmount" value="${cartItem.quantity}">
@@ -84,7 +98,7 @@ function handleClick(data) {
        });
        
        price = `<label>총 주문 금액 : </label>
-                <input type="text" id="result" readonly="readonly">`
+                <input type="text" id="result" readonly="readonly" value="0">원`
        
        // tbody 내용을 업데이트
        thead.html(lmth);
@@ -411,26 +425,19 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
        	 	}); 
    		 }    
       });
-    $("table").on("mouseover", ".reportInfo", function () {
-        colorDarker(event);
-    });
-
-    $("table").on("mouseleave", ".reportInfo", function () {
-        colorReset(event);
-    });
+	$('body').on('mouseover','.reportInfo',colorDarker)
+	 		 .on('mouseleave', '.reportInfo',colorReset)
+	function colorDarker(event) {
+		  console.log('Mouse over');
+		  $(event.currentTarget).css({background : '#f2f4f5'})
+		  						.css({cursor : 'pointer'});
+		}
+	
+		function colorReset(event) {
+		  console.log('Mouse leave');
+		  $(event.currentTarget).css({background: '#ffffff'});
+		}
 });
-//마우스 오버 : 색상 어둡게
-function colorDarker(event){
-$(event.currentTarget).css({background: '#f2f4f5'})
-		  .css({cursor: 'pointer'});		
-}
-
-//마우스릴리브 : 색상 원상복귀
-function colorReset(event){
-$(event.currentTarget).css({background: '#ffffff'});
-}
-
-
 </script>
 </head>
 <body>
