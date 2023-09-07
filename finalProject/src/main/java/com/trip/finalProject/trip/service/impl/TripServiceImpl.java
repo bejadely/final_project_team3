@@ -26,19 +26,19 @@ public class TripServiceImpl implements TripService {
 	
 	//마이페이지 계획 여행
 	@Override
-	public int tripPerCount() {
-		return tripMapper.getPerCount();
+	public int tripPerCount(String writerId) {
+		return tripMapper.getPerCount(writerId);
 	}
 	
 	//마이페이지 계획 여행
 	@Override
-	public int tripPerNotCount() {
-		return tripMapper.getPerNotCount();
+	public int tripPerNotCount(String writerId) {
+		return tripMapper.getPerNotCount(writerId);
 	}
 	//마이페이지 완료여행
 	@Override
-	public int tripPerComCount() {
-		return tripMapper.getPerComCount();
+	public int tripPerComCount(String writerId) {
+		return tripMapper.getPerComCount(writerId);
 	}
 
 
@@ -50,8 +50,8 @@ public class TripServiceImpl implements TripService {
 	
 	//여행기록 회원별 조회
 	@Override
-	public List<TripVO> getTripPer(PagingVO pagingVO) {
-		return tripMapper.selectPerTrip(pagingVO);
+	public List<TripVO> getTripPer(TripVO tripVO, PagingVO pagingVO) {
+		return tripMapper.selectPerTrip(tripVO, pagingVO);
 	}
 	
 	//여행 저장 데이터 업데이트
@@ -74,14 +74,14 @@ public class TripServiceImpl implements TripService {
 	
 	//여행기록 회원별 조회
 	@Override
-	public List<TripVO> getTripPerNot(PagingVO pagingVO) {
-		return tripMapper.selectPerNotTrip(pagingVO);
+	public List<TripVO> getTripPerNot(TripVO tripVO, PagingVO pagingVO) {
+		return tripMapper.selectPerNotTrip(tripVO, pagingVO);
 	}
 	
 	//여행기록 회원별 조회 - 완료된 여행
 	@Override
-	public List<TripVO> getTripPerCom(PagingVO pagingVO) {
-		return tripMapper.selectPerComTrip(pagingVO);
+	public List<TripVO> getTripPerCom(TripVO tripVO, PagingVO pagingVO) {
+		return tripMapper.selectPerComTrip(tripVO, pagingVO);
 	}
 
 	//여행기록 상세조회

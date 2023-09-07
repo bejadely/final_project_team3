@@ -10,28 +10,28 @@ public interface TripMapper {
 	public int getTotalCount();
 	
 	//마이페이지 페이징
-	public int getPerCount();
+	public int getPerCount(String writerId);
 	
 	//마이페이지 페이징 - 임시저장
-	public int getPerNotCount();
+	public int getPerNotCount(String writerId);
 	
 	//마이페이지 페이징
-	public int getPerComCount();
+	public int getPerComCount(String writerId);
 
 	//여행기록 전체 조회
 	public List<TripVO>	selectAllTrip(PagingVO pagingVO);
 	
 	//여행기록 회원 조회 - 미완료 여행
-	public List<TripVO> selectPerTrip(PagingVO pagingVO);
+	public List<TripVO> selectPerTrip(TripVO tripVO, PagingVO pagingVO);
 	
 	//여행기록 업데이트
 	public int updateDis(TripVO tripVO);
 	
 	//여행기록 회원 조회 - 임시저장
-	public List<TripVO> selectPerNotTrip(PagingVO pagingVO);
+	public List<TripVO> selectPerNotTrip(TripVO tripVO, PagingVO pagingVO);
 	
 	//여행기록 회원 조회 - 완료 여행
-	public List<TripVO> selectPerComTrip(PagingVO pagingVO);
+	public List<TripVO> selectPerComTrip(TripVO tripVO, PagingVO pagingVO);
 	
 	//여행기록 상세조회
 	public TripVO selectTripInfo(TripVO tripVO);
