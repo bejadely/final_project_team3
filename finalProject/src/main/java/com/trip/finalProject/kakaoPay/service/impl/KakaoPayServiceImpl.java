@@ -168,5 +168,12 @@ public class KakaoPayServiceImpl implements KakaoPayService {
 	}
 
 
+	@Override
+	public void deleteCart(String cartId) {
+		// TODO Auto-generated method stub
+		kakaoPayMapper.deleteCart(cartId);
+	}
+
+
     
 }

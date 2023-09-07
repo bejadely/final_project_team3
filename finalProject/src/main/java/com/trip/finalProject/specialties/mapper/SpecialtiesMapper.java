@@ -11,6 +11,8 @@ public interface SpecialtiesMapper {
 	//특산물 등록
 	public int insertSpecialites(SpecialtiesVO specialtiesVO);
 	
+	//특산물 수정
+	
 	//특산물 정보
 	public SpecialtiesVO sepcialtiesInfo(String postId);
 	
@@ -25,6 +27,7 @@ public interface SpecialtiesMapper {
 	//특산물 옵션 등록
 	public void insertSpecialtiesOption(SpecialtiesOptionVO specialtiesOptionVO);
 	
+	//특산물 옵션 리스트
 	public List<SpecialtiesOptionVO> findByPostId(String postId);
 	
 	//0904창민
@@ -37,6 +40,11 @@ public interface SpecialtiesMapper {
 	public int specialtiesCountTitle(String keyword);
 
 	public List<SpecialtiesVO> searchspecialtiesByTitle(SpecialtiesVO specialtiesVO, PagingVO pagingVO);
+
+	//특산물 옵션 삭제
+	public void deleteOption(String postId);
+
+	public void updateSpecialites(SpecialtiesVO specialtiesVO);
 
 	
 	

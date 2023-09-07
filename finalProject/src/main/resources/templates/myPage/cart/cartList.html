@@ -326,6 +326,13 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
            cartIdElements.push(value);
            totalAmount += cartTotal;
            quantity += count;
+           console.log(price);
+           console.log(value);
+           console.log(totalAmount);
+           console.log(count);
+           console.log(quantity);
+           console.log(option);
+           
        });   
        console.log(postId);
           if(orderElements.length == 1) {
@@ -346,7 +353,6 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
                orderName : orderName,
                quantity : quantity,
                itemCode: cartIdElements.join(','),
-               postId: postId,
                partnerUserId: memberId,
                specialtyType: option 
                

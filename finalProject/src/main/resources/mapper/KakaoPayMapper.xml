@@ -109,4 +109,13 @@
 		</set>		
 		WHERE order_detail_id = #{orderDetailId}
 	</update>
+	
+		<!-- 카트 soft delete -->
+ 	<update id="deleteCart" parameterType="CartVO">
+ 	update cart
+ 	<set>
+ 		delete_type='Y'
+ 	</set>
+ 	WHERE cart_id = #{cartId}
+ 	</update>
 </mapper>  

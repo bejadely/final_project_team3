@@ -75,5 +75,8 @@
  	<select id="cartInfo">
  		SELECT *
  		FROM cart
+ 		WHERE cart_id = #{cartId}
  	</select>
+ 	
+ 
  </mapper>
