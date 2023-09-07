@@ -28,9 +28,6 @@ public class TripMateController {
 	HttpSession session;
 	@Autowired
 	AttachedFileService attachedFileService;
-	
-	@Autowired
-	HttpSession session;
 
 	private final String FIRST_PAGE = "1";
 	
