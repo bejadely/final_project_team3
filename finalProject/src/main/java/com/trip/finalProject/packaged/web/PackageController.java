@@ -184,7 +184,7 @@ public class PackageController {
 							,PackageVO pacVO
 							,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 							,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
-		pacVO.setWriterId("1");
+		pacVO.setWriterId(session.getAttribute("sessionId").toString());
 		pacVO.setCompletion("D1");
 		
 		int total = packageService.guiListCount(pacVO);
@@ -203,7 +203,7 @@ public class PackageController {
 			,PackageVO pacVO
 			,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 			,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
-		pacVO.setWriterId("1");
+		pacVO.setWriterId(session.getAttribute("sessionId").toString());
 		pacVO.setCompletion("D2");
 		
 		int total = packageService.guiListCount(pacVO);
@@ -221,7 +221,7 @@ public class PackageController {
 			,PackageVO pacVO
 			,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 			,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
-		pacVO.setWriterId("1");
+		pacVO.setWriterId(session.getAttribute("sessionId").toString());
 		int total = packageService.guiListComCount(pacVO);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 		List<PackageVO> pacList = packageService.guiListComPackage(pacVO, pagingVO);
@@ -241,11 +241,22 @@ public class PackageController {
 		return "guide/package/packageDetail";
 	}
 	
-	@GetMapping("/guide/deletePackage")
-	@ResponseBody
-	public Map<String, Object> deletePackage(String postId) {
-		int r = packageService.deletePackage(postId);
-		return Collections.singletonMap("result", r==1?true:false);
+	@GetMapping("/guide/deleteSalePackage")
+	public String deleteSalePackage(String postId) {
+		packageService.deletePackage(postId);
+		return "redirect:/guide/packageSale";
+	}
+	
+	@GetMapping("/guide/deleteSoldOutPackage")
+	public String deleteSoldOutPackage(String postId) {
+		packageService.deletePackage(postId);
+		return "redirect:/guide/packageSoldOut";
+	}
+	
+	@GetMapping("/guide/deleteComPackage")
+	public String deleteComPackage(String postId) {
+		packageService.deletePackage(postId);
+		return "redirect:/guide/packageCom";
 	}
 	
 }

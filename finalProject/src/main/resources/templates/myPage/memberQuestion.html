@@ -66,20 +66,6 @@
 	<div class="container">
 		<h5><b>문의 내역 조회</b></h5>
 		<br>
-		<div>
-			<select id="questionType" name="questionType">
-				<option value="">문의 분류</option>
-				<option value="Q1">일반문의</option>
-				<option value="Q3">특산물 문의</option>
-				<option value="Q4">숙박상품 문의</option>
-			</select>
-			<!-- <select id="searchBy" name="searchBy">
-				<option value="name">이름으로 검색</option>
-				<option value="id">아이디로 검색</option>
-			</select>
-			<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
-			<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button> -->
-		</div>
 		<div class="table-responsive">
 				<table class="table">
 					<thead>
@@ -131,81 +117,42 @@
 		<th:block th:if="${#strings.isEmpty(keyword)}">
 			<div style="text-align : center;" class="property-pagination">
 				<th:block th:if="${paging.nowPage != 1}">
-					<a th:href="@{/admin/seeAllQuestion(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+					<a th:href="@{/common/memberQue(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
 				</th:block>
 				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+					<a th:href="@{/common/memberQue(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 				</th:block>
 				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
 					<th:block th:if="${p eq paging.nowPage}">
 						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
 					</th:block>
 					<th:block th:if="${p ne paging.nowPage}">
-						<a th:href="@{/admin/seeAllQuestion(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+						<a th:href="@{/common/memberQue(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
 					</th:block>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					<a th:href="@{/common/memberQue(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage}">
-					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+					<a th:href="@{/common/memberQue(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
 				</th:block>
 			</div>
 		</th:block>
-		<!-- 검색키워드가 있을때 -->
-		<th:block th:if="${!#strings.isEmpty(keyword)}">
-			<div style="text-align : center;" class="property-pagination">
-				<th:block th:if="${paging.nowPage != 1}">
-					<a th:href="@{/admin/seeAllQuestion(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
-				</th:block>
-				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;</a>
-				</th:block>
-				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
-					<th:block th:if="${p eq paging.nowPage}">
-						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
-					</th:block>
-					<th:block th:if="${p ne paging.nowPage}">
-						<a th:href="@{/admin/seeAllQuestion(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
-					</th:block>
-				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
-				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage}">
-					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
-				</th:block>
-			</div>
-		</th:block>
-		
 	</div>
-	
-	<script th:inline="javascript" type="text/javascript">
+		<script th:inline="javascript" type="text/javascript">
 	
 	$(document).ready(function() {
 		// 이벤트 설정
-		$('#searchButton').on('click', search);
 		$('.memberInfo').on('mouseover', colorDarker)
 						.on('mouseleave', colorReset)
 						.on('click')
-						.on('mouseup', moveToMemberDetail);
-		$('#questionType').on('change', searchType);
 		
 		// 답변하기 버튼 누를 시 토글 활성화
 		$('[id^="ansBtn"]').on('click', toggleVisible);
 		
 		// ajax 활용 답변 완료 시 해당 답변 바로 페이지에 반영
 		$('.answer-btn').on('click', ajaxSubmitAnswer);
-		rememberSearchingMemory();
 	});
-	
-	// selectbox 선택시 조건 검색 바로 실행
-	function searchType(event){
-		
-		let value = $('#questionType').val();
-		location.href='/admin/searchQuestionByType?questionType='+value;
-		
-	}
 	
 	// 답변하기 버튼 클릭 시 hidden 버튼 활성화
 	function toggleVisible(event){
@@ -268,15 +215,6 @@
 	    return ([year, month, day].join('.')) + ' ' + hour;
 	}
 	
-	// 조건검색기능
-	function search(event){
-		
-		let value = $('#searchBy').val();
-		let keyword = $('#keyword').val();
-		location.href='/admin/searchAdminMember?searchBy='+value+'&keyword='+keyword;
-		
-	}
-	
 	// 마우스 오버 : 색상 어둡게
 	function colorDarker(event){
 		$(event.currentTarget).css({background: '#f2f4f5'})
@@ -287,34 +225,6 @@
 	// 마우스릴리브 : 색상 원상복귀
 	function colorReset(event){
 		$(event.currentTarget).css({background: '#ffffff'});
-	}
-	
-	// 클릭시 회원상세정보 조회페이지로 이동
-	function moveToMemberDetail(event){
-		
-		// 상세보기 할 member의 id값 가져오기
-		let memberId = $(event.currentTarget).find('td:eq(0)').text();
-		
-		// 페이지 전환 실행
-		location.href=`seeMemberDetail?memberId=${memberId}`;
-	}
-	
-	// 만약 조건 검색을 했다면 해당 검색조건 기억
-	function rememberSearchingMemory(){
-		
-		if([[${rememberType}]] != null){
-			// 기본으로 설정할 타입 설정
-			let defaultType = [[${rememberType}]];
-			
-			// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
-			$('#questionType').next().find('span').text($('.option[data-value="'+defaultType+'"]').text());
-			
-			// selected 처리되어있던 option을 일반 옵션으로 변경
-			$('#questionType').next().find('.option.selected').attr("class", "option");
-			
-			// 불러온 값에 해당하는 option을 selected 및 focus 처리
-			$('.option[data-value="'+defaultType+'"]').attr("class", "option selected focus");
-		}
 	}
 	
 	</script>
