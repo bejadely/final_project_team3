@@ -65,7 +65,12 @@
 								<td colspan="3" width="400" align="center">
 								<div class="row">
 									<div class="col-lg-5">
-										<input style="margin-bottom: 3px;" type="text" name="zipCode" class="zip form-control" th:value="*{zipCode}" readonly>
+										<th:block th:if="*{!#strings.isEmpty(zipCode)}">
+											<input style="margin-bottom: 3px;" type="text" name="zipCode" class="zip form-control" th:value="*{zipCode}" readonly>
+										</th:block>
+										<th:block th:if="*{#strings.isEmpty(zipCode)}">
+											<input style="margin-bottom: 3px;" type="text" name="zipCode" class="zip form-control" placeholder="우편번호" readonly>
+										</th:block>	
 										<input style="margin-bottom: 3px;" type="text" name="address" class="zip form-control" th:value="*{address}" readonly>
 										<input type="text" name="addressDetail" class="form-control" th:value="*{addressDetail}" placeholder="상세주소">
 									</div>
@@ -259,6 +264,8 @@
 		$("#nameMessage").empty();
 
 	}
+	
+	// submit 전 공백
 	
 	</script>
 </div>

@@ -53,6 +53,14 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	
 	@Override
 	public String modifyMemberInfo(AdminMemberVO vo) {
+		
+		// 계좌번호 암호화
+		try {
+			vo.setAccountNumber(aesProcessor.aesCBCEncode(vo.getAccountNumber())); 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		// 회원 정보 수정
 		int result = amm.modifyMemberInfo(vo);
 		
