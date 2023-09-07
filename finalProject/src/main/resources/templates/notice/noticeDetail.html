@@ -189,9 +189,10 @@ table {
    
     <!--  <div th:if="${id == board.memberId || id == 'manager'}"> -->
     		<!--  <input type="button" onclick="callFunction('E')" value="버튼"/>-->
-            <button  type="submit" id='modify' class="modify"onclick="callFunction('E')" >수정</button>&nbsp;&nbsp;
-            <button type="button" onclick="callFunction('D')">삭제</button>&nbsp;&nbsp;
-            <button type="button" onclick="callFunction('B')">되돌아가기</button>&nbsp;&nbsp;
+            <button  type="submit" id='modify' class="btn btn-primary submitButton" onclick="callFunction('E')" >수정</button>&nbsp;&nbsp;
+          <!--   <button type="button" onclick="callFunction('D')">삭제</button>&nbsp;&nbsp; -->
+                    <input type="button" value="목록" onclick="location.href='noticeList?page=1'" class="btn btn-secondary">
+
          
      <!-- </div>-->
      </div>
