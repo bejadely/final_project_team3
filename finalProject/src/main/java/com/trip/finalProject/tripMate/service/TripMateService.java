@@ -1,6 +1,7 @@
 package com.trip.finalProject.tripMate.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.trip.finalProject.common.PagingVO;
 
@@ -69,7 +70,16 @@ public interface TripMateService {
 	//참여한 메이트 정보 불러오기
 	public TripMateVO memberInfo(TripMateVO tripMateVO);
 
-	//댓글, 대댓글 가져오기
-	public List<PostCommentVO> getCommentInfo(TripMateVO tripMateVO);
-	
+	//댓글, 대댓글 관련
+	public List<PostCommentVO> getCommentInfo(String postId, String page);
+
+	public Map<String, Object> insertCommentInfo(PostCommentVO postCommentVO) throws Exception;
+
+    Map<String, Object> deleteComment(PostCommentVO postCommentVO) throws Exception;
+
+	public Map<String, Object> insertCommentReplyInfo(PostCommentVO postCommentVO) throws Exception;
+
+	public Map<String, Object> modifyCommentInfo(PostCommentVO postCommentVO) throws Exception;
+
+	public int getCommentNumInfo(TripMateVO tripMateVO);
 }
