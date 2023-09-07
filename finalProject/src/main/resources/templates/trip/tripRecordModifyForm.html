@@ -495,7 +495,7 @@ body {
        //여행경로 수정버튼 클릭시 여행경로를 삭제 후 다시 저장해야함
  		$(".modifyMapping").click(function(){
  			if(confirm("여행 경로를 수정 하시겠습니까?")) {
- 	 			tDate = $(this).prev("input[name=tDate]").attr("value");
+ 	 			var tDate = $(this).prev("input[name=tDate]").attr("value");
  	 			$.ajax({
  	 				url: '/common/mapDeleteList',
  	 				type: 'post',
