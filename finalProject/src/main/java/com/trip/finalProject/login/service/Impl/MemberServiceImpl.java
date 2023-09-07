@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.trip.finalProject.login.mapper.MemberMapper;
 import com.trip.finalProject.login.service.MemberService;
 import com.trip.finalProject.login.service.MemberVO;
+import com.trip.finalProject.security.service.AesProcessor;
 
 
 @Service //해당 클래스를 스프링의 서비스 빈으로 등록하
@@ -25,10 +26,9 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public String insertMemberInfo(MemberVO memberVO) {
 		
-		//0907 창민 추가 - 암호화
+		// 0907 창민 추가
+		// 비밀번호 암호화
 		String encodePassword = passwordEncoder.encode(memberVO.getPassword());
-		
-		System.out.println("암호화 잘되냐" + encodePassword);
 		
 		// 암호화된 키를 memberVO에 재저장
 		memberVO.setPassword(encodePassword);
@@ -44,7 +44,17 @@ public class MemberServiceImpl implements MemberService {
 	//가이드회원 회원가입
 	@Override
 	public String insertGuide(MemberVO memberVO) {
-
+		
+		//0907 창민 추가
+		// 비밀번호 암호화
+		String encodePassword = passwordEncoder.encode(memberVO.getPassword());
+		
+		// 암호화된 키를 memberVO에 재저장
+		memberVO.setPassword(encodePassword);
+		
+		// 계좌번호 암호화
+		
+		
 		int result = memberMapper.insertGuide(memberVO);
 		if(result ==1) {
 			return memberVO.getMemberId();
