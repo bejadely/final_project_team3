@@ -97,8 +97,8 @@ public class PackageServiceImpl implements PackageService {
 	//가이드 페이지=====================================================================
 	//리스트 페이징용
 	@Override
-	public int guiListCount(PackageVO pacVO) {
-		return packageMapper.guiListCount(pacVO);
+	public int guiListCount(String memberId) {
+		return packageMapper.guiListCount(memberId);
 	}
 	//리스트 불러오기
 	@Override

@@ -171,55 +171,53 @@
 	<select id="guiListCount" resultType="int">
 		SELECT COUNT(*)
 		FROM package_regist
-		WHERE writer_id = #{writerId} AND completion = #{completion} AND delete_type = 'N'
+		WHERE writer_id = #{pacVO.writerId} AND delete_type = 'N' AND completion='D2'
 	</select>
 	
 	<select id="guiListPackage" resultType="PackageVO">
 	SELECT *
 		FROM(SELECT ROWNUM rn, a.*
 			 FROM(SELECT post_id,
-				   name,
-				   content,
-				   tour_theme,
-				   deadline_date,
-				   start_date,
-				   end_date,
-				   max_reservation,
-				   code_val(completion) completion,
-				   writer_id,
-				   now_reservation,
-				   reg_date
+					   	 name,
+					     content,
+					     tour_theme,
+					     deadline_date,
+					     start_date,
+					     end_date,
+					     max_reservation,
+					     code_val(completion) completion,
+					     writer_id,
+					     now_reservation,
+					     reg_date
 			FROM package_regist
-			WHERE writer_id = #{pacVO.writerId} AND completion = #{pacVO.completion}
-				  AND delete_type = 'N'
-				 ORDER BY reg_date DESC) a)
+			WHERE writer_id = #{pacVO.writerId} AND delete_type = 'N' AND completion='D2'
+				  ORDER BY reg_date DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
 	</select>
 	<select id="guiListComCount" resultType="int">
 		SELECT COUNT(*)
-		FROM package_regist r RIGHT JOIN calculation c on r.post_id = c.post_id 
-		WHERE r.writer_id = #{writerId} AND c.cal_status = 'V2' AND delete_type = 'N'
+		FROM package_regist
+		WHERE writer_id = #{writerId} AND completion='D1' AND delete_type = 'N'
 	</select>
 	
 	<select id="guiListComPackage" resultType="PackageVO">
 	SELECT *
 		FROM(SELECT ROWNUM rn, a.*
-			 FROM(SELECT r.post_id,
-					    r.name,
-					    r.content,
-					    r.tour_theme,
-					    r.deadline_date,
-					    r.start_date,
-					    r.end_date,
-					    r.max_reservation,
-					    code_val(r.completion) completion,
-					    r.writer_id,
-					    r.now_reservation,
-					    r.reg_date
-			FROM package_regist r RIGHT JOIN calculation c on r.post_id = c.post_id 
-			WHERE r.writer_id = #{pacVO.writerId} AND c.cal_status = 'V2'
-				  AND delete_type = 'N'
-				 ORDER BY reg_date DESC) a)
+			 FROM(SELECT post_id,
+					   	 name,
+					     content,
+					     tour_theme,
+					     deadline_date,
+					     start_date,
+					     end_date,
+					     max_reservation,
+					     code_val(completion) completion,
+					     writer_id,
+					     now_reservation,
+					     reg_date
+			FROM package_regist
+			WHERE writer_id = #{pacVO.writerId} AND delete_type = 'N' AND completion='D1'
+				  ORDER BY reg_date DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
 	</select>
 	

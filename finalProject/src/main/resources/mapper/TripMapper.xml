@@ -22,7 +22,7 @@
  	 <select id="getPerNotCount" resultType="int">
  		SELECT COUNT(*)
  		FROM trip_record
- 		WHERE end_day > sysdate AND trip_save='T2' AND writer_id = #{writerId}
+ 		WHERE end_day > sysdate AND trip_save='T1' AND writer_id = #{writerId}
  	</select>
  	
  	 <!-- 마이페이지 페이징 - 미완료 여행-->

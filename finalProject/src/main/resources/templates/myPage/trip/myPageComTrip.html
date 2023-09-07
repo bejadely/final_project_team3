@@ -105,16 +105,13 @@
 		   
 		   $('.toggle input[type="checkbox"]').on('click', function() {
 		        var isChecked = $(this).prop('checked'); // 클릭한 토글의 체크 상태 가져오기
-		        console.log(isChecked);
 		        var postId = $(this).val();
-		        console.log(postId);
 		        var tripDisclose = '';
 		        if(isChecked == true){
 		        	tripDisclose = '01';
 		        }else if(isChecked == false){
 		        	tripDisclose = '02';
 		        }
-		        console.log(tripDisclose) ;
 		        
 		        let obj={
 		        		postId : postId,
