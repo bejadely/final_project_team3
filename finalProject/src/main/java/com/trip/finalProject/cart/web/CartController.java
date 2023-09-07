@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.trip.finalProject.cart.service.CartService;
 import com.trip.finalProject.cart.service.CartVO;
 import com.trip.finalProject.common.PagingVO;
-import com.trip.finalProject.trip.service.TripVO;
 //재운 장바구니 시스템
 @Controller
 @RequestMapping("/")
@@ -26,9 +27,11 @@ public class CartController {
 	
 	@Autowired
 	CartService cartService;
+	@Autowired
+	HttpSession session;
 
 	//전체조회
-	@GetMapping("cartList")
+	@GetMapping("/common/cartList")
 	public String cartList(Model model){
 	
 		
@@ -36,15 +39,16 @@ public class CartController {
 	};
 	
 	
-	@PostMapping("ajaxCartList")
+	@PostMapping("/common/ajaxCartList")
 	@ResponseBody
 	public Map<String, Object> ajaxCart(CartVO cartVO
 			  ,@RequestParam(value="cntPerPage", defaultValue="10") Integer cntPerPage
 			  ,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 			  ) {
-		
+		cartVO.setMemberId(session.getAttribute("sessionId").toString());
+		System.out.println("cartcart:" + cartVO);
 		//처리중
-		int total = cartService.postIdCount(cartVO.getPostId());
+		int total = cartService.postIdCount(cartVO);
 		
 		
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
@@ -60,15 +64,14 @@ public class CartController {
 	}
 	
 	//삭제
-	@GetMapping("cartDelete")
+	@GetMapping("/common/cartDelete")
 	@ResponseBody
-	public Map<String, Object> cartDelete(String postId) {
-
-		int r = cartService.deleteCartInfo(postId);
+	public Map<String, Object> cartDelete(String cartId) {
+		int r = cartService.deleteCartInfo(cartId);
 		return Collections.singletonMap("result", r==1?true:false);
 	};
 	
-	@PostMapping("/updateQuantity")
+	@PostMapping("/common/updateQuantity")
 	@ResponseBody
 	public Map<String, Object> quanUpdate(CartVO cartVO){
 		cartVO.getPostId();
@@ -77,7 +80,7 @@ public class CartController {
 	    
 	    return map;
 	}
-	@PostMapping("/cartInsert")
+	@PostMapping("/common/cartInsert")
 	@ResponseBody
 	public String cartInsert(CartVO cartVO) {
 		

@@ -12,7 +12,7 @@ public interface MemberService {
 	public MemberVO memberInfo(MemberVO memberVO);
 	
 	//회원정보 수정
-	public Map<String, String> updateMember(MemberVO memberVO);
+	public String updateMember(MemberVO memberVO);
 
 	
 	//회원등록(가입)

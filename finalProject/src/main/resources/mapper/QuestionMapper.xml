@@ -16,16 +16,18 @@
 	    SELECT ROWNUM rn, a.*
 	    FROM (
 	        SELECT
-	            question_id,
-	            code_val(question_type),
-	            question_content,
-	            question_date,
-	            member_id,
-	            answer_result,
-	           	column1 answer_content,
-	            answer_date,
-	            answer_modify_date,
-	            answer_member_id
+	            question_title
+			  , question_id
+			  , member_id
+			  , question_date
+			  , question_content
+			  , question_type
+			  , code_val(answer_result) answer_result
+			  , product_id
+			  , answer_member_id
+			  , answer_modify_date
+			  , answer_date
+			  , answer_content
 	        FROM  question
 	        where answer_member_id = #{questionVO.answerMemberId}
 	        ORDER BY question_date DESC
@@ -68,16 +70,18 @@
 	    SELECT ROWNUM rn, a.*
 	    FROM (
 	        SELECT
-	            question_id,
-	            question_type,
-	            question_content,
-	            question_date,
-	            member_id,
-	            answer_result,
-	           	column1 answer_content,
-	            answer_date,
-	            answer_modify_date,
-	            answer_member_id
+	            question_title
+			  , question_id
+			  , member_id
+			  , question_date
+			  , question_content
+			  , question_type
+			  , code_val(answer_result) answer_result
+			  , product_id
+			  , answer_member_id
+			  , answer_modify_date
+			  , answer_date
+			  , answer_content
 	        FROM  question
 	        where member_id = #{questionVO.memberId}
 	        ORDER BY question_date DESC

@@ -68,16 +68,16 @@ public class CalculationServiceImpl implements CalculationService {
 	
 	
 	@Override
-	public Map<String, Object> selectCompCalList(Integer nowPage, Integer cntPerPage, Integer searchMonth) {
+	public Map<String, Object> selectCompCalList(Integer nowPage, Integer cntPerPage, Integer searchYear, Integer searchMonth) {
 		
 		// 특정월 정산내역 전체 조회
 		
 		// 특정월 내역 카운트
-		int total = calculationMapper.countCompCalList(searchMonth);
+		int total = calculationMapper.countCompCalList(searchYear, searchMonth);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 		
 		// 미정산 내역 전체 조회
-		List<CalculationVO> list = calculationMapper.selectCompCalList(pagingVO, searchMonth);
+		List<CalculationVO> list = calculationMapper.selectCompCalList(pagingVO, searchYear, searchMonth);
 		
 		// 컨트롤러에 값을 보내기 위한 Map 생성
 		Map<String, Object> map = new HashMap<String, Object>();

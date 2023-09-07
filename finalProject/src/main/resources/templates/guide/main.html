@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="@{layouts/admin_layout}">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="@{layouts/myPage_layout}">
 <head>
     <meta charset="UTF-8">
     <title>가이드 메인 페이지</title>
@@ -62,19 +62,21 @@
     <div class="container">
         <div class="rounded-box" >
             <ul class="guide-main-nav">
-                <li onclick="window.location.href='/'">
+                <li onclick="window.location.href='/common/myPage'">
                     <i class="fa-solid fa-user main-icon"></i>
                     <div>내 정 보</div>
                 </li>
-                <li onclick="window.location.href='/'">
+                <li onclick="window.location.href='/guide/packageSale'">
                     <i class="fa-solid fa-store main-icon"></i>
+                    <div>판매중패키지</div>
                     <div th:text="|판매중 ${packageSalingCount}건|"></div>
                 </li>
-                <li onclick="window.location.href='/'">
+                <li onclick="window.location.href='/guide/packageCom'">
                     <i class="fa-solid fa-shop-lock main-icon"></i>
+                    <div>판매완료패키지</div>
                     <div th:text="|판매완료 ${packageSaledCount}건|"></div>
                 </li>
-                <li onclick="window.location.href='/guideQue'">
+                <li onclick="window.location.href='/guide/guideQue'">
                     <i class="fa-solid fa-clipboard-question main-icon"></i>
                     <div th:text="|미답변 ${unansweredQuestion}건|"></div>
                 </li>

@@ -2,6 +2,8 @@ package com.trip.finalProject.buyList.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,16 +22,20 @@ public class BuyListController {
 	@Autowired
 	BuyListService buyService;
 	
+    @Autowired
+    HttpSession session;
+	
 	// 여행메이트 전체 조회
 		@GetMapping("/common/buyPkList")
-		public String paList(Model model, 
-				@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
-				@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
-			String memberId = "1";
+		public String paList(Model model
+				,BuyListVO buyVO
+				,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
+				,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
+			String memberId = session.getAttribute("sessionId").toString();
 			int total = buyService.pkCountInfo(memberId);
+			buyVO.setMemberId(memberId);
 			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-			System.out.println("total: "+pagingVO);
-			List<BuyListVO> buyList = buyService.pkAllLikeInfo(pagingVO);
+			List<BuyListVO> buyList = buyService.pkAllLikeInfo(buyVO, pagingVO);
 
 			model.addAttribute("list", buyList);
 			model.addAttribute("paging", pagingVO);
@@ -39,12 +45,15 @@ public class BuyListController {
 		
 		// 여행계획 전체 조회
 		@GetMapping("/common/buySpList")
-		public String trList(Model model, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
-				@RequestParam(value = "cntPerPage", defaultValue = "12") Integer cntPerPage) {
-			String memberId = "1";
+		public String trList(Model model
+				, BuyListVO buyVO
+				, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
+				, @RequestParam(value = "cntPerPage", defaultValue = "12") Integer cntPerPage) {
+			String memberId = session.getAttribute("sessionId").toString();
 			int total = buyService.spCountInfo(memberId);
+			buyVO.setMemberId(memberId);
 			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-			List<BuyListVO> buyList = buyService.spAllLikeInfo(pagingVO);
+			List<BuyListVO> buyList = buyService.spAllLikeInfo(buyVO, pagingVO);
 
 			model.addAttribute("list", buyList);
 			model.addAttribute("paging", pagingVO);
@@ -63,6 +72,7 @@ public class BuyListController {
 		@GetMapping("/common/buySpSelect")
 		public String selectSp(BuyListVO buyVO,Model model) {
 			BuyListVO findVo = buyService.selectSpInfo(buyVO);
+			System.out.println("testtest : " + findVo);
 			model.addAttribute("list", findVo);
 						
 			return "myPage/buyList/detailBuySpInfo";

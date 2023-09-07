@@ -27,7 +27,7 @@ public class ApiController {
 	@Value("${lodgingInfoApi.auth.key}")
 	private String API_KEY;
 	
-	@GetMapping("api")
+	@GetMapping("/admin/api")
 	public String callApi() throws IOException{
 		StringBuilder result = null;
 		

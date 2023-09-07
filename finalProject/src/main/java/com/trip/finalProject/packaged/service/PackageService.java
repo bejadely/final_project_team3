@@ -13,10 +13,11 @@ public interface PackageService {
 	public PackageVO packageInfo(PackageVO packageVO);
 	
 	//패키지 리스트
-	public List<PackageVO> getPackageList();
-
+	public List<PackageVO> getPackageList(PagingVO pagingVO);
+	
+	//패키지 등록
 	public void register(PackageVO vo);
-
+	
 	Map<String, Object> getDetailInfoReviewList(String postId);
 
 	List<PackageReviewVO> getDetailReviewList(String postId, int page);
@@ -27,6 +28,16 @@ public interface PackageService {
 	
 	//지역 코드 리스트
 	public List<LocationVO> getLocationList();
+	
+	//패키지 수 카운트
+	public int packageCount();
+	
+	//패키지 명 검색 카운트
+	public int packageCountTitle(String keyword);
+	
+	//패키지 명 검색
+	public List<PackageVO> searchPackageByTitle(PackageVO packageVO, PagingVO pagingVO);
+	
 	
 	//가이드 마이페이지 (재운) ===================================================================
 	//전체 리스트 페이징
@@ -41,5 +52,17 @@ public interface PackageService {
 	public PackageVO guidePacInfo(PackageVO pacVO);
 	//결제 회원 정보
 	public List<PackageVO> pacMember(PackageVO pacVO);
+	//패키지 삭제
+	public int deletePackage(String postId);
+
+	
+
+	
+
+	
+
+	
+
+	
 
 }

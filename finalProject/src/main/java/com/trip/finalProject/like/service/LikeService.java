@@ -12,10 +12,10 @@ public interface LikeService {
 	public int trCountInfo(String memberId);
 
 	//특산물 조회
-	public List<LikeVO> mtAllLikeInfo(PagingVO pagingVO);
+	public List<LikeVO> mtAllLikeInfo(LikeVO likeVO, PagingVO pagingVO);
 	
 	//여행기록 조회
-	public List<LikeVO> trAllLikeInfo(PagingVO pagingVO);
+	public List<LikeVO> trAllLikeInfo(LikeVO likeVO, PagingVO pagingVO);
 
 
 }

@@ -2,6 +2,8 @@ package com.trip.finalProject.like.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,18 +21,20 @@ public class LikeController {
 
 	@Autowired
 	LikeService liService;
+	@Autowired
+	HttpSession session;
 	
 	// 여행메이트 전체 조회
-	@GetMapping("myMtList")
-	public String paList(Model model, 
+	@GetMapping("/common/myMtList")
+	public String paList(Model model,
+			LikeVO likeVO,
 			@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
 			@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
-		String memberId = "1";
+		String memberId = session.getAttribute("sessionId").toString();
 		int total = liService.mtCountInfo(memberId);
-		System.out.println("토탈 :" + total);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-		System.out.println("total: "+pagingVO);
-		List<LikeVO> paList = liService.mtAllLikeInfo(pagingVO);
+		likeVO.setMemberId(memberId);
+		List<LikeVO> paList = liService.mtAllLikeInfo(likeVO, pagingVO);
 
 		model.addAttribute("list", paList);
 		model.addAttribute("paging", pagingVO);
@@ -39,14 +43,15 @@ public class LikeController {
 	}
 	
 	// 여행계획 전체 조회
-	@GetMapping("myTrList")
-	public String trList(Model model, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage,
-			@RequestParam(value = "cntPerPage", defaultValue = "12") Integer cntPerPage) {
-		LikeVO likeVO = new LikeVO();
-		String memberId = likeVO.getMemberId();
-		int total = liService.trCountInfo(memberId);
+	@GetMapping("/common/myTrList")
+	public String trList(Model model
+			, LikeVO likeVO
+			, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
+			, @RequestParam(value = "cntPerPage", defaultValue = "12") Integer cntPerPage) {
+		int total = liService.trCountInfo(session.getAttribute("sessionId").toString());
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-		List<LikeVO> paList = liService.trAllLikeInfo(pagingVO);
+		likeVO.setMemberId(session.getAttribute("sessionId").toString());
+		List<LikeVO> paList = liService.trAllLikeInfo(likeVO, pagingVO);
 
 		model.addAttribute("list", paList);
 		model.addAttribute("paging", pagingVO);

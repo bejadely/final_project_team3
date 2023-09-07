@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,33 +26,35 @@ import com.trip.finalProject.question.service.QuestionVO;
 public class QuestionController {
 	@Autowired
 	QuestionService queService;
+	@Autowired
+	HttpSession session;
 	
 	//전체조회
-	@GetMapping("guideQue")
+	@GetMapping("/guide/guideQue")
 	public String quideQue(Model model
 			  , QuestionVO questionVO
 			  ,@RequestParam(value="nowPage", defaultValue="1") Integer nowPage
 			  ,@RequestParam(value="cntPerPage", defaultValue="10") Integer cntPerPage) {
-		String answerMemberId = "101";
+		String answerMemberId = session.getAttribute("sessionId").toString();
 		int total = queService.Count(answerMemberId);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 		questionVO.setAnswerMemberId(answerMemberId);
 		List<QuestionVO> guideQue = queService.getQueAll(questionVO, pagingVO);
 		
-		model.addAttribute("guideQue", guideQue);
+		model.addAttribute("list", guideQue);
 		model.addAttribute("paging", pagingVO);
 				
 		return"guide/question";
 	}
 	//등록 - process
-		@PostMapping("queInsert")
+		@PostMapping("/common/queInsert")
 		@ResponseBody
 		public Map<String, String> empInsertProcess(@RequestBody QuestionVO queVO) {
 			return queService.insertQueInfo(queVO);
 		}
 		
 		//수정 - process
-		@PostMapping("queUpdate")
+		@PostMapping("/common/queUpdate")
 		@ResponseBody
 		public Map<String, String> empUpdateProcess(@RequestBody QuestionVO queVO) {
 			return queService.updateQueInfo(queVO);
@@ -59,24 +62,22 @@ public class QuestionController {
 		
 	//일반사용자
 	//전체 조회	
-		@GetMapping("common/memberQue")
+		@GetMapping("/common/memberQue")
 		public String memberQue(Model model
 				  ,QuestionVO questionVO
 				  ,@RequestParam(value="nowPage", defaultValue="1") Integer nowPage
 				  ,@RequestParam(value="cntPerPage", defaultValue="10") Integer cntPerPage) {
 			
-			String memberId = "101";
+			String memberId = session.getAttribute("sessionId").toString();
 			 
 			
 			int total = queService.memberCount(memberId);
 			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 			questionVO.setMemberId(memberId);
 			
-			System.out.println("test 1: " + questionVO.toString());
 			List<QuestionVO> memberQue = queService.getQueAllMember(questionVO, pagingVO);
-			System.out.println("test 2: " + memberQue);
 			
-			model.addAttribute("guideQue", memberQue);
+			model.addAttribute("list", memberQue);
 			model.addAttribute("paging", pagingVO);
 					
 			return"myPage/memberQuestion";
