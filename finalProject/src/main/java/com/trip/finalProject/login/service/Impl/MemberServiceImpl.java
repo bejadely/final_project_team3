@@ -22,6 +22,9 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	
+	@Autowired
+	AesProcessor aesProcessor;
+	
 	//일반회원 회원가입
 	@Override
 	public String insertMemberInfo(MemberVO memberVO) {
@@ -53,6 +56,14 @@ public class MemberServiceImpl implements MemberService {
 		memberVO.setPassword(encodePassword);
 		
 		// 계좌번호 암호화
+		String encodedAccountNum = "";
+		
+		try {
+			encodedAccountNum = aesProcessor.aesCBCEncode(memberVO.getAccountNumber());
+			memberVO.setAccountNumber(encodedAccountNum);  
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
 		
 		
 		int result = memberMapper.insertGuide(memberVO);
