@@ -99,7 +99,7 @@ ul, ol {
   Custom - common
 -----------------------*/
 th, td {
-	text-align: center;
+	text-align: left;
 }
 
 .custom-sidebar {

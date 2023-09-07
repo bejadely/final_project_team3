@@ -102,7 +102,22 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	@Override
 	public List<AdminMemberVO> selectAllAuthRequest() {
 		// 권한 승인 요청 내역 전체 조회
-		return amm.selectAllAuthRequest();
+		List<AdminMemberVO> list = amm.selectAllAuthRequest();
+		
+		// 복호화
+		for(AdminMemberVO vo : list) {
+			
+			String decodedAccountNum = "";
+			try {
+				decodedAccountNum = aesProcessor.aesCBCDecode(vo.getAccountNumber());
+				vo.setAccountNumber(decodedAccountNum); 
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		return list;
 	}
 
 	@Override

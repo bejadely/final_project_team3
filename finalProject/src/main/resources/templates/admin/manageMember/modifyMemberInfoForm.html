@@ -10,7 +10,7 @@
 			<form action="/admin/modifyMemberInfo" th:object="${memberVO}" method="post">
 				<h5><b>회원정보 수정</b></h5>
 				<br><br>
-				<div class="table-responsive">
+				<div class="table">
 					<h6>기본정보</h6>
 					<br>
 					<input type="hidden" name="memberId" th:value="*{memberId}">
@@ -24,7 +24,12 @@
 							</tr>
 							<tr>
 								<th width="150" align="center">이름</th>
-								<td width="400" align="center"><input type="text" name="memberName" th:value="*{memberName}"></td>
+								<td width="400" align="center">
+									<input type="text" id="memberName" name="memberName" class="form-control checkStirng" th:value="*{memberName}">
+									<div id="nameMessage">
+									<!-- 메시지 출력 -->
+									</div>
+								</td>
 								<th width="150" align="center">권한분류</th>
 								<td id="authority" width="400" align="center" th:text="*{authority}"></td>
 							</tr>
@@ -34,7 +39,11 @@
 								</td>
 								<!-- <td width="400" align="center"><input type="text" name="gender" th:value="*{gender}"></td>  -->
 								<th width="150" align="center">생년월일</th>
-								<td width="400" align="center"><input type="date" name="birthDate" th:value="*{#strings.substring(birthDate, 0, 10)}"></td>
+								<td width="400" align="center">
+									<div class="col-lg-12">
+										<input type="date" name="birthDate" class="form-control" th:value="*{#strings.substring(birthDate, 0, 10)}">
+									</div>
+								</td>
 							</tr>
 							<tr>
 								<th width="150" align="center">국적</th>
@@ -54,23 +63,29 @@
 							<tr align="left">
 								<th width="150" align="center">주소</th>
 								<td colspan="3" width="400" align="center">
-								<input type="text" name="zipCode" class="zip" th:value="*{zipCode}" readonly>
-								<button type="button" id="zip" class="feature-btn">우편번호 찾기</button><br>
-								<input type="text" name="address" class="zip" th:value="*{address}" readonly><br>
-								<input type="text" name="addressDetail" th:value="*{addressDetail}" placeholder="상세주소">
+								<div class="row">
+									<div class="col-lg-5">
+										<input style="margin-bottom: 3px;" type="text" name="zipCode" class="zip form-control" th:value="*{zipCode}" readonly>
+										<input style="margin-bottom: 3px;" type="text" name="address" class="zip form-control" th:value="*{address}" readonly>
+										<input type="text" name="addressDetail" class="form-control" th:value="*{addressDetail}" placeholder="상세주소">
+									</div>
+									<div class="col-lg-1">
+										<button type="button" id="zip" class="feature-btn">우편번호 찾기</button><br>
+									</div>
+								</div>
 								</td>
 							</tr>
 							<tr>
 								<th width="150" align="center">이메일</th>
-								<td width="400" align="center"><input type="email" name="email" th:value="*{email}"></td>
+								<td width="400" align="center"><input type="email" name="email" class="form-control" th:value="*{email}"></td>
 								<th width="150" align="center">연락처</th>
-								<td width="400" align="center"><input type="text" name="phoneNumber" th:value="*{phoneNumber}"></td>
+								<td width="400" align="center"><input type="text" name="phoneNumber" class="form-control" th:value="*{phoneNumber}"></td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 				<br><br>
-				<div class="table-responsive">
+				<div class="table">
 					<h6>계좌정보</h6>
 					<br>
 					<table id="accountInfo" class="table">
@@ -84,14 +99,16 @@
 										</th:block>
 									</select>
 								</td>
-								<!-- 작업중 : selelct로 수정해야함 -->
-								<!-- <td width="400" align="center"><input type="text" name="bankCode" th:value="*{bankCode}"></td> -->
 								<th width="150" align="center">예금주</th>
-								<td width="400" align="center"><input type="text" th:value="*{memberName}"></td>
+								<td width="400" align="center"><input type="text" class="form-control" th:value="*{memberName}"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">계좌번호</th>
-								<td colspan="3" width="400" align="center"><input type="text" name="accountNumber" th:value="*{accountNumber}"></td>
+								<td colspan="3" width="400" align="center">
+									<input type="number" class="form-control checkString" name="accountNumber" th:value="*{accountNumber}">
+									<div>
+									</div>
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -113,6 +130,8 @@
 		$('#zip').on('click', openDaumAddrApi);
 		$('.zip').on('click', openDaumAddrApi);
 		$('#returnPage').on('click', returnToBeforePage);
+		// 기본 문자열 체크가 필요한 클래스 이벤트 설정
+		$('#memberName').on('input', checkString);
 		setDefaultNationality();
 		setDefaultAuth();
 		setDefaultGender();
@@ -213,7 +232,34 @@
 		// 불러온 은행명값에 해당하는 option을 selected 및 focus 처리
 		$('.option[data-value="'+defaultBankCode+'"]').attr("class", "option selected focus");
 	}
-	</script>
 	
+	// 문자열 예외처리
+	function checkString(event){
+		
+		// 찾을 문자열 검색
+		var str = $(this).val();
+		
+		//var blank_pattern = /^\s+|\s+$/g;(/\s/g
+		var blank_pattern = /[\s]/g;
+		if(blank_pattern.test(str) == true){
+		$("#nameMessage").empty();
+		$("#nameMessage").append(`<p style="color: red">공백은 입력하실 수 없습니다.</p>`);
+		return false;
+		}
+		
+		var special_pattern = /[\+\=\-`~!@#$%^&*)(|\\\'\";:\/?]/gi;
+
+		if(special_pattern.test(str) == true ){
+		$("#nameMessage").empty();
+		$("#nameMessage").append(`<p style="color: red">특수문자는 입력하실 수 없습니다.</p>`);
+		return false;
+		}
+		
+		// 정상적으로 입력 시
+		$("#nameMessage").empty();
+
+	}
+	
+	</script>
 </div>
 </html>
