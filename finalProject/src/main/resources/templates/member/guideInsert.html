@@ -73,17 +73,14 @@
 										</div>
 									</div>
 									<font id="checkPw" size="2"></font>
+									<br>
 
 									<!-- <div>
 											<button class="btn btn-default" type="button" name="confirmBtn" id="confirmBtn" >비밀번호 확인</button>
 										</div> -->
-									<div class="mb-3">
-										<label for="" class="form-label">이름</label> <input type="text"
-											name="memberName" placeholder="이름" class="form-control"
-											id="name" required>
-									</div>
+									
 
-									<a>국적</a>
+									<label>국적</label>
 
 									<div class="mb-3">
 										<select class="" id="nationality" name="nationality"
@@ -106,6 +103,12 @@
 										<label for="example" class="form-label">이메일</label> <input
 											type="email" name="email" placeholder="이메일"
 											class="form-control" id="email" required>
+									</div>
+									
+									<div class="mb-3">
+										<label for="" class="form-label">이름</label> <input type="text"
+											name="memberName" placeholder="이름" class="form-control"
+											id="name" required>
 									</div>
 
 
@@ -334,25 +337,49 @@
 
 	<!--  아이디 확인 -->
 	<script>
-$('#id').focusout(function(){
+$('#id').change(function(){
 
 	 var id = $("#id").val();
 
-
- 	if(id.search(/\s/) != -1){
- 		 $("#spaceId").html("아이디는 공백 없이 입력해주세요.");
-		$("#spaceId").attr('color','red');
-	  return false;
-	 }else {
-		 $("#spaceId").html("조건을 충족합니다.");
-		$("#spaceId").attr('color','green');
-	    return true;
+	 if(id === '' )  {
+		 $("#spaceId").html("");
+		 return false;
 	 }
+	 
+	 if(id.search(/\s/) != -1){
+ 		$("#spaceId").html("아이디는 공백 없이 입력해주세요.");
+		$("#spaceId").attr('color','red');
+		$("#id").focus();
+	 	return false;
+	 }
+	 
+	 
+	 $.ajax({
+			/* url : "IdCheckService", */
+			url : "/idCheck", 
+			type : "post",
+			data :  {memberId :id},
+			dataType : 'json',
+			success : function(result){
+				if(result == 0){
+					$("#spaceId").html('사용할 수 있는 아이디입니다.');
+					$("#spaceId").attr('color','green');
+					
+				} else{
+										
+					$("#spaceId").html('사용할 수 없는 아이디입니다.');
+					$("#spaceId").attr('color','red');
+				} 
+			},
+			error : function(){
+				alert("서버요청실패");
+			}
+		})
 
 	});
 
-
 </script>
+
 
 
 	<!--  비밀번호 확인 -->
@@ -361,7 +388,7 @@ $('#id').focusout(function(){
 	<!--  비밀번호 유효성 검사 -->
 	
 	
-	$('#pw1').focusout(function(){
+	$('#pw1').change(function(){
 
 		 var pw = $("#pw1").val();
 		 var num = pw.search(/[0-9]/g);
@@ -511,34 +538,6 @@ function openZipSearch() {
 
 
 
-	<script>
-	$('#id').focusout(function(){
-		let userId = $('#id').val(); // input_id에 입력되는 값
-		
-		$.ajax({
-			/* url : "IdCheckService", */
-			url : "/idCheck", 
-			type : "post",
-			data :  {memberId :userId},
-			dataType : 'json',
-			success : function(result){
-				if(result == 0){
-					$("#checkId").html('사용할 수 있는 아이디입니다.');
-					$("#checkId").attr('color','green');
-					
-				} else{
-										
-					$("#checkId").html('사용할 수 없는 아이디입니다.');
-					$("#checkId").attr('color','red');
-				} 
-			},
-			error : function(){
-				alert("서버요청실패");
-			}
-		})
-		 
-	})
- </script>
 
 	<!-- 회원가입 유효성 체크 -->
 	<script>
