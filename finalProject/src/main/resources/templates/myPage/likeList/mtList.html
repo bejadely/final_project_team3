@@ -82,10 +82,9 @@ $(document).ready(function() {
 				<th:block th:if="${p eq paging.nowPage}">
 					<b th:text="${p}"></b>
 				</th:block>
-				<th:block th:if="${p ne paging.nowPage}">
-					<a
-						th:href="@{/common/myMtList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
-						th:text="${p}"></a>
+				<th:block th:if="${p ne paging.nowPage and paging.nowPage > 0}">
+				    <a th:href="@{/common/myMtList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
+				        th:text="${p}"></a>
 				</th:block>
 			</th:block>
 			<th:block th:if="${paging.endPage != paging.lastPage}">

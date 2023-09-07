@@ -273,7 +273,6 @@ table {
 		
 		//ajax를 통해서 해당 게시글의 포스트 아이디를 보내서 결과 값을 리스트로 담아서 가져옴.
 	    $('#callCmt').click(function() {
-			console.log("댓글리스트 출력");
 		    $.ajax({
 		            url: '/commentList',
 		            type: 'get',
@@ -374,7 +373,6 @@ table {
 		}
 		  //신청반려버튼
 		$("#cancle").click(function(){
-			console.log("test");
 			var postId = $("#dataPostId").val()
 			var applyId = $("#dataApplyId").val()
 			var memberId = $("#dataMemberId").val()
