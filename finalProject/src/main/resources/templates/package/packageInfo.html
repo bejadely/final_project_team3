@@ -37,6 +37,9 @@ form {
             position: relative;
             float: right;
         }
+#select_count{
+	display:block;
+}
 </style>
 
 </head>
@@ -208,7 +211,14 @@ form {
 							<div id="totalPriceDisplay">
 							    총 금액: <span id="totalPrice">0</span> 원
 							</div>
-						
+							<div class="form-horizontal" style="text-align: left;">
+								<label>구매수량  </label> 
+								<select class="nice-select form-control count" id="select_count" >
+								    <!-- <th:block th:each="count : ${#numbers.sequence(0, 20)}">
+								        <option th:value="${count}" th:text="${count}"></option>
+								    </th:block>  -->
+								</select>
+							</div>	
 							
 							
                     </div>
@@ -305,7 +315,16 @@ form {
 		 getPackageDetailInfoReview(postId, function(data) {
 			 appendPackageDetailInfoReview(data, postId);   
          });
-		
+		 var maxReservation =parseInt('[[${info.maxReservation}]]');
+		 var countSelect = document.getElementById("select_count");
+		 for (var i = 0; i <= maxReservation; i++) {
+			 var option = document.createElement('option');
+             option.value = i;
+             option.text = i;
+             console.log(option);
+             countSelect.appendChild(option);
+             $(countSelect).niceSelect(); 
+         }
 		
 		(function(){
 			$.getJSON("getAttachList",{postId:postId},function(arr){
