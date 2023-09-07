@@ -24,6 +24,18 @@ public class TripServiceImpl implements TripService {
 		return tripMapper.getTotalCount();
 	}
 	
+	//여행기록 전체 조회 아이디
+	@Override
+	public int tripWriterIdCount(String keyword) {
+		return tripMapper.getWriterIdCount(keyword);
+	}
+
+	//여행기록 전체 조회 타이틀
+	@Override
+	public int tripTitleCount(String keyword) {
+		return tripMapper.getTitleCount(keyword);
+	}
+	
 	//마이페이지 계획 여행
 	@Override
 	public int tripPerCount(String writerId) {
@@ -46,6 +58,18 @@ public class TripServiceImpl implements TripService {
 	@Override
 	public List<TripVO> getTripAll(PagingVO pagingVO) {
 		return tripMapper.selectAllTrip(pagingVO);
+	}
+	
+	//여행기록 전체 조회 아이디
+	@Override
+	public List<TripVO> getWriterAll(TripVO tripVO, PagingVO pagingVO) {
+		return tripMapper.selectAllWriter(tripVO, pagingVO);
+	}
+
+	//여행기록 전체 조회 타이틀
+	@Override
+	public List<TripVO> getTitleAll(TripVO tripVO, PagingVO pagingVO) {
+		return tripMapper.selectAllTitle(tripVO, pagingVO);
 	}
 	
 	//여행기록 회원별 조회
@@ -132,10 +156,22 @@ public class TripServiceImpl implements TripService {
 		return tripMapper.insertTripMemo(tripVO);
 	}
 	
+	//여행메모 수정
+	@Override
+	public int modifyTripMemo(TripVO tripVO) {
+		return tripMapper.modifyMemoData(tripVO);
+	}
+	
 	//여행메모 데이터 조회
 	@Override
 	public List<TripVO> getMemoData(TripVO tripVO) {
 		return tripMapper.selectMemoData(tripVO);
+	}
+	
+	//여행기록 수정
+	@Override
+	public int modifyTripRecord(TripVO tripVO) {
+		return tripMapper.modifyTripInfo(tripVO);
 	}
 	
 	//여행기록 삭제
@@ -170,7 +206,6 @@ public class TripServiceImpl implements TripService {
 	public int deleteTripMapping(TripVO tripVO) {
 		return tripMapper.deleteTripMapping(tripVO);
 	}
-
 
 	
 

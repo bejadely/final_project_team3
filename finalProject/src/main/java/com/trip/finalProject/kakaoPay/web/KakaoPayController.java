@@ -34,7 +34,7 @@ public class KakaoPayController {
 	private final KakaoPayService kakaoPayService;
 	
 	@PostMapping("/ready")
-	public KakaoPayResponseVO readyToKakaoPay(PaymentVO vo,@RequestParam("quantity") int quantity,@RequestParam("postId")String postId, String specialtyType) {
+	public KakaoPayResponseVO readyToKakaoPay(PaymentVO vo,@RequestParam("quantity") int quantity,@RequestParam(value="postId", required=false)String postId, String specialtyType) {
 		return kakaoPayService.kakoPayReady(vo,quantity,postId,specialtyType);
 
 	}
@@ -98,28 +98,32 @@ public class KakaoPayController {
 		}else {
 			List<CartVO> cartProduct = new ArrayList<>();
 			String[] cartIdArray = kakaoPayInfoResponseVO.getItem_code().split(",");
-			cartProduct = cartService.cartInfo(cartIdArray);
 			for(int i=0; i<cartIdArray.length; i++) {
-				kakaoPayInfoResponseVO.setPostId(cartProduct.get(i).getPostId());
-				kakaoPayInfoResponseVO.setMemberId(cartProduct.get(i).getMemberId());
-				kakaoPayInfoResponseVO.setQuantity(cartProduct.get(i).getQuantity());
-				kakaoPayInfoResponseVO.setItem_name(cartProduct.get(i).getCartName());
-				kakaoPayInfoResponseVO.setPrice(cartProduct.get(i).getPrice());
-				kakaoPayInfoResponseVO.setTid(kakaoPayInfoResponseVO.getTid());
-				kakaoPayInfoResponseVO.setCid(kakaoPayInfoResponseVO.getCid());
-				kakaoPayInfoResponseVO.setOrderStatus(kakaoPayInfoResponseVO.getStatus());
-				kakaoPayInfoResponseVO.setOrderDate(kakaoPayInfoResponseVO.getApproved_at().replace("T", " "));
-				kakaoPayInfoResponseVO.setPaymentId(vo.getPaymentId());
-				kakaoPayInfoResponseVO.setSpecialtyType(approveResponse.getSpecialtyType());
-				kakaoPayInfoResponseVO.setCancelAmount(cartProduct.get(i).getPrice()*cartProduct.get(i).getQuantity());
-				kakaoPayInfoResponseVO.setCancelTaxFreeAmount(cartProduct.get(i).getPrice()*cartProduct.get(i).getQuantity());
-				kakaoPayService.insertPurchase(kakaoPayInfoResponseVO);
+				cartProduct.addAll( cartService.cartInfo(cartIdArray[i]));						
 			}
-		}
-		
-		
-	   
-		
+			//cartProduct = cartService.cartInfo(cartIdArray);
+			
+			 System.out.println(cartProduct); 
+			 for(int i=0; i<cartProduct.size(); i++) {
+				 kakaoPayInfoResponseVO.setPostId(cartProduct.get(i).getPostId());
+				 kakaoPayInfoResponseVO.setMemberId(cartProduct.get(i).getMemberId());
+				 kakaoPayInfoResponseVO.setQuantity(cartProduct.get(i).getQuantity());
+				 kakaoPayInfoResponseVO.setItem_name(cartProduct.get(i).getCartName());
+				 kakaoPayInfoResponseVO.setPrice(cartProduct.get(i).getPrice()*cartProduct.get(i).getQuantity());
+				 kakaoPayInfoResponseVO.setTid(kakaoPayInfoResponseVO.getTid());
+				 kakaoPayInfoResponseVO.setCid(kakaoPayInfoResponseVO.getCid());
+				 kakaoPayInfoResponseVO.setOrderStatus(kakaoPayInfoResponseVO.getStatus());
+				 kakaoPayInfoResponseVO.setOrderDate(kakaoPayInfoResponseVO.getApproved_at().replace("T", " "));
+				 kakaoPayInfoResponseVO.setPaymentId(vo.getPaymentId());
+				 kakaoPayInfoResponseVO.setSpecialtyType(cartProduct.get(i).getOptionId());
+				 kakaoPayInfoResponseVO.setCancelAmount(cartProduct.get(i).getPrice()*cartProduct.get(i).getQuantity());
+				 kakaoPayInfoResponseVO.setCancelTaxFreeAmount(cartProduct.get(i).getPrice()*cartProduct.get(i).getQuantity());
+				 kakaoPayService.insertPurchase(kakaoPayInfoResponseVO);
+				 kakaoPayService.deleteCart(cartProduct.get(i).getCartId());
+			  }
+			 
+		}	
+	   	
 	    ModelAndView mv = new ModelAndView("redirect:/kakaoPaySuccess");
 	    
 	    return mv;

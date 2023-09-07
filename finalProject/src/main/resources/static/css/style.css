@@ -89,6 +89,25 @@ ul, ol {
   Helper CSS
 -----------------------*/
 
+/*---------------------
+  Custom kyunghwan
+-----------------------*/
+
+.feature-btn {
+  background-color: #2cbdb8;
+  color: whitesmoke;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 7px;
+  padding: 5px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin: 3px;
+}
+
 .service-city{
 	color: #aaaab3;
 }

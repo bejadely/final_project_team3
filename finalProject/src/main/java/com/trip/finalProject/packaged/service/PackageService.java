@@ -55,6 +55,8 @@ public interface PackageService {
 	//패키지 삭제
 	public int deletePackage(String postId);
 
+	public void packageUpdate(PackageVO packageVO);
+
 	
 
 	

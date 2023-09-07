@@ -36,5 +36,7 @@ public interface SpecialtiesService {
 
 	public List<SpecialtiesVO> searchspecialtiesByTitle(SpecialtiesVO specialtiesVO, PagingVO pagingVO);
 
+	public void updateSepcialties(SpecialtiesVO specialtiesVO);
+
 
 }

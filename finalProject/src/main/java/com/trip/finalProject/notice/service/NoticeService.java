@@ -26,6 +26,8 @@ public interface NoticeService {
 	public int listCount();
 	//게시글 상세조회 
 	public NoticeVO getNoticeDetail(NoticeVO vo);
+	//게시글 상세조회시 조회수 증가
+	public int updateNoticeHit(NoticeVO vo);
 	//게시글 수정적용
 	public String modifyNoticeInfo(NoticeVO noticeVO);
 	//전체 조회될 공지사항 타입이 n1인 수 카운트
