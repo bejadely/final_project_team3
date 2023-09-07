@@ -23,6 +23,9 @@ public interface NoticeMapper {
 	//게시글 상세조회
 	public NoticeVO getNoticeDetail(NoticeVO vo);
 	
+	//게시글 조회수 증가
+	public int updateNoticetHit(NoticeVO vo);
+	
 	// 게시물 수정하기
 	public int modifyNoticeInfo(NoticeVO vo);
 	
