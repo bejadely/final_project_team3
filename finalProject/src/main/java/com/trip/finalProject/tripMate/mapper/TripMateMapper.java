@@ -95,6 +95,17 @@ public interface TripMateMapper {
 	//참여한 메이트 정보 불러오기
 	public TripMateVO memberInfo(TripMateVO tripMateVO);
 
-	public List<PostCommentVO> getCommentInfo(TripMateVO tripMateVO);
+	public List<PostCommentVO> getCommentInfo(String postId, String page);
 
+	public int insertCommentInfo(PostCommentVO postCommentVO);
+
+	public int insertCommentReplyInfo(PostCommentVO postCommentVO);
+
+	public int getTotalCount(String postId);
+
+	public List<PostCommentVO> selectCommentInfo(String postId);
+
+    int deleteComment(String postId);
+
+	public int modifyCommentInfo(PostCommentVO postCommentVO);
 }

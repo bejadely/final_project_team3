@@ -164,6 +164,7 @@
 							, deadline
 							, writer_id
 							, trip_area
+							, room_number
 						)
 					VALUES
 						(
@@ -180,7 +181,8 @@
 							, sysdate
 							, #{deadline}
 							, #{writerId}
-							, #{tripArea}						
+							, #{tripArea}
+							, #{roomNumber}						
 						)
 		
 	</insert>
@@ -447,10 +449,65 @@
 	</select>
 	
 	<select id="getCommentInfo" resultType="PostCommentVO">
-		SELECT comment_id, post_id, origin_comment_id, writer_id, content, regist_date
-		  FROM post_comment
-		 WHERE post_id=#{postId}
-	  ORDER BY origin_comment_id, regist_date, comment_id
+		SELECT *
+			FROM (SELECT ROWNUM rn, a.*
+				FROM (
+					SELECT *
+					FROM post_comment
+					WHERE post_id = #{postId}
+					ORDER BY origin_comment_id, regist_date, comment_id
+					) a
+			)
+		WHERE rn BETWEEN (#{page}*5-4) AND (#{page}*5)
 	</select>
 	
+	<insert id="insertCommentInfo" parameterType="PostCommentVO">
+		<selectKey keyProperty="commentId" resultType="String" order="BEFORE">
+            SELECT 'CMT' || (TO_NUMBER(NVL((SUBSTR(MAX(comment_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM post_comment
+			WHERE SUBSTR(comment_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+        </selectKey>
+        	INSERT INTO post_comment (comment_id, post_id, origin_comment_id, writer_id, content, regist_date)
+			VALUES (#{commentId}, #{postId}, #{commentId}, #{writerId}, #{content}, SYSDATE)
+	</insert>
+
+	<insert id="insertCommentReplyInfo" parameterType="PostCommentVO">
+		<selectKey keyProperty="commentId" resultType="String" order="BEFORE">
+			SELECT 'CMT' || (TO_NUMBER(NVL((SUBSTR(MAX(comment_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM post_comment
+			WHERE SUBSTR(comment_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+		</selectKey>
+		INSERT INTO post_comment (comment_id, post_id, origin_comment_id, writer_id, content, regist_date)
+		VALUES (#{commentId}, #{postId}, #{originCommentId}, #{writerId}, #{content}, SYSDATE)
+	</insert>
+	
+	<select id="getTotalCount" resultType="int">
+		SELECT count(*)
+        FROM post_comment
+        WHERE post_id = #{postId}
+	</select>
+	
+	<select id="selectCommentInfo" resultType="PostCommentVO">
+		SELECT *
+			FROM (SELECT ROWNUM rn, a.*
+				FROM (
+					SELECT *
+					FROM post_comment
+					WHERE post_id = #{postId}
+					ORDER BY origin_comment_id, regist_date, comment_id
+				) a
+			)
+		WHERE rn BETWEEN 1 AND 5
+	</select>
+
+	<delete id="deleteComment" parameterType="PostCommentVO">
+		DELETE FROM post_comment
+		WHERE comment_id=#{commentId}
+	</delete>
+	
+	<update id="modifyCommentInfo" parameterType="PostCommentVO">
+		UPDATE post_comment
+        SET content=#{content}
+        WHERE comment_id=#{commentId}
+	</update>
 </mapper>

@@ -3049,15 +3049,26 @@
             let file = $('#ex_filename')[0].files[0];
 
             if(fileType == null || fileType == '파일타입' || fileType.replaceAll(' ', '') == '') {
-                alert('파일 타입을 선택해주세요');
+                
+                Swal.fire({
+                	  icon: 'warning',                     
+                	  title: '파일 타입을 선택해주세요'
+                	});
                 return;
             }
             if(locationType == null || ((fileType == '동행유형' || fileType == '여행유형' || fileType == '맛집방문자' || fileType == '여행지방문자') && locationType == '지역선택')) {
-                alert('지역을 선택해주세요.');
+                
+                Swal.fire({
+              	  icon: 'warning',                     
+              	  title: '지역을 선택해주세요'
+              	});
                 return;
             }
             if(file == undefined) {
-                alert('엑셀 파일을 선택해주세요');
+            	Swal.fire({
+                	  icon: 'warning',                     
+                	  title: '엑셀파일을 선택해주세요'
+                	});
                 return;
             }
 
@@ -3070,10 +3081,16 @@
 
             uploadExcel(formData, function(data) {
                 if(data > 0) {
-                    alert('엑셀 업로드를 성공했습니다.');
+                    Swal.fire({
+                  	  icon: 'success',                     
+                  	  title: '엑셀 업로드를 성공했습니다.'
+                  	});
                     return;
                 } else {
-                    alert('엑셀 업로드를 실패했습니다.');
+                	Swal.fire({
+                    	  icon: 'error',                     
+                    	  title: '엑셀 업로드를 실패했습니다.'
+                    	});
                     return;
                 }
             });
