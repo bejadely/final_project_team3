@@ -47,10 +47,11 @@ body {
       }
 
 .btn-outline-secondary {
-       padding: 10px 50px;
+       padding: 5px 50px;
        font-size: 16px;
        border-radius: 4px;
        height :38px;
+       margin-right:20px;
       }
 
 .btn-primary {
@@ -86,6 +87,25 @@ body {
       }
 li {
     list-style-type: none;
+}
+input[readonly] {
+  background-color: #f5f5f5; /* 배경색 변경 */
+  cursor: not-allowed; /* 커서 스타일 변경 */
+  margin-right:10px;
+}
+input[type="checkbox"] {
+  width: auto; /* 기본 크기로 설정 */
+  margin-right: 5px; /* 우측 여백 설정 */
+}
+label {
+  margin-right: 5px; /* 우측 여백 설정 */
+   font-weight: bold;
+   margin-bottom:0px;
+}
+.option {
+  align-items: center; /* 수직 가운데 정렬 */
+  margin-bottom:10px;
+
 }
 
 </style>
@@ -312,9 +332,9 @@ ClassicEditor
 				if(i==0){		
 					str +="<li data-path='"+obj.savedImg+"'";
 					str +=" data-filename='"+obj.originImg+"' data-type='U2'";
-					str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div>";
+					str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div style='text-align: left;'>";
 					//str +="<span> " + obj.originImg +"</span>";
-					str +="<img src='/display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
+					str +="<img src='/display?savedImg="+fileCallPath+"' class='img-thumbnail'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
 					pahts = obj.savedImg.split("/upload");
 					resultPath = pahts[0];
 				}
@@ -334,9 +354,9 @@ ClassicEditor
 			
 			str += "<li data-path='"+obj.savedImg+"'";
 			str +=" data-filename='"+obj.originImg+"' data-type='"+obj.imgType+"'";
-			str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div>";
+			str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div style='text-align: left;'>";
 			//str +="<span> " + obj.originImg +"</span>";
-			str +="<img src='/display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
+			str +="<img src='/display?savedImg="+fileCallPath+"' class='img-thumbnail'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
 		});
 		uploadResult.append(str);
 	}
@@ -387,15 +407,16 @@ ClassicEditor
 			  
 		      let form = document.getElementById("editorForm");
 			  let str="";
-			  str +=`<div class="option"><input type="checkbox" class="deleteCheckbox" >
-			  		<label>옵션</label><input type="text" class="specialtype" name="" value="${optionType}" readonly>
-				  	<label>가격</label><input type="text" class="price" name="" value="${optionPrice}"readonly><br>`
+			  str +=`<div class="option" style="width:800px; display: flex; align-text: left;"><input type="checkbox" class="deleteCheckbox" >
+			  		<label>옵션</label><input type="text" class="specialtype form-control" style="width:180px;" name="" value="${optionType}" readonly>
+				  	<label>가격</label><input type="text" class="price form-control" style="width:180px;" name="" value="${optionPrice}"readonly><br>`
 				  	
 		  	  if (discountRate !== '' && parseFloat(discountRate) !== 0) {
-		        str += `<label>할인율</label><input type="number" class="discountRate" name="" value="${discountRate}" readonly><br>`;
+		        str += `<label>할인율</label><input type="number" class="discountRate form-control" style="width:180px;" name="" value="${discountRate}" readonly><br>`;
 		      }else{
-		    	str += `<input type="hidden" class="discountRate" name="" value="" readonly><br>`;  		  
+		    	str += `<input type="hidden" class="discountRate form-control" style="width:180px;" name="" value="" readonly><br>`;  		  
 		      }
+			  str +=`</div>`;
 			  specialtiesOption.append(str);
 	      }
 	    })	
@@ -409,15 +430,16 @@ ClassicEditor
 		    	  //sweetalert2에서 입력된 값을 가지고옴	
 			      let form = document.getElementById("editorForm");
 			      var str="";
-				  str +=`<div class="option" style="display: inline-block; text-align: left; "><input type="checkbox" class="deleteCheckbox" >
-				  		<label>옵션</label><input type="text" class="specialtype" name="" value="${obj.specialtyType}" readonly>
-					  	<label>가격</label><input type="text" class="price" name="" value="${obj.price}"readonly><br>`
+				  str +=`<div class="option" style="width:800px; display: flex; align-text: left; "><input type="checkbox" class="deleteCheckbox" >
+				  		<label>옵션</label><input type="text" class="specialtype form-control" style="width:180px;" name="" value="${obj.specialtyType}" readonly>
+					  	<label>가격</label><input type="text" class="price form-control" style="width:180px;" name="" value="${obj.price}"readonly><br>`
 					  	
 			  	  if (obj.discountRate != '' && parseInt(obj.discountRate) != 0 && obj.discountRate != null) {
-			        str += `<label>할인율</label><input type="number" class="discountRate" name="" value="${obj.discountRate}" readonly><br>`;
+			        str += `<label>할인율</label><input type="number" class="discountRate form-control" style="width:180px;" name="" value="${obj.discountRate}" readonly><br>`;
 			      }else{
-			    	str += `<input type="hidden" class="discountRate" name="" value="" readonly><br>`;  		  
+			    	str += `<input type="hidden" class="discountRate form-control" style="width:180px;" name="" value="" readonly><br>`;  		  
 			      }
+				  str +=`</div>`
 				  specialtiesOption.append(str);	
 			});
 		});
@@ -463,69 +485,70 @@ function setDefaultType(){
 </head>
 <body>
 <div layout:fragment="content">
-<div id="ls" class="text-center" >
-	<form method="post" id="editorForm" enctype="multipart/form-data" >
-		<div id="specialtiesInfo" class="mb-3" style="margin-bottom: 20px;">	
-			<input type="hidden" name="writerId" th:value="${session.sessionId}">
-			<div id="type" class="mb-3" style=" text-align: left;">
-				<select name="type" aria-label="Default select example">
-					<option value="">선택</option>
-					<option th:each = "s : ${S}"  th:value="${s.detailCode}" th:text="${s.value}"></option>		
-				</select>	
-			</div>
-			<div class="mb-3" style="display: inline-block; text-align: left; padding-right:80%;">
-				<select id="location" aria-label="Default select example">
-					<option value="">선택</option>
-					<option th:each = "a : ${area}"  th:value1="${a.sigunguCode}" th:value2="${a.areaCode}" th:text="${a.locationName}"></option>	
-				</select>
-			</div>
-			<div class="uploadResult">
-				<ul>
+	<div id="ls" class="text-center" >
+		<form method="post" id="editorForm" enctype="multipart/form-data" >
+			<div id="specialtiesInfo" class="mb-3" style="margin-bottom: 20px;">	
+				<input type="hidden" name="writerId" th:value="${session.sessionId}">
+				<div id="type" class="mb-3" style=" text-align: left;">
+					<select name="type" aria-label="Default select example">
+						<option value="">선택</option>
+						<option th:each = "s : ${S}"  th:value="${s.detailCode}" th:text="${s.value}"></option>		
+					</select>	
+				</div>
+				<div class="mb-3" style="display: inline-block; text-align: left; padding-right:80%;">
+					<select id="location" aria-label="Default select example">
+						<option value="">지역</option>
+						<option th:each = "a : ${area}"  th:value1="${a.sigunguCode}" th:value2="${a.areaCode}" th:text="${a.locationName}"></option>	
+					</select>
+				</div>
+				<div class="uploadResult">
+					<ul>
+						
+					</ul>
+				</div>
+				<table class ="table">
+					<tr>
+						<th style="text-align: left; width: 20%;">메인 이미지</th>
+						<td colspan="5">
+						<div class="uploadDiv input-group">
+							<input type="file" class="form-control" name="mainImage" id="mainImage" aria-describedby="inputGroupFileAddon03" aria-label="Upload" style="width:400px;" multiple/>
+							<button type="button" class="btn btn-outline-secondary" id ="uploadBtn">upload</button>
+						</div>
+						</td>
+					</tr>
+					<tr>
+						<th style="text-align: left; width: 20%;">특산물</th>
+						<td colspan="2">
+							<input type="text" placeholder="특산물" style="width: 370px;" class="form-control" name="title" id="title" th:value="${info.title}"/>
+						</td>
+					</tr>
+					<tr>
+						<th style="text-align: left; width: 20%;" >옵션</th>
+						<td colspan="5">
+						<div class="specialtiesOption">
 					
-				</ul>
+						</div>
+						</td>
+					</tr>
+					<tr>
+					<th style="text-align: left; width: 20%;" >옵션 추가</th>
+						<td colspan="1">
+						<div style="display: flex; justify-content: left;">
+							<button type="button" class="optionInsert btn btn-outline-secondary" name="optionInsert">옵션추가</button>  
+							<button type="button" class="optionDelete btn btn-outline-secondary" name="optionDelete">옵션삭제</button>
+						</div>
+						</td>
+					</tr>
+				</table>
 			</div>
-			<table class ="table">
-				<tr>
-					<th style="text-align: left; width: 20%;">메인 이미지</th>
-					<td colspan="5">
-					<div class="uploadDiv input-group">
-						<input type="file" class="form-control" name="mainImage" id="mainImage" aria-describedby="inputGroupFileAddon03" aria-label="Upload" style="width:400px;" multiple/>
-						<button type="button" class="btn btn-outline-secondary" id ="uploadBtn">upload</button>
-					</div>
-					</td>
-				</tr>
-				<tr>
-					<th style="text-align: left; width: 20%;">특산물</th>
-					<td colspan="2">
-						<input type="text" placeholder="특산물" style="width: 370px;" class="form-control" name="title" id="title" th:value="${info.title}"/>
-					</td>
-				</tr>
-				<tr>
-					<th style="text-align: left; width: 20%;" >옵션</th>
-					<td colspan="5">
-					<div class="specialtiesOption">
-				
-					</div>
-					</td>
-				</tr>
-				<tr>
-					<td>
-					<div>
-						<button type="button" class="optionInsert" name="optionInsert">옵션추가</button>  
-						<button type="button" class="optionDelete" name="optionDelete">옵션삭제</button>
-					</div>
-					</td>
-				</tr>
-			</table>
-		</div>
-		<h5>패키지 설명</h5>
-		<div id="editor">
-			<th:textarea th:utext="${info.content}"></th:textarea>
-		</div>
-		<button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>
-		<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>
-	</form>
-</div>
+			<h5>패키지 설명</h5>
+			<div id="editor">
+				<th:textarea th:utext="${info.content}"></th:textarea>
+			</div>
+			<button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>
+			<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>
+		</form>
+	</div>
 </div>
 </body>
 </html>

@@ -148,6 +148,40 @@ ClassicEditor
 		
 		$("button[type='submit']").on("click",function(event){
 			event.preventDefault();
+			var startDate2 = document.getElementById("startDate").value;
+		 	var endDate2 = document.getElementById("endDate").value;
+		 	var deadlineDate2 = document.getElementById("deadlineDate").value;
+            // 현재 날짜 가져오기
+            var currentDate = new Date();
+
+            // 입력한 패키지 시작일을 Date 객체로 변환
+            var selectedStartDate = new Date(startDate2);
+            var selectedEndDate = new Date(endDate2);
+            var selectedDeadlineDate = new Date(deadlineDate2);
+            // 날짜 차이 계산 (밀리초 단위)
+            var timeDifference = selectedStartDate - currentDate;
+
+            // 30일을 밀리초로 계산
+            var thirtyDaysInMillis = 30 * 24 * 60 * 60 * 1000;
+            
+            if (selectedStartDate < currentDate) {
+                alert("여행 시작일은 오늘보다 이전일 수 없습니다.");
+                return false;
+            }
+
+            if (selectedEndDate < selectedStartDate) {
+                alert("여행 종료일은 여행 시작일 이후여야 합니다.");
+                return false;
+            }
+            if (selectedDeadlineDate > selectedStartDate) {
+                alert("여행 마감일은 여행 시작일 이전이여야 합니다.");
+                return false;
+            }
+            // 여행 시작일이 최소 한 달 전이 아닌 경우 예외 처리
+            if (timeDifference < thirtyDaysInMillis) {
+                alert("여행 시작일은 최소 한 달 전으로 설정해야 합니다.");
+                return false; // 폼 제출 중지
+            }
 			var str="";	
 			
 			var sigunguCode = $("#location > option:selected").attr("value1");
@@ -197,9 +231,80 @@ ClassicEditor
 				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='"+resultPath+obj+"'>";
 			});
 			
-			formObj.append(str);
-			document.getElementById('editorForm').action = "/guide/packageUpdate";
-			document.getElementById('editorForm').submit();
+			
+			 let packageName = document.getElementsByName('name')[0];
+			    let packagePrice = document.getElementsByName('price')[0];
+			    let packageStartDate = document.getElementsByName('startDate')[0];
+			    let packageEndDate = document.getElementsByName('endDate')[0];
+			    let packageDeadlineDate = document.getElementsByName('deadlineDate')[0];
+			    let packageMaxReservation = document.getElementsByName('maxReservation')[0];
+			    let packageContent = document.getElementsByName('content')[0];
+			    let packageTourTheme = document.getElementById('tourTheme')[0];
+			    let packageLocation = document.getElementById('location')[0];
+			   
+			    var selectedValue = packageLocation.value;
+			    
+			    if (packageName.value == '') {
+			       alert('타이틀을 입력해주세요.')
+			       packageName.focus();
+			       return;
+			    }
+			    
+			    if (packagePrice.value == '') {
+			       alert('패키지 금액을 입력해주세요.')
+			       packagePrice.focus();
+			       return;
+			    }
+			    
+			    if (packageStartDate.value == '' || packageEndDate.value == '') {
+			       alert('패키지 일정을 입력해주세요.')
+			       packageStartDate.focus();
+			       return;
+			    }
+			    
+			    if (packageDeadlineDate.value == '') {
+			       alert('모집 마감일을 입력해주세요.')
+			       packageDeadlineDate.focus();
+			       return;
+			    }
+			    
+			    if (packageMaxReservation.value == '' || packageMaxReservation.value == '') {
+			       alert('모집 인원을 입력해주세요.')
+			       packageMaxReservation.focus();
+			       return;
+			    }
+			    
+			    if (packageContent== '') {
+			       alert('내용을 입력해주세요.')
+			       packageContent.focus();
+			       return;
+			    }
+			    
+			/*     if (selectedValue === '') {
+			        alert('여행 지역을 선택 해주세요.')
+			        packageLocation.focus();
+			        return;
+			     } */
+			    
+			  /*   if (packageTourTheme.value === '') {
+			        alert('여행 테마을 지정해주세요.')
+			        packageTourTheme.focus();
+			        return;
+			     }
+ */
+				formObj.append(str);
+			    //등록하기 클릭 시 등록할지 여부를 확인
+			    if(confirm("등록 하시겠습니까?")){
+			       document.getElementById('editorForm').action = "/guide/register";
+			       document.getElementById('editorForm').submit();
+			       alert("등록 되었습니다.");
+			            return;
+			        }else{
+			              return;
+			        }
+			
+			/* document.getElementById('editorForm').action = "/guide/packageUpdate";
+			document.getElementById('editorForm').submit(); */
 			
 			
 			
