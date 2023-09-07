@@ -156,6 +156,22 @@ th, td {
   white-space: nowrap;
   margin: 3px;
 }
+
+.deletePac {
+  background-color: #2cbdb8;
+  color: whitesmoke;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 7px;
+  padding: 5px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin: 3px;
+}
+
 .delete-btn {
   background-color: #2cbdb8;
   color: whitesmoke;
@@ -1755,6 +1771,7 @@ h1 {
 }
 .property-pagination {
 	padding-top: 10px;
+	text-align: center;
 }
 .property-pagination a {
 	display: inline-block;
