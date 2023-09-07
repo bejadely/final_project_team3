@@ -21,8 +21,7 @@ public class AesProcessor {
 	
 	public AesProcessor() throws UnsupportedEncodingException, NoSuchAlgorithmException {
 		// secretKey, iv 실험
-		this("aeskey12345678987654321asekey987","kimnana");
-		
+		this("aeskey87522558466654321asekey987","aesiv12422411342");
 	};
 	
 	public AesProcessor(String reqSecretKey, String iv) throws UnsupportedEncodingException, NoSuchAlgorithmException {

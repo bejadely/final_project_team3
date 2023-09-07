@@ -11,12 +11,16 @@ import com.trip.finalProject.adminMember.mapper.AdminMemberMapper;
 import com.trip.finalProject.adminMember.service.AdminMemberService;
 import com.trip.finalProject.adminMember.service.AdminMemberVO;
 import com.trip.finalProject.common.PagingVO;
+import com.trip.finalProject.security.service.AesProcessor;
 
 @Service
 public class AdminMemberServiceImpl implements AdminMemberService {
 	
 	@Autowired
 	AdminMemberMapper amm;
+	
+	@Autowired
+	AesProcessor aesProcessor;
 	
 	@Override
 	public List<AdminMemberVO> selectAllMember(PagingVO pagingVO) {
@@ -33,7 +37,18 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	@Override
 	public AdminMemberVO getMemberDetail(AdminMemberVO vo) {
 		// 회원 상세 조회
-		return amm.getMemberDetail(vo);
+		String decodedAccountNum = "";
+		
+		//계좌번호 복호화
+		try {
+			vo = amm.getMemberDetail(vo);
+			decodedAccountNum = aesProcessor.aesCBCDecode(vo.getAccountNumber());
+			vo.setAccountNumber(decodedAccountNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return vo;
 	}
 	
 	@Override
