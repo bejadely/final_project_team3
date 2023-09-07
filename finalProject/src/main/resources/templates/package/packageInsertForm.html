@@ -14,21 +14,82 @@
  -->
 <script src ="/ckeditor5-build-classic/ckeditor.js"></script>
 <style>
-.ck.ck-editor {
-	width: 80%;
-	max-width: 800px;
-	margin: 0 auto;
-}
-
-.ck-editor__editable {
-	height: 80vh;
-}
-
 form {
 	text-align: center;
+
 }
 #tourTheme{
 	margin: 0 auto;
+}
+
+.input-group {
+    width: 700px; /* 파일 입력 필드와 버튼의 전체 너비 조절 */
+    
+}
+.img-thumbnail{
+	width:400px;
+	height:400px;
+	
+}
+body {
+       background-color: #ffffff;
+       color: #000000;
+      }
+
+.text-center {
+       text-align: center;
+       width: 60%;
+       margin: 0 auto;
+      }
+
+.form-control {
+       width: 100%;
+       padding: 10px;
+       border: 1px solid #ced4da;
+       border-radius: 4px;
+       box-sizing: border-box;
+      }
+
+.btn-outline-secondary {
+       padding: 10px 50px;
+       font-size: 16px;
+       border-radius: 4px;
+       height :38px;
+      }
+
+.btn-primary {
+       background-color: #007bff;
+       border: none;
+       color: #ffffff;
+      }
+
+.btn-primary:hover {
+       background-color: #0069d9;
+       color: #ffffff;
+      }
+
+.btn-secondary {
+      background-color: #6c757d;
+      border: none;
+      color: #ffffff;
+      }
+
+.btn-secondary:hover {
+      background-color: #5a6268;
+      color: #ffffff;
+      }
+        
+.ck.ck-editor {
+     width: 100%;
+     max-width: 1500px;
+     margin: 0 auto;
+      }
+
+.ck-editor__editable {
+     height: 70vh;
+      }
+li {
+    list-style-type: none;
 }
 
 </style>
@@ -246,9 +307,9 @@ ClassicEditor
 			
 			str += "<li data-path='"+obj.savedImg+"'";
 			str +=" data-filename='"+obj.originImg+"' data-type='"+obj.imgType+"'";
-			str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div>";
-			str +="<span> " + obj.originImg +"</span>";
-			str +="<img src='/display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
+			str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div style='text-align: left;'>";
+			//str +="<span> " + obj.originImg +"</span>";
+			str +="<img src='/display?savedImg="+fileCallPath+"'class='img-thumbnail' >"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
 		});
 		uploadResult.append(str);
 	}
@@ -259,63 +320,74 @@ ClassicEditor
 </head>
 <body>
 <div layout:fragment="content">
+<div id="ls" class="text-center" >
 	<form method="post" id="editorForm" enctype="multipart/form-data" >
-		<div id="packageInfo">
+		<div id="packageInfo" class="mb-3" style="margin-bottom: 20px;">
 		<input type="hidden" name="writerId" th:value="${session.sessionId}">
-			<div>
-				<label>테마</label>
-				<select name="tourTheme" id="tourTheme">
+			<div id="tourTheme" class="mb-3" style=" text-align: left;">
+				<select name="tourTheme" aria-label="Default select example">
 					<option value="맛집 투어">맛집 투어</option>
 					<option value="관광 명소 투어">관광 명소 투어</option>
 					<option value="쇼핑 여행">쇼핑 여행</option>
 					<option value="도시 여행">도시 여행</option>
 				</select>	
 			</div>	
-			<div>
-				<label>지역</label>
+			<div class="mb-3" style="display: inline-block; text-align: left; padding-right:80%;">
 				<select id="location">
-					<option value="">선택</option>
+					<option value="">지역</option>
 					<option th:each = "a : ${area}"  th:value1="${a.sigunguCode}" th:value2="${a.areaCode}" th:text="${a.locationName}"></option>	
 				</select>
 			</div>
-			<div class="uploadDiv">
-				<input type="file" name="mainImage" id="mainImage" multiple/>
-			</div>
-			<button id ="uploadBtn">upload</button>
 			<div class="uploadResult">
 				<ul>
 				
 				</ul>
 			</div>
-			<div>
-				<label>패키지 명</label>
-				<input type="text" placeholder="패키지 명" name="name" id="name"/>
-			</div>
-			
-			<div>
-				<label>패키지 가격</label>
-				<input type="text" placeholder="판매가" name="price" id="price"/>
-			</div>
-			<div>
-			
-			</div>
-			<div>
-				<p>패키지 기간</p>
-				<label>시작일</label>
-				<input type="date" name="startDate" id="startDate"/>
-				<label> ~ 종료일</label>
-				<input type="date" name="endDate" id="endDate"/>
-			</div>
-			
-			<div>
-				<label>모집 종료일</label>
-				<input type="date" name="deadlineDate" id="deadlineDate"/>
-			</div>
-			
-			<div>
-				<label>모집 인원</label>
-				<input type="number" name ="maxReservation" id="maxReservation"/>
-			</div>
+			<table class="table">
+				<tr>
+					<th style="text-align: left; width: 20%;">메인 이미지</th>
+					<td colspan="5">
+					<div class="uploadDiv input-group">
+						<input type="file" class="form-control" name="mainImage" id="mainImage" aria-describedby="inputGroupFileAddon03" aria-label="Upload" style="width:400px;" multiple/>
+						<button type="button" class="btn btn-outline-secondary" id ="uploadBtn">upload</button>
+					</div>
+					<td>
+				</tr>
+				<tr>
+					<th style="text-align: left; width: 20%;">패키지명</th>
+		            <td colspan="2">
+						<input type="text" style="width: 370px;" class="form-control" placeholder="패키지 명" name="name" id="name">
+					</td>	
+					<th style="text-align: left; width: 20%;">패키지 가격</th>
+					<td colspan="2">
+						<input type="text" style="width: 370px margin-left: 4px;;" class="form-control" placeholder="판매가" name="price" id="price">
+					</td>
+				</tr>
+				
+				<tr>
+					<th style="text-align: left; width: 20%;">여행 시작일</th>
+					<td colspan="2" >
+	                    <input type="date" style="width: 370px;" id="startDate" name="startDate" size="30" class="form-control" >
+	                </td>
+	                <th style="text-align: left; width: 20%;">여행 마지막일</th>
+	          		<td colspan="2">
+	                     <input type="date" style="width: 450px; margin-left: 4px;" id="endDate" name="endDate" size="30" class="form-control">
+	                 </td>
+				</tr>
+				
+				<tr>
+					<th style="text-align: left; width: 20%;">모집 마감일</th>
+	                <td colspan="5">
+	                	<input type="date"  name="deadlineDate" id="deadlineDate" class="form-control" />
+	                </td>
+				</tr>
+				<tr>
+				 	<th style="text-align: left; width: 20%;">모집 인원</th>
+	             	<td colspan="5">
+	             		<input type="number"  class="form-control" name ="maxReservation" id="maxReservation"/>
+	            	</td>
+				</tr>
+			</table>
 		</div>
 		<h5>패키지 설명</h5>
 		<div id="editor">
@@ -324,7 +396,7 @@ ClassicEditor
 		<button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>
 		<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>
 	</form>
-
+</div>
 </div>
 </body>
 </html>

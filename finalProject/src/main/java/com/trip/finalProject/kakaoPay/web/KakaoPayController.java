@@ -75,9 +75,9 @@ public class KakaoPayController {
 		
 		kakaoPayService.insertPayment(vo);
 		
-		
+		System.out.println(kakaoPayInfoResponseVO.getItem_code());
 		//주문 상세 테이블 등록
-		if(kakaoPayInfoResponseVO.getItem_code() == null) {
+		if(kakaoPayInfoResponseVO.getItem_code() == null || kakaoPayInfoResponseVO.getItem_code().equals("")) {
 			
 			kakaoPayInfoResponseVO.setSpecialtyType(approveResponse.getSpecialtyType());
 			kakaoPayInfoResponseVO.setPaymentId(vo.getPaymentId());
