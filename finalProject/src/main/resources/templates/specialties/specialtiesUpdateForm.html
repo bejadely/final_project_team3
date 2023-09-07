@@ -14,21 +14,78 @@
  -->
 <script src ="/ckeditor5-build-classic/ckeditor.js"></script>
 <style>
-.ck.ck-editor {
-	width: 80%;
-	max-width: 800px;
-	margin: 0 auto;
-}
-
-.ck-editor__editable {
-	height: 80vh;
-}
-
 form {
 	text-align: center;
+
 }
-#tourTheme{
-	margin: 0 auto;
+.input-group {
+    width: 700px; /* 파일 입력 필드와 버튼의 전체 너비 조절 */
+    
+}
+.img-thumbnail{
+	width:400px;
+	height:400px;
+	
+}
+body {
+       background-color: #ffffff;
+       color: #000000;
+      }
+
+.text-center {
+       text-align: center;
+       width: 60%;
+       margin: 0 auto;
+      }
+
+.form-control {
+       width: 100%;
+       padding: 10px;
+       border: 1px solid #ced4da;
+       border-radius: 4px;
+       box-sizing: border-box;
+      }
+
+.btn-outline-secondary {
+       padding: 10px 50px;
+       font-size: 16px;
+       border-radius: 4px;
+       height :38px;
+      }
+
+.btn-primary {
+       background-color: #007bff;
+       border: none;
+       color: #ffffff;
+      }
+
+.btn-primary:hover {
+       background-color: #0069d9;
+       color: #ffffff;
+      }
+
+.btn-secondary {
+      background-color: #6c757d;
+      border: none;
+      color: #ffffff;
+      }
+
+.btn-secondary:hover {
+      background-color: #5a6268;
+      color: #ffffff;
+      }
+        
+.ck.ck-editor {
+     width: 100%;
+     max-width: 1500px;
+     margin: 0 auto;
+      }
+
+.ck-editor__editable {
+     height: 70vh;
+      }
+li {
+    list-style-type: none;
 }
 
 </style>
@@ -37,6 +94,8 @@ form {
 <script>
 var postId = '[[${info.postId}]]';
 $(document).ready(function() {	
+	setDefaultType();
+
 var paths;
 var resultPath;
 ClassicEditor
@@ -58,11 +117,9 @@ ClassicEditor
 			
 			const filenames = imgTags.map(img=> {
 				const src = img.getAttribute('src');
-				console.log(src);
 				const substringToExtract = "/upload"
 				return src.split(substringToExtract)[1];
 			});
-			console.log(filenames);
 			fetch(`/common/deleteImg`,{
 				method: 'POST',
 				headers:{
@@ -214,7 +271,6 @@ ClassicEditor
 	$(".uploadResult").on("click","span",function(e){
 		var targetFile = $(this).data("file");
 		var clickedSpan = $(this);
-		console.log("파일 삭제");
 		
 		if(confirm("이미지 삭제 하시겠습니까?")){
 		var currentNode = clickedSpan.closest("li");
@@ -257,7 +313,7 @@ ClassicEditor
 					str +="<li data-path='"+obj.savedImg+"'";
 					str +=" data-filename='"+obj.originImg+"' data-type='U2'";
 					str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div>";
-					str +="<span> " + obj.originImg +"</span>";
+					//str +="<span> " + obj.originImg +"</span>";
 					str +="<img src='/display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
 					pahts = obj.savedImg.split("/upload");
 					resultPath = pahts[0];
@@ -279,7 +335,7 @@ ClassicEditor
 			str += "<li data-path='"+obj.savedImg+"'";
 			str +=" data-filename='"+obj.originImg+"' data-type='"+obj.imgType+"'";
 			str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div>";
-			str +="<span> " + obj.originImg +"</span>";
+			//str +="<span> " + obj.originImg +"</span>";
 			str +="<img src='/display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
 		});
 		uploadResult.append(str);
@@ -349,13 +405,11 @@ ClassicEditor
 		
 		$.getJSON("/getOptionList",{postId:postId},function(arr){
 			$(arr).each(function(i, obj){
-				  console.log(obj.discountRate);
 				  var specialtiesOption = $(".specialtiesOption");  
-			      console.log("=============");
 		    	  //sweetalert2에서 입력된 값을 가지고옴	
 			      let form = document.getElementById("editorForm");
 			      var str="";
-				  str +=`<div class="option"><input type="checkbox" class="deleteCheckbox" >
+				  str +=`<div class="option" style="display: inline-block; text-align: left; "><input type="checkbox" class="deleteCheckbox" >
 				  		<label>옵션</label><input type="text" class="specialtype" name="" value="${obj.specialtyType}" readonly>
 					  	<label>가격</label><input type="text" class="price" name="" value="${obj.price}"readonly><br>`
 					  	
@@ -388,50 +442,81 @@ ClassicEditor
 	
 	
 });
+
+function setDefaultType(){
+    
+    // 기본으로 설정할 국적 설정(컨트롤러에서 불러온 회원의 기본 국적 설정값)
+    let defaultType = '[[ ${info.type} ]]';
+    console.log(defaultType);
+    // select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
+    $('#type').find('span').text(defaultType);
+    
+    // selected 처리되어있던 option을 일반 옵션으로 변경
+    $('#type').find('.option.selected').attr("class", "option");
+    
+    // 불러온 국적값에 해당하는 option을 selected 및 focus 처리
+    $('.option[data-value="'+defaultType+'"]').attr("class", "option selected focus");
+} 
+
+
 </script>
 </head>
 <body>
 <div layout:fragment="content">
+<div id="ls" class="text-center" >
 	<form method="post" id="editorForm" enctype="multipart/form-data" >
-		<div id="specialtiesInfo">	
+		<div id="specialtiesInfo" class="mb-3" style="margin-bottom: 20px;">	
 			<input type="hidden" name="writerId" th:value="${session.sessionId}">
-			<div>
-				<label>특산물 종류</label>
-				<select name="type" id="type">
+			<div id="type" class="mb-3" style=" text-align: left;">
+				<select name="type" aria-label="Default select example">
 					<option value="">선택</option>
 					<option th:each = "s : ${S}"  th:value="${s.detailCode}" th:text="${s.value}"></option>		
 				</select>	
 			</div>
-			<div>
-				<label>지역</label>
-				<select id="location">
+			<div class="mb-3" style="display: inline-block; text-align: left; padding-right:80%;">
+				<select id="location" aria-label="Default select example">
 					<option value="">선택</option>
 					<option th:each = "a : ${area}"  th:value1="${a.sigunguCode}" th:value2="${a.areaCode}" th:text="${a.locationName}"></option>	
 				</select>
 			</div>
-			<div class="product-pic-zoom">
-                               
-            </div>
-			<div class="uploadDiv">
-				<input type="file" name="mainImage" id="mainImage" multiple/>
-			</div>
-			<button id ="uploadBtn">upload</button>
 			<div class="uploadResult">
 				<ul>
 					
 				</ul>
 			</div>
-			<div>
-				<label>특산물 명</label>
-				<input type="text" placeholder="특산물 명" name=title id="title"/>
-			</div>
-			<div class="specialtiesOption">
-			</div>
-			<div>
-				<button type="button" class="optionInsert" name="optionInsert">옵션추가</button>  
-				<button type="button" class="optionDelete" name="optionDelete">옵션삭제</button>
-			</div>
-			
+			<table class ="table">
+				<tr>
+					<th style="text-align: left; width: 20%;">메인 이미지</th>
+					<td colspan="5">
+					<div class="uploadDiv input-group">
+						<input type="file" class="form-control" name="mainImage" id="mainImage" aria-describedby="inputGroupFileAddon03" aria-label="Upload" style="width:400px;" multiple/>
+						<button type="button" class="btn btn-outline-secondary" id ="uploadBtn">upload</button>
+					</div>
+					</td>
+				</tr>
+				<tr>
+					<th style="text-align: left; width: 20%;">특산물</th>
+					<td colspan="2">
+						<input type="text" placeholder="특산물" style="width: 370px;" class="form-control" name="title" id="title" th:value="${info.title}"/>
+					</td>
+				</tr>
+				<tr>
+					<th style="text-align: left; width: 20%;" >옵션</th>
+					<td colspan="5">
+					<div class="specialtiesOption">
+				
+					</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<div>
+						<button type="button" class="optionInsert" name="optionInsert">옵션추가</button>  
+						<button type="button" class="optionDelete" name="optionDelete">옵션삭제</button>
+					</div>
+					</td>
+				</tr>
+			</table>
 		</div>
 		<h5>패키지 설명</h5>
 		<div id="editor">
@@ -440,7 +525,7 @@ ClassicEditor
 		<button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>
 		<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>
 	</form>
-
+</div>
 </div>
 </body>
 </html>
