@@ -233,7 +233,9 @@ public class TripMateController {
 
 		model.addAttribute("list", myTipPageList);
 		model.addAttribute("paging", pagingVO);
-
+		
+		System.out.println(myTipPageList);
+		
 		return "myPage/mate/myTripMate";
 	}
 	

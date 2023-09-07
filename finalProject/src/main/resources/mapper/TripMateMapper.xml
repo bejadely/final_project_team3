@@ -241,7 +241,8 @@
 			 			 deadline,
 			 			 hit,
 			 			 writer_id,
-			 			 trip_area		 
+			 			 trip_area,
+			 			 room_number		 
 				 FROM mate_recruit
      			 WHERE writer_id = #{trVO.writerId}
 				 ORDER BY post_id DESC) a)
@@ -269,7 +270,8 @@
 			 			 r.hit,
 			 			 r.writer_id,
 			 			 r.trip_area,
-                         a.apply_id	 
+                         a.apply_id,
+                         r.room_number
 				 FROM mate_recruit r left OUTER JOIN mate_apply a on r.post_id = a.post_id
      			 WHERE a.member_id = #{trVO.memberId}
 				 ORDER BY r.post_id DESC) a)

@@ -81,4 +81,5 @@ public interface TripMateMapper {
     int deleteComment(String postId);
 
 	public int modifyCommentInfo(PostCommentVO postCommentVO);
+
 }
