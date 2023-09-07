@@ -105,7 +105,8 @@ ClassicEditor
 		        type:type
 			};
 			
-			
+			var pahts;
+			var resultPath;
 			$(".uploadResult ul li").each(function(i,obj){
 				var jobj = $(obj);
 				
@@ -113,7 +114,8 @@ ClassicEditor
 				str += "<input type ='hidden' name='attachList["+i+"].savedImg' value='"+jobj.data("path")+"'>";
 				str += "<input type ='hidden' name='attachList["+i+"].imgType' value='"+jobj.data("type")+"'>";
 				str += "<input type ='hidden' name='attachList["+i+"].loadingImg' value='"+jobj.data("loadingpath")+"'>";
-				
+				pahts = jobj.data("path").split("/upload");
+				resultPath = pahts[0];
 			});
 			str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";
 			
@@ -139,7 +141,7 @@ ClassicEditor
 				return src;
 			});		
 			$.each(filenames,function(i,obj){
-				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
+				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='"+resultPath+obj+"'>";
 			});
 			
 			formObj.append(str);

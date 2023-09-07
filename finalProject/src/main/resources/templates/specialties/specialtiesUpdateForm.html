@@ -37,7 +37,8 @@ form {
 <script>
 var postId = '[[${info.postId}]]';
 $(document).ready(function() {	
-
+var paths;
+var resultPath;
 ClassicEditor
 	.create(document.querySelector('#editor'), {
 		/* htmlEncodeOutput: false, */
@@ -108,7 +109,8 @@ ClassicEditor
 		        postId:postId
 			};
 			
-			
+			var paths;
+			var result;
 			$(".uploadResult ul li").each(function(i,obj){
 				var jobj = $(obj);
 				
@@ -116,6 +118,8 @@ ClassicEditor
 				str += "<input type ='hidden' name='attachList["+i+"].savedImg' value='"+jobj.data("path")+"'>";
 				str += "<input type ='hidden' name='attachList["+i+"].imgType' value='"+jobj.data("type")+"'>";
 				str += "<input type ='hidden' name='attachList["+i+"].loadingImg' value='"+jobj.data("loadingpath")+"'>";
+				pahts = jobj.data("path").split("/upload");
+				resultPath = pahts[0];
 				
 			});
 			str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";
@@ -142,7 +146,7 @@ ClassicEditor
 				return src;
 			});		
 			$.each(filenames,function(i,obj){
-				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
+				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='"+resultPath+obj+"'>";
 			});
 			
 			formObj.append(str);
@@ -255,6 +259,8 @@ ClassicEditor
 					str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div>";
 					str +="<span> " + obj.originImg +"</span>";
 					str +="<img src='/display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
+					pahts = obj.savedImg.split("/upload");
+					resultPath = pahts[0];
 				}
 			});
 			uploadResult.append(str);

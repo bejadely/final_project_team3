@@ -14,29 +14,84 @@
  -->
 <script src ="/ckeditor5-build-classic/ckeditor.js"></script>
 <style>
-.ck.ck-editor {
-	width: 80%;
-	max-width: 800px;
-	margin: 0 auto;
-}
 
-.ck-editor__editable {
-	height: 80vh;
-}
 
 form {
 	text-align: center;
+
 }
 #tourTheme{
 	margin: 0 auto;
 }
 
 .input-group {
-    width: 400px; /* 파일 입력 필드와 버튼의 전체 너비 조절 */
+    width: 700px; /* 파일 입력 필드와 버튼의 전체 너비 조절 */
+    
 }
 .img-thumbnail{
 	width:400px;
 	height:400px;
+	
+}
+body {
+       background-color: #ffffff;
+       color: #000000;
+      }
+
+.text-center {
+       text-align: center;
+       width: 60%;
+       margin: 0 auto;
+      }
+
+.form-control {
+       width: 100%;
+       padding: 10px;
+       border: 1px solid #ced4da;
+       border-radius: 4px;
+       box-sizing: border-box;
+      }
+
+.btn-outline-secondary {
+       padding: 10px 50px;
+       font-size: 16px;
+       border-radius: 4px;
+       height :38px;
+      }
+
+.btn-primary {
+       background-color: #007bff;
+       border: none;
+       color: #ffffff;
+      }
+
+.btn-primary:hover {
+       background-color: #0069d9;
+       color: #ffffff;
+      }
+
+.btn-secondary {
+      background-color: #6c757d;
+      border: none;
+      color: #ffffff;
+      }
+
+.btn-secondary:hover {
+      background-color: #5a6268;
+      color: #ffffff;
+      }
+        
+.ck.ck-editor {
+     width: 100%;
+     max-width: 1500px;
+     margin: 0 auto;
+      }
+
+.ck-editor__editable {
+     height: 70vh;
+      }
+li {
+    list-style-type: none;
 }
 
 </style>
@@ -46,9 +101,12 @@ form {
 var postId = '[[${info.postId}]]';
 $(document).ready(function() {	
 	setDefaultTourTheme()
+	var paths;
+	var resultPath;
 ClassicEditor
 	.create(document.querySelector('#editor'), {
-		/* htmlEncodeOutput: false, */
+		/* htmlEncodeOutput: false, */	
+		
 		ckfinder: {
 			uploadUrl : '/common/upload'	
 		}
@@ -113,7 +171,7 @@ ClassicEditor
 		        postId:postId
 			};
 			
-			
+		
 			$(".uploadResult ul li").each(function(i,obj){
 				var jobj = $(obj);
 				
@@ -121,6 +179,8 @@ ClassicEditor
 				str += "<input type ='hidden' name='attachList["+i+"].savedImg' value='"+jobj.data("path")+"'>";
 				str += "<input type ='hidden' name='attachList["+i+"].imgType' value='"+jobj.data("type")+"'>";
 				str += "<input type ='hidden' name='attachList["+i+"].loadingImg' value='"+jobj.data("loadingpath")+"'>";
+				pahts = jobj.data("path").split("/upload");
+				resultPath = pahts[0];
 				
 			});
 			str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";
@@ -134,7 +194,7 @@ ClassicEditor
 				return src;
 			});		
 			$.each(filenames,function(i,obj){
-				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
+				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='"+resultPath+obj+"'>";
 			});
 			
 			formObj.append(str);
@@ -213,6 +273,7 @@ ClassicEditor
 	
 
 	
+	
 	//기존에 있던 이미지 썸네일
 	(function(){
 		$.getJSON("/getAttachList",{postId:postId},function(arr){
@@ -221,11 +282,13 @@ ClassicEditor
 				var fileCallPath = encodeURIComponent(`${obj.savedImg}`);
 			
 				if(i==0){		
-					str +="<data-path='"+obj.savedImg+"'";
+					str +="<li data-path='"+obj.savedImg+"'";
 					str +=" data-filename='"+obj.originImg+"' data-type='U2'";
-					str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div>";
+					str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div style='text-align: left;'>";
 					//str +="<span> " + obj.originImg +"</span>";
 					str +="<img src='/display?savedImg="+fileCallPath+"' class='img-thumbnail'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
+					pahts = obj.savedImg.split("/upload");
+					resultPath = pahts[0];
 				}
 			});
 			uploadResult.append(str);
@@ -242,10 +305,10 @@ ClassicEditor
 			//str += "<li><img src='display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"<li>";
 			
 			str += "<li data-path='"+obj.savedImg+"'";
-			str +="<li data-filename='"+obj.originImg+"' data-type='"+obj.imgType+"'";
-			str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div>";
-			str +="<span> " + obj.originImg +"</span>";
-			str +="<img src='/display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
+			str +=" data-filename='"+obj.originImg+"' data-type='"+obj.imgType+"'";
+			str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div style='text-align: left;'>";
+			//str +="<span> " + obj.originImg +"</span>";
+			str +="<img src='/display?savedImg="+fileCallPath+"' class='img-thumbnail'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
 		});
 		uploadResult.append(str);
 	}
@@ -272,70 +335,81 @@ function setDefaultTourTheme(){
 </head>
 <body>
 <div layout:fragment="content">
+<div id="ls" class="text-center" >
 	<form method="post" id="editorForm" enctype="multipart/form-data" >
-		<div id="specialtiesInfo">	
+		<div id="specialtiesInfo" class="mb-3" style="margin-bottom: 20px;">	
 			<input type="hidden" name="writerId" th:value="${session.sessionId}">
-			<div>
-				<label>테마</label>
-				<select name="tourTheme" id="tourTheme">
+			<div id="tourTheme" class="mb-3" style=" text-align: left;">
+				<select name="tourTheme" aria-label="Default select example">
 					<option value="맛집 투어">맛집 투어</option>
 					<option value="관광 명소 투어">관광 명소 투어</option>
 					<option value="쇼핑 여행">쇼핑 여행</option>
 					<option value="도시 여행">도시 여행</option>
 				</select>	
 			</div>	
-			<div>
-				<label>지역</label>
-				<select id="location">
-					<option value="">선택</option>
+			<div class="mb-3" style="display: inline-block; text-align: left; padding-right:80%;">
+				<select id="location" aria-label="Default select example">
+					<option value="">지역</option>
 					<option th:each = "a : ${area}"  th:value1="${a.sigunguCode}" th:value2="${a.areaCode}" th:text="${a.locationName}"></option>	
 				</select>
 			</div>
-			<div class="product-pic-zoom">
+	<!-- 		<div class="product-pic-zoom">
                                
-            </div>
+            </div> -->
             <div class="uploadResult">
 				<ul>
 					
 				</ul>
 			</div>
-			<div class="uploadDiv input-group">
-				<!-- <input type="file" name="mainImage" id="mainImage" class="form-control form-control-sm" multiple/>
-				<button id ="uploadBtn">upload</button> -->
+			<table class ="table">
+				<tr>
+					<!-- <input type="file" name="mainImage" id="mainImage" class="form-control form-control-sm" multiple/>
+					<button id ="uploadBtn">upload</button> -->
+					<th style="text-align: left; width: 20%;">메인 이미지</th>
+					<td colspan="5">
+					<div class= "input-group">
+		  				<input type="file" class="form-control" name="mainImage" id="mainImage" aria-describedby="inputGroupFileAddon03" aria-label="Upload" style="width:400px;" multiple/>
+						<button class="btn btn-outline-secondary" type="button" id="uploadBtn">Button</button>
+					</div>
+					<td>
+				</tr>
 				
-  				<input type="file" class="form-control" name="mainImage" id="mainImage" aria-describedby="inputGroupFileAddon03" aria-label="Upload" multiple/>
-				<button class="btn btn-outline-secondary" type="button" id="uploadBtn">Button</button>
-			</div>
-			
-			<div>
-				<label>패키지 명</label>
-				<input type="text" placeholder="패키지 명" name="name" id="name" th:value=${info.name}/>
-			</div>
-			
-			<div>
-				<label>패키지 가격</label>
-				<input type="text" placeholder="판매가" name="price" id="price" th:value=${info.price}/>
-			</div>
-			<div>
-			
-			</div>
-			<div>
-				<p>패키지 기간</p>
-				<label>시작일</label>
-				<input type="date" name="startDate" id="startDate" th:value="${#dates.format(info.startDate,'yyyy-MM-dd')}"/>
-				<label> ~ 종료일</label>
-				<input type="date" name="endDate" id="endDate" th:value="${#dates.format(info.endDate,'yyyy-MM-dd')}"/>
-			</div>
-			
-			<div>
-				<label>모집 종료일</label>
-				<input type="date" name="deadlineDate" id="deadlineDate" th:value="${#dates.format(info.deadlineDate,'yyyy-MM-dd')}"/>
-			</div>
-			<div>
-				<label>모집 인원</label>
-				<input type="number" name ="maxReservation" id="maxReservation" th:value="${info.maxReservation}"/>
-			</div>
-			
+				<tr>
+					<th style="text-align: left; width: 20%;">패키지명</th>
+		            <td colspan="2">
+						<input type="text" style="width: 370px;" class="form-control" placeholder="패키지 명" name="name" id="name" th:value="${info.name}">
+					</td>	
+					<th style="text-align: left; width: 20%;">패키지 가격</th>
+					<td colspan="2">
+						<input type="text" style="width: 370px margin-left: 4px;;" class="form-control" placeholder="판매가" name="price" id="price" th:value="${info.price}">
+					</td>
+				</tr>
+				
+				<tr>
+					<th style="text-align: left; width: 20%;">여행 시작일</th>
+					<td colspan="2" >
+	                    <input type="date" style="width: 370px;" id="startDate" name="startDate" size="30" class="form-control" th:value="${#dates.format(info.startDate,'yyyy-MM-dd')}">
+	                </td>
+	                <th style="text-align: left; width: 20%;">여행 마지막일</th>
+	          		<td colspan="2">
+	                     <input type="date" style="width: 370px; margin-left: 4px;" id="endDate" name="endDate" size="30" class="form-control" th:value="${#dates.format(info.endDate,'yyyy-MM-dd')}">
+	                 </td>
+				</tr>
+				
+				<tr>
+					<th style="text-align: left; width: 20%;">모집 마감일</th>
+	                <td colspan="5">
+	                	<input type="date"  name="deadlineDate" id="deadlineDate" class="form-control" th:value="${#dates.format(info.deadlineDate,'yyyy-MM-dd')}"/>
+	                </td>
+				</tr>
+				<tr>
+				 	<th style="text-align: left; width: 20%;">모집 인원</th>
+	             	<td colspan="5">
+	             		<input type="number"  class="form-control" name ="maxReservation" id="maxReservation" th:value="${info.maxReservation}"/>
+	            	</td>
+				</tr>
+				
+			</table>
 		</div>
 		<h5>패키지 설명</h5>
 		<div id="editor">
@@ -344,6 +418,7 @@ function setDefaultTourTheme(){
 		<button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>
 		<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>
 	</form>
+</div>
 
 </div>
 </body>
