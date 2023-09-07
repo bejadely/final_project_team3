@@ -19,6 +19,12 @@ public class AesProcessor {
 	private SecretKeySpec secretKey;
 	private IvParameterSpec IV;
 	
+	public AesProcessor() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+		// secretKey, iv 실험
+		this("aeskey12345678987654321asekey987","kimnana");
+		
+	};
+	
 	public AesProcessor(String reqSecretKey, String iv) throws UnsupportedEncodingException, NoSuchAlgorithmException {
 		
 		//바이트 배열로부터 SecretKey를 구축
@@ -28,7 +34,7 @@ public class AesProcessor {
 	}
 	
     //AES CBC PKCS5Padding 암호화(Hex | Base64)
-	public String AesCBCEncode(String plainText) throws Exception {
+	public String aesCBCEncode(String plainText) throws Exception {
 		
 		//Cipher 객체 인스턴스화(Java에서는 PKCS#5 = PKCS#7이랑 동일)
 		Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -47,7 +53,7 @@ public class AesProcessor {
 	}
 
 	//AES CBC PKCS5Padding 복호화(Hex | Base64)
-	public String AesCBCDecode(String encodeText) throws Exception {
+	public String aesCBCDecode(String encodeText) throws Exception {
 
 		//Cipher 객체 인스턴스화(Java에서는 PKCS#5 = PKCS#7이랑 동일)
 		Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
