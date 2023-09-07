@@ -64,6 +64,7 @@
 							, deadline
 							, writer_id
 							, trip_area
+							, room_number
 						)
 					VALUES
 						(
@@ -80,7 +81,8 @@
 							, sysdate
 							, #{deadline}
 							, #{writerId}
-							, #{tripArea}						
+							, #{tripArea}
+							, #{roomNumber}						
 						)
 		
 	</insert>

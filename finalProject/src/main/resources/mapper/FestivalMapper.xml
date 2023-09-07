@@ -63,6 +63,7 @@
 			  FROM festival_info
 			 WHERE TO_DATE(start_date, 'YYYYMMDD') <= LAST_DAY(TRUNC(SYSDATE))
 			   AND TO_DATE(end_date, 'YYYYMMDD') >= TRUNC(SYSDATE, 'MM')
+			   AND delete_yn = 'N'
 	 	  ORDER BY TO_DATE(start_date, 'YYYYMMDD') DESC
 		]]> 
 	</select>
@@ -74,6 +75,7 @@
 	  		  FROM festival_info
 	  		 WHERE TO_DATE(start_date, 'YYYYMMDD') <= LAST_DAY(TO_DATE(#{year} || #{month} || '01', 'YYYYMMDD'))
 	    	   AND TO_DATE(end_date, 'YYYYMMDD') >= TO_DATE(#{year} || #{month} || '01', 'YYYYMMDD')
+	   	  	   AND delete_yn = 'N'
 	   	  ORDER BY TO_DATE(start_date, 'YYYYMMDD') DESC
 		 ]]>
 	</select>

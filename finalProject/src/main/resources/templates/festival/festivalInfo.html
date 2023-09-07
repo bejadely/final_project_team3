@@ -502,9 +502,7 @@
 	}
 
 	$(document).on('click', '#modifyButton', function() {
-		if(!confirm('수정 하시겠습니까?')) {
-			return;
-		}
+
 
 		let title = $('#titleInput').val();
 		let date = $('#dateInput').val();
@@ -533,48 +531,86 @@
 			console.log('done');
 
 			if(data == 1) {
-				alert('수정을 성공했습니다.');
-				location.href = location.href;
+				Swal.fire({
+	          		  icon: 'success',                    
+	          		  title: '수정을 성공했습니다.'
+	          		}).then(result => {
+					   if (result.isConfirmed) { 
+						   location.href = location.href;
+					   }
+	          		});
+				
 			} else {
-				alert('수정 할 데이터가 없습니다.');
+				Swal.fire({
+	          		  icon: 'warning',                    
+	          		  title: '수정 할 데이터가 없습니다.'
+				});
 			}
 		})
 		.fail(function(jqXHR, textStatus, errorThrown) {
 			console.log('fail');
 
-			alert('수정을 실패했습니다.');
+			Swal.fire({
+      		  icon: 'error',                      
+      		  title: '수정되지 않았습니다.'
+      		});
 		})
 	})
 
 	$(document).on('click', '#deleteButton', function() {
-		if(!confirm('삭제 하시겠습니까?')) {
-			return;
-		}
+		
+		Swal.fire({
+			  icon: 'info',  // 여기다가 아이콘 종류를 쓰면 됩니다.                     
+			  title: '삭제 하시겠습니까?',
+			  showCancelButton: true,
+			  confirmButtonText: '네', 
+			  cancelButtonText: '아니요'
+			   
+			}).then(result => {
+				   if (result.isConfirmed) { 
+					   let contentId = $(this).data('contentId');
 
-		let contentId = $(this).data('contentId');
+						$.ajax({
+							type : 'DELETE',
+							url : '/festival',
+							data : {
+								'contentId' : contentId
+							}
+						})
+						.done(function(data, textStatus, jqXHR) {
+							console.log('done');
 
-		$.ajax({
-			type : 'DELETE',
-			url : '/festival',
-			data : {
-				'contentId' : contentId
-			}
-		})
-		.done(function(data, textStatus, jqXHR) {
-			console.log('done');
+							if(data == 1) {
+								Swal.fire({
+					          		  icon: 'success',                    
+					          		  title: '삭제를 성공했습니다.'
+									}).then(result => {
+									   if (result.isConfirmed) { 
+										   location.href = location.href;
+									   }
+					          		});
+							} else {
+								Swal.fire({
+				          		  icon: 'error',                      
+				          		  title: '삭제할 데이터가 없습니다.'
+				          		});
+							}
+						})
+						.fail(function(jqXHR, textStatus, errorThrown) {
+							console.log('fail');
 
-			if(data == 1) {
-				alert('삭제 성공했습니다.');
-				location.href = location.href;
-			} else {
-				alert('삭제 할 데이터가 없습니다.');
-			}
-		})
-		.fail(function(jqXHR, textStatus, errorThrown) {
-			console.log('fail');
+							Swal.fire({
+				        		  icon: 'error',                      
+				        		  title: '삭제 실패 하였습니다.'
+				        		});
+						})
+				      
+				   }else if (result.isDismissed) { // 만약 모달창에서 cancel 버튼을 눌렀다면
+				    	return
+				    }
+			});
 
-			alert('삭제를 실패했습니다.');
-		})
+		
 	})
 </script>	
 </div>
