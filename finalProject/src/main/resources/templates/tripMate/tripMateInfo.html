@@ -273,7 +273,11 @@
 
         let commentContent = $('#commentInput').val();
         if (commentContent == null || commentContent.replaceAll(' ', '') == '') {
-            alert("내용을 입력해주세요.");
+      
+            Swal.fire({
+      		  icon: 'warning',                      
+      		  title: '내용을 입력해주세요.'
+      		});
             return;
 
 
@@ -287,7 +291,10 @@
                 clearComment();
                 appendComment(data.commentList);
 
-                alert('댓글이 등록되었습니다.');
+                Swal.fire({
+            		  icon: 'success',                    
+            		  title: '댓글이 등록되었습니다.'
+            		});
             } else {
 
             }
@@ -307,7 +314,10 @@
 				clearComment();
 				appendComment(data.commentList);
 
-				alert('댓글이 삭제되었습니다.');
+				Swal.fire({
+          		  icon: 'error',                      
+          		  title: '댓글이 등록되지 않았습니다.'
+          		});
 			} else {
 
 			}
@@ -329,7 +339,10 @@
                clearComment();
                appendComment(data.commentList);
 
-               alert('대댓글이 등록되었습니다.');
+               Swal.fire({
+         		  icon: 'success',                    
+         		  title: '대댓글이 등록되었습니다.'
+         		});
            } else {
 
            }
@@ -497,9 +510,16 @@
 
 			let errorMessage = JSON.parse(jqXHR.responseText).message;
 			if (errorMessage == 'no login') {
-				alert('로그인을 해주세요.');
+				Swal.fire({
+		      		  icon: 'info',                      
+		      		  title: '로그인 해주세요.',
+        		  	  text: '댓글은 로그인 후 작성할 수 있습니다.'
+		      		});
 			} else if (errorMessage == 'not insert') {
-				alert('댓글이 등록되지 않았습니다.');
+				Swal.fire({
+	           		  icon: 'error',                      
+	           		  title: '댓글이 등록되지 않았습니다.'
+	           		});
 			}
 		})
     }
@@ -524,11 +544,22 @@
 
 			let errorMessage = JSON.parse(jqXHR.responseText).message;
 			if (errorMessage == 'no login') {
-				alert('로그인을 해주세요.');
+				Swal.fire({
+		      		  icon: 'info',                      
+		      		  title: '로그인 해주세요.',
+          		  	  text: '댓글은 로그인 후 작성할 수 있습니다.'
+		      		});
 			} else if (errorMessage == 'not insert') {
-				alert('댓글이 등록되지 않았습니다.');
+				Swal.fire({
+           		  icon: 'error',                      
+           		  title: '댓글이 삭제되지 않았습니다.'
+           		});
 			} else if(errorMessage == 'not same') {
-                alert('본인의 댓글만 삭제할 수 있습니다.');
+                Swal.fire({
+             		  icon: 'warning',                      
+             		  title: '댓글을 삭제할 수 없습니다.',
+             		  text: '자신의 댓글만 삭제 할 수 있습니다.'
+             		});
             }
 		})
 	}
@@ -553,9 +584,16 @@
 
             let errorMessage = JSON.parse(jqXHR.responseText).message;
             if (errorMessage == 'no login') {
-                alert('로그인을 해주세요.');
+            	Swal.fire({
+ 		      		  icon: 'info',                      
+ 		      		  title: '로그인 해주세요.',
+            		  text: '댓글은 로그인 후 작성할 수 있습니다.'
+ 		      		});
             } else if (errorMessage == 'not insert') {
-                alert('대댓글이 등록되지 않았습니다.');
+            	Swal.fire({
+             		  icon: 'error',                      
+             		  title: '대댓글이 삭제되지 않았습니다.'
+             		});
             }
         })
     }
@@ -577,7 +615,10 @@
 		 let content = $(this).parent().find('.modify-input').val();
 		 
          if (content == null || content.replaceAll(' ', '') == '') {
-             alert("내용을 입력해주세요.");
+        	 Swal.fire({
+         		  icon: 'warning',                    
+         		  title: '내용을 입력해주세요.'
+         		});
              return;
          }
          
@@ -591,7 +632,10 @@
                  clearComment();
                  appendComment(data.commentList);
 
-                 alert('댓글이 수정되었습니다.');
+                 Swal.fire({
+	          		  icon: 'success',                    
+	          		  title: '댓글이 수정되었습니다'
+	          		});
              } else {
 
              }
@@ -618,11 +662,22 @@
 
      			let errorMessage = JSON.parse(jqXHR.responseText).message;
      			if (errorMessage == 'no login') {
-     				alert('로그인을 해주세요.');
+     				Swal.fire({
+   		      		  icon: 'info',                      
+   		      		  title: '로그인 해주세요.',
+              		  text: '댓글은 로그인 후 작성할 수 있습니다.'
+   		      		});
      			} else if (errorMessage == 'not modify') {
-     				alert('댓글이 수정되지 않았습니다.');
+     				Swal.fire({
+               		  icon: 'error',                      
+               		  title: '댓글이 수정되지 않았습니다.'
+               		});
      			} else if(errorMessage == 'not same') {
-                     alert('본인의 댓글만 수정할 수 있습니다.');
+     				Swal.fire({
+               		  icon: 'warning',                      
+               		  title: '댓글을 수정할 수 없습니다.',
+               		  text: '자신의 댓글만 수정 할 수 있습니다.'
+               		});
                 }
      		})
          }
@@ -647,7 +702,10 @@
 		 let content = $(this).parent().find('.reply-modify-input').val();
 		 
          if (content == null || content.replaceAll(' ', '') == '') {
-             alert("내용을 입력해주세요.");
+        	 Swal.fire({
+         		  icon: 'warning',                      
+         		  title: '내용을 입력해주세요.'
+         		});
              return;
          }
          
@@ -660,7 +718,10 @@
                  clearComment();
                  appendComment(data.commentList);
 
-                 alert('댓글이 수정되었습니다.');
+                 Swal.fire({
+             		  icon: 'error',                      
+             		  title: '댓글이 수정되지 않았습니다.'
+             		});
              } else {
 
              }
@@ -687,11 +748,22 @@
 
      			let errorMessage = JSON.parse(jqXHR.responseText).message;
      			if (errorMessage == 'no login') {
-     				alert('로그인을 해주세요.');
+     				 Swal.fire({
+     		      		  icon: 'info',                      
+     		      		  title: '로그인 해주세요.',
+                		  text: '댓글은 로그인 후 작성할 수 있습니다.'
+     		      		});
      			} else if (errorMessage == 'not modify') {
-     				alert('댓글이 수정되지 않았습니다.');
+     				Swal.fire({
+              		  icon: 'error',                      
+              		  title: '댓글이 수정되지 않았습니다.'
+              		});
      			} else if(errorMessage == 'not same') {
-                     alert('본인의 댓글만 수정할 수 있습니다.');
+                     Swal.fire({
+                 		  icon: 'warning',                      
+                 		  title: '댓글을 수정할 수 없습니다.',
+                 		  text: '자신의 댓글만 수정 할 수 있습니다.'
+                 		});
                 }
      		})
          }
