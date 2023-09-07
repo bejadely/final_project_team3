@@ -51,9 +51,9 @@
                 <li><a href="/localTourInfo">관광정보</a></li>
                 <li><a href="/festival">축제정보</a></li>
                 <li><a href="/localTourStatistics">관광통계</a></li>
-                <li><a href="/">호텔예약</a></li>
-                <li><a href="/">상품구매</a></li>
-                <li><a href="/">패키지구매</a></li>
+                <li><a href="/lodging">숙박정보</a></li>
+                <li><a href="/specialtiesList">특산물구매</a></li>
+                <li><a href="/packageList">패키지구매</a></li>
             </ul>
         </nav>
         <div class="nav-logo-right">
@@ -107,11 +107,13 @@
                                 <li><a href="/localTourInfo">관광정보</a></li>
                                 <li><a href="/festival">축제정보</a></li>
                                 <li><a href="/localTourStatistics">관광통계</a></li>
-                                <li><a href="/">호텔예약</a></li>
-                                <li><a href="/">상품구매</a></li>
-                                <li><a href="/">패키지구매</a></li>
+                                <li><a href="/lodging">숙박정보</a></li>
+                                <li><a href="/specialtiesList">특산물구매</a></li>
+                                <li><a href="/packageList">패키지구매</a></li>
                                 <li sec:authorize="!hasRole('ROLE_A3')"><a href="/">마이페이지</a></li>
                                 <li sec:authorize="hasRole('ROLE_A3')"><a href="admin/seeAllMemberList">관리자페이지</a></li>
+                                <li sec:authorize="hasRole('ROLE_A3')"><a href="admin/specialtiesInsertForm">특산물등록</a></li>
+                                <li sec:authorize="hasRole('ROLE_A2')"><a href="guide/packageInsertForm">패키지등록</a></li>
                             </ul>
                         </nav>
                     </div>

@@ -60,7 +60,6 @@
 			,deadline_date = #{deadlineDate}
 			,max_reservation = #{maxReservation}
 			,tour_theme = #{tourTheme}
-			,reg_date = #{regDate}
 			,area_code = #{areaCode}
 			,sigungu_code = #{sigunguCode}
 		</set>

@@ -146,11 +146,12 @@ public class PackageController {
     }
 
     //모달창 내 리뷰 등록
-    @PostMapping("/packageReview")
+    @PostMapping("/common/packageReview")
     @ResponseBody
     public Map<String,Object> reviewInsert(PackageReviewVO packageReviewVO) throws Exception {
         if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().replaceAll(" ", "").equals("")) {
         	packageReviewVO.setWriterId(session.getAttribute("sessionId").toString());
+        	System.out.println(packageReviewVO.getWriterId());
         } else {
             throw new Exception("no login");
         }
@@ -159,7 +160,7 @@ public class PackageController {
     }
 
     //모달창 내 리뷰 삭제
-    @DeleteMapping("/packageReview")
+    @DeleteMapping("/common/packageReview")
     @ResponseBody
     public Map<String,Object> reviewDelete(String postId, String writerId, String reviewId) throws Exception {
         String sessionId = "";

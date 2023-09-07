@@ -208,6 +208,9 @@ form {
 							<div id="totalPriceDisplay">
 							    총 금액: <span id="totalPrice">0</span> 원
 							</div>
+						
+							
+							
                     </div>
                 </div>
             	<div>
@@ -454,6 +457,7 @@ form {
 	
 	    function appendReview(data, postId) {
 	        let node = ``;
+	        console.log(data);
 	        for(let i = 0; i < data.length; i++) {
 	            let stars = '';
 	            for(let j = 1; j <= 5; j++) {
@@ -501,13 +505,11 @@ form {
 	        let checkedgrade = $('input[name=inlineRadioOptions]:checked').val();
 	        if(checkedgrade == null) {
 	            alert("점수를 체크해주세요.");
-	            return;
 	        }
 	
 	        let reviewContent = $('#reviewInput').val();
 	        if(reviewContent == null|| reviewContent.replaceAll(' ', '') == '') {
 	            alert("내용을 입력해주세요.");
-	            return;
 	        }
 	        //  ajax 들어가서 로그인 되어있는지 먼저 확인 - 안되면 바로 fail throw new Exception(); 예외 일부러 발생시켜주기
 	        $.ajax({
