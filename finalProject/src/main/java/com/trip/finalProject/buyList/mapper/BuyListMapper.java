@@ -14,10 +14,10 @@ public interface BuyListMapper {
 	public int spCount(String memberId);
 	
 	//패키지 조회
-	public List<BuyListVO> pkAllLike(PagingVO pagingVO);
+	public List<BuyListVO> pkAllLike(BuyListVO buyVO, PagingVO pagingVO);
 	
 	//특산물 조회
-	public List<BuyListVO> spAllLike(PagingVO pagingVO);
+	public List<BuyListVO> spAllLike(BuyListVO buyVO, PagingVO pagingVO);
 	
 	//데이터 불러오기
 	public BuyListVO selectPk(BuyListVO buyVO);

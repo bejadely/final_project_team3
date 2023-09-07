@@ -83,5 +83,5 @@ public class TripMateVO {
 		private List<AttachedFileVO> attachList;
 		private List<AttachedFileVO> editorAttachList;
 		
-	
+		private String roomNumber;
 }

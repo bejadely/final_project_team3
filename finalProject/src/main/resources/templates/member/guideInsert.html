@@ -288,9 +288,11 @@
 				/* contentType : application/json */
 			})
 			.done(function(data) {
+
 				if (data.bankHolderInfo==null){
 					alert('정보를 확인할 수 없습니다.');
 				}				
+
 				console.log("data :", data);
 				console.log("통신은 성공");
 				if (data.bankHolderInfo) {					
