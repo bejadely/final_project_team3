@@ -12,10 +12,10 @@ public interface BuyListService {
 	public int spCountInfo(String memberId);
 
 	//패키지 조회
-	public List<BuyListVO> pkAllLikeInfo(PagingVO pagingVO);
+	public List<BuyListVO> pkAllLikeInfo(BuyListVO buyVO, PagingVO pagingVO);
 	
 	//특산물 조회
-	public List<BuyListVO> spAllLikeInfo(PagingVO pagingVO);
+	public List<BuyListVO> spAllLikeInfo(BuyListVO buyVO, PagingVO pagingVO);
 	
 	//패키지 상품 상세조회
 	public BuyListVO selectPkInfo(BuyListVO buyVO);

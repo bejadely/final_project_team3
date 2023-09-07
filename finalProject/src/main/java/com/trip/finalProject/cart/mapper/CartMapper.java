@@ -8,7 +8,7 @@ import com.trip.finalProject.common.PagingVO;
 public interface CartMapper {
 	
 	
-	public int getPostIdCount(String postId);
+	public int getPostIdCount(CartVO cartVO);
 	
 	//전체조회
 	public List<CartVO> selectAllCart(PagingVO pagingVO);

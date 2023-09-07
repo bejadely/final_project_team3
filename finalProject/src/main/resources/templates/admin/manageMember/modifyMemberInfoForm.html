@@ -13,29 +13,26 @@
 				<div class="table-responsive">
 					<h6>기본정보</h6>
 					<br>
+					<input type="hidden" name="memberId" th:value="*{memberId}">
 					<table id="defaultInfo" class="table">
 						<tbody>
 							<tr>
 								<th width="150" align="center">아이디</th>
-								<td width="400" align="center"><input type="text" name="memberId" th:value="*{memberId}"></td>
+								<td width="400" align="center" th:text="*{memberId}"></td>
 								<th width="150" align="center">가입일자</th>
-								<td width="400" align="center"><input type="date" name="signUpDate" th:value="*{#strings.substring(signUpDate, 0, 10)}"></td>
+								<td width="400" align="center" th:text="*{#strings.substring(signUpDate, 0, 10)}"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">이름</th>
 								<td width="400" align="center"><input type="text" name="memberName" th:value="*{memberName}"></td>
 								<th width="150" align="center">권한분류</th>
-								<td id="authority" width="400" align="center">
-									<select name="authority">
-										<th:block th:each="a : ${authList}"> 
-											<option th:value="${a.detailCode}">[[${a.value}]]</option>
-										</th:block>
-									</select>
-								</td>
+								<td id="authority" width="400" align="center" th:text="*{authority}"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">성별</th>
-								<td width="400" align="center"><input type="text" name="gender" th:value="*{gender}"></td>
+								<td id="gender" width="400" align="center" th:text="*{gender}">
+								</td>
+								<!-- <td width="400" align="center"><input type="text" name="gender" th:value="*{gender}"></td>  -->
 								<th width="150" align="center">생년월일</th>
 								<td width="400" align="center"><input type="date" name="birthDate" th:value="*{#strings.substring(birthDate, 0, 10)}"></td>
 							</tr>
@@ -60,7 +57,7 @@
 								<input type="text" name="zipCode" class="zip" th:value="*{zipCode}" readonly>
 								<button type="button" id="zip" class="feature-btn">우편번호 찾기</button><br>
 								<input type="text" name="address" class="zip" th:value="*{address}" readonly><br>
-								<input type="text" name="addressDetail" class="zip" th:value="*{addressDetail}" placeholder="상세주소">
+								<input type="text" name="addressDetail" th:value="*{addressDetail}" placeholder="상세주소">
 								</td>
 							</tr>
 							<tr>
@@ -80,8 +77,15 @@
 						<tbody>
 							<tr>
 								<th width="150" align="center">은행명</th>
+								<td id="bankCode" width="400" align="center">
+									<select name="bankCode">
+										<th:block th:each="a : ${bankCodeList}"> 
+											<option th:value="${a.detailCode}">[[${a.value}]]</option>
+										</th:block>
+									</select>
+								</td>
 								<!-- 작업중 : selelct로 수정해야함 -->
-								<td width="400" align="center"><input type="text" name="bankCode" th:value="*{bankCode}"></td>
+								<!-- <td width="400" align="center"><input type="text" name="bankCode" th:value="*{bankCode}"></td> -->
 								<th width="150" align="center">예금주</th>
 								<td width="400" align="center"><input type="text" th:value="*{memberName}"></td>
 							</tr>
@@ -111,6 +115,8 @@
 		$('#returnPage').on('click', returnToBeforePage);
 		setDefaultNationality();
 		setDefaultAuth();
+		setDefaultGender();
+		setDefaultBankCode();
 	});
 	
 	// daum 주소 api 호출
@@ -176,6 +182,37 @@
 		$('.option[data-value="'+defaultAuth+'"]').attr("class", "option selected focus");
 	}
 	
+	// 성별 기본 설정하기
+	function setDefaultGender(){
+		
+		// 기본으로 설정할 성별 설정(컨트롤러에서 불러온 회원의 기본 성별 설정값)
+		let defaultGender = [[${memberVO.gender}]];
+		
+		// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
+		$('#gender').find('span').text(defaultGender);
+		
+		// selected 처리되어있던 option을 일반 옵션으로 변경
+		$('#gender').find('.option.selected').attr("class", "option");
+		
+		// 불러온 성별값에 해당하는 option을 selected 및 focus 처리
+		$('.option[data-value="'+defaultGender+'"]').attr("class", "option selected focus");
+	}
+	
+	// 은행명 기본 설정하기
+	function setDefaultBankCode(){
+		
+		// 기본으로 설정할 은행명 설정(컨트롤러에서 불러온 회원의 기본 은행명 설정값)
+		let defaultBankCode = [[${memberVO.bankCode}]];
+		
+		// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
+		$('#bankCode').find('span').text(defaultBankCode);
+		
+		// selected 처리되어있던 option을 일반 옵션으로 변경
+		$('#bankCode').find('.option.selected').attr("class", "option");
+		
+		// 불러온 은행명값에 해당하는 option을 selected 및 focus 처리
+		$('.option[data-value="'+defaultBankCode+'"]').attr("class", "option selected focus");
+	}
 	</script>
 	
 </div>

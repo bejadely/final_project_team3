@@ -39,14 +39,7 @@ $(document).ready(function() {
 		e.stopPropagation()
 		var thi = $(this);
 		var postId = thi.val();
-		console.log(postId);
-		$.ajax({
-		       url: '/guide/deletePackage',
-		        type: 'get',
-		        data: {postId : postId}
-		       }).done(data => {
-		    	thi.parent().parent().remove();
-		       }).fail(reject => console.log(reject));
+		location.href="/guide/deleteSoldOutPackage?postId="+postId
 	})
 });
 </script>
@@ -91,13 +84,13 @@ $(document).ready(function() {
 			</table>
 			<button type="button" id="insert" th:onclick="|location.href='@{/packageInsertForm}'|">등록</button>
 		</form>
-		<div>
+		<div class="property-pagination">
 			<th:block th:if="${paging.startPage != 1}">
-				<a th:href="@{/guide/packageSale(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
+				<a th:href="@{/guide/packageSoldOut(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
 			</th:block>
 			<th:block th:if="${paging.startPage != 1}">
 				<a
-					th:href="@{/guide/packageSale(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+					th:href="@{/guide/packageSoldOut(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 			</th:block>
 			<th:block
 				th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
@@ -106,17 +99,17 @@ $(document).ready(function() {
 				</th:block>
 				<th:block th:if="${p ne paging.nowPage}">
 					<a
-						th:href="@{/guide/packageSale(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
+						th:href="@{/guide/packageSoldOut(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
 						th:text="${p}"></a>
 				</th:block>
 			</th:block>
 			<th:block th:if="${paging.endPage != paging.lastPage}">
 				<a
-					th:href="@{/guide/packageSale(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					th:href="@{/guide/packageSoldOut(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 			</th:block>
 			<th:block th:if="${paging.endPage != paging.lastPage}">
 				<a
-					th:href="@{/guide/packageSale(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
+					th:href="@{/guide/packageSoldOut(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
 			</th:block>
 		</div>
 	</div>

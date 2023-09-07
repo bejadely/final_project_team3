@@ -22,7 +22,7 @@
 			  , question_date
 			  , question_content
 			  , question_type
-			  , answer_result
+			  , code_val(answer_result) answer_result
 			  , product_id
 			  , answer_member_id
 			  , answer_modify_date
@@ -76,7 +76,7 @@
 			  , question_date
 			  , question_content
 			  , question_type
-			  , answer_result
+			  , code_val(answer_result) answer_result
 			  , product_id
 			  , answer_member_id
 			  , answer_modify_date

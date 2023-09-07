@@ -145,7 +145,7 @@
 		 , code_val(authority) authority
 		 , origin_profile_img
 		 , saved_profile_img
-		 , bank_code
+		 , code_val(bank_code) bank_code
 		 , account_number
 		 , login_type
 		 , access_token
@@ -166,10 +166,13 @@
 			<if test="password != null and !password.equals('')">
 				password = #{password},			
 			</if>
+			zip_code = #{zipCode},
 			address = #{address},
 			address_detail=#{addressDetail},
 			email = #{email},
-			phone_number = #{phoneNumber}
+			phone_number = #{phoneNumber},
+			bank_code=#{bankCode},
+			account_number = #{accountNumber}
 		</set>
 		WHERE member_id = #{memberId}	
 	</update>
