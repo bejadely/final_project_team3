@@ -53,6 +53,18 @@ public class TripMateServiceImpl implements TripMateService {
 		return tripMateMapper.countTripArea(keyword);
 	}
 	
+	//여행 스타일로 검색
+	@Override
+	public List<TripMateVO> searchMateByStyle(TripMateVO tripMateVO, PagingVO pagingVO) {
+		return tripMateMapper.searchMateByStyle(tripMateVO, pagingVO);
+	}
+			
+	//여행 스타일로 여행메이트 글 수 카운트
+	@Override
+	public int countTripStyle(String keyword) {
+		return tripMateMapper.countTripStyle(keyword);
+	}
+	
 	//여행 타이틀로 검색
 	@Override
 	public List<TripMateVO> searchMateByTripTitle(TripMateVO tripMateVO, PagingVO pagingVO) {

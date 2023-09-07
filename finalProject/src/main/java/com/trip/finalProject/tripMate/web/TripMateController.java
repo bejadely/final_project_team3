@@ -73,6 +73,17 @@ public class TripMateController {
 			model.addAttribute("tripMateList", list);
 			model.addAttribute("paging", pagingVO);
 			
+		} else if(searchBy.equals("mateStyle")) {
+			//여행스타일 전체 카운트 수
+			int total = tripMateService.countTripStyle(keyword);
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			
+			//여행 타이틀로 검색
+			tripMateVO.setMateStyle(keyword);
+			List<TripMateVO> list = tripMateService.searchMateByStyle(tripMateVO, pagingVO);
+			model.addAttribute("tripMateList", list);
+			model.addAttribute("paging", pagingVO);
+			
 		} else if(searchBy.equals("mateTitle")) {
 			//여행타이틀 전체 카운트 수
 			int total = tripMateService.countTripTitle(keyword);

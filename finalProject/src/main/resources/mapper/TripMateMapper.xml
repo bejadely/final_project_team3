@@ -44,6 +44,29 @@
   	WHERE trip_area LIKE '%${keyword}%'
   	</select>
   	
+  	<!-- 해당 여행스타일 글 전체 조회  -->
+	<select id="searchMateByStyle" resultType="TripMateVO">
+	SELECT *
+	FROM(SELECT ROWNUM rn, a.*
+		 FROM(SELECT *
+		 	  FROM mate_recruit m LEFT OUTER JOIN 
+     		 	   attached_file a ON m.post_id = a.post_id
+     		  WHERE a.member_id IS NOT NULL 
+     		  	AND m.mate_style LIKE '%${tripMateVO.mateStyle}%'
+     		  	 OR a.file_id IS NULL
+     		  	AND m.mate_style LIKE '%${tripMateVO.mateStyle}%'
+     		  ORDER BY m.post_id DESC) a)
+	WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+	</select>
+	
+	<!-- 여행 스타일의 총 결과값 카운트 -->
+  	<select id="countTripStyle" resultType="int" parameterType="String">
+  	SELECT COUNT(*)
+  	FROM mate_recruit
+  	WHERE mate_style LIKE '%${keyword}%'
+  	</select>
+  	
+  	
   	<!-- 해당 여행타이틀 글 전체 조회  -->
 	<select id="searchMateByTripTitle" resultType="TripMateVO">
 	SELECT *

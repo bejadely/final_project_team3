@@ -109,49 +109,51 @@ body {
                    <tr>
                        <th style="text-align: left; width: 20%;">작성자</th>
                        <td colspan="2">
-                           <input type="text" id="writerId" name="writerId" size="30" class="form-control" th:value="${session.sessionId}" readonly>
+                           <input type="text" id="writerId" name="writerId" style="width: 370px;" class="form-control" th:value="${session.sessionId}" readonly>
                        </td>
                        <th style="text-align: left; width: 20%;">등록일자</th>
                        <td colspan="2">
-                           <input type="date" id="now_date" name="" size="30" class="form-control" readonly>
+                           <input type="date" id="now_date" name="" style="width: 370px; margin-left: 4px;" class="form-control" readonly>
                        </td>
                    </tr>
                       <tr>
                        <th style="text-align: left; width: 20%;">타이틀</th>
                          <td colspan="5">
-                           <input type="text" id="mateTitle" name="mateTitle" size="70" class="form-control">
+                           <input type="text" id="mateTitle" name="mateTitle" style="width: 1075px;" class="form-control">
                        </td>
                    </tr>
                    <tr>
                        <th style="text-align: left; width: 20%;">여행기간</th>
                        <td colspan="2">
-                           <input type="date" id="startDay" name="startDay" size="30" class="form-control">
+                           <input type="date" id="startDay" name="startDay" style="width: 500px;" class="form-control">
                        </td>
                        <td colspan="2">
-                           <input type="date" id="endDay" name="endDay" size="30" class="form-control">
+                           <input type="date" id="endDay" name="endDay" style="width: 500px; margin-left: 57px;" class="form-control">
                        </td>
                    </tr>
                    <tr>
                        <th style="text-align: left; width: 20%;">모집 마감일</th>
                          <td colspan="5">
-                           <input type="date" id="deadline" name="deadline" size="50" class="form-control">
+                           <input type="date" id="deadline" name="deadline" style="width: 1075px;" class="form-control">
                        </td>
                    </tr>
                    <tr>
                        <th style="text-align: left; width: 20%;">예상 경비</th>
                        <td colspan="2">
-                       	   <input type="text" id="mateExpense" name="mateExpense" size="30" class="form-control" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');">
+                       	   <input type="text" id="mateExpense" name="mateExpense" style="width: 370px;" class="form-control" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');">
                        </td>
                        <th style="text-align: left; width: 20%;">모집 인원</th>
                        <td colspan="2">
-                           <input type="number" id="mateMax" name="mateMax" size="30" class="form-control"  min="1" max="50">
+                           <input type="number" id="mateMax" name="mateMax" style="width: 370px; margin-left: 4px;" class="form-control"  min="1" max="50">
                        </td>
                    </tr>
                    <tr>
                        <th style="text-align: left; width: 20%;">메인 이미지</th>
                          <td colspan="5">
-                           <input type="file" id="mainImage" name="mainImage" size="50" class="form-control">
-                           <input type="button" class="btn btn-secondary mt-3 mx-2" id ="uploadBtn" value="upload">
+                         <div class="input-group">
+                           <input type="file" id="mainImage" name="mainImage" style="width: 750px;" class="form-control">
+                           <input type="button" class="btn btn-secondary mt-3 mx-2" style="height: 38px;" id ="uploadBtn" value="upload">
+                       	</div>
                        </td>
                    </tr>
                 </table>

@@ -19,6 +19,12 @@ public interface TripMateMapper {
 	//여행 지역으로 여행메이트 글 수 카운트
 	public int countTripArea(String keyword);
 	
+	//여행 스타일로 검색
+	public List<TripMateVO> searchMateByStyle(TripMateVO tripMateVO, PagingVO pagingVO);
+				
+	//여행 스타일로 여행메이트 글 수 카운트
+	public int countTripStyle(String keyword);
+	
 	//여행 타이틀로 검색
 	public List<TripMateVO> searchMateByTripTitle(TripMateVO tripMateVO, PagingVO pagingVO);
 	
