@@ -41,13 +41,7 @@ $(document).ready(function() {
 		var thi = $(this);
 		var postId = thi.val();
 		console.log(postId);
-		$.ajax({
-		       url: '/guide/deletePackage',
-		        type: 'get',
-		        data: {postId : postId}
-		       }).done(data => {
-		    	thi.parent().parent().remove();
-		       }).fail(reject => console.log(reject));
+		location.href="/guide/deleteSalePackage?postId="+postId
 	})
 });
 </script>

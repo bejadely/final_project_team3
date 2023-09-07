@@ -6,13 +6,13 @@
   <select id="pkCount" resultType="int">
   	SELECT COUNT(*)
   	FROM purchase
-  	WHERE post_id LIKE 'PKG%'
+  	WHERE post_id LIKE 'PKG%' AND member_id=#{memberId}
   </select>
   
   <select id="spCount" resultType="int">
   	SELECT COUNT(*)
   	FROM purchase
-  	WHERE post_id LIKE 'SPE%'
+  	WHERE post_id LIKE 'SPE%' AND member_id = #{memberId}
   </select>
   
   <select id="pkAllLike" resultType="BuyListVO">
@@ -38,9 +38,9 @@
                          r.name,
 			 			 code_val(r.completion) completion
 				  FROM purchase p LEFT JOIN package_regist r ON (p.post_id = r.post_id)
-				  WHERE p.post_id LIKE 'PKG%'
+				  WHERE p.post_id LIKE 'PKG%' and member_id = #{buyVO.memberId}
 				  ORDER BY p.post_id DESC) a)
-		WHERE rn BETWEEN #{start } AND #{end }
+		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
   </select>
   <select id="spAllLike" resultType="BuyListVO">
   	  	SELECT *
@@ -62,9 +62,9 @@
 			 			 o.specialty_type
 				  FROM purchase p LEFT JOIN specialties_regist r ON (p.post_id = r.post_id)
 				  				  LEFT JOIN SPECIALTIES_option o ON (p.post_id = o.post_id)
-				  WHERE p.post_id LIKE 'SPE%'
+				  WHERE p.post_id LIKE 'SPE%' AND member_id = #{buyVO.memberId}
 				  ORDER BY p.post_id DESC) a)
-		WHERE rn BETWEEN #{start } AND #{end }
+		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
   </select>
   
   <select id="selectPk" resultType="BuyListVO">
