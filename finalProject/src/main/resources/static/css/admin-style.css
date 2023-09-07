@@ -156,6 +156,20 @@ th, td {
   white-space: nowrap;
   margin: 3px;
 }
+.delete-btn {
+  background-color: #2cbdb8;
+  color: whitesmoke;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 7px;
+  padding: 5px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin: 3px;
+}
 .approveButton {
   background-color: #2cbdb8;
   color: whitesmoke;
@@ -359,7 +373,6 @@ h1 {
 }
 .top-nav {
 	background: #1c1c1c;
-	position: sticky;
 	top: 0;
 }
 .top-nav .main-menu ul li {

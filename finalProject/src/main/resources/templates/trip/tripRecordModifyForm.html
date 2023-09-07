@@ -7,22 +7,915 @@
 <head>
 <meta charset="UTF-8">
 <title>여행기록 수정</title>
-<!-- Google Font -->
-<link
-   href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 <!-- 고유 CSS 추가 -->
 <th:block layout:fragment="css">
-	<link rel="stylesheet" th:href="@{/css/map.css}">
+   <link rel="stylesheet" th:href="@{/css/map.css}">
 </th:block>
 <!-- index.html 고유 스크립트 추가 -->
 <th:block layout:fragment="script"></th:block>
+<style>
+body {
+       background-color: #ffffff;
+       color: #000000;
+      }
+
+.text-center {
+       text-align: center;
+      }
+
+.form-control {
+       width: 100%;
+       padding: 10px;
+       border: 1px solid #ced4da;
+       border-radius: 4px;
+       box-sizing: border-box;
+      }
+
+.btn {
+       padding: 10px 20px;
+       font-size: 16px;
+       border-radius: 4px;
+      }
+
+.btn-primary {
+       background-color: #007bff;
+       border: none;
+       color: #ffffff;
+      }
+
+.btn-primary:hover {
+       background-color: #0069d9;
+       color: #ffffff;
+      }
+
+.btn-secondary {
+      background-color: #6c757d;
+      border: none;
+      color: #ffffff;
+      }
+
+.btn-secondary:hover {
+      background-color: #5a6268;
+      color: #ffffff;
+      }
+        
+.ck.ck-editor {
+     width: 100%;
+     max-width: 1500px;
+     margin: 0 auto;
+      }
+
+.ck-editor__editable {
+     height: 50vh;
+      }
+</style>
 </head>
 <body>
-	<div align="center">
-	
-	</div>
-	<script>
-	
-	</script>
+   <div class="container">
+      <div class="text-center">
+         <br>
+               <h1>여행기록 수정</h1>
+           <br>
+      </div>
+      <div id="ls" class="text-center">
+         <form id="modifyData" method="post">
+            <input type="hidden" name="writerId" th:value="${session.sessionId}">
+            <input type="hidden" name="postId" th:value="${tripInfo.postId}">
+            <div class="mb-3" style="float: left; margin-right: 20px;">
+               <select class="" id="tripArea" name="tripArea" aria-label="Default select example" th:value="${tripInfo.tripArea}" >
+                  <option value="" selected="selected">여행 지역</option>
+                  <option value="35.871159972672, 128.60183648521">대구
+                    <option value="35.1798269951885, 129.075103035027">부산
+                    <option value="36.01889392625669, 129.34319484447613">포항
+                    <option value="36.5684065570509, 128.7295973406168">안동
+                    <option value="35.85619885284879, 129.22477009676797">경주
+                    <option value="35.539464253228324, 129.31158865378814">울산
+                    <option value="34.85442687930827, 128.43314233985606">통영
+                    <option value="34.880381383213354, 128.62132760543582">거제
+               </select>            
+            </div>
+            <div class="mb-3" style="float: left; margin-right: 20px;">
+               <select class="" id="tripDisclose" name="tripDisclose" aria-label="Default select example" th:value="${tripInfo.tripDisclose}" >
+                  <option value="01" selected="selected">공개
+                    <option value="02">비공개
+               </select>            
+            </div>
+            <div>
+               <table class="table">
+                      <tr>
+                       <th style="text-align: left; width: 20%;">작성자</th>
+                       <td colspan="2">
+                           <input type="text" id="writerId" name="writerId" size="30" class="form-control" th:value="${session.sessionId}" readonly>
+                       </td>
+                       <th style="text-align: left; width: 20%;">수정일자</th>
+                       <td colspan="2">
+                           <input type="date" id="now_date" name="" size="30" class="form-control" readonly>
+                       </td>
+                   </tr>
+                   <tr>
+                       <th style="text-align: left; width: 20%;">타이틀</th>
+                       <td colspan="4">
+                           <input type="text" id="tripTitle" name="tripTitle" size="70" class="form-control" th:value="${tripInfo.tripTitle}">
+                       </td>
+                   </tr>
+                   <tr>
+                       <th style="text-align: left; width: 20%;">여행기간</th>
+                       <td colspan="2">
+                           <input type="date" id="startDay" name="startDay" size="30" class="form-control" th:value="${#dates.format(tripInfo.startDay, 'yyyy-MM-dd')}" readonly>
+                       </td>
+                       <td colspan="2">
+                           <input type="date" id="endDay" name="endDay" size="30" class="form-control" th:value="${#dates.format(tripInfo.endDay, 'yyyy-MM-dd')}" readonly>
+                       </td>
+                   </tr>
+                     <tr>
+                       <th style="text-align: left; width: 20%;">메인 이미지</th>
+                       <td colspan="4">
+                           <input type="file" id="mainImage" name="mainImage" size="50" class="form-control">
+                           <input type="button" class="btn btn-secondary mt-3 mx-2" id="uploadBtn" value="upload" style="margin: 0;">
+                       </td>
+                   </tr>
+               </table>
+            </div>
+         </form>
+         <br>
+         <div style="display: flex;">
+         	<!-- 지도 영역 -->
+            <div class="map_wrap" style="height: 800px; width: 50%; border: solid 1px;">
+            	<div id="map" style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
+				<div id="menu_wrap" class="bg_white" style="display: none">
+         			<div class="option">
+         			</div>
+         			<!--지도에  검색결과 리스트를 출력해주는 부분 -->
+         			<ul id="placesList"></ul>
+                  	<div id="pagination"></div>
+         		</div>            
+            </div>
+            <!-- 여행 메모 영역 -->
+            <div style="width: 50%; margin-left: 20px;">
+            	<div style="text-align: center;">
+                	<form id="memoForm" method="post">
+                    	<br>
+                        <h5><strong>여행 메모</strong></h5>
+                        <hr>
+                        <div th:each="mo : ${memoInfo}">
+                        	<label>[[${mo.tripDate}]] 일정</label>
+                            <br>
+                            <div align="center">
+                            	<input class="keyword" type="text" style="display:none" placeholder="키워드를 입력해주세요." onkeydown="return event.key != 'Enter';">
+       	            			<button type="button" class="searchPlaces" style="display:none">검색하기</button>
+       	            			<div class="showMapData">
+       	            			</div>
+       	            			<button class="mapping" type="button" style="display:none;"> 경로 선택 완료 </button>
+       	            			<input type="hidden" name="tDate" th:value="${mo.tripDate}">
+       	            			<button class="modifyMapping" type="button"> 경로 수정 </button>
+       	            			<br>
+                            </div>
+                            <br>
+                            <textarea name="content" cols="80" rows="5" th:text="${mo.content}"></textarea>
+                            <br>
+                            <input type="hidden" name="tripDate" th:value="${mo.tripDate}">
+                            <button type="button" class="btn btn-secondary updateMemo">메모 수정</button>
+                            <button type="button" id="showMap" class="btn btn-secondary">여행경로 보기</button>
+                            <br>
+                            <br>
+                        </div>
+                        <br>
+                    </form>
+                </div>
+            </div>
+         </div>
+         <br>
+         <hr>
+         <div align="center">
+            <button type="button" id="modifyTrip" class="btn btn-primary mt-3 mx-2">수정</button>&nbsp;&nbsp;
+            <input type="button" class="btn btn-secondary mt-3 mx-2" value="취소" id="cancelBtn"/>&nbsp;&nbsp;
+            <button type="button" class="btn btn-primary mt-3 mx-2" onclick="location.href='/tripRecordList'">목록으로</button>
+           </div>
+           <br>
+      </div>
+   </div>
+    <script th:inline="javascript">
+       $(document).ready(function() {
+           //현재 날짜 계산 - 수정일자 표시를 위해
+         document.getElementById('now_date').value = new Date().toISOString().substring(0, 10);
+           
+         //두 일수 사이의 값을 계산
+            var inDate = [[ ${#dates.format(tripInfo.startDay, 'yyyy-MM-dd')} ]]; 
+           var outDate = [[ ${#dates.format(tripInfo.endDay, 'yyyy-MM-dd')} ]];
+           
+         const getDateDiff = (d1, d2) => {
+            //받아온 데이터를 날짜 형식으로 변환
+            const date1 = new Date(d1);
+            const date2 = new Date(d2);
+              
+            const diffDate = date1.getTime() - date2.getTime();
+            
+            //밀리세컨 * 초 * 분 * 시 = 일
+            return Math.abs(diffDate / (1000 * 60 * 60 * 24));
+         }
+         
+         //두 날짜 사이의 일수
+         //여행 시작일도 포함이 되어야 함으로 결과값에 +1을 해줘야함.
+         var resdays = getDateDiff(inDate, outDate) + 1;
+            
+         var postData = [[${tripInfo.postId}]];
+           
+         $(".btn.btn-secondary#showMap").click(function(){
+            //여행경로보기 버튼 클릭시 지도영역div 나타냄
+            $("#mapDiv").attr('style', 'display:block');
+			
+            //db의 여행 정보를 불러오는 스크립트   
+            var mapDb = [];
+            //console.log(postData);
+            
+            var tData = $(this).siblings("input[name=tripDate]").val();
+
+            var parsedDate = new Date(tData);
+
+            var year = (parsedDate.getYear() - 100); // 연도에서 뒤의 2자리 추출
+            var month = (parsedDate.getMonth() + 1); // 월 (0부터 시작하므로 1을 더함)
+            var day = parsedDate.getDate(); // 일
+            
+            // 월과 일을 두 자리로 만들기 (0을 추가)
+            if (month < 10) {
+              month = '0' + month;
+            }
+            if (day < 10) {
+              day = '0' + day;
+            }
+
+            var formattedDate = year + '/' + month + '/' + day;
+            $.ajax({
+               url: '/mapInfoList',
+               type: 'Post',
+               data: {
+                     postId : postData,
+                     tripDate : formattedDate
+                    }
+            }).done(data => {
+               mapDb = data.tripMap;
+               console.log(mapDb);
+               
+               if(mapDb == ''){
+           		alert("헤당 일자에 등록된 여행 경로가 없습니다.");
+           		return;
+           	}
+               
+               //지도 관련 스크립트   
+               
+               //마커를 담을 배열
+               var markers = [];
+               //db에 저장된 좌표를 담아줄 배열
+               var mapping = [];
+               //생성된 마커를 연결하는 선 
+               var polyline = null;
+               
+               //ajax를 통해 받은 여행경로 데이터의 첫번째 위도와 경도를 찾아서 그 값을 지도의 중심좌표로 설정
+               var firstMapLat = mapDb[0].mapLat;
+                var firstMapLng = mapDb[0].mapLng;
+               
+               // 지도를 표시
+               var mapContainer = document.getElementById('map'), mapOption = {
+                   // 최초로 생성된 지도의 중심좌표 
+                   center : new kakao.maps.LatLng(firstMapLat, firstMapLng),
+                    // 지도의 확대 레벨
+                    level : 9
+                };
+               
+               // 지도 생성 
+                 var map = new kakao.maps.Map(mapContainer, mapOption);
+                  
+                 //DB에서 가져온 map 데이터
+                 var mapList = mapDb;
+                  
+                 //여행 경로 데이터에서 받아온 장소 데이터를 통해 지도위에 마커 생성
+                 var first_positions = [];
+                  
+                 $.each(mapList, function (index, obj){
+                  
+                    let object = {};
+                     object["content"] = obj.mapName;
+                     object["latlng"] = new kakao.maps.LatLng(obj.mapLat, obj.mapLng);
+                        
+                     first_positions.push(object);
+                     
+                 });
+                     
+                 for (var i = 0; i < first_positions.length; i++) {
+                    // 마커를 생성
+                     var marker = new kakao.maps.Marker({
+                        map : map, // 마커를 표시할 지도
+                         position : first_positions[i].latlng
+                     });
+
+                     // 마커에 표시할 인포윈도우를 생성
+                     var infowindow = new kakao.maps.InfoWindow({
+                         content : first_positions[i].content, // 인포윈도우에 표시할 내용
+                         removable : true
+                     });
+
+                     kakao.maps.event.addListener(marker, 'click', marker_click(map, marker, infowindow));
+                  }
+                  
+                  
+                  function marker_click(map, marker, infowindow) {
+                      return function() {
+                        infowindow.open(map, marker);
+                     };
+                  }
+                      
+                  //선을 구성하는 좌표 배열 이 좌표들을 이어서 선을 표시
+                  var first_polyline = []
+                  //여행 경로 데이터에서 받아온 장소 데이터를 통해 마커 사이에 선을 생성
+                
+                  $.each(mapList, function (index, obj){
+                      let object2 = {};
+                     object2 = new kakao.maps.LatLng(obj.mapLat, obj.mapLng),
+                     first_polyline.push(object2);
+                        
+                  });
+                    
+
+
+                  // 지도에 표시할 선을 생성합니다
+                  var first_linePath = new kakao.maps.Polyline({
+                       path : first_polyline, // 선을 구성하는 좌표 배열
+                      strokeWeight : 3, // 선의 두께
+                      strokeColor : 'black', // 선의 색깔
+                      strokeOpacity : 0.7, // 선의 불투명도 (1에서 0 사이의 값, 0에 가까울수록 투명)
+                      strokeStyle : 'solid' // 선의 스타일
+
+                   });
+                      
+                   // 지도에 마커를 표시
+                   marker.setMap(map);
+                   
+                   // 선 생성 
+                   first_linePath.setMap(map);
+               
+            }).fail(reject => console.log(reject));
+               //ajax 실패시 출력되는 부분
+         })
+         
+         //ajax를 통해 해당 일자의 여행경로를 db에 저장
+		function sendMappingData(data) {   
+         	fetch('/common/tripMappingInsert', {
+            	method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(result => {
+                // 서버 응답 처리
+                //console.log("성공");
+            })
+            .catch(error => {
+                // 응답 실패 처리
+                //console.log("실패");
+            });
+        }
+         
+         //여행 경로 재지정
+         $(".mapping").click(function() {
+			removeMarker();
+			
+			var tD = $(this).next("input[name=tDate]").attr("value");
+
+            var parsedDate = new Date(tD);
+
+            var year = (parsedDate.getYear() - 100); // 연도에서 뒤의 2자리 추출
+            var month = (parsedDate.getMonth() + 1); // 월 (0부터 시작하므로 1을 더함)
+            var day = parsedDate.getDate(); // 일
+            
+            // 월과 일을 두 자리로 만들기 (0을 추가)
+            if (month < 10) {
+              month = '0' + month;
+            }
+            if (day < 10) {
+              day = '0' + day;
+            }
+
+            var formattedDate = year + '/' + month + '/' + day;
+			
+			
+			$(this).attr('style', 'display:none;');
+			$(this).siblings(".showShow").attr('style', 'display:block;');
+			$(this).siblings(".modifyMapping").attr('style', 'display:block;');
+			$(this).siblings(".keyword").attr('style', 'display:none;');
+			$(this).siblings(".searchPlaces").attr('style', 'display:none;');
+    		var mappingCoordinates = $(this).prev(".showMapData");
+
+    		var mappingString ="";
+    		
+    		mappingCoordinates.html(""); 
+    
+    		var mapDataArry = [];
+    		for (var i = 0; i < mapping.length; i++) {
+        		 var mappingObj = mapping[i];
+        
+        		 mappingString = "<div class='tripDatas" + (i + 1) + "'>" +
+        		 					 "<label>" + "순번 : " + (i + 1) + "</label>" +
+        		 					 "<label>" + mappingObj.mapName + "</label>" + "<br>" +
+            						 "<input type='hidden' name='mapNo' value='" + (i + 1) + "'>" +
+            						 "<input type='hidden' name='mapName' value='" + mappingObj.mapName + "'>" +
+            						 "<input type='hidden' name='mapLat' value='" + mappingObj.mapLat + "'>" +
+            						 "<input type='hidden' name='mapLng' value='" + mappingObj.mapLng + "'>" +
+            						 "</div>";
+
+         		 // 위에 여행일자 추가 
+        		 mappingCoordinates.append(mappingString);
+
+      			 //객체 생성
+        		 var mapDataObj = {
+            						mapNo: (i + 1),
+            						mapName: mappingObj.mapName,
+            						mapLat: mappingObj.mapLat,
+            						mapLng: mappingObj.mapLng,
+            						postId: postData,
+            						tripDate: formattedDate
+        						  };
+      			 //객체를 배열로 변환
+        		 mapDataArry.push(mapDataObj);
+    		 }
+    		 sendMappingData(mapDataArry);
+    		 
+    		 //저장한 여행경로를 초기화 시켜줌
+    		 mapping = [];
+    		 //검색결과 리스트 초기화
+    		 $('#placesList').empty();
+		 });
+         
+         
+         // 여행 메모 수정 버튼을 클릭할 때
+         $(".updateMemo").click(function() {
+        	if(confirm("해당 일자의 여행 메모를 수정하시겠습니까?")) {
+        		var memoForm = $("#memoForm");
+             	var tripDate = $(this).siblings('input[name="tripDate"]').val();
+             	var content = $(this).siblings('textarea[name="content"]').val();
+             	
+             	var parsedDate = new Date(tripDate);
+    			var year = (parsedDate.getYear() - 100); // 연도에서 뒤의 2자리 추출
+    			var month = (parsedDate.getMonth() + 1); // 월 (0부터 시작하므로 1을 더함)
+    			var day = parsedDate.getDate(); // 일
+
+    			// 월과 일을 두 자리로 만들기 (0을 추가)
+    			if (month < 10) {
+    			  month = '0' + month;
+    			}
+    			if (day < 10) {
+    			  day = '0' + day;
+    			}
+
+    			var formattedDate = year + '/' + month + '/' + day;
+    		
+             	// Ajax로 메모 내용 수정
+            	$.ajax({
+                	type: "POST",
+                    url: "/common/modifyMemo", // 실제 컨트롤러 URL로 변경하세요.
+                    data: {
+                    	tripDate: formattedDate,
+                        content: content,
+                        postId : postData
+                    	}
+                    }).done(data => {
+        				alert("해당 메모 수정 완료");
+        		        
+        			}).fail(reject => console.log(reject));
+        		
+        		return;
+        	}else{
+        		return;
+        	}
+               
+         });
+         
+         
+       //여행경로 수정버튼 클릭시 여행경로를 삭제 후 다시 저장해야함
+ 		$(".modifyMapping").click(function(){
+ 			if(confirm("여행 경로를 수정 하시겠습니까?")) {
+ 	 			tDate = $(this).prev("input[name=tDate]").attr("value");
+ 	 			$.ajax({
+ 	 				url: '/common/mapDeleteList',
+ 	 				type: 'post',
+ 	 				data: { 
+ 	 						postId : postData,
+ 	 						tripDate : tDate 
+ 	 					  }
+ 	 				
+ 	 			}).done(data => {
+ 	 				//console.log("경로 삭제 완료");
+ 	 		        
+ 	 			}).fail(reject => console.log(reject));
+ 	 			$(this).siblings(".keyword").attr('style', 'display:block;');
+ 	 			$(this).siblings(".searchPlaces").attr('style', 'display:block;');
+ 	 			$(this).siblings(".mapping").attr('style', 'display:block;');
+ 	 			$(this).attr('style', 'display:none;');
+ 	 			
+ 			    return;
+ 			  } else {
+ 			    return;
+ 			  }
+ 		})
+         
+         
+         //여행기록 데이터 수정
+         $("#modifyTrip").click(function() {
+            //console.log(typeof tripTitle);
+            if(confirm("여행기록을 수정 하시겠습니까?")) {
+            	$("#modifyData").attr("action", "/common/tripRecordModify").submit();
+            	return;
+            }else{
+            	return;
+            }
+               
+            });
+           
+       });
+       
+     //지도 관련 스크립트 부분입니다.
+		// 마커를 담는 배열
+       var markers = [];
+		
+   	// 최종적으로 저장된 위도, 경도위 정보를 담아주는 배열
+       var mapping = [];
+		
+   	// 지도상의 선을 초기화
+       var polyline = null;
+   	
+    	// 생성된 마커의 위도, 경도를 담아줄 변수
+       var markerPosition ;
+    	
+    	// 지도를 표시할 div
+       var mapContainer = document.getElementById('map'), mapOption = {
+          // 최초로 생성된 지도의 중심좌표 
+          center : new kakao.maps.LatLng(35.871159972672, 128.60183648521),
+          // 지도의 확대 레벨
+          level : 7
+       };
+    	
+    	// 지도 생성 
+       var map = new kakao.maps.Map(mapContainer, mapOption);
+    	
+    	// 장소 검색 객체를 생성
+       var ps = new kakao.maps.services.Places();
+
+       // 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성
+       var infowindow = new kakao.maps.InfoWindow({
+          zIndex : 1
+       });
+       
+       //키워드 검색시 검색 실행되는 함수
+       function performSearch(divId) {
+           var keywordInput = document.getElementById(divId + '-keyword');
+           var keyword = keywordInput.value;
+       
+           //.replace(/^\s+|\s+$/g 앞 뒤의 공백을 제거
+           if (!keyword.replace(/^\s+|\s+$/g, '')) {
+               alert('키워드를 입력해주세요!');
+               return false;
+           }
+
+           ps.keywordSearch(keyword, function(data, status, pagination) {
+               if (status === kakao.maps.services.Status.OK) {
+                   displayPlaces(data, divId);
+                   displayPagination(pagination, divId);
+               } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+                   alert('검색 결과가 존재하지 않습니다.');
+               } else if (status === kakao.maps.services.Status.ERROR) {
+                   alert('검색 결과 중 오류가 발생했습니다.');
+               }
+           });
+       }
+       
+       $(".searchPlaces").click(function(){
+       	$('#menu_wrap').attr('style', 'display:block');
+       	var keywordInput = $(this).siblings(".keyword");
+           var keyword = keywordInput.val();
+       	console.log(keyword);
+           if (!keyword.replace(/^\s+|\s+$/g, '')) {
+               alert('키워드를 입력해주세요!');
+               return false;
+           }
+
+           // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
+           ps.keywordSearch( keyword, placesSearchCB); 
+       })
+
+       // 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+       function placesSearchCB(data, status, pagination) {
+           if (status === kakao.maps.services.Status.OK) {
+
+               // 정상적으로 검색이 완료됐으면
+               // 검색 목록과 마커를 표출합니다
+               displayPlaces(data);
+
+               // 페이지 번호를 표출합니다
+               displayPagination(pagination);
+
+           } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+
+               alert('검색 결과가 존재하지 않습니다.');
+               return;
+
+           } else if (status === kakao.maps.services.Status.ERROR) {
+
+               alert('검색 결과 중 오류가 발생했습니다.');
+               return;
+
+           }
+       }
+
+       // 검색 결과 목록과 마커를 표출하는 함수입니다
+       function displayPlaces(places) {
+
+           var listEl = document.getElementById('placesList'), 
+           menuEl = document.getElementById('menu_wrap'),
+           fragment = document.createDocumentFragment(), 
+           bounds = new kakao.maps.LatLngBounds(), 
+           listStr = '';
+           
+           // 검색 결과 목록에 추가된 항목들을 제거합니다
+           removeAllChildNods(listEl);
+
+           for ( var i=0; i<places.length; i++ ) {
+
+               // 마커를 생성하고 지도에 표시합니다
+               var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
+                   itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+
+               // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+               // LatLngBounds 객체에 좌표를 추가합니다
+               bounds.extend(placePosition);
+
+               // 검색결과 리스트와 지도에 나타난 숫자 마커 mouseover시 인포윈도우 나오고 mouseout하면 사라짐
+               (function(marker, pname, praddress, paddress, plat, plng) {
+                   //kakao.maps.event.addListener(marker, 'mouseover', function() {
+                   //    displayInfowindow(marker, pname);
+                   //});
+
+                   //kakao.maps.event.addListener(marker, 'mouseout', function() {
+                   //    infowindow.close();
+                   //});
+
+                   //itemEl.onmouseover =  function () {
+                   //    displayInfowindow(marker, pname);
+                   //};
+
+                   //itemEl.onmouseout =  function () {
+                   //    infowindow.close();
+                   //};
+                   
+                   
+                // 리스트의 아이템을 클릭하면 정보들을 text 영역으로 전송 (hidden 사용가능)
+                   itemEl.onclick = function() {
+                              
+                      //여행경로에 추가할지 여부를 확인하는 함수
+                      function addTripMarker(){
+                         if(confirm(pname + "을 경로에 추가하시겠습니까?")){
+                       	  	 markerPosition = new kakao.maps.LatLng(plat, plng);
+                                alert("추가 되었습니다.");
+                                 return;
+                             }else{
+                                   return;
+                             }
+                      }
+                      
+                      //함수 호출
+                      addTripMarker();
+                      
+                      var marker = new kakao.maps.Marker({
+                         
+                         content : pname,
+                         
+                         map : map, // 마커를 표시할 지도
+
+                         position : markerPosition
+                      });
+                      
+                      marker.polyline = null; // 선 정보를 저장할 프로퍼티 추가
+
+                      var infowindow = new kakao.maps.InfoWindow({
+
+                         content : pname, // 인포윈도우에 표시할 내용
+
+                         removable : true
+
+                      });
+
+                      kakao.maps.event.addListener(marker, 'click', function() {
+                         
+                         //여행경로를 삭제할지 여부를 확인하는 함수
+                         function deleteTripMarker(){
+                            if(confirm(pname + "을 경로에서 삭제하시겠습니까?")){
+                                   // 마커 클릭 시 해당 마커와 그에 따른 선을 지우는 함수 호출
+                               deleteMarkerAndLine(marker);
+                               alert("삭제 되었습니다.");
+                                    return;
+                                }else{
+                                      return;
+                                }
+                         }
+                         deleteTripMarker();
+                      });
+                      
+
+                      // 마커를 배열에 추가하고, 마커들끼리 순서대로 선을 그립니다.
+                      markers.push(marker);
+                      drawConnectingLines();
+                      
+                      mapping.push({
+                            mapLat: plat, mapLng: plng, mapName: pname
+                        });
+                   };
+                   
+                	// 새로운 마커들끼리 선을 그리는 함수
+                   function drawConnectingLines() {
+                   	// 기존에 그려진 선들을 모두 제거합니다.
+                       for (var i = 0; i < markers.length; i++) {
+                       	if (markers[i].polyline) {
+                           	markers[i].polyline.setMap(null);
+                           }
+                       }
+
+                       for (var i = 0; i < markers.length - 1; i++) {
+                     		 var linePath = [markers[i].getPosition(), markers[i + 1].getPosition()];
+
+                            markers[i].polyline = new kakao.maps.Polyline({
+                                path: linePath,
+                                strokeWeight: 3,
+                                strokeColor: '#ff0000',
+                                strokeOpacity: 0.7,
+                                strokeStyle: 'solid'
+                            });
+
+                            markers[i].polyline.setMap(map);
+                        }
+                   }
+                   
+               	// 마커와 그에 따른 선을 지우는 함수
+                   function deleteMarkerAndLine(marker) {
+                       var markerIndex = markers.indexOf(marker);
+                       if (markerIndex !== -1) {
+                           mapping.splice(markerIndex, 1);
+                           markers.splice(markerIndex, 1);
+                           marker.setMap(null);
+
+                           // 해당 마커와 그에 따른 선을 제거
+                           if (marker.polyline) {
+                               marker.polyline.setMap(null);
+                           }
+
+                           // 다른 마커와 연결된 선도 함께 다시 그림
+                           drawConnectingLines();
+                       }
+                   }
+               })(marker
+                  , places[i].place_name
+                  , places[i].road_address_name
+                  , places[i].address_name
+                  , places[i].y
+                  , places[i].x);
+
+               fragment.appendChild(itemEl);
+           }
+
+           // 검색결과 항목들을 검색결과 목록 Element에 추가합니다
+           listEl.appendChild(fragment);
+           menuEl.scrollTop = 0;
+
+           // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+           map.setBounds(bounds);
+       }
+
+       // 검색결과 항목을 Element로 반환하는 함수입니다
+       function getListItem(index, places) {
+
+           var el = document.createElement('li'),
+           itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
+                       '<div class="info">' +
+                       '   <h5>' + places.place_name + '</h5>';
+
+           if (places.road_address_name) {
+               itemStr += '    <span>' + places.road_address_name + '</span>' +
+                           '   <span class="jibun gray">' +  places.address_name  + '</span>';
+           } else {
+               itemStr += '    <span>' +  places.address_name  + '</span>'; 
+           }
+                        
+             itemStr += '  <span class="tel">' + places.phone  + '</span>' +
+                       '</div>';           
+
+           el.innerHTML = itemStr;
+           el.className = 'item';
+
+           return el;
+       }
+
+       // 지도 위에 표시되고 있는 마커를 모두 제거합니다
+       function removeMarker() {
+           for ( var i = 0; i < markers.length; i++ ) {
+               markers[i].setMap(null);
+           }   
+           markers = [];
+       }
+
+       // 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
+       function displayPagination(pagination) {
+           var paginationEl = document.getElementById('pagination'),
+               fragment = document.createDocumentFragment(),
+               i; 
+
+           // 기존에 추가된 페이지번호를 삭제합니다
+           while (paginationEl.hasChildNodes()) {
+               paginationEl.removeChild (paginationEl.lastChild);
+           }
+
+           for (i=1; i<=pagination.last; i++) {
+               var el = document.createElement('a');
+               el.href = "#";
+               el.innerHTML = i;
+
+               if (i===pagination.current) {
+                   el.className = 'on';
+               } else {
+                   el.onclick = (function(i) {
+                       return function() {
+                           pagination.gotoPage(i);
+                       }
+                   })(i);
+               }
+
+               fragment.appendChild(el);
+           }
+           paginationEl.appendChild(fragment);
+       }
+
+       // 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
+       // 인포윈도우에 장소명을 표시합니다
+       function displayInfowindow(marker, title) {
+           var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
+
+           infowindow.setContent(content);
+           infowindow.open(map, marker);
+       }
+
+        // 검색결과 목록의 자식 Element를 제거하는 함수입니다
+       function removeAllChildNods(el) {   
+           while (el.hasChildNodes()) {
+               el.removeChild (el.lastChild);
+           }
+       }
+    	
+       //리스트 목록에서 클릭한 곳의 좌표
+		markerPosition = [{}];
+		
+		//리스트 목록에서 클릭한 곳에 마커 생성
+		for (var i = 0; i < markerPosition.length; i++) {
+           // 마커를 생성
+           var marker = new kakao.maps.Marker({
+               		 	 map : map, // 마커를 표시할 지도
+              				 position : markerPosition[i].latlng
+           				 // 마커의 위치// 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+           			 });
+
+           // 마커에 표시할 인포윈도우를 생성합니다
+           var infowindow = new kakao.maps.InfoWindow({
+           	// 인포윈도우에 표시할 내용
+           	content : markerPosition[i].content,
+
+               removable : true
+
+           });
+
+           kakao.maps.event.addListener(marker, 'click', marker_click(map, marker, infowindow));
+
+       }
+		
+		function marker_click(map, marker, infowindow) {
+
+           return function() {
+
+              infowindow.open(map, marker);
+
+           };
+
+       }
+		
+		// 지도에 마커를 표시합니다
+       marker.setMap(map);
+		
+    	// 선택한 마커와 연결된 선을 삭제하는 함수
+       function deleteSelectedMarkerAndLine() {
+           var selectedMarker = markers[markers.length - 1]; // 마지막에 추가된 마커 선택
+
+           if (selectedMarker) {
+               deleteMarkerAndLine(selectedMarker);
+           }
+       }
+        
+      
+     </script>
 </body>
 </html>

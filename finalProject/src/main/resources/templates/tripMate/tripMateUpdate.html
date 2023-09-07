@@ -141,13 +141,20 @@ body {
     					<tr>
         					<th style="text-align: left; width: 20%;">예상 경비</th>
         					<td colspan="2">
-            					<input type="number" id="mateExpense" name="mateExpense" size="30" class="form-control" th:value="${tripMateVO.mateExpense}">
+            					 <input type="text" id="mateExpense" name="mateExpense" size="30" class="form-control" th:value="${tripMateVO.mateExpense}">
         					</td>
         					<th style="text-align: left; width: 20%;">모집 인원</th>
         					<td colspan="2">
             					<input type="number" id="mateMax" name="mateMax" size="30" class="form-control" th:value="${tripMateVO.mateMax}">
         					</td>
     					</tr>
+    					<tr>
+                        	<th style="text-align: left; width: 20%;">메인 이미지</th>
+                         	<td colspan="5">
+                           		<input type="file" id="mainImage" name="mainImage" size="50" class="form-control">
+                           		<input type="button" class="btn btn-secondary mt-3 mx-2" id ="uploadBtn" value="upload">
+                       		</td>
+                   		</tr>
 					</table>
 					<div id="editor">
 						<th:textarea th:utext="${tripMateVO.mateContent}"></th:textarea>
