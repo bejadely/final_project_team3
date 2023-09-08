@@ -32,7 +32,7 @@ public class NoticeController {
 	// 모든 리스트 모델에 담기
 			model.addAttribute("list", list);
 			model.addAttribute("paging", pagingVO);
-	return"/notice/noticeList";
+	return"notice/noticeList";
 	};
 	
 	//공지사항 게시글 상세보기
@@ -146,7 +146,7 @@ public class NoticeController {
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("noticeType", noticeType);
 		
-		return "/notice/noticeList";
+		return "notice/noticeList";
 	}
 
 	
