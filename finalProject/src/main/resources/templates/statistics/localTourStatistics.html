@@ -149,6 +149,7 @@
     	<!-- 파일업로드 버튼 -->
     	<div class="uploadModalbtn">
     		<button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#staticBackdrop">파일업로드</button>&ensp;
+            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">파일삭제</button>&ensp;
     	</div>
     	<!-- 파일업로드 모달 -->
     	<!-- Modal -->
@@ -187,7 +188,23 @@
                       <li><a class="dropdown-item" th:attr="data-area-code='36', data-sigungu-code='17'">통영</a></li>
                       <li><a class="dropdown-item" th:attr="data-area-code='36', data-sigungu-code='1'">거제</a></li>
 				  </ul>
-				</div> 
+				</div>
+                  <div class="dropdown">
+                      <button class="btn btn-sm btn-outline-dark dropdown-toggle" id="yearButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          년도 선택
+                      </button>
+                      <ul id="year" class="dropdown-menu">
+                          <!--년도-->
+                      </ul>
+                  </div>
+                  <div class="dropdown">
+                      <button class="btn btn-sm btn-outline-dark dropdown-toggle" id="monthButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          월 선택
+                      </button>
+                      <ul id="month" class="dropdown-menu">
+                          <!--월-->
+                      </ul>
+                  </div>
 		    </div>
 		       <div class="filebox">
 				  <label for="ex_filename"></label>
@@ -201,6 +218,71 @@
 		    </div>
 		  </div>
 		</div>
+        <!-- 파일삭제 모달 -->
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel2">통계자료 삭제</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="upload-container">
+                            <div class="dropdown">
+                                &nbsp;<button class="btn btn-sm btn-outline-dark dropdown-toggle" id="fileTypeButtonDel" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                파일타입
+                            </button>
+                                <ul id="fileTypeDel" class="dropdown-menu">
+                                    <li><a class="dropdown-item">동행유형</a></li>
+                                    <li><a class="dropdown-item">여행유형</a></li>
+                                    <li><a class="dropdown-item">맛집방문자</a></li>
+                                    <li><a class="dropdown-item">여행지방문자</a></li>
+                                    <li><a class="dropdown-item">방문자수</a></li>
+                                    <li><a class="dropdown-item">SNS언급량</a></li>
+                                </ul>
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-dark dropdown-toggle" id="locationTypeButtonDel" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    지역선택
+                                </button>
+                                <ul id="locationTypeDel" class="dropdown-menu">
+                                    <li><a class="dropdown-item" th:attr="data-area-code='4', data-sigungu-code='0'">대구</a></li>
+                                    <li><a class="dropdown-item" th:attr="data-area-code='6', data-sigungu-code='0'">부산</a></li>
+                                    <li><a class="dropdown-item" th:attr="data-area-code='7', data-sigungu-code='0'">울산</a></li>
+                                    <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='2'">경주</a></li>
+                                    <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='23'">포항</a></li>
+                                    <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='11'">안동</a></li>
+                                    <li><a class="dropdown-item" th:attr="data-area-code='36', data-sigungu-code='17'">통영</a></li>
+                                    <li><a class="dropdown-item" th:attr="data-area-code='36', data-sigungu-code='1'">거제</a></li>
+                                </ul>
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-dark dropdown-toggle" id="yearButtonDel" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    년도 선택
+                                </button>
+                                <ul id="yearDel" class="dropdown-menu">
+                                   <!--년도-->
+                                </ul>
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-dark dropdown-toggle" id="monthButtonDel" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    월 선택
+                                </button>
+                                <ul id="monthDel" class="dropdown-menu">
+                                   <!--월-->
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" id="deleteButton" class="btn btn-primary">삭제</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- 경상도 지역 통계 -->
         <div class="row">
             <div class="col-md-7">
@@ -3047,17 +3129,47 @@
             let areaCode = $('#locationTypeButton').data('areaCode');
             let sigunguCode = $('#locationTypeButton').data('sigunguCode');
             let file = $('#ex_filename')[0].files[0];
+            let fileYear = $('#yearButton').text();
+            let fileMonth = $('#monthButton').text();
+            let yearMonth = fileYear + fileMonth;
 
             if(fileType == null || fileType == '파일타입' || fileType.replaceAll(' ', '') == '') {
-                alert('파일 타입을 선택해주세요');
+                
+                Swal.fire({
+                	  icon: 'warning',                     
+                	  title: '파일 타입을 선택해주세요'
+                	});
                 return;
             }
             if(locationType == null || ((fileType == '동행유형' || fileType == '여행유형' || fileType == '맛집방문자' || fileType == '여행지방문자') && locationType == '지역선택')) {
-                alert('지역을 선택해주세요.');
+                
+                Swal.fire({
+              	  icon: 'warning',                     
+              	  title: '지역을 선택해주세요'
+              	});
+                return;
+            }
+            if(fileYear == null || fileYear.indexOf('년도 선택') != -1 || fileYear.replaceAll(' ', '') == '') {
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: '년도를 선택해주세요'
+                });
+                return;
+            }
+            if(fileMonth == null || fileMonth.indexOf('월 선택') != -1 || fileMonth.replaceAll(' ', '') == '') {
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: '월을 선택해주세요'
+                });
                 return;
             }
             if(file == undefined) {
-                alert('엑셀 파일을 선택해주세요');
+            	Swal.fire({
+                	  icon: 'warning',                     
+                	  title: '엑셀파일을 선택해주세요'
+                	});
                 return;
             }
 
@@ -3067,13 +3179,86 @@
             formData.append('areaCode', areaCode);
             formData.append('sigunguCode', sigunguCode);
             formData.append('file', file);
+            formData.append('yearMonth', yearMonth)
 
             uploadExcel(formData, function(data) {
                 if(data > 0) {
-                    alert('엑셀 업로드를 성공했습니다.');
+                    Swal.fire({
+                  	  icon: 'success',                     
+                  	  title: '엑셀 업로드를 성공했습니다.'
+                  	});
                     return;
                 } else {
-                    alert('엑셀 업로드를 실패했습니다.');
+                	Swal.fire({
+                    	  icon: 'error',                     
+                    	  title: '엑셀 업로드를 실패했습니다.'
+                    	});
+                    return;
+                }
+            });
+        })
+
+        $(document).on('click', '#deleteButton', function() {
+            let fileType = $('#fileTypeButtonDel').text();
+            let locationType = $('#locationTypeButtonDel').text();
+            let areaCode = $('#locationTypeButtonDel').data('areaCode');
+            let sigunguCode = $('#locationTypeButtonDel').data('sigunguCode');
+            let fileYear = $('#yearButtonDel').text();
+            let fileMonth = $('#monthButtonDel').text();
+            let yearMonth = fileYear + fileMonth;
+
+            if(fileType == null || fileType == '파일타입' || fileType.replaceAll(' ', '') == '') {
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: '파일 타입을 선택해주세요'
+                });
+                return;
+            }
+            if(locationType == null || ((fileType == '동행유형' || fileType == '여행유형' || fileType == '맛집방문자' || fileType == '여행지방문자') && locationType == '지역선택')) {
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: '지역을 선택해주세요'
+                });
+                return;
+            }
+            if(fileYear == null || fileYear.indexOf('년도 선택') != -1 || fileYear.replaceAll(' ', '') == '') {
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: '년도를 선택해주세요'
+                });
+                return;
+            }
+            if(fileMonth == null || fileMonth.indexOf('월 선택') != -1 || fileMonth.replaceAll(' ', '') == '') {
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: '월을 선택해주세요'
+                });
+                return;
+            }
+
+            // FormData 객체 생성 및 값 설정
+            let formData = new FormData();
+            formData.append('fileType', fileType);
+            formData.append('areaCode', areaCode);
+            formData.append('sigunguCode', sigunguCode);
+            formData.append('yearMonth', yearMonth)
+
+            deleteExcel(formData, function(data) {
+                if(data > 0) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '데이터 삭제를 성공했습니다.'
+                    });
+                    return;
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: '데이터가 없거나 삭제를 실패했습니다.'
+                    });
                     return;
                 }
             });
@@ -3082,6 +3267,24 @@
         function uploadExcel(formData, callback) {
             $.ajax({
                 type : 'POST',
+                url : '/excel',
+                data : formData,
+                contentType: false,
+                processData: false
+            })
+            .done(function(data, textStatus, jqXHR) {
+                console.log('done');
+
+                callback(data);
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                console.log('fail');
+            })
+        }
+
+        function deleteExcel(formData, callback) {
+            $.ajax({
+                type : 'DELETE',
                 url : '/excel',
                 data : formData,
                 contentType: false,
@@ -3275,8 +3478,9 @@
             });
         }
 
+        // 엑셀 업로드 드롭다운 항목 텍스트 넣기
         $('#fileType li > a').on('click', function() {
-            // 버튼에 선택된 항목 텍스트 넣기
+
             let fileType = $(this).text();
             $('#fileTypeButton').text(fileType);
 
@@ -3293,12 +3497,82 @@
         });
 
         $('#locationNameType li > a').on('click', function() {
-            // 버튼에 선택된 항목 텍스트 넣기
             let locationName = $(this).text();
             $('#locationName').text(locationName);
 
             getStatisticsData();
         });
+
+        $(document).on('click', '#year li > a', function() {
+            let year = $(this).html();
+            $('#yearButton').text(year);
+
+        });
+
+        $(document).on('click', '#month li > a', function() {
+            let month = $(this).html();
+            $('#monthButton').text(month);
+
+        });
+
+
+        //엑셀 삭제 드롭다운 항목 텍스트 넣기
+        $('#fileTypeDel li > a').on('click', function() {
+
+            let fileTypeDel = $(this).text();
+            $('#fileTypeButtonDel').text(fileTypeDel);
+
+            if(fileTypeDel == '방문자수' || fileTypeDel == 'SNS언급량') {
+                $('#locationTypeButtonDel').addClass('disabled', true);
+                $('#locationTypeButtonDel').text('지역선택 없음');
+                $('#locationTypeButtonDel').data('areaCode', '0');
+                $('#locationTypeButtonDel').data('sigunguCode', '0');
+            } else {
+                $('#locationTypeButtonDel').removeClass('disabled');
+                $('#locationTypeButtonDel').text('지역선택');
+            }
+
+        });
+
+        $('#locationTypeDel li > a').on('click', function() {
+            let locationName = $(this).text();
+            $('#locationTypeButtonDel').text(locationName);
+            $('#locationTypeButtonDel').data('areaCode', $(this).data('areaCode'));
+            $('#locationTypeButtonDel').data('sigunguCode', $(this).data('sigunguCode'));
+        });
+
+        $(document).on('click', '#yearDel li > a', function() {
+            let year = $(this).html();
+            $('#yearButtonDel').text(year);
+
+        });
+
+        $(document).on('click', '#monthDel li > a', function() {
+            let month = $(this).html();
+            $('#monthButtonDel').text(month);
+
+        });
+
+        //엑셀 업로드,삭제 모달창 년도 월 넣어주는 곳
+        const currentYear = new Date().getFullYear();
+        let yearListHtml = '';
+
+        for (let i = (currentYear) - 5; i <= currentYear + 1; i++) {
+            yearListHtml += `<li><a class="dropdown-item">${i}</a></li>`;
+        }
+
+        document.getElementById('year').innerHTML = yearListHtml;
+        document.getElementById('yearDel').innerHTML = yearListHtml;
+
+        let monthListHtml = '';
+
+        for (let i = 1; i <= 12; i++) {
+            let month = i.toString().length == 1 ? '0' + i : i;
+            monthListHtml += `<li><a class="dropdown-item">${month}</a></li>`;
+        }
+
+        document.getElementById('month').innerHTML = monthListHtml;
+        document.getElementById('monthDel').innerHTML = monthListHtml;
     </script>
 </div>
 </body>

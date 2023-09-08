@@ -25,16 +25,29 @@ public class CheckAccountController {
 	
 		String bankHolderInfo = (String) map.get("bankHolderInfo");
 		
+		//객체에 error키에 따른 밸류 저장
 		Object errorObj = map.get("error");
 		if (errorObj instanceof String) {
-		    String errorStr = (String) errorObj;
+		   //String이라면
+			String errorStr = (String) errorObj;
 		    int error1 = Integer.parseInt(errorStr);
 		    map.put("errormsg", String.valueOf(error1));
 		} 
 
+		if(bankHolderInfo !=null){
+			map.put("bankHolderInfo", bankHolderInfo);
+		}else {
+			//map.put("없는 정보입니다.", bankHolderInfo);
+			//System.out.println("없다");
+			//bankHolderInfo="없는 정보입니다.";
+			map.put("bankHolderInfo", bankHolderInfo);
+			
+		}
 		
-		map.put("bankHolderInfo", bankHolderInfo);
-		System.out.println("예금주:"+bankHolderInfo);
+			
+		//map.put("bankHolderInfo", bankHolderInfo);
+		System.out.println("예금주"+bankHolderInfo);
+		
 		return map;
 		
 		

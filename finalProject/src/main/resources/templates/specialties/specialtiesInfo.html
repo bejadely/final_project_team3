@@ -208,6 +208,14 @@ form {
 							
                     </div>
                 </div>
+                <div>
+	                <input type="hidden" id="sessionAuthority" th:value="${session.sessionAuthority}">
+	                <button th:if="${session.sessionAuthority} != null and ${session.sessionAuthority} == 'A3'" type="button" class="btn btn-outline-dark" 
+					th:onclick="|location.href='@{/admin/specialtiesUpdateForm(postId=${info.postId})}'|">수정</button>&nbsp;&nbsp;
+                </div>
+				
+               
+                
                 <!-- 리뷰 -->
         <div class="review">
             <h7 id="reviewCount"></h7>
@@ -256,6 +264,8 @@ form {
 
 
 <script>
+
+
 	var content = '[[${info.content }]]';
 	var postId = '[[${info.postId}]]';
 	var memberId = $("#id").val();
@@ -299,12 +309,9 @@ form {
 			}else{
 				finalPrice = price * count;
 			}
-			 
-			
-			
+
 			str += '<p><label>수량 : </label><span class="count">&nbsp;' + count + '</span>&nbsp;&nbsp;&nbsp;<br>';	
-			
-		
+	
 			str += '<label>옵션 : </label><span class="specialtyType">&nbsp;' + specialtyType + '</span>&nbsp;&nbsp;&nbsp;';	
 			str+=`<input type="hidden" class="specType" value="${specialtyType}"><br>`
 			
@@ -378,7 +385,6 @@ form {
 	    });
 	    
 	    
-	    //리뷰
 	    function getPackageDetailInfoReview(postId, callback) {
             $.ajax({
                 type: 'GET',

@@ -777,11 +777,17 @@
 		let areaCode = $('#locationTypeButton').data('areaCode');
 		let sigunguCode = $('#locationTypeButton').data('sigunguCode');
 
-		if(searchKeyWord.length<=1){
-			alert('1글자 이상 검색해주세요.');
+		if($('#locationTypeButton').text() == '지역 선택'){
+			Swal.fire({
+      		  icon: 'error',                      
+      		  title: '지역을 선택해주세요.'
+      		});
 			return;
-		} else if($('#locationTypeButton').text() == '지역 선택') {
-			alert('지역을 선택해주세요.');
+		} else if(searchKeyWord.length<=1) {
+			Swal.fire({
+        		  icon: 'error',                      
+        		  title: '한글자 이상 입력해주세요.'
+        		});
 			return;
 		}
 

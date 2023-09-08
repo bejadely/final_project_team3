@@ -47,7 +47,7 @@ public interface PackageMapper {
 
 	//가이드 마이페이지 (재운) ===================================================================
 	//전체 리스트 페이징
-	public int guiListCount(PackageVO pacVO);
+	public int guiListCount(String memberId);
 	//전체 리스트(모집)
 	public List<PackageVO> guiListPackage(PackageVO pacVO, PagingVO pagingVO);
 	//판매완료 리스트 페이징
@@ -60,6 +60,8 @@ public interface PackageMapper {
 	public List<PackageVO> pacMember(PackageVO pacVO);
 	//패키지 삭제
 	public int deletePackage(String postId);
+	//패키지 수정
+	public void updatePackage(PackageVO packageVO);
 
 	
 

@@ -3,6 +3,7 @@ package com.trip.finalProject.excelUpload.web;
 import com.trip.finalProject.excelUpload.service.ExcelUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,11 +27,13 @@ public class ExcelUploadController {
 
     @PostMapping("/excel")
     @ResponseBody
-    public Integer uploadExcel(String fileType, String areaCode, String sigunguCode, MultipartFile file) {
-        System.out.println("fileType = " + fileType);
-        System.out.println("areaCode = " + areaCode);
-        System.out.println("sigunguCode = " + sigunguCode);
-        System.out.println("file.getOriginalFilename() = " + file.getOriginalFilename());
-        return excelUploadService.uploadExcel(fileType, areaCode, sigunguCode, file);
+    public Integer uploadExcel(String fileType, String areaCode, String sigunguCode, String yearMonth, MultipartFile file) {
+        return excelUploadService.uploadExcel(fileType, areaCode, sigunguCode, yearMonth, file);
+    }
+
+    @DeleteMapping("/excel")
+    @ResponseBody
+    public Integer deleteExcel(String fileType, String areaCode, String sigunguCode, String yearMonth) {
+        return excelUploadService.deleteExcel(fileType, areaCode, sigunguCode, yearMonth);
     }
 }

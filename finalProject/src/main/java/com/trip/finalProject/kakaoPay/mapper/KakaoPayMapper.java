@@ -12,5 +12,9 @@ public interface KakaoPayMapper {
 	
 	//주문 상태 변경
 	public int updatePurchaseStatus(KakaoPayInfoResponseVO vo);
+
+	public void deleteCart(String cartId);
+
+	public void updatePackageReservation(KakaoPayInfoResponseVO kakaoVO);
 	
 }
