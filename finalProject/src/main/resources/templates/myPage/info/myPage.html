@@ -75,7 +75,7 @@
 					<input type="hidden" name="memberId" th:value="*{memberId}">
 				</div>
 				<div align="center">
-					<button type="button" class="btn btn-primary btn-ghost">수정하기</button>
+					<button type="button" class="feature-btn" id="correction">수정하기</button>
 					<button type="button" class="feature-btn">탈퇴처리</button>
 				</div>
 			</form>
@@ -84,7 +84,7 @@
 	<script th:inline="javascript" type="text/javascript">
 	
 	$(document).ready(function() {
-		$(".btn.btn-primary.btn-ghost").click(function(e){
+		$("#correction").click(function(e){
 
 			e.stopPropagation();
 			
@@ -104,6 +104,7 @@
 				}
 		    }).then((firstResult) => {
 		    	if(firstResult.value == ""){
+		    		console.log(firstResult);
 		    		Swal.fire({
 			        	title: '비밀번호를 입력하세요',
 					    icon: 'warning',
