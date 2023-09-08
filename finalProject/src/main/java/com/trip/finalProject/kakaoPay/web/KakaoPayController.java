@@ -24,7 +24,7 @@ import com.trip.finalProject.kakaoPay.service.PaymentVO;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/payment")
+@RequestMapping("/common/payment")
 @RequiredArgsConstructor
 public class KakaoPayController {
 	

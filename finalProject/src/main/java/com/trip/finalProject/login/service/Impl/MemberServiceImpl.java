@@ -140,12 +140,33 @@ public class MemberServiceImpl implements MemberService {
 		//회원정보 불러이기
 		@Override
 		public MemberVO memberInfo(MemberVO memberVO) {
-			return memberMapper.memebrInfo(memberVO);
+			// 회원 상세 조회
+			String decodedAccountNum = "";
+			String memberId = "";
+			
+			//계좌번호 복호화
+			try {
+				memberVO = memberMapper.memebrInfo(memberVO);
+				decodedAccountNum = aesProcessor.aesCBCDecode(memberVO.getAccountNumber());
+				memberVO.setAccountNumber(decodedAccountNum);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			return memberVO;
 		}
 
 		//회원정보 수정
 		@Override
 		public String updateMember(MemberVO memberVO) {
+			
+			try {
+				memberVO.setAccountNumber(aesProcessor.aesCBCEncode(memberVO.getAccountNumber())); 
+				memberVO.setAccountNumber(aesProcessor.aesCBCEncode(memberVO.getPassword())); 
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			
 			int result = memberMapper.updateMember(memberVO);
 			
