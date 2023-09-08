@@ -109,4 +109,5 @@ public interface TripMateService {
 	public Map<String, Object> modifyCommentInfo(PostCommentVO postCommentVO) throws Exception;
 
 	public int getCommentNumInfo(TripMateVO tripMateVO);
+
 }

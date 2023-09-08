@@ -11,7 +11,7 @@
     <!--    <link rel="stylesheet" href="style.css"> -->
  <style>
 * {
-    margin: 0;,
+    margin: 0;
     padding: 0;
     font-family: sans-serif;
 }
@@ -48,7 +48,7 @@
     border-radius: 30px;
 }
 .togglebtn {
-    padding: 5px 10px;
+    padding:  10px;
     margin-left : 8px;
    /*  margin-right : 10px; */
     cursor: pointer;
@@ -57,13 +57,18 @@
     outline: none;
     position: relative;
 }
+
+#loginButton{ border-radius: 5px;
+margin-left: 5px; 
+}
 #btn {
-    top: 0;
+ /*    top: +5;
+    bottom: +1; */
     left: 0;
-    margin-top : 5px;
+/*     margin-bottom : -5px; */
     position: absolute;
     width: 150px;
-    height: 80%;
+    height: 100%;
     background:  #1fa3d7;
     border-radius: 30px;
     transition: .5s;
@@ -93,16 +98,20 @@ padding:5px;
     background: transparent;
 }
 .submit {
-    width: 100%;
-    padding: 5px 5px;
+    width: 97%;
+    height: 40px;
     cursor: pointer;
     display: block;
     margin: auto;
     background: #1fa3d7;
     border: 0;
     outline: none;
-/*     border-radius: 30px; */
+    border-radius: 10%;
 }
+
+
+
+
 .checkbox {
     margin: 30px 10px 30px 0;
 }
@@ -135,8 +144,8 @@ span {
             <div class="form-wrap">
                 <div class="button-wrap">
                     <div id="btn"></div>
-                    <button type="button" class="togglebtn" onclick="member()">&nbsp;&nbsp;회원 로그인&nbsp;&nbsp;</button>
-                    <button type="button" class="togglebtn" onclick="guide()">&nbsp;가이드 로그인</button>
+                    <button type="button" class="togglebtn" onclick="member()">&nbsp;&nbsp;&nbsp;회원 로그인&nbsp;&nbsp;</button>
+                    <button type="button" class="togglebtn" onclick="guide()">&nbsp;&nbsp;가이드 로그인</button>
                 </div>
                                          
                 <!-- 일반 로그인 -->
@@ -147,13 +156,13 @@ span {
                             <font id="checkId" size="2"></font>
              
              <div id="find">
-                <a th:href="@{/findAccount}"class="property-sub">아이디 찾기</a>
+                <a th:href="@{/findAccount}"class="">아이디 찾기</a>
                  <span>&nbsp;|&nbsp;</span>
            <a th:href="@{/findPassword}"class="property-sub">비밀번호 찾기</a>
            </div>
                 <br/>
                 <br/>
-                    <button type="submit" class="submit">일반 로그인</button>
+                    <button type="submit" id='loginButton' class="submit">일반 로그인</button>
                          <!--  SNS로그인 -->
                       <div class="sns">
                          <div class="social-icons">
@@ -180,7 +189,7 @@ span {
 		          	 </div>
 		                <br/>
 		                <br/>
-		                    <button type="submit" class="submit" > 로그인</button>
+		                    <button type="submit" id='loginButton' class="submit" > 로그인</button>
 		            <a th:href="@{/member/guideInsert}"class="property-sub">회원가입</a>
                 </form>
                
