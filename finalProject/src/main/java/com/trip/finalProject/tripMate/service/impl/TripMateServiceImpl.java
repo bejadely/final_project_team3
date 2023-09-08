@@ -403,8 +403,6 @@ public class TripMateServiceImpl implements TripMateService {
         
 	}
 	
-	//채팅방 참여하기
-	
 	//채팅방 이름 만들기
 	 public String getRoomName() {
 		 	String roomName="";
@@ -422,4 +420,7 @@ public class TripMateServiceImpl implements TripMateService {
 	        
 	        return roomName;
 	 }
+
+	 
+	 
 }

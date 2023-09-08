@@ -46,9 +46,27 @@ $(document).ready(function() {
 	   $("#appButton").click(function(){
 		   location.href='/common/myPageAppMate'
 	   })
+
+	   
+	   $('.entranceChat').click(function(event){
+		   event.stopPropagation();
+		   
+		   let channelKey = $(this).data('roomNumber');
+			let chatRoomUrl = "https://www.vchatcloud.com/chat-demo/iframe/iframe_kakao/v3/index.html?channelKey="+channelKey;
+		    let newWindow = window.open(chatRoomUrl, "_blank", "width=391,height=691,scrollbars=no,menubar=no,toolbar=no,location=no,status=no");
+		    
+		    if (newWindow) {
+		    	newWindow.focus();
+		    } else {
+		        // 팝업 차단이 활성화되어 있을 경우 대비
+		        alert("팝업 차단이 활성화되어 있습니다. 팝업 차단을 해제하고 다시 시도하세요.");
+		    }
+	   })
+	   
 		$('.reportInfo').on('mouseover', colorDarker)
 						.on('mouseleave', colorReset)
 	});
+
 		// 마우스 오버 : 색상 어둡게
 		function colorDarker(event){
 			$(event.currentTarget).css({background: '#f2f4f5'})
@@ -91,6 +109,7 @@ $(document).ready(function() {
 							<th>모집현황</th>
 							<th>완료여부</th>
 							<th>조회수</th>
+							<th>채팅방</th>
 							<th>취소</th>
 						</tr>
 					</thead>
@@ -103,6 +122,7 @@ $(document).ready(function() {
 			    					<td th:text="${l.applyNum} + '/' +${l.mateMax}"></td>
 			    					<td th:text="${l.complition}"></td>
 			    					<td th:text="${l.hit}"></td>
+			    					<td><button type="button" class="btn btn-outline-dark entranceChat" th:attr="data-room-number=${l.roomNumber}" >입장</button></td>
 			    					<td><button type="button" class="feature-btn" th:value="${l.applyId}">취소</button></td>
 								</tr>
 							</th:block>
