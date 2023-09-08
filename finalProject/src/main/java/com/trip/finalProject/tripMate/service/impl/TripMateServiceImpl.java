@@ -168,20 +168,21 @@ public class TripMateServiceImpl implements TripMateService {
 		attachedFileMapper.delete(tripMateVO.getPostId());
 		tripMateMapper.updateTripMateRecruit(tripMateVO);
 		
-		if(tripMateVO.getAttachList()!=null || tripMateVO.getAttachList().size()>0) {
+		if (tripMateVO.getAttachList() == null || tripMateVO.getAttachList().size() <= 0) {			
+			return ;
+		}else {
 			tripMateVO.getAttachList().forEach(attach->{
 				attach.setPostId(tripMateVO.getPostId());
 				attachedFileMapper.insertAttachedFile(attach);
 			});
-		}else {
-			return;
 		}
+		
 		if(tripMateVO.getEditorAttachList()==null || tripMateVO.getEditorAttachList().size()<=0) {
 			return;
 		}else {
 			tripMateVO.getEditorAttachList().forEach(attach->{
-			attach.setPostId(tripMateVO.getPostId());
-			attachedFileMapper.insertAttachedFile(attach);
+				attach.setPostId(tripMateVO.getPostId());
+				attachedFileMapper.insertAttachedFile(attach);
 			});
 		}
 		
