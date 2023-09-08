@@ -11,12 +11,16 @@ import com.trip.finalProject.adminMember.mapper.AdminMemberMapper;
 import com.trip.finalProject.adminMember.service.AdminMemberService;
 import com.trip.finalProject.adminMember.service.AdminMemberVO;
 import com.trip.finalProject.common.PagingVO;
+import com.trip.finalProject.security.service.AesProcessor;
 
 @Service
 public class AdminMemberServiceImpl implements AdminMemberService {
 	
 	@Autowired
 	AdminMemberMapper amm;
+	
+	@Autowired
+	AesProcessor aesProcessor;
 	
 	@Override
 	public List<AdminMemberVO> selectAllMember(PagingVO pagingVO) {
@@ -33,11 +37,30 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	@Override
 	public AdminMemberVO getMemberDetail(AdminMemberVO vo) {
 		// 회원 상세 조회
-		return amm.getMemberDetail(vo);
+		String decodedAccountNum = "";
+		
+		//계좌번호 복호화
+		try {
+			vo = amm.getMemberDetail(vo);
+			decodedAccountNum = aesProcessor.aesCBCDecode(vo.getAccountNumber());
+			vo.setAccountNumber(decodedAccountNum);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return vo;
 	}
 	
 	@Override
 	public String modifyMemberInfo(AdminMemberVO vo) {
+		
+		// 계좌번호 암호화
+		try {
+			vo.setAccountNumber(aesProcessor.aesCBCEncode(vo.getAccountNumber())); 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		// 회원 정보 수정
 		int result = amm.modifyMemberInfo(vo);
 		
@@ -87,7 +110,22 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	@Override
 	public List<AdminMemberVO> selectAllAuthRequest() {
 		// 권한 승인 요청 내역 전체 조회
-		return amm.selectAllAuthRequest();
+		List<AdminMemberVO> list = amm.selectAllAuthRequest();
+		
+		// 복호화
+		for(AdminMemberVO vo : list) {
+			
+			String decodedAccountNum = "";
+			try {
+				decodedAccountNum = aesProcessor.aesCBCDecode(vo.getAccountNumber());
+				vo.setAccountNumber(decodedAccountNum); 
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		return list;
 	}
 
 	@Override

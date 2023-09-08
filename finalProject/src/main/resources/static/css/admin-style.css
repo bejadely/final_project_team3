@@ -99,7 +99,7 @@ ul, ol {
   Custom - common
 -----------------------*/
 th, td {
-	text-align: center;
+	text-align: left;
 }
 
 .custom-sidebar {
@@ -138,6 +138,8 @@ th, td {
 	vertical-align: baseline;
 	margin-right: 6px;
 }
+
+
 /*---------------------
   Custom - sweetalert2
 -----------------------*/
@@ -2741,7 +2743,7 @@ h1 {
 
 @media only screen and (min-width: 1200px) {
 	.container {
-		max-width: 1170px;
+		max-width: 1500px;
 	}
 }
 /* Medium Device: 1200px */
