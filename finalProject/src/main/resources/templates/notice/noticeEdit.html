@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
@@ -166,7 +167,7 @@
                     </div>                
                     <div align="right">
                     <button type="submit" value="등록" class="btn btn-primary submitButton">수정</button>&nbsp;&nbsp;         
-                    <input type="reset" value="취소" class="btn btn-secondary" id="cancelBtn">&nbsp;&nbsp;
+                     <input type="button" value="삭제" onclick="location.href='noticeList?page=1'" class="btn btn-secondary">
                     <input type="button" value="목록" onclick="location.href='noticeList?page=1'" class="btn btn-secondary">
                     </div>
                     <br><br>
@@ -301,7 +302,7 @@ $(document).ready(function() {
 	.create(document.querySelector('#editor'), {
 		 htmlEncodeOutput: false, 
 		ckfinder: {
-			uploadUrl : 'upload'	
+			uploadUrl : '/common/upload'	
 		}
 	
 		
@@ -309,60 +310,33 @@ $(document).ready(function() {
 	.then(editor => {
 		console.log('Editor was initialized');
 		
-		document.getElementById("cancelBtn").addEventListener("click",function(){
-			const data = editor.getData();
-			//Data 변수에 저장된 데이터를 파싱하여 이미지 태크를 찾음
-			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
-			
-			const filenames = imgTags.map(img=> {
-				const src = img.getAttribute('src');
-				
-				return src.substring(src.lastIndexOf('/')+1);
-			});
-			console.log(filenames);
-			fetch(`/deleteImg`,{
-				method: 'POST',
-				headers:{
-					'Content-Type':'application/json'
-				},
-				body: JSON.stringify({ filenames })
-			})
-			.then(response => response.text())
-			.then(message => {
-				console.log(message);
-				editor.setData('');
-			})
-			
-		})
-		
-		
+
 		var formObj = $("#frm");
+		var str="";
 		
-		//document.getElementById("editorForm").addEventListener("submit",function(event){
 		$("button[type='submit']").on("click",function(event){
-				
+			
 			event.preventDefault();
-	
+			
 			const data = editor.getData();
 			
-			let objData = serializeObject();
-			
-			
-			//작성 내용
 			console.log(data);
-			
-			//서버로 넘어가는 데이터 값들
-			const { writerId, registDate, title} = objData;
+			let objData = serializeObject();
+			var sigunguCode = $("#location > option:selected").attr("value1");
+			var areaCode = $("#location > option:selected").attr("value2");
+			str+=`<input type='hidden' name='sigunguCode' value='${sigunguCode}'>
+				 <input type ='hidden' name = 'areaCode' value='${areaCode}'>`
+			//sconsole.log(data);
+			const { writerId, registDate, title  } = objData;
 			var combinedData={
-				content: data,
-				writerId: writerId,
-				registDate: registDate,
-				title: title
+					 content: data,
+			         writerId: writerId,
+			         registDate: registDate,
+			         title: title
 			};
 			console.log(combinedData);
 	
-			
-			var str="";
+		
 			
 			str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";
 			

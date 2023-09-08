@@ -8,4 +8,6 @@ public interface AttachedFileMapper {
 	public void insertAttachedFile(AttachedFileVO attachedFileVO);
 
 	public List<AttachedFileVO> findByPostId(AttachedFileVO vo);
+
+	public void delete(String postId);
 }
