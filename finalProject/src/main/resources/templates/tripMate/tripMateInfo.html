@@ -282,7 +282,6 @@
         	cancelButtonColor: '#d33',
         	confirmButtonText: '신청',
         	cancelButtonText: '취소',
-        	reverseButtons: true,
     	}).then((result) => {
         	if (result.isConfirmed) {
         		 let form = document.getElementById("form");
@@ -304,7 +303,6 @@
 			cancelButtonColor: '#d33',
 			confirmButtonText: '신고',
 			cancelButtonText: '취소',
-			reverseButtons: true,
     	}).then((result) => {
 	   		if (result.isConfirmed) {
             	 location.href = `/common/mateRecruitReportForm?postId=${postId}`;
@@ -324,7 +322,6 @@
 			cancelButtonColor: '#d33',
 			confirmButtonText: '삭제',
 			cancelButtonText: '취소',
-			reverseButtons: true,
 	    }).then((result) => {
 		   	if (result.isConfirmed) {
 		   		Swal.fire({
@@ -348,7 +345,6 @@
 			cancelButtonColor: '#d33',
 			confirmButtonText: '수정',
 			cancelButtonText: '취소',
-			reverseButtons: true,
 	    }).then((result) => {
 		   	if (result.isConfirmed) {
 		   		location.href = `/common/mateRecruitUpdateForm?postId=${postId}`;

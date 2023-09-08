@@ -160,16 +160,16 @@ body {
                    		</tr>
 					</table>
 					<div class="uploadResult">
-				<ul>
+						<ul>
 					
-				</ul>
-			</div>
+						</ul>
+					</div>
 					<div id="editor">
 						<th:textarea th:utext="${tripMateVO.mateContent}"></th:textarea>
 					</div>
         		</div>
         		<div>
-        			<button type="submit" class="btn btn-primary mt-3 mx-2" value="수정" >수정</button>&nbsp;&nbsp;
+        			<button type="button" id="modifyMate" class="btn btn-primary mt-3 mx-2" value="수정" >수정</button>&nbsp;&nbsp;
 					<input type="button" class="btn btn-secondary mt-3 mx-2" value="취소" id="cancelBtn"/>&nbsp;&nbsp;
 					<button type="button" class="btn btn-primary mt-3 mx-2" onclick="location.href='tripMateList'">이전으로</button>
         		</div>
@@ -239,7 +239,7 @@ body {
 		
 		var formObj = $("#editorForm");
 		
-		$("button[type='submit']").on("click",function(event){
+		$("#modifyMate").on("click",function(event){
 				
 			event.preventDefault();
 	
@@ -292,8 +292,6 @@ body {
 				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='"+resultPath+obj+"'>";
 			});
 			
-			formObj.append(str);
-			
 			// 등록 시 필수 항목이 미작성 되어있으면 alert 후 focuse로 해당 위치로 보내줌
 			let metTitle = document.getElementsByName('mateTitle')[0];
 			let metExpense = document.getElementsByName('mateExpense')[0];
@@ -301,7 +299,7 @@ body {
 			let metEndDay = document.getElementsByName('endDay')[0];
 			let metDeadline = document.getElementsByName('deadline')[0];
 			let metMateMax = document.getElementsByName('mateMax')[0];
-			let metContent = document.getElementsByName('mateContent')[0];
+			let metContent = combinedData.mateContent;
 			let metTripArea = document.getElementsByName('tripArea')[0];
 	        let metStyle = document.getElementsByName('mateStyle')[0];
 			
@@ -355,6 +353,7 @@ body {
 			
 			//등록하기 클릭 시 등록할지 여부를 확인
 			if(confirm("수정 하시겠습니까?")){
+				formObj.append(str);
 				document.getElementById('editorForm').action = "/common/mateRecruitUpdate";
 				document.getElementById('editorForm').submit();
 				alert("수정 되었습니다.");

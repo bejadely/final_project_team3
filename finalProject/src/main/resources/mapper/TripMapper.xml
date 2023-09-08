@@ -327,5 +327,14 @@
 		DELETE FROM trip_record_memo
 		WHERE post_id = #{postId}
 	</delete>
+	
+	<!-- 여행기간이 지난 여행기록 자동 업데이트 -->
+	<update id="completeTripRecord" parameterType="String">
+	<![CDATA[UPDATE trip_record
+			<set>
+				trip_save = 'T3',
+			</set>
+			WHERE end_day < sysdate]]>
+	</update>
 
 </mapper>

@@ -30,12 +30,13 @@ public class TripVO {
 	private String authority;
 	private int punishCount;
 
-	//file
+	//file upload관련
 	private String fileId;
 	private String originImg;
 	private String savedImg;
 	private int fileNo;
 	private String imgType;
+	private String loadingImg;
 	
 	//trip_record
 	private String writerId;

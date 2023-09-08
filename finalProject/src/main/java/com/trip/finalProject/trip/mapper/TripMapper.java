@@ -87,4 +87,7 @@ public interface TripMapper {
 	//여행기록 삭제시 해당 게시글과 관련된 여행메모 삭제
 	public int deleteMemoData(TripVO tripVO);
 	
+	//여행기록 기간 완료시 자동으로 여행완료로 업데이트 처리
+	public int completeTripRecord();
+	
 }

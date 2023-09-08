@@ -17,6 +17,7 @@
 <!-- index.html 고유 스크립트 추가 -->
 <th:block layout:fragment="script"></th:block>
 </head>
+<script src ="/ckeditor5-build-classic/ckeditor.js"></script>
 <body>
 	<div align="center">
 		<form id="tripData" method="post" th:object="${tripVO}">
@@ -27,17 +28,6 @@
             <input type="hidden" name="tripDisclose" th:value="${tripVO.tripDisclose}">
             <input type="hidden" th:value="${#dates.format(tripVO.startDay, 'yyyy-MM-dd')}" id="startDay" name="startDay">
             <input type="hidden" th:value="${#dates.format(tripVO.endDay, 'yyyy-MM-dd')}" id="endDay" name="endDay">
-            <!-- 여행경로가 제대로 저징이 되면 이제 이전 페이지에서 이미지 업도드를 하는 기능을 이식해야함. -->
-            <input type="file" id="mainImage" name="mainImage" class="form-control">
-            <input type="button" class="btn btn-secondary mt-3 mx-2" style="height: 38px;" id ="uploadBtn" value="upload">
-			<div class="uploadResult" align="center">
-      			<div style="display:none;">
-            		<ul>
-            		</ul>
-            	</div>
-               	<div id="editor">
-               	</div>
-            </div>
 			<!-- 여행기록 등록자의 아이디, 타이틀, 여행 기간 등을 표시하는 div -->
 			<div align="center">
 				<br>
@@ -47,6 +37,17 @@
         		<label>[[ ${#dates.format(tripVO.endDay, 'yyyy년 MM월 dd일 EEE요일')} ]]</label>
 				<br>
 			</div>
+			<!-- 여행경로가 제대로 저징이 되면 이제 이전 페이지에서 이미지 업도드를 하는 기능을 이식해야함. -->
+            <input type="file" id="mainImage" name="mainImage" class="form-control">
+            <input type="button" class="btn btn-secondary mt-3 mx-2" style="height: 38px;" id ="uploadBtn" value="upload">
+			<div class="uploadResult" align="center">
+      			<div>
+            		<ul>
+            		</ul>
+            	</div>
+               	<div id="editor">
+               	</div>
+            </div>
 		</form>
 		<!-- 지도영역과 여행 경로, 메모 등을 입력하는 div -->
 		<div align="center">
@@ -73,7 +74,7 @@
             <button type="button" id="tsTripInsert">임시저장</button>
             <!-- 임시저장 -> 저장 -->
             <button type="button" id="tripInsert">등록</button>
-            <button type="reset">취소</button>
+            <input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>
             <!-- 임시저장 -> 해당 데이터 삭제 -->
             <!-- 목으로 버튼 클릭시 관련된 데이터들을 모두 삭제하고 목록 페이지로 이동 -->
             <form method="get">
@@ -86,6 +87,298 @@
     <script>
     	//dom을 실행하고 해당 function 실행
     	$(document).ready(function() {
+    		
+    	//에디터 관련 스크립트
+    		ClassicEditor
+            .create(document.querySelector('#editor'), {
+            	/* htmlEncodeOutput: false, */
+            	ckfinder: {
+               	uploadUrl : '/common/upload'   
+            	}
+         	})
+         	.then(editor => {
+         
+         	document.getElementById("cancelBtn").addEventListener("click",function(){
+            const data = editor.getData();
+            //Data 변수에 저장된 데이터를 파싱하여 이미지 태크를 찾음
+            const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
+            
+            const filenames = imgTags.map(img=> {
+               const src = img.getAttribute('src');
+               
+               return src.substring(src.lastIndexOf('/')+1);
+            });
+            console.log(filenames);
+            fetch(`/deleteImg`,{
+               method: 'POST',
+               headers:{
+                  'Content-Type':'application/json'
+               },
+               body: JSON.stringify({ filenames })
+            })
+            .then(response => response.text())
+            .then(message => {
+               console.log(message);
+               editor.setData('');
+            })
+            
+         })
+         
+         var formObj = $("#editorForm");
+         
+         $("button[type='submit']").on("click",function(event){
+               
+            event.preventDefault();
+      
+            const data = editor.getData();
+            
+            let objData = serializeObject();
+            
+            let writerId = "[[${session.sessionId}]]";
+            
+            //sconsole.log(data);
+            const { tripArea, mateStyle, mateTag, mateTitle, mateExpense, startDay, endDay, deadline, mateMax, mateContent } = objData;
+            var combinedData={
+               writerId : writerId,   
+               tripArea : tripArea,
+               mateStyle : mateStyle,
+               mateTag : mateTag,
+               mateTitle : mateTitle,
+               mateExpense : mateExpense,
+               startDay : startDay,
+               endDay : endDay,
+               deadline : deadline,
+               mateMax : mateMax,
+               mateContent: data
+            };
+            console.log(combinedData);
+            
+            
+            var startDate2 = document.getElementById("startDay").value;
+         	 var endDate2 = document.getElementById("endDay").value;
+          	 var deadlineDate2 = document.getElementById("deadline").value;
+          	  // 현재 날짜 가져오기
+            var currentDate = new Date();
+
+            // 입력한 패키지 시작일을 Date 객체로 변환
+            var selectedStartDate = new Date(startDate2);
+            var selectedEndDate = new Date(endDate2);
+            var selectedDeadlineDate = new Date(deadlineDate2);
+            // 날짜 차이 계산 (밀리초 단위)
+            var timeDifference = selectedStartDate - currentDate;
+
+            // 30일을 밀리초로 계산
+            var thirtyDaysInMillis = 30 * 24 * 60 * 60 * 1000;
+            
+            if (selectedStartDate < currentDate) {
+                alert("여행 시작일은 오늘보다 이전일 수 없습니다.");
+                return false;
+            }
+
+            if (selectedEndDate < selectedStartDate) {
+                alert("여행 종료일은 여행 시작일 이후여야 합니다.");
+                return false;
+            }
+            if (selectedDeadlineDate > selectedStartDate) {
+                alert("여행 마감일은 여행 시작일 이전이여야 합니다.");
+                return false;
+            }
+            // 여행 시작일이 최소 한 달 전이 아닌 경우 예외 처리
+            if (timeDifference < thirtyDaysInMillis) {
+                alert("여행 시작일은 최소 한 달 전으로 설정해야 합니다.");
+                return false; // 폼 제출 중지
+            }
+            
+            
+            
+            
+            var str="";
+            $(".uploadResult ul li").each(function(i,obj){
+               var jobj = $(obj);
+               str += "<input type ='hidden' name='attachList["+i+"].originImg' value='"+jobj.data("filename")+"'>";
+               str += "<input type ='hidden' name='attachList["+i+"].memberId' value='[[${session.sessionId}]]'>";
+               str += "<input type ='hidden' name='attachList["+i+"].savedImg' value='"+jobj.data("path")+"'>";
+               str += "<input type ='hidden' name='attachList["+i+"].imgType' value='"+jobj.data("type")+"'>";
+               str += "<input type ='hidden' name='attachList["+i+"].loadingImg' value='"+jobj.data("loadingpath")+"'>";
+               
+            });
+            str +="<input type='hidden' name='mateContent' value='"+combinedData.mateContent+"'>";
+            
+            
+            const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
+            
+            const filenames = imgTags.map(img=> {
+               const src = img.getAttribute('src');
+               
+               return src;
+            });      
+            $.each(filenames,function(i,obj){
+               str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
+            });
+            
+            formObj.append(str);
+            
+            // 등록 시 필수 항목이 미작성 되어있으면 alert 후 focuse로 해당 위치로 보내줌
+            let metTitle = document.getElementsByName('mateTitle')[0];
+            let metExpense = document.getElementsByName('mateExpense')[0];
+            let metStartDay = document.getElementsByName('startDay')[0];
+            let metEndDay = document.getElementsByName('endDay')[0];
+            let metDeadline = document.getElementsByName('deadline')[0];
+            let metMateMax = document.getElementsByName('mateMax')[0];
+            let metContent = document.getElementsByName('mateContent')[0];
+            let metTripArea = document.getElementsByName('tripArea')[0];
+            let metStyle = document.getElementsByName('mateStyle')[0];
+            
+            if (metTitle.value == '') {
+               alert('타이틀을 입력해주세요.')
+               metTitle.focus();
+               return;
+            }
+            
+            if (metExpense.value == '') {
+               alert('예상 경비를 입력해주세요.')
+               metExpense.focus();
+               return;
+            }
+            
+            if (metStartDay.value == '' || metEndDay.value == '') {
+               alert('여행 일정을 입력해주세요.')
+               metStartDay.focus();
+               return;
+            }
+            
+            if (metDeadline.value == '') {
+               alert('모집 마감일을 입력해주세요.')
+               metDeadline.focus();
+               return;
+            }
+            
+            if (metMateMax.value == '' || metEndDay.value == '') {
+               alert('모집 인원을 입력해주세요.')
+               metMateMax.focus();
+               return;
+            }
+            
+            if (metContent.value == '') {
+               alert('내용을 입력해주세요.')
+               metContent.focus();
+               return;
+            }
+            
+            if (metTripArea.value == '') {
+                alert('여행 지역을 선택 해주세요.')
+                metTripArea.focus();
+                return;
+             }
+            
+            if (metStyle.value == '') {
+                alert('여행 스타일을 지정해주세요.')
+                metStyle.focus();
+                return;
+             }
+            
+            //등록하기 클릭 시 등록할지 여부를 확인
+            if(confirm("등록 하시겠습니까?")){
+               document.getElementById('editorForm').action = "/common/tripMateRecruitInsert";
+               document.getElementById('editorForm').submit();
+               alert("등록 되었습니다.");
+                    return;
+                }else{
+                      return;
+                }
+            
+         })
+      })
+      .catch(error => {
+         console.error(error);
+      });
+      
+      function serializeObject(){
+         let formData = $('form').serializeArray();
+         let formObject={};
+         $.each(formData, function(idx,obj){
+            formObject[obj.name] = obj.value;
+         });
+         
+         return formObject;
+      }
+      var cloneObj = $(".uploadDiv").clone();
+      
+      $(function(){
+         $("#uploadBtn").on('click',function(e){
+            e.preventDefault();
+            let imageData = new FormData();
+            
+            let inputTag = document.querySelector('input[name="mainImage"]');
+            
+            let files = inputTag.files;
+            
+            for(let i=0; i<files.length; i++){
+               console.log(files[i]);
+               imageData.append("mainImage",files[i]);
+            }
+         
+            $.ajax({
+               url:'mainImageUpload',
+               processData: false,
+               contentType: false,
+               data: imageData,
+               type:'POST',
+               dataType:'json',
+               success: function(result){
+                  alert("성공");
+                  
+                  console.log(result);
+                  
+                  showUploadedFile(result);
+                  
+                  $(".uploadDiv").html(cloneObj.html());
+               }
+            });
+         });
+      });
+
+      $(".uploadResult").on("click","span",function(e){
+         var targetFile = $(this).data("file");
+         var clickedSpan = $(this);
+         $.ajax({
+            url:'deleteFile',
+            data: {savedImg: targetFile},
+            dataType: 'text',
+            type: 'POST',
+            success: function(result){
+               alert(result);
+               var currentNode = clickedSpan.closest("li");
+               var prevNode = currentNode.prev();
+               var nextNode = currentNode.next();
+               
+               currentNode.add(prevNode).add(nextNode).remove();
+               
+            }
+         })
+      })
+      
+      var uploadResult = $(".uploadResult ul");
+      
+      function showUploadedFile(uploadResultArr){
+         var str = "";
+         $(uploadResultArr).each(function(i,obj){
+            
+            var fileCallPath = encodeURIComponent(obj.savedImg);
+            
+            str += "<li style='width:500px; height:500px; text-align: center;' data-path='"+obj.savedImg+"'";
+            str +=" data-filename='"+obj.originImg+"' data-type='"+obj.imgType+"'";
+            str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div>";
+            str +="<span> " + obj.originImg +"</span>";
+            str +="<img src='/display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
+         });
+         uploadResult.append(str);
+      }
+    	
+    	
+    		
+    	///////////////////////////////////////////////////////////	
+    		
     	
  		//이전 페이지에서 받아온 날짜 데이터를 활용해서 두 일수 사이의 값을 계산
    		var inDate = "[[ ${#dates.format(tripVO.startDay, 'yyyy-MM-dd')} ]]"; 
@@ -101,45 +394,6 @@
 			//밀리세컨 * 초 * 분 * 시 = 일
 			return Math.abs(diffDate / (1000 * 60 * 60 * 24));
 		}
-		
-		//업로드 관련
-		ClassicEditor
-        .create(document.querySelector('#editor'), {
-        	/* htmlEncodeOutput: false, */
-        	ckfinder: {
-           	uploadUrl : '/common/upload'   
-        	}
-     	})
-     	.then(editor => {
-     
-     	document.getElementById("cancelBtn").addEventListener("click",function(){
-        const data = editor.getData();
-        //Data 변수에 저장된 데이터를 파싱하여 이미지 태크를 찾음
-        const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
-        
-        const filenames = imgTags.map(img=> {
-           const src = img.getAttribute('src');
-           
-           return src.substring(src.lastIndexOf('/')+1);
-        });
-        console.log(filenames);
-        fetch(`/deleteImg`,{
-           method: 'POST',
-           headers:{
-              'Content-Type':'application/json'
-           },
-           body: JSON.stringify({ filenames })
-        })
-        .then(response => response.text())
-        .then(message => {
-           console.log(message);
-           editor.setData('');
-        })
-        
-     })
-		
-		
-		
 		
 		//두 날짜 사이의 일수
 		//여행 시작일도 포함이 되어야 함으로 결과값에 +1을 해줘야함.
