@@ -15,11 +15,6 @@
 	href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap"
 	rel="stylesheet">
 	<style type="text/css">
-	table, th,td {
-		border: 1px solid black;
-		text-align: center;
-		margin: 0 auto;
-	}
 	</style>
 <script type="text/javascript">
 function pageChange(str){
@@ -44,18 +39,34 @@ $(document).ready(function() {
 	   $("#appButton").click(function(){
 		   location.href='/common/myPageAppMate'
 	   })
-	});
+	    $('.reportInfo').on('mouseover', colorDarker)
+		.on('mouseleave', colorReset)
+});
+
+	// 마우스 오버 : 색상 어둡게
+	function colorDarker(event){
+	$(event.currentTarget).css({background: '#f2f4f5'})
+					  .css({cursor: 'pointer'});		
+	}
+
+
+	// 마우스릴리브 : 색상 원상복귀
+	function colorReset(event){
+	$(event.currentTarget).css({background: '#ffffff'});
+	}
 </script>
 </head>
 <body>
 <div layout:fragment="content">
+
 	<div>
 		<button type="button" id="comButton">작성한 여행</button>
 		<button type="button" id="appButton">신청한 여행</button>
 	</div>
 	<section>
+	<div class="table-responsive">
 		<!-- 여행기록 section-->
-		<table>
+		<table class="table">
 			<thead>
 				<tr> 
 					<th>제목</th>
@@ -68,7 +79,7 @@ $(document).ready(function() {
 			</thead>
 			<tbody>
 				<th:block th:each="l : ${list}">
-					<tr class="question" th:onclick="|location.href='@{/common/tripMateMyInfo(postId=${l.postId})}'|">
+					<tr class="reportInfo" th:onclick="|location.href='@{/common/tripMateMyInfo(postId=${l.postId})}'|">
 						<td th:text="${l.mateTitle}"><input type="hidden" th:value="${l.postId}"></td>
 						<td th:text="${#dates.format(l.startDay, 'yyyy-MM-dd')} + '~' + ${#dates.format(l.endDay, 'yyyy-MM-dd')}"></td>
     					<td th:text="${#dates.format(l.deadline, 'yyyy-MM-dd')}"></td>
@@ -79,6 +90,7 @@ $(document).ready(function() {
 				</th:block>
 			</tbody>
 			</table>
+			</div>
 			<!-- 여행기록 페이징 -->
 			<div style="text-align: center" class="property-pagination">
 				<th:block th:if="${paging.startPage != 1}">

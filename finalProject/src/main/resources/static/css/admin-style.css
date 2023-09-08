@@ -156,6 +156,36 @@ th, td {
   white-space: nowrap;
   margin: 3px;
 }
+
+.deletePac {
+  background-color: #2cbdb8;
+  color: whitesmoke;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 7px;
+  padding: 5px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin: 3px;
+}
+
+.delete-btn {
+  background-color: #2cbdb8;
+  color: whitesmoke;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 7px;
+  padding: 5px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin: 3px;
+}
 .approveButton {
   background-color: #2cbdb8;
   color: whitesmoke;
@@ -359,7 +389,6 @@ h1 {
 }
 .top-nav {
 	background: #1c1c1c;
-	position: sticky;
 	top: 0;
 }
 .top-nav .main-menu ul li {
@@ -1742,6 +1771,7 @@ h1 {
 }
 .property-pagination {
 	padding-top: 10px;
+	text-align: center;
 }
 .property-pagination a {
 	display: inline-block;
@@ -3201,4 +3231,52 @@ h1 {
 		-ms-transform: translateX(-135px);
 		transform: translateX(-135px);
 	}
+/*radio 버튼*/
+.myPage {
+	margin-bottom: 30px;
+	overflow: hidden;
+}
+.myPage-btn .myPage-item {
+	width: 200px;
+	float: left;
+}
+.myPage-btn .myPage-item input[type=radio] {
+	display: none;
+}
+.myPage-btn .myPage-item input[type=radio]:checked+label {
+	background: #2cbdb8;
+	color: #ffffff;
+}
+.myPage-btn label {
+	display: block;
+	font-size: 18px;
+	margin-bottom: 0;
+	font-weight: 600;
+	text-transform: uppercase;
+	background: #EBEBEB;
+	color: #707079;
+	text-align: center;
+	cursor: pointer;
+	padding: 14px 0 12px;
+	
+}
+/*장바구니 수량 버튼*/
+.quantity-cell {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-btn {
+    padding: 5px 10px;
+    font-size: 14px;
+    background-color: #f0f0f0;
+    border: none;
+    cursor: pointer;
+}
+
+.quantity-input {
+    width: 40px;
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 5px;
 }
