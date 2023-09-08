@@ -17,5 +17,7 @@ public interface KakaoPayService {
 	public int updatePurchase(KakaoPayInfoResponseVO vo);
 
 	public void deleteCart(String cartId);
+
+	public void updatePackageQuantity(KakaoPayInfoResponseVO kakaoVO);
 	
 }
