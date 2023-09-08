@@ -482,9 +482,8 @@
 	        })
 	        .fail(function (data, textStatus, jqXHR) {
 	            console.log('fail');
-	
-	            console.log(console.log(jqXHR));
-	            let errorMessage = JSON.parse(jqXHR.responseText).message;
+	-
+	            let errorMessage = data.responseJSON.message;
 	            if(errorMessage == 'no login') {
                 	Swal.fire({
                 		  icon: 'info',                      
