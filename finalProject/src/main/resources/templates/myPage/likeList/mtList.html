@@ -10,17 +10,11 @@
 
 <title>문의사항</title>
 <style type="text/css">
-table, th,td {
-	border: 1px solid black;
-	text-align: center;
-	margin: 0 auto;
-}
-.hidden{
+.hidden {
 	border: none;
 	text-align: center;
 	margin: 0 auto;
 }
-
 }
 </style>
 <script>
@@ -32,46 +26,61 @@ $(document).ready(function() {
 	$("#tr").click(function() {
 		location.href="/common/myTrList"
 	})
+    $('.reportInfo').on('mouseover', colorDarker)
+					.on('mouseleave', colorReset)
 });
+
+//마우스 오버 : 색상 어둡게
+function colorDarker(event){
+$(event.currentTarget).css({background: '#f2f4f5'})
+		  .css({cursor: 'pointer'});		
+}
+
+
+//마우스릴리브 : 색상 원상복귀
+function colorReset(event){
+$(event.currentTarget).css({background: '#ffffff'});
+}
 </script>
 </head>
 <body>
-
-	<th:block layout:fragment="css"></th:block>
-	<th:block layout:fragment="script"></th:block>
-	<div layout:fragment="content" style="text-align: center;">
-	<form>
-		<h5>좋아요 목록</h5>
-		<button type="button" id="mt">여행메이트</button>
-		<button type="button" id="tr">여행기록</button>
-		<table>
-			<thead>
-				<tr>
-					<th>타이틀</th>
-					<th>여행날짜</th>
-					<th>마감날짜</th>
-					<th>여행지역</th>
-					<th>신청자 수</th>
-					<th>모집완료 여부</th>
-				</tr>
-			</thead>
-			<tbody>
-				<th:block th:each="li : ${list}">
-					<tr class="list" th:onclick="|location.href='@{/tripMateInfo(postId=${li.postId})}'|">
-						<td th:text="${li.mateTitle}"></td>
-						<td th:text="${li.startDay} + '~' + ${li.endDay}"></td>
-						<td th:text="${li.deadline}"></td>
-						<td th:text="${li.tripArea}"></td>
-						<td th:text="${li.applyNum}"></td>
-						<td th:text="${li.complition}"></td>
-					</tr>
-				</th:block>
-			</tbody>
-			</table>
-		</form>
-		<div class="property-pagination">
-			<th:block th:if="${paging.startPage != 1}" >
-				<a th:href="@{/common/myMtList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
+	<div layout:fragment="content">
+		<div class="table-responsive">
+			<form>
+				<h5>좋아요 목록</h5>
+				<button type="button" id="mt">여행메이트</button>
+				<button type="button" id="tr">여행기록</button>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>타이틀</th>
+							<th>여행날짜</th>
+							<th>마감날짜</th>
+							<th>여행지역</th>
+							<th>신청자 수</th>
+							<th>모집완료 여부</th>
+						</tr>
+					</thead>
+					<tbody>
+						<th:block th:each="li : ${list}">
+							<tr class="reportInfo"
+								th:onclick="|location.href='@{/tripMateInfo(postId=${li.postId})}'|">
+								<td th:text="${li.mateTitle}"></td>
+								<td th:text="${li.startDay} + '~' + ${li.endDay}"></td>
+								<td th:text="${li.deadline}"></td>
+								<td th:text="${li.tripArea}"></td>
+								<td th:text="${li.applyNum}"></td>
+								<td th:text="${li.complition}"></td>
+							</tr>
+						</th:block>
+					</tbody>
+				</table>
+			</form>
+		</div>
+		<div class="property-pagination" style="text-align: center;">
+			<th:block th:if="${paging.startPage != 1}">
+				<a
+					th:href="@{/common/myMtList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
 			</th:block>
 			<th:block th:if="${paging.startPage != 1}">
 				<a
@@ -82,17 +91,19 @@ $(document).ready(function() {
 				<th:block th:if="${p eq paging.nowPage}">
 					<b th:text="${p}"></b>
 				</th:block>
-				<th:block th:if="${p ne paging.nowPage}">
+				<th:block th:if="${p ne paging.nowPage and p > 0}">
 					<a
 						th:href="@{/common/myMtList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
 						th:text="${p}"></a>
 				</th:block>
 			</th:block>
-			<th:block th:if="${paging.endPage != paging.lastPage}">
+			<th:block
+				th:if="${paging.endPage != paging.lastPage and paging.lastPage > 5}">
 				<a
 					th:href="@{/common/myMtList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 			</th:block>
-			<th:block th:if="${paging.endPage != paging.lastPage}">
+			<th:block
+				th:if="${paging.endPage != paging.lastPage and paging.lastPage > 5}">
 				<a
 					th:href="@{/common/myMtList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
 			</th:block>

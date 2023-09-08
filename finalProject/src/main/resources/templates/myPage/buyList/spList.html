@@ -10,11 +10,6 @@
 
 <title>문의사항</title>
 <style type="text/css">
-table, th,td {
-	border: 1px solid black;
-	text-align: center;
-	margin: 0 auto;
-}
 .hidden{
 	border: none;
 	text-align: center;
@@ -32,19 +27,32 @@ $(document).ready(function() {
 	$("#sp").click(function() {
 		location.href="/common/buySpList"
 	})
+    $('.reportInfo').on('mouseover', colorDarker)
+					.on('mouseleave', colorReset)
 });
+
+//마우스 오버 : 색상 어둡게
+function colorDarker(event){
+$(event.currentTarget).css({background: '#f2f4f5'})
+		  .css({cursor: 'pointer'});		
+}
+
+
+//마우스릴리브 : 색상 원상복귀
+function colorReset(event){
+$(event.currentTarget).css({background: '#ffffff'});
+}
 </script>
 </head>
 <body>
 
-	<th:block layout:fragment="css"></th:block>
-	<th:block layout:fragment="script"></th:block>
-	<div layout:fragment="content" style="text-align: center;">
+	<div layout:fragment="content">
+	<div class="table-responsive">
 	<form>
 		<h5>구매 목록</h5>
 		<button type="button" id="pk">패키지</button>
 		<button type="button" id="sp">특산물</button>
-		<table>
+		<table class="table">
 			<thead>
 				<tr>
 					<th>이름</th>
@@ -56,7 +64,7 @@ $(document).ready(function() {
 			</thead>
 			<tbody>
 				<th:block th:each="li : ${list}">
-					<tr class="list" th:onclick="|location.href='@{/common/buySpSelect(orderDetailId=${li.orderDetailId})}'|">
+					<tr class="reportInfo" th:onclick="|location.href='@{/common/buySpSelect(orderDetailId=${li.orderDetailId})}'|">
 						<td th:text="${li.title}"></td>
 						<td th:text="${li.price}"></td>
 						<td th:text="${li.specialtyType}"></td>
@@ -67,6 +75,7 @@ $(document).ready(function() {
 			</tbody>
 			</table>
 		</form>
+		</div>
 		<div class="property-pagination">
 			<th:block th:if="${paging.startPage != 1}">
 				<a th:href="@{common/buySpList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
@@ -80,17 +89,17 @@ $(document).ready(function() {
 				<th:block th:if="${p eq paging.nowPage}">
 					<b th:text="${p}"></b>
 				</th:block>
-				<th:block th:if="${p ne paging.nowPage}">
+				<th:block th:if="${p ne paging.nowPage and p > 0}">
 					<a
 						th:href="@{common/buySpList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
 						th:text="${p}"></a>
 				</th:block>
 			</th:block>
-			<th:block th:if="${paging.endPage != paging.lastPage}">
+			<th:block th:if="${paging.endPage != paging.lastPage and paging.lastPage > 5}">
 				<a
 					th:href="@{common/buySpList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 			</th:block>
-			<th:block th:if="${paging.endPage != paging.lastPage}">
+			<th:block th:if="${paging.endPage != paging.lastPage and paging.lastPage > 5}">
 				<a
 					th:href="@{common/buySpList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
 			</th:block>
