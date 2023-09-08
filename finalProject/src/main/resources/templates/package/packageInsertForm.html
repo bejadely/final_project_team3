@@ -140,9 +140,9 @@ ClassicEditor
 		var formObj = $("#editorForm");
 		
 		//document.getElementById("editorForm").addEventListener("submit",function(event){
-		$("button[type='submit']").on("click",function(event){
+		$("button[type='button']").on("click",function(event){
 				
-			event.preventDefault();
+			event.stopPropagation();
 		 	var startDate2 = document.getElementById("startDate").value;
 		 	var endDate2 = document.getElementById("endDate").value;
 		 	var deadlineDate2 = document.getElementById("deadlineDate").value;
@@ -183,24 +183,20 @@ ClassicEditor
 	            
 			var str="";
 			const data = editor.getData();
-			
+		
 			let objData = serializeObject();
 			var sigunguCode = $("#location > option:selected").attr("value1");
 			var areaCode = $("#location > option:selected").attr("value2");
 			str+=`<input type='hidden' name='sigunguCode' value='${sigunguCode}'>
 				 <input type ='hidden' name = 'areaCode' value='${areaCode}'>`
+			
 			const { tourTheme, name, price, startDate, endDate, deadlineDate, maxReservation,writerId } = objData;
 			var combinedData={
 				content: data,
-				tourTheme: tourTheme,
-		        name: name,
-		        price: price,
-		        startDate: startDate,
-		        endDate: endDate,
-		        deadlineDate: deadlineDate,
-		        maxReservation: maxReservation,
-		        writerId : writerId
+			
 			};
+			
+			
 			var paths;
 			var resultPath;
 			$(".uploadResult ul li").each(function(i,obj){
@@ -213,11 +209,10 @@ ClassicEditor
 				pahts = jobj.data("path").split("/upload");
 				resultPath = pahts[0];
 			});
-			str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";
-			
+			str +="<input type='text' name='content' value='"+combinedData.content+"'>";
 			
 			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
-			
+			console.log(combinedData.content);
 			
 			
 			const filenames = imgTags.map(img=> {
@@ -245,12 +240,11 @@ ClassicEditor
 		    let packageEndDate = document.getElementsByName('endDate')[0];
 		    let packageDeadlineDate = document.getElementsByName('deadlineDate')[0];
 		    let packageMaxReservation = document.getElementsByName('maxReservation')[0];
-		    let packageContent = document.getElementsByName('content')[0];
-		    let packageTourTheme = document.getElementById('tourTheme')[0];
-		    let packageLocation = document.getElementById('location')[0];
+		    let packageContent = combinedData.content;
+		    let packageTourTheme = document.getElementsByName('tourTheme')[0];
+		    let packageLocation = document.getElementById('location').value;
 		    let packageImage = document.getElementsByName('mainImage')[0];
 		   
-	    
 		    /* if (!isIfExecuted) {
 			    if (packageImage.value == '') {
 				       alert('이미지를 업로드해주세요.')
@@ -290,33 +284,37 @@ ClassicEditor
 		       return;
 		    }
 		    
-		 /*    if (packageContent.value == '') {
-		       alert('내용을 입력해주세요.')
-		       packageContent.focus();
+		    if (packageContent == '') {
+		      	alert('내용을 입력해주세요.')
+		      	$(".ck .ck-content").focus();
+		      	return;
+		 	 } 
+		   
+		    if (packageLocation =='') {
+		       alert('여행 지역을 선택 해주세요.')
+		       packageLocation.focus();
 		       return;
-		    } */
-		    
-		   /*  if (packageLocation == '') {
-		        alert('여행 지역을 선택 해주세요.')
-		        packageLocation.focus();
-		        return;
-		     } */
-		    
-		  /*   if (packageTourTheme.value == '') {
-		        alert('여행 테마을 지정해주세요.')
-		        packageTourTheme.focus();
-		        return;
-		     } */
-
-			formObj.append(str);
+		    } 
+		   
+		 //   if (packageTourTheme.value == '') {
+		 //      alert('여행 테마을 지정해주세요.')
+		 //      packageTourTheme.focus();
+		 //      return;
+		 //   } 
+			
+		     
+			var star = confirm("등록 하시겠습니까?")
+			console.log(star)
 		    //등록하기 클릭 시 등록할지 여부를 확인
-		    if(confirm("등록 하시겠습니까?")){
-		       document.getElementById('editorForm').action = "/guide/register";
-		       document.getElementById('editorForm').submit();
-		       alert("등록 되었습니다.");
-		            return;
+		    if(star==true){
+		    	var formattedPrice = parseFloat($("#price").val().replace(/\,/g, '')); // 콤마 제거 및 숫자로 변환
+				document.getElementById("price").value=formattedPrice;
+		    
+		    	formObj.append(str);
+		        document.getElementById('editorForm').action = "/guide/register";
+		        document.getElementById('editorForm').submit();
+		        alert("등록 되었습니다.");
 		        }else{
-		              return;
 		        }
 					
 			
@@ -408,7 +406,7 @@ ClassicEditor
 				//$(this).closest(li).load(window.location.href + "#div의 id");
 			}
 		})
-	})
+	});
 	
 	var uploadResult = $(".uploadResult ul");
 	
@@ -434,10 +432,6 @@ ClassicEditor
         $(this).val($(this).val().replace(/\,/g, '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,'));
    });
 	
-
-    
-
-
 	
 	
 });
@@ -485,7 +479,7 @@ ClassicEditor
 					</td>	
 					<th style="text-align: left; width: 20%;">패키지 가격</th>
 					<td colspan="2">
-						<input type="text" style="width: 370px margin-left: 4px;;" class="form-control" placeholder="판매가" name="price" id="price">
+						<input type="text" style="width: 370px margin-left: 4px;;" class="form-control" placeholder="판매가" name="price" id="price" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');">
 					</td>
 				</tr>
 				
@@ -518,7 +512,7 @@ ClassicEditor
 		<div id="editor">
 		
 		</div>
-		<button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>
+		<button type="button" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>
 		<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>
 	</form>
 </div>

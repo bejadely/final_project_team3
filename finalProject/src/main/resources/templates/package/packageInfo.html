@@ -192,6 +192,7 @@ form {
                     <div class="property-sidebar">
                         <h4>구매하기</h4>
                             <div class="sidebar-btn">
+                             
                                 <div class="bt-item">
                                     <input type="radio" name="kakaoPay" id="kakaoPay" >
                                     <label for="kakaoPay">Buy</label>
@@ -216,7 +217,12 @@ form {
 							</div>
 							<div class="selected_option" style="text-align: right;">
 							</div>
-							
+							<div class="bt-item">
+                                    <button type="button" name="question" id="question" >
+                                    문의하기
+                                    </button>
+                                    
+                                </div>
 							
                     </div>
                 </div>
@@ -342,36 +348,44 @@ form {
          countSelect.appendChild(option);
      }
 	 
-	 $(document).on('click', '.nice-select.form-control', function() {
-			//var count = $(this).attr("data-value");
-			//var count = $(".current").text();
-			var count = $("div.count  li.selected").attr("data-value");
-			var finalPrice = 0;
-			var str = '';
-			var packagePriceDiv = $("#packagePrice");
+	 $(window).on('load', function() {
+		 $(document).on('change','.nice-select', function() {
+				//var count = $(this).attr("data-value");
+				//var count = $(".current").text();
+				console.log("gg");
+				var count = $("div.count  li.selected").attr("data-value");
+				var finalPrice = 0;
+				var str = '';
+				var packagePriceDiv = $("#packagePrice");
 
-			// div 요소 내부의 span 요소를 가져옵니다.
-			var priceSpan = packagePriceDiv.find(".price");
+				// div 요소 내부의 span 요소를 가져옵니다.
+				var priceSpan = packagePriceDiv.find(".price");
 
-			// span 요소의 텍스트 내용을 가져옵니다.
-			var priceValue = parseInt(priceSpan.text());
+				// span 요소의 텍스트 내용을 가져옵니다.
+				var priceValue = parseInt(priceSpan.text());
 
-			console.log(count)
-			
-			
-			// 가져온 값을 출력하거나 다른 용도로 사용할 수 있습니다.
-			console.log("가격: " + priceValue);
-			finalPrice = priceValue * count;
+				console.log(count)
+				
+				
+				// 가져온 값을 출력하거나 다른 용도로 사용할 수 있습니다.
+				console.log("가격: " + priceValue);
+				finalPrice = priceValue * count;
 
-			str += '<p><label>총 인원 : </label><span class="count">&nbsp;' + count + '</span>&nbsp;&nbsp;&nbsp;<br>';	
-			str += '<h4><label>결제금액 : </label><span class="finalPrice">&nbsp;' + finalPrice + ' 원</span></h4>'; 
-			
-			
-			$(".selected_option").html(str);
-		});
+				str += '<p><label>총 인원 : </label><span class="count">&nbsp;' + count + '</span>&nbsp;&nbsp;&nbsp;<br>';	
+				str += '<h4><label>결제금액 : </label><span class="finalPrice">&nbsp;' + finalPrice + ' 원</span></h4>'; 
+				
+				
+				$(".selected_option").html(str);
+			});
+	 });
 	 
 	 
 	 
+	 
+	 document.getElementById('question').addEventListener('click',function(){
+		 console.log("asdsad");
+		 location.href="/common/memberQueForm?productId="+'[[${info.postId}]]'
+	 })
 	 
 	 
 	
@@ -384,10 +398,10 @@ form {
 	        let orderName = "[[ ${info.name} ]]";
 	        let postId = "[[ ${info.postId} ]]"
 	        let quantity = parseInt(document.getElementById('quantity').value);
-	     console.log(totalAmount)
-	     console.log(orderName)
-	     console.log(quantity)
-	     console.log(memberId)
+		     console.log(totalAmount)
+		     console.log(orderName)
+		     console.log(quantity)
+		     console.log(memberId)
 	        $.ajax({
 	        	type:'post',
 	        	url:'payment/ready',
@@ -613,7 +627,7 @@ form {
 	        .fail(function (data, textStatus, jqXHR) {
 	            console.log('fail');
 	
-	            let errorMessage = JSON.parse(jqXHR.responseText).message;
+	            let errorMessage = data.responseJSON.message;
 	            if(errorMessage == 'no login') {
 	                alert('로그인을 해주세요.');
 	            } else if(errorMessage == 'not same') {

@@ -146,7 +146,7 @@ ClassicEditor
 		
 		var formObj = $("#editorForm");
 		
-		$("button[type='submit']").on("click",function(event){
+		$("button[type='button']").on("click",function(event){
 			event.preventDefault();
 			var startDate2 = document.getElementById("startDate").value;
 		 	var endDate2 = document.getElementById("endDate").value;
@@ -247,37 +247,37 @@ ClassicEditor
 			    if (packageName.value == '') {
 			       alert('타이틀을 입력해주세요.')
 			       packageName.focus();
-			       return;
+			       return false;
 			    }
 			    
 			    if (packagePrice.value == '') {
 			       alert('패키지 금액을 입력해주세요.')
 			       packagePrice.focus();
-			       return;
+			       return false;
 			    }
 			    
 			    if (packageStartDate.value == '' || packageEndDate.value == '') {
 			       alert('패키지 일정을 입력해주세요.')
 			       packageStartDate.focus();
-			       return;
+			       return false;
 			    }
 			    
 			    if (packageDeadlineDate.value == '') {
 			       alert('모집 마감일을 입력해주세요.')
 			       packageDeadlineDate.focus();
-			       return;
+			       return false;
 			    }
 			    
 			    if (packageMaxReservation.value == '' || packageMaxReservation.value == '') {
 			       alert('모집 인원을 입력해주세요.')
 			       packageMaxReservation.focus();
-			       return;
+			       return false;
 			    }
 			    
 			    if (packageContent== '') {
 			       alert('내용을 입력해주세요.')
 			       packageContent.focus();
-			       return;
+			       return false;
 			    }
 			    
 			/*     if (selectedValue === '') {
@@ -292,15 +292,16 @@ ClassicEditor
 			        return;
 			     }
  */
-				formObj.append(str);
+				
 			    //등록하기 클릭 시 등록할지 여부를 확인
 			    if(confirm("등록 하시겠습니까?")){
-			       document.getElementById('editorForm').action = "/guide/register";
+			    	formObj.append(str);
+			       document.getElementById('editorForm').action = "/guide/packageUpdate";
 			       document.getElementById('editorForm').submit();
 			       alert("등록 되었습니다.");
 			            return;
 			        }else{
-			              return;
+			        	return false;
 			        }
 			
 			/* document.getElementById('editorForm').action = "/guide/packageUpdate";
@@ -517,7 +518,7 @@ function setDefaultTourTheme(){
 		<div id="editor">
 			<th:textarea th:utext="${info.content}"></th:textarea>
 		</div>
-		<button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>
+		<button type="button" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>
 		<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>
 	</form>
 </div>

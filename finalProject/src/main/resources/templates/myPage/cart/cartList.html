@@ -407,7 +407,7 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
             
           $.ajax({
              type:'post',
-             url:'/payment/ready',
+             url:'/common/payment/ready',
              data:{
                 totalAmount: totalAmount,
                 orderName : orderName,
