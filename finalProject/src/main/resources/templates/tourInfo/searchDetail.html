@@ -383,13 +383,21 @@
 	        let contentId = $('#moreReview').data('contentId');
 	
 	        let checkedgrade = $('input[name=inlineRadioOptions]:checked').val();
-	        if(checkedgrade == null) {
-	            alert("점수를 체크해주세요.");
+	        if(checkedgrade == null || checkedgrade.replaceAll(' ', '')== '') {
+	        	Swal.fire({
+          		  icon: 'warning',                    
+          		  title: '점수를 입력해주세요.'
+          		});
+              return;
 	        }
 	
 	        let reviewContent = $('#reviewInput').val();
-	        if(reviewContent == null) {
-	            alert("내용을 입력해주세요.");
+	        if(reviewContent == null || reviewContent.replaceAll(' ', '')== '') {
+	        	Swal.fire({
+	          		  icon: 'warning',                    
+	          		  title: '내용을 입력해주세요.'
+	          		});
+	            return;
 	        }
 	        //  ajax 들어가서 로그인 되어있는지 먼저 확인 - 안되면 바로 fail throw new Exception(); 예외 일부러 발생시켜주기
 	        $.ajax({
@@ -414,17 +422,27 @@
 	            changeInfoMoreReviewButton(1);
 	            clearInput();
 	
-	            alert('리뷰가 등록되었습니다.');
+	            Swal.fire({
+          		  icon: 'success',                    
+          		  title: '리뷰가 등록되었습니다.'
+          		});
 	        })
 	        .fail(function (jqXHR, textStatus, errorThrown) {
 	            console.log('fail');
 	
 	            let errorMessage = JSON.parse(jqXHR.responseText).message;
 	            if(errorMessage == 'no login') {
-	                alert('로그인을 해주세요.');
-	            } else if(errorMessage == 'not insert') {
-	                alert('리뷰가 등록되지 않았습니다.');
-	            }
+                	Swal.fire({
+              		  icon: 'info',                      
+              		  title: '로그인을 해주세요.',
+              		  text: '리뷰는 로그인 후 작성할 수 있습니다.'
+              		});
+                } else if(errorMessage == 'not insert') {
+                    Swal.fire({
+                		  icon: 'error',                      
+                		  title: '리뷰가 등록되지 않았습니다.'
+                		});
+                }
 	        })
 	
 	    })
@@ -457,19 +475,35 @@
 	
 	            changeInfoMoreReviewButton(1);
 	
-	            alert('리뷰가 삭제되었습니다.');
+	            Swal.fire({
+	          		  icon: 'success',                    
+	          		  title: '리뷰가 삭제되었습니다.'
+	          		});
 	        })
 	        .fail(function (data, textStatus, jqXHR) {
 	            console.log('fail');
 	
+	            console.log(console.log(jqXHR));
 	            let errorMessage = JSON.parse(jqXHR.responseText).message;
 	            if(errorMessage == 'no login') {
-	                alert('로그인을 해주세요.');
-	            } else if(errorMessage == 'not same') {
-	                alert('본인의 리뷰만 삭제할 수 있습니다.');
-	            } else if(errorMessage == 'not delete') {
-	                alert('리뷰가 삭제되지 않았습니다.');
-	            }
+                	Swal.fire({
+                		  icon: 'info',                      
+                		  title: '로그인을 해주세요.',
+                		  text: '리뷰는 로그인 후 작성할 수 있습니다.'
+                		});
+                } else if(errorMessage == 'not same') {
+                	Swal.fire({
+              		  icon: 'warning',                      
+              		  title: '리뷰를 삭제할 수 없습니다.',
+              		  text: '자신의 리뷰만 삭제 할 수 있습니다.'
+              		});
+                } else if(errorMessage == 'not delete') {
+                    
+                    Swal.fire({
+                		  icon: 'error',                      
+                		  title: '리뷰가 삭제되지 않았습니다.'
+                		});
+                }
 	        })
 	
 	    })
@@ -486,13 +520,19 @@
 			let areaCode = $('#locationTypeButton').data('areaCode');
 			let sigunguCode = $('#locationTypeButton').data('sigunguCode');
 
-			if(searchKeyWord.length<=1){
-				alert('1글자 이상 검색해주세요.');
-				return;
-			} else if($('#locationTypeButton').text() == '지역 선택') {
-				alert('지역을 선택해주세요.');
-				return;
-			}
+			if($('#locationTypeButton').text() == '지역 선택'){
+    			Swal.fire({
+          		  icon: 'warning',                      
+          		  title: '지역을 선택해주세요.'
+          		});
+    			return;
+    		} else if(searchKeyWord.length<=1) {
+    			Swal.fire({
+            		  icon: 'warning',                      
+            		  title: '한글자 이상 입력해주세요.'
+            		});
+    			return;
+    		}
 
 			window.location.href=window.location.origin + "/localTourInfo/search?searchKeyWord="+searchKeyWord+"&areaCode="+areaCode+"&sigunguCode="+sigunguCode;
 	    })

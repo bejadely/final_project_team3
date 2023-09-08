@@ -3,6 +3,7 @@ package com.trip.finalProject.login.service.Impl;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -118,12 +119,21 @@ public class MemberServiceImpl implements MemberService {
 	 	
 	 //휴대폰 번호로 아이디 찾기
 
-	 
 	 @Override
 		public MemberVO phoneNumberCheck(String num) {
 			MemberVO result = memberMapper.checkIdByPhoneNumber(num);
 			return result;
 	} 
+	 
+	 //비밀번호 찾기 중 비밀번호 수정하기
+	 
+	 @Override
+	 public int editPassword(MemberVO vo) {
+		
+			int result = memberMapper.editPassword(vo);
+			return result;
+		 
+	 }
 	 
 	 
 		

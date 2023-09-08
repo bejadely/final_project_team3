@@ -16,7 +16,7 @@
 						,origin_img
 						,saved_img 
 						<choose>
-							<when test="imgType != null">
+							<when test="imgType == null || imgType== ''">
 								,img_type							
 							</when>
 							<otherwise>
@@ -34,11 +34,11 @@
 						,#{originImg}
 						,#{savedImg}
 						<choose>
-							<when test="imgType != null">
-								,#{imgType}							
+							<when test="imgType == null || imgType== ''">
+								,'U1'					
 							</when>
 							<otherwise>
-								,'U1'
+								,#{imgType}
 							</otherwise>
 						</choose>
 						,#{memberId}
@@ -48,9 +48,13 @@
 						)
 	</insert>
 	<select id="findByPostId" resultType="AttachedFileVO">
-		SELECT loading_img 
+		SELECT loading_img ,saved_img,origin_img
 		FROM attached_file 
 		WHERE post_id = #{postId} AND img_type ='U2'
 	</select>
 
+	<delete id="delete">
+	DELETE FROM attached_file
+	WHERE post_id = #{postId}
+	</delete>
 </mapper>

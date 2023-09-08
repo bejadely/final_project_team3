@@ -2,7 +2,10 @@ package com.trip.finalProject.kakaoPay.service.impl;
 
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -29,8 +32,16 @@ public class KakaoPayServiceImpl implements KakaoPayService {
 	@Autowired
 	KakaoPayMapper kakaoPayMapper;
 	
+	@Value("${kakaoPay.key}")
+	private String kakaoPay_Key;
+	
 	static final String cid = "TC0ONETIME";
-	static final String admin_Key = "7b4adfbd7d95d738f22c53a059516ffc";
+	static String admin_Key;
+	
+	 @PostConstruct
+	 private void init() {
+	     admin_Key = kakaoPay_Key;
+	 }
 	
 	private KakaoPayResponseVO kakaoPayResponseVO;
 	
@@ -165,6 +176,21 @@ public class KakaoPayServiceImpl implements KakaoPayService {
 		// TODO Auto-generated method stub
 		
 		return kakaoPayMapper.updatePurchaseStatus(vo);
+	}
+
+
+	@Override
+	public void deleteCart(String cartId) {
+		// TODO Auto-generated method stub
+		kakaoPayMapper.deleteCart(cartId);
+	}
+
+
+	@Override
+	public void updatePackageQuantity(KakaoPayInfoResponseVO kakaoVO) {
+		// TODO Auto-generated method stub
+		kakaoPayMapper.updatePackageReservation(kakaoVO);
+		
 	}
 
 

@@ -1,6 +1,5 @@
 package com.trip.finalProject.login.web;
 
-import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -10,11 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.trip.finalProject.common.mapper.CommonMapper;
 import com.trip.finalProject.login.service.MemberService;
 import com.trip.finalProject.login.service.MemberVO;
 import com.trip.finalProject.login.service.NaverLoginVO;
@@ -25,6 +24,8 @@ import com.trip.finalProject.login.service.NaverLoginVO;
  @Controller
  @RequestMapping("/")
 public class MemberController {
+	@Autowired
+	CommonMapper commonMapper;
 	  
 	@Autowired
 	MemberService memberService;
@@ -181,6 +182,7 @@ public class MemberController {
 		public String memberUpdate(MemberVO memberVO, Model model) {
 			memberVO.setMemberId(session.getAttribute("sessionId").toString());
 			MemberVO findVO = memberService.memberInfo(memberVO);
+			model.addAttribute("B",commonMapper.selectCode("0"));
 			model.addAttribute("memberInfo", findVO);
 			return "myPage/info/myPageUpdate";
 		}
@@ -202,6 +204,13 @@ public class MemberController {
 			return"member/findAccount";
 		}
 		
+		
+		//비밀번호 찾기 
+		@GetMapping("/findPassword")
+		public String findPassword() {
+			return"member/findPassword";
+		}
+		
 		//입력한 전화번호로 계정 ID 찾기
 		@ResponseBody
 		@PostMapping("/phoneNumberCheck")
@@ -211,13 +220,23 @@ public class MemberController {
 		}
 		
 		
-		@PostMapping("/updatePasword")
-		public String updatePassword(MemberVO memberVO) {
+		//비밀번호 찾기. 이메일 인증 후  비밀번호 업데이트 폼 호출
+		@PostMapping("/updatePaswordForm")
+		public String updatePassword(MemberVO memberVO,Model model) {
 			//memberService.insertMemberInfo(memberVO);
 		System.out.println(memberVO);
+		model.addAttribute("email", memberVO.getEmail());
+		System.out.println(memberVO.getEmail());
 			return "member/updatePassword";
 		}
 	
+		//비밀번호 찾기.변경할 비밀번호로 업데이트 시행하기 
+		@PostMapping("/EditPassword")
+		public String EditPassword(MemberVO memberVO){
+			System.out.println(memberVO);
+			memberService.editPassword(memberVO);
+			return "/member/login";
+		}
 	
  
 

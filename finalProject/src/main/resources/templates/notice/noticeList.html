@@ -233,7 +233,7 @@ section.notice {
 	border-left: 1px solid #ddd;
 }
 
-.bt_wrap {
+ .bt_wrap {
 	margin-top: 30px;
 	text-align: center;
 	font-size: 0;
@@ -263,7 +263,7 @@ section.notice {
 #board-list .bt_wrap {
 	text-align: right;
 	padding-right: 20%;
-}
+} 
 </style>
 
 </head>
@@ -323,7 +323,7 @@ section.notice {
 		<!--  가이드(A2)인 경우 검색 div  -->
 		<div th:if="${session.sessionAuthority} == 'A2'">
 			<div id="noticeType" class="mb-3"
-				style="float: left; margin-left: 10%; margin-right: 20px">
+				style="float: left; margin-left: 15%; margin-right: 20px">
 				<select class="" name="noticeType"
 					aria-label="Default select example">
 					<option value="">공지사항 종류</option>
@@ -488,8 +488,10 @@ section.notice {
 
 			<div class="bt_wrap">
 				<!--  <div th:if="${id == board.memberId || id == 'manager'}"> -->
-				<a href="/noticeWrite" class="on"
+				<a href="/noticeWrite" class="btn btn-primary submitButton"
 					th:if="${session.sessionAuthority} == 'A3'">등록&nbsp;</a>
+		 <input type="button" th:if="${session.sessionAuthority} == 'A3'" value="등록" onclick="location.href='/noticeWrite'" class="btn btn-secondary">
+					
 			</div>
 		</div>
 		<!--      </div> -->
@@ -532,7 +534,8 @@ section.notice {
 			let noticeNumber = $(event.currentTarget).find('td:eq(0)').text();
 
 			// 페이지 전환 실행
-			location.href = `/admin/seeNoticeDetail?noticeNumber=${noticeNumber}`;
+			location.href = `/seeNoticeDetail?noticeNumber=${noticeNumber}`;
+			
 		}
 	</script>
 
