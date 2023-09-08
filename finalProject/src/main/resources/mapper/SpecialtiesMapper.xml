@@ -130,6 +130,11 @@
 		WHERE post_id = #{postId}
 	</select>
 	
+	<delete id="deleteOption">
+		DELETE FROM specialties_option
+		WHERE post_id = #{postId}
+	</delete>
+	
 	<!-- 창민 -->
 	<!-- 특산물 전체 등록 수 카운트 -->
 	<select id="countAllSpecial">
@@ -167,4 +172,16 @@
 	                   ORDER BY s.regist_date DESC) a )
 	      WHERE rn BETWEEN #{start} AND #{end}
 	</select>
+	
+	<update id="updateSpecialites" parameterType="SpecialtiesVO">
+		UPDATE specialties_regist
+		<set>
+			content=#{content}
+			,title=#{title}
+			,area_code=#{areaCode}
+			,sigungu_code=#{sigunguCode}
+			,type=#{type}
+		</set>
+		WHERE post_id=#{postId}
+	</update>
 </mapper>

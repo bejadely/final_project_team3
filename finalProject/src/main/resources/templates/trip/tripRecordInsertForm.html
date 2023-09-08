@@ -212,12 +212,6 @@
 				
 			}).done(data => {
 				//console.log("경로 삭제 완료");
-				mapDb = data.tripMap;
-				
-				//ajax를 통해 받은 여행경로 데이터의 첫번째 위도와 경도를 찾아서 그 값을 지도의 중심좌표로 설정
-				var firstMapLat = mapDb[0].mapLat;
-		        var firstMapLng = mapDb[0].mapLng;
-		        
 		        
 			}).fail(reject => console.log(reject));
 			$(this).siblings(".keyword").attr('style', 'display:block;');
@@ -228,6 +222,8 @@
 		
 		//경로보기 버튼 클릭시 지도에 해당 일자의 여행경로를 나타냄
 		$(".showShow").click(function(){
+			
+			var mapDb = [];
 			
 			//날짜 형식을 db에 저장된 형식과 같게 yy/MM/dd형식으로 변경
 			tDate = $(this).parent().find("input[name=tripDate]").attr("value");
@@ -256,7 +252,97 @@
 					  }
 				
 			}).done(data => {
-				console.log(data);
+				//console.log(data);
+				mapDb = data.tripMap;
+				
+				markers = [];
+				//db에 저장된 좌표를 담아줄 배열
+				mapping = [];
+				//생성된 마커를 연결하는 선 
+				polyline = null;
+				
+				//ajax를 통해 받은 여행경로 데이터의 첫번째 위도와 경도를 찾아서 그 값을 지도의 중심좌표로 설정
+				var firstMapLat = mapDb[0].mapLat;
+		        var firstMapLng = mapDb[0].mapLng;
+		        
+		        var mapContainer = document.getElementById('map'), mapOption = {
+			    	// 최초로 생성된 지도의 중심좌표 
+			    	center : new kakao.maps.LatLng(firstMapLat, firstMapLng),
+			        // 지도의 확대 레벨
+			        level : 9
+			    };
+		        
+		     	// 지도 생성 
+		        var map = new kakao.maps.Map(mapContainer, mapOption);
+		     
+		      	//DB에서 가져온 map 데이터
+		        var mapL = mapDb;
+		         
+		        //여행 경로 데이터에서 받아온 장소 데이터를 통해 지도위에 마커 생성
+		        var map_positions = [];
+		         
+		        $.each(mapL, function (index, obj){
+		         
+		        	let object = {};
+		         	object["content"] = obj.mapName;
+		         	object["latlng"] = new kakao.maps.LatLng(obj.mapLat, obj.mapLng);
+		         		
+		         	map_positions.push(object);
+		         	
+		        });
+		         	
+		        for (var i = 0; i < map_positions.length; i++) {
+		        	// 마커를 생성
+		            var marker = new kakao.maps.Marker({
+		            	map : map, // 마커를 표시할 지도
+		                position : map_positions[i].latlng
+		            });
+
+		            // 마커에 표시할 인포윈도우를 생성
+		            var infowindow = new kakao.maps.InfoWindow({
+		             	content : map_positions[i].content, // 인포윈도우에 표시할 내용
+		                removable : true
+		            });
+
+		            kakao.maps.event.addListener(marker, 'click', marker_click(map, marker, infowindow));
+		         }
+		         
+		         
+		         function marker_click(map, marker, infowindow) {
+		          	return function() {
+		            	infowindow.open(map, marker);
+		            };
+		         }
+		             
+		         //선을 구성하는 좌표 배열 이 좌표들을 이어서 선을 표시
+		         var map_polyline = []
+		         //여행 경로 데이터에서 받아온 장소 데이터를 통해 마커 사이에 선을 생성
+				 
+		         $.each(mapL, function (index, obj){
+		          	let object2 = {};
+		         	object2 = new kakao.maps.LatLng(obj.mapLat, obj.mapLng),
+		         	map_polyline.push(object2);
+		         		
+		         });
+		           
+
+		         // 지도에 표시할 선을 생성합니다
+		         var map_linePath = new kakao.maps.Polyline({
+		          	 path : map_polyline, // 선을 구성하는 좌표 배열
+		             strokeWeight : 3, // 선의 두께
+		             strokeColor : 'black', // 선의 색깔
+		             strokeOpacity : 0.7, // 선의 불투명도 (1에서 0 사이의 값, 0에 가까울수록 투명)
+		             strokeStyle : 'solid' // 선의 스타일
+
+		          });
+		             
+		          // 지도에 마커를 표시
+		          marker.setMap(map);
+		          
+		          // 선 생성 
+		          map_linePath.setMap(map);
+		          
+		          
 			}).fail(reject => console.log(reject));
 			
 		});

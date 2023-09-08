@@ -34,27 +34,28 @@ public class NoticeController {
 	// 모든 리스트 모델에 담기
 			model.addAttribute("list", list);
 			model.addAttribute("paging", pagingVO);
-	return"notice/NoticeList";
+	return"/notice/NoticeList";
 	};
 	
 	//공지사항 게시글 상세보기
-	@GetMapping("/admin/seeNoticeDetail")
+	@GetMapping("/seeNoticeDetail")
 	public String selectNoticeDetail(NoticeVO noticeVO, Model model) {
 		
+		//공지사항 조회수 증가
+		noticeService.updateNoticeHit(noticeVO);
 		// 공지사항 상세조회 실행
 		noticeVO = noticeService.getNoticeDetail(noticeVO);
 		model.addAttribute("noticeVO", noticeVO);
 		System.out.println(noticeVO);
+		
+
+		
 		return "notice/noticeDetail";
 		
 	}
 	
 	
-	//검색
-	@GetMapping("/noticeSearch")
-	public String boardSearch() {
-		return"notice/BoardList";
-	};
+	
 
 	
 	//공지사항 작성 폼 불러옴
@@ -93,7 +94,7 @@ public class NoticeController {
 		// 리다이렉트 어트리뷰트에 결과값 담기(성공 : success / 실패 : fail)
 		rtt.addFlashAttribute("result", result);
 		
-		return "redirect:seeNoticeDetail?noticeNumber=" + noticeVO.getNoticeNumber();
+		return "redirect:/seeNoticeDetail?noticeNumber=" + noticeVO.getNoticeNumber();
 	}
 
 

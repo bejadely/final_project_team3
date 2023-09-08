@@ -7,11 +7,6 @@
 <head>
 <meta charset="UTF-8">
 <title>여행 메이트 글 등록</title>
-<!-- index.html 고유 CSS 추가 -->
-<th:block layout:fragment="css"></th:block>
-<!-- index.html 고유 스크립트 추가 -->
-<th:block layout:fragment="script"></th:block>
-<script src ="/ckeditor5-build-classic/ckeditor.js"></script>
 <style>
 body {
        background-color: #ffffff;
@@ -69,6 +64,7 @@ body {
       }
 </style>
 </head>
+<script src ="/ckeditor5-build-classic/ckeditor.js"></script>
 <body>
    <div class="container">
       <div class="text-center">
@@ -109,60 +105,64 @@ body {
                    <tr>
                        <th style="text-align: left; width: 20%;">작성자</th>
                        <td colspan="2">
-                           <input type="text" id="writerId" name="writerId" size="30" class="form-control" th:value="${session.sessionId}" readonly>
+                           <input type="text" id="writerId" name="writerId" style="width: 370px;" class="form-control" th:value="${session.sessionId}" readonly>
                        </td>
                        <th style="text-align: left; width: 20%;">등록일자</th>
                        <td colspan="2">
-                           <input type="date" id="now_date" name="" size="30" class="form-control" readonly>
+                           <input type="date" id="now_date" name="" style="width: 370px; margin-left: 4px;" class="form-control" readonly>
                        </td>
                    </tr>
                       <tr>
                        <th style="text-align: left; width: 20%;">타이틀</th>
                          <td colspan="5">
-                           <input type="text" id="mateTitle" name="mateTitle" size="70" class="form-control">
+                           <input type="text" id="mateTitle" name="mateTitle" style="width: 1075px;" class="form-control">
                        </td>
                    </tr>
                    <tr>
                        <th style="text-align: left; width: 20%;">여행기간</th>
                        <td colspan="2">
-                           <input type="date" id="startDay" name="startDay" size="30" class="form-control">
+                           <input type="date" id="startDay" name="startDay" style="width: 500px;" class="form-control">
                        </td>
                        <td colspan="2">
-                           <input type="date" id="endDay" name="endDay" size="30" class="form-control">
+                           <input type="date" id="endDay" name="endDay" style="width: 500px; margin-left: 57px;" class="form-control">
                        </td>
                    </tr>
                    <tr>
                        <th style="text-align: left; width: 20%;">모집 마감일</th>
                          <td colspan="5">
-                           <input type="date" id="deadline" name="deadline" size="50" class="form-control">
+                           <input type="date" id="deadline" name="deadline" style="width: 1075px;" class="form-control">
                        </td>
                    </tr>
                    <tr>
                        <th style="text-align: left; width: 20%;">예상 경비</th>
                        <td colspan="2">
-                           <input type="number" id="mateExpense" name="mateExpense" size="30" class="form-control">
+                       	   <input type="text" id="mateExpense" name="mateExpense" style="width: 370px;" class="form-control" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');">
                        </td>
                        <th style="text-align: left; width: 20%;">모집 인원</th>
                        <td colspan="2">
-                           <input type="number" id="mateMax" name="mateMax" size="30" class="form-control">
+                           <input type="number" id="mateMax" name="mateMax" style="width: 370px; margin-left: 4px;" class="form-control"  min="1" max="50">
                        </td>
                    </tr>
                    <tr>
                        <th style="text-align: left; width: 20%;">메인 이미지</th>
                          <td colspan="5">
-                           <input type="file" id="mainImage" name="mainImage" size="50" class="form-control">
-                           <button id ="uploadBtn">upload</button>
+                         <div class="input-group">
+                           <input type="file" id="mainImage" name="mainImage" style="width: 750px;" class="form-control">
+                           <input type="button" class="btn btn-secondary mt-3 mx-2" style="height: 38px;" id ="uploadBtn" value="upload">
+                       	</div>
                        </td>
                    </tr>
                 </table>
                 </div>
-                <div class="uploadResult">
-            		<ul>
+                <div class="uploadResult" align="center">
+      				<div style="display:none;">
+            			<ul>
             
-            		</ul>
-               <div id="editor">
+            			</ul>
+            		</div>
+               		<div id="editor">
       
-               </div>
+               		</div>
               </div>
               <div>
                <button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>&nbsp;&nbsp;
@@ -173,20 +173,26 @@ body {
         </div>
    </div>
    <script>
+   	   //숫자 컴마로 표현, 숫자만 입력 가능
+   	   document.getElementById("mateExpense").addEventListener("keyup", function (e) {
+   		  $(this).val($(this).val().replace(/\,/g, '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,'));
+	   });
+	   
       //현재 날짜 계산
       document.getElementById('now_date').value = new Date().toISOString().substring(0, 10);
       
       $(document).ready(function() {   
+    	  
          ClassicEditor
          .create(document.querySelector('#editor'), {
-         /* htmlEncodeOutput: false, */
-         ckfinder: {
-            uploadUrl : '/common/upload'   
-         }
-      })
-      .then(editor => {
+         	/* htmlEncodeOutput: false, */
+         	ckfinder: {
+            	uploadUrl : '/common/upload'   
+         	}
+      	})
+      	.then(editor => {
       
-      document.getElementById("cancelBtn").addEventListener("click",function(){
+      	document.getElementById("cancelBtn").addEventListener("click",function(){
          const data = editor.getData();
          //Data 변수에 저장된 데이터를 파싱하여 이미지 태크를 찾음
          const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
@@ -211,7 +217,6 @@ body {
          })
          
       })
-      
       
       var formObj = $("#editorForm");
       
@@ -241,6 +246,45 @@ body {
             mateContent: data
          };
          console.log(combinedData);
+         
+         
+         var startDate2 = document.getElementById("startDay").value;
+      	 var endDate2 = document.getElementById("endDay").value;
+       	 var deadlineDate2 = document.getElementById("deadline").value;
+       	  // 현재 날짜 가져오기
+         var currentDate = new Date();
+
+         // 입력한 패키지 시작일을 Date 객체로 변환
+         var selectedStartDate = new Date(startDate2);
+         var selectedEndDate = new Date(endDate2);
+         var selectedDeadlineDate = new Date(deadlineDate2);
+         // 날짜 차이 계산 (밀리초 단위)
+         var timeDifference = selectedStartDate - currentDate;
+
+         // 30일을 밀리초로 계산
+         var thirtyDaysInMillis = 30 * 24 * 60 * 60 * 1000;
+         
+         if (selectedStartDate < currentDate) {
+             alert("여행 시작일은 오늘보다 이전일 수 없습니다.");
+             return false;
+         }
+
+         if (selectedEndDate < selectedStartDate) {
+             alert("여행 종료일은 여행 시작일 이후여야 합니다.");
+             return false;
+         }
+         if (selectedDeadlineDate > selectedStartDate) {
+             alert("여행 마감일은 여행 시작일 이전이여야 합니다.");
+             return false;
+         }
+         // 여행 시작일이 최소 한 달 전이 아닌 경우 예외 처리
+         if (timeDifference < thirtyDaysInMillis) {
+             alert("여행 시작일은 최소 한 달 전으로 설정해야 합니다.");
+             return false; // 폼 제출 중지
+         }
+         
+         
+         
          
          var str="";
          $(".uploadResult ul li").each(function(i,obj){
