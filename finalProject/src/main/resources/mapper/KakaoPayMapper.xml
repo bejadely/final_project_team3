@@ -118,4 +118,11 @@
  	</set>
  	WHERE cart_id = #{cartId}
  	</update>
+ 	<update id="updatePackageReservation" parameterType="packageVO">
+ 		UPDATE package_regist
+ 		<set>
+ 			max_reservation = max_reservation-#{maxReservation}
+ 		</set>
+ 		WHERE post_id = #{postId}
+ 	</update>
 </mapper>  
