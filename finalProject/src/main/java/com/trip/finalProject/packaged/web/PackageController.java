@@ -129,7 +129,7 @@ public class PackageController {
 	}
 	
 
-    //모달창 내 정보+리뷰 가져오기
+    //  내 정보+리뷰 가져오기
     @GetMapping("/packageInfoReview")
     @ResponseBody
     public Map<String,Object> getDetailInfoReview(String postId) {
@@ -137,7 +137,7 @@ public class PackageController {
         return packageService.getDetailInfoReviewList(postId);
     }
 
-    //모달창 내 리뷰 가져오기
+    //  내 리뷰 가져오기
     @GetMapping("/packageReview")
     @ResponseBody
     public List<PackageReviewVO> getDetailReview(String postId, int page) {
@@ -145,7 +145,7 @@ public class PackageController {
         return packageService.getDetailReviewList(postId, page);
     }
 
-    //모달창 내 리뷰 등록
+    //  내 리뷰 등록
     @PostMapping("/common/packageReview")
     @ResponseBody
     public Map<String,Object> reviewInsert(PackageReviewVO packageReviewVO) throws Exception {
@@ -159,11 +159,12 @@ public class PackageController {
         return packageService.insertReviewInfo(packageReviewVO);
     }
 
-    //모달창 내 리뷰 삭제
+    //  내 리뷰 삭제
     @DeleteMapping("/common/packageReview")
     @ResponseBody
     public Map<String,Object> reviewDelete(String postId, String writerId, String reviewId) throws Exception {
         String sessionId = "";
+        System.out.println(writerId);
         if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().replaceAll(" ", "").equals("")) {
             sessionId =  session.getAttribute("sessionId").toString();
         } else {
