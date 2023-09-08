@@ -395,7 +395,7 @@ section.notice {
 				<tbody>
 					<th:block th:each="n : ${list}">
 						<tr class="noticeInfo"
-							th:attr="onmouseover='this.style.background=&quot;#dadada&quot;;', onmouseleave='this.style.background=&quot;#FFFFFF&quot;;' ">
+							th:attr="onmouseover='this.style.background=&quot;#dadada&quot;;',  onmouseleave='this.style.background=&quot;#FFFFFF&quot;;' ">
 							<td th:text="${n.noticeNumber}"></td>
 							<td th:text="${n.title}"></td>
 							<td th:text="${n.writerId}"></td>
@@ -510,7 +510,20 @@ section.notice {
 
 
 
+
+
 	<script th:inline="javascript" type="text/javascript">
+	
+	
+	
+	
+	$(document).ready(function() {
+		// 이벤트 설정
+		$('#searchButton').on('click', search);
+		$('.noticeInfo').css({cursor: 'pointer'});
+	});
+	
+	
 		$(document).ready(function() {
 
 			$('.noticeInfo').on('mouseup', moveToNoticeDetail)
