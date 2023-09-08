@@ -8,7 +8,7 @@ import com.trip.finalProject.common.PagingVO;
 public interface CartService {
 	
 	//부분 데이터 가져오기
-	public int postIdCount(String postId);
+	public int postIdCount(CartVO cartVO);
 	//버튼조회
 	public List<CartVO> getAjaxCart(CartVO cartVO, PagingVO pagingVO);
 	//등록
@@ -19,6 +19,6 @@ public interface CartService {
 	public Map<String, Object> getQuanUpdate(CartVO cartVO);
 	
 	//카트 상세 정보 조회
-	public List<CartVO> cartInfo(String[] cartId);
+	public List<CartVO> cartInfo(String cartId);
 
 }

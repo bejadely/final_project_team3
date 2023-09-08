@@ -25,6 +25,7 @@ public class CartVO {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date regDate;
 	private String cartName;
+	private String specialtyType;
 
 	
 }

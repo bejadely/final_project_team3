@@ -115,8 +115,21 @@ public class PackageController {
 		return attachedFileService.getAttachList(vo);
 	}
 	
+	@GetMapping("/guide/packageUpdateForm")
+	public String packageUpdateForm(Model model, PackageVO packageVO) {
+		PackageVO vo = packageService.packageInfo(packageVO);
+		model.addAttribute("info",vo);
+		model.addAttribute("area",packageService.getLocationList());
+		return "package/packageUpdateForm";
+	}
+	@PostMapping("/guide/packageUpdate")
+	public String packageUpdate(PackageVO packageVO) {
+		packageService.packageUpdate(packageVO);
+		return "redirect:/packageList";
+	}
+	
 
-    //모달창 내 정보+리뷰 가져오기
+    //  내 정보+리뷰 가져오기
     @GetMapping("/packageInfoReview")
     @ResponseBody
     public Map<String,Object> getDetailInfoReview(String postId) {
@@ -124,7 +137,7 @@ public class PackageController {
         return packageService.getDetailInfoReviewList(postId);
     }
 
-    //모달창 내 리뷰 가져오기
+    //  내 리뷰 가져오기
     @GetMapping("/packageReview")
     @ResponseBody
     public List<PackageReviewVO> getDetailReview(String postId, int page) {
@@ -132,12 +145,13 @@ public class PackageController {
         return packageService.getDetailReviewList(postId, page);
     }
 
-    //모달창 내 리뷰 등록
-    @PostMapping("/packageReview")
+    //  내 리뷰 등록
+    @PostMapping("/common/packageReview")
     @ResponseBody
     public Map<String,Object> reviewInsert(PackageReviewVO packageReviewVO) throws Exception {
         if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().replaceAll(" ", "").equals("")) {
         	packageReviewVO.setWriterId(session.getAttribute("sessionId").toString());
+        	System.out.println(packageReviewVO.getWriterId());
         } else {
             throw new Exception("no login");
         }
@@ -145,11 +159,12 @@ public class PackageController {
         return packageService.insertReviewInfo(packageReviewVO);
     }
 
-    //모달창 내 리뷰 삭제
-    @DeleteMapping("/packageReview")
+    //  내 리뷰 삭제
+    @DeleteMapping("/common/packageReview")
     @ResponseBody
     public Map<String,Object> reviewDelete(String postId, String writerId, String reviewId) throws Exception {
         String sessionId = "";
+        System.out.println(writerId);
         if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().replaceAll(" ", "").equals("")) {
             sessionId =  session.getAttribute("sessionId").toString();
         } else {
@@ -170,11 +185,11 @@ public class PackageController {
 							,PackageVO pacVO
 							,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 							,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
-		pacVO.setWriterId("1");
-		pacVO.setCompletion("D1");
+		String memberId = session.getAttribute("sessionId").toString();
 		
-		int total = packageService.guiListCount(pacVO);
+		int total = packageService.guiListCount(memberId);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		pacVO.setWriterId(memberId);
 		List<PackageVO> pacList = packageService.guiListPackage(pacVO, pagingVO);
 
 		model.addAttribute("list", pacList);
@@ -183,31 +198,13 @@ public class PackageController {
 		return "guide/package/packageSale";
 	}
 	
-	//전체 리스트 모집 완료
-	@GetMapping("/guide/packageSoldOut")
-	public String guiPacSoldOut(Model model
-			,PackageVO pacVO
-			,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
-			,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
-		pacVO.setWriterId("1");
-		pacVO.setCompletion("D2");
-		
-		int total = packageService.guiListCount(pacVO);
-		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-		List<PackageVO> pacList = packageService.guiListPackage(pacVO, pagingVO);
-		
-		model.addAttribute("list", pacList);
-		model.addAttribute("paging", pagingVO);
-		
-		return "guide/package/packageSoldOut";
-	}
 	//완료페이지
 	@GetMapping("/guide/packageCom")
 	public String guiPacCom(Model model
 			,PackageVO pacVO
 			,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 			,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
-		pacVO.setWriterId("1");
+		pacVO.setWriterId(session.getAttribute("sessionId").toString());
 		int total = packageService.guiListComCount(pacVO);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 		List<PackageVO> pacList = packageService.guiListComPackage(pacVO, pagingVO);
@@ -227,11 +224,22 @@ public class PackageController {
 		return "guide/package/packageDetail";
 	}
 	
-	@GetMapping("/guide/deletePackage")
-	@ResponseBody
-	public Map<String, Object> deletePackage(String postId) {
-		int r = packageService.deletePackage(postId);
-		return Collections.singletonMap("result", r==1?true:false);
+	@GetMapping("/guide/deleteSalePackage")
+	public String deleteSalePackage(String postId) {
+		packageService.deletePackage(postId);
+		return "redirect:/guide/packageSale";
+	}
+	
+	@GetMapping("/guide/deleteSoldOutPackage")
+	public String deleteSoldOutPackage(String postId) {
+		packageService.deletePackage(postId);
+		return "redirect:/guide/packageSoldOut";
+	}
+	
+	@GetMapping("/guide/deleteComPackage")
+	public String deleteComPackage(String postId) {
+		packageService.deletePackage(postId);
+		return "redirect:/guide/packageCom";
 	}
 	
 }

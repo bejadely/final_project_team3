@@ -129,7 +129,15 @@
     
     
     <!--  입력한 이메일에 대한 비번 수정  -->
-    
+    	<update id="editPassword" parameterType="MemberVO">
+		UPDATE member
+		<set>
+			<if test="password != null and !password.equals('')">
+				password = #{password}			
+			</if>		
+		</set>
+		WHERE email = #{email}	
+	</update>
     
     <!-- 회원정보 불러오기 -->
 	<select id="memebrInfo" resultType="MemberVO">
@@ -145,7 +153,7 @@
 		 , code_val(authority) authority
 		 , origin_profile_img
 		 , saved_profile_img
-		 , bank_code
+		 , code_val(bank_code) bank_code
 		 , account_number
 		 , login_type
 		 , access_token
