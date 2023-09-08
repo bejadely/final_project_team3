@@ -96,9 +96,12 @@ public class PackageServiceImpl implements PackageService {
 	public void packageUpdate(PackageVO packageVO) {
 		// TODO Auto-generated method stub
 		attachedFileMapper.delete(packageVO.getPostId());
+		System.out.println(packageVO.getPostId());
 		mapper.updatePackage(packageVO);
 		
-		if(packageVO.getAttachList()!=null || packageVO.getAttachList().size()>0) {
+		if (packageVO.getAttachList() == null || packageVO.getAttachList().size() <= 0) {			
+			return ;
+		}else {
 			packageVO.getAttachList().forEach(attach->{
 				attach.setPostId(packageVO.getPostId());
 				attachedFileMapper.insertAttachedFile(attach);
@@ -108,10 +111,10 @@ public class PackageServiceImpl implements PackageService {
 			return;
 		}else {
 			packageVO.getEditorAttachList().forEach(attach->{
-			attach.setPostId(packageVO.getPostId());
-			attachedFileMapper.insertAttachedFile(attach);
+				attach.setPostId(packageVO.getPostId());
+				attachedFileMapper.insertAttachedFile(attach);
 			});
-		}
+		}			
 	}
 	
 	//가이드 페이지=====================================================================

@@ -24,7 +24,7 @@ import com.trip.finalProject.kakaoPay.service.PaymentVO;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/payment")
+@RequestMapping("/common/payment")
 @RequiredArgsConstructor
 public class KakaoPayController {
 	
@@ -51,7 +51,7 @@ public class KakaoPayController {
 		mv.addObject("tid",approveResponse.getTid());
 		mv.addObject("specialtyType",specialtyType);
 		mv.addObject("postId",postId);
-		mv.setViewName("redirect:/payment/info");
+		mv.setViewName("redirect:/common/payment/info");
 		
 		
 		return mv;
