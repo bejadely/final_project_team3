@@ -7,16 +7,25 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.trip.finalProject.attachedFile.mapper.AttachedFileMapper;
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.trip.mapper.TripMapper;
 import com.trip.finalProject.trip.service.TripService;
 import com.trip.finalProject.trip.service.TripVO;
+
+import lombok.Setter;
 
 @Service
 public class TripServiceImpl implements TripService {
 
 	@Autowired
 	TripMapper tripMapper;
+	
+	@Setter(onMethod_=@Autowired)
+	private TripMapper mapper;
+	
+	@Setter(onMethod_=@Autowired)
+	private AttachedFileMapper attachedFileMapper; 
 	
 	//여행기록 전체 조회 페이징용
 	@Override
@@ -116,11 +125,28 @@ public class TripServiceImpl implements TripService {
 	
 	//여행기록 등록(임시저장에서 저장으로 update)
 	@Override
-	public int InsertTripInfo(TripVO tripVO) {
+	public void InsertTripInfo(TripVO tripVO) {
 		
-		int result = tripMapper.insertTripInfo(tripVO);
+		mapper.insertTripInfo(tripVO);
 		
-		return result;
+		if (tripVO.getAttachList() == null || tripVO.getAttachList().size() <= 0) {			
+			return ;
+		}else {
+			tripVO.getAttachList().forEach(attach->{
+				attach.setPostId(tripVO.getPostId());
+				attachedFileMapper.insertAttachedFile(attach);
+			});
+		}
+		
+		if(tripVO.getEditorAttachList()==null || tripVO.getEditorAttachList().size()<=0) {
+			return;
+		}else {
+			tripVO.getEditorAttachList().forEach(attach->{
+				attach.setPostId(tripVO.getPostId());
+				attachedFileMapper.insertAttachedFile(attach);
+			});
+		}
+		
 	}
 	
 	//여행기록 임시저장(임시저장 상태로 최초로 등록된 게시글을 다시 임시저장함)

@@ -1,8 +1,11 @@
 package com.trip.finalProject.trip.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.trip.finalProject.attachedFile.service.AttachedFileVO;
 
 import lombok.Data;
 
@@ -54,6 +57,11 @@ public class TripVO {
 	private String content;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date memoDate;
+	
+	//에디터
+	private List<AttachedFileVO> attachList;
+	private List<AttachedFileVO> editorAttachList;
+	
 
 	//선택한 여행 지역을 최초로 지도에 표시하기 위한 위도,경도 값
 	private String tripArea;
