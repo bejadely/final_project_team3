@@ -92,13 +92,33 @@ public class PackageServiceImpl implements PackageService {
 		return packageMapper.searchPackageByTitle(packageVO, pagingVO);
 	}
 	
-	
+	@Override
+	public void packageUpdate(PackageVO packageVO) {
+		// TODO Auto-generated method stub
+		attachedFileMapper.delete(packageVO.getPostId());
+		mapper.updatePackage(packageVO);
+		
+		if(packageVO.getAttachList()!=null || packageVO.getAttachList().size()>0) {
+			packageVO.getAttachList().forEach(attach->{
+				attach.setPostId(packageVO.getPostId());
+				attachedFileMapper.insertAttachedFile(attach);
+			});
+		}
+		if(packageVO.getEditorAttachList()==null || packageVO.getEditorAttachList().size()<=0) {
+			return;
+		}else {
+			packageVO.getEditorAttachList().forEach(attach->{
+			attach.setPostId(packageVO.getPostId());
+			attachedFileMapper.insertAttachedFile(attach);
+			});
+		}
+	}
 	
 	//가이드 페이지=====================================================================
 	//리스트 페이징용
 	@Override
-	public int guiListCount(PackageVO pacVO) {
-		return packageMapper.guiListCount(pacVO);
+	public int guiListCount(String memberId) {
+		return packageMapper.guiListCount(memberId);
 	}
 	//리스트 불러오기
 	@Override
@@ -207,6 +227,7 @@ public class PackageServiceImpl implements PackageService {
 
         return recentReviewInfo;
     }
+
 	
 
 	

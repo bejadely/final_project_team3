@@ -233,13 +233,13 @@ table {
 		<form id="sendData" action="tripMateApplyForm" method="post">
 			<input type="hidden" name="postId" th:value="${tripMateInfo.postId}">
 			<input type="hidden" name="mateWriter" th:value="${tripMateInfo.writerId}">
-			<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="submit" class="primary-btn">
+			<button th:if="${session.sessionId} != null and ${session.sessionId} != ${tripMateInfo.writerId}" type="submit" class="feature-btn">
 			신청하기</button>&nbsp;&nbsp;
-			<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button" class="primary-btn" 
+			<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button" class="feature-btn" 
 			th:onclick="|location.href='@{/mateRecruitUpdateForm(postId=${tripMateInfo.postId})}'|">수정</button>&nbsp;&nbsp;
-			<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button" class="primary-btn" 
+			<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button" class="feature-btn" 
 			th:onclick="|location.href='@{/mateRecruitDelete(postId=${tripMateInfo.postId})}'|">삭제</button>&nbsp;&nbsp;
-			<button type="button" class="primary-btn" onclick="location.href='/common/myPageTrip'">목록으로</button>
+			<button type="button" class="feature-btn" onclick="history.back()">목록으로</button>
 		</form>
 	</div>
 	<!-- 댓글 기능 -->
@@ -273,7 +273,6 @@ table {
 		
 		//ajax를 통해서 해당 게시글의 포스트 아이디를 보내서 결과 값을 리스트로 담아서 가져옴.
 	    $('#callCmt').click(function() {
-			console.log("댓글리스트 출력");
 		    $.ajax({
 		            url: '/commentList',
 		            type: 'get',
@@ -374,7 +373,6 @@ table {
 		}
 		  //신청반려버튼
 		$("#cancle").click(function(){
-			console.log("test");
 			var postId = $("#dataPostId").val()
 			var applyId = $("#dataApplyId").val()
 			var memberId = $("#dataMemberId").val()

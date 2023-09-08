@@ -41,6 +41,6 @@ public interface MemberMapper {
 	 //입력한 전화번호로 회원 계정 찾기
 	 public MemberVO checkIdByPhoneNumber(String num);
 	 
-	 //입력한 이메일 번호로 회원 비밀번호 업데이트폼 보내기
-	 public MemberVO updatePassword(String email);
+	 //입력한 이메일을 비밀번호 업데이트 하기
+	 public int editPassword(MemberVO vo);
 }
