@@ -192,7 +192,7 @@
 	<update id="updateTripMateRecruit" parameterType="TripMateVO">
 		UPDATE mate_recruit
 		<set>
-			<if test="mateTitle != null and !tripTitle.equals('')">
+			<if test="mateTitle != null and !mateTitle.equals('')">
 				mate_title = #{mateTitle},
 			</if>
 			<if test="mateContent != null and !mateContent.equals('')">
