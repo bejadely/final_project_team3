@@ -1,18 +1,17 @@
 package com.trip.finalProject.login.service.Impl;
 
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpSession;
 
 import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.trip.finalProject.login.mapper.MemberMapper;
 import com.trip.finalProject.login.service.MemberService;
 import com.trip.finalProject.login.service.MemberVO;
+import com.trip.finalProject.security.service.AesProcessor;
 
 
 @Service //해당 클래스를 스프링의 서비스 빈으로 등록하
@@ -21,10 +20,23 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	MemberMapper memberMapper;
 	
+	@Autowired
+	PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	AesProcessor aesProcessor;
+	
 	//일반회원 회원가입
 	@Override
 	public String insertMemberInfo(MemberVO memberVO) {
-
+		
+		// 0907 창민 추가
+		// 비밀번호 암호화
+		String encodePassword = passwordEncoder.encode(memberVO.getPassword());
+		
+		// 암호화된 키를 memberVO에 재저장
+		memberVO.setPassword(encodePassword);
+		
 		int result = memberMapper.insertMember(memberVO);
 		if(result ==1) {
 			return memberVO.getMemberId();
@@ -36,7 +48,25 @@ public class MemberServiceImpl implements MemberService {
 	//가이드회원 회원가입
 	@Override
 	public String insertGuide(MemberVO memberVO) {
-
+		
+		//0907 창민 추가
+		// 비밀번호 암호화
+		String encodePassword = passwordEncoder.encode(memberVO.getPassword());
+		
+		// 암호화된 키를 memberVO에 재저장
+		memberVO.setPassword(encodePassword);
+		
+		// 계좌번호 암호화
+		String encodedAccountNum = "";
+		
+		try {
+			encodedAccountNum = aesProcessor.aesCBCEncode(memberVO.getAccountNumber());
+			memberVO.setAccountNumber(encodedAccountNum);  
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
+		
 		int result = memberMapper.insertGuide(memberVO);
 		if(result ==1) {
 			return memberVO.getMemberId();
