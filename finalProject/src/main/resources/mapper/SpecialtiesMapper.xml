@@ -172,4 +172,16 @@
 	                   ORDER BY s.regist_date DESC) a )
 	      WHERE rn BETWEEN #{start} AND #{end}
 	</select>
+	
+	<update id="updateSpecialites" parameterType="SpecialtiesVO">
+		UPDATE specialties_regist
+		<set>
+			content=#{content}
+			,title=#{title}
+			,area_code=#{areaCode}
+			,sigungu_code=#{sigunguCode}
+			,type=#{type}
+		</set>
+		WHERE post_id=#{postId}
+	</update>
 </mapper>

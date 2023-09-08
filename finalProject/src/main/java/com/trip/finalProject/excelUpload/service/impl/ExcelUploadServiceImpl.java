@@ -23,7 +23,7 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
     ExcelUploadMapper excelUploadMapper;
 
     @Override
-    public Integer uploadExcel(String fileType, String areaCode, String sigunguCode, MultipartFile file) {
+    public Integer uploadExcel(String fileType, String areaCode, String sigunguCode, String yearMonth, MultipartFile file) {
 
         Integer result = 0;
 
@@ -31,41 +31,70 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
 
         switch(fileType) {
             case "동행유형":
-                excelDataList = getFellowList(areaCode, sigunguCode, file);
+                excelDataList = getFellowList(areaCode, sigunguCode, yearMonth, file);
                 result = excelUploadMapper.uploadFellowList(excelDataList);
                 break;
             case "여행유형":
-                excelDataList = getTripList(areaCode, sigunguCode, file);
+                excelDataList = getTripList(areaCode, sigunguCode, yearMonth, file);
                 result = excelUploadMapper.uploadTripList(excelDataList);
                 break;
             case "맛집방문자":
-                excelDataList = getRestaurantList(areaCode, sigunguCode, file);
+                excelDataList = getRestaurantList(areaCode, sigunguCode, yearMonth, file);
                 result = excelUploadMapper.uploadRestaurantList(excelDataList);
                 break;
             case "여행지방문자" :
-                excelDataList = getAttractionList(areaCode, sigunguCode, file);
+                excelDataList = getAttractionList(areaCode, sigunguCode, yearMonth, file);
                 result = excelUploadMapper.uploadAttractionList(excelDataList);
             	break;
             case "방문자수":
-                excelDataList = getVisitorList(file);
+                excelDataList = getVisitorList(yearMonth, file);
                 result = excelUploadMapper.uploadVisitorList(excelDataList);
                 break;
             case "SNS언급량":
-                excelDataList = getSnsList(file);
+                excelDataList = getSnsList(yearMonth, file);
                 result = excelUploadMapper.uploadSnsList(excelDataList);
                 break;
             default: 
                 break;
         }
 
+        return result;
+    }
+
+    @Override
+    public Integer deleteExcel(String fileType, String areaCode, String sigunguCode, String yearMonth) {
+
+        Integer result = 0;
+
+        switch(fileType) {
+            case "동행유형":
+                result = excelUploadMapper.deleteFellowList(areaCode, sigunguCode, yearMonth);
+                break;
+            case "여행유형":
+                result = excelUploadMapper.deleteTripList(areaCode, sigunguCode, yearMonth);
+                break;
+            case "맛집방문자":
+                result = excelUploadMapper.deleteRestaurantList(areaCode, sigunguCode, yearMonth);
+                break;
+            case "여행지방문자" :
+                result = excelUploadMapper.deleteAttractionList(areaCode, sigunguCode, yearMonth);
+                break;
+            case "방문자수":
+                result = excelUploadMapper.deleteVisitorList(yearMonth);
+                break;
+            case "SNS언급량":
+                result = excelUploadMapper.deleteSnsList(yearMonth);
+                break;
+            default:
+                break;
+        }
+        System.out.println("result = " + result);
 
         return result;
     }
 
-    private List<Map<String, String>> getTripList(String areaCode, String sigunguCode, MultipartFile file) {
+    private List<Map<String, String>> getTripList(String areaCode, String sigunguCode, String yearMonth, MultipartFile file) {
     	List<Map<String, String>> tripList = new ArrayList<>();
-
-        String prevMonth = getPrevMonth();
 
         try (InputStream inputStream = file.getInputStream()) {
 
@@ -85,7 +114,7 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
                 Map<String, String> tripMap = new HashMap<>();
                 tripMap.put("tripType", tripType);
                 tripMap.put("searchNumber", searchNumber);
-                tripMap.put("prevMonth", prevMonth);
+                tripMap.put("yearMonth", yearMonth);
                 tripMap.put("areaCode", areaCode);
                 tripMap.put("sigunguCode", sigunguCode);
 
@@ -100,10 +129,8 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
         return tripList;
 	}
 
-	private List<Map<String, String>> getFellowList(String areaCode, String sigunguCode, MultipartFile file) {
+	private List<Map<String, String>> getFellowList(String areaCode, String sigunguCode, String yearMonth, MultipartFile file) {
     	List<Map<String, String>> fellowList = new ArrayList<>();
-
-        String prevMonth = getPrevMonth();
 
         try (InputStream inputStream = file.getInputStream()) {
 
@@ -123,7 +150,7 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
                 Map<String, String> fellowMap = new HashMap<>();
                 fellowMap.put("fellowType", fellowType);
                 fellowMap.put("searchNumber", searchNumber);
-                fellowMap.put("prevMonth", prevMonth);
+                fellowMap.put("yearMonth", yearMonth);
                 fellowMap.put("areaCode", areaCode);
                 fellowMap.put("sigunguCode", sigunguCode);
 
@@ -139,10 +166,8 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
 		
 	}
 
-	private List<Map<String,String>> getRestaurantList(String areaCode, String sigunguCode, MultipartFile file) {
+	private List<Map<String,String>> getRestaurantList(String areaCode, String sigunguCode, String yearMonth, MultipartFile file) {
         List<Map<String, String>> restaurantList = new ArrayList<>();
-
-        String prevMonth = getPrevMonth();
 
         try (InputStream inputStream = file.getInputStream()) {
 
@@ -165,7 +190,7 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
                 restaurantMap.put("restaurantName", restaurantName);
                 restaurantMap.put("restaurantType", restaurantType);
                 restaurantMap.put("visitorNumber", visitorNumber);
-                restaurantMap.put("prevMonth", prevMonth);
+                restaurantMap.put("yearMonth", yearMonth);
                 restaurantMap.put("areaCode", areaCode);
                 restaurantMap.put("sigunguCode", sigunguCode);
 
@@ -180,10 +205,8 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
         return restaurantList;
     }
 
-	private List<Map<String, String>> getAttractionList(String areaCode, String sigunguCode, MultipartFile file) {
+	private List<Map<String, String>> getAttractionList(String areaCode, String sigunguCode, String yearMonth, MultipartFile file) {
 		List<Map<String, String>> attractionList = new ArrayList<>();
-
-        String prevMonth = getPrevMonth();
 
         try (InputStream inputStream = file.getInputStream()) {
 
@@ -206,7 +229,7 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
                 attractionMap.put("attractionName", attractionName);
                 attractionMap.put("attractionType", attractionType);
                 attractionMap.put("visitorNumber", visitorNumber);
-                attractionMap.put("prevMonth", prevMonth);
+                attractionMap.put("yearMonth", yearMonth);
                 attractionMap.put("areaCode", areaCode);
                 attractionMap.put("sigunguCode", sigunguCode);
 
@@ -221,10 +244,8 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
         return attractionList;
 	}
 
-    private List<Map<String, String>> getVisitorList(MultipartFile file) {
+    private List<Map<String, String>> getVisitorList(String yearMonth, MultipartFile file) {
         List<Map<String, String>> visitorList = new ArrayList<>();
-
-        String yearMonth = "";
 
         try (InputStream inputStream = file.getInputStream()) {
 
@@ -240,10 +261,6 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
             String visitorNumber = "";
             // 모든 행(row)들을 조회한다. 첫줄은 데이터 목록이므로 생략. 1~5위만 가져와야해서 1부터 6까지.
             for (int i = 1; i < 9; i++) {
-                if(i == 1) {
-                    yearMonth = String.valueOf((int)sheet.getRow(i).getCell(0).getNumericCellValue());
-                }
-
                 locationName = sheet.getRow(i).getCell(1).getStringCellValue(); //  지역명
                 Map<String,String> areaSigunguCode = getAreaSigunguCode(locationName);
                 areaCode = areaSigunguCode.get("areaCode");
@@ -267,10 +284,8 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
         return visitorList;
     }
 
-    private List<Map<String, String>> getSnsList(MultipartFile file) {
+    private List<Map<String, String>> getSnsList(String yearMonth, MultipartFile file) {
         List<Map<String, String>> snsList = new ArrayList<>();
-
-        String yearMonth = "";
 
         try (InputStream inputStream = file.getInputStream()) {
 
@@ -286,10 +301,6 @@ public class ExcelUploadServiceImpl implements ExcelUploadService {
             String searchNumber = "";
             // 모든 행(row)들을 조회한다. 첫줄은 데이터 목록이므로 생략. 1~5위만 가져와야해서 1부터 6까지.
             for (int i = 1; i < 9; i++) {
-                if(i == 1) {
-                    yearMonth = String.valueOf((int)sheet.getRow(i).getCell(0).getNumericCellValue());
-                }
-
                 locationName = sheet.getRow(i).getCell(1).getStringCellValue(); //  지역명
                 Map<String,String> areaSigunguCode = getAreaSigunguCode(locationName);
                 areaCode = areaSigunguCode.get("areaCode");

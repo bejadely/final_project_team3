@@ -109,7 +109,7 @@ table {
        		<br>
         </div>
         <div id="ls" class="text-center">
-        	<form method="post">
+        	<form id="form" method="post">
         		<div>
         			<input type="hidden" name="postId" th:value="${tripMateVO.postId}">
         			<div class="mb-3" style="float: left; margin-right: 20px;">
@@ -127,19 +127,25 @@ table {
                				<tr>
                					<th width="150">신고자 아이디</th>
                					<td width="150">
-                                	<input type="text" name="reporterId" th:value="${session.sessionId}" readOnly class="form-control">
+               						<label for="reporterId" class="form-control">
+                                		[[${session.sessionId}]]
+                            		</label>
+                                	<input type="hidden" name="reporterId" th:value="${session.sessionId}" readOnly class="form-control">
                             	</td>
                				</tr>
                				<tr>
                					<th width="150">피신고자 아이디</th>
                					<td width="150">
-                                	<input type="text" name="punishedId" th:value="${tripMateVO.writerId}" readOnly class="form-control">
+               						<label for="punishedId" class="form-control">
+                                		[[${tripMateVO.writerId}]]
+                            		</label>
+                                	<input type="hidden" name="punishedId" th:value="${tripMateVO.writerId}" readOnly class="form-control">
                             	</td>
                				</tr>
                				<tr>
                             	<th width="150">신고일자</th>
-                            	<td width="150">
-                                	<input type="date" id="now_date" name="reportDate" readOnly class="form-control">
+                            	<td width="150" id="reportDayCell"> 
+                                	<input type="hidden" id="now_date" name="reportDate" readOnly class="form-control">
                             	</td>
                         	</tr>
                         	<tr>
@@ -152,7 +158,7 @@ table {
               		</div>
         		</div>
         		<div align="right">
-                   	<input type="submit" value="신고" class="btn btn-primary" id="report">&nbsp;&nbsp;
+                   	<button type="button" class="btn btn-primary" id="report">신고</button>&nbsp;&nbsp;
                    	<input type="reset" value="취소" class="btn btn-secondary">&nbsp;&nbsp;
                     <input type="button" value="목록" onclick="location.href='tripMateList'" class="btn btn-secondary">
                 </div>
@@ -163,9 +169,67 @@ table {
 		//오늘 날짜를 계산
 		document.getElementById('now_date').value = new Date().toISOString().substring(0, 10);
 	
-		$("#report").click(function() {
-            $("form").attr("action", "/common/mateRecruitReport");
-         });
+		//오늘의 날짜를 동적으로 생성한 label태그에 넣어주는 부분
+		var nowDate = new Date().toISOString().substring(0, 10);
+	    
+		var applyDayCell = document.getElementById('reportDayCell');
+	    
+		var label = document.createElement('label');
+	    
+		label.setAttribute('for', 'reportDate');
+	    label.classList.add('form-control');
+	    label.textContent = nowDate;
+	    applyDayCell.appendChild(label);
+		
+		//신고 버튼 클릭시
+		$("#report").click(function(){
+			
+			var reportSelect = document.getElementsByName('reportReason')[0];
+			
+			var reportInfo = document.getElementsByName('content')[0];
+			
+			if (reportSelect.value === '') {
+		        Swal.fire({
+		            icon: 'warning',
+		            title: '신고 사유를 선택해주세요.',
+		        });
+		        reportSelect.focus();
+		        return;
+		    }
+		    
+			if (reportInfo.value === '') {
+		        Swal.fire({
+		            icon: 'warning',
+		            title: '신고 내용을 입력해주세요.',
+		        });
+		        reportInfo.focus();
+		        return;
+		    }
+			
+	    	Swal.fire({
+	    		icon: 'warning',                      
+	        	title: '신고 하시겠습니까?.',
+	        	showCancelButton: true,
+	        	confirmButtonColor: '#3085d6',
+	        	cancelButtonColor: '#d33',
+	        	confirmButtonText: '신고',
+	        	cancelButtonText: '취소',
+	        	reverseButtons: true,
+	    	
+	    	}).then((result) => {
+	        	
+	    		if (result.isConfirmed) {
+	    			Swal.fire({
+		                icon: 'success',
+		                title: '신고 되었습니다.'
+		            }).then(() => {
+		            	let form = document.getElementById("form");
+		        		form.action = "/common/mateRecruitReport";
+		                form.submit();
+		            });
+	        	}
+	    	});
+		});
 		
 	</script>
 </body>

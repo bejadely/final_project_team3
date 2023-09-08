@@ -14,5 +14,7 @@ public interface KakaoPayMapper {
 	public int updatePurchaseStatus(KakaoPayInfoResponseVO vo);
 
 	public void deleteCart(String cartId);
+
+	public void updatePackageReservation(KakaoPayInfoResponseVO kakaoVO);
 	
 }

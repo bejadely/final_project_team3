@@ -102,9 +102,9 @@
 						<div class="single-blog-item">
 							<div class="sb-pic">
 								<img th:src="${tripInfo.writerId}" alt="이미지">
-								<!-- <img th:if="${not #strings.isEmpty(tripInfo.loadingImg)}" th:src="${tripInfo.loadingImg}" alt="이미지" style="height:237px;">
-                            	<img th:unless="${not #strings.isEmpty(tripInfo.loadingImg)}" th:src="@{/img/no-image.png}" alt="이미지">
-								-->
+								<!-- 이미지 업로드 되면 추가해야함 -->
+								<!--  <img th:if="${not #strings.isEmpty(tripInfo.loadingImg)}" th:src="${tripInfo.loadingImg}" alt="이미지" style="height:277px;">
+                            	<img th:unless="${not #strings.isEmpty(tripInfo.loadingImg)}" th:src="@{/img/no-image.png}" alt="이미지">-->
 							</div>
 							<div class="sb-text">
 								<ul>
@@ -123,6 +123,14 @@
 							</div>
 						</div>
 					</div>
+					<th:block th:if="${#lists.isEmpty(tripRecordList)}">
+						<div align="center">
+							<br>
+							<h5>조회된 결과가 없습니다.</h5>
+							<br>
+							<br>
+						</div>
+					</th:block>
 				</div>
 			</div>
 			<!-- 페이징 구문 -->
@@ -186,9 +194,17 @@
 
 	// 조건검색기능
 	function search(event){
-		console.log("1111");	
 		let value = $('#searchBy').val();
 		let keyword = $('#keyword').val();
+		
+		if(!keyword.replace(/^\s+|\s+$/g, '')){
+			Swal.fire({
+				  icon: 'warning',
+			      title: '키워드를 입력해주세요.',
+			    })
+			    return;
+		}
+		
 		location.href='/searchTripRecord?searchBy='+value+'&keyword='+keyword;
 	}
 	

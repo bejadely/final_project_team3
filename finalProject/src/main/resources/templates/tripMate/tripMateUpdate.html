@@ -11,7 +11,6 @@
 <th:block layout:fragment="css"></th:block>
 <!-- index.html 고유 스크립트 추가 -->
 <th:block layout:fragment="script"></th:block>
-<script src ="/ckeditor5-build-classic/ckeditor.js"></script>
 <style>
 body {
        background-color: #ffffff;
@@ -69,6 +68,7 @@ body {
       }
 </style>
 </head>
+<script src ="/ckeditor5-build-classic/ckeditor.js"></script>
 <body>
 	<div class="container">
 		<div class="text-center">
@@ -110,11 +110,14 @@ body {
     					<tr>
         					<th style="text-align: left; width: 20%;">작성자</th>
         					<td colspan="2">
-            					<input type="text" id="writerId" name="writerId" size="30" class="form-control" th:value="${session.sessionId}" readonly>
+        						<label for="writerId" class="form-control" style="text-align: left;">
+        							[[${session.sessionId}]]
+        						</label>
+            					<input type="hidden" id="writerId" name="writerId" size="30" class="form-control" th:value="${session.sessionId}" readonly>
         					</td>
         					<th style="text-align: left; width: 20%;">수정일자</th>
-        					<td colspan="2">
-            					<input type="date" id="now_date" name="" size="30" class="form-control" readonly>
+        					<td colspan="2" id="modifyDayCell">
+            					<input type="hidden" id="now_date" name="modifyDate" size="30" class="form-control" readonly>
         					</td>
     					</tr>
    	 					<tr>
@@ -156,6 +159,11 @@ body {
                        		</td>
                    		</tr>
 					</table>
+					<div class="uploadResult">
+				<ul>
+					
+				</ul>
+			</div>
 					<div id="editor">
 						<th:textarea th:utext="${tripMateVO.mateContent}"></th:textarea>
 					</div>
@@ -172,7 +180,27 @@ body {
 		//현재 날짜 계산
 		document.getElementById('now_date').value = new Date().toISOString().substring(0, 10);
 		
+		//오늘의 날짜를 동적으로 생성한 label태그에 넣어주는 부분
+		var nowDate = new Date().toISOString().substring(0, 10);
+	    
+		var modifyDayCell = document.getElementById('modifyDayCell');
+	    
+		var label = document.createElement('label');
+	    
+		label.setAttribute('for', 'modifyDate');
+	    label.classList.add('form-control');
+	    label.style.textAlign = 'left';
+	    label.textContent = nowDate;
+	    modifyDayCell.appendChild(label);
+	    
+	    var postId = '[[${tripMateVO.postId}]]'
+		
+		
 		$(document).ready(function() {	
+			
+			var paths;
+			var resultPath;
+			
 			ClassicEditor
 			.create(document.querySelector('#editor'), {
 			/* htmlEncodeOutput: false, */
@@ -246,6 +274,8 @@ body {
 				str += "<input type ='hidden' name='attachList["+i+"].savedImg' value='"+jobj.data("path")+"'>";
 				str += "<input type ='hidden' name='attachList["+i+"].imgType' value='"+jobj.data("type")+"'>";
 				str += "<input type ='hidden' name='attachList["+i+"].loadingImg' value='"+jobj.data("loadingpath")+"'>";
+				pahts = jobj.data("path").split("/upload");
+				resultPath = pahts[0];
 				
 			});
 			str +="<input type='hidden' name='mateContent' value='"+combinedData.mateContent+"'>";
@@ -259,7 +289,7 @@ body {
 				return src;
 			});		
 			$.each(filenames,function(i,obj){
-				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
+				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='"+resultPath+obj+"'>";
 			});
 			
 			formObj.append(str);
@@ -387,21 +417,15 @@ body {
 	$(".uploadResult").on("click","span",function(e){
 		var targetFile = $(this).data("file");
 		var clickedSpan = $(this);
-		$.ajax({
-			url:'/deleteFile',
-			data: {savedImg: targetFile},
-			dataType: 'text',
-			type: 'POST',
-			success: function(result){
-				alert(result);
-				var currentNode = clickedSpan.closest("li");
-				var prevNode = currentNode.prev();
-				var nextNode = currentNode.next();
-				
-				currentNode.add(prevNode).add(nextNode).remove();
-				
-			}
-		})
+		console.log("파일 삭제");
+		
+		if(confirm("이미지 삭제 하시겠습니까?")){
+		var currentNode = clickedSpan.closest("li");
+		var prevNode = currentNode.prev();
+		var nextNode = currentNode.next();
+		
+		currentNode.add(prevNode).add(nextNode).remove();
+		}
 	})
 	
 	var uploadResult = $(".uploadResult ul");
@@ -420,6 +444,29 @@ body {
 		});
 		uploadResult.append(str);
 	}
+	
+	//기존에 있던 이미지 썸네일
+	(function(){
+		$.getJSON("/getAttachList",{postId:postId},function(arr){
+			var str="";
+			$(arr).each(function(i, obj){
+				var fileCallPath = encodeURIComponent(`${obj.savedImg}`);
+			
+				if(i==0){		
+					str +="<li data-path='"+obj.savedImg+"'";
+					str +=" data-filename='"+obj.originImg+"' data-type='U2'";
+					str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div style='text-align: left;'>";
+					//str +="<span> " + obj.originImg +"</span>";
+					str +="<img src='/display?savedImg="+fileCallPath+"' class='img-thumbnail'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
+					pahts = obj.savedImg.split("/upload");
+					resultPath = pahts[0];
+				}
+			});
+			uploadResult.append(str);
+		});
+	})();
+	
+	
 	
 	
 });

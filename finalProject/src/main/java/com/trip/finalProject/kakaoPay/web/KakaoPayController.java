@@ -74,10 +74,17 @@ public class KakaoPayController {
 		vo.setTotalAmount(kakaoPayInfoResponseVO.getAmount().getTotal());
 		
 		kakaoPayService.insertPayment(vo);
-		
-		
+		if(approveResponse.getPostId().substring(0,3).equals("PKG")) {
+			KakaoPayInfoResponseVO kakaoVO = new KakaoPayInfoResponseVO();
+			kakaoVO.setQuantity(kakaoPayInfoResponseVO.getQuantity());
+			kakaoVO.setPostId(kakaoPayInfoResponseVO.getPostId());
+			kakaoPayService.updatePackageQuantity(kakaoVO);
+			
+		}
+		System.out.println(approveResponse.getPostId().substring(0,3));
+		System.out.println(kakaoPayInfoResponseVO.getItem_code());
 		//주문 상세 테이블 등록
-		if(kakaoPayInfoResponseVO.getItem_code() == null) {
+		if(kakaoPayInfoResponseVO.getItem_code() == null || kakaoPayInfoResponseVO.getItem_code().equals("")) {
 			
 			kakaoPayInfoResponseVO.setSpecialtyType(approveResponse.getSpecialtyType());
 			kakaoPayInfoResponseVO.setPaymentId(vo.getPaymentId());
