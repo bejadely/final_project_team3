@@ -169,7 +169,7 @@ ClassicEditor
                 return false;
             }
             if (selectedDeadlineDate > selectedStartDate) {
-                alert("여행 마감일은 여행 시작일 이전이여야 합니다.");
+                alert("패키지 마감일은 여행 시작일 이전이여야 합니다.");
                 return false;
             }
             // 여행 시작일이 최소 한 달 전이 아닌 경우 예외 처리
@@ -250,8 +250,7 @@ ClassicEditor
 		    let packageLocation = document.getElementById('location')[0];
 		    let packageImage = document.getElementsByName('mainImage')[0];
 		   
-	        
-		    
+	    
 		    /* if (!isIfExecuted) {
 			    if (packageImage.value == '') {
 				       alert('이미지를 업로드해주세요.')
@@ -291,7 +290,7 @@ ClassicEditor
 		       return;
 		    }
 		    
-		 /*    if (packageContent.text == '') {
+		 /*    if (packageContent.value == '') {
 		       alert('내용을 입력해주세요.')
 		       packageContent.focus();
 		       return;
