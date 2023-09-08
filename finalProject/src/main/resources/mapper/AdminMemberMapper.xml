@@ -69,7 +69,7 @@
 				 , password
 				 , nationality
 				 , email
-				 , NVL(zip_code, '-') zip_code
+				 , zip_code
 				 , address
 				 , address_detail
 				 , phone_number
@@ -115,7 +115,7 @@
 				<if test="nationality != null and !nationality.equals('')">
 					nationality = #{nationality},
 				</if>
-				<if test="zipCode != null and !zipCode.equals('')">
+				<if test="zipCode != null and !zipCode.equals('') and !zipCode.equals('-')">
 					zip_code = #{zipCode},
 				</if>
 				<if test="address != null and !address.equals('')">
