@@ -8,7 +8,34 @@ import com.trip.finalProject.tripMate.service.TripMateVO;
 
 public interface TripMateMapper {
 	//여행 메이트 게시글 전체조회
-	public List<TripMateVO> selectAllTripMate();
+	public List<TripMateVO> selectAllTripMate(PagingVO pagingVO);
+	
+	//전체 여행 메이트 게시글 조회 카운트
+	public int getAllMateListCount();
+	
+	//여행 지역으로 검색
+	public List<TripMateVO> searchMateByTripArea(TripMateVO tripMateVO, PagingVO pagingVO);
+	
+	//여행 지역으로 여행메이트 글 수 카운트
+	public int countTripArea(String keyword);
+	
+	//여행 스타일로 검색
+	public List<TripMateVO> searchMateByStyle(TripMateVO tripMateVO, PagingVO pagingVO);
+				
+	//여행 스타일로 여행메이트 글 수 카운트
+	public int countTripStyle(String keyword);
+	
+	//여행 타이틀로 검색
+	public List<TripMateVO> searchMateByTripTitle(TripMateVO tripMateVO, PagingVO pagingVO);
+	
+	//여행 메이트 게시글 제목으로 글 수 카운트
+	public int countTripTitle(String keyword);
+	
+	//작성자 아이디로 검색
+	public List<TripMateVO> searchMateByTripWriterId(TripMateVO tripMateVO, PagingVO pagingVO);
+	
+	//여행 메이트 작성자 아이디로 글 수 카운트
+	public int countTripWrtierId(String keyword);
 	
 	//여행 메이트 게시글 상세조회
 	public TripMateVO selectTripMateInfo(TripMateVO tripMateVO);
@@ -68,6 +95,18 @@ public interface TripMateMapper {
 	//참여한 메이트 정보 불러오기
 	public TripMateVO memberInfo(TripMateVO tripMateVO);
 
-	public List<PostCommentVO> getCommentInfo(TripMateVO tripMateVO);
+	public List<PostCommentVO> getCommentInfo(String postId, String page);
+
+	public int insertCommentInfo(PostCommentVO postCommentVO);
+
+	public int insertCommentReplyInfo(PostCommentVO postCommentVO);
+
+	public int getTotalCount(String postId);
+
+	public List<PostCommentVO> selectCommentInfo(String postId);
+
+    int deleteComment(String postId);
+
+	public int modifyCommentInfo(PostCommentVO postCommentVO);
 
 }

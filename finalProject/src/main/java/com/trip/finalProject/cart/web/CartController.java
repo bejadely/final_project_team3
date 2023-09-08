@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.trip.finalProject.cart.service.CartService;
 import com.trip.finalProject.cart.service.CartVO;
 import com.trip.finalProject.common.PagingVO;
-import com.trip.finalProject.trip.service.TripVO;
 //재운 장바구니 시스템
 @Controller
 @RequestMapping("/")
@@ -26,6 +27,8 @@ public class CartController {
 	
 	@Autowired
 	CartService cartService;
+	@Autowired
+	HttpSession session;
 
 	//전체조회
 	@GetMapping("/common/cartList")
@@ -42,9 +45,10 @@ public class CartController {
 			  ,@RequestParam(value="cntPerPage", defaultValue="10") Integer cntPerPage
 			  ,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 			  ) {
-		
+		cartVO.setMemberId(session.getAttribute("sessionId").toString());
+		System.out.println("cartcart:" + cartVO);
 		//처리중
-		int total = cartService.postIdCount(cartVO.getPostId());
+		int total = cartService.postIdCount(cartVO);
 		
 		
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);

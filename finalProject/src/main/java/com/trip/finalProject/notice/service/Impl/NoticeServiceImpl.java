@@ -43,6 +43,13 @@ public class NoticeServiceImpl implements NoticeService {
 		return noticeMapper.getNoticeDetail(vo);
 	}
 	
+	//게시글 상세조회시 카운트 증가
+	@Override
+	public int updateNoticeHit(NoticeVO vo) {
+		return noticeMapper.updateNoticetHit(vo);
+	}
+	
+	
 	//게시글 등록
 	@Override
 	public int noticeInsert(NoticeVO vo) {
