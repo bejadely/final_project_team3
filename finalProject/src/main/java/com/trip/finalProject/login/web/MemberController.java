@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.trip.finalProject.adminMember.service.AdminMemberService;
+import com.trip.finalProject.adminMember.service.AdminMemberVO;
 import com.trip.finalProject.common.mapper.CommonMapper;
 import com.trip.finalProject.login.service.MemberService;
 import com.trip.finalProject.login.service.MemberVO;
@@ -35,6 +37,9 @@ public class MemberController {
 	
     @Autowired
     HttpSession session;
+    
+    @Autowired
+    AdminMemberService adminMemberService;
 //	private String apiResult = null;
 	
 	//회원가입
@@ -166,38 +171,6 @@ public class MemberController {
 		}
 	 
 	  }
-	  
-	  
-		//회원정보 가져오기
-		@GetMapping("/common/myPage")
-		public String memberInfo(MemberVO memberVO, Model model,HttpServletRequest request) {
-			memberVO.setMemberId(session.getAttribute("sessionId").toString());  //to do 
-			MemberVO findVO = memberService.memberInfo(memberVO);
-			model.addAttribute("memberInfo", findVO);
-			return "myPage/info/myPage";
-		}
-		
-		//회원수정 폼 호출
-		@GetMapping("/common/myPageUpdate")
-		public String memberUpdate(MemberVO memberVO, Model model) {
-			memberVO.setMemberId(session.getAttribute("sessionId").toString());
-			MemberVO findVO = memberService.memberInfo(memberVO);
-			model.addAttribute("B",commonMapper.selectCode("0"));
-			model.addAttribute("memberInfo", findVO);
-			return "myPage/info/myPageUpdate";
-		}
-		
-		//회원수정 프로세서
-		@PostMapping("/common/myPageUpdate")
-		public String memberUpdatePro(MemberVO memberVO, RedirectAttributes rtt){
-			memberVO.setMemberId(session.getAttribute("sessionId").toString());
-			System.out.println("tstst : " + memberVO );
-			String result = memberService.updateMember(memberVO);
-			rtt.addFlashAttribute("result", result);
-			return "redirect:/common/myPage?memberId=" + memberVO.getMemberId();
-		}
-	  
-		
 		//아이디 찾기 
 		@GetMapping("/findAccount")
 		public String fintId() {
@@ -236,6 +209,52 @@ public class MemberController {
 			System.out.println(memberVO);
 			memberService.editPassword(memberVO);
 			return "/member/login";
+		}
+		
+		
+		//마이페지이지 사용중 ================================================================================
+		//회원정보 가져오기
+		@GetMapping("/common/myPage")
+		public String memberInfo(MemberVO memberVO, Model model,HttpServletRequest request) {
+			memberVO.setMemberId(session.getAttribute("sessionId").toString());  //to do 
+			MemberVO findVO = memberService.memberInfo(memberVO);
+			model.addAttribute("memberInfo", findVO);
+			return "myPage/info/myPage";
+		}
+		
+		//회원수정 폼 호출
+		@GetMapping("/common/myPageUpdate")
+		public String memberUpdate(MemberVO memberVO, Model model) {
+			memberVO.setMemberId(session.getAttribute("sessionId").toString());
+			MemberVO findVO = memberService.memberInfo(memberVO);
+			model.addAttribute("B",commonMapper.selectCode("0"));
+			model.addAttribute("memberInfo", findVO);
+			return "myPage/info/myPageUpdate";
+		}
+		
+		//회원수정 프로세서
+		@PostMapping("/common/myPageUpdate")
+		public String memberUpdatePro(MemberVO memberVO, RedirectAttributes rtt){
+			memberVO.setMemberId(session.getAttribute("sessionId").toString());
+			System.out.println("tstst : " + memberVO );
+			String result = memberService.updateMember(memberVO);
+			rtt.addFlashAttribute("result", result);
+			return "redirect:/common/myPage?memberId=" + memberVO.getMemberId();
+		}
+		
+		@PostMapping("/common/deleteData")
+		public String withdrawMember(AdminMemberVO adminVO, RedirectAttributes rtt) {
+			adminVO.setMemberId(session.getAttribute("sessionId").toString());
+			// 회원 삭제
+			String result = adminMemberService.withdrawMember(adminVO);
+			
+			// 리다이렉트 어트리뷰트에 결과값 담기(성공 : success / 실패 : fail)
+			rtt.addAttribute("result", result);
+			
+			session.invalidate();
+			
+			return "redirect:/";
+			
 		}
 	
  
