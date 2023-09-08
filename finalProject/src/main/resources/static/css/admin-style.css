@@ -98,8 +98,12 @@ ul, ol {
 /*---------------------
   Custom - common
 -----------------------*/
+.table th, td {
+	text-align: center;
+}
+
 th, td {
-	text-align: left;
+	text-align: center;
 }
 
 .custom-sidebar {
