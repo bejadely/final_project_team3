@@ -159,6 +159,11 @@ body {
                        		</td>
                    		</tr>
 					</table>
+					<div class="uploadResult">
+				<ul>
+					
+				</ul>
+			</div>
 					<div id="editor">
 						<th:textarea th:utext="${tripMateVO.mateContent}"></th:textarea>
 					</div>
@@ -187,9 +192,15 @@ body {
 	    label.style.textAlign = 'left';
 	    label.textContent = nowDate;
 	    modifyDayCell.appendChild(label);
+	    
+	    var postId = '[[${tripMateVO.postId}]]'
 		
 		
 		$(document).ready(function() {	
+			
+			var paths;
+			var resultPath;
+			
 			ClassicEditor
 			.create(document.querySelector('#editor'), {
 			/* htmlEncodeOutput: false, */
@@ -263,6 +274,8 @@ body {
 				str += "<input type ='hidden' name='attachList["+i+"].savedImg' value='"+jobj.data("path")+"'>";
 				str += "<input type ='hidden' name='attachList["+i+"].imgType' value='"+jobj.data("type")+"'>";
 				str += "<input type ='hidden' name='attachList["+i+"].loadingImg' value='"+jobj.data("loadingpath")+"'>";
+				pahts = jobj.data("path").split("/upload");
+				resultPath = pahts[0];
 				
 			});
 			str +="<input type='hidden' name='mateContent' value='"+combinedData.mateContent+"'>";
@@ -276,7 +289,7 @@ body {
 				return src;
 			});		
 			$.each(filenames,function(i,obj){
-				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
+				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='"+resultPath+obj+"'>";
 			});
 			
 			formObj.append(str);
@@ -404,21 +417,15 @@ body {
 	$(".uploadResult").on("click","span",function(e){
 		var targetFile = $(this).data("file");
 		var clickedSpan = $(this);
-		$.ajax({
-			url:'/deleteFile',
-			data: {savedImg: targetFile},
-			dataType: 'text',
-			type: 'POST',
-			success: function(result){
-				alert(result);
-				var currentNode = clickedSpan.closest("li");
-				var prevNode = currentNode.prev();
-				var nextNode = currentNode.next();
-				
-				currentNode.add(prevNode).add(nextNode).remove();
-				
-			}
-		})
+		console.log("파일 삭제");
+		
+		if(confirm("이미지 삭제 하시겠습니까?")){
+		var currentNode = clickedSpan.closest("li");
+		var prevNode = currentNode.prev();
+		var nextNode = currentNode.next();
+		
+		currentNode.add(prevNode).add(nextNode).remove();
+		}
 	})
 	
 	var uploadResult = $(".uploadResult ul");
@@ -437,6 +444,27 @@ body {
 		});
 		uploadResult.append(str);
 	}
+	
+	//기존에 있던 이미지 썸네일
+	(function(){
+		$.getJSON("/getAttachList",{postId:postId},function(arr){
+			var str="";
+			$(arr).each(function(i, obj){
+				var fileCallPath = encodeURIComponent(`${obj.savedImg}`);
+			
+				if(i==0){		
+					str +="<li data-path='"+obj.savedImg+"'";
+					str +=" data-filename='"+obj.originImg+"' data-type='U2'";
+					str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div style='text-align: left;'>";
+					//str +="<span> " + obj.originImg +"</span>";
+					str +="<img src='/display?savedImg="+fileCallPath+"' class='img-thumbnail'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
+					pahts = obj.savedImg.split("/upload");
+					resultPath = pahts[0];
+				}
+			});
+			uploadResult.append(str);
+		});
+	})();
 	
 	
 	

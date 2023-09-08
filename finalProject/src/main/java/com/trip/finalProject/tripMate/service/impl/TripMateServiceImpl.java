@@ -164,8 +164,28 @@ public class TripMateServiceImpl implements TripMateService {
 
 	//여행 메이트 게시글 수정
 	@Override
-	public int updateTripMateRecruit(TripMateVO tripMateVO) {
-		return tripMateMapper.updateTripMateRecruit(tripMateVO);
+	public void updateTripMateRecruit(TripMateVO tripMateVO) {
+		attachedFileMapper.delete(tripMateVO.getPostId());
+		tripMateMapper.updateTripMateRecruit(tripMateVO);
+		
+		if(tripMateVO.getAttachList()!=null || tripMateVO.getAttachList().size()>0) {
+			tripMateVO.getAttachList().forEach(attach->{
+				attach.setPostId(tripMateVO.getPostId());
+				attachedFileMapper.insertAttachedFile(attach);
+			});
+		}else {
+			return;
+		}
+		if(tripMateVO.getEditorAttachList()==null || tripMateVO.getEditorAttachList().size()<=0) {
+			return;
+		}else {
+			tripMateVO.getEditorAttachList().forEach(attach->{
+			attach.setPostId(tripMateVO.getPostId());
+			attachedFileMapper.insertAttachedFile(attach);
+			});
+		}
+		
+		//return tripMateMapper.updateTripMateRecruit(tripMateVO);
 	}
 	
 	//여행 메이트 게시글 신고
