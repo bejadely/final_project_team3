@@ -76,8 +76,8 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
 	@Override
 	public void insertSepcialties(SpecialtiesVO specialtiesVO) {
 		// TODO Auto-generated method stub
-		mapper.updateSpecialites(specialtiesVO);
 		
+		mapper.insertSpecialites(specialtiesVO);
 		specialtiesVO.getOptionList().forEach(option->{
 		option.setPostId(specialtiesVO.getPostId());
 		mapper.insertSpecialtiesOption(option);
@@ -107,7 +107,7 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
 		// TODO Auto-generated method stub
 		attachedFileMapper.delete(specialtiesVO.getPostId());
 		specialtiesMapper.deleteOption(specialtiesVO.getPostId());
-		mapper.insertSpecialites(specialtiesVO);
+		mapper.updateSpecialites(specialtiesVO);
 		if(specialtiesVO.getOptionList()!=null || specialtiesVO.getOptionList().size()>0) {
 			specialtiesVO.getOptionList().forEach(attach->{
 				attach.setPostId(specialtiesVO.getPostId());
