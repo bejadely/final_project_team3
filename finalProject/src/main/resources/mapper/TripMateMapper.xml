@@ -126,7 +126,8 @@
 			   apply_num,
 			   hit,
 			   trip_area,
-			   write_date
+			   write_date,
+			   mate_style
 		FROM mate_recruit
 		WHERE post_id = #{postId}
 	</select>
@@ -191,36 +192,15 @@
 	<update id="updateTripMateRecruit" parameterType="TripMateVO">
 		UPDATE mate_recruit
 		<set>
-			<if test="mateTitle != null and !tripTitle.equals('')">
-				mate_title = #{mateTitle},
-			</if>
-			<if test="mateContent != null and !mateContent.equals('')">
-				mate_content = #{mateContent},
-			</if>
-			<if test="mateExpense != null and mateExpense > 0">
-		    	mate_expense = #{mateExpense},
-		    </if>
-		    <if test="startDay != null">
-				start_day = #{startDay},
-			</if>
-			<if test="endDay != null">
-				end_day = #{endDay},
-			</if>
-			<if test="mateStyle != null and !mateStyle.equals('')">
-				mate_style = #{mateStyle},
-			</if>
-			<if test="mateTag != null and !mateTag.equals('')">
-				mate_tag = #{mateTag},
-			</if>
-			<if test="mateMax != null and mateMax > 0">
-				mate_max = #{mateMax},
-			</if>
-			<if test="deadline != null">
-				deadline = #{deadline},
-			</if>
-			<if test="tripArea != null and !tripArea.equals('')">
-				trip_area = #{tripArea}
-			</if>
+			mate_title = #{mateTitle},
+			mate_content = #{mateContent},
+		    mate_expense = #{mateExpense},
+			start_day = #{startDay},
+			end_day = #{endDay},
+			mate_style = #{mateStyle},
+			mate_max = #{mateMax},
+			deadline = #{deadline},
+			trip_area = #{tripArea},
 		</set>
 		WHERE post_id = #{postId}
 	</update>
@@ -361,7 +341,8 @@
 			 			 deadline,
 			 			 hit,
 			 			 writer_id,
-			 			 trip_area		 
+			 			 trip_area,
+			 			 room_number		 
 				 FROM mate_recruit
      			 WHERE writer_id = #{trVO.writerId}
 				 ORDER BY post_id DESC) a)
@@ -389,7 +370,8 @@
 			 			 r.hit,
 			 			 r.writer_id,
 			 			 r.trip_area,
-                         a.apply_id	 
+                         a.apply_id,
+                         r.room_number
 				 FROM mate_recruit r left OUTER JOIN mate_apply a on r.post_id = a.post_id
      			 WHERE a.member_id = #{trVO.memberId}
 				 ORDER BY r.post_id DESC) a)

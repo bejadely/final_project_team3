@@ -6,14 +6,14 @@
     <update id="uploadRestaurantList" parameterType="java.util.List">
         <foreach collection="list" item="item" open="INSERT ALL " close="SELECT * FROM DUAL" separator=" ">
             INTO CHART_RESTAURANT (AREA_CODE, SIGUNGU_CODE, VISITOR_NUMBER, RESTAURANT_NAME, RESTAURANT_TYPE, YEAR_MONTH) VALUES
-            (#{item.areaCode},#{item.sigunguCode},#{item.visitorNumber},#{item.restaurantName},#{item.restaurantType},#{item.prevMonth})
+            (#{item.areaCode},#{item.sigunguCode},#{item.visitorNumber},#{item.restaurantName},#{item.restaurantType},#{item.yearMonth})
         </foreach>
     </update>
     
     <update id="uploadAttractionList" parameterType="java.util.List">
         <foreach collection="list" item="item" open="INSERT ALL " close="SELECT * FROM DUAL" separator=" ">
             INTO CHART_ATTRACTION (AREA_CODE, SIGUNGU_CODE, ATTRACTION_NAME, ATTRACTION_TYPE, VISITOR_NUMBER, YEAR_MONTH) VALUES
-            (#{item.areaCode},#{item.sigunguCode},#{item.attractionName},#{item.attractionType},#{item.visitorNumber},#{item.prevMonth})
+            (#{item.areaCode},#{item.sigunguCode},#{item.attractionName},#{item.attractionType},#{item.visitorNumber},#{item.yearMonth})
         </foreach>
     </update>
 
@@ -34,14 +34,52 @@
 	<update id="uploadFellowList" parameterType="java.util.List">
         <foreach collection="list" item="item" open="INSERT ALL " close="SELECT * FROM DUAL" separator=" ">
             INTO CHART_FELLOW (AREA_CODE, SIGUNGU_CODE, FELLOW_TYPE, SEARCH_NUMBER, YEAR_MONTH) VALUES
-            (#{item.areaCode},#{item.sigunguCode},#{item.fellowType},#{item.searchNumber},#{item.prevMonth})
+            (#{item.areaCode},#{item.sigunguCode},#{item.fellowType},#{item.searchNumber},#{item.yearMonth})
         </foreach>
     </update>
     
     <update id="uploadTripList" parameterType="java.util.List">
         <foreach collection="list" item="item" open="INSERT ALL " close="SELECT * FROM DUAL" separator=" ">
             INTO CHART_TRIP (AREA_CODE, SIGUNGU_CODE, TRIP_TYPE, SEARCH_NUMBER, YEAR_MONTH) VALUES
-            (#{item.areaCode},#{item.sigunguCode},#{item.tripType},#{item.searchNumber},#{item.prevMonth})
+            (#{item.areaCode},#{item.sigunguCode},#{item.tripType},#{item.searchNumber},#{item.yearMonth})
         </foreach>
     </update>
+
+    <delete id="deleteFellowList">
+        DELETE FROM chart_fellow
+        WHERE area_code = #{areaCode}
+        AND sigungu_code = #{sigunguCode}
+        AND year_month = #{yearMonth}
+    </delete>
+
+    <delete id="deleteTripList" parameterType="String">
+        DELETE FROM chart_trip
+        WHERE area_code = #{areaCode}
+        AND sigungu_code = #{sigunguCode}
+        AND year_month = #{yearMonth}
+    </delete>
+
+    <delete id="deleteRestaurantList" parameterType="String">
+        DELETE FROM chart_restaurant
+        WHERE area_code = #{areaCode}
+        AND sigungu_code = #{sigunguCode}
+        AND year_month = #{yearMonth}
+    </delete>
+
+    <delete id="deleteAttractionList" parameterType="String">
+        DELETE FROM chart_attraction
+        WHERE area_code = #{areaCode}
+        AND sigungu_code = #{sigunguCode}
+        AND year_month = #{yearMonth}
+    </delete>
+
+    <delete id="deleteVisitorList" parameterType="String">
+        DELETE FROM chart_visitor
+        WHERE year_month = #{yearMonth}
+    </delete>
+
+    <delete id="deleteSnsList" parameterType="String">
+        DELETE FROM chart_sns
+        WHERE year_month = #{yearMonth}
+    </delete>
   </mapper>
