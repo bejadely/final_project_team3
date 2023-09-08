@@ -31,7 +31,19 @@
 							<tr>
 								<th width="150" align="center">신고당한글</th>
 								<!-- 작업중 -->
-								<td width="400" align="center" th:utext="|*{postId}<br><a href='#'>원본글 보러가기</a>|"></td>
+								<!-- <td width="400" align="center" th:utext="|*{postId}<br><a href='#'>원본글 보러가기</a>|"> -->
+								<td width="400">
+									<span th:utext="|*{postId}<br>|"></span>
+									<th:block th:if="*{#strings.substring(postId,0,3) == 'PKG'}">
+										<a th:href="@{/packageInfo(postId=*{postId})}">원본글 보러가기</a>
+									</th:block>
+									<th:block th:if="*{#strings.substring(postId,0,3) == 'SPE'}">
+										<a th:href="@{/specialtiesInfo(postId=*{postId})}">원본글 보러가기</a>
+									</th:block>
+									<th:block th:if="*{#strings.substring(postId,0,3) == 'MAT'}">
+										<a th:href="@{/tripMateInfo(postId=*{postId})}">원본글 보러가기</a>
+									</th:block>
+								</td>
 								<th width="150" align="center">신고<br>당한회원</th>
 								<td width="400" align="center" th:utext="|*{punishedId} <br> (제재횟수 : *{punishCount})|"></td>
 							</tr>
