@@ -55,7 +55,7 @@ public interface TripMateService {
 	public int deleteAttachedFile(TripMateVO tripMateVO);
 	
 	//여행 메이트 게시글 수정
-	public int updateTripMateRecruit(TripMateVO tripMateVO);
+	public void updateTripMateRecruit(TripMateVO tripMateVO);
 	
 	//여행 메이트 게시글 신고
 	public int reportTripMate(TripMateVO tripMateVO);
@@ -109,4 +109,5 @@ public interface TripMateService {
 	public Map<String, Object> modifyCommentInfo(PostCommentVO postCommentVO) throws Exception;
 
 	public int getCommentNumInfo(TripMateVO tripMateVO);
+
 }

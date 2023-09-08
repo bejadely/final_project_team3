@@ -7,11 +7,6 @@
 <head>
 <meta charset="UTF-8">
 <title>여행 메이트 글 등록</title>
-<!-- index.html 고유 CSS 추가 -->
-<th:block layout:fragment="css"></th:block>
-<!-- index.html 고유 스크립트 추가 -->
-<th:block layout:fragment="script"></th:block>
-<script src ="/ckeditor5-build-classic/ckeditor.js"></script>
 <style>
 body {
        background-color: #ffffff;
@@ -69,6 +64,7 @@ body {
       }
 </style>
 </head>
+<script src ="/ckeditor5-build-classic/ckeditor.js"></script>
 <body>
    <div class="container">
       <div class="text-center">
@@ -177,7 +173,6 @@ body {
         </div>
    </div>
    <script>
-   
    	   //숫자 컴마로 표현, 숫자만 입력 가능
    	   document.getElementById("mateExpense").addEventListener("keyup", function (e) {
    		  $(this).val($(this).val().replace(/\,/g, '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,'));
@@ -187,16 +182,17 @@ body {
       document.getElementById('now_date').value = new Date().toISOString().substring(0, 10);
       
       $(document).ready(function() {   
+    	  
          ClassicEditor
          .create(document.querySelector('#editor'), {
-         /* htmlEncodeOutput: false, */
-         ckfinder: {
-            uploadUrl : '/common/upload'   
-         }
-      })
-      .then(editor => {
+         	/* htmlEncodeOutput: false, */
+         	ckfinder: {
+            	uploadUrl : '/common/upload'   
+         	}
+      	})
+      	.then(editor => {
       
-      document.getElementById("cancelBtn").addEventListener("click",function(){
+      	document.getElementById("cancelBtn").addEventListener("click",function(){
          const data = editor.getData();
          //Data 변수에 저장된 데이터를 파싱하여 이미지 태크를 찾음
          const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
@@ -221,7 +217,6 @@ body {
          })
          
       })
-      
       
       var formObj = $("#editorForm");
       
@@ -251,6 +246,45 @@ body {
             mateContent: data
          };
          console.log(combinedData);
+         
+         
+         var startDate2 = document.getElementById("startDay").value;
+      	 var endDate2 = document.getElementById("endDay").value;
+       	 var deadlineDate2 = document.getElementById("deadline").value;
+       	  // 현재 날짜 가져오기
+         var currentDate = new Date();
+
+         // 입력한 패키지 시작일을 Date 객체로 변환
+         var selectedStartDate = new Date(startDate2);
+         var selectedEndDate = new Date(endDate2);
+         var selectedDeadlineDate = new Date(deadlineDate2);
+         // 날짜 차이 계산 (밀리초 단위)
+         var timeDifference = selectedStartDate - currentDate;
+
+         // 30일을 밀리초로 계산
+         var thirtyDaysInMillis = 30 * 24 * 60 * 60 * 1000;
+         
+         if (selectedStartDate < currentDate) {
+             alert("여행 시작일은 오늘보다 이전일 수 없습니다.");
+             return false;
+         }
+
+         if (selectedEndDate < selectedStartDate) {
+             alert("여행 종료일은 여행 시작일 이후여야 합니다.");
+             return false;
+         }
+         if (selectedDeadlineDate > selectedStartDate) {
+             alert("여행 마감일은 여행 시작일 이전이여야 합니다.");
+             return false;
+         }
+         // 여행 시작일이 최소 한 달 전이 아닌 경우 예외 처리
+         if (timeDifference < thirtyDaysInMillis) {
+             alert("여행 시작일은 최소 한 달 전으로 설정해야 합니다.");
+             return false; // 폼 제출 중지
+         }
+         
+         
+         
          
          var str="";
          $(".uploadResult ul li").each(function(i,obj){
