@@ -37,6 +37,9 @@ form {
             position: relative;
             float: right;
         }
+#select_count{
+	display:block;
+}
 </style>
 
 </head>
@@ -208,7 +211,14 @@ form {
 							<div id="totalPriceDisplay">
 							    총 금액: <span id="totalPrice">0</span> 원
 							</div>
-						
+							<div class="form-horizontal" style="text-align: left;">
+								<label>구매수량  </label> 
+								<select class="nice-select form-control count" id="select_count" >
+								    <!-- <th:block th:each="count : ${#numbers.sequence(0, 20)}">
+								        <option th:value="${count}" th:text="${count}"></option>
+								    </th:block>  -->
+								</select>
+							</div>	
 							
 							
                     </div>
@@ -298,35 +308,20 @@ form {
    
 
 <script>
-	var content = '[[${info.content }]]';
-	var postId = '[[${info.postId}]]';
-	var memberId = $("#id").val();
-	$(document).ready(function(){
-		 getPackageDetailInfoReview(postId, function(data) {
-			 appendPackageDetailInfoReview(data, postId);   
-         });
-		
-		
-		(function(){
-			$.getJSON("getAttachList",{postId:postId},function(arr){
-				var str="";
-				var str2="";
-				$(arr).each(function(i, attach){
-					if(i==0){
-						str+=`<img src="${attach.loadingImg}" class="product-big-img"  alt="">`	
-					}
-					else{
-						str2+=`<div class="pt" data-imgbigurl="${attach.loadingImg}"><img
-                            src="${attach.loadingImg}" alt=""></div>`
-					}
-				});
-				$(".product-pic-zoom").html(str);
-				$(".product-thumbs-track.ps-slider.owl-carousel").html(str2);
-			});
-		})();
-		   
-	});
-		
+//이미 생성된 select 엘리먼트를 선택합니다.
+var countSelect = $("#select_count");
+
+// maxReservation 값을 가져옵니다.
+var maxReservation = parseInt('[[${info.maxReservation}]]');
+
+// 새로운 option 엘리먼트를 생성하고 select 엘리먼트에 추가합니다.
+for (var i = 0; i <= maxReservation; i++) {
+    var option = document.createElement('option');
+    option.value = i;
+    option.text = i;
+    countSelect.append(option); // 새로운 option을 추가하므로 이미 생성된 option이 사라지지 않습니다.
+}
+	
 	
 	 function calculatePrice(pricePerPerson) {
 	        const quantity = parseInt(document.getElementById('quantity').value);
@@ -457,7 +452,6 @@ form {
 	
 	    function appendReview(data, postId) {
 	        let node = ``;
-	        console.log(data);
 	        for(let i = 0; i < data.length; i++) {
 	            let stars = '';
 	            for(let j = 1; j <= 5; j++) {
@@ -505,11 +499,13 @@ form {
 	        let checkedgrade = $('input[name=inlineRadioOptions]:checked').val();
 	        if(checkedgrade == null) {
 	            alert("점수를 체크해주세요.");
+	            return;
 	        }
 	
 	        let reviewContent = $('#reviewInput').val();
 	        if(reviewContent == null|| reviewContent.replaceAll(' ', '') == '') {
 	            alert("내용을 입력해주세요.");
+	            return;
 	        }
 	        //  ajax 들어가서 로그인 되어있는지 먼저 확인 - 안되면 바로 fail throw new Exception(); 예외 일부러 발생시켜주기
 	        $.ajax({
