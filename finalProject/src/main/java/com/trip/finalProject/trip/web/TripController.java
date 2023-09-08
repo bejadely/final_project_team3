@@ -153,6 +153,7 @@ public class TripController {
 	public Map<String, Object> disUpdate(TripVO tripVO){
 	    tripVO.getPostId();
 	    tripVO.getTripDisclose();
+	    System.out.println("tete : " + tripVO);
 	    	    
 	    Map<String, Object> map = tripService.getUpdateDis(tripVO);
 	    System.out.println("testMap : " + map);

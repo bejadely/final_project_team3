@@ -172,13 +172,13 @@
 							<td th:text="${trip.tripTitle}"  th:onclick="|location.href='@{/tripRecordInfo(postId=${trip.postId})}'|">
 								<input type="hidden" th:value="${trip.postId}">
 							</td>
-							<td><button type="button" class="feature-btn" th:onclick="" style="width: 15%;">수정</button></td>
-							<td><button type="button" class="feature-btn" th:onclick="|location.href=" style="width: 15%;">삭제</button></td>
+							<td style="width: 15%;"><button type="button" class="feature-btn" th:onclick="">수정</button></td>
+							<td style="width: 15%;"><button type="button" class="feature-btn" th:onclick="|location.href=">삭제</button></td>
 	    					<td class="toggle" style="width: 15%;">
 				                <input type="checkbox" th:id="'toggle_' + ${trip.postId}" name="toggle1" th:value="${trip.postId}" 
 	                   					th:checked="${trip.tripDisclose == '01'}">
 				                <label th:for="'toggle_' + ${trip.postId}"></label>
-				            </td>
+				            </td>	
 						</tr>
 					</th:block>
 				</tbody>
