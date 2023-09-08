@@ -90,7 +90,6 @@ ClassicEditor
 			var areaCode = $("#location > option:selected").attr("value2");
 			str+=`<input type='hidden' name='sigunguCode' value='${sigunguCode}'>
 				 <input type ='hidden' name = 'areaCode' value='${areaCode}'>`
-			//sconsole.log(data);
 			const { tourTheme, name, price, startDate, endDate, deadlineDate, maxReservation,writerId } = objData;
 			var combinedData={
 				content: data,
@@ -103,9 +102,8 @@ ClassicEditor
 		        maxReservation: maxReservation,
 		        writerId : writerId
 			};
-			console.log(combinedData);
-			
-			
+			var paths;
+			var resultPath;
 			$(".uploadResult ul li").each(function(i,obj){
 				var jobj = $(obj);
 				str += "<input type ='hidden' name='attachList["+i+"].originImg' value='"+jobj.data("filename")+"'>";
@@ -113,12 +111,15 @@ ClassicEditor
 				str += "<input type ='hidden' name='attachList["+i+"].memberId' value='[[${session.sessionId}]]'>";
 				str += "<input type ='hidden' name='attachList["+i+"].imgType' value='"+jobj.data("type")+"'>";
 				str += "<input type ='hidden' name='attachList["+i+"].loadingImg' value='"+jobj.data("loadingpath")+"'>";
-				
+				pahts = jobj.data("path").split("/upload");
+				resultPath = pahts[0];
 			});
 			str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";
 			
 			
 			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
+			
+			
 			
 			const filenames = imgTags.map(img=> {
 				const src = img.getAttribute('src');
@@ -126,7 +127,7 @@ ClassicEditor
 				return src;
 			});		
 			$.each(filenames,function(i,obj){
-				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
+				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='"+resultPath+obj+"'>";
 			});
 			
 			
