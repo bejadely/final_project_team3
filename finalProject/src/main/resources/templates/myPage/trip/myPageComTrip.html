@@ -115,7 +115,7 @@
 		        }
 		        
 		        $.ajax({
-		        	url:'discloseUpdate',
+		        	url:'/discloseUpdate',
 		        	type: 'post',
 		        	data : obj
 		        	}).done(data => {
@@ -171,9 +171,9 @@
 							<td th:text="${trip.tripTitle}" th:onclick="|location.href='@{/tripRecordInfo(postId=${trip.postId})}'|">
 								<input type="hidden" th:value="${trip.postId}" >
 							</td>
-							<td><button type="button" class="feature-btn" style="width: 15%;">수정</button></td>
-							<td><button type="button" class="feature-btn" style="width: 15%;">삭제</button></td>
-	    					<td class="toggle" style="width: 15%;">
+							<td  style="width: 15%;"><button type="button" class="feature-btn">수정</button></td>
+							<td  style="width: 15%;"><button type="button" class="feature-btn">삭제</button></td>
+	    					<td class="toggle">
 				                <input type="checkbox" th:id="'toggle_' + ${trip.postId}" name="toggle1" th:value="${trip.postId}" 
 	                   					th:checked="${trip.tripDisclose == '01'}">
 				                <label th:for="'toggle_' + ${trip.postId}"></label>

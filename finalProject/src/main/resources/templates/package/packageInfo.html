@@ -308,44 +308,20 @@ form {
    
 
 <script>
-	var content = '[[${info.content }]]';
-	var postId = '[[${info.postId}]]';
-	var memberId = $("#id").val();
-	$(document).ready(function(){
-		 getPackageDetailInfoReview(postId, function(data) {
-			 appendPackageDetailInfoReview(data, postId);   
-         });
-		 var maxReservation =parseInt('[[${info.maxReservation}]]');
-		 var countSelect = document.getElementById("select_count");
-		 for (var i = 0; i <= maxReservation; i++) {
-			 var option = document.createElement('option');
-             option.value = i;
-             option.text = i;
-             console.log(option);
-             countSelect.appendChild(option);
-             $(countSelect).niceSelect(); 
-         }
-		
-		(function(){
-			$.getJSON("getAttachList",{postId:postId},function(arr){
-				var str="";
-				var str2="";
-				$(arr).each(function(i, attach){
-					if(i==0){
-						str+=`<img src="${attach.loadingImg}" class="product-big-img"  alt="">`	
-					}
-					else{
-						str2+=`<div class="pt" data-imgbigurl="${attach.loadingImg}"><img
-                            src="${attach.loadingImg}" alt=""></div>`
-					}
-				});
-				$(".product-pic-zoom").html(str);
-				$(".product-thumbs-track.ps-slider.owl-carousel").html(str2);
-			});
-		})();
-		   
-	});
-		
+//이미 생성된 select 엘리먼트를 선택합니다.
+var countSelect = $("#select_count");
+
+// maxReservation 값을 가져옵니다.
+var maxReservation = parseInt('[[${info.maxReservation}]]');
+
+// 새로운 option 엘리먼트를 생성하고 select 엘리먼트에 추가합니다.
+for (var i = 0; i <= maxReservation; i++) {
+    var option = document.createElement('option');
+    option.value = i;
+    option.text = i;
+    countSelect.append(option); // 새로운 option을 추가하므로 이미 생성된 option이 사라지지 않습니다.
+}
+	
 	
 	 function calculatePrice(pricePerPerson) {
 	        const quantity = parseInt(document.getElementById('quantity').value);
