@@ -127,7 +127,7 @@
 			   hit,
 			   trip_area,
 			   write_date,
-			   mate_style
+			   code_val(mate_style) mate_style
 		FROM mate_recruit
 		WHERE post_id = #{postId}
 	</select>

@@ -8,7 +8,9 @@
  		SELECT COUNT(*)
  		FROM trip_record
  		WHERE trip_save = 'T2' 
-			AND trip_disclose = '01'
+			AND trip_disclose = 'O1'
+			OR trip_save = 'T3'
+			AND trip_disclose = 'O1'
  	</select>
  	
  	<!-- 여행기록 전체조회 아이디 -->
@@ -16,7 +18,10 @@
  		SELECT COUNT(*)
  		FROM trip_record
  		WHERE trip_save = 'T2' 
-			AND trip_disclose = '01'
+			AND trip_disclose = 'O1'
+			AND writer_id LIKE '%${keyword}%'
+			OR trip_save = 'T3'
+			AND trip_disclose = 'O1'
 			AND writer_id LIKE '%${keyword}%'
  	</select>
  	
@@ -25,7 +30,10 @@
  		SELECT COUNT(*)
  		FROM trip_record
  		WHERE trip_save = 'T2' 
-			AND trip_disclose = '01'
+			AND trip_disclose = 'O1'
+			AND trip_title LIKE '%${keyword}%'
+			OR trip_save = 'T3'
+			AND trip_disclose = 'O1'
 			AND trip_title LIKE '%${keyword}%'
  	</select>
  	
@@ -59,7 +67,9 @@
 				  FROM trip_record t LEFT OUTER JOIN 
 				  	   attached_file a ON t.post_id = a.post_id
 				  WHERE trip_save = 'T2' 
-				  	AND trip_disclose = '01'
+				  	AND trip_disclose = 'O1'
+				  	OR trip_save = 'T3'
+					AND trip_disclose = 'O1'
 				  ORDER BY t.post_id DESC) a)
 		WHERE rn BETWEEN #{start } AND #{end }
 	</select>
@@ -72,8 +82,11 @@
 				  FROM trip_record t LEFT OUTER JOIN 
 				  	   attached_file a ON t.post_id = a.post_id
 				  WHERE trip_save = 'T2' 
-				  	AND trip_disclose = '01'
+				  	AND trip_disclose = 'O1'
 				  	AND t.writer_id LIKE '%${tripVO.writerId}%'
+				  	OR trip_save = 'T3'
+					AND trip_disclose = 'O1'
+					AND t.writer_id LIKE '%${tripVO.writerId}%'
 				  ORDER BY t.post_id DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
 	</select>
@@ -86,8 +99,11 @@
 				  FROM trip_record t LEFT OUTER JOIN 
 				  	   attached_file a ON t.post_id = a.post_id
 				  WHERE trip_save = 'T2' 
-				  	AND trip_disclose = '01'
+				  	AND trip_disclose = 'O1'
 				  	AND t.trip_title LIKE '%${tripVO.tripTitle}%'
+				  	OR trip_save = 'T3'
+					AND trip_disclose = 'O1'
+					AND t.trip_title LIKE '%${tripVO.tripTitle}%'
 				  ORDER BY t.post_id DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
 	</select>
