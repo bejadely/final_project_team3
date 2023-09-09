@@ -10,9 +10,9 @@
    <select id="SelectAllNoticeList" >
 		
 				SELECT *
-			  	FROM (SELECT ROWNUM rn, a.*
-			        	FROM(SELECT notice_Number,title,writer_Id,regist_Date,hit 
-							FROM notice  order by regist_Date desc) a )
+			  	FROM (SELECT ROWNUM rn, notice_Number,title,writer_Id,regist_Date,hit,code_val(notice_type)notice_type 
+			        	FROM(SELECT notice_Number,title,writer_Id,regist_Date,hit,notice_type
+							FROM notice  where status='T2' and release='N1' order by regist_Date desc) a )
 			  WHERE rn BETWEEN #{start} AND #{end}
 			  				
 		
@@ -20,7 +20,7 @@
 	<!-- 전체 게시글 수 카운트 -->
   		<select id="getAllNoticeCount">
   			SELECT COUNT(*)
-  			  FROM notice
+  			  FROM notice where status='T2' and release='N1'
   	</select>
 	
 
@@ -98,14 +98,16 @@
 						     , a.writer_Id						    
 						     , a.regist_date
 						     , a.hit
+						     , code_val(notice_type)notice_type
 						     <!-- , code_val(a.authority) authority -->
 			 FROM(SELECT notice_number
 				       , title
 				       ,writer_Id				       
 				       , regist_date
 				       ,hit
+				       ,notice_type
 				    FROM notice
-				   WHERE notice_Type='n1'  and  title LIKE '%${noticeVO.title}%'
+				   where status='T2' and release='N1' and notice_Type='n1'  and  title LIKE '%${noticeVO.title}%'
 				ORDER BY regist_date DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
   		</select>
@@ -117,7 +119,7 @@
   		<select id="countNoticeType2n">
   			SELECT COUNT(*)
   			  FROM notice
-  			 WHERE notice_Type='n2'  and title LIKE '%${title}%'
+  			 where status='T2' and release='N1'and notice_Type='n2'  and title LIKE '%${title}%'
   		</select>
   		
   		<!-- 제목으로 게시글 검색 -->
@@ -128,14 +130,16 @@
 						     , a.writer_Id						    
 						     , a.regist_date
 						     , a.hit
+						     , code_val(notice_type)notice_type
 						     <!-- , code_val(a.authority) authority -->
 			 FROM(SELECT notice_number
 				       , title
 				       ,writer_Id				       
 				       , regist_date
 				       ,hit
+				       ,notice_type
 				    FROM notice
-				   WHERE notice_Type='n2'  and  title LIKE '%${noticeVO.title}%'
+				   where status='T2' and release='N1'and notice_Type='n2'  and  title LIKE '%${noticeVO.title}%'
 				ORDER BY regist_date DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
   		</select>
