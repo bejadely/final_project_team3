@@ -285,7 +285,7 @@ section.notice {
 		<!--  관리자(A3)인 경우 검색 div  -->
 		<div th:if="${session.sessionAuthority} == 'A3'">
 			<div id="noticeType" class="mb-3"
-				style="float: left; margin-left: 10%; margin-right: 20px">
+				style="float: left; margin-left: 17%; margin-right: 20px">
 
 				<select id="searchByNoticeType" class="" name="noticeType"
 					aria-label="Default select example">
@@ -312,7 +312,7 @@ section.notice {
 				</select>
 			</div>
 			<div>
-				<input type="text" id="keyword" name="keyword"
+				<input type="text" id="keyword" name="keyword" style="margin-left: 20px;"
 					placeholder="검색어를 입력해주세요.">
 				<button id="searchButton" class="feature-btn">
 					<i class="fa-solid fa-magnifying-glass"></i>
@@ -384,7 +384,7 @@ section.notice {
 			<table class="board-table">
 				<thead>
 					<tr>
-						<th scope="col" class="th-num">번호</th>
+						<th scope="col" class="th-num">공지</th>
 						<th scope="col" class="th-title">제목</th>
 						<th scope="col" class="th-writer">작성자</th>
 						<th scope="col" class="th-date">등록일</th>
@@ -396,8 +396,9 @@ section.notice {
 					<th:block th:each="n : ${list}">
 						<tr class="noticeInfo"
 							th:attr="onmouseover='this.style.background=&quot;#dadada&quot;;',  onmouseleave='this.style.background=&quot;#FFFFFF&quot;;' ">
-							<td th:text="${n.noticeNumber}"></td>
-							<td th:text="${n.title}"></td>
+							 <td th:text="${n.noticeType}"></td> 
+							<!-- <td th:text="'[' + ${n.noticeType} + ']' + '              ' + ${n.title}"></td> -->
+							 <td th:text="${n.title}"></td> 
 							<td th:text="${n.writerId}"></td>
 							<td th:text="${n.registDate}"></td>
 							<td th:text="${n.hit}"></td>
@@ -521,6 +522,7 @@ section.notice {
 		// 이벤트 설정
 		$('#searchButton').on('click', search);
 		$('.noticeInfo').css({cursor: 'pointer'});
+		remeberSearch();
 	});
 	
 	
@@ -539,6 +541,20 @@ section.notice {
 					+ keyword;
 
 		}
+		// 검색어 기억
+		function remeberSearch(){
+			
+			// 우리가 실제로 만든 셀렉트 박스의 option을 selected 설정
+		    $('#searchByNoticeType').val([[${noticeType}]]).prop("selected", true);
+		      
+		    // 우리가 실제로 만든 셀렉트 박스의 변경값을 나이스 셀렉트 박스에 업데이트
+		    $('select').niceSelect('update');
+		      
+		    // 검색어 입력창의 값 유지
+		    $('#keyword').val([[${keyword}]]);
+		}
+		
+		
 
 		//클릭시 공지사항 상세 조회페이지로 이동
 		function moveToNoticeDetail(event) {

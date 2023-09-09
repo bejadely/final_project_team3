@@ -209,10 +209,7 @@ ClassicEditor
 		const data = editor.getData();		
 		//console.log(data);
 		let objData = serializeObject();
-		var sigunguCode = $("#location > option:selected").attr("value1");
-		var areaCode = $("#location > option:selected").attr("value2");
-		str+=`<input type='hidden' name='sigunguCode' value='${sigunguCode}'>
-			 <input type ='hidden' name = 'areaCode' value='${areaCode}'>`
+
 		//sconsole.log(data);
 		const { writerId, registDate, title  } = objData;
 		var combinedData={
