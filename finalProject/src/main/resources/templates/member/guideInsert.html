@@ -23,6 +23,11 @@
 	color: #6A82FB;
 	display: none;
 }
+
+    h5{
+    color : red;
+}
+
 </style>
 <body>
 	<script src="https://kit.fontawesome.com/d58c3728d1.js"
@@ -41,10 +46,12 @@
 									<!-- <img src="../assets/images/logos/dark-logo.svg" width="180" alt="">	 -->
 								</a>
 								<p class="text-center">회원가입</p>
-
+														
 								<form name="insertForm" action="/guideInsert" method="post">
-									<div class="mb-3">
-										<label for="" class="form-label">아이디</label>
+								<h5>*는 필수입력 사항입니다.</h5>
+								
+									<div class="mb-3">									
+										<h5>*</h5><label for="" class="form-label" style="float: left; display: inline;">아이디</label>
 										<!-- 	<button class="btn btn-default">중복체크</button> -->
 										<input type="text" name="memberId" placeholder="아이디"
 											class="form-control" id="id" aria-describedby="textHelp"
@@ -56,7 +63,7 @@
 									</div>
 									<div class="mb-3">
 										<div class="main">
-											<label for="" class="form-label">비밀번호</label> <i
+											<h5>*</h5><label for="" class="form-label">비밀번호</label> <i
 												class="fa-solid fa-eye-slash fa-xs"></i> <input
 												type="password" name="password" placeholder="비밀번호"
 												class="form-control" id="pw1" required> <font
