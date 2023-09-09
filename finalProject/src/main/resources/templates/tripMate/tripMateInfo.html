@@ -148,24 +148,22 @@
             <td width="70" align="center" th:text="${tripMateInfo.hit}"></td>
         </tr>
          <tr>
+        	<th width="100">작성자</th>
+            <td width="110" align="center" th:text="${tripMateInfo.writerId}"></td>
             <th width="100">예상 경비</th>
             <td width="110" align="center" th:text="${tripMateInfo.mateExpense}"></td>
             <th width="100">모집 인원</th>
             <td width="110" align="center" th:text="${tripMateInfo.mateMax}"></td>
             <th width="100">신청 인원</th>
             <td width="110" align="center" th:text="${tripMateInfo.applyNum}"></td>
-            <th colspan="1">마감일</th>
-            <td colspan="3" align="center">[[${#dates.format(tripMateInfo.deadline, 'yy년 MM월 dd일')}]]</td>
         </tr>
          <tr>
             <th colspan="1">여행 기간</th>
-            <td colspan="7" align="center">[[${#dates.format(tripMateInfo.startDay, 'yy년 MM월 dd일')}]] ~
+            <td colspan="3" align="center">[[${#dates.format(tripMateInfo.startDay, 'yy년 MM월 dd일')}]] ~
                 [[${#dates.format(tripMateInfo.endDay, 'yy년 MM월 dd일')}]]
             </td>
-        </tr>
-        <tr>
-            <th colspan="1">작성자</th>
-            <td colspan="7" align="center" th:text="${tripMateInfo.writerId}"></td>
+            <th colspan="1">마감일</th>
+            <td colspan="3" align="center">[[${#dates.format(tripMateInfo.deadline, 'yy년 MM월 dd일')}]]</td>
         </tr>
         <tr>
             <th colspan="1">여행 타이틀</th>
@@ -174,7 +172,7 @@
         </tr>
         <tr>
             <td colspan="8">
-                <th:textarea rows="30" th:utext="${tripMateInfo.mateContent}" readonly></th:textarea>
+                <th:textarea rows="100" th:utext="${tripMateInfo.mateContent}" readonly></th:textarea>
             </td>
         </tr>
     </table>
