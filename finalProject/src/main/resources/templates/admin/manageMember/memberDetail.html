@@ -54,7 +54,12 @@
 							<tr>
 								<th width="150" align="center">주소</th>
 								<th:block th:if="*{!#strings.isEmpty(zipCode)}">
-									<td colspan="3" width="400" align="center" th:utext="|(*{zipCode}) <br> *{address} *{addressDetail}|"></td>
+									<th:block th:if="*{!#strings.isEmpty(addressDetail)}">
+										<td colspan="3" width="400" align="center" th:utext="|(*{zipCode}) <br> *{address} *{addressDetail}|"></td>
+									</th:block>
+									<th:block th:if="*{#strings.isEmpty(addressDetail)}">
+										<td colspan="3" width="400" align="center" th:utext="|(*{zipCode}) <br> *{address}|"></td>
+									</th:block>
 								</th:block>
 								<th:block th:if="*{#strings.isEmpty(zipCode)}">
 									<td colspan="3" width="400" align="center">-</td>

@@ -7,7 +7,7 @@
 <!-- Content -->
 <div layout:fragment="content">
 		<div class="container">
-			<form action="/admin/modifyMemberInfo" th:object="${memberVO}" method="post">
+			<form id="frm" action="/admin/modifyMemberInfo" th:object="${memberVO}" method="post">
 				<h5><b>회원정보 수정</b></h5>
 				<br><br>
 				<div class="table">
@@ -141,6 +141,7 @@
 		setDefaultAuth();
 		setDefaultGender();
 		setDefaultBankCode();
+		$('#frm').on('submit', checkBeforeSub);
 	});
 	
 	// daum 주소 api 호출
