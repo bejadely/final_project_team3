@@ -96,7 +96,6 @@ public class AdminMemberController {
 			List<AdminMemberVO> list = adminMemberService.searchMemberById(adminMemberVO, pagingVO);
 			model.addAttribute("list", list);
 			model.addAttribute("paging", pagingVO);
-			
 		}
 		
 		// 검색결과 기억을 위해 keyword와 searchBy 담기
