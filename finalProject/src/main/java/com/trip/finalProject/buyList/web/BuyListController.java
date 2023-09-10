@@ -25,15 +25,16 @@ public class BuyListController {
     @Autowired
     HttpSession session;
 	
-	// 여행메이트 전체 조회
+		// 주문 패키지 전체 조회
 		@GetMapping("/common/buyPkList")
 		public String paList(Model model
 				,BuyListVO buyVO
 				,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 				,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
 			String memberId = session.getAttribute("sessionId").toString();
-			int total = buyService.pkCountInfo(memberId);
 			buyVO.setMemberId(memberId);
+			buyVO.setOrderStatus("B1");
+			int total = buyService.pkCountInfo(buyVO);
 			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 			List<BuyListVO> buyList = buyService.pkAllLikeInfo(buyVO, pagingVO);
 
@@ -43,15 +44,16 @@ public class BuyListController {
 			return "myPage/buyList/pkList";
 		}
 		
-		// 여행계획 전체 조회
+		// 주문 특산물 전체 조회
 		@GetMapping("/common/buySpList")
 		public String trList(Model model
 				, BuyListVO buyVO
 				, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 				, @RequestParam(value = "cntPerPage", defaultValue = "12") Integer cntPerPage) {
 			String memberId = session.getAttribute("sessionId").toString();
-			int total = buyService.spCountInfo(memberId);
 			buyVO.setMemberId(memberId);
+			buyVO.setOrderStatus("B7");
+			int total = buyService.spCountInfo(buyVO);
 			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 			List<BuyListVO> buyList = buyService.spAllLikeInfo(buyVO, pagingVO);
 
@@ -59,6 +61,44 @@ public class BuyListController {
 			model.addAttribute("paging", pagingVO);
 
 			return "myPage/buyList/spList";
+		}
+		
+		// 환불 패키지 전체 조회
+		@GetMapping("/common/refundPkList")
+		public String paRefundList(Model model
+				,BuyListVO buyVO
+				,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
+				,@RequestParam(value = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
+			String memberId = session.getAttribute("sessionId").toString();
+			buyVO.setMemberId(memberId);
+			buyVO.setOrderStatus("X2");
+			int total = buyService.pkCountInfo(buyVO);
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			List<BuyListVO> buyList = buyService.pkAllLikeInfo(buyVO, pagingVO);
+			
+			model.addAttribute("list", buyList);
+			model.addAttribute("paging", pagingVO);
+			
+			return "myPage/buyList/refundPkList";
+		}
+		
+		// 환불 특산물 전체 조회
+		@GetMapping("/common/refundSpList")
+		public String trRefundList(Model model
+				, BuyListVO buyVO
+				, @RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
+				, @RequestParam(value = "cntPerPage", defaultValue = "12") Integer cntPerPage) {
+			String memberId = session.getAttribute("sessionId").toString();
+			buyVO.setMemberId(memberId);
+			buyVO.setOrderStatus("X2");
+			int total = buyService.spCountInfo(buyVO);
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			List<BuyListVO> buyList = buyService.spAllLikeInfo(buyVO, pagingVO);
+			
+			model.addAttribute("list", buyList);
+			model.addAttribute("paging", pagingVO);
+			
+			return "myPage/buyList/refundSpList";
 		}
 		
 		@GetMapping("/common/buyPkSelect")
@@ -72,7 +112,6 @@ public class BuyListController {
 		@GetMapping("/common/buySpSelect")
 		public String selectSp(BuyListVO buyVO,Model model) {
 			BuyListVO findVo = buyService.selectSpInfo(buyVO);
-			System.out.println("testtest : " + findVo);
 			model.addAttribute("list", findVo);
 						
 			return "myPage/buyList/detailBuySpInfo";

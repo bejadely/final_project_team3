@@ -19,11 +19,11 @@
 <script>
 $(document).ready(function() {
     $("#pk").click(function() {
-        location.href = "/common/buyPkList";
+        location.href = "/common/refundPkList";
     });
 
     $("#sp").click(function() {
-        location.href = "/common/buySpList";
+        location.href = "/common/refundSpList";
     });
     $('.reportInfo').on('mouseover', colorDarker)
 					.on('mouseleave', colorReset)
@@ -47,29 +47,27 @@ $(document).ready(function() {
 	<div layout:fragment="content">
 	<div class="table-responsive">
 	<form>
-		<h5>구매 목록</h5>
+		<h5>환불 목록</h5>
 		<button type="button" id="pk">패키지</button>
 		<button type="button" id="sp">특산물</button>
 		<table class="table">
 			<thead>
 				<tr>
-					<th>타이틀</th>
-					<th>여행날짜</th>
-					<th>마감날짜</th>
-					<th>여행테마</th>
-					<th>모집완료 여부</th>
+					<th>이름</th>
 					<th>가격</th>
+					<th>옵션</th>
+					<th>갯수</th>
+					<th>총 구매가격</th>
 				</tr>
 			</thead>
 			<tbody>
 				<th:block th:each="li : ${list}">
-					<tr class="reportInfo" th:onclick="|location.href='@{/common/buyPkSelect(orderDetailId=${li.orderDetailId})}'|">
-						<td th:text="${li.name}"></td>
-						<td th:text="${#dates.format(li.startDate, 'yyyy-MM-dd')} + '~' + ${#dates.format(li.endDate, 'yyyy-MM-dd')}"></td>
-						<td th:text="${#dates.format(li.deadlineDate, 'yyyy-MM-dd')}"></td>
-						<td th:text="${li.tourTheme}"></td>
-						<td th:text="${li.completion}"></td>
-						<td th:text="${li.pkPrice}"></td>
+					<tr class="reportInfo" th:onclick="|location.href='@{/common/buySpSelect(orderDetailId=${li.orderDetailId})}'|">
+						<td th:text="${li.title}"></td>
+						<td th:text="${li.price}"></td>
+						<td th:text="${li.specialtyType}"></td>
+						<td th:text="${li.quantity}"></td>
+						<td th:text="${li.price * li.quantity}"></td>
 					</tr>
 				</th:block>
 			</tbody>
