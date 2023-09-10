@@ -151,11 +151,20 @@
 	<div layout:fragment="content">
 		<section>
 		<div class = "table-responsive">
-			<div>
-				<button type="button" onclick="pageChange('my')">나의 여행 계획</button>
-				<button type="button" onclick="pageChange('com')">완료된 여행</button>
-				<button type="button" onclick="pageChange('not')">임시저장 한 파일</button>
-			</div>
+     	<div class="radioButton">
+	         <div class="bt-item">
+	            <input type="radio" name="s-type" onclick="pageChange('my')" id="my" checked>
+	            <label for="my">미완료 여행</label>
+	         </div>
+	         <div class="bt-item">
+	            <input type="radio" name="s-type" onclick="pageChange('com')" id="com">
+	            <label for="com">완료된 여행</label>
+	         </div>
+	         <div class="bt-item">
+	            <input type="radio" name="s-type" onclick="pageChange('not')" id="not">
+	            <label for="not">임시저장</label>
+	         </div>
+      	</div>
 			<!-- 여행기록 section-->
 			<table class="table">
 				<thead>
