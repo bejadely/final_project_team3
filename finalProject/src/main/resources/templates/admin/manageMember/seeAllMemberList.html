@@ -36,7 +36,7 @@
 						<th>회원분류</th>
 						<td class="filterAuthority">
 							<th:block th:each="a : ${authCodeList}">
-								<a href="#" role="button" th:data-auth="${a.detailCode}">[[${a.value}]]</a>							
+								<a role="button" th:data-auth="${a.detailCode}">[[${a.value}]]</a>							
 							</th:block>
 						</td>					
 					</tr>
@@ -61,7 +61,7 @@
 					</tr>
 				</thead>
 				<th:block th:if="${!#lists.isEmpty(list)}">
-					<tbody>
+					<tbody id="memberInfo">
 						<th:block th:each="l : ${list}">
 							<tr class="memberInfo">
 								<td th:text="${l.memberId}"></td>
@@ -160,13 +160,19 @@
 		
 		// 토글 형성 - 볼드 처리 및 data-selected 속성 true/false 전환
 		if($(this).attr("data-selected") == "true"){
+			
 			// 선택되어 있던 경우 - 본인 볼드처리 해제 / data-selected >> false
 			$(this).css({fontWeight: 'normal'});
-			$(this).attr("data-selected", "false")
-		} else{
+			$(this).css({background: '#ffffff'});
+			$(this).attr("data-selected", "false");
+			
+		} else {
+			
 			// 선택되어있지 않았던 경우 - 볼드 처리 및 다른 형제요소 볼드처리 해제 / data-selected >> falses
 			$(this).css({fontWeight: 'bold'});
+			$(this).css({background: '#2cbdb8'});
 			$(this).siblings().css({fontWeight: 'normal'});
+			$(this).siblings().css({background: '#ffffff'});
 			$(this).attr("data-selected", "true")
 			
 			// ajax 검색으로 보낼 변수값 지정
@@ -179,7 +185,7 @@
 			}
 			// 확장성을 고려 / else 사용하지 않음
 			if($(this).closest('td').prop('class') == 'filterAuthority'){
-				authority = $(this).text();
+				authority = $(this).attr('data-auth');
 				console.log(authority);
 			}
 			
@@ -194,8 +200,31 @@
 			})
 			.done( data => {
 				console.log("data : ", data);
+				// 동적으로 tr 재생성
+				$('#memberInfo').empty();
+				let newElement ='';
+				
+				$(data).each(function (index, m) {
+						newElement = `
+							<tr class="memberInfo">
+				                <td>${m.memberId}</td>
+				                <td>${m.memberName}</td>
+				                <td>${m.phoneNumber != null ? m.phoneNumber : '-'}</td>
+				                <td>${m.nationality}</td>
+				                <td>${m.authority}</td>
+				            </tr>
+						`
+						
+						
+						$('#memberInfo').append(newElement);
+					});
+				
+				
 			})
 			.fail( reject => console.log(reject));
+			
+			
+			
 		}
 		
 	}
