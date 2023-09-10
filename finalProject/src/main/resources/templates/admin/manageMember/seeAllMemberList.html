@@ -181,7 +181,9 @@
 			
 			if($(this).closest('td').prop('class') == 'filterNationality'){
 				nationality = $(this).text();
+				authority = $('#filterAuthority').find('a[data-selected="true"]');
 				console.log(nationality);
+				console.log(authority);
 			}
 			// 확장성을 고려 / else 사용하지 않음
 			if($(this).closest('td').prop('class') == 'filterAuthority'){
@@ -214,7 +216,6 @@
 				                <td>${m.authority}</td>
 				            </tr>
 						`
-						
 						
 						$('#memberInfo').append(newElement);
 					});
