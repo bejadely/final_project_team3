@@ -106,9 +106,9 @@ public class NoticeController {
 	
 	// 특정 조건으로 공지사항 상세 검색
 	@GetMapping("/searchNotice")
-	public String searchAdminMember( String noticeType
-								  ,  String release
-								  ,  String status		
+	public String searchAdminMember( @RequestParam( name = "noticeType" ,required = false) String noticeType
+								  ,  @RequestParam( name = "release" ,required = false) String release
+								  , @RequestParam( name = "status",required = false)  String status		
 								   ,@RequestParam( name = "keyword" ) String keyword
 								  , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
 								  , @RequestParam( name = "cntPerPage", defaultValue = "10") Integer cntPerPage
