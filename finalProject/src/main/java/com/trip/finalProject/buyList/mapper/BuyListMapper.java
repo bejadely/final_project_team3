@@ -8,10 +8,10 @@ import com.trip.finalProject.common.PagingVO;
 public interface BuyListMapper {
 	
 	//패키지 조회(카운트)
-	public int pkCount(String memberId);
+	public int pkCount(BuyListVO buyVO);
 	
 	//특산물 조회(카운트)
-	public int spCount(String memberId);
+	public int spCount(BuyListVO buyVO);
 	
 	//패키지 조회
 	public List<BuyListVO> pkAllLike(BuyListVO buyVO, PagingVO pagingVO);

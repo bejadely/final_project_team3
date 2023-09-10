@@ -32,11 +32,21 @@ $(document).ready(function() {
 		   event.stopPropagation();
 		   var applyId = $(this).attr('value');// 버튼의 'th:value' 속성 값을 가져옵니다.
 		   var postId = $(this).parent().parent().find("td:eq(0)").attr("value");
+			Swal.fire({
+				showCancelButton: true,
+		       	title: '삭제 하시겠습니까?',
+				    icon: 'question',
+					confirmButtonText: '확인',
+					cancelButtonText: '취소',
+			    }).then((firstResult) => {
+			    	if(firstResult.value == true){
+				        var form = $("<form action='/common/myPageCancle' method='post'></form>");
+				        form.append("<input type='hidden' name='applyId' value='" + applyId + "'>");
+				        form.append("<input type='hidden' name='postId' value='" + postId + "'>");
+				        form.appendTo("body").submit();
+			    	}
+				})
 	        
-	        var form = $("<form action='/common/myPageCancle' method='post'></form>");
-	        form.append("<input type='hidden' name='applyId' value='" + applyId + "'>");
-	        form.append("<input type='hidden' name='postId' value='" + postId + "'>");
-	        form.appendTo("body").submit();
 
 	   })
 
@@ -92,10 +102,6 @@ $(document).ready(function() {
             <label for="mul">신청한 여행</label>
          </div>
       </div>
-	<div>
-		<button type="button" id="comButton">작성한 여행</button>
-		<button type="button" id="appButton">신청한 여행</button>	
-	</div>
 	<section>
 		<!-- 여행기록 section-->
 		<div class="table-responsive">

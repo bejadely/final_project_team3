@@ -153,7 +153,7 @@ public class TripController {
 	}
 	
 	//여행기록 공개 설정 업데이트
-	@PostMapping("/discloseUpdate")
+	@PostMapping("/common/discloseUpdate")
 	@ResponseBody
 	public Map<String, Object> disUpdate(TripVO tripVO){
 	    tripVO.getPostId();

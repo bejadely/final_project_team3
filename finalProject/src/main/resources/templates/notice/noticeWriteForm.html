@@ -88,7 +88,7 @@
             <h1>공지사항 등록</h1>
         <br>
         </div>
-        <div id="ls" class="text-center">
+        <div id="noticeType"  class="text-center">
             <form id="frm" action="/noticeProc" method="post">
                	<div class="mb-3" style="float: left; margin-right: 20px;" >
 					<select class="" id="noticeType" name="noticeType"
@@ -99,7 +99,7 @@
 					</select> 
 				</div>  
 				
-				<div class="mb-3" style="float: left; margin-right: 20px;" >
+				<div id="release" class="mb-3" style="float: left; margin-right: 20px;" >
 					<select class="" id="release" name="release"
 						aria-label="Default select example"  required>
 						<option value="">공개대상</option>
@@ -108,7 +108,7 @@
 					</select> 
 				</div>  
 				
-		       	 <div class="mb-3" style="float:left;">
+		       	 <div id="status"  class="mb-3" style="float:left;">
 					<select class="" id="status" name="status"
 						aria-label="Default select example" required >
 						<option value="">글 저장상태</option>
@@ -121,7 +121,7 @@
 	                    <tr>
 	                        <th style="text-align: left;">작성자</th>
 	                        <td colspan="3">
-								<input type="text" id="boardTitle" name="writerId" size="70" class="form-control" th:value="${session.sessionId}" readonly style="width: 33%;">
+								<input type="text" id="" name="writerId" size="70" class="form-control" th:value="${session.sessionId}" readonly style="width: 33%;">
 	                        </td>
 	                     </tr>
 	                     <tr>
@@ -134,7 +134,7 @@
                         <tr>
                             <th style="text-align: left;">제목</th>
                             <td colspan="3" >
-                                <input  type="text" id="boardTitle" name="title" size="70" class="form-control">
+                                <input  type="text" id="title" name="title" size="70" class="form-control">
                             </td>
                         </tr>    
                                   
@@ -179,44 +179,83 @@
 
 
 
-
-
-
-
 <script>
  
 document.getElementById('registDate').value = new Date().toISOString().substring(0, 10);
 
-
 $(document).ready(function() {
 		// 승인 버튼 클릭 시 발생 이벤트 설정
-		$('.submitButton').on('click', go);
-		 // $('#frm').on('submit', loginAccountcheck);
-	/* 	$('.rejectButton').on('click', authReject); */
-	
+		//$('.submitButton').on('click', go);
 });	
 	
 	
-/* 	
-function noticeTypeCheck(){
-	   var noticeType = $("#noticeType").val();
-	  
+ClassicEditor
+.create(document.querySelector('#editor'), {
+	/* htmlEncodeOutput: false, */
+	ckfinder: {
+		uploadUrl : '/common/upload'	
+	}	
+})
+.then(editor => {
+	console.log('Editor was initialized');
 
-     if (noticeType==null) { // 저장된 SMS 코드를 사용
-         alert("공지사항 종류 정하세요.");
-     } 
- } */
-	
+	var formObj = $("#frm");
+	var str="";
+
+	$("button[type='submit']").on("click",function(event){
 		
-	// 승인 버튼 클릭 시 발생 이벤트
-	function go(e){
-		e.preventDefault();
-		 /* var noticeType = $("#noticeType").val(); */
-		  
+		
+		event.preventDefault();		
+		const data = editor.getData();		
+		//console.log(data);
+		let objData = serializeObject();
+		var sigunguCode = $("#location > option:selected").attr("value1");
+		var areaCode = $("#location > option:selected").attr("value2");
+		str+=`<input type='hidden' name='sigunguCode' value='${sigunguCode}'>
+			 <input type ='hidden' name = 'areaCode' value='${areaCode}'>`
+		//sconsole.log(data);
+		const { writerId, registDate, title  } = objData;
+		var combinedData={
+				 content: data,
+		         writerId: writerId,
+		         title: title
+		};
+		//console.log(combinedData.content);
+		
+		str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";		
+		
+		const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
+		
+		const filenames = imgTags.map(img=> {
+			const src = img.getAttribute('src');
+			return src;
+		});		
+		$.each(filenames,function(i,obj){
+			str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
+		});	
+	formObj.append(str);
+		
 
-		 if ($("#noticeType option:selected").val() == null) { // 저장된 SMS 코드를 사용
+		 if ($("#noticeType option:selected").val() =='') { // 저장된 SMS 코드를 사용
 	         alert("공지사항 종류 정하세요.");
-	     } 
+		// return false;
+	     } else if ($("#release option:selected").val() ==''){
+	    	 alert("공개대상 정하세요.");
+	    	// return false;
+	     } else if($("#status option:selected").val() ==''){
+	    	 alert("글 저장상태 정하세요.");
+	    	// return false;
+	    	 
+	     }else if($("#title").val() ==''){
+	    	 console.log('있나'+$("#editor").val());
+	    	 alert("글 제목 입력하세요.");
+		    	// return false;
+	    	
+		     }else if(data == '' || data == null){
+				
+		    	 alert("글 내용 작성하세요");
+			    	 //return false;			    	 
+		     }else{
 		
 	
 		Swal.fire({
@@ -244,73 +283,26 @@ function noticeTypeCheck(){
 		    });
 		 
 	   	    
-	} 	
-	//ck-editor
-	
-
-ClassicEditor
-	.create(document.querySelector('#editor'), {
-		/* htmlEncodeOutput: false, */
-		ckfinder: {
-			uploadUrl : '/common/upload'	
-		}
-	
+	}
+		
+		
+		
+		
+			
 		
 	})
-	.then(editor => {
-		console.log('Editor was initialized');
+})
+.catch(error => {
+	console.error(error);
+});
+	
+	/* function go(e){
+		e.preventDefault();
+ 	}
+	//ck-editor */
+	
 
-		var formObj = $("#frm");
-		var str="";
 
-		$("button[type='submit']").on("click",function(event){
-				
-			event.preventDefault();
-			
-			const data = editor.getData();
-			
-			console.log(data);
-			let objData = serializeObject();
-			var sigunguCode = $("#location > option:selected").attr("value1");
-			var areaCode = $("#location > option:selected").attr("value2");
-			str+=`<input type='hidden' name='sigunguCode' value='${sigunguCode}'>
-				 <input type ='hidden' name = 'areaCode' value='${areaCode}'>`
-			//sconsole.log(data);
-			const { writerId, registDate, title  } = objData;
-			var combinedData={
-					 content: data,
-			         writerId: writerId,
-			         registDate: registDate,
-			         title: title
-			};
-			//console.log(combinedData.content);
-			
-			
-			
-			
-			str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";
-			
-			
-			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
-			
-			const filenames = imgTags.map(img=> {
-				const src = img.getAttribute('src');
-				
-				return src;
-			});		
-			$.each(filenames,function(i,obj){
-				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
-			});
-		
-		formObj.append(str);
-		//서브밋
-		//document.getElementById('frm').submit();
-		})
-		//////////////////////////////////////////////////////////////////////
-	})
-	.catch(error => {
-		console.error(error);
-	});
 	
 	function serializeObject(){
 		let formData = $('form').serializeArray();
