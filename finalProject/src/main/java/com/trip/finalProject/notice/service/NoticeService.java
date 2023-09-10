@@ -42,6 +42,9 @@ public interface NoticeService {
 	public List<NoticeVO> searchNoticeByTitle1n(NoticeVO noticeVO, PagingVO pagingVO);
 	// 제목으로 이벤트 검색 
 	public List<NoticeVO> searchNoticeByTitle2n(NoticeVO noticeVO, PagingVO pagingVO);
+	
+	//삭제
+	//public NoticeVO noticeDelete
 
 	
 }

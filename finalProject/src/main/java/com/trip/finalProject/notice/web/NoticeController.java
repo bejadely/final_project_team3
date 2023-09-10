@@ -98,10 +98,16 @@ public class NoticeController {
 	}
 
 
-	
-	//게시글 삭제 기능 수행
-	///admin/noticeDelete
-	
+	/*
+	 * //게시글 삭제 기능 수행 ///admin/noticeDelete
+	 * 
+	 * @PostMapping(/admin/noticeDelete) public String noticeDelete(NoticeVO
+	 * noticeVO) { String result = noticeService.noticeDelete(noticeVO);
+	 * attachedFileMapper.delete(specialtiesVO.getPostId());
+	 * specialtiesMapper.deleteOption(specialtiesVO.getPostId());
+	 * 
+	 * }
+	 */
 	
 	
 	// 특정 조건으로 공지사항 상세 검색
