@@ -117,7 +117,8 @@ body {
          <tbody>
             <tr th:onclick="|location.href='@{/packageInfo(postId=${list.postId})}'|">
                <td style="width: 30%">
-					<img alt="대표사진" src="${list.loadingImg}">
+					<img th:if="${not #strings.isEmpty(list.loadingImg)}" th:src="${list.loadingImg}" style="height:277px;">
+                    <img th:unless="${not #strings.isEmpty(list.loadingImg)}" th:src="@{/img/no-image.png}">
 				</td>
 				<td th:text="${list.title}"></td>
 				<td th:text="${list.specialtyType}" style="width: 15%"></td>
@@ -126,6 +127,7 @@ body {
             </tr>
             <tr>
                <td colspan="4"> 총 금액 </td>
+               <td>
                <td th:text="${list.puPrice}"></td>
             <tr>
          </tbody>
