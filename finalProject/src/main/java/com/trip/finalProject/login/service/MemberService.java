@@ -42,5 +42,8 @@ public interface MemberService {
 	MemberVO phoneNumberCheck(String phoneNumber);
 	
 	//비밀번호 찾기 중 비밀번호 업데이트
-	public int editPassword(MemberVO vo);
+	public int editPassword(MemberVO vo);	 
+	
+	//회원정보 수정페이제를 위한 비밀번호 확인 구문
+	 public String passwordVerify(MemberVO memberVO);
 }

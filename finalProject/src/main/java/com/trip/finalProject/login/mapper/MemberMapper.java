@@ -43,4 +43,8 @@ public interface MemberMapper {
 	 
 	 //입력한 이메일을 비밀번호 업데이트 하기
 	 public int editPassword(MemberVO vo);
+	 
+	 //회원정보 수정페이제를 위한 비밀번호 확인 구문
+	 public MemberVO passwordVerify(MemberVO memberVO);
+
 }
