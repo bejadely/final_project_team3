@@ -393,10 +393,16 @@ section.notice {
 				<tbody>
 					<th:block th:each="n : ${list}">
 						<tr class="noticeInfo"
+<<<<<<< HEAD
 							th:attr="onmouseover='this.style.background=&quot;#dadada&quot;;',  onmouseleave='this.style.background=&quot;#FFFFFF&quot;;' ">
 							<td  th:text="${n.noticeNumber}" style="display:none;">
 							 <td th:text="${n.noticeType}"></td> 					
 							 <td th:text="${n.title}"></td> 
+=======
+							th:attr="onmouseover='this.style.background=&quot;#dadada&quot;;', onmouseleave='this.style.background=&quot;#FFFFFF&quot;;' ">
+							<td th:text="${n.rn}"></td>
+							<td th:text="${n.title}"></td>
+>>>>>>> branch 'new_develep' of https://github.com/bejadely/final_project_team3.git
 							<td th:text="${n.writerId}"></td>
 							<td th:text="${n.registDate}"></td>
 							<td th:text="${n.hit}"></td>
