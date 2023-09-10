@@ -48,8 +48,17 @@ $(document).ready(function() {
 	<div class="table-responsive">
 	<form>
 		<h5>환불 목록</h5>
-		<button type="button" id="pk">패키지</button>
-		<button type="button" id="sp">특산물</button>
+		<br>
+     	<div class="radioButton">
+	         <div class="bt-item">
+	            <input type="radio" name="s-type" id="pk">
+	            <label for="pk">패키지</label>
+	         </div>
+	         <div class="bt-item">
+	            <input type="radio" name="s-type" id="sp" checked>
+	            <label for="sp">특산물</label>
+	         </div>
+      	</div>
 		<table class="table">
 			<thead>
 				<tr>

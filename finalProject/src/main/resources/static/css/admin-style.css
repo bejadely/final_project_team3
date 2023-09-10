@@ -116,11 +116,13 @@ th, td {
 	overflow: hidden;
     text-overflow: ellipsis;
     height: 100%;
+    background-color: #ffffff;
 }
 .custom-sidebar h5, h6 {
 	/*margin-bottom: 10%; */
 	padding-top: 5%;
 	padding-bottom: 5%;
+	padding-left: 20px;
 }
 
 .custom-top-margin{
@@ -129,7 +131,7 @@ th, td {
 
 .custom-sidebar i{
 	font-size: 24px;
-	color: #012970;
+	color: #2cbdb8;
 	text-align:right;
 	margin-right: 10px;
 }
@@ -1530,6 +1532,39 @@ h1 {
 	z-index: -1;
 	border-radius: 50%;
 }
+/*----------------------
+	radio button
+------------------------*/
+.radioButton {
+	margin-bottom: 20px;
+	overflow: hidden;
+	
+}
+.radioButton .bt-item {
+	width: 100px;
+	height: 30px;
+	float: left;
+	
+}
+.radioButton .bt-item input[type=radio] {
+	display: none;
+}
+.radioButton .bt-item input[type=radio]:checked+label {
+	background: #2cbdb8;
+	color: #ffffff;
+}
+.radioButton label {
+	display: block;
+	font-size: 16px;
+	margin-bottom: 0;
+	font-weight: 600;
+	background: #EBEBEB;
+	color: #707079;
+	text-align: center;
+	cursor: pointer;
+	padding: 4px 0 6px;	
+}
+
 /*---------------------
   Property Section
 -----------------------*/
