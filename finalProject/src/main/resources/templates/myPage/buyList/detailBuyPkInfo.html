@@ -52,19 +52,26 @@ $(document).ready(function(){
 		let cancelAmount = $(".cancelAmount").val();
 		let cancelTaxFreeAmount = $(".cancelTaxFreeAmount").val();
 		let orderDetailId = $(".orderId").val();
-		
+		let postId = '[[${list.postId}]]';
+		let quantity = '[[${list.quantity}]]'
+		let nowReservation = '[[${list.nowReservation}]]'-quantity;
+		let maxReservation = '[[${list.nowReservation}]]'
 		console.log(tid);
 		console.log(cancelAmount);
 		console.log(cancelTaxFreeAmount);
 		
 		$.ajax({
 			type:'post',
-			url:'/payment/refund',
+			url:'/common/payment/refund',
 			data:{
 				tid: tid,
 				cancelAmount : cancelAmount,
 				cancelTaxFreeAmount : cancelTaxFreeAmount,
-				orderDetailId : orderDetailId
+				orderDetailId : orderDetailId,
+				postId : postId,
+				quantity:quantity,
+				nowReservation: nowReservation,
+				maxReservation: maxReservation
 			}
 		}).done(data=>{
 			console.log(data);

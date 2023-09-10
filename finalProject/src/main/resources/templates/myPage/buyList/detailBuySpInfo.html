@@ -24,8 +24,31 @@ table, th,td {
 }
 </style>
 <script>
-$(document).ready(function() {
-
+$(document).ready(function(){
+	$("button").click(function(){
+		let tid =  $(".tid").val();
+		let cancelAmount = $(".cancelAmount").val();
+		let cancelTaxFreeAmount = $(".cancelTaxFreeAmount").val();
+		let orderDetailId = $(".orderId").val();
+		
+		console.log(tid);
+		console.log(cancelAmount);
+		console.log(cancelTaxFreeAmount);
+		
+		$.ajax({
+			type:'post',
+			url:'/common/payment/refund',
+			data:{
+				tid: tid,
+				cancelAmount : cancelAmount,
+				cancelTaxFreeAmount : cancelTaxFreeAmount,
+				orderDetailId : orderDetailId
+			}
+		}).done(data=>{
+			console.log(data);
+		}).fail(reject => console.log(reject));
+	});
+	
 });
 </script>
 </head>

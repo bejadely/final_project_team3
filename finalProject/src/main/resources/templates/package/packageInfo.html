@@ -40,6 +40,11 @@ form {
 #select_count{
 	display:block;
 }
+.nice-select .list {
+    height: 200px;
+}
+
+
 </style>
 
 </head>
@@ -211,7 +216,7 @@ form {
 							</div>
 							<div class="form-horizontal" style="text-align: left;">
 								<label>구매수량  </label> 
-								<select class="nice-select form-control count" id="select_count" >
+								<select class="nice-select list form-control count" id="select_count" >
 								   
 								</select>
 							</div>
@@ -314,9 +319,12 @@ form {
 	var content = '[[${info.content }]]';
 	var postId = '[[${info.postId}]]';
 	var memberId = $("#id").val();
+	$(document).ready(function() {
+	   
+	});
 	
 	$(document).ready(function(){
-			
+		
 		(function(){
 			$.getJSON("getAttachList",{postId:postId},function(arr){
 				var str="";
@@ -339,7 +347,8 @@ form {
 	 getPackageDetailInfoReview(postId, function(data) {
 		 appendPackageDetailInfoReview(data, postId);   
      });
-	 var maxReservation =parseInt('[[${info.maxReservation}]]');
+	 var maxReservation =parseInt('[[${info.maxReservation}]]') - parseInt('[[${info.nowReservation}]]');
+	 console.log(maxReservation)
 	 var countSelect = document.getElementById("select_count");
 	 for (var i = 0; i <= maxReservation; i++) {
 		 var option = document.createElement('option');
@@ -349,6 +358,17 @@ form {
      }
 	 
 	 $(window).on('load', function() {
+		// NiceSelect 초기화
+	    $('select').niceSelect();
+
+	    // NiceScroll 초기화
+	    $('.nice-select .list').niceScroll();
+
+	    // NiceSelect 업데이트
+	    $('select').niceSelect('update');
+	    
+	    // NiceScroll 다시 초기화 (업데이트 이후에 초기화해야 함)
+	    $('.nice-select .list').niceScroll();
 		 $(document).on('change','.nice-select', function() {
 				//var count = $(this).attr("data-value");
 				//var count = $(".current").text();
@@ -383,7 +403,6 @@ form {
 	 
 	 
 	 document.getElementById('question').addEventListener('click',function(){
-		 console.log("asdsad");
 		 location.href="/common/memberQueForm?productId="+'[[${info.postId}]]'
 	 })
 	 
@@ -394,36 +413,47 @@ form {
 	    document.getElementById('kakaoPay').addEventListener('click', function() {
 	        // 여기에 결제 페이지로 이동하는 코드 추가
 	        // 예를 들어, window.location.href = '결제페이지URL';
-	        let totalAmount = parseInt($("#totalPrice").text());
+	        let totalAmount = parseInt($(".finalPrice").text());
+	        console.log(totalAmount);
 	        let orderName = "[[ ${info.name} ]]";
 	        let postId = "[[ ${info.postId} ]]"
-	        let quantity = parseInt(document.getElementById('quantity').value);
-		     console.log(totalAmount)
-		     console.log(orderName)
-		     console.log(quantity)
-		     console.log(memberId)
+	        let quantity = parseInt($(".count").val());
+	        let nowReservation='[[${info.nowReservation}]]';
+	        let maxReservation='[[${info.maxReservation}]]';
+		    console.log(memberId)
 	        $.ajax({
 	        	type:'post',
-	        	url:'payment/ready',
+	        	url:'/common/payment/ready',
 	        	data:{
 	        		totalAmount: totalAmount,
 	        		orderName : orderName,
 	        		quantity : quantity,
 	        		postId: postId,
-	        		partnerUserId: memberId
+	        		partnerUserId: memberId,
+	        		nowReservation: nowReservation,
+	        		maxReservation: maxReservation
 	        	},
 	        	success:function(response){
 	        		location.href = response.next_redirect_pc_url
+	        	},
+	        	 error: function(jqXHR, textStatus, errorThrown) {
+	        	        // 오류 응답을 처리하는 코드
+	        	        let errorMessage = JSON.parse(jqXHR.responseText).message;
+	    	            if(errorMessage == 'no login') {
+	    	                alert('로그인을 해주세요.');
+	    	            } else {
+	        	            alert('신청할 인원 수를 선택해주세요');
+	        	        }	
 	        	}
 	        	
 	        });
 	    });
 	    
 	    document.getElementById('cartBtn').addEventListener('click',function(){
-	    	let totalAmount = parseInt($("#totalPrice").text());
+	    	let totalAmount = parseInt($(".finalPrice").text());
 	        let orderName = "[[ ${info.name} ]]";
 	        let postId = "[[ ${info.postId} ]]"
-	        let quantity = parseInt(document.getElementById('quantity').value);
+	        let quantity = parseInt($(".count").val());
 	    	
 	    	console.log(memberId);
 	    	$.ajax({
@@ -438,7 +468,16 @@ form {
 	    		},
 	    		success:function(message){
 	    			alert(message);
-	    		}
+	    		},
+	    		error: function(jqXHR, textStatus, errorThrown) {
+        	        // 오류 응답을 처리하는 코드
+	    			let errorMessage = JSON.parse(jqXHR.responseText).message;
+    	            if(errorMessage == 'no login') {
+    	                alert('로그인을 해주세요.');
+    	            } else {
+        	            alert('신청할 인원 수를 선택해주세요');
+        	        }		            
+        	}
 	    	});
 	    });
 	    
