@@ -27,6 +27,8 @@ public class BuyListVO {
 	private Integer pkPrice;
 	private String name;
 	private String tourTheme;
+	private String nowReservation;
+	private String maxReservation;
 	//sepcialties_resigt
 	private String type;
 	private String title;

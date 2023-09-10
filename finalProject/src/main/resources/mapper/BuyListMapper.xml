@@ -76,6 +76,8 @@
   	SELECT p.order_detail_id,
 			 			 p.post_id,
 			 			 p.member_id,
+			 			 r.max_reservation,
+			 			 r.now_reservation,
 			 			 p.quantity,
 			 			 p.price pu_price,
 			 			 p.specialty_type,
