@@ -22,10 +22,7 @@ form {
 	margin: 0 auto;
 }
 
-.input-group {
-    width: 700px; /* 파일 입력 필드와 버튼의 전체 너비 조절 */
-    
-}
+
 .img-thumbnail{
 	width:400px;
 	height:400px;
@@ -92,6 +89,46 @@ li {
     list-style-type: none;
 }
 
+table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    /* 미디어 쿼리 - 작은 화면에서 테이블 조정 */
+    @media (max-width: 768px) {
+      th, td {
+        display: block; /* 테이블 셀을 블록 요소로 변경 */
+        width: 100%; /* 전체 너비로 설정 */
+      }
+
+      /* th 요소에 추가적인 스타일 조정 (선택 사항) */
+      th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+    }
+     /* Flex 컨테이너 스타일 */
+    .select-container {
+      display: flex;
+      justify-content: space-between; /* 요소 간 여백을 최대화하여 나란히 정렬 */
+      align-items: center; /* 세로 중앙 정렬 */
+      margin-bottom: 20px;
+      width:10%;
+    }
+
+    /* 셀렉트 박스 스타일 */
+    select {
+      width: 45%; /* 각 셀렉트 박스의 너비를 조절 */
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
 </style>
 <!-- CKEditor -->
 <!-- <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script> -->
@@ -140,9 +177,9 @@ ClassicEditor
 		var formObj = $("#editorForm");
 		
 		//document.getElementById("editorForm").addEventListener("submit",function(event){
-		$("button[type='submit']").on("click",function(event){
+		$("input[type='button']").on("click",function(event){
 				
-			event.preventDefault();
+			event.stopPropagation();
 		 	var startDate2 = document.getElementById("startDate").value;
 		 	var endDate2 = document.getElementById("endDate").value;
 		 	var deadlineDate2 = document.getElementById("deadlineDate").value;
@@ -183,24 +220,20 @@ ClassicEditor
 	            
 			var str="";
 			const data = editor.getData();
-			
+		
 			let objData = serializeObject();
 			var sigunguCode = $("#location > option:selected").attr("value1");
 			var areaCode = $("#location > option:selected").attr("value2");
 			str+=`<input type='hidden' name='sigunguCode' value='${sigunguCode}'>
 				 <input type ='hidden' name = 'areaCode' value='${areaCode}'>`
+			
 			const { tourTheme, name, price, startDate, endDate, deadlineDate, maxReservation,writerId } = objData;
 			var combinedData={
 				content: data,
-				tourTheme: tourTheme,
-		        name: name,
-		        price: price,
-		        startDate: startDate,
-		        endDate: endDate,
-		        deadlineDate: deadlineDate,
-		        maxReservation: maxReservation,
-		        writerId : writerId
+			
 			};
+			
+			
 			var paths;
 			var resultPath;
 			$(".uploadResult ul li").each(function(i,obj){
@@ -213,11 +246,10 @@ ClassicEditor
 				pahts = jobj.data("path").split("/upload");
 				resultPath = pahts[0];
 			});
-			str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";
-			
+			str +="<input type='text' name='content' value='"+combinedData.content+"'>";
 			
 			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
-			
+			console.log(combinedData.content);
 			
 			
 			const filenames = imgTags.map(img=> {
@@ -245,20 +277,18 @@ ClassicEditor
 		    let packageEndDate = document.getElementsByName('endDate')[0];
 		    let packageDeadlineDate = document.getElementsByName('deadlineDate')[0];
 		    let packageMaxReservation = document.getElementsByName('maxReservation')[0];
-		    let packageContent = document.getElementsByName('content')[0];
-		    let packageTourTheme = document.getElementById('tourTheme')[0];
-		    let packageLocation = document.getElementById('location')[0];
+		    let packageContent = combinedData.content;
+		    let packageTourTheme = document.getElementsByName('tourTheme')[0];
+		    let packageLocation = document.getElementById('location').value;
 		    let packageImage = document.getElementsByName('mainImage')[0];
 		   
-	    
-		    /* if (!isIfExecuted) {
+		     if (!isIfExecuted) {
 			    if (packageImage.value == '') {
 				       alert('이미지를 업로드해주세요.')
 				       packageImage.focus();
-				       isIfExecuted=true;
 				       return;
 				    }
-		    } */
+		    } 
 		    if (packageName.value == '') {
 		       alert('타이틀을 입력해주세요.')
 		       packageName.focus();
@@ -290,33 +320,37 @@ ClassicEditor
 		       return;
 		    }
 		    
-		 /*    if (packageContent.value == '') {
-		       alert('내용을 입력해주세요.')
-		       packageContent.focus();
+		    if (packageContent == '') {
+		      	alert('내용을 입력해주세요.')
+		      	$(".ck .ck-content").focus();
+		      	return;
+		 	 } 
+		   
+		    if (packageLocation =='') {
+		       alert('여행 지역을 선택 해주세요.')
+		       packageLocation.focus();
 		       return;
-		    } */
-		    
-		   /*  if (packageLocation == '') {
-		        alert('여행 지역을 선택 해주세요.')
-		        packageLocation.focus();
-		        return;
-		     } */
-		    
-		  /*   if (packageTourTheme.value == '') {
-		        alert('여행 테마을 지정해주세요.')
-		        packageTourTheme.focus();
-		        return;
-		     } */
-
-			formObj.append(str);
+		    } 
+		   
+		    if (packageTourTheme.value == '') {
+		       alert('여행 테마을 지정해주세요.')
+		       packageTourTheme.focus();
+		       return;
+		    } 
+			
+		     
+			var star = confirm("등록 하시겠습니까?")
+			console.log(star)
 		    //등록하기 클릭 시 등록할지 여부를 확인
-		    if(confirm("등록 하시겠습니까?")){
-		       document.getElementById('editorForm').action = "/guide/register";
-		       document.getElementById('editorForm').submit();
-		       alert("등록 되었습니다.");
-		            return;
+		    if(star==true){
+		    	var formattedPrice = parseFloat($("#price").val().replace(/\,/g, '')); // 콤마 제거 및 숫자로 변환
+				document.getElementById("price").value=formattedPrice;
+		    
+		    	formObj.append(str);
+		        document.getElementById('editorForm').action = "/guide/register";
+		        document.getElementById('editorForm').submit();
+		        alert("등록 되었습니다.");
 		        }else{
-		              return;
 		        }
 					
 			
@@ -345,19 +379,18 @@ ClassicEditor
 		
 		return formObject;
 	}
-	var cloneObj = $(".uploadDiv").clone();
+	
 	
 	$(function(){
 		$("#uploadBtn").on('click',function(e){
 			e.preventDefault();
 			let imageData = new FormData();
-			
+			isIfExecuted=true;
 			let inputTag = document.querySelector('input[name="mainImage"]');
 			
 			let files = inputTag.files;
 			
 			for(let i=0; i<files.length; i++){
-				console.log(files[i]);
 				imageData.append("mainImage",files[i]);
 			}
 		
@@ -369,19 +402,22 @@ ClassicEditor
 				type:'POST',
 				dataType:'json',
 				success: function(result){
-					alert("성공");
-					
-					console.log(result);
-					
+					inputTag.value = '';
 					showUploadedFile(result);
-					
-					$(".uploadDiv").html(cloneObj.html());
+					/* var cloneObj = $(".uploadDiv").clone();
+					$(".uploadDiv").append(cloneObj.html()); */
 				}
 			});
 			//readURL(this);	
 		});
 	});
+	function appendUploadInput() {
+	    const cloneObj = $(".uploadDiv").clone();
+	    $(".uploadDiv").html(cloneObj.html());
+	}
 
+	// Call the function to append a new input initially
+	appendUploadInput();
 	/* document.getElementById("packageInfo").addEventListener("submit",function(event){
 		
 	}) */
@@ -408,7 +444,7 @@ ClassicEditor
 				//$(this).closest(li).load(window.location.href + "#div의 id");
 			}
 		})
-	})
+	});
 	
 	var uploadResult = $(".uploadResult ul");
 	
@@ -434,10 +470,6 @@ ClassicEditor
         $(this).val($(this).val().replace(/\,/g, '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,'));
    });
 	
-
-    
-
-
 	
 	
 });
@@ -445,11 +477,12 @@ ClassicEditor
 </head>
 <body>
 <div layout:fragment="content">
-<div id="ls" class="text-center" >
+<div id="ls" class="text-center container" >
 	<form method="post" id="editorForm" enctype="multipart/form-data" >
 		<div id="packageInfo" class="mb-3" style="margin-bottom: 20px;">
 		<input type="hidden" name="writerId" th:value="${session.sessionId}">
-			<div id="tourTheme" class="mb-3" style=" text-align: left;">
+		<div class="select-container">
+			<div id="tourTheme" class="mb-3" style="margin-left:5%; margin-right:5%;">
 				<select name="tourTheme" aria-label="Default select example">
 					<option value="맛집 투어">맛집 투어</option>
 					<option value="관광 명소 투어">관광 명소 투어</option>
@@ -457,12 +490,13 @@ ClassicEditor
 					<option value="도시 여행">도시 여행</option>
 				</select>	
 			</div>	
-			<div class="mb-3" style="display: inline-block; text-align: left; padding-right:80%;">
+			<div class="mb-3">
 				<select id="location">
 					<option value="">지역</option>
 					<option th:each = "a : ${area}"  th:value1="${a.sigunguCode}" th:value2="${a.areaCode}" th:text="${a.locationName}"></option>	
 				</select>
 			</div>
+		</div>
 			<div class="uploadResult">
 				<ul>
 				
@@ -470,44 +504,49 @@ ClassicEditor
 			</div>
 			<table class="table">
 				<tr>
-					<th style="text-align: left; width: 20%;">메인 이미지</th>
-					<td colspan="5">
-					<div class="uploadDiv input-group">
-						<input type="file" class="form-control" name="mainImage" id="mainImage" aria-describedby="inputGroupFileAddon03" aria-label="Upload" style="width:400px;" multiple/>
-						<button type="button" class="btn btn-outline-secondary" id ="uploadBtn">upload</button>
-					</div>
-					<td>
+					<th >메인 이미지</th>
+					<td colspan="4">
+						<div class="uploadDiv input-group">
+							<input type="file" class="form-control" name="mainImage" id="mainImage" aria-describedby="inputGroupFileAddon03" aria-label="Upload"  multiple/>
+							<button type="button" class="btn btn-outline-secondary" id ="uploadBtn" >upload</button>
+						</div>
+					</td>
 				</tr>
 				<tr>
-					<th style="text-align: left; width: 20%;">패키지명</th>
+					<td colspan="4">
+					
+					</td>
+				</tr>
+				<tr>
+					<th >패키지명</th>
 		            <td colspan="2">
-						<input type="text" style="width: 370px;" class="form-control" placeholder="패키지 명" name="name" id="name">
+						<input type="text"  class="form-control" placeholder="패키지 명" name="name" id="name">
 					</td>	
-					<th style="text-align: left; width: 20%;">패키지 가격</th>
+					<th >패키지 가격</th>
 					<td colspan="2">
-						<input type="text" style="width: 370px margin-left: 4px;;" class="form-control" placeholder="판매가" name="price" id="price">
+						<input type="text"  class="form-control" placeholder="판매가" name="price" id="price" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');">
 					</td>
 				</tr>
 				
 				<tr>
-					<th style="text-align: left; width: 20%;">여행 시작일</th>
+					<th >여행 시작일</th>
 					<td colspan="2" >
-	                    <input type="date" style="width: 370px;" id="startDate" name="startDate" size="30" class="form-control" >
+	                    <input type="date"  id="startDate" name="startDate" size="30" class="form-control" >
 	                </td>
-	                <th style="text-align: left; width: 20%;">여행 마지막일</th>
+	                <th >여행 마지막일</th>
 	          		<td colspan="2">
-	                     <input type="date" style="width: 450px; margin-left: 4px;" id="endDate" name="endDate" size="30" class="form-control">
+	                     <input type="date"  id="endDate" name="endDate" size="30" class="form-control">
 	                 </td>
 				</tr>
 				
 				<tr>
-					<th style="text-align: left; width: 20%;">모집 마감일</th>
+					<th >모집 마감일</th>
 	                <td colspan="5">
 	                	<input type="date"  name="deadlineDate" id="deadlineDate" class="form-control" />
 	                </td>
 				</tr>
 				<tr>
-				 	<th style="text-align: left; width: 20%;">모집 인원</th>
+				 	<th >모집 인원</th>
 	             	<td colspan="5">
 	             		<input type="number"  class="form-control" name ="maxReservation" id="maxReservation"/>
 	            	</td>
@@ -518,8 +557,8 @@ ClassicEditor
 		<div id="editor">
 		
 		</div>
-		<button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>
-		<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>
+		<input type="button" class="btn btn-primary mt-3 mx-2" value="작성완료" >
+		<button type="button" class="btn btn-secondary mt-3 mx-2" id="cancelBtn">작성취소</button>
 	</form>
 </div>
 </div>

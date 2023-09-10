@@ -407,6 +407,7 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
           else{
              orderName = orderElements[0] + ' 외 ' + (orderElements.length - 1) + '건';
           }      
+
            $.ajax({
                type:'post',
                url:'/common/payment/ready',
