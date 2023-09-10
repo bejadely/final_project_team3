@@ -80,9 +80,9 @@ body {
         	<form method="post" id="editorForm" enctype="multipart/form-data">
 				<input type="hidden" name="memberId" th:value="${session.sessionId}">
 				<input type="hidden" name="postId" th:value="${tripMateVO.postId}">
-        		<div class="mb-3" style="float: left; margin-right: 20px;">
+        		<div class="mb-3"  style="float: left; margin-right: 20px;">
         			<select class="" id="tripArea" name="tripArea" aria-label="Default select example" th:value="${tripMateVO.tripArea}" >
-						<option value="" selected="selected">여행 지역</option>
+						<option value="">여행 지역</option>
 						<option value="대구">대구</option>
 						<option value="부산">부산</option>
 						<option value="포항">포항</option>
@@ -95,14 +95,18 @@ body {
         		</div>
         		<div class="mb-3" style="float: left; margin-right: 20px;" >
         			<select class="" id="mateStyle" name="mateStyle" aria-label="Default select example" th:value="${tripMateVO.mateStyle}">
-						<option value="" selected="selected">여행 스타일</option>
+						<option value="">여행 스타일</option>
+						<th:block th:each="mStyle : ${codeList}">
+						<option th:value="${mStyle.detailCode}">[[${mStyle.value}]]</option>
+						<!-- <option value="">여행 스타일</option>
 						<option value="J1">계획적인 여행</option>
 						<option value="J2">자유로운 여행</option>
 						<option value="J3">역사 탐방</option>
 						<option value="J4">맛집 탐방</option>
 						<option value="J5">드라이브 여행</option>
 						<option value="J6">배낭 여행</option>
-						<option value="J7">기타</option>
+						<option value="J7">기타</option>  -->
+						</th:block>
 					</select>
         		</div>
         		<div> 
@@ -160,23 +164,24 @@ body {
                    		</tr>
 					</table>
 					<div class="uploadResult">
-				<ul>
+						<ul>
 					
-				</ul>
-			</div>
+						</ul>
+					</div>
 					<div id="editor">
 						<th:textarea th:utext="${tripMateVO.mateContent}"></th:textarea>
 					</div>
         		</div>
-        		<div>
-        			<button type="submit" class="btn btn-primary mt-3 mx-2" value="수정" >수정</button>&nbsp;&nbsp;
+        		<div style="margin-bottom: 20px;">
+        			<button type="button" id="modifyMate" class="btn btn-primary mt-3 mx-2" value="수정" >수정</button>&nbsp;&nbsp;
 					<input type="button" class="btn btn-secondary mt-3 mx-2" value="취소" id="cancelBtn"/>&nbsp;&nbsp;
-					<button type="button" class="btn btn-primary mt-3 mx-2" onclick="location.href='tripMateList'">이전으로</button>
+					<button type="button" class="btn btn-primary mt-3 mx-2" onclick="history.back()">이전으로</button>
         		</div>
         	</form>
         </div>
 	</div>
 	<script>
+	$(document).ready(function() {	
 		//현재 날짜 계산
 		document.getElementById('now_date').value = new Date().toISOString().substring(0, 10);
 		
@@ -195,11 +200,47 @@ body {
 	    
 	    var postId = '[[${tripMateVO.postId}]]'
 		
-		
-		$(document).ready(function() {	
+	    //등록했던 여행지역 default로 띄워주기	
+	    function setTripArea(){
+	    			
+	    	// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
+	    	let defaultStatus = "[[${tripMateVO.tripArea}]]";
+	    	
+	    	// 포항
+	    	console.log(defaultStatus);
+	    	
+	    	 // 우리가 실제로 만든 셀렉트 박스의 option을 selected 설정
+	        $('#tripArea').val(defaultStatus).prop("selected", true);
+	        
+	        // 우리가 실제로 만든 셀렉트 박스의 변경값을 나이스 셀렉트 박스에 업데이트
+	         $('select').niceSelect('update');
+	    	
+	    }
+	    
+	    function setMateStyle(){
+			
+	    	// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
+	    	let defaultStatus = "[[${tripMateVO.mateStyle}]]";
+	    	
+	    	// 포항
+	    	console.log(defaultStatus);
+	    	
+	    	 // 우리가 실제로 만든 셀렉트 박스의 option을 selected 설정
+	        $('#mateStyle').val(defaultStatus).prop("selected", true);
+	        
+	        // 우리가 실제로 만든 셀렉트 박스의 변경값을 나이스 셀렉트 박스에 업데이트
+	         $('select').niceSelect('update');
+	    	
+	    }
+	    
 			
 			var paths;
 			var resultPath;
+			
+			//여행 지역
+			setTripArea();
+			//여행 스타일
+			setMateStyle();
 			
 			ClassicEditor
 			.create(document.querySelector('#editor'), {
@@ -239,7 +280,7 @@ body {
 		
 		var formObj = $("#editorForm");
 		
-		$("button[type='submit']").on("click",function(event){
+		$("#modifyMate").on("click",function(event){
 				
 			event.preventDefault();
 	
@@ -292,8 +333,6 @@ body {
 				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='"+resultPath+obj+"'>";
 			});
 			
-			formObj.append(str);
-			
 			// 등록 시 필수 항목이 미작성 되어있으면 alert 후 focuse로 해당 위치로 보내줌
 			let metTitle = document.getElementsByName('mateTitle')[0];
 			let metExpense = document.getElementsByName('mateExpense')[0];
@@ -301,7 +340,7 @@ body {
 			let metEndDay = document.getElementsByName('endDay')[0];
 			let metDeadline = document.getElementsByName('deadline')[0];
 			let metMateMax = document.getElementsByName('mateMax')[0];
-			let metContent = document.getElementsByName('mateContent')[0];
+			let metContent = combinedData.mateContent;
 			let metTripArea = document.getElementsByName('tripArea')[0];
 	        let metStyle = document.getElementsByName('mateStyle')[0];
 			
@@ -355,6 +394,7 @@ body {
 			
 			//등록하기 클릭 시 등록할지 여부를 확인
 			if(confirm("수정 하시겠습니까?")){
+				formObj.append(str);
 				document.getElementById('editorForm').action = "/common/mateRecruitUpdate";
 				document.getElementById('editorForm').submit();
 				alert("수정 되었습니다.");
@@ -465,6 +505,9 @@ body {
 			uploadResult.append(str);
 		});
 	})();
+	
+	
+	
 	
 	
 	
