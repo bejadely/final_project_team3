@@ -185,6 +185,42 @@ public class MemberServiceImpl implements MemberService {
 			
 			return memberMapper.singleLogin(vo);
 		}
+
+		@Override
+		public String passwordVerify(MemberVO memberVO) {
+			
+			// 비교할 암호 암호화 //fldkjsklfj
+			String plainPassword = memberVO.getPassword();
+			MemberVO result = memberMapper.passwordVerify(memberVO);
+			
+			boolean a = passwordEncoder.matches(plainPassword, result.getPassword());
+			if(a == true) {
+				return "true";
+			}else {
+				return "false";
+			}
+			
+			
+//			// 비교할 회원 정보 DB에서 호출 // flsddjsfdkj
+//			
+//			System.out.println("password 1: " + encodePassword);
+//			System.out.println("password 2: " + result.getPassword());
+//			
+//			// 호출한 회원정보와 비교할 암호화된 암호 비교
+//			if(result.getPassword().equals(encodePassword)) {
+//				return "success";
+//			} else {
+//				return "fail";
+//			}
+			
+//			if(result == 1) {
+//				return "success";
+//			} else {
+//				return "fail";
+//			}
+		}
+		
+		
 		
 	
 

@@ -123,21 +123,31 @@
 					    cancelButtonText: '확인',
 					    reverseButtons: true,
 		    		})
-		    	}else if(firstResult.value != [[${memberInfo.password}]]){
-		    		console.log(firstResult.value)
-		    		console.log([[${memberInfo.password}]])
-			        Swal.fire({
-			        	title: '비밀번호가 다릅니다 \n 비밀번호를 다시 입력해주세요',
-					    icon: 'warning',
-					    confirmButtonText: '확인',
-					    showCancelButton: false,
-					    confirmButtonColor: '#3085d6',
-					    cancelButtonColor: '#d33',
-					    cancelButtonText: '확인',
-					    reverseButtons: true,
-			        })
-		    	}else{
-		    		location.href="/common/myPageUpdate?memberId = "+[[${memberInfo.memberId}]]
+		    	}else {
+		    		obj = {memberId : [[${memberInfo.memberId}]],
+		    			   password : firstResult.value }
+		    		$.ajax({
+		                url: '/common/passwordVerify',
+		                type: 'post',
+		                data:obj
+		                
+		            }).done(data => {
+		            	if(data == "false"){
+					        Swal.fire({
+					        	title: '비밀번호가 다릅니다 \n 비밀번호를 다시 입력해주세요',
+							    icon: 'warning',
+							    confirmButtonText: '확인',
+							    showCancelButton: false,
+							    confirmButtonColor: '#3085d6',
+							    cancelButtonColor: '#d33',
+							    cancelButtonText: '확인',
+							    reverseButtons: true,
+					        })
+				    	}else{
+				    		location.href="/common/myPageUpdate?memberId = "+[[${memberInfo.memberId}]]
+				    	}
+		            	
+		            }).fail(reject => console.log(reject));
 		    	}
 		    }
 		    })		 
@@ -172,54 +182,67 @@
 					    cancelButtonText: '확인',
 					    reverseButtons: true,
 		    		})
-		    	}else if(firstResult.value != [[${memberInfo.password}]]){
-			        Swal.fire({
-			        	title: '비밀번호가 다릅니다 \n 비밀번호를 다시 입력해주세요',
-					    icon: 'warning',
-					    confirmButtonText: '확인',
-					    showCancelButton: false,
-					    confirmButtonColor: '#3085d6',
-					    cancelButtonColor: '#d33',
-					    cancelButtonText: '확인',
-					    reverseButtons: true,
-			        })
-		    	}else{
-		    		Swal.fire({
-						showCancelButton: true,
-						confirmButtonText: '확인',
-						cancelButtonText: '취소',
-					    reverseButtons: true,
-						input: 'text',
-						title:'탈퇴하시겠습니까?',
-						inputLabel: '탈퇴 하시면 다시 가입하실수 없습니다. \n 탈퇴를 원하시면 탈퇴하기를 입력해주세요',
-						inputPlaceholder: '탈퇴하기',
-						inputAttributes: {
-							maxlength: 150,
-							autocaptitalize: 'off',
-							autocorrect: 'off',
-							id: 'inputReason',
-						}
-				    }).then((secondResult) => {
-				    	console.log(secondResult)
-				    	if(secondResult.dismiss != 'cancel'){
-				    		if(secondResult.value != "탈퇴하기"){
-				    			Swal.fire({
-						        	title: '입력 구문이 다릅니다.',
-								    icon: 'warning',
-								    confirmButtonText: '확인',
-								    showCancelButton: false,
-								    confirmButtonColor: '#3085d6',
-								    cancelButtonColor: '#d33',
-								    cancelButtonText: '확인',
-								    reverseButtons: true,
-						        })
-				    		}else{
-				    			$("#delete").submit();
-				    	}
-				    	}
-				    })
-				    	
-				    }
+		    	}else {
+		    		obj = {memberId : [[${memberInfo.memberId}]],
+			    			   password : firstResult.value }
+		    		$.ajax({
+		                url: '/common/passwordVerify',
+		                type: 'post',
+		                data:obj
+		                
+		            }).done(data => {
+			    		if(data == "false"){
+					        Swal.fire({
+					        	title: '비밀번호가 다릅니다 \n 비밀번호를 다시 입력해주세요',
+							    icon: 'warning',
+							    confirmButtonText: '확인',
+							    showCancelButton: false,
+							    confirmButtonColor: '#3085d6',
+							    cancelButtonColor: '#d33',
+							    cancelButtonText: '확인',
+							    reverseButtons: true,
+					        })
+				    	}else{
+				    		Swal.fire({
+								showCancelButton: true,
+								confirmButtonText: '확인',
+								cancelButtonText: '취소',
+							    reverseButtons: true,
+								input: 'text',
+								title:'탈퇴하시겠습니까?',
+								inputLabel: '탈퇴 하시면 다시 가입하실수 없습니다. \n 탈퇴를 원하시면 탈퇴하기를 입력해주세요',
+								inputPlaceholder: '탈퇴하기',
+								inputAttributes: {
+									maxlength: 150,
+									autocaptitalize: 'off',
+									autocorrect: 'off',
+									id: 'inputReason',
+								}
+						    }).then((secondResult) => {
+						    	console.log(secondResult)
+						    	if(secondResult.dismiss != 'cancel'){
+						    		if(secondResult.value != "탈퇴하기"){
+						    			Swal.fire({
+								        	title: '입력 구문이 다릅니다.',
+										    icon: 'warning',
+										    confirmButtonText: '확인',
+										    showCancelButton: false,
+										    confirmButtonColor: '#3085d6',
+										    cancelButtonColor: '#d33',
+										    cancelButtonText: '확인',
+										    reverseButtons: true,
+								        })
+						    		}else{
+						    			$("#delete").submit();
+						    	}
+						    	}
+						    })
+						    	
+						    }
+		            	
+		            }).fail(reject => console.log(reject));
+		    		
+		    	}
 		    	}
 		})
 	})
