@@ -17,7 +17,7 @@
 				<tbody>
 					<tr>
 						<th>국적</th>
-						<td class="filterNationality">
+						<td class="filterNationality" style="text-align: left;">
 							<a role="button">대한민국</a>
 							<a role="button">일본</a>
 							<a role="button">중국</a>
@@ -34,7 +34,7 @@
 					</tr>
 					<tr>
 						<th>회원분류</th>
-						<td class="filterAuthority">
+						<td class="filterAuthority" style="text-align: left;">
 							<th:block th:each="a : ${authCodeList}">
 								<a role="button" th:data-auth="${a.detailCode}">[[${a.value}]]</a>							
 							</th:block>

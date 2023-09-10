@@ -170,9 +170,8 @@
 	
 	// 마우스 오버 : 색상 옅게
 	function colorBrighter(event){
-		$(event.currentTarget).css({background: '#eef2f8'})
+		$(event.currentTarget).css({background: '#efefef'})
 		  					  .css({cursor: 'pointer'})
-		  					  .css({color: '#012970'})
 		  					  .css({fontWeight: 'bold'});
 	}
 	
