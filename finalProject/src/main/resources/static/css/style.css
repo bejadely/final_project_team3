@@ -76,10 +76,15 @@ img {
 input:focus, select:focus, button:focus, textarea:focus {
 	outline: none;
 }
+
+.top-nav a{
+	text-decoration: none;
+}
+
 a:hover, a:focus {
 	text-decoration: none;
 	outline: none;
-	color: #fff;
+	color: #2cbdb8;
 }
 ul, ol {
 	padding: 0;
