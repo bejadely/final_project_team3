@@ -54,7 +54,7 @@ public interface NoticeMapper {
 	//이벤트 제목으로 게시글 검색
 	public List<NoticeVO> searchByNoticeByTitle2n(NoticeVO noticeVO,PagingVO pagingVO);
 	
-	
+	public void noticeDelete(NoticeVO vo);
 	
 	public int boardUpdate(NoticeVO vo);
 	
