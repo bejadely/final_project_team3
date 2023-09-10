@@ -8,7 +8,7 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 
-<title>문의사항</title>
+<title>환불 목록</title>
 <style type="text/css">
 .hidden{
 	border: none;
@@ -21,11 +21,11 @@
 <script>
 $(document).ready(function() {
 	$("#pk").click(function() {
-		location.href="/common/buyPkList"	
+		location.href="/common/refundPkList"	
 	})
 
 	$("#sp").click(function() {
-		location.href="/common/buySpList"
+		location.href="/common/refundSpList"
 	})
     $('.reportInfo').on('mouseover', colorDarker)
 					.on('mouseleave', colorReset)
@@ -49,36 +49,38 @@ $(event.currentTarget).css({background: '#ffffff'});
 	<div layout:fragment="content">
 	<div class="table-responsive">
 	<form>
-		<h5>구매 목록</h5>
+		<h5>환불 목록</h5>
 		<br>
      	<div class="radioButton">
 	         <div class="bt-item">
-	            <input type="radio" name="s-type" id="pk">
+	            <input type="radio" name="s-type" id="pk" checked>
 	            <label for="pk">패키지</label>
 	         </div>
 	         <div class="bt-item">
-	            <input type="radio" name="s-type" id="sp" checked>
+	            <input type="radio" name="s-type" id="sp">
 	            <label for="sp">특산물</label>
 	         </div>
       	</div>
 		<table class="table">
 			<thead>
 				<tr>
-					<th>이름</th>
+					<th>타이틀</th>
+					<th>여행날짜</th>
+					<th>마감날짜</th>
+					<th>여행테마</th>
+					<th>모집완료 여부</th>
 					<th>가격</th>
-					<th>옵션</th>
-					<th>갯수</th>
-					<th>총 구매가격</th>
 				</tr>
 			</thead>
 			<tbody>
 				<th:block th:each="li : ${list}">
-					<tr class="reportInfo" th:onclick="|location.href='@{/common/buySpSelect(orderDetailId=${li.orderDetailId})}'|">
-						<td th:text="${li.title}"></td>
-						<td th:text="${li.price}"></td>
-						<td th:text="${li.specialtyType}"></td>
-						<td th:text="${li.quantity}"></td>
-						<td th:text="${li.price * li.quantity}"></td>
+					<tr class="reportInfo" th:onclick="|location.href='@{/common/buyPkSelect(orderDetailId=${li.orderDetailId})}'|">
+						<td th:text="${li.name}"></td>
+						<td th:text="${#dates.format(li.startDate, 'yyyy-MM-dd')} + '~' + ${#dates.format(li.endDate, 'yyyy-MM-dd')}"></td>
+						<td th:text="${#dates.format(li.deadlineDate, 'yyyy-MM-dd')}"></td>
+						<td th:text="${li.tourTheme}"></td>
+						<td th:text="${li.completion}"></td>
+						<td th:text="${li.pkPrice}"></td>
 					</tr>
 				</th:block>
 			</tbody>
@@ -87,11 +89,11 @@ $(event.currentTarget).css({background: '#ffffff'});
 		</div>
 		<div class="property-pagination">
 			<th:block th:if="${paging.startPage != 1}">
-				<a th:href="@{/common/buySpList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
+				<a th:href="@{/common/refundPkList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
 			</th:block>
 			<th:block th:if="${paging.startPage != 1}">
 				<a
-					th:href="@{/common/buySpList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+					th:href="@{/common/refundPkList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 			</th:block>
 			<th:block
 				th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
@@ -100,17 +102,17 @@ $(event.currentTarget).css({background: '#ffffff'});
 				</th:block>
 				<th:block th:if="${p ne paging.nowPage and p > 0}">
 					<a
-						th:href="@{/common/buySpList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
+						th:href="@{/common/refundPkList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
 						th:text="${p}"></a>
 				</th:block>
 			</th:block>
 			<th:block th:if="${paging.endPage != paging.lastPage and paging.lastPage > 5}">
 				<a
-					th:href="@{/common/buySpList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					th:href="@{/common/refundPkList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 			</th:block>
 			<th:block th:if="${paging.endPage != paging.lastPage and paging.lastPage > 5}">
 				<a
-					th:href="@{/common/buySpList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
+					th:href="@{/common/refundPkList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
 			</th:block>
 		</div>
 	</div>

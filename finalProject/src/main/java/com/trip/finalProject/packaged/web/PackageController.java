@@ -217,6 +217,7 @@ public class PackageController {
 	
 	@GetMapping("/guide/packageDetail")
 	public String guidePacDetail(Model model, PackageVO pacVO) {
+		System.out.println("pacapc : " + pacVO);
 		PackageVO findVO = packageService.guidePacInfo(pacVO);
 		List<PackageVO> memberList = packageService.pacMember(pacVO);
 		model.addAttribute("member", memberList);

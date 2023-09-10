@@ -4,90 +4,98 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="@{layouts/myPage_layout}">
 <head>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@alphardex/aqua.css/dist/aqua.min.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/@alphardex/aqua.css/dist/aqua.min.css">
 </head>
 <!-- Content -->
 <div layout:fragment="content">
-		<div class="container">
-			<form action="/admin/modifyMemberInfoForm" th:object="${memberInfo}" method="post">
-				<h5><b>회원정보 상세 조회</b></h5>
-				<br><br>
-				<div class="table-responsive">
-					<h6>기본정보</h6>
-					<br>
-					<table id="defaultInfo" class="table">
-						<tbody>
-							<tr>
-								<th width="150" align="center">아이디</th>
-								<td width="400" align="center" th:text="*{memberId}"></td>
-								<th width="150" align="center">가입일자</th>
-								<td width="400" align="center" th:text="*{#strings.substring(signUpDate,0,10)}"></td>
-							</tr>
-							<tr>
-								<th width="150" align="center">이름</th>
-								<td width="400" align="center" th:text="*{memberName}"></td>
-							</tr>
-							<tr>
-								<th width="150" align="center">성별</th>
-								<td width="400" align="center" th:text="*{gender}"></td>
-								<th width="150" align="center">생년월일</th>
-								<td width="400" align="center" th:text="*{#strings.substring(birthDate,0,10)}"></td>
-							</tr>
-							<tr>
-								<th width="150" align="center">국적</th>
-								<td width="400" align="center" th:text="*{nationality}"></td>
-								<th width="150" align="center">제재횟수</th>
-								<td width="400" align="center" th:text="*{punishCount}"></td>
-							</tr>
-							<tr>
-								<th width="150" align="center">주소</th>
-								<td colspan="3" width="400" align="center" th:utext="|(*{zipCode}) <br> *{address} *{addressDetail}|"></td>
-							</tr>
-							<tr>
-								<th width="150" align="center">이메일</th>
-								<td width="400" align="center" th:text="*{email}"></td>
-								<th width="150" align="center">연락처</th>
-								<td width="400" align="center" th:text="*{phoneNumber}"></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<br><br>
-				<div class="table-responsive" th:if="${session.sessionAuthority == 'A2'}">
-					<h6>계좌정보</h6>
-					<br>
-					<table id="accountInfo" class="table">
-						<tbody>
-							<tr>
-								<th width="150" align="center">은행명</th>
-								<td width="400" align="center" th:text="*{bankCode}"></td>
-								<th width="150" align="center">예금주</th>
-								<td width="400" align="center" th:text="*{memberName}"></td>
-							</tr>
-							<tr>
-								<th width="150" align="center">계좌번호</th>
-								<td colspan="3" width="400" align="center" th:text="*{accountNumber}"></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div>
-					<input type="hidden" name="memberId" th:value="*{memberId}">
-				</div>
-				<div align="center">
-					<button type="button" class="feature-btn" id="correction">수정하기</button>
-					<button type="button" class="feature-btn">탈퇴처리</button>
-				</div>
-			</form>
-		</div>
-	
+	<div class="container">
+		<form id="delete" th:object="${memberInfo}" method="post" action="/common/deleteData">
+			<h5>
+				<b>회원정보 상세 조회</b>
+			</h5>
+			<br>
+			<br>
+			<div class="table-responsive">
+				<h6>기본정보</h6>
+				<br>
+				<table id="defaultInfo" class="table">
+					<tbody>
+						<tr>
+							<th width="150" align="center">아이디</th>
+							<td width="400" align="center" th:text="*{memberId}"></td>
+							<th width="150" align="center">가입일자</th>
+							<td width="400" align="center"
+								th:text="*{#strings.substring(signUpDate,0,10)}"></td>
+						</tr>
+						<tr>
+							<th width="150" align="center">이름</th>
+							<td width="400" align="center" th:text="*{memberName}"></td>
+						</tr>
+						<tr>
+							<th width="150" align="center">성별</th>
+							<td width="400" align="center" th:text="*{gender}"></td>
+							<th width="150" align="center">생년월일</th>
+							<td width="400" align="center"
+								th:text="*{#strings.substring(birthDate,0,10)}"></td>
+						</tr>
+						<tr>
+							<th width="150" align="center">국적</th>
+							<td width="400" align="center" th:text="*{nationality}"></td>
+							<th width="150" align="center">제재횟수</th>
+							<td width="400" align="center" th:text="*{punishCount}"></td>
+						</tr>
+						<tr>
+							<th width="150" align="center">주소</th>
+							<td colspan="3" width="400" align="center"
+								th:utext="|(*{zipCode}) <br> *{address} *{addressDetail}|"></td>
+						</tr>
+						<tr>
+							<th width="150" align="center">이메일</th>
+							<td width="400" align="center" th:text="*{email}"></td>
+							<th width="150" align="center">연락처</th>
+							<td width="400" align="center" th:text="*{phoneNumber}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<br>
+			<br>
+			<div class="table-responsive"
+				th:if="${session.sessionAuthority == 'A2'}">
+				<h6>계좌정보</h6>
+				<br>
+				<table id="accountInfo" class="table">
+					<tbody>
+						<tr>
+							<th width="150" align="center">은행명</th>
+							<td width="400" align="center" th:text="*{bankCode}"></td>
+							<th width="150" align="center">예금주</th>
+							<td width="400" align="center" th:text="*{memberName}"></td>
+						</tr>
+						<tr>
+							<th width="150" align="center">계좌번호</th>
+							<td colspan="3" width="400" align="center"
+								th:text="*{accountNumber}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div>
+				<input type="hidden" name="memberId" th:value="*{memberId}">
+			</div>
+			<div align="center">
+				<button type="button" class="feature-btn" id="correction">수정하기</button>
+				<button type="button" class="feature-btn" id="secession">탈퇴하기</button>
+			</div>
+		</form>
+	</div>
+
 	<script th:inline="javascript" type="text/javascript">
 	
 	$(document).ready(function() {
 		$("#correction").click(function(e){
-
 			e.stopPropagation();
-			
 			Swal.fire({
 				showCancelButton: true,
 				confirmButtonText: '확인',
@@ -103,8 +111,8 @@
 					id: 'inputReason',
 				}
 		    }).then((firstResult) => {
+		    	if(firstResult.dismiss != 'cancel'){
 		    	if(firstResult.value == ""){
-		    		console.log(firstResult);
 		    		Swal.fire({
 			        	title: '비밀번호를 입력하세요',
 					    icon: 'warning',
@@ -115,9 +123,57 @@
 					    cancelButtonText: '확인',
 					    reverseButtons: true,
 		    		})
-		    	}else if(firstResult.value != [[${memberInfo.password}]]){
-			        Swal.fire({
-			        	title: '비밀번호가 다릅니다 \n 비밀번호를 다시 입력해주세요',
+		    	}else {
+		    		obj = {memberId : [[${memberInfo.memberId}]],
+		    			   password : firstResult.value }
+		    		$.ajax({
+		                url: '/common/passwordVerify',
+		                type: 'post',
+		                data:obj
+		                
+		            }).done(data => {
+		            	if(data == "false"){
+					        Swal.fire({
+					        	title: '비밀번호가 다릅니다 \n 비밀번호를 다시 입력해주세요',
+							    icon: 'warning',
+							    confirmButtonText: '확인',
+							    showCancelButton: false,
+							    confirmButtonColor: '#3085d6',
+							    cancelButtonColor: '#d33',
+							    cancelButtonText: '확인',
+							    reverseButtons: true,
+					        })
+				    	}else{
+				    		location.href="/common/myPageUpdate?memberId = "+[[${memberInfo.memberId}]]
+				    	}
+		            	
+		            }).fail(reject => console.log(reject));
+		    	}
+		    }
+		    })		 
+		})
+		
+		$("#secession").click(function(e){
+			e.stopPropagation();
+			Swal.fire({
+				showCancelButton: true,
+				confirmButtonText: '확인',
+				cancelButtonText: '취소',
+			    reverseButtons: true,
+				input: 'password',
+				inputLabel: '비밀번호',
+				inputPlaceholder: '비밀번호를 입력해주세요.',
+				inputAttributes: {
+					maxlength: 150,
+					autocaptitalize: 'off',
+					autocorrect: 'off',
+					id: 'inputReason',
+				}
+		    }).then((firstResult) => {
+		    	if(firstResult.dismiss != 'cancel'){
+		    	if(firstResult.value == ""){
+		    		Swal.fire({
+			        	title: '비밀번호를 입력하세요',
 					    icon: 'warning',
 					    confirmButtonText: '확인',
 					    showCancelButton: false,
@@ -125,12 +181,71 @@
 					    cancelButtonColor: '#d33',
 					    cancelButtonText: '확인',
 					    reverseButtons: true,
-			        })
-		    	}else{
-		    		location.href="/common/myPageUpdate?memberId = "+[[${memberInfo.memberId}]]
+		    		})
+		    	}else {
+		    		obj = {memberId : [[${memberInfo.memberId}]],
+			    			   password : firstResult.value }
+		    		$.ajax({
+		                url: '/common/passwordVerify',
+		                type: 'post',
+		                data:obj
+		                
+		            }).done(data => {
+			    		if(data == "false"){
+					        Swal.fire({
+					        	title: '비밀번호가 다릅니다 \n 비밀번호를 다시 입력해주세요',
+							    icon: 'warning',
+							    confirmButtonText: '확인',
+							    showCancelButton: false,
+							    confirmButtonColor: '#3085d6',
+							    cancelButtonColor: '#d33',
+							    cancelButtonText: '확인',
+							    reverseButtons: true,
+					        })
+				    	}else{
+				    		Swal.fire({
+								showCancelButton: true,
+								confirmButtonText: '확인',
+								cancelButtonText: '취소',
+							    reverseButtons: true,
+								input: 'text',
+								title:'탈퇴하시겠습니까?',
+								inputLabel: '탈퇴 하시면 다시 가입하실수 없습니다. \n 탈퇴를 원하시면 탈퇴하기를 입력해주세요',
+								inputPlaceholder: '탈퇴하기',
+								inputAttributes: {
+									maxlength: 150,
+									autocaptitalize: 'off',
+									autocorrect: 'off',
+									id: 'inputReason',
+								}
+						    }).then((secondResult) => {
+						    	console.log(secondResult)
+						    	if(secondResult.dismiss != 'cancel'){
+						    		if(secondResult.value != "탈퇴하기"){
+						    			Swal.fire({
+								        	title: '입력 구문이 다릅니다.',
+										    icon: 'warning',
+										    confirmButtonText: '확인',
+										    showCancelButton: false,
+										    confirmButtonColor: '#3085d6',
+										    cancelButtonColor: '#d33',
+										    cancelButtonText: '확인',
+										    reverseButtons: true,
+								        })
+						    		}else{
+						    			$("#delete").submit();
+						    	}
+						    	}
+						    })
+						    	
+						    }
+		            	
+		            }).fail(reject => console.log(reject));
+		    		
 		    	}
-		    })		 
+		    	}
 		})
+	})
 	})
 	
 	</script>

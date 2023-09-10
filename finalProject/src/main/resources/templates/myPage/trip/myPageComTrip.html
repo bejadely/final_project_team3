@@ -99,14 +99,14 @@
 		       window.location.href = prevPageUrl; // 자동으로 이동
 		   }
 		   
-		   $('.toggle input[type="checkbox"]').on('click', function() {
+		   $('.toggle input[type="checkbox"]').on('click', function(e) {
 		        var isChecked = $(this).prop('checked'); // 클릭한 토글의 체크 상태 가져오기
 		        var postId = $(this).val();
 		        var tripDisclose = '';
 		        if(isChecked == true){
-		        	tripDisclose = '01';
+		        	tripDisclose = 'O1';
 		        }else if(isChecked == false){
-		        	tripDisclose = '02';
+		        	tripDisclose = 'O2';
 		        }
 		        
 		        let obj={
@@ -115,7 +115,7 @@
 		        }
 		        
 		        $.ajax({
-		        	url:'/discloseUpdate',
+		        	url:'/common/discloseUpdate',
 		        	type: 'post',
 		        	data : obj
 		        	}).done(data => {
@@ -128,6 +128,7 @@
 		        } else {
 		            row.removeClass('checked'); // 체크 해제되었을 경우 해당 행에서 클래스 제거
 		        }
+		        
 		    });
 		    $('.reportInfo').on('mouseover', colorDarker)
 			.on('mouseleave', colorReset)
@@ -150,16 +151,27 @@
 	<div layout:fragment="content">
 		<section>
 		<div class="table-responsive">
-			<div>
-				<button type="button" onclick="pageChange('my')">나의 여행 계획</button>
-				<button type="button" onclick="pageChange('com')">완료된 여행</button>
-				<button type="button" onclick="pageChange('not')">임시저장 한 파일</button>
-			</div>
+		<br>
+     	<div class="radioButton">
+	         <div class="bt-item">
+	            <input type="radio" name="s-type" onclick="pageChange('my')" id="my">
+	            <label for="my">미완료 여행</label>
+	         </div>
+	         <div class="bt-item">
+	            <input type="radio" name="s-type" onclick="pageChange('com')" id="com" checked>
+	            <label for="com">완료된 여행</label>
+	         </div>
+	         <div class="bt-item">
+	            <input type="radio" name="s-type" onclick="pageChange('not')" id="not">
+	            <label for="not">임시저장</label>
+	         </div>
+      	</div>
 			<!-- 여행기록 section-->
 			<table class="table">
 				<thead>
 					<tr> 
 						<th>제목</th>
+						<th>여행 날짜</th>
 						<th style="width: 15%;">수정</th>
 						<th style="width: 15%;">삭제</th>
 						<th style="width: 15%;">공개여부</th>
@@ -167,15 +179,18 @@
 				</thead>
 				<tbody>
 					<th:block th:each="trip : ${tripList}">
-						<tr class="reportInfo" >
-							<td th:text="${trip.tripTitle}" th:onclick="|location.href='@{/tripRecordInfo(postId=${trip.postId})}'|">
+						<tr class="reportInfo">
+							<td th:text="${trip.tripTitle}"  th:onclick="|location.href='@{/tripRecordInfo(postId=${trip.postId})}'|">
 								<input type="hidden" th:value="${trip.postId}" >
+							</td>
+							<td  th:onclick="|location.href='@{/tripRecordInfo(postId=${trip.postId})}'|">
+								[[${#dates.format(trip.startDay, 'yy년 MM월 dd일')}]] ~ [[${#dates.format(trip.endDay, 'yy년 MM월 dd일')}]]
 							</td>
 							<td  style="width: 15%;"><button type="button" class="feature-btn">수정</button></td>
 							<td  style="width: 15%;"><button type="button" class="feature-btn">삭제</button></td>
 	    					<td class="toggle">
 				                <input type="checkbox" th:id="'toggle_' + ${trip.postId}" name="toggle1" th:value="${trip.postId}" 
-	                   					th:checked="${trip.tripDisclose == '01'}">
+	                   					th:checked="${trip.tripDisclose == 'O1'}">
 				                <label th:for="'toggle_' + ${trip.postId}"></label>
 				            </td>
 						</tr>

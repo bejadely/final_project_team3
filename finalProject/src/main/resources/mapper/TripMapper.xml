@@ -8,7 +8,9 @@
  		SELECT COUNT(*)
  		FROM trip_record
  		WHERE trip_save = 'T2' 
-			AND trip_disclose = '01'
+			AND trip_disclose = 'O1'
+			OR trip_save = 'T3'
+			AND trip_disclose = 'O1'
  	</select>
  	
  	<!-- 여행기록 전체조회 아이디 -->
@@ -16,7 +18,10 @@
  		SELECT COUNT(*)
  		FROM trip_record
  		WHERE trip_save = 'T2' 
-			AND trip_disclose = '01'
+			AND trip_disclose = 'O1'
+			AND writer_id LIKE '%${keyword}%'
+			OR trip_save = 'T3'
+			AND trip_disclose = 'O1'
 			AND writer_id LIKE '%${keyword}%'
  	</select>
  	
@@ -25,7 +30,10 @@
  		SELECT COUNT(*)
  		FROM trip_record
  		WHERE trip_save = 'T2' 
-			AND trip_disclose = '01'
+			AND trip_disclose = 'O1'
+			AND trip_title LIKE '%${keyword}%'
+			OR trip_save = 'T3'
+			AND trip_disclose = 'O1'
 			AND trip_title LIKE '%${keyword}%'
  	</select>
  	
@@ -33,21 +41,21 @@
  	 <select id="getPerCount" resultType="int">
  		SELECT COUNT(*)
  		FROM trip_record
- 		WHERE writer_id = #{writerId}
+ 		WHERE trip_save='T1'AND writer_id = #{writerId}
  	</select>
  	
- 	<!-- 마이페이지 페이징 - 미완료 여행/임시저장-->
+ 	<!-- 마이페이지 페이징 - 임시저장-->
  	 <select id="getPerNotCount" resultType="int">
  		SELECT COUNT(*)
  		FROM trip_record
- 		WHERE end_day > sysdate AND trip_save='T1' AND writer_id = #{writerId}
+ 		WHERE trip_save='T1' AND writer_id = #{writerId}
  	</select>
  	
- 	 <!-- 마이페이지 페이징 - 미완료 여행-->
+ 	 <!-- 마이페이지 페이징 - 완료 여행-->
  	 <select id="getPerComCount" resultType="int">
  	 <![CDATA[ SELECT COUNT(*)
  		FROM trip_record
- 		WHERE end_day < sysdate AND writer_id = #{writerId}]]>
+ 		WHERE trip_save='T3' AND writer_id = #{writerId}]]>
  		
  	</select>
 	
@@ -59,7 +67,9 @@
 				  FROM trip_record t LEFT OUTER JOIN 
 				  	   attached_file a ON t.post_id = a.post_id
 				  WHERE trip_save = 'T2' 
-				  	AND trip_disclose = '01'
+				  	AND trip_disclose = 'O1'
+				  	OR trip_save = 'T3'
+					AND trip_disclose = 'O1'
 				  ORDER BY t.post_id DESC) a)
 		WHERE rn BETWEEN #{start } AND #{end }
 	</select>
@@ -72,8 +82,11 @@
 				  FROM trip_record t LEFT OUTER JOIN 
 				  	   attached_file a ON t.post_id = a.post_id
 				  WHERE trip_save = 'T2' 
-				  	AND trip_disclose = '01'
+				  	AND trip_disclose = 'O1'
 				  	AND t.writer_id LIKE '%${tripVO.writerId}%'
+				  	OR trip_save = 'T3'
+					AND trip_disclose = 'O1'
+					AND t.writer_id LIKE '%${tripVO.writerId}%'
 				  ORDER BY t.post_id DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
 	</select>
@@ -86,8 +99,11 @@
 				  FROM trip_record t LEFT OUTER JOIN 
 				  	   attached_file a ON t.post_id = a.post_id
 				  WHERE trip_save = 'T2' 
-				  	AND trip_disclose = '01'
+				  	AND trip_disclose = 'O1'
 				  	AND t.trip_title LIKE '%${tripVO.tripTitle}%'
+				  	OR trip_save = 'T3'
+					AND trip_disclose = 'O1'
+					AND t.trip_title LIKE '%${tripVO.tripTitle}%'
 				  ORDER BY t.post_id DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
 	</select>
@@ -98,7 +114,7 @@
 		FROM(SELECT ROWNUM rn, a.*
 			 FROM(SELECT *
 				  FROM trip_record
-				  WHERE end_day > sysdate AND trip_save='T1' AND writer_id = #{tripVO.writerId}
+				  WHERE trip_save='T2' AND writer_id = #{tripVO.writerId}
 				  ORDER BY regist_day DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
 	</select>
@@ -117,7 +133,7 @@
 		FROM(SELECT ROWNUM rn, a.*
 			 FROM(SELECT *
 				  FROM trip_record
-				  WHERE end_day > sysdate AND trip_save='T2' AND writer_id = #{tripVO.writerId}
+				  WHERE trip_save='T1' AND writer_id = #{tripVO.writerId}
 				  ORDER BY regist_day DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
 	</select>
@@ -128,7 +144,7 @@
 		FROM(SELECT ROWNUM rn, a.*
 			 FROM(SELECT *
 				  FROM trip_record
-				  WHERE end_day < sysdate AND writer_id = #{tripVO.writerId}
+				  WHERE trip_save='T3' AND writer_id = #{tripVO.writerId}
 				  ORDER BY regist_day DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end } ]]>		
 		
@@ -141,10 +157,20 @@
 			   start_day,
 			   end_day,
 			   regist_day,
-			   post_id
+			   post_id,
+			   hit
 		FROM trip_record
 		WHERE post_id = #{postId}
 	</select>
+	
+	<!-- 여행기록 조회수 카운트 -->
+	<update id="updateTripRecordHit" parameterType="TripVO">
+		UPDATE trip_record
+		<set>
+			hit = NVL((hit), 0) + 1
+		</set>
+		WHERE post_id = #{postId}
+	</update>
 	
 	
 	<!-- 여행기록 등록(임시저장에서 저장상태로 업데이트) -->
@@ -214,7 +240,14 @@
 				   VALUES
 				        (
 							#{memoId}
-							, #{content}
+							<choose>
+			   	  				<when test="content != null and !content.equals('')">
+			   	  				, #{content}
+			   	  				</when>
+			   	  				<otherwise>
+			   	  				, '입력된 여행 메모가 없습니다.'
+			   	  				</otherwise>
+			   	  			</choose>
 							, sysdate
 							, #{postId}
 							, #{tripDate}
@@ -327,5 +360,14 @@
 		DELETE FROM trip_record_memo
 		WHERE post_id = #{postId}
 	</delete>
+	
+	<!-- 여행기간이 지난 여행기록 자동 업데이트 -->
+	<update id="completeTripRecord" parameterType="String">
+	UPDATE trip_record
+			<set>
+				trip_save = 'T3',
+			</set>
+	<![CDATA[WHERE end_day < sysdate]]>
+	</update>
 
 </mapper>

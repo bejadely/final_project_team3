@@ -82,8 +82,13 @@ public class CartController {
 	}
 	@PostMapping("/common/cartInsert")
 	@ResponseBody
-	public String cartInsert(CartVO cartVO) {
-		
+	public String cartInsert(CartVO cartVO) throws Exception {
+		String sessionId = "";
+		if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().replaceAll(" ", "").equals("")) {
+			sessionId =  session.getAttribute("sessionId").toString();
+        } else {
+            throw new Exception("no login");
+        }	
 		return cartService.insertCartInfo(cartVO);
 	}
 	
