@@ -150,11 +150,48 @@ table {
 
 #modalBody {
   width: 500px;
-  height: 300px;
+  height: 420px;
   padding: 30px 30px;
   margin: 0 auto;
   border: 1px solid #777;
   background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+#modalBody textarea {
+  width: 100%;
+  height: 100px; /* 원하는 높이로 조절하세요 */
+  padding: 10px;
+  border: 1px solid #ddd;
+  resize: none;
+  margin-bottom: 10px;
+}
+
+/* 모달 내부의 table 스타일 */
+#modalBody table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  margin: 0;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+#modalBody th, #modalBody td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+#modalBody th {
+  background-color: #f5f5f5;
+  width: 30%;
+  text-align: center;
+}
+
+#modalBody td a {
+  text-decoration: none;
 }
 </style>
 </head>
@@ -196,7 +233,32 @@ table {
 				</td>
 			</tr>
 		</table>
-		<table>
+		<br>
+		<h5>신청자</h5>
+		<th:block th:if="${!#lists.isEmpty(member)}">
+		<table  border="1" style="width: 80%;">
+			<thead>
+				<tr>
+					<th>아이디</th>
+					<th>생년월일</th>
+					<th>성별</th>
+					<th>국적</th>
+				</tr>
+			</thead>
+			<tbody id="memberData">
+				<th:block th:each="tripMateInfo : ${member}">
+					<tr class="btnWrap">
+						<td th:text="${tripMateInfo.memberId}" th:value="${tripMateInfo.postId}"></td>
+						<td th:text="${#dates.format(tripMateInfo.birthDate, 'yyyy-MM-dd')}"></td>
+						<td th:text="${tripMateInfo.gender}"></td>
+						<td th:text="${tripMateInfo.nationality}"></td>
+					</tr>
+				</th:block>
+			</tbody>
+		</table>
+		</th:block>
+		<th:block th:if="${	#lists.isEmpty(member)}">
+			<table  border="1" style="width: 80%;">
 			<thead>
 				<tr>
 					<th>아이디</th>
@@ -206,25 +268,20 @@ table {
 				</tr>
 			</thead>
 			<tbody>
-				<th:block th:each="tripMateInfo : ${member}">
-					<tr th:class="btnWrap">
-						<td th:text="${tripMateInfo.memberId}" th:value="${tripMateInfo.postId}"></td>
-						<td th:text="${#dates.format(tripMateInfo.birthDate, 'yyyy-MM-dd')}"></td>
-						<td th:text="${tripMateInfo.gender}"></td>
-						<td th:text="${tripMateInfo.nationality}"></td>
-					</tr>
-				</th:block>
+				<tr>
+					<td colspan="4" style="text-align: center;">신청자가 없습니다.</td>
+				</tr>
 			</tbody>
 		</table>
-
+		</th:block>
 	
 	<div id="modalWrap">
 	  <div id="modalContent">
 	    <div id="modalBody">
 	     <div id="modalData">
 	     </div>
-	     <button type="button" id="cancle">신청 반려</button>	
-	     <button type="button" id="closeBtn">취소</button>
+	     <button type="button" class="feature-btn" id="cancle">반려</button>	
+	     <button type="button" class="feature-btn" id="closeBtn">취소</button>
 	    </div>
 	  </div>
 	</div>
@@ -354,51 +411,91 @@ table {
 		function modalInfo(data){
 			var modal = $("#modalData")
 			var modalInfo = "";
+			var birthDate = data.birthDate.substr(0, 10);
 			modalInfo = `
 				<input type="hidden" id="dataPostId" value="${data.postId}">
 				<input type="hidden" id="dataApplyId" value="${data.applyId}">
 				<input type="hidden" id="dataMemberId" value="${data.memberId}">
-				<label>이름</label>
-				<input type="text" value="${data.memberName}" readonly><br>
-				<label>성별</label>
-				<input type="text" value="${data.gender}" readonly><br>
-				<label>국적</label>
-				<input type="text" value="${data.nationality}" readonly><br>
-				<label>생년 월 일</label>
-				<input type="text" value="${data.birthDate}" readonly><br>
+				<table>
+					<tr>
+						<th>이름</th>
+						<td>${data.memberName}</td>
+					</tr>
+					<tr>
+						<th>성별</th>
+						<td>${data.gender}</td>
+					</tr>
+					<tr>
+						<th>성별</th>
+						<td>${data.nationality}</td>
+					</tr>
+					<tr>
+						<th>생년월일</th>
+						<td>${birthDate}</td>
+					</tr>
+				</table>
 				<label>신청 내용</label>
-				 <input type="text" value="${data.applyInfo}" readonly><br>
+				<textarea>${data.applyInfo}</textarea>
 			`
 			modal.html(modalInfo);
 		}
 		  //신청반려버튼
 		$("#cancle").click(function(){
-			var postId = $("#dataPostId").val()
-			var applyId = $("#dataApplyId").val()
-			var memberId = $("#dataMemberId").val()
-			var applyNum = parseInt($("#applyNum").text());
-			
-			console.log(postId + ", " +applyId)
-			$.ajax({
-			       url: '/common/myPageMyCancle',
-			        type: 'post',
-			        data: {postId : postId,
-			        	   applyId : applyId,
-			        	   memberId : memberId
-			        }
-			       }).done(data => {
-			    	   modal.style.display = "none";
-			    	   $('tr.btnWrap').each(function() {
-			                var memberId = $(this).find('td:eq(0)').text();
-			                if (memberId === data.data.memberId) {
-			                    $(this).remove();
-			                    var newApplyNum = applyNum - 1;
-			                    $("#applyNum").text(newApplyNum);
-			                }
-			            });
-			       }).fail(reject => console.log(reject));
-
+			Swal.fire({
+				showCancelButton: true,
+	        	title: '반려 하시겠습니까?',
+			    icon: 'question',
+				confirmButtonText: '확인',
+				cancelButtonText: '취소',
+			    reverseButtons: true,
+		    }).then((firstResult) => {
+		    	console.log(firstResult)
+		    	if(firstResult.value == true){
+				var postId = $("#dataPostId").val()
+				var applyId = $("#dataApplyId").val()
+				var memberId = $("#dataMemberId").val()
+				var applyNum = parseInt($("#applyNum").text());
+				$.ajax({
+				       url: '/common/myPageMyCancle',
+				        type: 'post',
+				        data: {postId : postId,
+				        	   applyId : applyId,
+				        	   memberId : memberId
+				        }
+				       }).done(data => {
+				    	   modal.style.display = "none";
+				    	   $('tr.btnWrap').each(function() {
+				                var memberId = $(this).find('td:eq(0)').text();
+				                if (memberId === data.data.memberId) {
+				                    $(this).remove();
+				                    var newApplyNum = applyNum - 1;
+				                    $("#applyNum").text(newApplyNum);
+				                }
+				            });
+				    	   if($('.btnWrap').length == 0){
+				    		   makeNullTable()
+				    	   }
+				    	   $('.btnWrap').length;
+				    	   console.log($('.btnWrap').length)
+				
+				       }).fail(reject => console.log(reject));
+		    	}
+		    })
 	     })
+	     
+	     function makeNullTable(){
+			var table = $('#memberData')
+			var makeTd = "";
+			console.log(table)
+			makeTd = `
+				<tr>
+					<td colspan="4" style="text-align: center;">신청자가 없습니다.</td>
+				</tr>
+			`
+			
+			console.log('makeTd')
+			table.html(makeTd); 
+		  }
 	})
 		//보낸 데이터 확인 작업
 		function confirmCode(){

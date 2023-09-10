@@ -190,6 +190,13 @@
 		FROM member
 		WHERE member_id = #{memberId}
 	</select>
+	
+	<select id="passwordVerify" resultType="MemberVO">
+	SELECT member_id, password
+	FROM member
+	WHERE member_id = #{memberId}
+	
+	</select>
     
      
 </mapper>

@@ -105,6 +105,8 @@
 	<update id="updatePurchaseStatus" parameterType="KakaoPayInfoResponseVO">
 		UPDATE purchase 	
 		<set>
+		 	cancel_amount=0,
+ 			cancel_tax_free_amount=0,
 			ORDER_STATUS = 'X2'
 		</set>		
 		WHERE order_detail_id = #{orderDetailId}
@@ -118,10 +120,21 @@
  	</set>
  	WHERE cart_id = #{cartId}
  	</update>
- 	<update id="updatePackageReservation" parameterType="packageVO">
+ 	
+ 	<update id="updatePackageReservation" parameterType="KakaoPayInfoResponseVO">
  		UPDATE package_regist
  		<set>
- 			max_reservation = max_reservation-#{maxReservation}
+ 		now_reservation = now_reservation+#{quantity},
+ 		completion = 
+        <choose>
+            <when test="maxReservation == nowReservation">
+                'D1',
+            </when>
+            <otherwise>
+                'D2',
+            </otherwise>
+        </choose>
+ 			
  		</set>
  		WHERE post_id = #{postId}
  	</update>

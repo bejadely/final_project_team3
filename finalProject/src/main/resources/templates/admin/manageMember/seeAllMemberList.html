@@ -7,11 +7,41 @@
 	<!-- <link rel="stylesheet" th:href="@{/css/bluetable.css}" > -->
 </head>
 <!-- Content -->
-<div layout:fragment="content">
+<div class="main-container" layout:fragment="content">
 	<div class="container text-break">
 		<h5><b>회원조회</b></h5>
 		<br>
 		<div>
+			<table class="table">
+				<p>조건 검색</p>
+				<tbody>
+					<tr>
+						<th>국적</th>
+						<td class="filterNationality" style="text-align: left;">
+							<a role="button">대한민국</a>
+							<a role="button">일본</a>
+							<a role="button">중국</a>
+							<a role="button">미국</a>
+							<a role="button">캐나다</a>
+							<a role="button">필리핀</a>
+							<a role="button">인도</a>
+							<a role="button">영국</a>
+							<a role="button">프랑스</a>
+							<a role="button">이탈리아</a>
+							<a role="button">독일</a>
+							<a role="button">기타</a>
+						</td>					
+					</tr>
+					<tr>
+						<th>회원분류</th>
+						<td class="filterAuthority" style="text-align: left;">
+							<th:block th:each="a : ${authCodeList}">
+								<a role="button" th:data-auth="${a.detailCode}">[[${a.value}]]</a>							
+							</th:block>
+						</td>					
+					</tr>
+				</tbody>			
+			</table>
 			<select id="searchBy" name="searchBy">
 				<option value="name">이름으로 검색</option>
 				<option value="id">아이디로 검색</option>
@@ -31,12 +61,17 @@
 					</tr>
 				</thead>
 				<th:block th:if="${!#lists.isEmpty(list)}">
-					<tbody>
+					<tbody id="memberInfo">
 						<th:block th:each="l : ${list}">
 							<tr class="memberInfo">
 								<td th:text="${l.memberId}"></td>
 								<td th:text="${l.memberName}"></td>
-								<td th:text="${l.phoneNumber}"></td>
+								<th:block th:if="${l.phoneNumber != null}">
+									<td th:text="${l.phoneNumber}"></td>
+								</th:block>
+								<th:block th:if="${l.phoneNumber == null}">
+									<td>-</td>
+								</th:block>
 								<td th:text="${l.nationality}"></td>
 								<td th:text="${l.authority}"></td>
 							</tr>
@@ -52,56 +87,57 @@
 		</div>
 		<!-- 페이징 구문 -->
 		<!-- 검색키워드가 없을때 -->
-		<th:block th:if="${#strings.isEmpty(keyword)}">
-			<div style="text-align : center;" class="property-pagination">
-				<th:block th:if="${paging.nowPage != 1}">
-					<a th:href="@{seeAllMemberList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
-				</th:block>
-				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{seeAllMemberList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
-				</th:block>
-				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
-					<th:block th:if="${p eq paging.nowPage}">
-						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+			<th:block th:if ="${paging.totalData > 0}">	
+				<th:block th:if="${#strings.isEmpty(keyword)}">
+				<div style="text-align : center;" class="property-pagination">
+					<th:block th:if="${paging.nowPage != 1}">
+						<a th:href="@{seeAllMemberList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
 					</th:block>
-					<th:block th:if="${p ne paging.nowPage}">
-						<a th:href="@{seeAllMemberList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+					<th:block th:if="${paging.startPage != 1}">
+						<a th:href="@{seeAllMemberList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 					</th:block>
-				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-					<a th:href="@{seeAllMemberList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
-				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage}">
-					<a th:href="@{seeAllMemberList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
-				</th:block>
-			</div>
+					<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+						<th:block th:if="${p eq paging.nowPage}">
+							<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+						</th:block>
+						<th:block th:if="${p ne paging.nowPage}">
+							<a th:href="@{seeAllMemberList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+						</th:block>
+					</th:block>
+					<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+						<a th:href="@{seeAllMemberList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					</th:block>
+					<th:block th:if="${paging.nowPage != paging.lastPage}">
+						<a th:href="@{seeAllMemberList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+					</th:block>
+				</div>
+			</th:block>
+			<!-- 검색키워드가 있을때 -->
+			<th:block th:if="${!#strings.isEmpty(keyword)}">
+				<div style="text-align : center;" class="property-pagination">
+					<th:block th:if="${paging.nowPage != 1}">
+						<a th:href="@{searchAdminMember(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
+					</th:block>
+					<th:block th:if="${paging.startPage != 1}">
+						<a th:href="@{searchAdminMember(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;</a>
+					</th:block>
+					<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+						<th:block th:if="${p eq paging.nowPage}">
+							<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+						</th:block>
+						<th:block th:if="${p ne paging.nowPage}">
+							<a th:href="@{searchAdminMember(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
+						</th:block>
+					</th:block>
+					<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+						<a th:href="@{searchAdminMember(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
+					</th:block>
+					<th:block th:if="${paging.nowPage != paging.lastPage}">
+						<a th:href="@{searchAdminMember(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
+					</th:block>
+				</div>
+			</th:block>
 		</th:block>
-		<!-- 검색키워드가 있을때 -->
-		<th:block th:if="${!#strings.isEmpty(keyword)}">
-			<div style="text-align : center;" class="property-pagination">
-				<th:block th:if="${paging.nowPage != 1}">
-					<a th:href="@{searchAdminMember(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
-				</th:block>
-				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{searchAdminMember(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;</a>
-				</th:block>
-				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
-					<th:block th:if="${p eq paging.nowPage}">
-						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
-					</th:block>
-					<th:block th:if="${p ne paging.nowPage}">
-						<a th:href="@{searchAdminMember(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
-					</th:block>
-				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-					<a th:href="@{searchAdminMember(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
-				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage}">
-					<a th:href="@{searchAdminMember(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
-				</th:block>
-			</div>
-		</th:block>
-		
 	</div>
 	
 	<script th:inline="javascript" type="text/javascript">
@@ -113,7 +149,130 @@
 						.on('mouseleave', colorReset)
 						.on('click')
 						.on('mouseup', moveToMemberDetail);
+		rememberKeyword();
+		// 필터검색 ajax
+		$('a[role=button]').on('click', ajaxFilterSearch);
+		
+		
 	});
+	
+	// ajax 검색으로 보낼 변수값 지정
+	let authority = "";
+	let nationality = "";
+	
+	//ajax 필터 검색
+	function ajaxFilterSearch(event){
+		
+		// 토글 형성 - 볼드 처리 및 data-selected 속성 true/false 전환
+		if($(this).attr("data-selected") == "true"){
+			
+			// 선택되어 있던 경우 - 본인 볼드처리 해제 / data-selected >> false
+			$(this).css({fontWeight: 'normal'});
+			$(this).css({background: '#ffffff'});
+			$(this).attr("data-selected", "false");
+			
+			// 체크 해제 시 해당 검색필터값 초기화
+			if($(this).closest('td').prop('class') == 'filterNationality'){
+				nationality = "";
+			}
+			
+			if($(this).closest('td').prop('class') == 'filterAuthority'){
+				authority = "";
+			}
+			
+			// ajax 실행
+			$.ajax({
+				url : '/admin/ajaxFilterSearch',
+				type : 'get',
+				data : { 
+						authority : authority,
+						nationality : nationality
+						},
+			})
+			.done( data => {
+				console.log("data : ", data);
+				// 동적으로 tr 재생성
+				$('#memberInfo').empty();
+				let newElement ='';
+				
+				$(data).each(function (index, m) {
+						newElement = `
+							<tr class="memberInfo">
+				                <td>${m.memberId}</td>
+				                <td>${m.memberName}</td>
+				                <td>${m.phoneNumber != null ? m.phoneNumber : '-'}</td>
+				                <td>${m.nationality}</td>
+				                <td>${m.authority}</td>
+				            </tr>
+						`
+						
+						$('#memberInfo').append(newElement);
+					});
+				
+				
+			})
+			.fail( reject => console.log(reject));
+			
+		} else {
+			
+			// 선택되어있지 않았던 경우 - 볼드 처리 및 다른 형제요소 볼드처리 해제 / data-selected >> falses
+			$(this).css({fontWeight: 'bold'});
+			$(this).css({background: '#2cbdb8'});
+			$(this).siblings().css({fontWeight: 'normal'});
+			$(this).siblings().css({background: '#ffffff'});
+			$(this).attr("data-selected", "true")
+			
+			
+			if($(this).closest('td').prop('class') == 'filterNationality'){
+				nationality = $(this).text();
+				console.log(nationality);
+				console.log(authority);
+			}
+			// 확장성을 고려 / else 사용하지 않음
+			if($(this).closest('td').prop('class') == 'filterAuthority'){
+				authority = $(this).attr('data-auth');
+				console.log(authority);
+			}
+			
+			// ajax 실행
+			$.ajax({
+				url : '/admin/ajaxFilterSearch',
+				type : 'get',
+				data : { 
+						authority : authority,
+						nationality : nationality
+						},
+			})
+			.done( data => {
+				console.log("data : ", data);
+				// 동적으로 tr 재생성
+				$('#memberInfo').empty();
+				let newElement ='';
+				
+				$(data).each(function (index, m) {
+						newElement = `
+							<tr class="memberInfo">
+				                <td>${m.memberId}</td>
+				                <td>${m.memberName}</td>
+				                <td>${m.phoneNumber != null ? m.phoneNumber : '-'}</td>
+				                <td>${m.nationality}</td>
+				                <td>${m.authority}</td>
+				            </tr>
+						`
+						
+						$('#memberInfo').append(newElement);
+					});
+				
+				
+			})
+			.fail( reject => console.log(reject));
+			
+		}
+		
+		// 페이징 임시 삭제
+		$('.property-pagination').empty();
+		
+	}
 	
 	// 조건검색기능
 	function search(event){
@@ -123,6 +282,21 @@
 		location.href='/admin/searchAdminMember?searchBy='+value+'&keyword='+keyword;
 		
 	}
+	
+	// 검색 기록 기억
+	function rememberKeyword(){
+		
+		// 우리가 실제로 만든 셀렉트 박스의 option을 selected 설정
+		$('#searchBy').val([[${searchBy}]]).prop("selected", true);
+		
+		// 우리가 실제로 만든 셀렉트 박스의 변경값을 나이스 셀렉트 박스에 업데이트
+	    $('select').niceSelect('update');
+		
+		// 검색어 입력창의 값 유지
+		$('#keyword').val([[${keyword}]]);
+		
+	}
+	
 	
 	// 마우스 오버 : 색상 어둡게
 	function colorDarker(event){

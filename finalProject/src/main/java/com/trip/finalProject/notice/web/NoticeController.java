@@ -2,6 +2,8 @@ package com.trip.finalProject.notice.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.trip.finalProject.adminMember.service.AdminMemberVO;
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.notice.service.NoticeService;
 import com.trip.finalProject.notice.service.NoticeVO;
@@ -26,53 +26,53 @@ public class NoticeController {
 	@GetMapping("/noticeList")
 	public String selectNoticeList(Model model
 									,@RequestParam(value = "nowPage", defaultValue ="1")Integer nowPage
-									,@RequestParam(value= "cntPerPage",defaultValue="10")Integer cntPerPage) {
-	int total = noticeService.listCount();
+									,@RequestParam(value= "cntPerPage",defaultValue="10")Integer cntPerPage
+									,	HttpSession session) {
+	String sessionAuthority = (String) session.getAttribute("sessionAuthority");
+	//권한에 따라 볼 수 있는 기본 게시글 갯수 카운팅
+	int total = noticeService.listCount(sessionAuthority);
+	
 	PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+	System.out.println("나우페이지"+nowPage);
 	//전제 공지사항 리스트 조회
-	List<NoticeVO> list = noticeService.SelectAllNoticeList(pagingVO);
+	List<NoticeVO> list = noticeService.SelectAllNoticeList(sessionAuthority,pagingVO);
 	// 모든 리스트 모델에 담기
-			model.addAttribute("list", list);
-			model.addAttribute("paging", pagingVO);
-	return"/notice/NoticeList";
+	model.addAttribute("list", list);
+	model.addAttribute("paging", pagingVO);	    
+	return"notice/noticeList";
 	};
 	
+	
+		
 	//공지사항 게시글 상세보기
 	@GetMapping("/seeNoticeDetail")
-	public String selectNoticeDetail(NoticeVO noticeVO, Model model) {
-		
+	public String selectNoticeDetail(NoticeVO noticeVO, Model model) {		
 		//공지사항 조회수 증가
 		noticeService.updateNoticeHit(noticeVO);
 		// 공지사항 상세조회 실행
 		noticeVO = noticeService.getNoticeDetail(noticeVO);
 		model.addAttribute("noticeVO", noticeVO);
-		System.out.println(noticeVO);
-		
-
-		
+		System.out.println("공지사항"+noticeVO);
 		return "notice/noticeDetail";
 		
 	}
 	
-	
-	
 
-	
 	//공지사항 작성 폼 불러옴
-	  @GetMapping("/noticeWrite")
+	  @GetMapping("/admin/noticeWrite")
 	  public String noticedWrite() {
 		  return"notice/noticeWriteForm"; 
 	  };
 	 
 	//공지사항 작성후 DB저장
-	@PostMapping("/noticeProc")
+	@PostMapping("/admin/noticeProc")
 	public String noticeInsert(NoticeVO noticeVO) {
 		noticeService.noticeInsert(noticeVO);
 		return"redirect:/noticeList";
 	};
 	
 	//공지사항 수정 폼 불러옴
-    @PostMapping("/noticeEdit")
+    @PostMapping("/admin/noticeEdit")
     public String noticedEdit(NoticeVO noticeVO, Model model) {
     	// 공지사항 상세조회 실행
     			noticeVO = noticeService.getNoticeDetail(noticeVO);
@@ -99,7 +99,17 @@ public class NoticeController {
 
 
 	
+	  //게시글 삭제 기능 수행 ///admin/noticeDelete
+	  
+	  @GetMapping("/admin/noticeDelete") 
+	  public String noticeDelete(NoticeVO noticeVO) { 
+		   System.out.println("삭제하자:"+ noticeVO);
+		   noticeService.noticeDelete(noticeVO);
 	
+	
+	  	return "redirect:/noticeList"; 
+	  }
+	 
 	
 	
 	// 특정 조건으로 공지사항 상세 검색
@@ -148,7 +158,7 @@ public class NoticeController {
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("noticeType", noticeType);
 		
-		return "/notice/noticeList";
+		return "notice/noticeList";
 	}
 
 	

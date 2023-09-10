@@ -48,8 +48,11 @@ public interface TripService {
 	//여행기록 상세조회
 	public TripVO getTripInfo(TripVO tripVO);
 	
+	//여행기록 조회수 카운트
+	public int updateTripRecordHit(TripVO tripVO);
+	
 	//여행기록 등록(임시저장 되어있는 게시글을 저장 상태로 업데이트)
-	public int InsertTripInfo(TripVO tripVO);
+	public void InsertTripInfo(TripVO tripVO);
 	
 	//여행기록 임시저장(임시저장 되어있는 게시글을 추가된 내용을 가지고 다시 업데이트)
 	public int TsTripInfo(TripVO tripVO);

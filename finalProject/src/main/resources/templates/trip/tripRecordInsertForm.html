@@ -16,7 +16,137 @@
 </th:block>
 <!-- index.html 고유 스크립트 추가 -->
 <th:block layout:fragment="script"></th:block>
+<style>
+form {
+   text-align: center;
+
+}
+#tourTheme{
+   margin: 0 auto;
+}
+
+
+/* .img-thumbnail{
+   width:400px;
+   height:400px;
+   
+} */
+body {
+       background-color: #ffffff;
+       color: #000000;
+      }
+
+.text-center {
+       text-align: center;
+       width: 60%;
+       margin: 0 auto;
+      }
+
+.form-control {
+       width: 100%;
+       padding: 10px;
+       border: 1px solid #ced4da;
+       border-radius: 4px;
+       box-sizing: border-box;
+      }
+
+.btn-outline-secondary {
+       padding: 10px 50px;
+       font-size: 16px;
+       border-radius: 4px;
+       height :38px;
+      }
+
+.btn-primary {
+       background-color: #007bff;
+       border: none;
+       color: #ffffff;
+      }
+
+.btn-primary:hover {
+       background-color: #0069d9;
+       color: #ffffff;
+      }
+
+.btn-secondary {
+      background-color: #6c757d;
+      border: none;
+      color: #ffffff;
+      }
+
+.btn-secondary:hover {
+      background-color: #5a6268;
+      color: #ffffff;
+      }
+        
+.ck.ck-editor {
+     width: 100%;
+     max-width: 1500px;
+     margin: 0 auto;
+      }
+
+.ck-editor__editable {
+     height: 70vh;
+      }
+li {
+    list-style-type: none;
+}
+
+table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    /* 미디어 쿼리 - 작은 화면에서 테이블 조정 */
+    @media (max-width: 768px) {
+      th, td {
+        display: block; /* 테이블 셀을 블록 요소로 변경 */
+        width: 100%; /* 전체 너비로 설정 */
+      }
+
+      /* th 요소에 추가적인 스타일 조정 (선택 사항) */
+      th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+    }
+     /* Flex 컨테이너 스타일 */
+    .select-container {
+      display: flex;
+      justify-content: space-between; /* 요소 간 여백을 최대화하여 나란히 정렬 */
+      align-items: center; /* 세로 중앙 정렬 */
+      margin-bottom: 20px;
+      width:10%;
+    }
+
+    /* 셀렉트 박스 스타일 */
+    select {
+      width: 45%; /* 각 셀렉트 박스의 너비를 조절 */
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
+    
+    .image-frame {
+            width: 150px; /* 이미지 틀의 너비 */
+            height: 150px; /* 이미지 틀의 높이 */
+            border: 2px solid #ccc; /* 테두리 스타일 및 색상 설정 */
+            padding: 5px; /* 내부 여백 설정 */
+            text-align: center; /* 이미지 가운데 정렬 */
+        }
+    .image-frame img {
+            max-width: 100%; /* 이미지의 최대 너비 설정 */
+            max-height: 100%; /* 이미지의 최대 높이 설정 */
+        }
+</style>
 </head>
+<script src ="/ckeditor5-build-classic/ckeditor.js"></script>
 <body>
 	<div align="center">
 		<form id="tripData" method="post" th:object="${tripVO}">
@@ -27,9 +157,6 @@
             <input type="hidden" name="tripDisclose" th:value="${tripVO.tripDisclose}">
             <input type="hidden" th:value="${#dates.format(tripVO.startDay, 'yyyy-MM-dd')}" id="startDay" name="startDay">
             <input type="hidden" th:value="${#dates.format(tripVO.endDay, 'yyyy-MM-dd')}" id="endDay" name="endDay">
-            <!-- 여행경로가 제대로 저징이 되면 이제 이전 페이지에서 이미지 업도드를 하는 기능을 이식해야함. -->
-            <!--  <input type="hidden" th:value="${tripVO.mainImage}" id="mainImage" name="mainImage"> -->
-			
 			<!-- 여행기록 등록자의 아이디, 타이틀, 여행 기간 등을 표시하는 div -->
 			<div align="center">
 				<br>
@@ -38,12 +165,29 @@
 				<label>[[ ${#dates.format(tripVO.startDay, 'yyyy년 MM월 dd일 EEE요일')} ]] ~ </label>
         		<label>[[ ${#dates.format(tripVO.endDay, 'yyyy년 MM월 dd일 EEE요일')} ]]</label>
 				<br>
+				<br>
+				<table class="table" style="width: 1400px;">
+					<tr>
+                       	 <th style="text-align: left; width: 100px;">메인 이미지</th>
+                         <td style="width: 400px; ">
+                           	<input type="file" id="mainImage" name="mainImage" size="50" class="form-control">
+                           	<input type="button" class="btn btn-secondary mt-3 mx-2" id ="uploadBtn" value="upload">
+                       		<div class="uploadResult" align="center">
+            					<ul style="display:none;"></ul>
+            					<div style="display:none;">
+               					<div id="editor"></div>
+               					</div>
+            				</div>
+                       	</td>
+                   	</tr>
+				</table>
 			</div>
+			<!-- 여행경로가 제대로 저징이 되면 이제 이전 페이지에서 이미지 업도드를 하는 기능을 이식해야함. -->
 		</form>
 		<!-- 지도영역과 여행 경로, 메모 등을 입력하는 div -->
-		<div align="center">
+		<div style="display: flex; margin: 50px 0 0 180px;">
 			<!-- 화면에 보여지는 지도영역 -->
-			<div class="map_wrap" style="height: 800px; width: 1000px; border: solid 1px;">
+			<div class="map_wrap" style="height: 800px; width: 700px; border: solid 1px; margin-left: 50px;">
          		<div id="map"style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
          		<div id="menu_wrap" class="bg_white" style="display: none">
          			<div class="option">
@@ -53,31 +197,200 @@
                   	<div id="pagination"></div>
          		</div>
         	</div>
-		</div>
-		<!-- 앞에서 선택한 여행 일정 수 만큼 여행 경로 지정과 여행 메모 div 생성 -->
-		<div id="tripSchedule">
-				
+        	<!-- 앞에서 선택한 여행 일정 수 만큼 여행 경로 지정과 여행 메모 div 생성 -->
+			<div id="tripSchedule" style="width: 700px; margin-left: 50px; overflow-y: auto; max-height: 800px;">
+			<h4><b>여행일정</b></h4>
+			<hr>
+			</div>
+			
 		</div>
 		<br>
 		<br>
-		<div align="center">
-			<!-- 임시저장 -> 임시저장 -->
-            <button type="button" id="tsTripInsert">임시저장</button>
-            <!-- 임시저장 -> 저장 -->
-            <button type="button" id="tripInsert">등록</button>
-            <button type="reset">취소</button>
-            <!-- 임시저장 -> 해당 데이터 삭제 -->
-            <!-- 목으로 버튼 클릭시 관련된 데이터들을 모두 삭제하고 목록 페이지로 이동 -->
-            <form method="get">
-            	<input type="hidden" name="postId" th:value="${tripVO.postId}">
-	            <button type="button" th:onclick="|location.href='@{/common/tripRecordDelete(postId=${tripVO.postId})}'|">목록으로</button>			
-			</form>
+		<div align="center" style="display: flex; justify-content: center; align-items: center; margin-bottom: 50px;">
+    		<!-- 임시저장 -> 임시저장 -->
+    		<button type="button" id="tsTripInsert" class="btn btn-primary mx-2">임시저장</button>
+    		<!-- 임시저장 -> 저장 -->
+    		<button type="button" id="tripInsert" class="btn btn-primary mx-2">등록</button>
+    		<input type="button" class="btn btn-secondary mx-2" value="작성취소" id="cancelBtn"/>
+    		<!-- 임시저장 -> 해당 데이터 삭제 -->
+    		<!-- 목록으로 버튼 클릭시 관련된 데이터들을 모두 삭제하고 목록 페이지로 이동 -->
+    		<form method="get">
+        		<input type="hidden" name="postId" th:value="${tripVO.postId}">
+        		<button type="button" class="btn btn-secondary mx-2" th:onclick="|location.href='@{/common/tripRecordDelete(postId=${tripVO.postId})}'|">목록으로</button>			
+    		</form>
 		</div>
 	</div>
 	
     <script>
     	//dom을 실행하고 해당 function 실행
     	$(document).ready(function() {
+    		
+    	//에디터 관련 스크립트
+    		ClassicEditor
+            .create(document.querySelector('#editor'), {
+            	/* htmlEncodeOutput: false, */
+            	ckfinder: {
+               	uploadUrl : '/common/upload'   
+            	}
+         	})
+         	.then(editor => {
+         
+         	document.getElementById("cancelBtn").addEventListener("click",function(){
+            const data = editor.getData();
+            //Data 변수에 저장된 데이터를 파싱하여 이미지 태크를 찾음
+            const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
+            
+            const filenames = imgTags.map(img=> {
+               const src = img.getAttribute('src');
+               
+               return src.substring(src.lastIndexOf('/')+1);
+            });
+            console.log(filenames);
+            fetch(`/deleteImg`,{
+               method: 'POST',
+               headers:{
+                  'Content-Type':'application/json'
+               },
+               body: JSON.stringify({ filenames })
+            })
+            .then(response => response.text())
+            .then(message => {
+               console.log(message);
+               editor.setData('');
+            })
+            
+         })
+         
+         var formObj = $("#tripData");
+         
+         $("#tripInsert").on("click",function(event){
+               
+            event.preventDefault();
+      
+            const data = editor.getData();
+            
+            let objData = serializeObject();
+            
+            let writerId = "[[${session.sessionId}]]";
+            
+            var str="";
+            $(".uploadResult ul li").each(function(i,obj){
+               var jobj = $(obj);
+               str += "<input type ='hidden' name='attachList["+i+"].originImg' value='"+jobj.data("filename")+"'>";
+               str += "<input type ='hidden' name='attachList["+i+"].memberId' value='[[${session.sessionId}]]'>";
+               str += "<input type ='hidden' name='attachList["+i+"].savedImg' value='"+jobj.data("path")+"'>";
+               str += "<input type ='hidden' name='attachList["+i+"].imgType' value='"+jobj.data("type")+"'>";
+               str += "<input type ='hidden' name='attachList["+i+"].loadingImg' value='"+jobj.data("loadingpath")+"'>";
+               
+            });
+            
+            const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
+            
+            const filenames = imgTags.map(img=> {
+               const src = img.getAttribute('src');
+               
+               return src;
+            });      
+            $.each(filenames,function(i,obj){
+               str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
+            });
+            
+            formObj.append(str);
+            $("#tripData").attr("action", "/common/tripRecordInsertUp").submit();
+            sendMemoData(memoDataArry);
+            
+         })
+      })
+      .catch(error => {
+         console.error(error);
+      });
+      
+      function serializeObject(){
+         let formData = $('form').serializeArray();
+         let formObject={};
+         $.each(formData, function(idx,obj){
+            formObject[obj.name] = obj.value;
+         });
+         
+         return formObject;
+      }
+      var cloneObj = $(".uploadDiv").clone();
+      
+      $(function(){
+         $("#uploadBtn").on('click',function(e){
+            e.preventDefault();
+            let imageData = new FormData();
+            
+            let inputTag = document.querySelector('input[name="mainImage"]');
+            
+            let files = inputTag.files;
+            
+            for(let i=0; i<files.length; i++){
+               console.log(files[i]);
+               imageData.append("mainImage",files[i]);
+            }
+         
+            $.ajax({
+               url:'mainImageUpload',
+               processData: false,
+               contentType: false,
+               data: imageData,
+               type:'POST',
+               dataType:'json',
+               success: function(result){
+                  alert("성공");
+                  
+                  console.log(result);
+                  
+                  showUploadedFile(result);
+                  
+                  $(".uploadDiv").html(cloneObj.html());
+               }
+            });
+         });
+      });
+
+      $(".uploadResult").on("click","span",function(e){
+         var targetFile = $(this).data("file");
+         var clickedSpan = $(this);
+         $.ajax({
+            url:'deleteFile',
+            data: {savedImg: targetFile},
+            dataType: 'text',
+            type: 'POST',
+            success: function(result){
+               alert(result);
+               var currentNode = clickedSpan.closest("li");
+               var prevNode = currentNode.prev();
+               var nextNode = currentNode.next();
+               
+               currentNode.add(prevNode).add(nextNode).remove();
+               
+            }
+         })
+      })
+      
+      var uploadResult = $(".uploadResult ul");
+      
+      function showUploadedFile(uploadResultArr){
+         var str = "";
+         $(uploadResultArr).each(function(i,obj){
+            
+            var fileCallPath = encodeURIComponent(obj.savedImg);
+            
+            str += "<li style='width:500px; height:500px; text-align: center;' data-path='"+obj.savedImg+"'";
+            str +=" data-filename='"+obj.originImg+"' data-type='"+obj.imgType+"'";
+            str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div>";
+            str +="<span> " + obj.originImg +"</span>";
+            str +="<img src='/display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
+         });
+         uploadResult.append(str);
+      }
+    	
+    	
+    		
+    	///////////////////////////////////////////////////////////	
+    		
     	
  		//이전 페이지에서 받아온 날짜 데이터를 활용해서 두 일수 사이의 값을 계산
    		var inDate = "[[ ${#dates.format(tripVO.startDay, 'yyyy-MM-dd')} ]]"; 
@@ -114,8 +427,8 @@
        	        					<div id="schedule${i+1}">
        	     							<input type="hidden" value="${date3.toISOString().split('T')[0]}" id="tripDate" name="tripDate">
        	     							<input type="hidden" value="${postData}" id="postId" name="postId">
-       	     							<label>${date3.toISOString().split('T')[0]} /</label>
-       	     							<label>${i+1}일차 일정</label>
+       	     							<h5><b>${i+1}일차 일정</b></h5>
+       	     							<h6>(${date3.toISOString().split('T')[0]})</h6>
        	        						<br>
        	        						<input class="keyword" type="text" placeholder="키워드를 입력해주세요." onkeydown="return event.key != 'Enter';">
        	            					<button id="${i+1}" type="button" class="searchPlaces">검색하기</button>
@@ -130,6 +443,7 @@
        	            					<button class="showShow" type="button" style="display:none;"> 경로 보기 </button>
        	            					<button class="modifyMapping" type="button" style="display:none;"> 경로 수정 </button>
        	            					<br>
+       	            					<hr>
        	        					</div>
        	     					</form>
        	    				`;
@@ -411,15 +725,15 @@
 		//저장, 임시저장 버튼 클릭시 id에 맞게 해당 action이 발생함
         //여행기록 임시저장
         $("#tsTripInsert").click(function() {
-           $("#tripData").attr("action", "/common/tsTripRecordInsertUp").submit();;
+           $("#tripData").attr("action", "/common/tsTripRecordInsertUp").submit();
            
         });
         
         //여행기록 저장
-        $("#tripInsert").click(function() {
-           $("#tripData").attr("action", "/common/tripRecordInsertUp").submit();;
+      /*   $("#tripInsert").click(function() {
+           $("#tripData").attr("action", "/common/tripRecordInsertUp").submit();
            sendMemoData(memoDataArry);
-        });
+        }); */
 		
 		//지도 관련 스크립트 부분입니다.
 		// 마커를 담는 배열

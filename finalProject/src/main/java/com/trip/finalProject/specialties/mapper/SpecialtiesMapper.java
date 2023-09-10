@@ -46,6 +46,8 @@ public interface SpecialtiesMapper {
 
 	public void updateSpecialites(SpecialtiesVO specialtiesVO);
 
+	public void updateDiscount(String string);
+
 	
 	
 	
