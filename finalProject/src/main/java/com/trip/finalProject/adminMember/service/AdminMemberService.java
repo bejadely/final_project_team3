@@ -43,4 +43,7 @@ public interface AdminMemberService {
 	// 권한 승인 요청 반려 처리
 	public Map<String, String> rejectAuthRequest(String memberId);
 	
+	// 회원 필터 검색
+	Map<String, Object> selectFilterSearch(Integer nowPage, Integer cntPerPage, AdminMemberVO adminMemberVO);
+	
 }
