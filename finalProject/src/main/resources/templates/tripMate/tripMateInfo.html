@@ -151,7 +151,7 @@
         	<th width="100">작성자</th>
             <td width="110" align="center" th:text="${tripMateInfo.writerId}"></td>
             <th width="100">예상 경비</th>
-            <td width="110" align="center" th:text="${tripMateInfo.mateExpense}"></td>
+            <td width="110" align="center" th:text="${#numbers.formatInteger(tripMateInfo.mateExpense, 0, 'COMMA')}"></td>
             <th width="100">모집 인원</th>
             <td width="110" align="center" th:text="${tripMateInfo.mateMax}"></td>
             <th width="100">신청 인원</th>
@@ -270,7 +270,6 @@
 <div id="cmtL">
 </div>
 <script th:inline="javascript">
-
 	//게시글 신청버튼 클릭시
 	$(".primary-btn#mateApply").click(function(){
 		

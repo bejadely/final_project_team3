@@ -427,6 +427,8 @@ body {
 	                icon: 'success',
 	                title: '등록 되었습니다.'
 	            }).then(() => {
+	            	var formattedPrice = parseFloat($("#mateExpense").val().replace(/\,/g, '')); // 콤마 제거 및 숫자로 변환
+	                document.getElementById("mateExpense").value=formattedPrice;
 	            	document.getElementById('editorForm').action = "/common/tripMateRecruitInsert";
 	                document.getElementById('editorForm').submit();
 	            });
