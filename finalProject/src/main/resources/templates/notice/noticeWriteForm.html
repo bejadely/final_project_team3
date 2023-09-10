@@ -89,7 +89,7 @@
         <br>
         </div>
         <div id="noticeType"  class="text-center">
-            <form id="frm" action="/noticeProc" method="post">
+            <form id="frm" action="/admin/noticeProc" method="post">
                	<div class="mb-3" style="float: left; margin-right: 20px;" >
 					<select class="" id="noticeType" name="noticeType"
 						aria-label="Default select example" required >
@@ -203,16 +203,10 @@ ClassicEditor
 	var str="";
 
 	$("button[type='submit']").on("click",function(event){
-		
-		
 		event.preventDefault();		
 		const data = editor.getData();		
 		//console.log(data);
 		let objData = serializeObject();
-		var sigunguCode = $("#location > option:selected").attr("value1");
-		var areaCode = $("#location > option:selected").attr("value2");
-		str+=`<input type='hidden' name='sigunguCode' value='${sigunguCode}'>
-			 <input type ='hidden' name = 'areaCode' value='${areaCode}'>`
 		//sconsole.log(data);
 		const { writerId, registDate, title  } = objData;
 		var combinedData={
@@ -220,12 +214,9 @@ ClassicEditor
 		         writerId: writerId,
 		         title: title
 		};
-		//console.log(combinedData.content);
-		
-		str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";		
-		
-		const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
-		
+		//console.log(combinedData.content);	
+		str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";			
+		const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));	
 		const filenames = imgTags.map(img=> {
 			const src = img.getAttribute('src');
 			return src;
