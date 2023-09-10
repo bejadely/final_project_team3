@@ -8,38 +8,40 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 
-<title>문의사항</title>
+<title>환불 목록</title>
 <style type="text/css">
 .hidden{
 	border: none;
 	text-align: center;
 	margin: 0 auto;
 }
+
+}
 </style>
 <script>
 $(document).ready(function() {
-    $("#pk").click(function() {
-        location.href = "/common/buyPkList";
-    });
+	$("#pk").click(function() {
+		location.href="/common/buyPkList"	
+	})
 
-    $("#sp").click(function() {
-        location.href = "/common/buySpList";
-    });
+	$("#sp").click(function() {
+		location.href="/common/buySpList"
+	})
     $('.reportInfo').on('mouseover', colorDarker)
 					.on('mouseleave', colorReset)
 });
 
-	// 마우스 오버 : 색상 어둡게
-	function colorDarker(event){
-		$(event.currentTarget).css({background: '#f2f4f5'})
-							  .css({cursor: 'pointer'});		
-	}
+//마우스 오버 : 색상 어둡게
+function colorDarker(event){
+$(event.currentTarget).css({background: '#f2f4f5'})
+		  .css({cursor: 'pointer'});		
+}
 
 
-	// 마우스릴리브 : 색상 원상복귀
-	function colorReset(event){
-		$(event.currentTarget).css({background: '#ffffff'});
-	}
+//마우스릴리브 : 색상 원상복귀
+function colorReset(event){
+$(event.currentTarget).css({background: '#ffffff'});
+}
 </script>
 </head>
 <body>
@@ -47,7 +49,7 @@ $(document).ready(function() {
 	<div layout:fragment="content">
 	<div class="table-responsive">
 	<form>
-		<h5>구매 목록</h5>
+		<h5>환불 목록</h5>
 		<button type="button" id="pk">패키지</button>
 		<button type="button" id="sp">특산물</button>
 		<table class="table">
@@ -76,34 +78,34 @@ $(document).ready(function() {
 			</table>
 		</form>
 		</div>
-		<div class="property-pagination" style="text-align: center;">
+		<div class="property-pagination">
 			<th:block th:if="${paging.startPage != 1}">
-				<a th:href="@{/common/buyPkList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
+				<a th:href="@{/common/refundPkList(nowPage=1, cntPerPage=${paging.cntPerPage})}"><<</a>
 			</th:block>
 			<th:block th:if="${paging.startPage != 1}">
 				<a
-					th:href="@{/common/buyPkList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+					th:href="@{/common/refundPkList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 			</th:block>
 			<th:block
 				th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
 				<th:block th:if="${p eq paging.nowPage}">
 					<b th:text="${p}"></b>
 				</th:block>
-				<th:block th:if="${p ne paging.nowPage}">
+				<th:block th:if="${p ne paging.nowPage and p > 0}">
 					<a
-						th:href="@{/common/buyPkList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
+						th:href="@{/common/refundPkList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
 						th:text="${p}"></a>
 				</th:block>
 			</th:block>
-			<th:block th:if="${paging.endPage != paging.lastPage}">
+			<th:block th:if="${paging.endPage != paging.lastPage and paging.lastPage > 5}">
 				<a
-					th:href="@{/common/buyPkList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					th:href="@{/common/refundPkList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 			</th:block>
-			<th:block th:if="${paging.endPage != paging.lastPage}">
+			<th:block th:if="${paging.endPage != paging.lastPage and paging.lastPage > 5}">
 				<a
-					th:href="@{/common/buyPkList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
+					th:href="@{/common/refundPkList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">>></a>
 			</th:block>
 		</div>
-		</div>
+	</div>
 </body>
 </html>

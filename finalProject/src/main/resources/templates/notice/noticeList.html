@@ -396,7 +396,7 @@ section.notice {
 					<th:block th:each="n : ${list}">
 						<tr class="noticeInfo"
 							th:attr="onmouseover='this.style.background=&quot;#dadada&quot;;', onmouseleave='this.style.background=&quot;#FFFFFF&quot;;' ">
-							<td th:text="${n.noticeNumber}"></td>
+							<td th:text="${n.rn}"></td>
 							<td th:text="${n.title}"></td>
 							<td th:text="${n.writerId}"></td>
 							<td th:text="${n.registDate}"></td>

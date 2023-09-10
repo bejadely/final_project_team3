@@ -256,6 +256,12 @@ public class MemberController {
 			return "redirect:/";
 			
 		}
+		
+		@PostMapping("/common/passwordVerify")
+		@ResponseBody
+		public String passwordVerify(MemberVO memberVO) {
+			return memberService.passwordVerify(memberVO);
+		}
 	
  
 
