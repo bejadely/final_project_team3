@@ -11,6 +11,7 @@ import com.trip.finalProject.adminMember.mapper.AdminMemberMapper;
 import com.trip.finalProject.adminMember.service.AdminMemberService;
 import com.trip.finalProject.adminMember.service.AdminMemberVO;
 import com.trip.finalProject.common.PagingVO;
+import com.trip.finalProject.report.service.ReportVO;
 import com.trip.finalProject.security.service.AesProcessor;
 
 @Service
@@ -158,6 +159,25 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		} else {
 			map.put("result", "fail");
 		}
+		
+		return map;
+	}
+	
+	@Override
+	public Map<String, Object> selectFilterSearch(Integer nowPage, Integer cntPerPage, AdminMemberVO adminMemberVO) {
+		
+		// 필터검색할 회원 수 카운트
+		int total = amm.countFilterSearch(adminMemberVO);
+		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		
+		// 필터검색 회원 전체 조회
+		List<AdminMemberVO> list = amm.selectFilterSearch(adminMemberVO, pagingVO);
+		
+		// 컨트롤러에 값을 보내기 위한 Map 생성
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("list", list);
+		map.put("PagingVO", pagingVO);
 		
 		return map;
 	}

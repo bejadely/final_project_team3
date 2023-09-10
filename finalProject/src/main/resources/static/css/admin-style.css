@@ -40,6 +40,9 @@ html, body {
 }
 /* custom button */
 
+.main-container{
+	min-height: 1300px;
+}
 
 h1, h2, h3, h4, h5, h6 {
 	margin: 0;
@@ -98,8 +101,12 @@ ul, ol {
 /*---------------------
   Custom - common
 -----------------------*/
+.table th, td {
+	text-align: center;
+}
+
 th, td {
-	text-align: left;
+	text-align: center;
 }
 
 .custom-sidebar {
@@ -1523,6 +1530,39 @@ h1 {
 	z-index: -1;
 	border-radius: 50%;
 }
+/*----------------------
+	radio button
+------------------------*/
+.radioButton {
+	margin-bottom: 20px;
+	overflow: hidden;
+	
+}
+.radioButton .bt-item {
+	width: 100px;
+	height: 30px;
+	float: left;
+	
+}
+.radioButton .bt-item input[type=radio] {
+	display: none;
+}
+.radioButton .bt-item input[type=radio]:checked+label {
+	background: #2cbdb8;
+	color: #ffffff;
+}
+.radioButton label {
+	display: block;
+	font-size: 16px;
+	margin-bottom: 0;
+	font-weight: 600;
+	background: #EBEBEB;
+	color: #707079;
+	text-align: center;
+	cursor: pointer;
+	padding: 4px 0 6px;	
+}
+
 /*---------------------
   Property Section
 -----------------------*/
