@@ -77,6 +77,7 @@ function handleClick(data) {
       "<th >상품사진</th>" +
       `<th style='width:40%'>상품 명</th>` +
       "<th>상품수량</th>" +
+      "<th>상품옵션</th>" +
       "<th>상품가격</th>" +
       "<th >삭제</th>"+
       "</tr>";
@@ -86,12 +87,13 @@ function handleClick(data) {
              html += "<tr class='reportInfo'>" +
                "<td><input type='checkbox' name='chk' data-postid='" + cartItem.postId + "' /></td>" +
                "<td class='post'>"+"<input type='hidden' class='cartId' value='" + cartItem.cartId + "' />" + cartItem.cartName + "</td>" +
-               "<td class='post' style='width:40%'>"+"<input type='hidden' class='cartOption' value='" + cartItem.optionId + "' />" + cartItem.cartName + "</td>" +
+               "<td class='post' style='width:40%'>"+ cartItem.cartName + "</td>" +
                `<td>
-                <button type="button" class="quantity-btn decrement-btn">-</button>
-                <input type="text" class="quantity-input" name="productAmount" value="${cartItem.quantity}">
-                <button type="button" class="quantity-btn increment-btn">+</button>
-            </td>` +
+	                <button type="button" class="quantity-btn decrement-btn">-</button>
+	                <input type="text" class="quantity-input" name="productAmount" value="${cartItem.quantity}">
+	                <button type="button" class="quantity-btn increment-btn">+</button>
+            	</td>` +
+            	"<td><input type='hidden' name='option' value='" + cartItem.optionId + "' />" + (cartItem.optionId != null ? cartItem.optionId : "-") + "</td>" + // 조건에 따라 내용을 생성
                "<td>" + cartItem.price + "</td>" +
                "<td><button class='delete-btn'>삭제</button></td>" +
                "</tr>";           
@@ -229,7 +231,8 @@ function updateTotalAndPrice(data) {
     $("tbody input[type=checkbox]:checked").each(function() {
         var row = $(this).closest("tr");
         var quantity = row.find("input[type=text]").val();
-        var price = parseFloat(row.find("td:eq(4)").text());
+        var price = parseFloat(row.find("td:eq(5)").text());
+        console.log(price)
         var cartTotal = quantity * price;
         result += cartTotal;
     });
@@ -381,9 +384,9 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
             var row = $(this).closest("tr");
             postId = $(this).data("postid");
             var count = parseInt(row.find("input[type=text]").val());
-            var price = parseFloat(row.find("td:eq(4)").text());
+            var price = parseFloat(row.find("td:eq(5)").text());
             var value = row.find("input[class=cartId]").val();
-            option = row.find("input[class=cartOption]").val();
+            option = row.find("input[name=option]").val();
             var cartTotal = count * price;
             orderElements.push(row.find("td:eq(2)").text()); // 값을 배열에 추가          
             cartIdElements.push(value);
@@ -404,39 +407,28 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
           else{
              orderName = orderElements[0] + ' 외 ' + (orderElements.length - 1) + '건';
           }      
-            
-          $.ajax({
-             type:'post',
-             url:'/common/payment/ready',
-             data:{
-                totalAmount: totalAmount,
-                orderName : orderName,
-                quantity : quantity,
-                itemCode: cartIdElements.join(','),
-                partnerUserId: memberId,
-                specialtyType: option 
-                
-                },
-           success:function(response){
-              location.href = response.next_redirect_pc_url
-           }
-             
-       	 		}); 
+
+           $.ajax({
+               type:'post',
+               url:'/common/payment/ready',
+               data:{
+                  totalAmount: totalAmount,
+                  orderName : orderName,
+                  quantity : quantity,
+                  itemCode: cartIdElements.join(','),
+                  partnerUserId: memberId,
+                  specialtyType: option 
+                  
+                  },
+             success:function(response){
+                location.href = response.next_redirect_pc_url
+             }
+               
+         	}); 
+
        	 	}); 
    		 }    
       });
-	$('body').on('mouseover','.reportInfo',colorDarker)
-	 		 .on('mouseleave', '.reportInfo',colorReset)
-	function colorDarker(event) {
-		  console.log('Mouse over');
-		  $(event.currentTarget).css({background : '#f2f4f5'})
-		  						.css({cursor : 'pointer'});
-		}
-	
-		function colorReset(event) {
-		  console.log('Mouse leave');
-		  $(event.currentTarget).css({background: '#ffffff'});
-		}
 });
 </script>
 </head>

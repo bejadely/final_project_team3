@@ -5,24 +5,57 @@
 <mapper namespace="com.trip.finalProject.notice.mapper.NoticeMapper"><!-- 구현! 메서드 명 만들어 놓은 것을 여기서 만들겠다. -->
 
 
-
+<!--A1, A4, null일 때 T2:공개 N1:전체 , 검색전은 가이드도 동일.-->
 <!--  페이지별로 게시글 확인 row 개수에 따라 -->
    <select id="SelectAllNoticeList" >
 		
 				SELECT *
-			  	FROM (SELECT ROWNUM rn, a.*
-			        	FROM(SELECT notice_Number,title,writer_Id,regist_Date,hit 
-							FROM notice  order by regist_Date desc) a )
-			  WHERE rn BETWEEN #{start} AND #{end}
+			  	FROM (SELECT ROWNUM rn, notice_Number,title,writer_Id,regist_Date,hit,code_val(notice_type)notice_type 
+			        	FROM(SELECT notice_Number,title,writer_Id,regist_Date,hit,notice_type
+							FROM notice  where status='T2' and release='N1' order by regist_Date desc) a )
+			  WHERE rn BETWEEN #{start} AND #{end}			  			
+
+			  ORDER BY rn DESC
 			  				
 		
+
 	</select>	
-	<!-- 전체 게시글 수 카운트 -->
+	
+	
+	
+	<!--A3일 때 관리자. -->
+<!--  페이지별로 게시글 확인 row 개수에 따라 -->
+   <select id="SelectByAdminNoticeList" >
+		
+				SELECT *
+			  	FROM (SELECT ROWNUM rn, notice_Number,title,writer_Id,regist_Date,hit,code_val(notice_type)notice_type 
+			        	FROM(SELECT notice_Number,title,writer_Id,regist_Date,hit,notice_type
+							FROM notice   order by regist_Date desc) a )
+			  WHERE rn BETWEEN #{start} AND #{end}			  			
+	</select>	
+	
+	
+	<!--전체 게시글 수 카운트. A1, A4, null일 때 T2:공개 N1:전체-->
   		<select id="getAllNoticeCount">
   			SELECT COUNT(*)
-  			  FROM notice
+  			  FROM notice where status='T2' and release='N1'
+  	</select>
+
+
+
+
+  	<!--전체 게시글 수 카운트. A2일 때 T2:공개 N1:전체-->
+  	<select id="getGuideNoticeCount">
+  			SELECT COUNT(*)
+  			  FROM notice where status='T2' and release='N1'
   	</select>
 	
+	
+	  	<!--전체 게시글 수 카운트. A3일 때 -->
+  	<select id="getAdminNoticeCount">
+  			SELECT COUNT(*)
+  			  FROM notice 
+  	</select>
 
 	
 
@@ -84,43 +117,75 @@
 	
 
 <!-- 글 속성이 공지사항인 총 결과값 카운트 -->
-  		<select id="countNoticeType1n">
-  			SELECT COUNT(*)
-  			  FROM notice
-  			 WHERE notice_Type='n1'  and title LIKE '%${title}%'
+  	<select id="countNoticeBySearch">
+	SELECT COUNT(*)
+	FROM notice
+	WHERE 1=1
+	<if test="noticeType != null">
+		AND notice_Type = #{noticeType}
+	</if>
+	<!-- release 조건 추가 -->
+	<if test="release != null">
+		AND release = #{release}
+	</if>
+	<!-- STATUS 조건 추가 -->
+	<if test="status != null">
+		AND STATUS = #{status}
+	</if>
   		</select>
   		
   		<!-- 제목으로 게시글 검색 -->
-  		<select id="searchByNoticeByTitle1n" resultType="NoticeVO">
+  		<select id="searchByNoticeByTitle" resultType="NoticeVO">
  		SELECT *
 		FROM(SELECT ROWNUM rn, a.notice_number
 						     , a.title
 						     , a.writer_Id						    
 						     , a.regist_date
 						     , a.hit
+						     , code_val(notice_type)notice_type
 						     <!-- , code_val(a.authority) authority -->
 			 FROM(SELECT notice_number
 				       , title
 				       ,writer_Id				       
 				       , regist_date
 				       ,hit
+				       ,notice_type
 				    FROM notice
-				   WHERE notice_Type='n1'  and  title LIKE '%${noticeVO.title}%'
-				ORDER BY regist_date DESC) a)
-		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+
+				   where 1=1 	
+				   <if test="noticeType != null and noticeType != ''">
+					AND notice_Type = #{noticeType}
+					</if>
+					
+					<!-- release 조건 추가 -->
+					<if test="release != null">
+						AND release = #{release}
+					</if>
+					
+					<!-- STATUS 조건 추가 -->
+					<if test="status != null">
+						AND STATUS = #{status}
+					</if> 
+					
+					and  title LIKE '%${noticeVO.title}%'
+					ORDER BY regist_date DESC
+					) a
+			)
+					WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+
   		</select>
 
 
 
 
-<!-- 글 속성이 이벤트인 총 결과값 카운트 -->
+<!-- 글 속성이 이벤트인 총 결과값 카운트
   		<select id="countNoticeType2n">
   			SELECT COUNT(*)
   			  FROM notice
-  			 WHERE notice_Type='n2'  and title LIKE '%${title}%'
-  		</select>
+  			 where status='T2' and release='N1'and notice_Type='n2'  and title LIKE '%${title}%'
+  		</select>  -->
   		
-  		<!-- 제목으로 게시글 검색 -->
+<!--   		제목으로 게시글 검색
   		<select id="searchByNoticeByTitle2n" resultType="NoticeVO">
  		SELECT *
 		FROM(SELECT ROWNUM rn, a.notice_number
@@ -128,17 +193,97 @@
 						     , a.writer_Id						    
 						     , a.regist_date
 						     , a.hit
-						     <!-- , code_val(a.authority) authority -->
+						     , code_val(notice_type)notice_type
+						     , code_val(a.authority) authority
 			 FROM(SELECT notice_number
 				       , title
 				       ,writer_Id				       
 				       , regist_date
 				       ,hit
+				       ,notice_type
 				    FROM notice
-				   WHERE notice_Type='n2'  and  title LIKE '%${noticeVO.title}%'
+<<<<<<< HEAD
+				   where status='T2' and release='N1'and notice_Type='n2'  and  title LIKE '%${noticeVO.title}%'
 				ORDER BY regist_date DESC) a)
+=======
+				   WHERE notice_Type='n2'  and  title LIKE '%${noticeVO.title}%'
+				ORDER BY regist_date DESC) a
+				ORDER BY rn DESC)
+>>>>>>> branch 'new_develep' of https://github.com/bejadely/final_project_team3.git
 		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
-  		</select>
+  		</select> -->
+
+
+<select id="countNoticeValue">
+  SELECT COUNT(*)
+  FROM notice
+  WHERE 1=1 
+  <!-- notice_Type 조건 추가 -->
+  <if test="noticeVO != null and noticeVO.noticeType != null">
+    AND notice_Type = #{noticeVO.noticeType}
+  </if>
+  <!-- release 조건 추가 -->
+  <if test="noticeVO != null and noticeVO.release != null">
+    AND release = #{noticeVO.release}
+  </if>
+  <!-- STATUS 조건 추가 -->
+  <if test="noticeVO != null and noticeVO.status != null">
+    AND STATUS = #{noticeVO.status}
+  </if>
+  <!-- title 조건 추가 -->
+  <if test="noticeVO != null and noticeVO.title != null">
+    AND title LIKE '%${noticeVO.title}%'
+  </if>
+  ORDER BY regist_date DESC 
+</select>
+
+
+
+  		
+  		
+  		
+
+
+<select id="searchByNoticeByTitle1n" resultType="NoticeVO">
+  SELECT *
+  FROM (
+    SELECT ROWNUM rn, a.notice_number
+				    , a.title
+				    , a.writer_Id
+				    , a.regist_date
+				    , a.hit
+				    , code_val(notice_type)notice_type 
+		    FROM (
+		      SELECT notice_number
+				      , title
+				      , writer_Id
+				      , regist_date
+				      , hit
+				      ,notice_type
+      FROM notice
+      WHERE 1=1 
+      <!-- notice_Type 조건 추가 -->
+      <if test="noticeVO != null and noticeVO.noticeType != null">
+        AND notice_Type = #{noticeVO.noticeType}
+      </if>
+      <!-- release 조건 추가 -->
+      <if test="noticeVO != null and noticeVO.release != null">
+        AND release = #{noticeVO.release}
+      </if>
+      <!-- STATUS 조건 추가 -->
+      <if test="noticeVO != null and noticeVO.status != null">
+        AND STATUS = #{noticeVO.status}
+      </if>
+      <!-- title 조건 추가 -->
+      <if test="noticeVO != null and noticeVO.title != null">
+        AND title LIKE '%${noticeVO.title}%'
+      </if>
+      ORDER BY regist_date DESC
+    ) a
+  ) b
+  WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+</select>
+
 
 
 

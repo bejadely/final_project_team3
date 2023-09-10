@@ -10,12 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.trip.finalProject.attachedFile.service.AttachedFileService;
 import com.trip.finalProject.attachedFile.service.AttachedFileVO;
 import com.trip.finalProject.common.PagingVO;
+import com.trip.finalProject.common.mapper.CommonMapper;
 import com.trip.finalProject.tripMate.service.PostCommentVO;
 import com.trip.finalProject.tripMate.service.TripMateService;
 import com.trip.finalProject.tripMate.service.TripMateVO;
@@ -28,13 +33,14 @@ public class TripMateController {
 	HttpSession session;
 	@Autowired
 	AttachedFileService attachedFileService;
-
+	@Autowired
+	CommonMapper commonMapper;
 	private final String FIRST_PAGE = "1";
 	
 	//여행 메이트 게시글 전체 조회
 	@GetMapping("/tripMateList")
 	public String tripMateList(Model model
-			 				, @RequestParam( name = "searchBy", defaultValue = "name" ) String searchBy
+			 				, @RequestParam( name = "searchBy", defaultValue = "tripArea" ) String searchBy
 			 				, @RequestParam( name = "keyword", defaultValue = "" ) String keyword
 			 				, @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
 			 				, @RequestParam( name = "cntPerPage", defaultValue = "12")Integer cntPerPage ) {
@@ -173,6 +179,7 @@ public class TripMateController {
 		//여행 메이트 글 삭제 시 해당 게시글과 관련된 첨부파일 테이블 데이터 삭제
 		tripMateService.deleteAttachedFile(tripMateVO);
 		tripMateService.deleteTripMateRecruit(tripMateVO);
+		
 		return "redirect:/tripMateList";
 	}
 	
@@ -181,7 +188,12 @@ public class TripMateController {
 	@GetMapping("/common/mateRecruitUpdateForm")
 	public String mateRecruitUpdateForm(TripMateVO tripMateVO, Model model) {
 		TripMateVO findVO = tripMateService.getTripMateInfo(tripMateVO);
+		List<Map<String, String>> codeList = commonMapper.selectCode("J");
+		
 		model.addAttribute("tripMateVO", findVO);
+		model.addAttribute("codeList" , codeList);
+		
+		
 		return "tripMate/tripMateUpdate";
 	}
 	
@@ -191,6 +203,14 @@ public class TripMateController {
 	public String mateRecruitUpdateProcess(TripMateVO tripMateVO){
 		tripMateService.updateTripMateRecruit(tripMateVO);
 		return "redirect:/tripMateList";
+	}
+	
+	//여행 메이트 중복신고 확인
+	@GetMapping("/common/selectReportLog")
+	@ResponseBody
+	public int selectReportLog(TripMateVO tripMateVO) {
+
+		return tripMateService.selectReportLog(tripMateVO);
 	}
 	
 	//여행 메이트 게시글 신고 - form
@@ -208,10 +228,22 @@ public class TripMateController {
 		return "redirect:/tripMateList";
 	}
 	
+	//여행 메이트 중복신청 확인
+	@GetMapping("/common/selectApplyLog")
+	@ResponseBody
+	public int selectApplyLog(TripMateVO tripMateVO) {
+
+		return tripMateService.selectApplyLog(tripMateVO);
+	}
+	
 	//여행 메이트 신청 - form
 	@PostMapping("/common/tripMateApplyForm")
 	public String tripMateApplyForm(TripMateVO trvo,  
 			@RequestParam(name="mateWriter") String mateWriter, Model model) {
+		
+		//최대 인원, 신청 인원 조회
+	    //tripMateService.selectMateRecruitApplyNum(trvo);
+		
 		trvo.setMemberId(mateWriter);
 		//System.out.println(trvo.getMemberId());
 		model.addAttribute("mateWriter", trvo.getMemberId());
@@ -225,8 +257,7 @@ public class TripMateController {
 	@PostMapping("/common/tripMateApplyInsert")
 	public String tripMateApplyInsert(TripMateVO tripMateVO, 
 			@RequestParam(name="mateWriter") String mateWriter, Model model) {
-		//최대 인원, 신청 인원 조회
-		//tripMateService.selectMateRecruitApplyNum(tripMateVO);
+		
 		//메이트 신청
 		tripMateService.InsertTripMateApply(tripMateVO);
 		
