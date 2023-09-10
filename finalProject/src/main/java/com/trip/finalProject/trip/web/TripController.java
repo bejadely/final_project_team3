@@ -40,7 +40,7 @@ public class TripController {
 	// 여행기록 전체 조회
 	@GetMapping("/tripRecordList")
 	public String tirpRecordList(Model model
-							  , @RequestParam( name = "searchBy", defaultValue = "name" ) String searchBy
+							  , @RequestParam( name = "searchBy", defaultValue = "writerId" ) String searchBy
 							  , @RequestParam( name = "keyword", defaultValue = "" ) String keyword
 							  , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
 							  , @RequestParam( name = "cntPerPage", defaultValue = "12")Integer cntPerPage ) {
@@ -153,7 +153,7 @@ public class TripController {
 	}
 	
 	//여행기록 공개 설정 업데이트
-	@PostMapping("/discloseUpdate")
+	@PostMapping("/common/discloseUpdate")
 	@ResponseBody
 	public Map<String, Object> disUpdate(TripVO tripVO){
 	    tripVO.getPostId();
@@ -170,6 +170,9 @@ public class TripController {
 	@Transactional
 	@GetMapping("/tripRecordInfo")
 	public String tripRecordInfo(TripVO tripVO, Model model) {
+		//조회수 업데이트
+		tripService.updateTripRecordHit(tripVO);
+		
 		TripVO findVO = tripService.getTripInfo(tripVO);
 		
 		//여행 기록 데이터

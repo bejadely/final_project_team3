@@ -77,6 +77,7 @@
 									<td>
 									<button type="button" th:class="btn-success" th:text="${l.answerResult}"></button>
 									<span th:text="${l.questionTitle}"></span><br>
+									<span th:utext="|문의자ID : ${l.memberId} 문의일자 : ${#dates.format(l.questionDate, 'yyyy.MM.dd HH:mm')}"></span>
 									<p th:text="${l.questionContent}"></p>
 									<th:block th:if="${l.answerResult != '미답변'}">
 										<button type="button" th:id="|ansBtn${lStat.count}|" class="btn btn-primary btn-sm" data-visible="visible">답변보기</button>
@@ -86,16 +87,9 @@
 								<tr style="display: none;">
 									<td>
 										<form method="post" th:id="|form${lStat.count}|">
-											<th:block th:if="${l.answerResult == '미답변'}">
-												<span>ㄴ답변하기</span><br>
-												<textarea name="answerContent" class="form-control" rows="3" cols="90"></textarea>
-											</th:block>
 											<th:block th:if="${l.answerResult != '미답변'}">
 												<p th:text="|답변일자 : ${#dates.format(l.answerDate, 'yyyy.MM.dd HH:mm')}|"></p>
 												<textarea name="answerContent" class="form-control" th:text="${l.answerContent}" rows="3" cols="90" readonly></textarea>
-											</th:block>
-											<th:block th:if="${l.answerResult == '미답변'}">	
-												<button class="answer-btn btn btn-primary btn-sm" type="button">답변완료</button>
 											</th:block>
 											<input type="hidden" name="questionId" th:value="${l.questionId}">
 											<input type="hidden" name="answerMemberId" th:value="${session.sessionId}">
@@ -114,31 +108,33 @@
 		</div>
 		<!-- 페이징 구문 -->
 		<!-- 검색키워드가 없을때 -->
+		<th:block th:if="${#strings.isEmpty(keyword)}">
 			<div style="text-align : center;" class="property-pagination">
 				<th:block th:if="${paging.nowPage != 1}">
-					<a th:href="@{/common/memberQue(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+					<a th:href="@{/admin/seeAllQuestion(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
 				</th:block>
 				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{/common/memberQue(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 				</th:block>
 				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
 					<th:block th:if="${p eq paging.nowPage}">
 						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
 					</th:block>
-					<th:block th:if="${p ne paging.nowPage and p > 0}">
-					    <a th:href="@{/common/myMtList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"
-					        th:text="${p}"></a>
+					<th:block th:if="${p ne paging.nowPage}">
+						<a th:href="@{/admin/seeAllQuestion(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
 					</th:block>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-					<a th:href="@{/common/memberQue(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-					<a th:href="@{/common/memberQue(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+				<th:block th:if="${paging.nowPage != paging.lastPage}">
+					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
 				</th:block>
 			</div>
+		</th:block>
 	</div>
-		<script th:inline="javascript" type="text/javascript">
+	
+	<script th:inline="javascript" type="text/javascript">
 	
 	$(document).ready(function() {
 		// 이벤트 설정

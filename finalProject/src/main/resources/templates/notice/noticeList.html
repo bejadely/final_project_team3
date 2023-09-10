@@ -284,8 +284,8 @@ section.notice {
 		<!-- style='margin-left: 8%;' -->
 		<!--  관리자(A3)인 경우 검색 div  -->
 		<div th:if="${session.sessionAuthority} == 'A3'">
-			<div id="noticeType" class="mb-3"
-				style="float: left; margin-left: 10%; margin-right: 20px">
+			<div  class="mb-3"
+				style="float: left; margin-left: 17%; margin-right: 20px">
 
 				<select id="searchByNoticeType" class="" name="noticeType"
 					aria-label="Default select example">
@@ -295,24 +295,24 @@ section.notice {
 				</select>
 			</div>
 
-			<div id="release" class="mb-3"
+			<div  class="mb-3"
 				style="float: left; margin-right: 20px;">
-				<select class="" name="release" aria-label="Default select example">
+				<select id="searchByRelease" class="" name="release" aria-label="Default select example">
 					<option value="">공개대상</option>
 					<option value="N1">전체공개</option>
 					<option value="N2">가이드공개</option>
 				</select>
 			</div>
 
-			<div id="status" class="mb-3" style="float: left;">
-				<select class="" name="status" aria-label="Default select example">
+			<div  class="mb-3" style="float: left;">
+				<select id="searchByStatus" class="" name="status" aria-label="Default select example">
 					<option value="">글 저장상태</option>
 					<option value="T1">임시저장</option>
 					<option value="T2">저장완료</option>
 				</select>
 			</div>
 			<div>
-				<input type="text" id="keyword" name="keyword"
+				<input type="text" id="keyword" name="keyword" style="margin-left: 20px;"
 					placeholder="검색어를 입력해주세요.">
 				<button id="searchButton" class="feature-btn">
 					<i class="fa-solid fa-magnifying-glass"></i>
@@ -322,9 +322,9 @@ section.notice {
 
 		<!--  가이드(A2)인 경우 검색 div  -->
 		<div th:if="${session.sessionAuthority} == 'A2'">
-			<div id="noticeType" class="mb-3"
+			<div id="" class="mb-3"
 				style="float: left; margin-left: 15%; margin-right: 20px">
-				<select class="" name="noticeType"
+				<select id="serchBynoticeType" class="" name="noticeType"
 					aria-label="Default select example">
 					<option value="">공지사항 종류</option>
 					<option value="n1">공지사항</option>
@@ -332,9 +332,9 @@ section.notice {
 				</select>
 			</div>
 
-			<div id="release" class="mb-3"
+			<div id="" class="mb-3"
 				style="float: left; margin-right: 20px;">
-				<select class="" name="release" aria-label="Default select example">
+				<select id="serchByRelease" class="" name="release" aria-label="Default select example">
 					<option value="">공개대상</option>
 					<option value="N1">전체공개</option>
 					<option value="N2">가이드공개</option>
@@ -352,10 +352,8 @@ section.notice {
 		</div>
 		
 
-		<!-- 일반회원(A1)or 로그인x인 경우 검색 div  -->
-		<!--   <div  th:if="${session.sessionAuthority} == 'A1'"> -->
-		<div 
-			th:if="${session.sessionAuthority == 'A1' or session.sessionAuthority == null}">
+		<!-- 일반회원(A1)or 권한신청중인 회원(A4)or 로그아웃인 경우 검색 div  -->	
+		<div th:if="${session.sessionAuthority == 'A1' or session.sessionAuthority == 'A4' or session.sessionAuthority == null}">
 
 			<div id="noticeType" class="mb-3"
 				style="float: left; margin-left: 15%; margin-right: 20px">
@@ -384,7 +382,7 @@ section.notice {
 			<table class="board-table">
 				<thead>
 					<tr>
-						<th scope="col" class="th-num">번호</th>
+						<th scope="col" class="th-num">공지</th>
 						<th scope="col" class="th-title">제목</th>
 						<th scope="col" class="th-writer">작성자</th>
 						<th scope="col" class="th-date">등록일</th>
@@ -395,9 +393,10 @@ section.notice {
 				<tbody>
 					<th:block th:each="n : ${list}">
 						<tr class="noticeInfo"
-							th:attr="onmouseover='this.style.background=&quot;#dadada&quot;;', onmouseleave='this.style.background=&quot;#FFFFFF&quot;;' ">
-							<td th:text="${n.noticeNumber}"></td>
-							<td th:text="${n.title}"></td>
+							th:attr="onmouseover='this.style.background=&quot;#dadada&quot;;',  onmouseleave='this.style.background=&quot;#FFFFFF&quot;;' ">
+							<td  th:text="${n.noticeNumber}" style="display:none;">
+							 <td th:text="${n.noticeType}"></td> 					
+							 <td th:text="${n.title}"></td> 
 							<td th:text="${n.writerId}"></td>
 							<td th:text="${n.registDate}"></td>
 							<td th:text="${n.hit}"></td>
@@ -419,12 +418,10 @@ section.notice {
 				<th:block th:if="${#strings.isEmpty(keyword)}">
 					<div style="text-align: center;" class="property-pagination">
 						<th:block th:if="${paging.nowPage != 1}">
-							<a
-								th:href="@{noticeList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+							<a th:href="@{noticeList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
 						</th:block>
 						<th:block th:if="${paging.startPage != 1}">
-							<a
-								th:href="@{noticeList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+							<a th:href="@{noticeList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 						</th:block>
 						<th:block
 							th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
@@ -440,16 +437,15 @@ section.notice {
 						</th:block>
 						<th:block
 							th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-							<a
-								th:href="@{noticeList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+							<a th:href="@{noticeList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 						</th:block>
 						<th:block th:if="${paging.nowPage != paging.lastPage}">
-							<a
-								th:href="@{noticeList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+							<a th:href="@{noticeList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
 						</th:block>
 					</div>
 				</th:block>
-				<!-- 검색키워드가 있을때 -->
+				
+			<!-- 검색키워드가 있을때 -->
 				<th:block th:if="${!#strings.isEmpty(keyword)}">
 					<div style="text-align: center;" class="property-pagination">
 						<th:block th:if="${paging.nowPage != 1}">
@@ -457,8 +453,7 @@ section.notice {
 								th:href="@{searchNotice(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, noticeType=${noticeType})}">&lt;&lt;</a>
 						</th:block>
 						<th:block th:if="${paging.startPage != 1}">
-							<a
-								th:href="@{searchNotice(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, noticeType=${noticeType})}">&lt;</a>
+							<a th:href="@{searchNotice(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, noticeType=${noticeType})}">&lt;</a>
 						</th:block>
 						<th:block
 							th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
@@ -467,50 +462,45 @@ section.notice {
 									style="background-color: #2cbdb8; color: white;"></a>
 							</th:block>
 							<th:block th:if="${p ne paging.nowPage}">
-								<a
-									th:href="@{searchNotice(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, noticeType=${noticeType})}"
-									th:text="${p}"></a>
+								<a th:href="@{searchNotice(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, noticeType=${noticeType})}" th:text="${p}"></a>
 							</th:block>
 						</th:block>
-						<th:block
-							th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-							<a
-								th:href="@{searchNotice(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, noticeType=${noticeType})}">&gt;</a>
+						<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+							<a th:href="@{searchNotice(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, noticeType=${noticeType})}">&gt;</a>
 						</th:block>
 						<th:block th:if="${paging.nowPage != paging.lastPage}">
-							<a
-								th:href="@{searchNotice(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, noticeType=${noticeType})}">&gt;&gt;</a>
+							<a th:href="@{searchNotice(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, noticeType=${noticeType})}">&gt;&gt;</a>
 						</th:block>
 					</div>
 				</th:block>
 			</div>
 
 
-			<div class="bt_wrap">
-				<!--  <div th:if="${id == board.memberId || id == 'manager'}"> -->
-				<a href="/noticeWrite" class="btn btn-primary submitButton"
-					th:if="${session.sessionAuthority} == 'A3'">등록&nbsp;</a>
-		 <input type="button" th:if="${session.sessionAuthority} == 'A3'" value="등록" onclick="location.href='/noticeWrite'" class="btn btn-secondary">
-					
-			</div>
+			<div class="bt_wrap">		
+				<a href="/admin/noticeWrite" class="btn btn-primary submitButton" th:if="${session.sessionAuthority} == 'A3'">등록&nbsp;</a>
+<!-- 				 <input type="button" th:if="${session.sessionAuthority} == 'A3'" value="등록" onclick="location.href='/noticeWrite'" class="btn btn-secondary">					
+ -->			</div>
 		</div>
-		<!--      </div> -->
-
-
-		<div>
-			<!-- 히든폼 -->
-			<form id="frm2" action="boardSelect.do" method="post">
-				<input type="hidden" id="boardId" name="boardId"> <input
-					type="hidden" id="boardSecret" name="boardSecret">
-			</form>
-		</div>
-
 	</section>
 
 
 
 
+
+
 	<script th:inline="javascript" type="text/javascript">
+	
+	
+	
+	
+	$(document).ready(function() {
+		// 이벤트 설정
+		$('#searchButton').on('click', search);
+		$('.noticeInfo').css({cursor: 'pointer'});
+		remeberSearch();
+	});
+	
+	
 		$(document).ready(function() {
 
 			$('.noticeInfo').on('mouseup', moveToNoticeDetail)
@@ -520,17 +510,36 @@ section.notice {
 		//조건검색기능
 		function search(event) {
 
-			let value = $('#searchByNoticeType').val();
+			let noticeType = $('#searchByNoticeType').val();
+			let release	=	$('#searchByRelease').val(); 
+			let status = $('#searchByStatus').val();			
 			let keyword = $('#keyword').val();
-			location.href = '/searchNotice?noticeType=' + value + '&keyword='
+			//검색기능 매핑주소
+			location.href = '/searchNotice?noticeType=' + noticeType +'&release='+ release+'&status='+status+'&keyword='
 					+ keyword;
 
 		}
+		 // 검색어 기억
+		function remeberSearch(){
+			
+			// 우리가 실제로 만든 셀렉트 박스의 option을 selected 설정
+		    $('#searchByNoticeType').val([[${noticeType}]]).prop("selected", true);
+		    $('#searchByRelease').val([[${release}]]).prop("selected", true);
+		    $('#searchByStatus').val([[${status}]]).prop("selected", true);
+		      
+		    // 우리가 실제로 만든 셀렉트 박스의 변경값을 나이스 셀렉트 박스에 업데이트
+		    $('select').niceSelect('update');
+		      
+		    // 검색어 입력창의 값 유지
+		    $('#keyword').val([[${keyword}]]);
+		} 
+		
+		
 
 		//클릭시 공지사항 상세 조회페이지로 이동
 		function moveToNoticeDetail(event) {
 
-			// 상세보기 할 member의 id값 가져오기
+			// 상세보기 할 notice의 id값 가져오기
 			let noticeNumber = $(event.currentTarget).find('td:eq(0)').text();
 
 			// 페이지 전환 실행
