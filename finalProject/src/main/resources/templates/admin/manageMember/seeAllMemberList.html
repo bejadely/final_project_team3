@@ -153,7 +153,12 @@
 		// 필터검색 ajax
 		$('a[role=button]').on('click', ajaxFilterSearch);
 		
+		
 	});
+	
+	// ajax 검색으로 보낼 변수값 지정
+	let authority = "";
+	let nationality = "";
 	
 	//ajax 필터 검색
 	function ajaxFilterSearch(event){
@@ -166,6 +171,48 @@
 			$(this).css({background: '#ffffff'});
 			$(this).attr("data-selected", "false");
 			
+			// 체크 해제 시 해당 검색필터값 초기화
+			if($(this).closest('td').prop('class') == 'filterNationality'){
+				nationality = "";
+			}
+			
+			if($(this).closest('td').prop('class') == 'filterAuthority'){
+				authority = "";
+			}
+			
+			// ajax 실행
+			$.ajax({
+				url : '/admin/ajaxFilterSearch',
+				type : 'get',
+				data : { 
+						authority : authority,
+						nationality : nationality
+						},
+			})
+			.done( data => {
+				console.log("data : ", data);
+				// 동적으로 tr 재생성
+				$('#memberInfo').empty();
+				let newElement ='';
+				
+				$(data).each(function (index, m) {
+						newElement = `
+							<tr class="memberInfo">
+				                <td>${m.memberId}</td>
+				                <td>${m.memberName}</td>
+				                <td>${m.phoneNumber != null ? m.phoneNumber : '-'}</td>
+				                <td>${m.nationality}</td>
+				                <td>${m.authority}</td>
+				            </tr>
+						`
+						
+						$('#memberInfo').append(newElement);
+					});
+				
+				
+			})
+			.fail( reject => console.log(reject));
+			
 		} else {
 			
 			// 선택되어있지 않았던 경우 - 볼드 처리 및 다른 형제요소 볼드처리 해제 / data-selected >> falses
@@ -175,13 +222,9 @@
 			$(this).siblings().css({background: '#ffffff'});
 			$(this).attr("data-selected", "true")
 			
-			// ajax 검색으로 보낼 변수값 지정
-			let authority = "";
-			let nationality = "";
 			
 			if($(this).closest('td').prop('class') == 'filterNationality'){
 				nationality = $(this).text();
-				authority = $('#filterAuthority').find('a[data-selected="true"]');
 				console.log(nationality);
 				console.log(authority);
 			}
@@ -224,9 +267,10 @@
 			})
 			.fail( reject => console.log(reject));
 			
-			
-			
 		}
+		
+		// 페이징 임시 삭제
+		$('.property-pagination').empty();
 		
 	}
 	
