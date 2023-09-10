@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.trip.finalProject.attachedFile.service.AttachedFileService;
+import com.trip.finalProject.attachedFile.service.AttachedFileVO;
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.trip.service.TripService;
 import com.trip.finalProject.trip.service.TripVO;
@@ -28,6 +31,8 @@ public class TripController {
 	TripService tripService;
 	@Autowired
 	HttpSession session;
+	@Autowired
+	AttachedFileService attachedFileService;
 
 	@Value("${kakao.map.key}")
 	String kakaoMap;
@@ -207,12 +212,21 @@ public class TripController {
 
 	// 여행기록 등록 - 임시저장 상태에서 저장상태로 상태 업데이트
 	@PostMapping("/common/tripRecordInsertUp")
-	public String tripRecordInsertProcess(TripVO tripVO) {
+	public ModelAndView tripRecordInsertProcess(TripVO tripVO) {
 		//여행기록 저장상태 변경
 		tripService.InsertTripInfo(tripVO);
-		return "redirect:/tripRecordList";
+		ModelAndView mv = new ModelAndView("redirect:/tripRecordList");
+		return mv;
 	}
-
+	
+	//첨부파일 상세정보(파일 여러개를 보여주기 위해서)
+	@GetMapping("/getAttachTrip")
+	@ResponseBody
+	public List<AttachedFileVO> getAttachList(AttachedFileVO vo){
+		System.out.println(vo.getPostId());
+		return attachedFileService.getAttachList(vo);
+	}
+	
 	// 여행기록 임시저장 - 임시 저장인 상태로 다시 업데이트
 	@PostMapping("/common/tsTripRecordInsertUp")
 	public String tsTripRecordInsertProcess(TripVO tripVO) {
