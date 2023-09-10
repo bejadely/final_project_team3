@@ -15,7 +15,6 @@
 <script src ="/ckeditor5-build-classic/ckeditor.js"></script>
 <style>
 
-
 form {
 	text-align: center;
 
@@ -24,10 +23,7 @@ form {
 	margin: 0 auto;
 }
 
-.input-group {
-    width: 700px; /* 파일 입력 필드와 버튼의 전체 너비 조절 */
-    
-}
+
 .img-thumbnail{
 	width:400px;
 	height:400px;
@@ -93,7 +89,46 @@ body {
 li {
     list-style-type: none;
 }
+table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
 
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    /* 미디어 쿼리 - 작은 화면에서 테이블 조정 */
+    @media (max-width: 768px) {
+      th, td {
+        display: block; /* 테이블 셀을 블록 요소로 변경 */
+        width: 100%; /* 전체 너비로 설정 */
+      }
+
+      /* th 요소에 추가적인 스타일 조정 (선택 사항) */
+      th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+    }
+     /* Flex 컨테이너 스타일 */
+    .select-container {
+      display: flex;
+      justify-content: space-between; /* 요소 간 여백을 최대화하여 나란히 정렬 */
+      align-items: center; /* 세로 중앙 정렬 */
+      margin-bottom: 20px;
+      width:10%;
+    }
+
+    /* 셀렉트 박스 스타일 */
+    select {
+      width: 45%; /* 각 셀렉트 박스의 너비를 조절 */
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
 </style>
 <!-- CKEditor -->
 <!-- <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script> -->
@@ -103,6 +138,7 @@ $(document).ready(function() {
 	setDefaultTourTheme()
 	var paths;
 	var resultPath;
+	var isIfExecuted = false;
 ClassicEditor
 	.create(document.querySelector('#editor'), {
 		/* htmlEncodeOutput: false, */	
@@ -146,7 +182,7 @@ ClassicEditor
 		
 		var formObj = $("#editorForm");
 		
-		$("button[type='submit']").on("click",function(event){
+		$("input[type='button']").on("click",function(event){
 			event.preventDefault();
 			var startDate2 = document.getElementById("startDate").value;
 		 	var endDate2 = document.getElementById("endDate").value;
@@ -232,75 +268,81 @@ ClassicEditor
 			});
 			
 			
-			 let packageName = document.getElementsByName('name')[0];
-			    let packagePrice = document.getElementsByName('price')[0];
-			    let packageStartDate = document.getElementsByName('startDate')[0];
-			    let packageEndDate = document.getElementsByName('endDate')[0];
-			    let packageDeadlineDate = document.getElementsByName('deadlineDate')[0];
-			    let packageMaxReservation = document.getElementsByName('maxReservation')[0];
-			    let packageContent = document.getElementsByName('content')[0];
-			    let packageTourTheme = document.getElementById('tourTheme')[0];
-			    let packageLocation = document.getElementById('location')[0];
-			   
-			    var selectedValue = packageLocation.value;
-			    
+			let packageName = document.getElementsByName('name')[0];
+		    let packagePrice = document.getElementsByName('price')[0];
+		    let packageStartDate = document.getElementsByName('startDate')[0];
+		    let packageEndDate = document.getElementsByName('endDate')[0];
+		    let packageDeadlineDate = document.getElementsByName('deadlineDate')[0];
+		    let packageMaxReservation = document.getElementsByName('maxReservation')[0];
+		    let packageContent = combinedData.content;
+		    let packageTourTheme = document.getElementsByName('tourTheme')[0];
+		    let packageLocation = document.getElementById('location').value;
+		    let packageImage = document.getElementsByName('mainImage')[0];
+			    if (!isIfExecuted) {
+				    if (packageImage.value == '') {
+					       alert('이미지를 업로드해주세요.')
+					       packageImage.focus();
+					       return;
+					    }
+			    } 
 			    if (packageName.value == '') {
 			       alert('타이틀을 입력해주세요.')
 			       packageName.focus();
-			       return;
+			       return false;
 			    }
 			    
 			    if (packagePrice.value == '') {
 			       alert('패키지 금액을 입력해주세요.')
 			       packagePrice.focus();
-			       return;
+			       return false;
 			    }
 			    
 			    if (packageStartDate.value == '' || packageEndDate.value == '') {
 			       alert('패키지 일정을 입력해주세요.')
 			       packageStartDate.focus();
-			       return;
+			       return false;
 			    }
 			    
 			    if (packageDeadlineDate.value == '') {
 			       alert('모집 마감일을 입력해주세요.')
 			       packageDeadlineDate.focus();
-			       return;
+			       return false;
 			    }
 			    
 			    if (packageMaxReservation.value == '' || packageMaxReservation.value == '') {
 			       alert('모집 인원을 입력해주세요.')
 			       packageMaxReservation.focus();
-			       return;
+			       return false;
 			    }
 			    
-			    if (packageContent== '') {
+			    if(packageContent== '') {
 			       alert('내용을 입력해주세요.')
 			       packageContent.focus();
-			       return;
+			       return false;
 			    }
-			    
-			/*     if (selectedValue === '') {
-			        alert('여행 지역을 선택 해주세요.')
-			        packageLocation.focus();
-			        return;
-			     } */
-			    
-			  /*   if (packageTourTheme.value === '') {
-			        alert('여행 테마을 지정해주세요.')
-			        packageTourTheme.focus();
-			        return;
-			     }
- */
-				formObj.append(str);
+			    if(packageLocation =='') {
+			       alert('여행 지역을 선택 해주세요.')
+			       packageLocation.focus();
+			       return;
+				} 
+				   
+				if(packageTourTheme.value == '') {
+			       alert('여행 테마을 지정해주세요.')
+			       packageTourTheme.focus();
+			       return;
+				 } 
+ 
+				
 			    //등록하기 클릭 시 등록할지 여부를 확인
 			    if(confirm("등록 하시겠습니까?")){
-			       document.getElementById('editorForm').action = "/guide/register";
+			    	var formattedPrice = parseFloat($("#price").val().replace(/\,/g, '')); // 콤마 제거 및 숫자로 변환
+			    	formObj.append(str);
+			       document.getElementById('editorForm').action = "/guide/packageUpdate";
 			       document.getElementById('editorForm').submit();
 			       alert("등록 되었습니다.");
 			            return;
 			        }else{
-			              return;
+			        	return false;
 			        }
 			
 			/* document.getElementById('editorForm').action = "/guide/packageUpdate";
@@ -325,13 +367,12 @@ ClassicEditor
 		
 		return formObject;
 	}
-	var cloneObj = $(".uploadDiv").clone();
 	
 	$(function(){
 		$("#uploadBtn").on('click',function(e){
 			e.preventDefault();
 			let imageData = new FormData();
-			
+			isIfExecuted=true;
 			let inputTag = document.querySelector('input[name="mainImage"]');
 			
 			let files = inputTag.files;
@@ -348,23 +389,23 @@ ClassicEditor
 				type:'POST',
 				dataType:'json',
 				success: function(result){
-					alert("성공");
-					
-					
+					inputTag.value = '';
 					showUploadedFile(result);
 					
-					$(".uploadDiv").html(cloneObj.html());
 				}
 			});
 		});
 	});
-
+	function appendUploadInput() {
+	    const cloneObj = $(".uploadDiv").clone();
+	    $(".uploadDiv").html(cloneObj.html());
+	}
 	//섬네일 이미지 화면상에서만 안보이게 해줌
 	$(".uploadResult").on("click","span",function(e){
 		var targetFile = $(this).data("file");
 		var clickedSpan = $(this);
 		console.log("파일 삭제");
-		
+		isIfExecuted = false;
 		if(confirm("이미지 삭제 하시겠습니까?")){
 		var currentNode = clickedSpan.closest("li");
 		var prevNode = currentNode.prev();
@@ -383,6 +424,7 @@ ClassicEditor
 	(function(){
 		$.getJSON("/getAttachList",{postId:postId},function(arr){
 			var str="";
+			isIfExecuted=true;
 			$(arr).each(function(i, obj){
 				var fileCallPath = encodeURIComponent(`${obj.savedImg}`);
 			
@@ -440,23 +482,25 @@ function setDefaultTourTheme(){
 </head>
 <body>
 <div layout:fragment="content">
-<div id="ls" class="text-center" >
+<div id="ls" class="text-center container" >
 	<form method="post" id="editorForm" enctype="multipart/form-data" >
 		<div id="specialtiesInfo" class="mb-3" style="margin-bottom: 20px;">	
 			<input type="hidden" name="writerId" th:value="${session.sessionId}">
-			<div id="tourTheme" class="mb-3" style=" text-align: left;">
-				<select name="tourTheme" aria-label="Default select example">
-					<option value="맛집 투어">맛집 투어</option>
-					<option value="관광 명소 투어">관광 명소 투어</option>
-					<option value="쇼핑 여행">쇼핑 여행</option>
-					<option value="도시 여행">도시 여행</option>
-				</select>	
-			</div>	
-			<div class="mb-3" style="display: inline-block; text-align: left; padding-right:80%;">
-				<select id="location" aria-label="Default select example">
-					<option value="">지역</option>
-					<option th:each = "a : ${area}"  th:value1="${a.sigunguCode}" th:value2="${a.areaCode}" th:text="${a.locationName}"></option>	
-				</select>
+			<div class="select-container">
+				<div id="tourTheme" class="mb-3" style="margin-left:5%; margin-right:5%;">
+					<select name="tourTheme" aria-label="Default select example">
+						<option value="맛집 투어">맛집 투어</option>
+						<option value="관광 명소 투어">관광 명소 투어</option>
+						<option value="쇼핑 여행">쇼핑 여행</option>
+						<option value="도시 여행">도시 여행</option>
+					</select>	
+				</div>	
+				<div class="mb-3" >
+					<select id="location" aria-label="Default select example">
+						<option value="">지역</option>
+						<option th:each = "a : ${area}"  th:value1="${a.sigunguCode}" th:value2="${a.areaCode}" th:text="${a.locationName}"></option>	
+					</select>
+				</div>
 			</div>
             <div class="uploadResult">
 				<ul>
@@ -467,45 +511,45 @@ function setDefaultTourTheme(){
 				<tr>
 					<!-- <input type="file" name="mainImage" id="mainImage" class="form-control form-control-sm" multiple/>
 					<button id ="uploadBtn">upload</button> -->
-					<th style="text-align: left; width: 20%;">메인 이미지</th>
-					<td colspan="5">
+					<th >메인 이미지</th>
+					<td colspan="4">
 					<div class= "input-group">
-		  				<input type="file" class="form-control" name="mainImage" id="mainImage" aria-describedby="inputGroupFileAddon03" aria-label="Upload" style="width:400px;" multiple/>
+		  				<input type="file" class="form-control" name="mainImage" id="mainImage" aria-describedby="inputGroupFileAddon03" aria-label="Upload"  multiple/>
 						<button class="btn btn-outline-secondary" type="button" id="uploadBtn">Button</button>
 					</div>
 					<td>
 				</tr>
 				
 				<tr>
-					<th style="text-align: left; width: 20%;">패키지명</th>
+					<th >패키지명</th>
 		            <td colspan="2">
-						<input type="text" style="width: 370px;" class="form-control" placeholder="패키지 명" name="name" id="name" th:value="${info.name}">
+						<input type="text"  class="form-control" placeholder="패키지 명" name="name" id="name" th:value="${info.name}">
 					</td>	
-					<th style="text-align: left; width: 20%;">패키지 가격</th>
+					<th >패키지 가격</th>
 					<td colspan="2">
-						<input type="text" style="width: 370px margin-left: 4px;;" class="form-control" placeholder="판매가" name="price" id="price" th:value="${info.price}">
+						<input type="text"  class="form-control" placeholder="판매가" name="price" id="price" th:value="${info.price}">
 					</td>
 				</tr>
 				
 				<tr>
-					<th style="text-align: left; width: 20%;">여행 시작일</th>
+					<th >여행 시작일</th>
 					<td colspan="2" >
-	                    <input type="date" style="width: 370px;" id="startDate" name="startDate" size="30" class="form-control" th:value="${#dates.format(info.startDate,'yyyy-MM-dd')}">
+	                    <input type="date"  id="startDate" name="startDate" size="30" class="form-control" th:value="${#dates.format(info.startDate,'yyyy-MM-dd')}">
 	                </td>
-	                <th style="text-align: left; width: 20%;">여행 마지막일</th>
+	                <th >여행 마지막일</th>
 	          		<td colspan="2">
-	                     <input type="date" style="width: 370px; margin-left: 4px;" id="endDate" name="endDate" size="30" class="form-control" th:value="${#dates.format(info.endDate,'yyyy-MM-dd')}">
+	                     <input type="date"  id="endDate" name="endDate" size="30" class="form-control" th:value="${#dates.format(info.endDate,'yyyy-MM-dd')}">
 	                 </td>
 				</tr>
 				
 				<tr>
-					<th style="text-align: left; width: 20%;">모집 마감일</th>
+					<th >모집 마감일</th>
 	                <td colspan="5">
 	                	<input type="date"  name="deadlineDate" id="deadlineDate" class="form-control" th:value="${#dates.format(info.deadlineDate,'yyyy-MM-dd')}"/>
 	                </td>
 				</tr>
 				<tr>
-				 	<th style="text-align: left; width: 20%;">모집 인원</th>
+				 	<th >모집 인원</th>
 	             	<td colspan="5">
 	             		<input type="number"  class="form-control" name ="maxReservation" id="maxReservation" th:value="${info.maxReservation}"/>
 	            	</td>
@@ -517,8 +561,8 @@ function setDefaultTourTheme(){
 		<div id="editor">
 			<th:textarea th:utext="${info.content}"></th:textarea>
 		</div>
-		<button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>
-		<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>
+		<input type="button" class="btn btn-primary mt-3 mx-2" value="작성완료" >
+		<button type="button" class="btn btn-secondary mt-3 mx-2" id="cancelBtn"/>작성취소</button>
 	</form>
 </div>
 

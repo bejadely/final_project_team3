@@ -40,6 +40,9 @@ html, body {
 }
 /* custom button */
 
+.main-container{
+	min-height: 1300px;
+}
 
 h1, h2, h3, h4, h5, h6 {
 	margin: 0;
@@ -98,8 +101,12 @@ ul, ol {
 /*---------------------
   Custom - common
 -----------------------*/
+.table th, td {
+	text-align: center;
+}
+
 th, td {
-	text-align: left;
+	text-align: center;
 }
 
 .custom-sidebar {
