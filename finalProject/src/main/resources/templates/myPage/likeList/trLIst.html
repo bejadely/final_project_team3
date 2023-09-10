@@ -41,8 +41,17 @@ $(document).ready(function() {
 	<div class="table-responsive">
 	<form>
 		<h5>좋아요 목록</h5>
-		<button type="button" id="mt">여행메이트</button>
-		<button type="button" id="tr">여행기록</button>
+		<br>
+     	<div class="radioButton">
+	         <div class="bt-item">
+	            <input type="radio" name="s-type" id="mt">
+	            <label for="mt">여행메이트</label>
+	         </div>
+	         <div class="bt-item">
+	            <input type="radio" name="s-type" id="tr" checked>
+	            <label for="tr">여행기록</label>
+	         </div>
+      	</div>
 		<table class="table">
 			<thead>
 				<tr>

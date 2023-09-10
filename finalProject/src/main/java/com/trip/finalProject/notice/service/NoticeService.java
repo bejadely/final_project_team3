@@ -21,9 +21,11 @@ public interface NoticeService {
 	public int boardReple(NoticeVO vo);
 	public int boardRepleN(NoticeVO vo);
 	//공지사항 화면에 뿌리기
-	public List<NoticeVO> SelectAllNoticeList(PagingVO pagingVO);
+	public List<NoticeVO> SelectAllNoticeList(String sessionAuthority,PagingVO pagingVO);
+
+	
 	//게시글 수 카운트
-	public int listCount();
+	public int listCount(String sessionAuthority);
 	//게시글 상세조회 
 	public NoticeVO getNoticeDetail(NoticeVO vo);
 	//게시글 상세조회시 조회수 증가
@@ -40,6 +42,9 @@ public interface NoticeService {
 	public List<NoticeVO> searchNoticeByTitle1n(NoticeVO noticeVO, PagingVO pagingVO);
 	// 제목으로 이벤트 검색 
 	public List<NoticeVO> searchNoticeByTitle2n(NoticeVO noticeVO, PagingVO pagingVO);
+	
+	//삭제
+	public void noticeDelete(NoticeVO noticeVO);
 
 	
 }

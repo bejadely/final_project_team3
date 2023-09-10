@@ -5,24 +5,52 @@
 <mapper namespace="com.trip.finalProject.notice.mapper.NoticeMapper"><!-- 구현! 메서드 명 만들어 놓은 것을 여기서 만들겠다. -->
 
 
-
+<!--A1, A4, null일 때 T2:공개 N1:전체 , 검색전은 가이드도 동일.-->
 <!--  페이지별로 게시글 확인 row 개수에 따라 -->
    <select id="SelectAllNoticeList" >
 		
 				SELECT *
-			  	FROM (SELECT ROWNUM rn, a.*
-			        	FROM(SELECT notice_Number,title,writer_Id,regist_Date,hit 
-							FROM notice  order by regist_Date desc) a )
-			  WHERE rn BETWEEN #{start} AND #{end}
-			  				
-		
+			  	FROM (SELECT ROWNUM rn, notice_Number,title,writer_Id,regist_Date,hit,code_val(notice_type)notice_type 
+			        	FROM(SELECT notice_Number,title,writer_Id,regist_Date,hit,notice_type
+							FROM notice  where status='T2' and release='N1' order by regist_Date desc) a )
+			  WHERE rn BETWEEN #{start} AND #{end}			  			
 	</select>	
-	<!-- 전체 게시글 수 카운트 -->
+	
+	
+	
+	<!--A3일 때 관리자. -->
+<!--  페이지별로 게시글 확인 row 개수에 따라 -->
+   <select id="SelectByAdminNoticeList" >
+		
+				SELECT *
+			  	FROM (SELECT ROWNUM rn, notice_Number,title,writer_Id,regist_Date,hit,code_val(notice_type)notice_type 
+			        	FROM(SELECT notice_Number,title,writer_Id,regist_Date,hit,notice_type
+							FROM notice   order by regist_Date desc) a )
+			  WHERE rn BETWEEN #{start} AND #{end}			  			
+	</select>	
+	
+	
+	<!--전체 게시글 수 카운트. A1, A4, null일 때 T2:공개 N1:전체-->
   		<select id="getAllNoticeCount">
   			SELECT COUNT(*)
-  			  FROM notice
+  			  FROM notice where status='T2' and release='N1'
+  	</select>
+
+
+
+
+  	<!--전체 게시글 수 카운트. A2일 때 T2:공개 N1:전체-->
+  	<select id="getGuideNoticeCount">
+  			SELECT COUNT(*)
+  			  FROM notice where status='T2' and release='N1'
   	</select>
 	
+	
+	  	<!--전체 게시글 수 카운트. A3일 때 -->
+  	<select id="getAdminNoticeCount">
+  			SELECT COUNT(*)
+  			  FROM notice 
+  	</select>
 
 	
 
@@ -98,14 +126,16 @@
 						     , a.writer_Id						    
 						     , a.regist_date
 						     , a.hit
+						     , code_val(notice_type)notice_type
 						     <!-- , code_val(a.authority) authority -->
 			 FROM(SELECT notice_number
 				       , title
 				       ,writer_Id				       
 				       , regist_date
 				       ,hit
+				       ,notice_type
 				    FROM notice
-				   WHERE notice_Type='n1'  and  title LIKE '%${noticeVO.title}%'
+				   where status='T2' and release='N1' and notice_Type='n1'  and  title LIKE '%${noticeVO.title}%'
 				ORDER BY regist_date DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
   		</select>
@@ -117,7 +147,7 @@
   		<select id="countNoticeType2n">
   			SELECT COUNT(*)
   			  FROM notice
-  			 WHERE notice_Type='n2'  and title LIKE '%${title}%'
+  			 where status='T2' and release='N1'and notice_Type='n2'  and title LIKE '%${title}%'
   		</select>
   		
   		<!-- 제목으로 게시글 검색 -->
@@ -128,14 +158,16 @@
 						     , a.writer_Id						    
 						     , a.regist_date
 						     , a.hit
+						     , code_val(notice_type)notice_type
 						     <!-- , code_val(a.authority) authority -->
 			 FROM(SELECT notice_number
 				       , title
 				       ,writer_Id				       
 				       , regist_date
 				       ,hit
+				       ,notice_type
 				    FROM notice
-				   WHERE notice_Type='n2'  and  title LIKE '%${noticeVO.title}%'
+				   where status='T2' and release='N1'and notice_Type='n2'  and  title LIKE '%${noticeVO.title}%'
 				ORDER BY regist_date DESC) a)
 		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
   		</select>
@@ -155,8 +187,7 @@
 
 	
 <!-- 게시글을 삭제하는 쿼리 -->	
-	<delete id="boardDelete">
-		DELETE FROM board WHERE board_id = #{boardId}
+	<delete id="noticeDelete">
+		DELETE FROM notice WHERE notice_number = #{noticeNumber}
 	</delete>
 </mapper>
-

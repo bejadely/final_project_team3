@@ -9,96 +9,53 @@
 <!-- index.html 고유 CSS 추가 -->
 <th:block layout:fragment="css"></th:block>
 <!-- index.html 고유 스크립트 추가 -->
-<th:block layout:fragment="script"><style>
-body {
-	background-color: #fff;
-	font-family: 'Roboto', sans-serif;
-	font-weight: 400;
-	color: #333;
-}
+<th:block layout:fragment="script">
+<style>
+	body {
+    	background-color: #ffffff;
+        color: #000000;
+    }
 
-h1 {
-	color: #333;
-}
+    .text-center {
+        text-align: center;
+    }
 
-table {
-	width: 100%;
-	border-collapse: collapse;
-	margin-bottom: 20px;
-}
-
-th, td {
-	padding: 10px;
-	text-align: left;
-	border: 1px solid #ddd;
-}
-
-th {
-	background-color: #f5f5f5;
-}
-
-textarea {
-	width: 100%;
-	padding: 10px;
-	border: 1px solid #ddd;
-	resize: none;
-}
-
-button {
-	background-color: #333;
-	color: #fff;
-	border: none;
-	padding: 10px 20px;
-	cursor: pointer;
-}
-
-button:hover {
-	background-color: #222;
-}
-
-p {
-    padding: 5px;
-    margin-bottom: 5px;
-    margin-left : 10px;
-}
-
-table {
-	width: 100%;
-	border-collapse: collapse;
-	margin-bottom: 20px;
-	margin: 10px;
-	padding: 10px;
-}
-    .report-form {
-        display: inline;
-        background-color: #f2f2f2;
+    .form-control {
+        width: 100%;
         padding: 10px;
-        border-radius: 5px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        box-sizing: border-box;
     }
 
-    .report-form label {
-        font-weight: bold;
+    .btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 4px;
     }
 
-    .report-form select {
-        width: 200px;
-        padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 3px;
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        color: #ffffff;
     }
 
-    .report-form input[type="submit"] {
-        background-color: #333;
-        color: white;
-        padding: 8px 16px;
-        border: 1px solid black;
-        border-radius: 0;
-        cursor: pointer;
+    .btn-primary:hover {
+        background-color: #0069d9;
+        color: #ffffff;
     }
 
-    .report-form input[type="submit"]:hover {
-        background-color: #222;
+    .btn-secondary {
+        background-color: #6c757d;
+        border: none;
+        color: #ffffff;
     }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        color: #ffffff;
+    }
+	
 </style>
 </head>
 <body>
@@ -125,8 +82,8 @@ table {
               		<div>
               			<table class="table">
                				<tr>
-               					<th width="150">신고자 아이디</th>
-               					<td width="150">
+               					<th style="text-align: left; width: 200px;">신고자 아이디</th>
+               					<td colspan="2" style="text-align: left;">
                						<label for="reporterId" class="form-control">
                                 		[[${session.sessionId}]]
                             		</label>
@@ -134,8 +91,8 @@ table {
                             	</td>
                				</tr>
                				<tr>
-               					<th width="150">피신고자 아이디</th>
-               					<td width="150">
+               					<th style="text-align: left;">피신고자 아이디</th>
+               					<td colspan="2" style="text-align: left;">
                						<label for="punishedId" class="form-control">
                                 		[[${tripMateVO.writerId}]]
                             		</label>
@@ -143,24 +100,24 @@ table {
                             	</td>
                				</tr>
                				<tr>
-                            	<th width="150">신고일자</th>
-                            	<td width="150" id="reportDayCell"> 
+                            	<th style="text-align: left;">신고일자</th>
+                            	<td colspan="2" style="text-align: left;" id="reportDayCell"> 
                                 	<input type="hidden" id="now_date" name="reportDate" readOnly class="form-control">
                             	</td>
                         	</tr>
                         	<tr>
-                            	<th>신고 내용</th>
-                            	<td colspan="3">
+                            	<th style="text-align: left;">신고 내용</th>
+                            	<td colspan="2" style="text-align: left;">
                                 	<textarea rows="10" cols="=50" name="content" placeholder="내용을 입력해주세요." required class="form-control"></textarea>
                             	</td>
                         	</tr>
                			</table>
               		</div>
         		</div>
-        		<div align="right">
+        		<div align="right" style="margin-bottom: 30px;">
                    	<button type="button" class="btn btn-primary" id="report">신고</button>&nbsp;&nbsp;
                    	<input type="reset" value="취소" class="btn btn-secondary">&nbsp;&nbsp;
-                    <input type="button" value="목록" onclick="location.href='tripMateList'" class="btn btn-secondary">
+                    <input type="button" value="이전으로" onclick="history.back()" class="btn btn-secondary">
                 </div>
         	</form>
         </div>
@@ -214,7 +171,6 @@ table {
 	        	cancelButtonColor: '#d33',
 	        	confirmButtonText: '신고',
 	        	cancelButtonText: '취소',
-	        	reverseButtons: true,
 	    	
 	    	}).then((result) => {
 	        	

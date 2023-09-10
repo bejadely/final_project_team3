@@ -1,8 +1,11 @@
 package com.trip.finalProject.trip.service;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.trip.finalProject.attachedFile.service.AttachedFileVO;
 
 import lombok.Data;
 
@@ -27,12 +30,13 @@ public class TripVO {
 	private String authority;
 	private int punishCount;
 
-	//file
+	//file upload관련
 	private String fileId;
 	private String originImg;
 	private String savedImg;
 	private int fileNo;
 	private String imgType;
+	private String loadingImg;
 	
 	//trip_record
 	private String writerId;
@@ -47,6 +51,7 @@ public class TripVO {
 	private Date registDay;
 	private String tripReview;
 	private String tripShare;
+	private int hit;
 	
 	//trip_record_memo
 	private String memoId;
@@ -54,6 +59,11 @@ public class TripVO {
 	private String content;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date memoDate;
+	
+	//에디터
+	private List<AttachedFileVO> attachList;
+	private List<AttachedFileVO> editorAttachList;
+	
 
 	//선택한 여행 지역을 최초로 지도에 표시하기 위한 위도,경도 값
 	private String tripArea;

@@ -168,20 +168,21 @@ public class TripMateServiceImpl implements TripMateService {
 		attachedFileMapper.delete(tripMateVO.getPostId());
 		tripMateMapper.updateTripMateRecruit(tripMateVO);
 		
-		if(tripMateVO.getAttachList()!=null || tripMateVO.getAttachList().size()>0) {
+		if (tripMateVO.getAttachList() == null || tripMateVO.getAttachList().size() <= 0) {			
+			return ;
+		}else {
 			tripMateVO.getAttachList().forEach(attach->{
 				attach.setPostId(tripMateVO.getPostId());
 				attachedFileMapper.insertAttachedFile(attach);
 			});
-		}else {
-			return;
 		}
+		
 		if(tripMateVO.getEditorAttachList()==null || tripMateVO.getEditorAttachList().size()<=0) {
 			return;
 		}else {
 			tripMateVO.getEditorAttachList().forEach(attach->{
-			attach.setPostId(tripMateVO.getPostId());
-			attachedFileMapper.insertAttachedFile(attach);
+				attach.setPostId(tripMateVO.getPostId());
+				attachedFileMapper.insertAttachedFile(attach);
 			});
 		}
 		
@@ -194,6 +195,18 @@ public class TripMateServiceImpl implements TripMateService {
 		return tripMateMapper.reportTripMate(tripMateVO);
 	}
 
+	//여행 메이트신고시 해당 게시글에 신고 내역이 존재하는지 체크
+	@Override
+	public int selectReportLog(TripMateVO tripMateVO) {
+		int result = tripMateMapper.selectReportLog(tripMateVO);
+		
+		if(result > 0) {
+			return result = 1;
+		}else {
+			return result = 0;
+		}
+	}
+	
 	//여행 메이트 신청 (등록된 게시글에 대한 여행메이트 신청)
 	@Override
 	public TripMateVO InsertTripMateApply(TripMateVO tripMateVO) {
@@ -205,6 +218,19 @@ public class TripMateServiceImpl implements TripMateService {
 	@Override
 	public int sendAlert(TripMateVO tripMateVO) {
 		return tripMateMapper.sendAlert(tripMateVO);
+	}
+	
+	//여행 메이트신청시 해당 게시글에 신청 내역이 존재하는지 체크
+	@Override
+	public int selectApplyLog(TripMateVO tripMateVO) {
+		int result = tripMateMapper.selectApplyLog(tripMateVO);
+		
+		if(result > 0) {
+			return result = 1;
+		}else {
+			return result = 0;
+		}
+		
 	}
 
 	//여행 메이트 신청시 게시글의 신청자 수 업데이트

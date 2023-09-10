@@ -3,6 +3,8 @@ package com.trip.finalProject.kakaoPay.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,17 +26,24 @@ import com.trip.finalProject.kakaoPay.service.PaymentVO;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/payment")
+@RequestMapping("/common/payment")
 @RequiredArgsConstructor
 public class KakaoPayController {
 	
 	@Autowired
 	CartService cartService;
-	
+	@Autowired
+    HttpSession session;
 	private final KakaoPayService kakaoPayService;
 	
 	@PostMapping("/ready")
-	public KakaoPayResponseVO readyToKakaoPay(PaymentVO vo,@RequestParam("quantity") int quantity,@RequestParam(value="postId", required=false)String postId, String specialtyType) {
+	public KakaoPayResponseVO readyToKakaoPay(PaymentVO vo,@RequestParam("quantity") int quantity,@RequestParam(value="postId", required=false)String postId, String specialtyType) throws Exception {
+		String sessionId = "";
+		if(session.getAttribute("sessionId") != null && !session.getAttribute("sessionId").toString().replaceAll(" ", "").equals("")) {
+			sessionId =  session.getAttribute("sessionId").toString();
+        } else {
+            throw new Exception("no login");
+        }	
 		return kakaoPayService.kakoPayReady(vo,quantity,postId,specialtyType);
 
 	}
@@ -51,7 +60,7 @@ public class KakaoPayController {
 		mv.addObject("tid",approveResponse.getTid());
 		mv.addObject("specialtyType",specialtyType);
 		mv.addObject("postId",postId);
-		mv.setViewName("redirect:/payment/info");
+		mv.setViewName("redirect:/common/payment/info");
 		
 		
 		return mv;
@@ -77,12 +86,11 @@ public class KakaoPayController {
 		if(approveResponse.getPostId().substring(0,3).equals("PKG")) {
 			KakaoPayInfoResponseVO kakaoVO = new KakaoPayInfoResponseVO();
 			kakaoVO.setQuantity(kakaoPayInfoResponseVO.getQuantity());
-			kakaoVO.setPostId(kakaoPayInfoResponseVO.getPostId());
+			kakaoVO.setPostId(approveResponse.getPostId());
+			System.out.println(approveResponse.getPostId());
 			kakaoPayService.updatePackageQuantity(kakaoVO);
 			
 		}
-		System.out.println(approveResponse.getPostId().substring(0,3));
-		System.out.println(kakaoPayInfoResponseVO.getItem_code());
 		//주문 상세 테이블 등록
 		if(kakaoPayInfoResponseVO.getItem_code() == null || kakaoPayInfoResponseVO.getItem_code().equals("")) {
 			
@@ -110,7 +118,6 @@ public class KakaoPayController {
 			}
 			//cartProduct = cartService.cartInfo(cartIdArray);
 			
-			 System.out.println(cartProduct); 
 			 for(int i=0; i<cartProduct.size(); i++) {
 				 kakaoPayInfoResponseVO.setPostId(cartProduct.get(i).getPostId());
 				 kakaoPayInfoResponseVO.setMemberId(cartProduct.get(i).getMemberId());
@@ -131,7 +138,7 @@ public class KakaoPayController {
 			 
 		}	
 	   	
-	    ModelAndView mv = new ModelAndView("redirect:/kakaoPaySuccess");
+	    ModelAndView mv = new ModelAndView("redirect:/common/buyPkList");
 	    
 	    return mv;
 	}
@@ -140,8 +147,16 @@ public class KakaoPayController {
 	public ModelAndView refund(KakaoPayInfoResponseVO vo) {
 		System.out.println(vo);
 		kakaoPayService.KakaoCancelResponse(vo);
-		kakaoPayService.updatePurchase(vo);
-		ModelAndView mv = new ModelAndView("/payment/kakaoRefundSuccess");
+		if(vo.getPostId().substring(0,3).equals("PKG")) {
+			kakaoPayService.updatePurchase(vo);
+			vo.setQuantity(-vo.getQuantity());  
+			kakaoPayService.updatePackageQuantity(vo);
+		}else {
+			kakaoPayService.updatePurchase(vo);
+		}
+		
+		
+		ModelAndView mv = new ModelAndView("redirect:/common/buyPkList");
 		return mv;
 	}
 	

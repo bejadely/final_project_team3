@@ -6,10 +6,10 @@ import com.trip.finalProject.common.PagingVO;
 
 public interface BuyListService {
 	//패키지 조회(카운트)
-	public int pkCountInfo(String memberId);
+	public int pkCountInfo(BuyListVO buyVO);
 	
 	//특산물 조회(카운트)
-	public int spCountInfo(String memberId);
+	public int spCountInfo(BuyListVO buyVO);
 
 	//패키지 조회
 	public List<BuyListVO> pkAllLikeInfo(BuyListVO buyVO, PagingVO pagingVO);

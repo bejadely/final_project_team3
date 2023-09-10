@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.trip.finalProject.attachedFile.service.AttachedFileService;
+import com.trip.finalProject.attachedFile.service.AttachedFileVO;
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.trip.service.TripService;
 import com.trip.finalProject.trip.service.TripVO;
@@ -28,6 +31,8 @@ public class TripController {
 	TripService tripService;
 	@Autowired
 	HttpSession session;
+	@Autowired
+	AttachedFileService attachedFileService;
 
 	@Value("${kakao.map.key}")
 	String kakaoMap;
@@ -35,7 +40,7 @@ public class TripController {
 	// 여행기록 전체 조회
 	@GetMapping("/tripRecordList")
 	public String tirpRecordList(Model model
-							  , @RequestParam( name = "searchBy", defaultValue = "name" ) String searchBy
+							  , @RequestParam( name = "searchBy", defaultValue = "writerId" ) String searchBy
 							  , @RequestParam( name = "keyword", defaultValue = "" ) String keyword
 							  , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
 							  , @RequestParam( name = "cntPerPage", defaultValue = "12")Integer cntPerPage ) {
@@ -148,7 +153,7 @@ public class TripController {
 	}
 	
 	//여행기록 공개 설정 업데이트
-	@PostMapping("/discloseUpdate")
+	@PostMapping("/common/discloseUpdate")
 	@ResponseBody
 	public Map<String, Object> disUpdate(TripVO tripVO){
 	    tripVO.getPostId();
@@ -165,6 +170,9 @@ public class TripController {
 	@Transactional
 	@GetMapping("/tripRecordInfo")
 	public String tripRecordInfo(TripVO tripVO, Model model) {
+		//조회수 업데이트
+		tripService.updateTripRecordHit(tripVO);
+		
 		TripVO findVO = tripService.getTripInfo(tripVO);
 		
 		//여행 기록 데이터
@@ -207,12 +215,21 @@ public class TripController {
 
 	// 여행기록 등록 - 임시저장 상태에서 저장상태로 상태 업데이트
 	@PostMapping("/common/tripRecordInsertUp")
-	public String tripRecordInsertProcess(TripVO tripVO) {
+	public ModelAndView tripRecordInsertProcess(TripVO tripVO) {
 		//여행기록 저장상태 변경
 		tripService.InsertTripInfo(tripVO);
-		return "redirect:/tripRecordList";
+		ModelAndView mv = new ModelAndView("redirect:/tripRecordList");
+		return mv;
 	}
-
+	
+	//첨부파일 상세정보(파일 여러개를 보여주기 위해서)
+	@GetMapping("/getAttachTrip")
+	@ResponseBody
+	public List<AttachedFileVO> getAttachList(AttachedFileVO vo){
+		System.out.println(vo.getPostId());
+		return attachedFileService.getAttachList(vo);
+	}
+	
 	// 여행기록 임시저장 - 임시 저장인 상태로 다시 업데이트
 	@PostMapping("/common/tsTripRecordInsertUp")
 	public String tsTripRecordInsertProcess(TripVO tripVO) {

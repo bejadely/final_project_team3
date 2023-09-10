@@ -85,7 +85,7 @@
 	</select>
 	
 	<select id="packageInfo" resultType="PackageVO">
-		SELECT content, name, price, start_date, end_date, deadline_date, max_reservation, tour_theme,post_id
+		SELECT content, name, price, start_date, end_date, deadline_date, max_reservation, tour_theme,post_id,now_reservation
 		FROM package_regist
 		WHERE post_id=#{postId}
 	</select>
@@ -237,26 +237,27 @@
 	</select>
 	
 	<select id="guidePacInfo" resultType="PackageVO">
-		SELECT content, 
-			   name, 
-			   price, 
-			   start_date, 
-			   end_date, 
-			   deadline_date,
-			   now_reservation, 
-			   max_reservation, 
-			   tour_theme,
-			   code_val(completion) completion,
-			   post_id
-		FROM package_regist
-		WHERE post_id=#{postId}
+		SELECT p.content, 
+			  p.name, 
+			  p.price, 
+			  p.start_date, 
+			  p.end_date, 
+			  p.deadline_date,
+			  p.now_reservation, 
+			  p.max_reservation, 
+			  p.tour_theme,
+			  code_val(p.completion) completion,
+			  p.post_id,
+			  a.loading_img
+		FROM package_regist p JOIN attached_file a ON p.post_id = a.post_id
+		WHERE p.post_id=#{postId} AND a.img_type = 'U2'
 	</select>
 	<!-- 패키지 상세보기 내의 회원 정보 불러오기 -->
 	<select id="pacMember" resultType="PackageVO">
 		SELECT p.post_id,
 			   p.member_id,
 			   p.price,
-			   p.order_status,
+			   code_val(p.order_status) order_status,
 			   p.quantity,
 			   p.order_date,
 			   m.member_name,
@@ -264,7 +265,7 @@
 			   code_val(m.gender) gender,
 			   m.birth_date
 		FROM purchase p LEFT JOIN member m on p.member_id = m.member_id 
-		WHERE p.post_id = #{postId}
+		WHERE p.post_id = #{postId} 
 	</select>
 	
 	<update id="deletePackage" parameterType="PackageVO">

@@ -81,7 +81,7 @@
 <script type="text/javascript">
 	
 </script>
-<script src ="ckeditor5-build-classic/ckeditor.js"></script>
+<script src ="/ckeditor5-build-classic/ckeditor.js"></script>
 <body>
     <div class="container">
         <div class="text-center">
@@ -158,17 +158,18 @@
                 <br>
 
                 <div>
-                    <input type="hidden" id="순번" name="noticeNumber" th:value="${noticeVO.noticeNumber}">
+                    <input type="hidden" id="noticeNumber" name="noticeNumber" th:value="${noticeVO.noticeNumber}">
                 </div>
                 <div>
-                    <div align="left">
+                  <!--   <div align="left">
                     <input type='checkbox' name="boardSecret" id="boardSecret" onclick="settingSecret()" value="N" class="form-check-input">
                     
-                    </div>                
+                    </div>        -->         
                     <div align="right">
                     <button type="submit" value="등록" class="btn btn-primary submitButton">수정</button>&nbsp;&nbsp;         
-                     <input type="button" value="삭제" onclick="location.href='noticeList?page=1'" class="btn btn-secondary">
+                     <button type="button"    class="btn btn-secondary deleteButton">삭제</button>
                     <input type="button" value="목록" onclick="location.href='noticeList?page=1'" class="btn btn-secondary">
+                    <!-- onclick="location.href='/admin/noticeDelete'" -->
                     </div>
                     <br><br>
                 </div>
@@ -198,6 +199,7 @@ $(document).ready(function() {
  	setRelease();
  	//공지종류
  	setNoticeType();
+ 	//noticeDelete();
  });
 
 
@@ -257,17 +259,103 @@ function setNoticeType(){
 
  
 
+
+
+
 $(document).ready(function() {
 		// 승인 버튼 클릭 시 발생 이벤트 설정
-		$('.submitButton').on('click', go);
-		 // $('#frm').on('submit', loginAccountcheck);
-	/* 	$('.rejectButton').on('click', authReject); */
+		/* $('.deleteButton').on('click', noticeDelete); */
+
+
+
+
+
+
+
+
+$('.deleteButton').on("click",function(event){
+		var noticeNumber = $("#noticeNumber").val();
+	Swal.fire({
+	      title: '삭제하시겠습니까',
+	      icon: 'question',
+	      showCancelButton: true,
+	      confirmButtonColor: '#3085d6',
+	      cancelButtonColor: '#d33',
+	      confirmButtonText: '삭제',
+	      cancelButtonText: '취소',
+	    
+    }).then((result) => {
+	      if (result.isConfirmed) {
+				location.href="/admin/noticeDelete?noticeNumber=" + noticeNumber;			 	
+	      }else{
+	    	  console.log('Nope')
+	    	  return;
+	      }
+	    });
+
 });
-	
 		
-	// 승인 버튼 클릭 시 발생 이벤트
-	function go(e){
-		event.preventDefault();
+});	
+	
+	
+ClassicEditor
+.create(document.querySelector('#editor'), {
+	/* htmlEncodeOutput: false, */
+	ckfinder: {
+		uploadUrl : '/common/upload'	
+	}	
+})
+.then(editor => {
+	console.log('Editor was initialized');
+
+	var formObj = $("#frm");
+	var str="";
+
+	$("button[type='submit']").on("click",function(event){
+		event.preventDefault();		
+		const data = editor.getData();		
+		//console.log(data);
+		let objData = serializeObject();
+		//sconsole.log(data);
+		const { writerId, registDate, title  } = objData;
+		var combinedData={
+				 content: data,
+		         writerId: writerId,
+		         title: title
+		};
+		//console.log(combinedData.content);	
+		str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";			
+		const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));	
+		const filenames = imgTags.map(img=> {
+			const src = img.getAttribute('src');
+			return src;
+		});		
+		$.each(filenames,function(i,obj){
+			str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
+		});	
+	formObj.append(str);
+		
+
+		 if ($("#noticeType option:selected").val() =='') { // 저장된 SMS 코드를 사용
+	         alert("공지사항 종류 정하세요.");
+		// return false;
+	     } else if ($("#release option:selected").val() ==''){
+	    	 alert("공개대상 정하세요.");
+	    	// return false;
+	     } else if($("#status option:selected").val() ==''){
+	    	 alert("글 저장상태 정하세요.");
+	    	// return false;
+	    	 
+	     }else if($("#title").val() ==''){
+	    	 console.log('있나'+$("#editor").val());
+	    	 alert("글 제목 입력하세요.");
+		    	// return false;
+	    	
+		     }else if(data == '' || data == null){
+				
+		    	 alert("글 내용 작성하세요");
+			    	 //return false;			    	 
+		     }else{
 		
 	
 		Swal.fire({
@@ -290,82 +378,32 @@ $(document).ready(function() {
 				
 		      }else{
 		    	  console.log('Nope')
+		    	  return;
 		      }
 		    });
 		 
 	   	    
-	} 
-
-	
-	
-	ClassicEditor
-	.create(document.querySelector('#editor'), {
-		 htmlEncodeOutput: false, 
-		ckfinder: {
-			uploadUrl : '/common/upload'	
-		}
-	
+	}
+		
+		
+		
+		
+			
 		
 	})
-	.then(editor => {
-		console.log('Editor was initialized');
-		
+})
+.catch(error => {
+	console.error(error);
+});
+	
+	/* function go(e){
+		e.preventDefault();
+ 	}
+	//ck-editor */
+	
 
-		var formObj = $("#frm");
-		var str="";
-		
-		$("button[type='submit']").on("click",function(event){
-			
-			event.preventDefault();
-			
-			const data = editor.getData();
-			
-			console.log(data);
-			let objData = serializeObject();
-			var sigunguCode = $("#location > option:selected").attr("value1");
-			var areaCode = $("#location > option:selected").attr("value2");
-			str+=`<input type='hidden' name='sigunguCode' value='${sigunguCode}'>
-				 <input type ='hidden' name = 'areaCode' value='${areaCode}'>`
-			//sconsole.log(data);
-			const { writerId, registDate, title  } = objData;
-			var combinedData={
-					 content: data,
-			         writerId: writerId,
-			         registDate: registDate,
-			         title: title
-			};
-			console.log(combinedData);
+
 	
-		
-			
-			str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";
-			
-			
-			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
-			
-			const filenames = imgTags.map(img=> {
-				const src = img.getAttribute('src');
-				
-				return src;
-			});		
-			$.each(filenames,function(i,obj){
-				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
-			});
-	
-			formObj.append(str);
-			//document.getElementById('frm').action = "/noticeProc";
-			//document.getElementById('frm').submit();
-			
-			
-			
-			
-		})
-		//////////////////////////////////////////////////////////////////////
-	})
-	.catch(error => {
-		console.error(error);
-	});
-		
 	function serializeObject(){
 		let formData = $('form').serializeArray();
 		let formObject={};
@@ -382,6 +420,11 @@ $(document).ready(function() {
 	
 	
 	
+	
+	
+	
+
+
 </script>
 
 

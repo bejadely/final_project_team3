@@ -140,32 +140,30 @@
             <th width="50">여행 지역</th>
             <td width="70" align="center" th:text="${tripMateInfo.tripArea}"></td>
             <th width="50">여행 스타일</th>
-            <td width="70" align="center" th:text="${tripMateInfo.mateStyle}"></td>
+            <td width="70" align="center" th:text="${tripMateInfo.tStyle}"></td>
             <th width="100">등록일자</th>
             <td width="150" align="center"
-                th:text="${#dates.format(tripMateInfo.writeDate, 'yy년 MM월 dd일 hh:mm:ss')}"></td>
+                th:text="${#dates.format(tripMateInfo.writeDate, 'yy년 MM월 dd일')}"></td>
             <th width="50">조회수</th>
             <td width="70" align="center" th:text="${tripMateInfo.hit}"></td>
         </tr>
          <tr>
+        	<th width="100">작성자</th>
+            <td width="110" align="center" th:text="${tripMateInfo.writerId}"></td>
             <th width="100">예상 경비</th>
-            <td width="110" align="center" th:text="${tripMateInfo.mateExpense}"></td>
+            <td width="110" align="center" th:text="${#numbers.formatInteger(tripMateInfo.mateExpense, 0, 'COMMA')}"></td>
             <th width="100">모집 인원</th>
             <td width="110" align="center" th:text="${tripMateInfo.mateMax}"></td>
             <th width="100">신청 인원</th>
             <td width="110" align="center" th:text="${tripMateInfo.applyNum}"></td>
-            <th colspan="1">마감일</th>
-            <td colspan="3" align="center">[[${#dates.format(tripMateInfo.deadline, 'yy년 MM월 dd일')}]]</td>
         </tr>
          <tr>
             <th colspan="1">여행 기간</th>
-            <td colspan="7" align="center">[[${#dates.format(tripMateInfo.startDay, 'yy년 MM월 dd일')}]] ~
+            <td colspan="3" align="center">[[${#dates.format(tripMateInfo.startDay, 'yy년 MM월 dd일')}]] ~
                 [[${#dates.format(tripMateInfo.endDay, 'yy년 MM월 dd일')}]]
             </td>
-        </tr>
-        <tr>
-            <th colspan="1">작성자</th>
-            <td colspan="7" align="center" th:text="${tripMateInfo.writerId}"></td>
+            <th colspan="1">마감일</th>
+            <td colspan="3" align="center">[[${#dates.format(tripMateInfo.deadline, 'yy년 MM월 dd일')}]]</td>
         </tr>
         <tr>
             <th colspan="1">여행 타이틀</th>
@@ -173,10 +171,11 @@
             </td>
         </tr>
         <tr>
-            <td colspan="8">
-                <th:textarea rows="30" th:utext="${tripMateInfo.mateContent}" readonly></th:textarea>
-            </td>
-        </tr>
+        	<th colspan="1">내용</th>
+        	<td colspan="7">
+    			<div style="min-height: 300px;" th:utext="${tripMateInfo.mateContent}" class="contentStyle" ></div> 
+    		</td>
+    	</tr>
     </table>
 </div>
 <div align="center">
@@ -195,7 +194,7 @@
         <button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button"
                 class="primary-btn" id="mateDelbtn">삭제
         </button>&nbsp;&nbsp;
-        <button type="button" class="primary-btn" onclick="history.back()">목록으로</button>
+        <button type="button" class="primary-btn" onclick="location.href='/tripMateList'">목록으로</button>
     </form>
 </div>
 <br>
@@ -271,46 +270,65 @@
 <div id="cmtL">
 </div>
 <script th:inline="javascript">
-
 	//게시글 신청버튼 클릭시
 	$(".primary-btn#mateApply").click(function(){
-    	Swal.fire({
-        	icon: 'warning',                      
-        	title: '메이트 신청 하시겠습니까?.',
-        	showCancelButton: true,
-        	confirmButtonColor: '#3085d6',
-        	cancelButtonColor: '#d33',
-        	confirmButtonText: '신청',
-        	cancelButtonText: '취소',
-        	reverseButtons: true,
-    	}).then((result) => {
-        	if (result.isConfirmed) {
-        		 let form = document.getElementById("form");
-        		 form.action = "/common/tripMateApplyForm";
-                 form.submit();
-        	}
-    	});
+		
+		$.ajax({
+			type : 'get',
+			url : '/common/selectApplyLog',
+			data : {
+				memberId : [[${session.sessionId}]],
+				postId : [[${tripMateInfo.postId}]] 
+			}
+			
+		}).done(data => {
+	        if(data == 0 ){
+	        	sendApplyData();
+	        }else{
+	        	Swal.fire({
+	        		  icon: 'warning',                      
+	        		  title: '이미 신청한 게시글입니다.'
+	        		});
+	              return;
+	        }
+                           
+         }).fail(reject => console.log(reject));
+        
 	});
+	
+	function sendApplyData(){
+		let form = document.getElementById("form");
+      	form.action = "/common/tripMateApplyForm";
+        form.submit();
+	}
 
 	//게시글 신고버튼 클릭시
 	$(".primary-btn#mateReport").click(function(){
-		var postId = $(this).siblings("input[name=postId]").val();
-	
-		Swal.fire({
-    		icon: 'warning',                      
-     		title: '게시글을 신고 하시겠습니까?.',
-      		showCancelButton: true,
-			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-			confirmButtonText: '신고',
-			cancelButtonText: '취소',
-			reverseButtons: true,
-    	}).then((result) => {
-	   		if (result.isConfirmed) {
-            	 location.href = `/common/mateRecruitReportForm?postId=${postId}`;
+		
+		$.ajax({
+			type : 'get',
+			url : '/common/selectReportLog',
+			data : {
+				reporterId : [[${session.sessionId}]],
+				postId : [[${tripMateInfo.postId}]] 
 			}
-		})
+			
+		}).done(data => {
+	        if(data == 0 ){
+	        	var postId = $(this).siblings("input[name=postId]").val();
+	            location.href = `/common/mateRecruitReportForm?postId=${postId}`;
+	        }else{
+	        	Swal.fire({
+	        		  icon: 'warning',                      
+	        		  title: '이미 신고한 게시글입니다.'
+	        		});
+	              return;
+	        }
+                           
+         }).fail(reject => console.log(reject));
+		
 	});
+	
 	
 	//게시글 삭제버튼 클릭시
 	$(".primary-btn#mateDelbtn").click(function(){
@@ -324,7 +342,6 @@
 			cancelButtonColor: '#d33',
 			confirmButtonText: '삭제',
 			cancelButtonText: '취소',
-			reverseButtons: true,
 	    }).then((result) => {
 		   	if (result.isConfirmed) {
 		   		Swal.fire({
@@ -340,20 +357,7 @@
 	//게시글 수정버튼 클릭시
 	$(".primary-btn#mateModify").click(function(){
 		postId = $(this).siblings("input[name=postId]").val();
-		Swal.fire({
-	    	icon: 'warning',                      
-	     	title: '수정 하시겠습니까?.',
-	      	showCancelButton: true,
-			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-			confirmButtonText: '수정',
-			cancelButtonText: '취소',
-			reverseButtons: true,
-	    }).then((result) => {
-		   	if (result.isConfirmed) {
-		   		location.href = `/common/mateRecruitUpdateForm?postId=${postId}`;
-			}
-		})
+		location.href = `/common/mateRecruitUpdateForm?postId=${postId}`;
 	});
 	
 	
