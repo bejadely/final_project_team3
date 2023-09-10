@@ -7,11 +7,41 @@
 	<!-- <link rel="stylesheet" th:href="@{/css/bluetable.css}" > -->
 </head>
 <!-- Content -->
-<div layout:fragment="content">
+<div class="main-container" layout:fragment="content">
 	<div class="container text-break">
 		<h5><b>회원조회</b></h5>
 		<br>
 		<div>
+			<table class="table">
+				<p>조건 검색</p>
+				<tbody>
+					<tr>
+						<th>국적</th>
+						<td>
+							<a role="button">대한민국</a>
+							<a role="button">일본</a>
+							<a role="button">중국</a>
+							<a role="button">미국</a>
+							<a role="button">캐나다</a>
+							<a role="button">필리핀</a>
+							<a role="button">인도</a>
+							<a role="button">영국</a>
+							<a role="button">프랑스</a>
+							<a role="button">이탈리아</a>
+							<a role="button">독일</a>
+							<a role="button">기타</a>
+						</td>					
+					</tr>
+					<tr>
+						<th>회원분류</th>
+						<td>
+							<th:block th:each="a : ${authCodeList}">
+								<a href="#" role="button" th:data-auth="${a.detailCode}">[[${a.value}]]</a>							
+							</th:block>
+						</td>					
+					</tr>
+				</tbody>			
+			</table>
 			<select id="searchBy" name="searchBy">
 				<option value="name">이름으로 검색</option>
 				<option value="id">아이디로 검색</option>
@@ -120,9 +150,30 @@
 						.on('click')
 						.on('mouseup', moveToMemberDetail);
 		rememberKeyword();
-		// 검색 기록 기억
+		// 필터검색 ajax
+		$('a[role=button]').on('click', ajaxFilterSearch);
 		
 	});
+	
+	//ajax 필터 검색
+	function ajaxFilterSearch(event){
+		
+		// 보낼 데이터 추출
+		
+		
+		$.ajax({
+			url : '/admin/ajaxFilterSearch',
+			type : 'get',
+			data : { 
+					authority : "A2",
+					nationality : "대한민국"
+					},
+		})
+		.done( data => {
+			console.log("data : ", data);
+		})
+		.fail( reject => console.log(reject));
+	}
 	
 	// 조건검색기능
 	function search(event){

@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.trip.finalProject.adminMember.service.AdminMemberService;
@@ -42,7 +43,8 @@ public class AdminMemberController {
 							 , @RequestParam( name = "searchBy", defaultValue = "name" ) String searchBy
 							 , @RequestParam( name = "keyword", defaultValue = "" ) String keyword
 			                 , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
-			                 , @RequestParam( name = "cntPerPage", defaultValue = "10")Integer cntPerPage ){
+			                 , @RequestParam( name = "cntPerPage", defaultValue = "10")Integer cntPerPage
+			                 , AdminMemberVO adminMemberVO){
 		
 		// 전체 조회될 회원 수 카운트
 		int total = adminMemberService.memberCount();
@@ -58,6 +60,10 @@ public class AdminMemberController {
 		// 검색어가 없을 경우를 대비한 구문
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("searchBy", searchBy);
+		
+		// 다중 검색을 위해 코드 리스트 보내기
+		List<Map<String, String>> authCodeList = commonMapper.selectCode("A");
+		model.addAttribute("authCodeList", authCodeList);
 		
 		return "admin/manageMember/seeAllMemberList";
 	}
@@ -101,6 +107,10 @@ public class AdminMemberController {
 		// 검색결과 기억을 위해 keyword와 searchBy 담기
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("searchBy", searchBy);
+		
+		// 다중 검색을 위해 코드 리스트 보내기
+		List<Map<String, String>> authCodeList = commonMapper.selectCode("A");
+		model.addAttribute("authCodeList", authCodeList);
 		
 		return "admin/manageMember/seeAllMemberList";
 	}
@@ -228,6 +238,19 @@ public class AdminMemberController {
 		return "redirect:authRequestList";
 	}
 	
-	
+	// 필터 검색
+		@GetMapping("/admin/ajaxFilterSearch")
+		@ResponseBody
+		public Object ajaxFilterSearch(AdminMemberVO adminVO
+									 , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
+									 , @RequestParam( name = "cntPerPage", defaultValue = "10") Integer cntPerPage) {
+			
+			// 필터검색 실행
+			Map<String, Object> map = adminMemberService.selectFilterSearch(nowPage, cntPerPage, adminVO);
+			
+			Object list = map.get("list");
+			
+			return list;
+		}
 	
 }
