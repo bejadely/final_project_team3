@@ -27,6 +27,7 @@
 						area_code,
 						sigungu_code,
 						type
+						,regist_date
 					)
 				VALUES
 					(
@@ -37,6 +38,7 @@
 						,#{areaCode}
 						,#{sigunguCode}
 						,#{type}
+						,sysdate
 					)			
 			
 	</insert>
@@ -78,6 +80,14 @@
 		WHERE rn BETWEEN #{start} AND #{end}
 	
 	</select>
+	
+	<update id="updateDiscount" parameterType="String">
+		UPDATE specialties_regist
+		<set>
+			discount='I2'
+		</set>
+			WHERE post_id=#{postId}
+	</update>
 	
 	<!-- 패키지 수 카운트 -->
 	<select id="specialtiesCount">
