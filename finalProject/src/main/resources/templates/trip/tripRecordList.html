@@ -20,6 +20,108 @@
 <!-- jQuery Modal -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.2/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.2/jquery.modal.min.css" />
+<style>
+.text-center {
+       text-align: center;
+      }
+
+.form-control {
+       width: 100%;
+       padding: 10px;
+       border: 1px solid #ced4da;
+       border-radius: 4px;
+       box-sizing: border-box;
+      }
+
+.btn {
+       padding: 10px 20px;
+       font-size: 16px;
+       border-radius: 4px;
+      }
+
+.btn-primary {
+       background-color: #007bff;
+       border: none;
+       color: #ffffff;
+      }
+
+.btn-primary:hover {
+       background-color: #0069d9;
+       color: #ffffff;
+      }
+
+.btn-secondary {
+      background-color: #6c757d;
+      border: none;
+      color: #ffffff;
+      }
+
+.btn-secondary:hover {
+      background-color: #5a6268;
+      color: #ffffff;
+      }
+
+
+#modalWrap {
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  display: none;
+}
+
+#modalBody {
+  width: 600px;
+  height: 420px;
+  padding: 30px 30px;
+  margin: 0 auto;
+  border: 1px solid #777;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+#modalBody textarea {
+  width: 100%;
+  height: 100px; /* 원하는 높이로 조절하세요 */
+  padding: 10px;
+  border: 1px solid #ddd;
+  resize: none;
+  margin-bottom: 10px;
+}
+
+/* 모달 내부의 table 스타일 */
+#modalBody table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  margin: 0;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+#modalBody th, #modalBody td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+#modalBody th {
+  background-color: #f5f5f5;
+  width: 30%;
+  text-align: center;
+}
+
+#modalBody td a {
+  text-decoration: none;
+}
+
+</style>
 </head>
 <body>
 	<div layout:fragment="content">
@@ -31,57 +133,75 @@
 						<div class="breadcrumb-text">
 							<h2>여행 기록</h2>
 							<div class="col-lg-12">
-								<div class="loadmore">								
-									<!-- modal에 띄우고자하는 코드 -->
-									<div id="test" class="modal" style="height: 600px;  width: 500px; text-align: center;">
-										<form name="sendData" action="/common/tripRecordInsertForm" method="post">
-											<input type="hidden" name="writerId" th:value="${session.sessionId}">
-  											<div style="margin-top: 40px;"> 
-  												<h3>여행 타이틀</h3>
-  												<input type="text" name="tripTitle" placeholder="타이틀을 입력 해주세요." >
-  											</div>
-  											<div style="margin-top: 40px;">
-  												<h3>여행지역 선택</h3>
-  												<select id="tripArea" name="tripArea">
-  													<option value="35.871159972672, 128.60183648521" selected>대구
-  													<option value="35.1798269951885, 129.075103035027">부산
-  													<option value="36.01889392625669, 129.34319484447613">포항
-  													<option value="36.5684065570509, 128.7295973406168">안동
-  													<option value="35.85619885284879, 129.22477009676797">경주
-  													<option value="35.539464253228324, 129.31158865378814">울산
-  													<option value="34.85442687930827, 128.43314233985606">통영
-  													<option value="34.880381383213354, 128.62132760543582">거제
-  												</select><br>
-  											</div><br>
-  											<div>
-  												<h3>여행일정 선택</h3>
-  												<input type="date" name="startDay" value="startDay"> ~ <input type="date" name="endDay" value="endDay">
-  											</div><br>
-  											<div>
-  												<h3>공개여부</h3>
-  												<input type="radio" value="O1" id="tripDisclose" name="tripDisclose" checked="checked"> 
-												<label for="tripDisclose">공개</label> 
-												<input type="radio" value="O2" id="tripDisclose" name="tripDisclose"> 
-												<label for="tripDisclose">비공개</label>
-  											</div><br>
-  											<div style ="margin-top: 30px;"> 
-  												<button type="reset" class="primary-btn">취소</button>
-  												<a href="#" rel="modal:close" class="primary-btn">닫기</a>
-  												<button type="submit" class="primary-btn" id="tripInsert">여행일정 작성</button> 
-  												<!-- <button type="button" onclick="location.href='tripRecordInsert'" class="primary-btn">여행일정 작성</button> -->
-  												<!-- <a href="./tripRecordInsert" class="primary-btn">여행일정 작성</a> -->
-											</div>
-										</form>
-									</div>
-									<!-- href 속성값을 사용하여 modal을 띄워주는 링크 -->
-									<a href="#test" rel="modal:open" class="primary-btn">여행기록 등록</a>
-									<!-- <a href="./tripRecordInsert" class="primary-btn">여행기록 등록</a> -->
+								<div id="modalWrap">
+	 								 <div id="modalContent">
+	    								<div id="modalBody">
+	     									<div id="modalData">
+	     										<div class="text-center">
+           											<br>
+               										<h3>여행 메이트 글 등록</h3>
+               										<br>
+        										</div>
+        										<div id="ls" class="text-center">
+												<form name="sendData" action="/common/tripRecordInsertForm" method="post">
+													<input type="hidden" name="writerId" th:value="${session.sessionId}">
+  													<div class="mb-3" style="float: left; margin-right: 20px;">
+  														<select id="tripArea" name="tripArea">
+  															<option value="" selected="selected">여행 지역</option>
+  															<option value="35.871159972672, 128.60183648521">대구
+  															<option value="35.1798269951885, 129.075103035027">부산
+  															<option value="36.01889392625669, 129.34319484447613">포항
+  															<option value="36.5684065570509, 128.7295973406168">안동
+  															<option value="35.85619885284879, 129.22477009676797">경주
+  															<option value="35.539464253228324, 129.31158865378814">울산
+  															<option value="34.85442687930827, 128.43314233985606">통영
+  															<option value="34.880381383213354, 128.62132760543582">거제
+  														</select><br>
+  													</div>
+  													<div class="mb-3" style="float: left; margin-right: 20px;" >
+                 										<select class="" id="tripDisclose" name="tripDisclose" aria-label="Default select example" >
+                  											<option value="" selected="selected">공개여부</option>
+                  											<option value="O1">공개</option>
+                  											<option value="O2">비공개</option>
+               											</select>
+              										</div>
+  													<div>
+  														<table class="table">
+  															<tr>
+  																<th style="text-align: left; width: 20%;">타이틀</th>
+  																<td colspan="5">
+  																	<input type="text" name="tripTitle" placeholder="타이틀을 입력 해주세요." class="form-control">
+  																</td>
+  															</tr>
+  															<tr>
+                       											<th style="text-align: left; width: 20%;">여행기간</th>
+                       											<td colspan="2">
+                           											<input type="date" id="startDay" name="startDay" class="form-control">
+                       											</td>
+                       											<td colspan="2">
+                           											<input type="date" id="endDay" name="endDay" class="form-control">
+                       											</td>
+                  	 										</tr>
+  														</table> 
+  													</div>
+  													<div style ="margin-top: 30px;"> 
+  														<button type="reset" class="primary-btn">취소</button>
+  														<button type="button" id="closeBtn" class="primary-btn">닫기</button>
+  														<button type="submit" class="primary-btn" id="tripInsert">여행일정 작성</button> 
+													</div>
+												</form>	
+												</div>						
+	     									</div>
+	    								</div>
+	  								</div>
+								</div>
+								<!-- href 속성값을 사용하여 modal을 띄워주는 링크 -->
+								<button id="buttonWrap" class="primary-btn">여행기록 등록</button>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 		</section>
 		<br>
 		<div style="float:right; margin-right: 150px;">
@@ -101,9 +221,7 @@
 						class="col-lg-4 col-md-6">
 						<div class="single-blog-item">
 							<div class="sb-pic">
-								<img th:src="${tripInfo.writerId}">
-								<!-- 이미지 업로드 되면 추가해야함 -->
-								<img th:if="${not #strings.isEmpty(tripInfo.loadingImg)}" th:src="${tripInfo.loadingImg}" alt="이미지" style="height:277px;">
+								<img th:if="${not #strings.isEmpty(tripInfo.loadingImg)}" th:src="${tripInfo.loadingImg}" style="height:277px;">
                             	<img th:unless="${not #strings.isEmpty(tripInfo.loadingImg)}" th:src="@{/img/no-image.png}">
 							</div>
 							<div class="sb-text">
@@ -260,6 +378,68 @@
 		sendData.submit();
 		
 	});
+	
+	//modal 창 띄우는 구문
+	var btn = $("#btnWrap");
+	const modal = document.getElementById('modalWrap');
+	const closeBtn = document.getElementById('closeBtn');
+	
+	$("#buttonWrap").click(function() {
+		//모달창 띄우기
+		modal.style.display = 'block';
+		//데이터값 가져와서 ajax 통신
+		var memberId = $(this).find("td:eq(0)").text();
+		var postId = $(this).find("td:eq(0)").attr('value');
+		$.ajax({
+			type : 'get',
+			url: '/common/ajaxMember',
+			data: { memberId : memberId, 
+					postId : postId }
+		}).done(data => {
+			modalInfo(data)
+		}).fail(reject => console.log(reject));
+		  });
+	  closeBtn.onclick = function() {
+	    modal.style.display = 'none';
+	  }
+		  
+	  window.onclick = function(event) {
+	    if (event.target == modal) {
+	      modal.style.display = "none";
+	    }
+	  }
+	  //ajax 통신으로 모달창 데이터 띄우기
+	function modalInfo(data){
+		var modal = $("#modalData")
+		var modalInfo = "";
+		var birthDate = data.birthDate.substr(0, 10);
+		modalInfo = `
+			<input type="hidden" id="dataPostId" value="${data.postId}">
+			<input type="hidden" id="dataApplyId" value="${data.applyId}">
+			<input type="hidden" id="dataMemberId" value="${data.memberId}">
+			<table>
+				<tr>
+					<th>이름</th>
+					<td>${data.memberName}</td>
+				</tr>
+				<tr>
+					<th>성별</th>
+					<td>${data.gender}</td>
+				</tr>
+				<tr>
+					<th>성별</th>
+					<td>${data.nationality}</td>
+				</tr>
+				<tr>
+					<th>생년월일</th>
+					<td>${birthDate}</td>
+				</tr>
+			</table>
+			<label>신청 내용</label>
+			<textarea>${data.applyInfo}</textarea>
+		`
+		modal.html(modalInfo);
+	}
 	
 	});
 	</script>
