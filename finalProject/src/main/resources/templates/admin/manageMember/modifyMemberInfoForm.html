@@ -7,7 +7,7 @@
 <!-- Content -->
 <div layout:fragment="content">
 		<div class="container">
-			<form action="/admin/modifyMemberInfo" th:object="${memberVO}" method="post">
+			<form id="frm" action="/admin/modifyMemberInfo" th:object="${memberVO}" method="post">
 				<h5><b>회원정보 수정</b></h5>
 				<br><br>
 				<div class="table">
@@ -55,6 +55,13 @@
 										<option value="미국">미국</option>
 										<option value="캐나다">캐나다</option>
 										<option value="필리핀">필리핀</option>
+										<!-- 추가 -->
+										<option value="인도">인도</option>
+										<option value="영국">영국</option>
+										<option value="프랑스">프랑스</option>
+										<option value="이탈리아">이탈리아</option>
+										<option value="독일">독일</option>
+										<option value="기타">기타</option>
 									</select>
 								</td>
 								<th width="150" align="center">제재횟수</th>
@@ -141,6 +148,7 @@
 		setDefaultAuth();
 		setDefaultGender();
 		setDefaultBankCode();
+		$('#frm').on('submit', checkBeforeSub);
 	});
 	
 	// daum 주소 api 호출
@@ -236,6 +244,7 @@
 		
 		// 불러온 은행명값에 해당하는 option을 selected 및 focus 처리
 		$('.option[data-value="'+defaultBankCode+'"]').attr("class", "option selected focus");
+		
 	}
 	
 	// 문자열 예외처리
