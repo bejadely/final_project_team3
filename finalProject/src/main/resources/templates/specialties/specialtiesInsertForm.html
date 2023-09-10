@@ -18,10 +18,11 @@ form {
 	text-align: center;
 
 }
-.input-group {
-    width: 700px; /* 파일 입력 필드와 버튼의 전체 너비 조절 */
-    
+#tourTheme{
+	margin: 0 auto;
 }
+
+
 .img-thumbnail{
 	width:400px;
 	height:400px;
@@ -47,11 +48,10 @@ body {
       }
 
 .btn-outline-secondary {
-       padding: 5px 50px;
+       padding: 10px 50px;
        font-size: 16px;
        border-radius: 4px;
        height :38px;
-       margin-right:20px;
       }
 
 .btn-primary {
@@ -88,24 +88,73 @@ body {
 li {
     list-style-type: none;
 }
+
+table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    /* 미디어 쿼리 - 작은 화면에서 테이블 조정 */
+    @media (max-width: 768px) {
+      th, td {
+        display: block; /* 테이블 셀을 블록 요소로 변경 */
+        width: 100%; /* 전체 너비로 설정 */
+      }
+
+      /* th 요소에 추가적인 스타일 조정 (선택 사항) */
+      th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+    }
+     /* Flex 컨테이너 스타일 */
+    .select-container {
+      display: flex;
+      justify-content: space-between; /* 요소 간 여백을 최대화하여 나란히 정렬 */
+      align-items: center; /* 세로 중앙 정렬 */
+      margin-bottom: 20px;
+      width:10%;
+    }
+
+    /* 셀렉트 박스 스타일 */
+    select {
+      width: 45%; /* 각 셀렉트 박스의 너비를 조절 */
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
 input[readonly] {
   background-color: #f5f5f5; /* 배경색 변경 */
   cursor: not-allowed; /* 커서 스타일 변경 */
-  margin-right:10px;
+  margin:10px;
 }
 input[type="checkbox"] {
   width: auto; /* 기본 크기로 설정 */
   margin-right: 5px; /* 우측 여백 설정 */
 }
-label {
-  margin-right: 5px; /* 우측 여백 설정 */
-   font-weight: bold;
-   margin-bottom:0px;
-}
-.option {
-  align-items: center; /* 수직 가운데 정렬 */
-  margin-bottom:10px;
 
+.specialtiesOption {
+    white-space: nowrap; /* 옵션들을 한 줄에 나열하기 위해 줄 바꿈 금지 */
+    overflow-x: auto;   /* 옵션이 부모 컨테이너를 넘어갈 경우 스크롤 표시 */
+    width: 100%;        /* 부모 컨테이너 너비에 맞게 설정 */
+}
+
+.option {
+    display: flex; /* 옵션들을 가로로 나열 */
+    margin-right: 10px;   /* 옵션 사이 여백 설정 */
+}
+.option label{
+text-align: center; /* 수평 가운데 정렬 */
+    display: flex; /* Flexbox를 사용하여 수직 가운데 정렬을 적용합니다. */
+    justify-content: center; /* 수평 가운데 정렬 */
+    align-items: center; /* 수직 가운데 정렬 */
+}
 }
 
 </style>
@@ -113,7 +162,7 @@ label {
 <!-- <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script> -->
 <script>
 $(document).ready(function() {	
-
+	var isIfExecuted = false;
 ClassicEditor
 	.create(document.querySelector('#editor'), {
 		/* htmlEncodeOutput: false, */
@@ -157,7 +206,7 @@ ClassicEditor
 		var formObj = $("#editorForm");
 		
 		//document.getElementById("editorForm").addEventListener("submit",function(event){
-		$("button[type='submit']").on("click",function(event){
+		$("input[type='button']").on("click",function(event){
 			event.preventDefault();
 			var str="";	
 			
@@ -221,9 +270,16 @@ ClassicEditor
 				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='"+resultPath+obj+"'>";
 			});
 			
-			formObj.append(str);
-			document.getElementById('editorForm').action = "/admin/specialtiesInsert";
-			document.getElementById('editorForm').submit();
+			if(confirm("등록 하시겠습니까?")){
+		    	//var formattedPrice = parseFloat($("#price").val().replace(/\,/g, '')); // 콤마 제거 및 숫자로 변환
+		    	formObj.append(str);
+		        document.getElementById('editorForm').action = "/guide/packageUpdate";
+		        document.getElementById('editorForm').submit();
+		        alert("등록 되었습니다.");
+		            return;
+		        }else{
+		        	return false;
+		        }
 			
 			
 			
@@ -247,7 +303,6 @@ ClassicEditor
 		
 		return formObject;
 	}
-	var cloneObj = $(".uploadDiv").clone();
 	
 	$(function(){
 		$("#uploadBtn").on('click',function(e){
@@ -270,17 +325,19 @@ ClassicEditor
 				type:'POST',
 				dataType:'json',
 				success: function(result){
-					
+					inputTag.value = '';
 					
 					showUploadedFile(result);
 					
-					$(".uploadDiv").html(cloneObj.html());
 				}
 			});
 			//readURL(this);	
 		});
 	});
-
+	function appendUploadInput() {
+	    const cloneObj = $(".uploadDiv").clone();
+	    $(".uploadDiv").html(cloneObj.html());
+	}
 	
 	$(".uploadResult").on("click","span",function(e){
 		var targetFile = $(this).data("file");
@@ -367,14 +424,14 @@ ClassicEditor
 			  
 		      let form = document.getElementById("editorForm");
 			  let str="";
-			  str +=`<div class="option" style="width:800px; display: flex; align-text: left;"><input type="checkbox" class="deleteCheckbox" >
-			  		<label>옵션</label><input type="text" class="specialtype form-control" style="width:180px;" name="" value="${optionType}" readonly>
-				  	<label>가격</label><input type="text" class="price form-control" style="width:180px;" name="" value="${optionPrice}"readonly><br>`
+			  str +=`<div class="option container" ><input type="checkbox" class="deleteCheckbox" >
+			  		<label>옵션</label><input type="text" class="specialtype form-control"  name="" value="${optionType}" readonly>
+				  	<label>가격</label><input type="text" class="price form-control"  name="" value="${optionPrice}"readonly><br>`
 				  	
 		  	  if (optionDiscount !== '' && parseFloat(optionDiscount) !== 0) {
-		        str += `<label>할인율</label><input type="number" class="discountRate form-control" style="width:180px;" name="" value="${optionDiscount}" readonly><br>`;
+		        str += `<label>할인율</label><input type="number" class="discountRate form-control"  name="" value="${optionDiscount}" readonly><br>`;
 		      }else{
-		    	str += `<input type="hidden" class="discountRate form-control" style="width:180px;" name="" value="" readonly><br>`;  		  
+		    	str += `<input type="hidden" class="discountRate form-control"  name="" value="" readonly><br>`;  		  
 		      }
 		    	str +=`</div>`;
 			  specialtiesOption.append(str);
@@ -403,21 +460,23 @@ ClassicEditor
 </head>
 <body>
 <div layout:fragment="content">
-	<div id="ls" class="text-center" >
+	<div id="ls" class="text-center container" >
 		<form method="post" id="editorForm" enctype="multipart/form-data" >
 			<div id="specialtiesInfo" class="mb-3" style="margin-bottom: 20px;">	
 				<input type="hidden" name="writerId" th:value="${session.sessionId}">
-				<div class="mb-3" style=" text-align: left;">
-					<select name="type" id="type" aria-label="Default select example">
-						<option value="">선택</option>
-						<option th:each = "s : ${S}"  th:value="${s.detailCode}" th:text="${s.value}"></option>		
-					</select>	
-				</div>
-				<div class="mb-3" style="display: inline-block; text-align: left; padding-right:80%;">
-					<select id="location" aria-label="Default select example">
-						<option value="">지역</option>
-						<option th:each = "a : ${area}"  th:value1="${a.sigunguCode}" th:value2="${a.areaCode}" th:text="${a.locationName}"></option>	
-					</select>
+				<div class="select-container">
+					<div class="mb-3" id="type" style="margin-left:5%; margin-right:5%;">
+						<select name="type"  aria-label="Default select example">
+							<option value="">선택</option>
+							<option th:each = "s : ${S}"  th:value="${s.detailCode}" th:text="${s.value}"></option>		
+						</select>	
+					</div>
+					<div class="mb-3" >
+						<select id="location" aria-label="Default select example">
+							<option value="">지역</option>
+							<option th:each = "a : ${area}"  th:value1="${a.sigunguCode}" th:value2="${a.areaCode}" th:text="${a.locationName}"></option>	
+						</select>
+					</div>
 				</div>
 				<div class="uploadResult">
 					<ul>
@@ -426,34 +485,34 @@ ClassicEditor
 				</div>
 				<table class="table">
 					<tr>
-						<th style="text-align: left; width: 20%;">메인 이미지</th>
-						<td colspan="5">
+						<th >메인 이미지</th>
+						<td colspan="4">
 						<div class="uploadDiv input-group">
-							<input type="file" class="form-control" name="mainImage" id="mainImage" aria-describedby="inputGroupFileAddon03" aria-label="Upload" style="width:400px;" multiple/>
+							<input type="file" class="form-control" name="mainImage" id="mainImage" aria-describedby="inputGroupFileAddon03" aria-label="Upload"  multiple/>
 							<button type="button" class="btn btn-outline-secondary" id ="uploadBtn">upload</button>
 						</div>
 						</td>
 					</tr>
 					<tr>
-						<th style="text-align: left; width: 20%;">특산물</th>
+						<th >특산물</th>
 						<td colspan="2">
-							<input type="text" placeholder="특산물" style="width: 370px;" class="form-control" name="title" id="title" >
+							<input type="text" placeholder="특산물" class="form-control" name="title" id="title" >
 						</td>
 					</tr>
 					<tr>
-						<th style="text-align: left; width: 20%;" >옵션</th>
-						<td colspan="5">
+						<th >옵션</th>
+						<td colspan="4">
 						<div class="specialtiesOption">
 					
 						</div>
 						</td>
 					</tr>
 					<tr>
-					<th style="text-align: left; width: 20%;" >옵션 추가</th>
+					<th >옵션 추가</th>
 						<td colspan="1">
-						<div style="display: flex; justify-content: left;">
-							<button type="button" class="optionInsert btn btn-outline-secondary" name="optionInsert">옵션추가</button>  
-							<button type="button" class="optionDelete btn btn-outline-secondary" name="optionDelete">옵션삭제</button>
+						<div >
+							<button type="button" class="optionInsert btn btn-outline-secondary" name="optionInsert" value="옵션추가">옵션추가</button>
+							<button type="button" class="optionDelete btn btn-outline-secondary" name="optionDelete" value="옵션삭제">옵션삭제</button>
 						</div>
 						</td>
 					</tr>
@@ -463,8 +522,8 @@ ClassicEditor
 			<div id="editor">
 			
 			</div>
-			<button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>
-			<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>
+			<input type="button" class="btn btn-primary mt-3 mx-2" value="작성완료" >
+			<button type="button" class="btn btn-secondary mt-3 mx-2" id="cancelBtn">작성취소</button>
 		</form>
 	</div>
 </div>
