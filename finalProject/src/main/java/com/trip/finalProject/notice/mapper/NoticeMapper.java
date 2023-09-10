@@ -44,15 +44,18 @@ public interface NoticeMapper {
 	public int modifyNoticeInfo(NoticeVO vo);
 	
 	//글 속성이 공지사항인 총 결과값 카운트
-	public int countNoticeType1n();
-	//글 속성이 이벤트인 총 결과값 카운트
-	public int countNoticeType2n();
+	public int countNoticeBySearch(NoticeVO noticeVO);
+	/*
+	 * //글 속성이 이벤트인 총 결과값 카운트 public int countNoticeType2n();
+	 */
 	
 	//공지사항 제목으로 게시글 검색
-	public List<NoticeVO> searchByNoticeByTitle1n(NoticeVO noticeVO,PagingVO pagingVO);
+	public List<NoticeVO> searchByNoticeByTitle(NoticeVO VO,PagingVO pagingVO);
 	
-	//이벤트 제목으로 게시글 검색
-	public List<NoticeVO> searchByNoticeByTitle2n(NoticeVO noticeVO,PagingVO pagingVO);
+	/*
+	 * //이벤트 제목으로 게시글 검색 public List<NoticeVO> searchByNoticeByTitle2n(NoticeVO
+	 * noticeVO,PagingVO pagingVO);
+	 */
 	
 	
 	
