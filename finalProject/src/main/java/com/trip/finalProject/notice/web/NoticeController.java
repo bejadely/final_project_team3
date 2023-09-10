@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.trip.finalProject.adminMember.service.AdminMemberVO;
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.notice.service.NoticeService;
 import com.trip.finalProject.notice.service.NoticeVO;
@@ -34,7 +32,7 @@ public class NoticeController {
 	// 모든 리스트 모델에 담기
 			model.addAttribute("list", list);
 			model.addAttribute("paging", pagingVO);
-	return"/notice/NoticeList";
+	return"notice/noticeList";
 	};
 	
 	//공지사항 게시글 상세보기
@@ -148,7 +146,7 @@ public class NoticeController {
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("noticeType", noticeType);
 		
-		return "/notice/noticeList";
+		return "notice/noticeList";
 	}
 
 	

@@ -27,15 +27,22 @@ $(document).ready(function() {
 	$("#com").click(function() {
 		location.href="/guide/packageCom"
 	})
-	$("#insert").click(function() {
-		location.href="/guide/packageCom"
-	})
 	$(".deletePac").click(function(e) {
 		e.stopPropagation()
 		var thi = $(this);
-		var postId = thi.val();
-		location.href="/guide/deleteComPackage?postId="+postId
-	})
+		var postId = thi.val();			   
+		Swal.fire({
+			showCancelButton: true,
+	       	title: '삭제 하시겠습니까?',
+			    icon: 'question',
+				confirmButtonText: '확인',
+				cancelButtonText: '취소',
+		    }).then((firstResult) => {
+		    	if(firstResult.value == true){
+		    		location.href="/guide/deleteComPackage?postId="+postId
+		    	}
+			}).fail(reject => console.log(reject));
+	});
 	$('.reportInfo').on('mouseover', colorDarker)
 					.on('mouseleave', colorReset)
 });
@@ -94,7 +101,7 @@ function colorReset(event){
 					</tbody>
 				</table>
 			</form>
-			<button type="button" class="feature-btn" id="insert" th:onclick="|location.href='@{/packageInsertForm}'|">등록</button>
+			<button type="button" class="feature-btn" id="insert" th:onclick="|location.href='@{/guide/packageInsertForm}'|">등록</button>
 		</div>
 		<div class="property-pagination">
 			<th:block th:if="${paging.startPage != 1}">

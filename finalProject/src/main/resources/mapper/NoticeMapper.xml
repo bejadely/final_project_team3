@@ -14,6 +14,7 @@
 			        	FROM(SELECT notice_Number,title,writer_Id,regist_Date,hit 
 							FROM notice  order by regist_Date desc) a )
 			  WHERE rn BETWEEN #{start} AND #{end}
+			  ORDER BY rn DESC
 			  				
 		
 	</select>	
@@ -106,7 +107,8 @@
 				       ,hit
 				    FROM notice
 				   WHERE notice_Type='n1'  and  title LIKE '%${noticeVO.title}%'
-				ORDER BY regist_date DESC) a)
+				ORDER BY regist_date DESC)  a
+				RODER BY rn DESC)
 		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
   		</select>
 
@@ -136,7 +138,8 @@
 				       ,hit
 				    FROM notice
 				   WHERE notice_Type='n2'  and  title LIKE '%${noticeVO.title}%'
-				ORDER BY regist_date DESC) a)
+				ORDER BY regist_date DESC) a
+				ORDER BY rn DESC)
 		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
   		</select>
 
