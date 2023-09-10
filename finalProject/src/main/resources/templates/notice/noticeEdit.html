@@ -92,7 +92,7 @@
         <div id="ls" class="text-center">
             <form id="frm" action="/admin/modifyNoticeInfo" th:object="${noticeVO}" method="post">
                	<div class="mb-3" id="noticeType" style="float: left; margin-right: 20px;" >
-					<select id="searchByNoticeType"  class=""name="noticeType"
+					<select class=""name="noticeType"
 						aria-label="Default select example"  >
 						<option value="">공지사항 종류</option>
 						<option value="n1">공지사항</option>
@@ -101,7 +101,7 @@
 				</div>  
 				
 				<div class="mb-3" id="release" style="float: left; margin-right: 20px;" >
-					<select id="searchByRelease"  class=""  name="release"
+					<select class=""  name="release"
 						aria-label="Default select example" >
 						<option value="">공개대상</option>
 						<option value="N1">전체공개</option>
@@ -110,7 +110,7 @@
 				</div>  
 				
 		       	 <div class="mb-3" id="status" style="float:left;">
-					<select id="searchByStatus"  class="" name="status"
+					<select class="" name="status"
 						aria-label="Default select example"  >
 						<option value="">글 저장상태</option>
 						<option value="T1">임시저장</option>
@@ -168,7 +168,7 @@
                     <div align="right">
                     <button type="submit" value="등록" class="btn btn-primary submitButton">수정</button>&nbsp;&nbsp;         
                      <input type="button" value="삭제" onclick="location.href='noticeList?page=1'" class="btn btn-secondary">
-                    <input type="button" value="목록" onclick="history.back()" class="btn btn-secondary">
+                    <input type="button" value="목록" onclick="location.href='noticeList?page=1'" class="btn btn-secondary">
                     </div>
                     <br><br>
                 </div>
@@ -263,7 +263,6 @@ function setNoticeType(){
 $(document).ready(function() {
 		// 승인 버튼 클릭 시 발생 이벤트 설정
 		//$('.submitButton').on('click', go);
-	remeberSearch();
 });	
 	
 	
@@ -388,67 +387,7 @@ ClassicEditor
 	
 	
 	
-	 $(document).ready(function() {
-		 	//저장상태
-		 	setStatus();
-		 	//공개대상
-		 	setRelease();
-		 	//공지종류
-		 	setNoticeType();
-		 });
-
-
-
-		//저장상태 한글로 표시	
-		function setStatus(){
-				
-				// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
-				let defaultStatus = [[${noticeVO.status}]];
-				
-				// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
-				$('#status').find('span').text(defaultStatus);
-				
-				// selected 처리되어있던 option을 일반 옵션으로 변경
-				$('#status').find('.option.selected').attr("class", "option");
-				
-				// 불러온 저장상태 값에 해당하는 option을 selected 및 focus 처리
-				$('.option[data-value="'+defaultStatus+'"]').attr("class", "option selected focus");
-			}
-
-		//공개대상 한글로 표시	
-		function setRelease(){
-			
-			// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
-			let defaultRelease = [[${noticeVO.release}]];
-			console.log([[${noticeVO.release}]]);
-			
-			// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
-			$('#release').find('span').text(defaultRelease);
-			
-			// selected 처리되어있던 option을 일반 옵션으로 변경
-			$('#release').find('.option.selected').attr("class", "option");
-			
-			// 불러온 저장상태 값에 해당하는 option을 selected 및 focus 처리
-			$('.option[data-value="'+defaultRelease+'"]').attr("class", "option selected focus");
-		}
-
-		//공지종류 한글로 표시	
-		function setNoticeType(){
-				
-				// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
-				let defaultNoticeType = [[${noticeVO.noticeType}]];
-				console.log([[${noticeVO.noticeType}]]);
-				// select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
-				$('#noticeType').find('span').text(defaultNoticeType);
-				console.log($('#noticeType').find('span').text());
-
-				// selected 처리되어있던 option을 일반 옵션으로 변경
-				$('#noticeType').find('.option.selected').attr("class", "option");
-				//console.log($('#noticeType .option.selected').attr("class"));
-				// 불러온 저장상태 값에 해당하는 option을 selected 및 focus 처리
-				$('.option[data-value="'+defaultNoticeType+'"]').attr("class", "option selected focus");
-			}
-
+	
 	
 	
 	
