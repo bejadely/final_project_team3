@@ -73,11 +73,15 @@
 			 FROM(select p.name, 
 						p.tour_theme, 
 						p.price, 
+						p.now_reservation,
+						p.deadline_date,
+						p.start_date,
+						p.end_date,
 						a.saved_img, 
 						p.post_id, 
 						a.loading_img,
 						code_val(p.completion) completion,
-				p.max_reservation
+						p.max_reservation
 				from package_regist p JOIN attached_file a ON p.post_id = a.post_id 
 				WHERE a.img_type = 'U2' AND delete_type = 'N'
 				ORDER BY reg_date DESC)b) 
@@ -85,7 +89,7 @@
 	</select>
 	
 	<select id="packageInfo" resultType="PackageVO">
-		SELECT content, name, price, start_date, end_date, deadline_date, max_reservation, tour_theme,post_id,now_reservation
+		SELECT content, name, price, start_date, end_date, deadline_date, max_reservation, tour_theme,post_id,now_reservation,code_val(completion) completion
 		FROM package_regist
 		WHERE post_id=#{postId}
 	</select>
