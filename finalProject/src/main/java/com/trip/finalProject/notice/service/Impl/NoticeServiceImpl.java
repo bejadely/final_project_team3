@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.trip.finalProject.attachedFile.mapper.AttachedFileMapper;
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.notice.mapper.NoticeMapper;
 import com.trip.finalProject.notice.service.NoticeService;
@@ -18,7 +20,7 @@ public class NoticeServiceImpl implements NoticeService {
 	
 	@Autowired
 	NoticeMapper noticeMapper;
-    
+	AttachedFileMapper attachedFileMapper;
     
 
     
@@ -121,6 +123,12 @@ public class NoticeServiceImpl implements NoticeService {
 		// 이벤트인 글을 제목으로 검색
 		return noticeMapper.searchByNoticeByTitle2n(noticeVO, pagingVO);
 	} 
+	
+	@Override
+	public void noticeDelete(NoticeVO noticeVO) {
+		//attachedFileMapper.delete( noticeVO);
+		 noticeMapper.noticeDelete(noticeVO);
+	}
 	
 	@Override
 	public int boardUpdate(NoticeVO vo) {

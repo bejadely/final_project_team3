@@ -44,7 +44,7 @@ public interface NoticeService {
 	public List<NoticeVO> searchNoticeByTitle2n(NoticeVO noticeVO, PagingVO pagingVO);
 	
 	//삭제
-	//public NoticeVO noticeDelete
+	public void noticeDelete(NoticeVO noticeVO);
 
 	
 }

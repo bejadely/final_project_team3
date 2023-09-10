@@ -98,16 +98,18 @@ public class NoticeController {
 	}
 
 
-	/*
-	 * //게시글 삭제 기능 수행 ///admin/noticeDelete
-	 * 
-	 * @PostMapping(/admin/noticeDelete) public String noticeDelete(NoticeVO
-	 * noticeVO) { String result = noticeService.noticeDelete(noticeVO);
-	 * attachedFileMapper.delete(specialtiesVO.getPostId());
-	 * specialtiesMapper.deleteOption(specialtiesVO.getPostId());
-	 * 
-	 * }
-	 */
+	
+	  //게시글 삭제 기능 수행 ///admin/noticeDelete
+	  
+	  @GetMapping("/admin/noticeDelete") 
+	  public String noticeDelete(NoticeVO noticeVO) { 
+		   System.out.println("삭제하자:"+ noticeVO);
+		   noticeService.noticeDelete(noticeVO);
+	
+	
+	  	return "redirect:/noticeList"; 
+	  }
+	 
 	
 	
 	// 특정 조건으로 공지사항 상세 검색

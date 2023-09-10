@@ -187,7 +187,7 @@
 
 	
 <!-- 게시글을 삭제하는 쿼리 -->	
-	<delete id="boardDelete">
-		DELETE FROM board WHERE board_id = #{boardId}
+	<delete id="noticeDelete">
+		DELETE FROM notice WHERE notice_number = #{noticeNumber}
 	</delete>
 </mapper>
