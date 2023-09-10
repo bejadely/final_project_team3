@@ -302,9 +302,7 @@
 	   })
 	   
 	   $("#phone").on("click", function(){
-		   console.log("됨");
 		    var code = $("#phoneSubmit").val();
-		    console.log(code)
 		    $("#phoneNumber").val(code);
 		    $("#phoneSubmit").val(""); // 전화번호 입력 필드 초기화
 		    $("#smsCode").val("");
@@ -348,6 +346,7 @@
     $("#accountHolderCheck").click(function() {
     	var bank_code = $("#modalType option:selected").val();
 		var bank_num = $("#accountNumberInfo").val();
+		$("#bankChange").attr("style", "display:none");
 		
 		if (bank_code =="" && bank_num == "") {
 		    Swal.fire({
@@ -402,23 +401,25 @@
 				    icon: 'success',
 				    confirmButtonText: '확인',
 				    confirmButtonColor: '#3085d6',
+				    }).then((result)=>{
+				    $("#bankChange").attr("style", "display:block");
 				    })
 				if (name1 !== name2) { 
 					Swal.fire({
-			        	title: '이름이 다릅니다. \n 본인의 계좌를 임력해주세요',
+			        	title: '이름이 다릅니다. \n 본인의 계좌를 입력해주세요',
 					    icon: 'error',
 					    confirmButtonText: '확인',
 					    confirmButtonColor: '#3085d6',
 					    })
 					$("#bankHolderNameInfo").val(""); // 이름이 다를 경우 값을 비워줍니다.
+					$("#accountNumberInfo").val(""); // 이름이 다를 경우 값을 비워줍니다.
 				} else if (data.errormsg) {
 					alert("Error: " + data.errormsg);
 				}
-				$("#bankChange").attr("style", "display:block");
+				
 			}
 		})
 		.fail(function(reject) {
-			console.log("실패")
 			
 		});
 	});

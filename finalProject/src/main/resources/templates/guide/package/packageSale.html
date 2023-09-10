@@ -17,8 +17,7 @@
 }
 </style>
 <script>
-	$(document).ready(
-			function() {
+	$(document).ready(function() {
 				$("#sale").click(function() {
 					location.href = "/guide/packageSale"
 				})
@@ -29,12 +28,22 @@
 				$(".deletePac").click(function(e) {
 					e.stopPropagation()
 					var thi = $(this);
-					var postId = thi.val();
-					location.href = "/guide/deleteSalePackage?postId=" + postId
-				})
-				$('.reportInfo').on('mouseover', colorDarker)
-								.on('mouseleave', colorReset)
-			});
+					var postId = thi.val();			   
+					Swal.fire({
+						showCancelButton: true,
+				       	title: '삭제 하시겠습니까?',
+						    icon: 'question',
+							confirmButtonText: '확인',
+							cancelButtonText: '취소',
+					    }).then((firstResult) => {
+					    	if(firstResult.value == true){
+					    		location.href = "/guide/deleteSalePackage?postId=" + postId
+					    	}
+						})
+				});
+		$('.reportInfo').on('mouseover', colorDarker)
+						.on('mouseleave', colorReset)
+	});
 
 	//마우스 오버 : 색상 어둡게
 	function colorDarker(event) {
@@ -92,7 +101,7 @@
 					</tbody>
 				</table>
 				<button type="button" id="insert" class="feature-btn"
-					th:onclick="|location.href='@{/packageInsertForm}'|">등록</button>
+					th:onclick="|location.href='@{/guide/packageInsertForm}'|">등록</button>
 			</form>
 		</div>
 		<div class="property-pagination">
