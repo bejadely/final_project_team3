@@ -28,8 +28,16 @@
             <input type="hidden" th:value="${#dates.format(tripVO.startDay, 'yyyy-MM-dd')}" id="startDay" name="startDay">
             <input type="hidden" th:value="${#dates.format(tripVO.endDay, 'yyyy-MM-dd')}" id="endDay" name="endDay">
             <!-- 여행경로가 제대로 저징이 되면 이제 이전 페이지에서 이미지 업도드를 하는 기능을 이식해야함. -->
-            <!--  <input type="hidden" th:value="${tripVO.mainImage}" id="mainImage" name="mainImage"> -->
-			
+            <input type="file" id="mainImage" name="mainImage" class="form-control">
+            <input type="button" class="btn btn-secondary mt-3 mx-2" style="height: 38px;" id ="uploadBtn" value="upload">
+			<div class="uploadResult" align="center">
+      			<div style="display:none;">
+            		<ul>
+            		</ul>
+            	</div>
+               	<div id="editor">
+               	</div>
+            </div>
 			<!-- 여행기록 등록자의 아이디, 타이틀, 여행 기간 등을 표시하는 div -->
 			<div align="center">
 				<br>
@@ -93,6 +101,45 @@
 			//밀리세컨 * 초 * 분 * 시 = 일
 			return Math.abs(diffDate / (1000 * 60 * 60 * 24));
 		}
+		
+		//업로드 관련
+		ClassicEditor
+        .create(document.querySelector('#editor'), {
+        	/* htmlEncodeOutput: false, */
+        	ckfinder: {
+           	uploadUrl : '/common/upload'   
+        	}
+     	})
+     	.then(editor => {
+     
+     	document.getElementById("cancelBtn").addEventListener("click",function(){
+        const data = editor.getData();
+        //Data 변수에 저장된 데이터를 파싱하여 이미지 태크를 찾음
+        const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
+        
+        const filenames = imgTags.map(img=> {
+           const src = img.getAttribute('src');
+           
+           return src.substring(src.lastIndexOf('/')+1);
+        });
+        console.log(filenames);
+        fetch(`/deleteImg`,{
+           method: 'POST',
+           headers:{
+              'Content-Type':'application/json'
+           },
+           body: JSON.stringify({ filenames })
+        })
+        .then(response => response.text())
+        .then(message => {
+           console.log(message);
+           editor.setData('');
+        })
+        
+     })
+		
+		
+		
 		
 		//두 날짜 사이의 일수
 		//여행 시작일도 포함이 되어야 함으로 결과값에 +1을 해줘야함.
