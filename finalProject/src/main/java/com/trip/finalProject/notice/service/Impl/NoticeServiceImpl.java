@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.trip.finalProject.attachedFile.mapper.AttachedFileMapper;
 import com.trip.finalProject.common.PagingVO;
 import com.trip.finalProject.notice.mapper.NoticeMapper;
 import com.trip.finalProject.notice.service.NoticeService;
@@ -18,7 +20,7 @@ public class NoticeServiceImpl implements NoticeService {
 	
 	@Autowired
 	NoticeMapper noticeMapper;
-    
+	AttachedFileMapper attachedFileMapper;
     
 
     
@@ -99,29 +101,34 @@ public class NoticeServiceImpl implements NoticeService {
 		}
 	}
 	//게시물 타입이 공지사항(n1)인 게시글 갯수 카운트
-	public int countNoticeBySearch(NoticeVO vo) {
-		return noticeMapper.countNoticeBySearch(vo); 	
+	public int countNoticeType1n() {
+		return noticeMapper.countNoticeType1n(); 	
 	}
 	
-	/*
-	 * //게시물 타입이 공지사항(n2)인 게시글 갯수 카운트 public int countNoticeType2n() { return
-	 * noticeMapper.countNoticeType2n(); }
-	 */
+	//게시물 타입이 공지사항(n2)인 게시글 갯수 카운트
+		public int countNoticeType2n() {
+			return noticeMapper.countNoticeType2n(); 	
+		}
 	
 	
 	
 	@Override
-	public List<NoticeVO> searchNoticeByTitle(NoticeVO VO, PagingVO pagingVO) {
+	public List<NoticeVO> searchNoticeByTitle1n(NoticeVO noticeVO, PagingVO pagingVO) {
 		// 공지사항인 글을 제목으로 검색
-		System.out.println("노티스있냐"+VO);
-		return noticeMapper.searchByNoticeByTitle(VO, pagingVO);
+		return noticeMapper.searchByNoticeByTitle1n(noticeVO, pagingVO);
 	} 
 	
-	/*
-	 * @Override public List<NoticeVO> searchNoticeByTitle2n(NoticeVO noticeVO,
-	 * PagingVO pagingVO) { // 이벤트인 글을 제목으로 검색 return
-	 * noticeMapper.searchByNoticeByTitle2n(noticeVO, pagingVO); }
-	 */
+	@Override
+	public List<NoticeVO> searchNoticeByTitle2n(NoticeVO noticeVO, PagingVO pagingVO) {
+		// 이벤트인 글을 제목으로 검색
+		return noticeMapper.searchByNoticeByTitle2n(noticeVO, pagingVO);
+	} 
+	
+	@Override
+	public void noticeDelete(NoticeVO noticeVO) {
+		//attachedFileMapper.delete( noticeVO);
+		 noticeMapper.noticeDelete(noticeVO);
+	}
 	
 	@Override
 	public int boardUpdate(NoticeVO vo) {
