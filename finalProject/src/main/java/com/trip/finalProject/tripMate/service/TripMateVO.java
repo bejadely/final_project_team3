@@ -50,6 +50,7 @@ public class TripMateVO {
 		private Date deadline;
 		private int hit;
 		private String writerId;
+		private String tStyle;
 		
 		//mate_apply 메이트 신청
 		private String applyId;
