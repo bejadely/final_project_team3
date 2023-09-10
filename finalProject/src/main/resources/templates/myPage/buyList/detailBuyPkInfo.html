@@ -55,10 +55,14 @@ $(document).ready(function(){
 				cancelButtonText: '취소',
 		    }).then((firstResult) => {
 		    	if(firstResult.value == true){
-					let tid =  $(".tid").val();
-					let cancelAmount = $(".cancelAmount").val();
-					let cancelTaxFreeAmount = $(".cancelTaxFreeAmount").val();
-					let orderDetailId = $(".orderId").val();
+		    		let tid =  $(".tid").val();
+		    		let cancelAmount = $(".cancelAmount").val();
+		    		let cancelTaxFreeAmount = $(".cancelTaxFreeAmount").val();
+		    		let orderDetailId = $(".orderId").val();
+		    		let postId = '[[${list.postId}]]';
+		    		let quantity = '[[${list.quantity}]]'
+		    		let nowReservation = '[[${list.nowReservation}]]'-quantity;
+		    		let maxReservation = '[[${list.nowReservation}]]'
 					
 					console.log(tid);
 					console.log(cancelAmount);
@@ -71,7 +75,11 @@ $(document).ready(function(){
 							tid: tid,
 							cancelAmount : cancelAmount,
 							cancelTaxFreeAmount : cancelTaxFreeAmount,
-							orderDetailId : orderDetailId
+							orderDetailId : orderDetailId,
+							postId : postId,
+							quantity:quantity,
+							nowReservation: nowReservation,
+							maxReservation: maxReservation
 						}
 					}).done(data=>{
 				        Swal.fire({

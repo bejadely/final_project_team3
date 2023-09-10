@@ -104,12 +104,13 @@ body {
                  <table class="table">
                    <tr>
                        <th style="text-align: left; width: 20%;">작성자</th>
-                       <td colspan="2">
-                           <input type="text" id="writerId" name="writerId" style="width: 370px;" class="form-control" th:value="${session.sessionId}" readonly>
+                       <td colspan="2" style="text-align: left;">
+                       	   <label for="writerId" class="form-control" style="width: 370px;">[[${session.sessionId}]]</label>
+                           <input type="hidden" id="writerId" name="writerId" th:value="${session.sessionId}" readonly>
                        </td>
                        <th style="text-align: left; width: 20%;">등록일자</th>
-                       <td colspan="2">
-                           <input type="date" id="now_date" name="" style="width: 370px; margin-left: 4px;" class="form-control" readonly>
+                       <td colspan="2" style="text-align: left;" id="insertCell">
+                           <input type="hidden" id="now_date" name="" class="form-control" readonly>
                        </td>
                    </tr>
                       <tr>
@@ -136,7 +137,7 @@ body {
                    <tr>
                        <th style="text-align: left; width: 20%;">예상 경비</th>
                        <td colspan="2">
-                       	   <input type="text" id="mateExpense" name="mateExpense" style="width: 370px;" class="form-control" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');">
+                             <input type="text" id="mateExpense" name="mateExpense" style="width: 370px;" class="form-control" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');">
                        </td>
                        <th style="text-align: left; width: 20%;">모집 인원</th>
                        <td colspan="2">
@@ -149,21 +150,21 @@ body {
                          <div class="input-group">
                            <input type="file" id="mainImage" name="mainImage" style="width: 750px;" class="form-control">
                            <input type="button" class="btn btn-secondary mt-3 mx-2" style="height: 38px;" id ="uploadBtn" value="upload">
-                       	</div>
+                          </div>
                        </td>
                    </tr>
                 </table>
                 </div>
                 <div class="uploadResult" align="center">
-      				<div style="display:none;">
-            			<ul>
+                  <div style="display:none;">
+                     <ul>
             
-            			</ul>
-            		</div>
-               		<div id="editor">
+                     </ul>
+                  </div>
+                     <div id="editor">
       
-               		</div>
-              	</div>
+                     </div>
+              </div>
               <div>
                <button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>&nbsp;&nbsp;
                <input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>&nbsp;&nbsp;
@@ -173,26 +174,38 @@ body {
         </div>
    </div>
    <script>
-   	   //숫자 컴마로 표현, 숫자만 입력 가능
-   	   document.getElementById("mateExpense").addEventListener("keyup", function (e) {
-   		  $(this).val($(this).val().replace(/\,/g, '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,'));
-	   });
-	   
+         //숫자 컴마로 표현, 숫자만 입력 가능
+         document.getElementById("mateExpense").addEventListener("keyup", function (e) {
+           $(this).val($(this).val().replace(/\,/g, '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,'));
+      });
+      
       //현재 날짜 계산
       document.getElementById('now_date').value = new Date().toISOString().substring(0, 10);
       
+      //오늘의 날짜를 동적으로 생성한 label태그에 넣어주는 부분
+	  var nowDate = new Date().toISOString().substring(0, 10);
+	    
+	  var applyDayCell = document.getElementById('insertCell');
+	    
+	  var label = document.createElement('label');
+	    
+	  label.classList.add('form-control');
+	  label.textContent = nowDate;
+	  insertCell.appendChild(label);
+
+      
       $(document).ready(function() {   
-    	  
+         
          ClassicEditor
          .create(document.querySelector('#editor'), {
-         	/* htmlEncodeOutput: false, */
-         	ckfinder: {
-            	uploadUrl : '/common/upload'   
-         	}
-      	})
-      	.then(editor => {
+            /* htmlEncodeOutput: false, */
+            ckfinder: {
+               uploadUrl : '/common/upload'   
+            }
+         })
+         .then(editor => {
       
-      	document.getElementById("cancelBtn").addEventListener("click",function(){
+         document.getElementById("cancelBtn").addEventListener("click",function(){
          const data = editor.getData();
          //Data 변수에 저장된 데이터를 파싱하여 이미지 태크를 찾음
          const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
@@ -249,9 +262,9 @@ body {
          
          
          var startDate2 = document.getElementById("startDay").value;
-      	 var endDate2 = document.getElementById("endDay").value;
-       	 var deadlineDate2 = document.getElementById("deadline").value;
-       	  // 현재 날짜 가져오기
+         var endDate2 = document.getElementById("endDay").value;
+         var deadlineDate2 = document.getElementById("deadline").value;
+         // 현재 날짜 가져오기
          var currentDate = new Date();
 
          // 입력한 패키지 시작일을 Date 객체로 변환
@@ -262,7 +275,7 @@ body {
          var timeDifference = selectedStartDate - currentDate;
 
          // 30일을 밀리초로 계산
-         var thirtyDaysInMillis = 30 * 24 * 60 * 60 * 1000;
+         var thirtyDaysInMillis = 24 * 60 * 60 * 1000;
          
          if (selectedStartDate < currentDate) {
              alert("여행 시작일은 오늘보다 이전일 수 없습니다.");
@@ -277,13 +290,6 @@ body {
              alert("여행 마감일은 여행 시작일 이전이여야 합니다.");
              return false;
          }
-         // 여행 시작일이 최소 한 달 전이 아닌 경우 예외 처리
-         if (timeDifference < thirtyDaysInMillis) {
-             alert("여행 시작일은 최소 한 달 전으로 설정해야 합니다.");
-             return false; // 폼 제출 중지
-         }
-         
-         
          
          
          var str="";
@@ -323,63 +329,109 @@ body {
          let metTripArea = document.getElementsByName('tripArea')[0];
          let metStyle = document.getElementsByName('mateStyle')[0];
          
-         if (metTitle.value == '') {
-            alert('타이틀을 입력해주세요.')
-            metTitle.focus();
-            return;
-         }
-         
-         if (metExpense.value == '') {
-            alert('예상 경비를 입력해주세요.')
-            metExpense.focus();
-            return;
-         }
-         
-         if (metStartDay.value == '' || metEndDay.value == '') {
-            alert('여행 일정을 입력해주세요.')
-            metStartDay.focus();
-            return;
-         }
-         
-         if (metDeadline.value == '') {
-            alert('모집 마감일을 입력해주세요.')
-            metDeadline.focus();
-            return;
-         }
-         
-         if (metMateMax.value == '' || metEndDay.value == '') {
-            alert('모집 인원을 입력해주세요.')
-            metMateMax.focus();
-            return;
-         }
-         
-         if (metContent.value == '') {
-            alert('내용을 입력해주세요.')
-            metContent.focus();
-            return;
-         }
-         
          if (metTripArea.value == '') {
-             alert('여행 지역을 선택 해주세요.')
-             metTripArea.focus();
-             return;
+        	 Swal.fire({
+              	icon: 'warning',                      
+          		title: '여행 지역을 입력해주세요.'
+          	 });
+        	 metTripArea.focus();
+              return;
           }
          
          if (metStyle.value == '') {
-             alert('여행 스타일을 지정해주세요.')
-             metStyle.focus();
+        	 Swal.fire({
+               	icon: 'warning',                      
+           		title: '여행 스타일을 입력해주세요.'
+           	 });
+        	 metStyle.focus();
+               return;
+          }
+         
+         
+         if (metTitle.value == '') {
+        	 Swal.fire({
+             	icon: 'warning',                      
+         		title: '타이틀을 입력해주세요.'
+         	 });
+        	 metTitle.focus();
+             return;
+         }
+         
+         if (metStartDay.value == '') {
+        	 Swal.fire({
+              	icon: 'warning',                      
+          		title: '여행 시작일을 입력해주세요.'
+          	 });
+        	 metStartDay.focus();
              return;
           }
          
+         if (metEndDay.value == '') {
+        	 Swal.fire({
+              	icon: 'warning',                      
+          		title: '여행 종료일을 입력해주세요.'
+          	 });
+        	 metEndDay.focus();
+             return;
+          }
+         
+         if (metDeadline.value == '') {
+        	 Swal.fire({
+               	icon: 'warning',                      
+           		title: '모집 마감일을 입력해주세요.'
+           	 });
+        	 metDeadline.focus();
+             return;
+          }
+         
+         
+         if (metExpense.value == '') {
+        	 Swal.fire({
+                	icon: 'warning',                      
+            		title: '여행 경비를 입력해주세요.'
+            	 });
+        	 metExpense.focus();
+             return;
+         }
+         
+         if (metMateMax.value == '') {
+        	 Swal.fire({
+             	icon: 'warning',                      
+         		title: '모집 인원을 입력해주세요.'
+         	 });
+        	 metMateMax.focus();
+          	 return;
+         }
+         
+         if (metContent.value == '') {
+        	 Swal.fire({
+              	icon: 'warning',                      
+          		title: '내용을 입력해주세요.'
+          	 });
+        	 metContent.focus();
+           	 return;
+         }
+         
          //등록하기 클릭 시 등록할지 여부를 확인
-         if(confirm("등록 하시겠습니까?")){
-            document.getElementById('editorForm').action = "/common/tripMateRecruitInsert";
-            document.getElementById('editorForm').submit();
-            alert("등록 되었습니다.");
-                 return;
-             }else{
-                   return;
-             }
+         Swal.fire({
+	    	icon: 'warning',                      
+	     	title: '등록 하시겠습니까?.',
+	      	showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: '등록',
+			cancelButtonText: '취소',
+	    }).then((result) => {
+		   	if (result.isConfirmed) {
+		   		Swal.fire({
+	                icon: 'success',
+	                title: '등록 되었습니다.'
+	            }).then(() => {
+	            	document.getElementById('editorForm').action = "/common/tripMateRecruitInsert";
+	                document.getElementById('editorForm').submit();
+	            });
+			}
+		})
          
       })
    })

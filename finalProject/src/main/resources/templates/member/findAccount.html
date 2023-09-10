@@ -61,10 +61,9 @@
 }
 
 #btn {
- /*    top: +5;
-    bottom: +1; */
+
     left: 0;
-/*     margin-bottom : -5px; */
+
     position: absolute;
     width: 150px;
     height: 100%;
@@ -200,7 +199,7 @@ span {
 				<div id="mail_input" name="mail_input">
 					<!--서버로 보낼 데이터 (input에 넣은 이메일을 서버로 보냄)  -->
 					<input  type="text" name="email" id="mail" value=""
-						placeholder="이메일 입력" style="width: 60%; , float: left; margin-right: 5px;"  class="form-control">
+						placeholder="이메일 입력" style="width: 60%; , float: left; margin-right: 5px;"  class="form-control" >
 					<button type="button" id="sendBtn" name="sendBtn"
 						onclick="sendNumber()" class="btn btn-default">인증요청</button>
 				</div>
@@ -358,6 +357,10 @@ span {
 	     
 	      // 이메일 코드 인증
 	            function sendNumber(){
+	    	  		if(){
+	    	  			
+	    	  		}
+	    	  
 	                $("#mail_number").css("display","block");
 	                $.ajax({
 	                    url:"/mail",

@@ -49,7 +49,6 @@ public class KakaoPayServiceImpl implements KakaoPayService {
 	@Override
 	public KakaoPayResponseVO kakoPayReady(PaymentVO vo, int quantity,String postId,String specialtyType) {
 		// TODO Auto-generated method stub
-		System.out.println(vo.getPartnerUserId());
 		String partner_order_id = UUID.randomUUID() + vo.getPartnerUserId();
 		//서버로 요청할 Body
 		MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
@@ -61,9 +60,12 @@ public class KakaoPayServiceImpl implements KakaoPayService {
         parameters.add("quantity", String.valueOf(quantity));
         parameters.add("total_amount", String.valueOf(vo.getTotalAmount()));
         parameters.add("tax_free_amount", String.valueOf(vo.getTotalAmount()));
-        parameters.add("approval_url", "http://localhost:8787/payment/success?specialtyType=" + specialtyType + "&partner_user_id=" + vo.getPartnerUserId() +"&partner_order_id="+ partner_order_id +"&postId="+postId); // 성공 시 redirect url
-        parameters.add("cancel_url", "http://localhost:8787/payment/cancel"); // 취소 시 redirect url
-        parameters.add("fail_url", "http://localhost:8787/payment/fail"); // 실패 시 redirect url
+        parameters.add("approval_url", "http://localhost:8787/common/payment/success?specialtyType=" + specialtyType + "&partner_user_id=" + vo.getPartnerUserId() +"&partner_order_id="+ partner_order_id +"&postId="+postId); // 성공 시 redirect url
+        parameters.add("cancel_url", "http://localhost:8787/common/payment/cancel"); // 취소 시 redirect url
+        parameters.add("fail_url", "http://localhost:8787/common/payment/fail"); // 실패 시 redirect url
+        parameters.add("approval_url", "http://3.39.21.112:8888/common/payment/success?specialtyType=" + specialtyType + "&partner_user_id=" + vo.getPartnerUserId() +"&partner_order_id="+ partner_order_id +"&postId="+postId); // 성공 시 redirect url
+        parameters.add("cancel_url", "http://3.39.21.112:8888/common/payment/cancel"); // 취소 시 redirect url
+        parameters.add("fail_url", "http://3.39.21.112:8888/common/payment/fail"); // 실패 시 redirect url
 		
         //파라미터, 헤더
 		HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters,this.getHeaders());
@@ -80,8 +82,6 @@ public class KakaoPayServiceImpl implements KakaoPayService {
     //결제 완료 승인
     public KakaoApproveResponseVO approveResponse(String pgToken, String partner_order_id, String partner_user_id) {
     	MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
-    	System.out.println(partner_order_id);
-    	System.out.println(partner_user_id);
     	parameters.add("cid", cid);
     	parameters.add("tid", kakaoPayResponseVO.getTid());
     	parameters.add("partner_order_id",partner_order_id );
@@ -131,13 +131,9 @@ public class KakaoPayServiceImpl implements KakaoPayService {
     	parameter.add("tid", kakaoPayInfoResponseVO.getTid());
     	parameter.add("cancel_amount", String.valueOf(kakaoPayInfoResponseVO.getCancelAmount()) );
     	parameter.add("cancel_tax_free_amount",String.valueOf(kakaoPayInfoResponseVO.getCancelTaxFreeAmount()) );
-    	System.out.println(kakaoPayInfoResponseVO.getCancelAmount());
-    	System.out.println(kakaoPayInfoResponseVO.getCancelTaxFreeAmount());
-    	System.out.println(kakaoPayInfoResponseVO.getTid());
     	HttpEntity<MultiValueMap<String, String>> requEntity = new HttpEntity<>(parameter,this.getHeaders());
     	
     	RestTemplate restTemplate = new RestTemplate();
-    	
     	KakaoPayInfoResponseVO kakaoPayInfoResponseVO2 = restTemplate.postForObject("https://kapi.kakao.com/v1/payment/cancel", requEntity, KakaoPayInfoResponseVO.class);
     	
     	return kakaoPayInfoResponseVO2;
