@@ -157,10 +157,20 @@
 			   start_day,
 			   end_day,
 			   regist_day,
-			   post_id
+			   post_id,
+			   hit
 		FROM trip_record
 		WHERE post_id = #{postId}
 	</select>
+	
+	<!-- 여행기록 조회수 카운트 -->
+	<update id="updateTripRecordHit" parameterType="TripVO">
+		UPDATE trip_record
+		<set>
+			hit = NVL((hit), 0) + 1
+		</set>
+		WHERE post_id = #{postId}
+	</update>
 	
 	
 	<!-- 여행기록 등록(임시저장에서 저장상태로 업데이트) -->
@@ -230,7 +240,14 @@
 				   VALUES
 				        (
 							#{memoId}
-							, #{content}
+							<choose>
+			   	  				<when test="content != null and !content.equals('')">
+			   	  				, #{content}
+			   	  				</when>
+			   	  				<otherwise>
+			   	  				, '입력된 여행 메모가 없습니다.'
+			   	  				</otherwise>
+			   	  			</choose>
 							, sysdate
 							, #{postId}
 							, #{tripDate}
@@ -346,11 +363,11 @@
 	
 	<!-- 여행기간이 지난 여행기록 자동 업데이트 -->
 	<update id="completeTripRecord" parameterType="String">
-	<![CDATA[UPDATE trip_record
+	UPDATE trip_record
 			<set>
 				trip_save = 'T3',
 			</set>
-			WHERE end_day < sysdate]]>
+	<![CDATA[WHERE end_day < sysdate]]>
 	</update>
 
 </mapper>

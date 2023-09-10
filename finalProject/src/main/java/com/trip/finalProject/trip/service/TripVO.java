@@ -51,6 +51,7 @@ public class TripVO {
 	private Date registDay;
 	private String tripReview;
 	private String tripShare;
+	private int hit;
 	
 	//trip_record_memo
 	private String memoId;

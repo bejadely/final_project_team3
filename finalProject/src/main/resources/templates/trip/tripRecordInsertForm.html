@@ -41,18 +41,16 @@
             <input type="file" id="mainImage" name="mainImage" class="form-control">
             <input type="button" class="btn btn-secondary mt-3 mx-2" style="height: 38px;" id ="uploadBtn" value="upload">
 			<div class="uploadResult" align="center">
-      			<div>
             		<ul>
             		</ul>
-            	</div>
                	<div id="editor">
                	</div>
             </div>
 		</form>
 		<!-- 지도영역과 여행 경로, 메모 등을 입력하는 div -->
-		<div align="center">
+		<div style="display: flex; margin: 50px 0 0 10px;">
 			<!-- 화면에 보여지는 지도영역 -->
-			<div class="map_wrap" style="height: 800px; width: 1000px; border: solid 1px;">
+			<div class="map_wrap" style="height: 800px; width: 50%; border: solid 1px; margin-left: 50px;">
          		<div id="map"style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
          		<div id="menu_wrap" class="bg_white" style="display: none">
          			<div class="option">
@@ -62,25 +60,27 @@
                   	<div id="pagination"></div>
          		</div>
         	</div>
-		</div>
-		<!-- 앞에서 선택한 여행 일정 수 만큼 여행 경로 지정과 여행 메모 div 생성 -->
-		<div id="tripSchedule">
+        	<!-- 앞에서 선택한 여행 일정 수 만큼 여행 경로 지정과 여행 메모 div 생성 -->
+			<div id="tripSchedule" style="width: 50%; margin-left: 10px;">
+			<h4><b>여행일정</b></h4>
+			<hr>
 				
+			</div>
 		</div>
 		<br>
 		<br>
-		<div align="center">
-			<!-- 임시저장 -> 임시저장 -->
-            <button type="button" id="tsTripInsert">임시저장</button>
-            <!-- 임시저장 -> 저장 -->
-            <button type="button" id="tripInsert">등록</button>
-            <input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>
-            <!-- 임시저장 -> 해당 데이터 삭제 -->
-            <!-- 목으로 버튼 클릭시 관련된 데이터들을 모두 삭제하고 목록 페이지로 이동 -->
-            <form method="get">
-            	<input type="hidden" name="postId" th:value="${tripVO.postId}">
-	            <button type="button" th:onclick="|location.href='@{/common/tripRecordDelete(postId=${tripVO.postId})}'|">목록으로</button>			
-			</form>
+		<div align="center" style="display: flex; justify-content: center; align-items: center;">
+    		<!-- 임시저장 -> 임시저장 -->
+    		<button type="button" id="tsTripInsert" class="btn btn-primary mx-2">임시저장</button>
+    		<!-- 임시저장 -> 저장 -->
+    		<button type="button" id="tripInsert" class="btn btn-primary mx-2">등록</button>
+    		<input type="button" class="btn btn-secondary mx-2" value="작성취소" id="cancelBtn"/>
+    		<!-- 임시저장 -> 해당 데이터 삭제 -->
+    		<!-- 목록으로 버튼 클릭시 관련된 데이터들을 모두 삭제하고 목록 페이지로 이동 -->
+    		<form method="get">
+        		<input type="hidden" name="postId" th:value="${tripVO.postId}">
+        		<button type="button" class="btn btn-secondary mx-2" th:onclick="|location.href='@{/common/tripRecordDelete(postId=${tripVO.postId})}'|">목록으로</button>			
+    		</form>
 		</div>
 	</div>
 	
@@ -124,9 +124,9 @@
             
          })
          
-         var formObj = $("#editorForm");
+         var formObj = $("#tripData");
          
-         $("button[type='submit']").on("click",function(event){
+         $("#tripInsert").on("click",function(event){
                
             event.preventDefault();
       
@@ -135,62 +135,6 @@
             let objData = serializeObject();
             
             let writerId = "[[${session.sessionId}]]";
-            
-            //sconsole.log(data);
-            const { tripArea, mateStyle, mateTag, mateTitle, mateExpense, startDay, endDay, deadline, mateMax, mateContent } = objData;
-            var combinedData={
-               writerId : writerId,   
-               tripArea : tripArea,
-               mateStyle : mateStyle,
-               mateTag : mateTag,
-               mateTitle : mateTitle,
-               mateExpense : mateExpense,
-               startDay : startDay,
-               endDay : endDay,
-               deadline : deadline,
-               mateMax : mateMax,
-               mateContent: data
-            };
-            console.log(combinedData);
-            
-            
-            var startDate2 = document.getElementById("startDay").value;
-         	 var endDate2 = document.getElementById("endDay").value;
-          	 var deadlineDate2 = document.getElementById("deadline").value;
-          	  // 현재 날짜 가져오기
-            var currentDate = new Date();
-
-            // 입력한 패키지 시작일을 Date 객체로 변환
-            var selectedStartDate = new Date(startDate2);
-            var selectedEndDate = new Date(endDate2);
-            var selectedDeadlineDate = new Date(deadlineDate2);
-            // 날짜 차이 계산 (밀리초 단위)
-            var timeDifference = selectedStartDate - currentDate;
-
-            // 30일을 밀리초로 계산
-            var thirtyDaysInMillis = 30 * 24 * 60 * 60 * 1000;
-            
-            if (selectedStartDate < currentDate) {
-                alert("여행 시작일은 오늘보다 이전일 수 없습니다.");
-                return false;
-            }
-
-            if (selectedEndDate < selectedStartDate) {
-                alert("여행 종료일은 여행 시작일 이후여야 합니다.");
-                return false;
-            }
-            if (selectedDeadlineDate > selectedStartDate) {
-                alert("여행 마감일은 여행 시작일 이전이여야 합니다.");
-                return false;
-            }
-            // 여행 시작일이 최소 한 달 전이 아닌 경우 예외 처리
-            if (timeDifference < thirtyDaysInMillis) {
-                alert("여행 시작일은 최소 한 달 전으로 설정해야 합니다.");
-                return false; // 폼 제출 중지
-            }
-            
-            
-            
             
             var str="";
             $(".uploadResult ul li").each(function(i,obj){
@@ -202,8 +146,6 @@
                str += "<input type ='hidden' name='attachList["+i+"].loadingImg' value='"+jobj.data("loadingpath")+"'>";
                
             });
-            str +="<input type='hidden' name='mateContent' value='"+combinedData.mateContent+"'>";
-            
             
             const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
             
@@ -217,75 +159,8 @@
             });
             
             formObj.append(str);
-            
-            // 등록 시 필수 항목이 미작성 되어있으면 alert 후 focuse로 해당 위치로 보내줌
-            let metTitle = document.getElementsByName('mateTitle')[0];
-            let metExpense = document.getElementsByName('mateExpense')[0];
-            let metStartDay = document.getElementsByName('startDay')[0];
-            let metEndDay = document.getElementsByName('endDay')[0];
-            let metDeadline = document.getElementsByName('deadline')[0];
-            let metMateMax = document.getElementsByName('mateMax')[0];
-            let metContent = document.getElementsByName('mateContent')[0];
-            let metTripArea = document.getElementsByName('tripArea')[0];
-            let metStyle = document.getElementsByName('mateStyle')[0];
-            
-            if (metTitle.value == '') {
-               alert('타이틀을 입력해주세요.')
-               metTitle.focus();
-               return;
-            }
-            
-            if (metExpense.value == '') {
-               alert('예상 경비를 입력해주세요.')
-               metExpense.focus();
-               return;
-            }
-            
-            if (metStartDay.value == '' || metEndDay.value == '') {
-               alert('여행 일정을 입력해주세요.')
-               metStartDay.focus();
-               return;
-            }
-            
-            if (metDeadline.value == '') {
-               alert('모집 마감일을 입력해주세요.')
-               metDeadline.focus();
-               return;
-            }
-            
-            if (metMateMax.value == '' || metEndDay.value == '') {
-               alert('모집 인원을 입력해주세요.')
-               metMateMax.focus();
-               return;
-            }
-            
-            if (metContent.value == '') {
-               alert('내용을 입력해주세요.')
-               metContent.focus();
-               return;
-            }
-            
-            if (metTripArea.value == '') {
-                alert('여행 지역을 선택 해주세요.')
-                metTripArea.focus();
-                return;
-             }
-            
-            if (metStyle.value == '') {
-                alert('여행 스타일을 지정해주세요.')
-                metStyle.focus();
-                return;
-             }
-            
-            //등록하기 클릭 시 등록할지 여부를 확인
-            if(confirm("등록 하시겠습니까?")){
-               document.getElementById('editorForm').action = "/common/tripMateRecruitInsert";
-               document.getElementById('editorForm').submit();
-               alert("등록 되었습니다.");
-                    return;
-                }else{
-                      return;
-                }
+            $("#tripData").attr("action", "/common/tripRecordInsertUp").submit();
+            sendMemoData(memoDataArry);
             
          })
       })
@@ -415,8 +290,8 @@
        	        					<div id="schedule${i+1}">
        	     							<input type="hidden" value="${date3.toISOString().split('T')[0]}" id="tripDate" name="tripDate">
        	     							<input type="hidden" value="${postData}" id="postId" name="postId">
-       	     							<label>${date3.toISOString().split('T')[0]} /</label>
-       	     							<label>${i+1}일차 일정</label>
+       	     							<h5><b>${i+1}일차 일정</b></h5>
+       	     							<h6>(${date3.toISOString().split('T')[0]})</h6>
        	        						<br>
        	        						<input class="keyword" type="text" placeholder="키워드를 입력해주세요." onkeydown="return event.key != 'Enter';">
        	            					<button id="${i+1}" type="button" class="searchPlaces">검색하기</button>
@@ -712,15 +587,15 @@
 		//저장, 임시저장 버튼 클릭시 id에 맞게 해당 action이 발생함
         //여행기록 임시저장
         $("#tsTripInsert").click(function() {
-           $("#tripData").attr("action", "/common/tsTripRecordInsertUp").submit();;
+           $("#tripData").attr("action", "/common/tsTripRecordInsertUp").submit();
            
         });
         
         //여행기록 저장
-        $("#tripInsert").click(function() {
-           $("#tripData").attr("action", "/common/tripRecordInsertUp").submit();;
+      /*   $("#tripInsert").click(function() {
+           $("#tripData").attr("action", "/common/tripRecordInsertUp").submit();
            sendMemoData(memoDataArry);
-        });
+        }); */
 		
 		//지도 관련 스크립트 부분입니다.
 		// 마커를 담는 배열

@@ -58,8 +58,14 @@ public interface TripMateMapper {
 	//여행 메이트 게시글 신고
 	public int reportTripMate(TripMateVO tripMateVO);
 	
+	//여행 메이트 신고시 해당 게시글에 신고한 내역이 존재하는지 확인
+	public int selectReportLog(TripMateVO tripMateVO);
+	
 	//여행 메이트 신청 (등록된 게시글에 대한 여행메이트 신청)
 	public int insertTripMateApply(TripMateVO tripMateVO); 
+	
+	//여행 메이트 신청시 해당 게시글에 신청한 내역이 존재하는지 확인
+	public int selectApplyLog(TripMateVO tripMateVO);
 	
 	//여행 메이트 신청시 작성자에게 알림
 	public int sendAlert(TripMateVO tripMateVO);
