@@ -195,52 +195,57 @@ function appendLodgingDetailInfo(data, addr1, title, firstimage, contentid) {
 }
 
 
-/* const myModalEl = document.getElementById('spotDetailInfoModal')
+ const myModalEl = document.getElementById('spotDetailInfoModal')
 myModalEl.addEventListener('hidden.bs.modal', event => {
     // 모달창이 닫히면 무조건 모달 내부 데이터를 삭제해줌
     clearModal();
-}) */
+}) 
 
 
+//검색정보 보내기
+$('#button-addon2').on('click', function(e){
+    e.preventDefault();
+    let searchKeyWord = $('#search-input').val();
+    let areaCode = $('#locationTypeButton').data('areaCode');
+    let sigunguCode = $('#locationTypeButton').data('sigunguCode');
 
+    if(searchKeyWord.length<=1){
+        alert('1글자 이상 검색해주세요.');
+        return;
+    } else if($('#locationTypeButton').text() == '지역 선택') {
+        alert('지역을 선택해주세요.');
+        return;
+    }
+
+    window.location.href=window.location.origin + "/localTourInfo/search?searchKeyWord="+searchKeyWord+"&areaCode="+areaCode+"&sigunguCode="+sigunguCode;
+})
+
+$('#locationType li > a').on('click', function() {
+    // 버튼에 선택된 항목 텍스트 넣기
+    $('#locationTypeButton').text($(this).text());
+    $('#locationTypeButton').data('areaCode', $(this).data('areaCode'));
+    $('#locationTypeButton').data('sigunguCode', $(this).data('sigunguCode'));
+});
 
 
 </script>
 </head>
 <body>
 <div layout:fragment="content">
+	<form action="/searchLodging">
+		<div style="float:right; margin-right: 500px;">
+			<select id="searchBy" name="searchBy">
+				<option value="name">이름으로 검색</option>
+			</select>&nbsp;
+			<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요." style="height: 40px; width: 200px;">
+			<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+		</div>
+	</form>
 	<!-- Property Section Begin -->
 	<section class="property-section spad">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-3">
-					<div class="property-sidebar">
-						<h4>Search Property</h4>
-						<form action="/searchLodging" class="sidebar-search">
-						<button type="submit" class="search-btn">Search Property</button>
-							<div>
-								<select id="searchBy" name="searchBy">
-									<option value="name">이름으로 검색</option>
-								</select>
-								<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
-							</div>
-							<div class="price-range-wrap">
-								<div class="price-text">
-									<label for="priceRangeP">Price:</label> <input type="text" id="priceRangeP" readonly>
-								</div>
-								<div id="price-range-P" class="slider"></div>
-							</div>
-							<div>
-								<label for="location">지역</label>
-								<select id="location" class="location">
-									<option value="">선택</option>
-									<option th:each = "a : ${area}"  th:value1="${a.sigunguCode}" th:value2="${a.areaCode}" th:text="${a.locationName}"></option>	
-								</select>
-							</div>
-							
-						</form>
-					</div>		
-				</div>
+				
 				<div class="col-lg-9">
 					<h4 class="property-title">숙소</h4>
 					<div class="property-list">
@@ -249,7 +254,9 @@ myModalEl.addEventListener('hidden.bs.modal', event => {
 								<div class="row">
 									<div class="col-md-4">
 										<div class="property-pic">
-											<img th:src="${lod.firstimage}" alt="">
+											<!-- <img th:src="${lod.firstimage}" alt=""> -->
+											<img th:if="${not #strings.isEmpty(lod.firstimage)}" th:src="${lod.firstimage}" alt="">
+                            				<img th:unless="${not #strings.isEmpty(lod.firstimage)}" th:src="@{/img/no-image.png}" alt="">
 										</div>
 									</div>
 									<div class="col-md-8">
@@ -264,28 +271,15 @@ myModalEl.addEventListener('hidden.bs.modal', event => {
 												<i class="icon_pin"></i>[[ ${lod.addr1} ]]
 											</th:div>
 										</div>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing
-											elit, sed do eiusmod tempor incididunt ut labore.</p>
-										<ul class="room-features">
-											<li><i class="fa fa-arrows"></i>
-												<p>5201 sqft</p></li>
-											<li><i class="fa fa-bed"></i>
-												<p>8 Bed Room</p></li>
-											<li><i class="fa fa-bath"></i>
-												<p>7 Baths Bed</p></li>
-											<li><i class="fa fa-car"></i>
-												<p>1 Garage</p></li>
-										</ul>
+										
 									</div>
 								</div>
 							</div>
 					</div>
 					</th:block>
-					
+
 				</div>
-				
-			</div>
-			<!-- 페이징 구문 -->
+				<!-- 페이징 구문 -->
 			<!-- 검색키워드가 없을때 -->
 			<th:block th:if="${#strings.isEmpty(keyword)}">
 				<div style="text-align : center;" class="property-pagination">
@@ -336,9 +330,9 @@ myModalEl.addEventListener('hidden.bs.modal', event => {
 					</th:block>
 				</div>
 			</th:block>
+			</div>
 		</div>
 	</section>
-</div>
 	 <!--모달창-->
             <div class="modal fade" id="spotDetailInfoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
@@ -383,6 +377,7 @@ myModalEl.addEventListener('hidden.bs.modal', event => {
                     </div>
                 </div>
             </div>
+            
 	
 </div>
 <!-- Property Section End -->

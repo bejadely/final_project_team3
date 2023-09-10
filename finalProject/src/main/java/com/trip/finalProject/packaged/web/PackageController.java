@@ -1,7 +1,6 @@
 package com.trip.finalProject.packaged.web;
 
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +38,7 @@ public class PackageController {
 	@GetMapping("/packageInfo")
 	public String getpackageInfo(Model model, PackageVO packageVO) {
 		PackageVO findVO = packageService.packageInfo(packageVO);
-
+		
 		model.addAttribute("info",findVO);
 		return "package/packageInfo";
 	}
