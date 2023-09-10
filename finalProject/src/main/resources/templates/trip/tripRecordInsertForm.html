@@ -16,6 +16,135 @@
 </th:block>
 <!-- index.html 고유 스크립트 추가 -->
 <th:block layout:fragment="script"></th:block>
+<style>
+form {
+   text-align: center;
+
+}
+#tourTheme{
+   margin: 0 auto;
+}
+
+
+/* .img-thumbnail{
+   width:400px;
+   height:400px;
+   
+} */
+body {
+       background-color: #ffffff;
+       color: #000000;
+      }
+
+.text-center {
+       text-align: center;
+       width: 60%;
+       margin: 0 auto;
+      }
+
+.form-control {
+       width: 100%;
+       padding: 10px;
+       border: 1px solid #ced4da;
+       border-radius: 4px;
+       box-sizing: border-box;
+      }
+
+.btn-outline-secondary {
+       padding: 10px 50px;
+       font-size: 16px;
+       border-radius: 4px;
+       height :38px;
+      }
+
+.btn-primary {
+       background-color: #007bff;
+       border: none;
+       color: #ffffff;
+      }
+
+.btn-primary:hover {
+       background-color: #0069d9;
+       color: #ffffff;
+      }
+
+.btn-secondary {
+      background-color: #6c757d;
+      border: none;
+      color: #ffffff;
+      }
+
+.btn-secondary:hover {
+      background-color: #5a6268;
+      color: #ffffff;
+      }
+        
+.ck.ck-editor {
+     width: 100%;
+     max-width: 1500px;
+     margin: 0 auto;
+      }
+
+.ck-editor__editable {
+     height: 70vh;
+      }
+li {
+    list-style-type: none;
+}
+
+table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    /* 미디어 쿼리 - 작은 화면에서 테이블 조정 */
+    @media (max-width: 768px) {
+      th, td {
+        display: block; /* 테이블 셀을 블록 요소로 변경 */
+        width: 100%; /* 전체 너비로 설정 */
+      }
+
+      /* th 요소에 추가적인 스타일 조정 (선택 사항) */
+      th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+    }
+     /* Flex 컨테이너 스타일 */
+    .select-container {
+      display: flex;
+      justify-content: space-between; /* 요소 간 여백을 최대화하여 나란히 정렬 */
+      align-items: center; /* 세로 중앙 정렬 */
+      margin-bottom: 20px;
+      width:10%;
+    }
+
+    /* 셀렉트 박스 스타일 */
+    select {
+      width: 45%; /* 각 셀렉트 박스의 너비를 조절 */
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
+    
+    .image-frame {
+            width: 150px; /* 이미지 틀의 너비 */
+            height: 150px; /* 이미지 틀의 높이 */
+            border: 2px solid #ccc; /* 테두리 스타일 및 색상 설정 */
+            padding: 5px; /* 내부 여백 설정 */
+            text-align: center; /* 이미지 가운데 정렬 */
+        }
+    .image-frame img {
+            max-width: 100%; /* 이미지의 최대 너비 설정 */
+            max-height: 100%; /* 이미지의 최대 높이 설정 */
+        }
+</style>
 </head>
 <script src ="/ckeditor5-build-classic/ckeditor.js"></script>
 <body>
@@ -36,21 +165,29 @@
 				<label>[[ ${#dates.format(tripVO.startDay, 'yyyy년 MM월 dd일 EEE요일')} ]] ~ </label>
         		<label>[[ ${#dates.format(tripVO.endDay, 'yyyy년 MM월 dd일 EEE요일')} ]]</label>
 				<br>
+				<br>
+				<table class="table" style="width: 1400px;">
+					<tr>
+                       	 <th style="text-align: left; width: 100px;">메인 이미지</th>
+                         <td style="width: 400px; ">
+                           	<input type="file" id="mainImage" name="mainImage" size="50" class="form-control">
+                           	<input type="button" class="btn btn-secondary mt-3 mx-2" id ="uploadBtn" value="upload">
+                       		<div class="uploadResult" align="center">
+            					<ul style="display:none;"></ul>
+            					<div style="display:none;">
+               					<div id="editor"></div>
+               					</div>
+            				</div>
+                       	</td>
+                   	</tr>
+				</table>
 			</div>
 			<!-- 여행경로가 제대로 저징이 되면 이제 이전 페이지에서 이미지 업도드를 하는 기능을 이식해야함. -->
-            <input type="file" id="mainImage" name="mainImage" class="form-control">
-            <input type="button" class="btn btn-secondary mt-3 mx-2" style="height: 38px;" id ="uploadBtn" value="upload">
-			<div class="uploadResult" align="center">
-            		<ul>
-            		</ul>
-               	<div id="editor">
-               	</div>
-            </div>
 		</form>
 		<!-- 지도영역과 여행 경로, 메모 등을 입력하는 div -->
-		<div style="display: flex; margin: 50px 0 0 10px;">
+		<div style="display: flex; margin: 50px 0 0 180px;">
 			<!-- 화면에 보여지는 지도영역 -->
-			<div class="map_wrap" style="height: 800px; width: 50%; border: solid 1px; margin-left: 50px;">
+			<div class="map_wrap" style="height: 800px; width: 700px; border: solid 1px; margin-left: 50px;">
          		<div id="map"style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
          		<div id="menu_wrap" class="bg_white" style="display: none">
          			<div class="option">
@@ -61,15 +198,15 @@
          		</div>
         	</div>
         	<!-- 앞에서 선택한 여행 일정 수 만큼 여행 경로 지정과 여행 메모 div 생성 -->
-			<div id="tripSchedule" style="width: 50%; margin-left: 10px;">
+			<div id="tripSchedule" style="width: 700px; margin-left: 50px; overflow-y: auto; max-height: 800px;">
 			<h4><b>여행일정</b></h4>
 			<hr>
-				
 			</div>
+			
 		</div>
 		<br>
 		<br>
-		<div align="center" style="display: flex; justify-content: center; align-items: center;">
+		<div align="center" style="display: flex; justify-content: center; align-items: center; margin-bottom: 50px;">
     		<!-- 임시저장 -> 임시저장 -->
     		<button type="button" id="tsTripInsert" class="btn btn-primary mx-2">임시저장</button>
     		<!-- 임시저장 -> 저장 -->
@@ -306,6 +443,7 @@
        	            					<button class="showShow" type="button" style="display:none;"> 경로 보기 </button>
        	            					<button class="modifyMapping" type="button" style="display:none;"> 경로 수정 </button>
        	            					<br>
+       	            					<hr>
        	        					</div>
        	     					</form>
        	    				`;
