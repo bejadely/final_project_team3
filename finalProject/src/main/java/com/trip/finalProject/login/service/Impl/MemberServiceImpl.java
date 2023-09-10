@@ -140,12 +140,33 @@ public class MemberServiceImpl implements MemberService {
 		//회원정보 불러이기
 		@Override
 		public MemberVO memberInfo(MemberVO memberVO) {
-			return memberMapper.memebrInfo(memberVO);
+			// 회원 상세 조회
+			String decodedAccountNum = "";
+			String memberId = "";
+			
+			//계좌번호 복호화
+			try {
+				memberVO = memberMapper.memebrInfo(memberVO);
+				decodedAccountNum = aesProcessor.aesCBCDecode(memberVO.getAccountNumber());
+				memberVO.setAccountNumber(decodedAccountNum);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			
+			return memberVO;
 		}
 
 		//회원정보 수정
 		@Override
 		public String updateMember(MemberVO memberVO) {
+			
+			try {
+				memberVO.setAccountNumber(aesProcessor.aesCBCEncode(memberVO.getAccountNumber())); 
+				memberVO.setAccountNumber(aesProcessor.aesCBCEncode(memberVO.getPassword())); 
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			
 			int result = memberMapper.updateMember(memberVO);
 			
@@ -164,6 +185,42 @@ public class MemberServiceImpl implements MemberService {
 			
 			return memberMapper.singleLogin(vo);
 		}
+
+		@Override
+		public String passwordVerify(MemberVO memberVO) {
+			
+			// 비교할 암호 암호화 //fldkjsklfj
+			String plainPassword = memberVO.getPassword();
+			MemberVO result = memberMapper.passwordVerify(memberVO);
+			
+			boolean a = passwordEncoder.matches(plainPassword, result.getPassword());
+			if(a == true) {
+				return "true";
+			}else {
+				return "false";
+			}
+			
+			
+//			// 비교할 회원 정보 DB에서 호출 // flsddjsfdkj
+//			
+//			System.out.println("password 1: " + encodePassword);
+//			System.out.println("password 2: " + result.getPassword());
+//			
+//			// 호출한 회원정보와 비교할 암호화된 암호 비교
+//			if(result.getPassword().equals(encodePassword)) {
+//				return "success";
+//			} else {
+//				return "fail";
+//			}
+			
+//			if(result == 1) {
+//				return "success";
+//			} else {
+//				return "fail";
+//			}
+		}
+		
+		
 		
 	
 
