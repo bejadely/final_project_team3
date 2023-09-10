@@ -57,20 +57,20 @@ public class NoticeController {
 
 	
 	//공지사항 작성 폼 불러옴
-	  @GetMapping("/noticeWrite")
+	  @GetMapping("/admin/noticeWrite")
 	  public String noticedWrite() {
 		  return"notice/noticeWriteForm"; 
 	  };
 	 
 	//공지사항 작성후 DB저장
-	@PostMapping("/noticeProc")
+	@PostMapping("/admin/noticeProc")
 	public String noticeInsert(NoticeVO noticeVO) {
 		noticeService.noticeInsert(noticeVO);
 		return"redirect:/noticeList";
 	};
 	
 	//공지사항 수정 폼 불러옴
-    @PostMapping("/noticeEdit")
+    @PostMapping("/admin/noticeEdit")
     public String noticedEdit(NoticeVO noticeVO, Model model) {
     	// 공지사항 상세조회 실행
     			noticeVO = noticeService.getNoticeDetail(noticeVO);
@@ -97,6 +97,8 @@ public class NoticeController {
 
 
 	
+	//게시글 삭제 기능 수행
+	///admin/noticeDelete
 	
 	
 	
