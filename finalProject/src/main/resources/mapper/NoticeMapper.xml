@@ -10,20 +10,15 @@
    <select id="SelectAllNoticeList" >
 		
 				SELECT *
-<<<<<<< HEAD
 			  	FROM (SELECT ROWNUM rn, notice_Number,title,writer_Id,regist_Date,hit,code_val(notice_type)notice_type 
 			        	FROM(SELECT notice_Number,title,writer_Id,regist_Date,hit,notice_type
 							FROM notice  where status='T2' and release='N1' order by regist_Date desc) a )
 			  WHERE rn BETWEEN #{start} AND #{end}			  			
-=======
-			  	FROM (SELECT ROWNUM rn, a.*
-			        	FROM(SELECT notice_Number,title,writer_Id,regist_Date,hit 
-							FROM notice  order by regist_Date desc) a )
-			  WHERE rn BETWEEN #{start} AND #{end}
+
 			  ORDER BY rn DESC
 			  				
 		
->>>>>>> branch 'new_develep' of https://github.com/bejadely/final_project_team3.git
+
 	</select>	
 	
 	
@@ -177,11 +172,6 @@
 					) a
 			)
 					WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
-
-				  <!--  WHERE notice_Type='n1'  and  title LIKE '%${noticeVO.title}%'
-				ORDER BY regist_date DESC)  a
-				RODER BY rn DESC)
-		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end} -->
 
   		</select>
 
