@@ -68,6 +68,7 @@ body {
 .ck-editor__editable {
      height: 50vh;
       }
+
 </style>
 </head>
 <body>
@@ -81,19 +82,6 @@ body {
          <form id="modifyData" method="post">
             <input type="hidden" name="writerId" th:value="${session.sessionId}">
             <input type="hidden" name="postId" th:value="${tripInfo.postId}">
-            <div class="mb-3" style="float: left; margin-right: 20px;">
-               <select class="" id="tripArea" name="tripArea" aria-label="Default select example" th:value="${tripInfo.tripArea}" >
-                  <option value="" selected="selected">여행 지역</option>
-                  <option value="35.871159972672, 128.60183648521">대구
-                    <option value="35.1798269951885, 129.075103035027">부산
-                    <option value="36.01889392625669, 129.34319484447613">포항
-                    <option value="36.5684065570509, 128.7295973406168">안동
-                    <option value="35.85619885284879, 129.22477009676797">경주
-                    <option value="35.539464253228324, 129.31158865378814">울산
-                    <option value="34.85442687930827, 128.43314233985606">통영
-                    <option value="34.880381383213354, 128.62132760543582">거제
-               </select>            
-            </div>
             <div class="mb-3" style="float: left; margin-right: 20px;">
                <select class="" id="tripDisclose" name="tripDisclose" aria-label="Default select example" th:value="${tripInfo.tripDisclose}" >
                   <option value="01" selected="selected">공개
@@ -127,13 +115,6 @@ body {
                            <input type="date" id="endDay" name="endDay" size="30" class="form-control" th:value="${#dates.format(tripInfo.endDay, 'yyyy-MM-dd')}" readonly>
                        </td>
                    </tr>
-                     <tr>
-                       <th style="text-align: left; width: 20%;">메인 이미지</th>
-                       <td colspan="4">
-                           <input type="file" id="mainImage" name="mainImage" size="50" class="form-control">
-                           <input type="button" class="btn btn-secondary mt-3 mx-2" id="uploadBtn" value="upload" style="margin: 0;">
-                       </td>
-                   </tr>
                </table>
             </div>
          </form>
@@ -154,7 +135,7 @@ body {
             <div style="width: 700px; margin-left: 20px;">
             <h5><strong>여행 메모</strong></h5>
             <hr>
-            <div style=" overflow-y: auto; max-height: 800px; border: solid 1px; padding: 5 5 5 5px;">
+            <div style=" overflow-y: auto; max-height: 800px; padding: 5 5 5 5px;">
             	<div style="text-align: center; margin: 10px;">
                 	<form id="memoForm" method="post">
                     	<br>
@@ -418,7 +399,7 @@ body {
         		 var mappingObj = mapping[i];
         
         		 mappingString = "<div class='tripDatas" + (i + 1) + "'>" +
-        		 					 "<label>" + "순번 : " + (i + 1) + "</label>" +
+        		 					 "<label>" + (i + 1) + "</label>" +
         		 					 "<label>" + mappingObj.mapName + "</label>" + "<br>" +
             						 "<input type='hidden' name='mapNo' value='" + (i + 1) + "'>" +
             						 "<input type='hidden' name='mapName' value='" + mappingObj.mapName + "'>" +
