@@ -140,7 +140,7 @@ body {
          <br>
          <div style="display: flex;">
          	<!-- 지도 영역 -->
-            <div class="map_wrap" style="height: 800px; width: 50%; border: solid 1px;">
+            <div class="map_wrap" style="height: 900px; width: 50%; border: solid 1px;">
             	<div id="map" style="width: 100%; height: 100%; position: relative; overflow: hidden;"></div>
 				<div id="menu_wrap" class="bg_white" style="display: none">
          			<div class="option">
@@ -151,16 +151,17 @@ body {
          		</div>            
             </div>
             <!-- 여행 메모 영역 -->
-            <div style="width: 50%; margin-left: 20px;">
-            	<div style="text-align: center;">
+            <div style="width: 700px; margin-left: 20px;">
+            <h5><strong>여행 메모</strong></h5>
+            <hr>
+            <div style=" overflow-y: auto; max-height: 800px; border: solid 1px; padding: 5 5 5 5px;">
+            	<div style="text-align: center; margin: 10px;">
                 	<form id="memoForm" method="post">
                     	<br>
-                        <h5><strong>여행 메모</strong></h5>
-                        <hr>
-                        <div th:each="mo : ${memoInfo}">
-                        	<label>[[${mo.tripDate}]] 일정</label>
-                            <br>
-                            <div align="center">
+                        <div th:each="mo, iterStat : ${memoInfo}">
+                        	<h5 th:text="'Day ' + ${iterStat.count} + ' 일차 일정' "></h5>
+                        	<h6>([[${#strings.substring(mo.tripDate, 0, 10)}]])</h6>
+                            <div align="center" style="margin-top: 10px;">
                             	<input class="keyword" type="text" style="display:none" placeholder="키워드를 입력해주세요." onkeydown="return event.key != 'Enter';">
        	            			<button type="button" class="searchPlaces" style="display:none">검색하기</button>
        	            			<div class="showMapData">
@@ -183,15 +184,16 @@ body {
                     </form>
                 </div>
             </div>
+            </div>
          </div>
          <br>
          <hr>
          <div align="center">
             <button type="button" id="modifyTrip" class="btn btn-primary mt-3 mx-2">수정</button>&nbsp;&nbsp;
             <input type="button" class="btn btn-secondary mt-3 mx-2" value="취소" id="cancelBtn"/>&nbsp;&nbsp;
-            <button type="button" class="btn btn-primary mt-3 mx-2" onclick="location.href='/tripRecordList'">목록으로</button>
-           </div>
-           <br>
+            <button type="button" class="btn btn-primary mt-3 mx-2" onclick="history.back()">이전으로</button>
+          </div>
+          <br>
       </div>
    </div>
     <script th:inline="javascript">

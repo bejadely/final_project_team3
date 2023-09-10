@@ -39,7 +39,6 @@
 		<div style="float:right; margin-right: 150px;">
 			<select id="searchBy" name="searchBy">
 				<option value="tripArea">여행지역으로 검색</option>
-				<!-- <option value="mateStyle">여행스타일로 검색</option> -->
 				<option value="mateTitle">타이틀로 검색</option>
 				<option value="writerId">아이디로 검색</option>
 			</select>&nbsp;
@@ -73,7 +72,7 @@
 											조회수 : <span th:text="${tripMateInfo.hit}"></span>
 										</li>
 									</ul>
-									</div>
+								</div>
 									<div align="center">
 									<h5>
 										<a th:text="${tripMateInfo.mateTitle}"></a>
@@ -163,12 +162,13 @@
 		$(document).ready(function() {
 			// 이벤트 설정
 			$('#searchButton').on('click', search);
-		});
+			
+			rememberKeyword();
 	
 		// 조건검색기능
 		function search(event){
 			let value = $('#searchBy').val();
-			let keyword = $('#keyword').val();
+			let keyword = $('#keyword').val().trim();
 			
 			if(!keyword.replace(/^\s+|\s+$/g, '')){
 				Swal.fire({
@@ -179,9 +179,22 @@
 			}
 			
 			location.href='/searchTripMate?searchBy='+value+'&keyword='+keyword;
-			rememberKeyword()
+			rememberKeyword();
 		}
 		
+		// 검색 기록 기억
+		function rememberKeyword(){
+			// 우리가 실제로 만든 셀렉트 박스의 option을 selected 설정
+			$('#searchBy').val([[${searchBy}]]).prop("selected", true);
+				      
+			// 우리가 실제로 만든 셀렉트 박스의 변경값을 나이스 셀렉트 박스에 업데이트
+			$('select').niceSelect('update');
+				      
+			// 검색어 입력창의 값 유지
+			$('#keyword').val([[${keyword}]]);
+		}
+		
+	});
 	</script>
 	</div>
 </body>

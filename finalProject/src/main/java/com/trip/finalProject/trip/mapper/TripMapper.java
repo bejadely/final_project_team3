@@ -48,6 +48,9 @@ public interface TripMapper {
 	//여행기록 상세조회
 	public TripVO selectTripInfo(TripVO tripVO);
 	
+	//여행기록 게시글 조회수 카운트
+	public int updateTripRecordHit(TripVO tripVO);
+	
 	//여행기록 등록(임시저장 데이터를 저장 상태로 상태 변경)
 	public int insertTripInfo(TripVO tripVO);
 	
