@@ -99,28 +99,29 @@ public class NoticeServiceImpl implements NoticeService {
 		}
 	}
 	//게시물 타입이 공지사항(n1)인 게시글 갯수 카운트
-	public int countNoticeType1n() {
-		return noticeMapper.countNoticeType1n(); 	
+	public int countNoticeBySearch(NoticeVO vo) {
+		return noticeMapper.countNoticeBySearch(vo); 	
 	}
 	
-	//게시물 타입이 공지사항(n2)인 게시글 갯수 카운트
-		public int countNoticeType2n() {
-			return noticeMapper.countNoticeType2n(); 	
-		}
+	/*
+	 * //게시물 타입이 공지사항(n2)인 게시글 갯수 카운트 public int countNoticeType2n() { return
+	 * noticeMapper.countNoticeType2n(); }
+	 */
 	
 	
 	
 	@Override
-	public List<NoticeVO> searchNoticeByTitle1n(NoticeVO noticeVO, PagingVO pagingVO) {
+	public List<NoticeVO> searchNoticeByTitle(NoticeVO VO, PagingVO pagingVO) {
 		// 공지사항인 글을 제목으로 검색
-		return noticeMapper.searchByNoticeByTitle1n(noticeVO, pagingVO);
+		System.out.println("노티스있냐"+VO);
+		return noticeMapper.searchByNoticeByTitle(VO, pagingVO);
 	} 
 	
-	@Override
-	public List<NoticeVO> searchNoticeByTitle2n(NoticeVO noticeVO, PagingVO pagingVO) {
-		// 이벤트인 글을 제목으로 검색
-		return noticeMapper.searchByNoticeByTitle2n(noticeVO, pagingVO);
-	} 
+	/*
+	 * @Override public List<NoticeVO> searchNoticeByTitle2n(NoticeVO noticeVO,
+	 * PagingVO pagingVO) { // 이벤트인 글을 제목으로 검색 return
+	 * noticeMapper.searchByNoticeByTitle2n(noticeVO, pagingVO); }
+	 */
 	
 	@Override
 	public int boardUpdate(NoticeVO vo) {
