@@ -177,7 +177,7 @@ ClassicEditor
 		var formObj = $("#editorForm");
 		
 		//document.getElementById("editorForm").addEventListener("submit",function(event){
-		$("button[type='button']").on("click",function(event){
+		$("input[type='button']").on("click",function(event){
 				
 			event.stopPropagation();
 		 	var startDate2 = document.getElementById("startDate").value;
@@ -282,14 +282,13 @@ ClassicEditor
 		    let packageLocation = document.getElementById('location').value;
 		    let packageImage = document.getElementsByName('mainImage')[0];
 		   
-		    /* if (!isIfExecuted) {
+		     if (!isIfExecuted) {
 			    if (packageImage.value == '') {
 				       alert('이미지를 업로드해주세요.')
 				       packageImage.focus();
-				       isIfExecuted=true;
 				       return;
 				    }
-		    } */
+		    } 
 		    if (packageName.value == '') {
 		       alert('타이틀을 입력해주세요.')
 		       packageName.focus();
@@ -333,11 +332,11 @@ ClassicEditor
 		       return;
 		    } 
 		   
-		 //   if (packageTourTheme.value == '') {
-		 //      alert('여행 테마을 지정해주세요.')
-		 //      packageTourTheme.focus();
-		 //      return;
-		 //   } 
+		    if (packageTourTheme.value == '') {
+		       alert('여행 테마을 지정해주세요.')
+		       packageTourTheme.focus();
+		       return;
+		    } 
 			
 		     
 			var star = confirm("등록 하시겠습니까?")
@@ -380,13 +379,13 @@ ClassicEditor
 		
 		return formObject;
 	}
-	var cloneObj = $(".uploadDiv").clone();
+	
 	
 	$(function(){
 		$("#uploadBtn").on('click',function(e){
 			e.preventDefault();
 			let imageData = new FormData();
-			
+			isIfExecuted=true;
 			let inputTag = document.querySelector('input[name="mainImage"]');
 			
 			let files = inputTag.files;
@@ -403,16 +402,22 @@ ClassicEditor
 				type:'POST',
 				dataType:'json',
 				success: function(result){
-					
+					inputTag.value = '';
 					showUploadedFile(result);
-					
-					$(".uploadDiv").html(cloneObj.html());
+					/* var cloneObj = $(".uploadDiv").clone();
+					$(".uploadDiv").append(cloneObj.html()); */
 				}
 			});
 			//readURL(this);	
 		});
 	});
+	function appendUploadInput() {
+	    const cloneObj = $(".uploadDiv").clone();
+	    $(".uploadDiv").html(cloneObj.html());
+	}
 
+	// Call the function to append a new input initially
+	appendUploadInput();
 	/* document.getElementById("packageInfo").addEventListener("submit",function(event){
 		
 	}) */
@@ -501,11 +506,16 @@ ClassicEditor
 				<tr>
 					<th >메인 이미지</th>
 					<td colspan="4">
-					<div class="uploadDiv input-group">
-						<input type="file" class="form-control" name="mainImage" id="mainImage" aria-describedby="inputGroupFileAddon03" aria-label="Upload"  multiple/>
-						<input type="button" class="btn btn-outline-secondary" id ="uploadBtn" value="button" />
-					</div>
-					<td>
+						<div class="uploadDiv input-group">
+							<input type="file" class="form-control" name="mainImage" id="mainImage" aria-describedby="inputGroupFileAddon03" aria-label="Upload"  multiple/>
+							<button type="button" class="btn btn-outline-secondary" id ="uploadBtn" >upload</button>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4">
+					
+					</td>
 				</tr>
 				<tr>
 					<th >패키지명</th>
@@ -547,8 +557,8 @@ ClassicEditor
 		<div id="editor">
 		
 		</div>
-		<button type="button" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>
-		<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>
+		<input type="button" class="btn btn-primary mt-3 mx-2" value="작성완료" >
+		<button type="button" class="btn btn-secondary mt-3 mx-2" id="cancelBtn">작성취소</button>
 	</form>
 </div>
 </div>

@@ -26,10 +26,11 @@ table, th,td {
 <script>
 $(document).ready(function(){
 	$("button").click(function(){
-		let tid =  $(".tid").val();
-		let cancelAmount = $(".cancelAmount").val();
-		let cancelTaxFreeAmount = $(".cancelTaxFreeAmount").val();
+		let tid =  '[[${list.tid}]]';
+		let cancelAmount = '[[${list.cancelAmount}]]';
+		let cancelTaxFreeAmount = '[[${list.cancelTaxFreeAmount}]]';
 		let orderDetailId = $(".orderId").val();
+		let postId = '[[${list.postId}]]';
 		
 		console.log(tid);
 		console.log(cancelAmount);
@@ -42,7 +43,8 @@ $(document).ready(function(){
 				tid: tid,
 				cancelAmount : cancelAmount,
 				cancelTaxFreeAmount : cancelTaxFreeAmount,
-				orderDetailId : orderDetailId
+				orderDetailId : orderDetailId,
+				postId: postId
 			}
 		}).done(data=>{
 			console.log(data);
@@ -59,10 +61,8 @@ $(document).ready(function(){
 	<div layout:fragment="content" style="text-align: center;">
 	<form>
 		<h5>주문 상세내역</h5>
-<!-- 		<input type="hidden" th:value="list.cid">	
-		<input type="hidden" th:value="list.tid">	
-		<input type="hidden" th:value="list.cancelAmount">	
-		<input type="hidden" th:value="list.cancelTaxFreeAmount"> -->
+		<input type="hidden" class="orderId" th:value="${list.orderDetailId}">
+		
 		<table>
 			<thead>
 				<tr>
