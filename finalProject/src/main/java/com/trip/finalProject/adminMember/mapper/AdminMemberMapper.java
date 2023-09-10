@@ -49,4 +49,9 @@ public interface AdminMemberMapper {
 	// 제재카운트 1 증가
 	public int plusPunishCount(String memberId);
 	
+	// 필터검색할 회원 수 카운트
+	public int countFilterSearch(AdminMemberVO adminMemberVO);
+	
+	// 필터검색으로 검색된 회원 전체 조회
+	public List<AdminMemberVO> selectFilterSearch(AdminMemberVO adminMemberVO, PagingVO pagingVO);
 }

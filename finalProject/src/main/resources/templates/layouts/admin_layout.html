@@ -5,14 +5,13 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8" />
-    <title>thymeleaf layout</title>
     <meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1, user-scalable=yes,initial-scale=1.0" />
     <!-- head fragment 사용 -->
     <th:block th:replace="fragments/admin_head :: headFragment"></th:block>
 </head>
 <body>
     <!-- header fragment 사용 -->
-    <th:block th:replace="fragments/admin_header3_no_logo :: headerFragment"></th:block>
+    <th:block th:replace="fragments/admin_header :: headerFragment"></th:block>
         
     <!-- aside + content -->    
     <section class="property-section spad">
@@ -23,30 +22,31 @@
                     <div class="property-sidebar">
                         <form action="#" class="sidebar-search">
                             <div>
-		                        <h5 style="margin-bottom: 25px;"><b>관리자 페이지</b></h5>
-	                            <h6 class="main-menu"><i class="fa-solid fa-user-gear fa-xl" style="color: #012970;"></i>회원관리</h6>
-	                        	<div class="detail-menu">	
-	                        		<a href="/admin/seeAllMemberList"><h6><i class="fa-solid fa-angle-right fa-xs"></i>회원정보관리</h6></a>
-	                        		<a href="/authRequestList"><h6><i class="fa-solid fa-angle-right fa-xs"></i>권한승인요청내역</h6></a>
-	                        	</div>
-	                        	<h6 class="main-menu"><i class="fa-solid fa-bullhorn fa-xl" style="color: #012970;"></i>신고 현황 및 제재 관리</h6>
+		                        <h5 style="padding-top: 0px"><b>관리자 페이지</b></h5>
+		                        <hr>
+	                            <h6 class="main-menu"><i class="fa-solid fa-user-pen" style="color: #2cbdb8;"></i>회원관리</h6>
 	                        	<div class="detail-menu">
-		                        	<a href="/admin/seeAllReport"><h6><i class="fa-solid fa-angle-right fa-xs"></i>새로운 신고 내역</h6></a>
-		                        	<a href="/admin/seeAllPunish"><h6><i class="fa-solid fa-angle-right fa-xs"></i>제재 처리 내역 관리</h6></a>
+	                        		<a href="/admin/seeAllMemberList"><h6> - 회원정보관리</h6></a>
+	                        		<a href="/authRequestList"><h6> - 권한승인요청내역</h6></a>
+	                        	</div>
+	                        	<h6 class="main-menu"><i class="fa-solid fa-bullhorn fa-xl" style="color: #2cbdb8;"></i>신고 현황 및 제재 관리</h6>
+	                        	<div class="detail-menu">
+		                        	<a href="/admin/seeAllReport"><h6>- 새로운 신고 내역</h6></a>
+		                        	<a href="/admin/seeAllPunish"><h6>- 제재 처리 내역 관리</h6></a>
 	                        	</div>
 	                        	<h6 class="main-menu"><i class="fa-regular fa-credit-card fa-xl"></i>상품 판매 및 정산 관리</h6>
 	                        	<div class="detail-menu">
-		                        	<a href="/admin/seeAllSpecial"><h6><i class="fa-solid fa-angle-right fa-xs"></i>특산물 판매 관리</h6></a>
-		                        	<a href="/admin/selectNotCalList"><h6><i class="fa-solid fa-angle-right fa-xs"></i>패키지 정산 관리</h6></a>
+		                        	<a href="/admin/seeAllSpecial"><h6>- 특산물 판매 관리</h6></a>
+		                        	<a href="/admin/selectNotCalList"><h6>- 패키지 정산 관리</h6></a>
 	                        	</div>
 	                        	<h6 class="main-menu"><i class="fa-regular fa-comments fa-xl"></i>문의 내역 관리</h6>
 	                        	<div class="detail-menu">
-		                        	<a href="/admin/seeAllQuestion"><h6><i class="fa-solid fa-angle-right fa-xs"></i>문의 내역 관리</h6></a>
+		                        	<a href="/admin/seeAllQuestion"><h6>- 문의 내역 관리</h6></a>
 	                        	</div>
 	                        	<h6 class="main-menu"><i class="fa-regular fa-paste fa-xl"></i>공지 관리</h6>
 	                        	<div class="detail-menu">
-		                        	<a href="/admin/seeAllReport"><h6><i class="fa-solid fa-angle-right fa-xs"></i>새로운 신고 내역</h6></a>
-		                        	<a href="/admin/seeAllPunish"><h6><i class="fa-solid fa-angle-right fa-xs"></i>제재 처리 내역 관리</h6></a>
+		                        	<a href="/admin/seeAllReport"><h6>- 새로운 신고 내역</h6></a>
+		                        	<a href="/admin/seeAllPunish"><h6>- 제재 처리 내역 관리</h6></a>
 	                        	</div>
                         	</div>
                             <!-- 

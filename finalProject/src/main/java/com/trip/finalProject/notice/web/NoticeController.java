@@ -99,50 +99,65 @@ public class NoticeController {
 
 
 	
-	//게시글 삭제 기능 수행
-	///admin/noticeDelete
+	  //게시글 삭제 기능 수행 ///admin/noticeDelete
+	  
+	  @GetMapping("/admin/noticeDelete") 
+	  public String noticeDelete(NoticeVO noticeVO) { 
+		   System.out.println("삭제하자:"+ noticeVO);
+		   noticeService.noticeDelete(noticeVO);
 	
+	
+	  	return "redirect:/noticeList"; 
+	  }
+	 
 	
 	
 	// 특정 조건으로 공지사항 상세 검색
 	@GetMapping("/searchNotice")
-	public String searchAdminMember( String noticeType
-								  ,  String release
-								  ,  String status		
-								   ,@RequestParam( name = "keyword" ) String keyword
+	public String searchAdminMember(@RequestParam( name = "noticeType" ) String noticeType
+								  , @RequestParam( name = "keyword" ) String keyword
 								  , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
 								  , @RequestParam( name = "cntPerPage", defaultValue = "10") Integer cntPerPage
 								  , Model model
 								  , NoticeVO noticeVO) {
 		
-		
-		System.out.println("노티스타입:"+noticeType);
-		System.out.println("공개대상:"+release);
-		System.out.println("공개상태:"+status);
 		// 조건 파악 공지사항 or 이벤트
+		if(noticeType.equals("n1")) {
 			
-			// 전체 조회될 카운트
-			int total = noticeService.countNoticeBySearch(noticeVO);
+			// 전체 조회될 공지사항 타입이 n1인 수 카운트
+			int total = noticeService.countNoticeType1n();
 			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 			
-			//  검색기능 수행
+			// 공지사항인 경우 검색기능 수행
 			noticeVO.setTitle(keyword);
-			List<NoticeVO> list = noticeService.searchNoticeByTitle(noticeVO, pagingVO);
+			List<NoticeVO> list = noticeService.searchNoticeByTitle1n(noticeVO, pagingVO);
 			model.addAttribute("list", list);
 			model.addAttribute("paging", pagingVO);
+			model.addAttribute("n1", noticeType);
 			
 			
-
+			
+			
+		} else if(noticeType.equals("n2")) {
+			  
+				// 전체 조회될 공지사항 타입이 n2인 수 카운트
+			int total = noticeService.countNoticeType2n();
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			  
+			  //이벤트인 경우 검색기능 수행
+			noticeVO.setTitle(keyword);
+			List<NoticeVO> list = noticeService.searchNoticeByTitle2n(noticeVO, pagingVO);
+			  model.addAttribute("list", list); 
+			  model.addAttribute("paging", pagingVO);
+			  model.addAttribute("n2", noticeType);
+			  
+			  }
+			 
+		
 		// 검색결과 기억을 위해 keyword와 searchBy 담기
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("noticeType", noticeType);
-		model.addAttribute("release", release);
-		model.addAttribute("status", status);
-		/*
-		 * System.out.println("--------------"); System.out.println("keyword"+keyword);
-		 * System.out.println("noticeType"+noticeType);
-		 * System.out.println("release"+release); System.out.println("status"+status);
-		 */
+		
 		return "notice/noticeList";
 	}
 
