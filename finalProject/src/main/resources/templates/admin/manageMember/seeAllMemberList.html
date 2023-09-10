@@ -17,7 +17,7 @@
 				<tbody>
 					<tr>
 						<th>국적</th>
-						<td>
+						<td class="filterNationality">
 							<a role="button">대한민국</a>
 							<a role="button">일본</a>
 							<a role="button">중국</a>
@@ -34,7 +34,7 @@
 					</tr>
 					<tr>
 						<th>회원분류</th>
-						<td>
+						<td class="filterAuthority">
 							<th:block th:each="a : ${authCodeList}">
 								<a href="#" role="button" th:data-auth="${a.detailCode}">[[${a.value}]]</a>							
 							</th:block>
@@ -158,21 +158,46 @@
 	//ajax 필터 검색
 	function ajaxFilterSearch(event){
 		
-		// 보낼 데이터 추출
+		// 토글 형성 - 볼드 처리 및 data-selected 속성 true/false 전환
+		if($(this).attr("data-selected") == "true"){
+			// 선택되어 있던 경우 - 본인 볼드처리 해제 / data-selected >> false
+			$(this).css({fontWeight: 'normal'});
+			$(this).attr("data-selected", "false")
+		} else{
+			// 선택되어있지 않았던 경우 - 볼드 처리 및 다른 형제요소 볼드처리 해제 / data-selected >> falses
+			$(this).css({fontWeight: 'bold'});
+			$(this).siblings().css({fontWeight: 'normal'});
+			$(this).attr("data-selected", "true")
+			
+			// ajax 검색으로 보낼 변수값 지정
+			let authority = "";
+			let nationality = "";
+			
+			if($(this).closest('td').prop('class') == 'filterNationality'){
+				nationality = $(this).text();
+				console.log(nationality);
+			}
+			// 확장성을 고려 / else 사용하지 않음
+			if($(this).closest('td').prop('class') == 'filterAuthority'){
+				authority = $(this).text();
+				console.log(authority);
+			}
+			
+			// ajax 실행
+			$.ajax({
+				url : '/admin/ajaxFilterSearch',
+				type : 'get',
+				data : { 
+						authority : authority,
+						nationality : nationality
+						},
+			})
+			.done( data => {
+				console.log("data : ", data);
+			})
+			.fail( reject => console.log(reject));
+		}
 		
-		
-		$.ajax({
-			url : '/admin/ajaxFilterSearch',
-			type : 'get',
-			data : { 
-					authority : "A2",
-					nationality : "대한민국"
-					},
-		})
-		.done( data => {
-			console.log("data : ", data);
-		})
-		.fail( reject => console.log(reject));
 	}
 	
 	// 조건검색기능
