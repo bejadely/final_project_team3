@@ -352,8 +352,8 @@ section.notice {
 		</div>
 		
 
-		<!-- 일반회원(A1)or 로그인x인 경우 검색 div  -->	
-		<div th:if="${session.sessionAuthority == 'A1' or session.sessionAuthority == null}">
+		<!-- 일반회원(A1)or 권한신청중인 회원(A4)or 로그아웃인 경우 검색 div  -->	
+		<div th:if="${session.sessionAuthority == 'A1' or session.sessionAuthority == 'A4' or session.sessionAuthority == null}">
 
 			<div id="noticeType" class="mb-3"
 				style="float: left; margin-left: 15%; margin-right: 20px">
@@ -418,12 +418,10 @@ section.notice {
 				<th:block th:if="${#strings.isEmpty(keyword)}">
 					<div style="text-align: center;" class="property-pagination">
 						<th:block th:if="${paging.nowPage != 1}">
-							<a
-								th:href="@{noticeList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
+							<a th:href="@{noticeList(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
 						</th:block>
 						<th:block th:if="${paging.startPage != 1}">
-							<a
-								th:href="@{noticeList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
+							<a th:href="@{noticeList(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 						</th:block>
 						<th:block
 							th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
@@ -439,12 +437,10 @@ section.notice {
 						</th:block>
 						<th:block
 							th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-							<a
-								th:href="@{noticeList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+							<a th:href="@{noticeList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 						</th:block>
 						<th:block th:if="${paging.nowPage != paging.lastPage}">
-							<a
-								th:href="@{noticeList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+							<a th:href="@{noticeList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
 						</th:block>
 					</div>
 				</th:block>

@@ -5,7 +5,7 @@
 <mapper namespace="com.trip.finalProject.notice.mapper.NoticeMapper"><!-- 구현! 메서드 명 만들어 놓은 것을 여기서 만들겠다. -->
 
 
-
+<!--A1, A4, null일 때 T2:공개 N1:전체 , 검색전은 가이드도 동일.-->
 <!--  페이지별로 게시글 확인 row 개수에 따라 -->
    <select id="SelectAllNoticeList" >
 		
@@ -13,16 +13,44 @@
 			  	FROM (SELECT ROWNUM rn, notice_Number,title,writer_Id,regist_Date,hit,code_val(notice_type)notice_type 
 			        	FROM(SELECT notice_Number,title,writer_Id,regist_Date,hit,notice_type
 							FROM notice  where status='T2' and release='N1' order by regist_Date desc) a )
-			  WHERE rn BETWEEN #{start} AND #{end}
-			  				
-		
+			  WHERE rn BETWEEN #{start} AND #{end}			  			
 	</select>	
-	<!-- 전체 게시글 수 카운트 -->
+	
+	
+	
+	<!--A3일 때 관리자. -->
+<!--  페이지별로 게시글 확인 row 개수에 따라 -->
+   <select id="SelectByAdminNoticeList" >
+		
+				SELECT *
+			  	FROM (SELECT ROWNUM rn, notice_Number,title,writer_Id,regist_Date,hit,code_val(notice_type)notice_type 
+			        	FROM(SELECT notice_Number,title,writer_Id,regist_Date,hit,notice_type
+							FROM notice   order by regist_Date desc) a )
+			  WHERE rn BETWEEN #{start} AND #{end}			  			
+	</select>	
+	
+	
+	<!--전체 게시글 수 카운트. A1, A4, null일 때 T2:공개 N1:전체-->
   		<select id="getAllNoticeCount">
   			SELECT COUNT(*)
   			  FROM notice where status='T2' and release='N1'
   	</select>
+
+
+
+
+  	<!--전체 게시글 수 카운트. A2일 때 T2:공개 N1:전체-->
+  	<select id="getGuideNoticeCount">
+  			SELECT COUNT(*)
+  			  FROM notice where status='T2' and release='N1'
+  	</select>
 	
+	
+	  	<!--전체 게시글 수 카운트. A3일 때 -->
+  	<select id="getAdminNoticeCount">
+  			SELECT COUNT(*)
+  			  FROM notice 
+  	</select>
 
 	
 
