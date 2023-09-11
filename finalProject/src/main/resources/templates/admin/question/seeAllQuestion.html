@@ -191,6 +191,7 @@
 	<script th:inline="javascript" type="text/javascript">
 	
 	$(document).ready(function() {
+		jQuery.noConflict();
 		// 이벤트 설정
 		$('#searchButton').on('click', search);
 		$('.memberInfo').on('mouseover', colorDarker)
