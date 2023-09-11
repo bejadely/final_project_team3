@@ -186,7 +186,7 @@ h5 {
 		  
 
 		   function ajaxApprove(){
-			   console.log("sms 버튼 눌렀다.");
+			  
 			  
 		      // memberId 정의
 		 	let receiverId = document.getElementById("phonenumber").value;
@@ -197,7 +197,7 @@ h5 {
 		         data: { to : receiverId },
 		      })
 		      .done( data => {
-		         //console.log("data :", data);
+		   
 		         console.log("통신은 성공");
 		         if(data != null && data.num != null){
 		            alert(`${receiverId} 문자발송했습니다`); 
