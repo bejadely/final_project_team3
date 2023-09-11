@@ -8,7 +8,7 @@
 <!-- 기본 : 판매중인 상품 -->
 <div layout:fragment="content">
 	<div class="container">
-		<h5><b>판매 상품 관리</b></h5>
+		<h5><b>특산물 판매 관리</b></h5>
 		<br>
 		<div>
 			<select id="searchBy" name="searchBy">
@@ -142,7 +142,7 @@
 		let reportId = $(event.currentTarget).find('td:eq(0)').text();
 		
 		// 페이지 전환 실행
-		location.href=`/specialtiesInfo?postId=${reportId}`;
+		location.href=`/admin/specialtiesUpdateForm?postId=${reportId}`;
 	}
 	
 	
