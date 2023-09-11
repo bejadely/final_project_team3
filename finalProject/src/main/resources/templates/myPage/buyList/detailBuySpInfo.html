@@ -101,51 +101,62 @@ body {
    <th:block layout:fragment="script"></th:block>
    <div layout:fragment="content" style="text-align: center;">
    <form>
-      <h5>주문 상세내역</h5>
+   		<th:block th:if="${list.orderStatus != '환불 완료'}">
+			<h5>주문 상세내역</h5>
+		</th:block>
+		<th:block th:if="${list.orderStatus == '환불 완료'}">
+			<h5>환불 상세내역</h5>
+		</th:block>
+      <br>
       <input type="hidden" class="orderId" th:value="${list.orderDetailId}">
       
       <table>
-         <thead>
-            <tr>
-               <th style="width: 30%">상품사진</th>
-				<th>상품명</th>
-       			<th style="width: 15%">옵션</th>
-				<th style="width: 15%">수량</th>
-				<th style="width: 15%">상품금액</th>
-            </tr>
-         </thead>
-         <tbody>
-            <tr th:onclick="|location.href='@{/packageInfo(postId=${list.postId})}'|">
-               <td style="width: 30%">
-					<img th:if="${not #strings.isEmpty(list.loadingImg)}" th:src="${list.loadingImg}" style="height:277px;">
-                    <img th:unless="${not #strings.isEmpty(list.loadingImg)}" th:src="@{/img/no-image.png}">
-				</td>
-				<td th:text="${list.title}"></td>
-				<td th:text="${list.specialtyType}" style="width: 15%"></td>
-				<td th:text="${list.quantity}" style="width: 15%"></td>
-				<td th:text="${list.spPrice}" style="width: 15%"></td>
-            </tr>
-            <tr>
-               <td colspan="4"> 총 금액 </td>
-               <td>
-               <td th:text="${list.puPrice}"></td>
-            <tr>
-         </tbody>
-      </table>
-      <h5>결제정보</h5>
-      <ul>
-         <li>
-            <label>결제 금액</label>
-            <input type="text" th:value="${list.puPrice}" readonly="readonly">
-         </li>
-         <li>
-            <label>결제 상태</label>
-            <input type="text" th:value="${list.orderStatus}" readonly="readonly">
-         </li>
-      </ul>
-      	<button type="button" id="refundBtn" class="feature-btn" th:if="${list.orderStatus != '환불 완료'}">환불</button>
-		<button type="button" th:onclick="history.back()" class="feature-btn">목록으로</button>
-
+			<thead>
+				<tr>
+					<th style="width: 30%; padding: 0;">상품사진</th>
+					<th colspan="3">상품명</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:onclick="|location.href='@{/packageInfo(postId=${list.postId})}'|">
+					<td style="width: 30%" rowspan="6">
+						<img th:if="${not #strings.isEmpty(list.loadingImg)}" th:src="${list.loadingImg}" style="width:100%; height:250px;">
+                    	<img th:unless="${not #strings.isEmpty(list.loadingImg)}" th:src="@{/img/no-image.png}">
+					</td>
+					<td th:text="${list.title}" colspan="3"></td>
+				</tr>
+				<tr>
+					<th style="width: 15%" colspan="">옵션</th>
+					<th style="width: 15%" colspan="">수량</th>
+					<th style="width: 15%">상품금액</th>
+				</tr>
+				<tr>
+					<td th:text="${list.specialtyType}" style="width: 15%"></td>
+					<td th:text="${list.quantity}" style="width: 15%"></td>
+					<td th:text="${list.spPrice}" style="width: 15%"></td>
+				</tr>
+				<tr>
+					<th > 총 금액 </th>
+					<td colspan="3" th:text="${list.puPrice}+원" style="text-align: right;"></td>
+				<tr>
+			</tbody>
+		</table>
+		<br>
+		<h4>결제정보</h4>
+		<br>
+      	<table>
+			<tbody>
+				<tr>
+					<th style="width: 20%">결제금액</th>
+					<td th:text="${list.puPrice}"></td>
+				</tr>
+				<tr>
+					<th style="width: 20%">결제 상태</th>
+					<td th:text="${list.orderStatus}"></td>
+				</tr>
+			
+			</tbody>
+		</table>
    </form>
    </div>
 </body>

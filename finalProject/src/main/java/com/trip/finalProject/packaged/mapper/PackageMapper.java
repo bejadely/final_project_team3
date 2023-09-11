@@ -17,7 +17,7 @@ public interface PackageMapper {
 	public PackageVO packageInfo(PackageVO packageVO);
 	
 	//패키지 리스트
-	public List<PackageVO> listPackage(PagingVO pagingvo);
+	public List<PackageVO> listPackage(PagingVO pagingVO, PackageVO packageVO);
 	
 	//지역 리스트
 	public List<LocationVO> listArea();
