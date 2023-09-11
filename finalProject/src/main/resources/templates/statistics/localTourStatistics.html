@@ -26,108 +26,108 @@
             crossorigin="anonymous"></script>
     <!-- Popper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<!-- billboard.js -->
+    <!-- billboard.js -->
     <link rel="stylesheet" href="https://naver.github.io/billboard.js/release/latest/dist/theme/datalab.min.css">
     <script src="https://naver.github.io/billboard.js/release/latest/dist/billboard.pkgd.min.js"></script>
 
-<style>
-    .rounded-box {
-        border-radius: 10px;
-        padding: 20px;
-        margin: 10px;
-        border: 1px solid #CCCCCC;
-    }
-    .box-2 {
-        margin-bottom: 20px; /* 네모박스 2와 네모박스 3 사이 여백  */
-    }
-    .table-sm td, .table-sm th {
-        font-size: 12px;
-    }
-    .rounded-box {
-        height: 90%;
-        padding: 10px;
-    }
-    .col-md-7,
-    .col-md-5 {
-        height: 100%; /* 네모박스 1과 동일한 높이로 설정 */
-    }
-    .inline {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+    <style>
+        .rounded-box {
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px;
+            border: 1px solid #CCCCCC;
+        }
+        .box-2 {
+            margin-bottom: 20px; /* 네모박스 2와 네모박스 3 사이 여백  */
+        }
+        .table-sm td, .table-sm th {
+            font-size: 12px;
+        }
+        .rounded-box {
+            height: 90%;
+            padding: 10px;
+        }
+        .col-md-7,
+        .col-md-5 {
+            height: 100%; /* 네모박스 1과 동일한 높이로 설정 */
+        }
+        .inline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .btn-group {
-        margin-left: auto;
-    }
-    .input-container {
-        display: flex;
-        justify-content: center;
-    }
+        .btn-group {
+            margin-left: auto;
+        }
+        .input-container {
+            display: flex;
+            justify-content: center;
+        }
 
-    .form-control {
-        flex: 1;
-        max-width: 100px;
-        margin-right: 10px;
-    }
-    .local-map {
-        display: flex;
-        justify-content: center;
-    }
-    .local-map svg{
-        width: 30%;
-        height: 30%;
-    }
-    .dropdown-check{
-        display: flex;
-        align-items: center;
-    }
-    .total-data {
-        margin-bottom: 10px; /* 바깥쪽 여백 조절 */
-    }
+        .form-control {
+            flex: 1;
+            max-width: 100px;
+            margin-right: 10px;
+        }
+        .local-map {
+            display: flex;
+            justify-content: center;
+        }
+        .local-map svg{
+            width: 30%;
+            height: 30%;
+        }
+        .dropdown-check{
+            display: flex;
+            align-items: center;
+        }
+        .total-data {
+            margin-bottom: 10px; /* 바깥쪽 여백 조절 */
+        }
 
-    .total-datail {
-        margin-bottom: 0; /* 테이블의 바깥쪽 여백 제거 */
-    }
-     .uploadModalbtn {
-   		 text-align: right;
-         display: none;
- 	 }
- 	.upload-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-    }
-	.dropdown {
-        margin-bottom: 10px; 
-    }
-	.input-container input {
-	    font-size: 10px; 
-	    padding: 5px;
-	    text-align: center;
-	}
-	.table td, .table th {
-   		 text-align: center; 
-    }
-    .statisticsContent {
-        height: 70px; 
-    }
-    .total-datail td {
-        vertical-align: middle; 
-        font-size: 14px; 
-    }
-    .btn-custom {
-      background-color: #2cbdb8;
-      border-color: #2cbdb8; 
-      color: white;
-    }
-  .btn-custom:hover,
-  .btn-custom:active {
-    background-color: #2cbdb8;
-    border-color: #2cbdb8;
-    color: white;
-  }
-</style>
+        .total-datail {
+            margin-bottom: 0; /* 테이블의 바깥쪽 여백 제거 */
+        }
+        .uploadModalbtn {
+            text-align: right;
+            display: none;
+        }
+        .upload-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .dropdown {
+            margin-bottom: 10px;
+        }
+        .input-container input {
+            font-size: 10px;
+            padding: 5px;
+            text-align: center;
+        }
+        .table td, .table th {
+            text-align: center;
+        }
+        .statisticsContent {
+            height: 70px;
+        }
+        .total-datail td {
+            vertical-align: middle;
+            font-size: 14px;
+        }
+        .btn-custom {
+            background-color: #2cbdb8;
+            border-color: #2cbdb8;
+            color: white;
+        }
+        .btn-custom:hover,
+        .btn-custom:active {
+            background-color: #2cbdb8;
+            border-color: #2cbdb8;
+            color: white;
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -146,78 +146,78 @@
     <br>
     <!-- 내용창 -->
     <div class="container-lg">
-    	<!-- 파일업로드 버튼 -->
-    	<div class="uploadModalbtn">
-    		<button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#staticBackdrop">파일업로드</button>&ensp;
+        <!-- 파일업로드 버튼 -->
+        <div class="uploadModalbtn">
+            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#staticBackdrop">파일업로드</button>&ensp;
             <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">파일삭제</button>&ensp;
-    	</div>
-    	<!-- 파일업로드 모달 -->
-    	<!-- Modal -->
-		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h1 class="modal-title fs-5" id="staticBackdropLabel">통계자료 업로드</h1>
-		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		      </div>
-		      <div class="modal-body">
-		      <div class="upload-container">
-			      <div class="dropdown">
-				  &nbsp;<button class="btn btn-sm btn-outline-dark dropdown-toggle" id="fileTypeButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-				    파일타입
-				  </button>
-				  <ul id="fileType" class="dropdown-menu">
-				    <li><a class="dropdown-item">동행유형</a></li>
-				    <li><a class="dropdown-item">여행유형</a></li>
-				    <li><a class="dropdown-item">맛집방문자</a></li>
-				    <li><a class="dropdown-item">여행지방문자</a></li>
-				    <li><a class="dropdown-item">방문자수</a></li>
-				    <li><a class="dropdown-item">SNS언급량</a></li>
-				  </ul>
-				</div><div class="dropdown">
-				  <button class="btn btn-sm btn-outline-dark dropdown-toggle" id="locationTypeButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-				    지역선택
-				  </button>
-				  <ul id="locationType" class="dropdown-menu">
-                      <li><a class="dropdown-item" th:attr="data-area-code='4', data-sigungu-code='0'">대구</a></li>
-                      <li><a class="dropdown-item" th:attr="data-area-code='6', data-sigungu-code='0'">부산</a></li>
-                      <li><a class="dropdown-item" th:attr="data-area-code='7', data-sigungu-code='0'">울산</a></li>
-                      <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='2'">경주</a></li>
-                      <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='23'">포항</a></li>
-                      <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='11'">안동</a></li>
-                      <li><a class="dropdown-item" th:attr="data-area-code='36', data-sigungu-code='17'">통영</a></li>
-                      <li><a class="dropdown-item" th:attr="data-area-code='36', data-sigungu-code='1'">거제</a></li>
-				  </ul>
-				</div>
-                  <div class="dropdown">
-                      <button class="btn btn-sm btn-outline-dark dropdown-toggle" id="yearButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          년도 선택
-                      </button>
-                      <ul id="year" class="dropdown-menu">
-                          <!--년도-->
-                      </ul>
-                  </div>
-                  <div class="dropdown">
-                      <button class="btn btn-sm btn-outline-dark dropdown-toggle" id="monthButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          월 선택
-                      </button>
-                      <ul id="month" class="dropdown-menu">
-                          <!--월-->
-                      </ul>
-                  </div>
-		    </div>
-		       <div class="filebox">
-				  <label for="ex_filename"></label>
-				  <input type="file" id="ex_filename" class="upload-hidden">
-				</div>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-		        <button type="button" id="uploadButton" class="btn btn-primary">업로드</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
+        </div>
+        <!-- 파일업로드 모달 -->
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">통계자료 업로드</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="upload-container">
+                            <div class="dropdown">
+                                &nbsp;<button class="btn btn-sm btn-outline-dark dropdown-toggle" id="fileTypeButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                파일타입
+                            </button>
+                                <ul id="fileType" class="dropdown-menu">
+                                    <li><a class="dropdown-item">동행유형</a></li>
+                                    <li><a class="dropdown-item">여행유형</a></li>
+                                    <li><a class="dropdown-item">맛집방문자</a></li>
+                                    <li><a class="dropdown-item">여행지방문자</a></li>
+                                    <li><a class="dropdown-item">방문자수</a></li>
+                                    <li><a class="dropdown-item">SNS언급량</a></li>
+                                </ul>
+                            </div><div class="dropdown">
+                            <button class="btn btn-sm btn-outline-dark dropdown-toggle" id="locationTypeButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                지역선택
+                            </button>
+                            <ul id="locationType" class="dropdown-menu">
+                                <li><a class="dropdown-item" th:attr="data-area-code='4', data-sigungu-code='0'">대구</a></li>
+                                <li><a class="dropdown-item" th:attr="data-area-code='6', data-sigungu-code='0'">부산</a></li>
+                                <li><a class="dropdown-item" th:attr="data-area-code='7', data-sigungu-code='0'">울산</a></li>
+                                <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='2'">경주</a></li>
+                                <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='23'">포항</a></li>
+                                <li><a class="dropdown-item" th:attr="data-area-code='35', data-sigungu-code='11'">안동</a></li>
+                                <li><a class="dropdown-item" th:attr="data-area-code='36', data-sigungu-code='17'">통영</a></li>
+                                <li><a class="dropdown-item" th:attr="data-area-code='36', data-sigungu-code='1'">거제</a></li>
+                            </ul>
+                        </div>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-dark dropdown-toggle" id="yearButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    년도 선택
+                                </button>
+                                <ul id="year" class="dropdown-menu">
+                                    <!--년도-->
+                                </ul>
+                            </div>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-dark dropdown-toggle" id="monthButton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    월 선택
+                                </button>
+                                <ul id="month" class="dropdown-menu">
+                                    <!--월-->
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="filebox">
+                            <label for="ex_filename"></label>
+                            <input type="file" id="ex_filename" class="upload-hidden">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" id="uploadButton" class="btn btn-primary">업로드</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- 파일삭제 모달 -->
         <!-- Modal -->
         <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -262,7 +262,7 @@
                                     년도 선택
                                 </button>
                                 <ul id="yearDel" class="dropdown-menu">
-                                   <!--년도-->
+                                    <!--년도-->
                                 </ul>
                             </div>
                             <div class="dropdown">
@@ -270,7 +270,7 @@
                                     월 선택
                                 </button>
                                 <ul id="monthDel" class="dropdown-menu">
-                                   <!--월-->
+                                    <!--월-->
                                 </ul>
                             </div>
                         </div>
@@ -290,7 +290,7 @@
                     <!-- 제목 및 통계 자료 전환 버튼 -->
                     <div class="inline">
                         <h6>경상도 지역 주요 관광 현황 지도</h6>
-                        <button type="button" class="btn btn-sm btn-custom">방문자수</button>   
+                        <button type="button" class="btn btn-sm btn-custom">방문자수</button>
                     </div>
                     <div class="local-map">
                         <svg
@@ -2812,11 +2812,11 @@
                     <h6>방문자 수 최다 지역</h6>
                     <table class="table table-sm">
                         <tbody>
-                            <tr th:each ="visitorInfo, stat : ${visitorRank}">
-                                <th scope="row" style="width: 15%" th:text="${stat.count}"></th>
-                                <td style="width: 40%" th:text="${visitorInfo.locationName}"></td>
-                                <td data-th-text="${#numbers.formatInteger(visitorInfo.visitorNumber, 3, 'COMMA') + '명'}"></td>
-                            </tr>
+                        <tr th:each ="visitorInfo, stat : ${visitorRank}">
+                            <th scope="row" style="width: 15%" th:text="${stat.count}"></th>
+                            <td style="width: 40%" th:text="${visitorInfo.locationName}"></td>
+                            <td data-th-text="${#numbers.formatInteger(visitorInfo.visitorNumber, 3, 'COMMA') + '명'}"></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -2824,13 +2824,13 @@
                     <h6>관광지 검색 순위</h6>
                     <table class="table table-sm">
                         <tbody>
-	                        <tr th:each="attractionInfo, stat : ${attractionRank}">
-	                            <th scope="row" style="width: 15%" th:text="${stat.count}"></th>
-	                            <td th:text="${attractionInfo.locationName}"></td>
-	                            <td th:text="${attractionInfo.attractionType}"></td>
-	                            <td th:text="${attractionInfo.attractionName}"></td>
-                                <td data-th-text="${#numbers.formatInteger(attractionInfo.visitorNumber, 3, 'COMMA') + '명'}"></td>
-	                        </tr>
+                        <tr th:each="attractionInfo, stat : ${attractionRank}">
+                            <th scope="row" style="width: 15%" th:text="${stat.count}"></th>
+                            <td th:text="${attractionInfo.locationName}"></td>
+                            <td th:text="${attractionInfo.attractionType}"></td>
+                            <td th:text="${attractionInfo.attractionName}"></td>
+                            <td data-th-text="${#numbers.formatInteger(attractionInfo.visitorNumber, 3, 'COMMA') + '명'}"></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -2860,26 +2860,26 @@
                     <h6>데이터 총 정리</h6>
                     <table class="table table-sm total-datail">
                         <tbody>
-                            <tr>
-                                <td>동행유형</td>
-                                <td class="totalDataContent statisticsContent"></td>
-                                <td>가장 많아요!</td>
-                            </tr>
-                            <tr>
-                                <td>여행유형</td>
-                                <td class="totalDataContent statisticsContent"></td>
-                                <td>가장 많아요!</td>
-                            </tr>
-                            <tr>
-                                <td>맛집은</td>
-                                <td class="totalDataContent statisticsContent"></td>
-                                <td>인기에요!</td>
-                            </tr>
-                            <tr>
-                                <td>관광지는</td>
-                                <td class="totalDataContent statisticsContent"></td>
-                                <td>인기에요!</td>
-                            </tr>
+                        <tr>
+                            <td>동행유형</td>
+                            <td class="totalDataContent statisticsContent"></td>
+                            <td>가장 많아요!</td>
+                        </tr>
+                        <tr>
+                            <td>여행유형</td>
+                            <td class="totalDataContent statisticsContent"></td>
+                            <td>가장 많아요!</td>
+                        </tr>
+                        <tr>
+                            <td>맛집은</td>
+                            <td class="totalDataContent statisticsContent"></td>
+                            <td>인기에요!</td>
+                        </tr>
+                        <tr>
+                            <td>관광지는</td>
+                            <td class="totalDataContent statisticsContent"></td>
+                            <td>인기에요!</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -2887,10 +2887,10 @@
             <!-- 지역별 관광 차트 -->
             <div class="col-md-6">
                 <div class="rounded-box" >
-                	<h6>최근 SNS언급량</h6>
-               
-                    	<div id="chart"></div>
-                    
+                    <h6>최근 SNS언급량</h6>
+
+                    <div id="chart"></div>
+
                 </div>
             </div>
         </div>
@@ -3088,10 +3088,10 @@
 
             //  ajax로 방문자수 데이터 가져오기 map형식(지역, 방문자수)
             getVisitorData(function(data) {
-               if(data) {
-                   makePopover(data);
-                   appendRank(data);
-               }
+                if(data) {
+                    makePopover(data);
+                    appendRank(data);
+                }
             });
 
             // 최초에 데이터 ajax로 받아서 아래쪽 통계 데이터 넣어주기
@@ -3134,19 +3134,19 @@
             let yearMonth = fileYear + fileMonth;
 
             if(fileType == null || fileType == '파일타입' || fileType.replaceAll(' ', '') == '') {
-                
+
                 Swal.fire({
-                	  icon: 'warning',                     
-                	  title: '파일 타입을 선택해주세요'
-                	});
+                    icon: 'warning',
+                    title: '파일 타입을 선택해주세요'
+                });
                 return;
             }
             if(locationType == null || ((fileType == '동행유형' || fileType == '여행유형' || fileType == '맛집방문자' || fileType == '여행지방문자') && locationType == '지역선택')) {
-                
+
                 Swal.fire({
-              	  icon: 'warning',                     
-              	  title: '지역을 선택해주세요'
-              	});
+                    icon: 'warning',
+                    title: '지역을 선택해주세요'
+                });
                 return;
             }
             if(fileYear == null || fileYear.indexOf('년도 선택') != -1 || fileYear.replaceAll(' ', '') == '') {
@@ -3166,10 +3166,10 @@
                 return;
             }
             if(file == undefined) {
-            	Swal.fire({
-                	  icon: 'warning',                     
-                	  title: '엑셀파일을 선택해주세요'
-                	});
+                Swal.fire({
+                    icon: 'warning',
+                    title: '엑셀파일을 선택해주세요'
+                });
                 return;
             }
 
@@ -3184,15 +3184,16 @@
             uploadExcel(formData, function(data) {
                 if(data > 0) {
                     Swal.fire({
-                  	  icon: 'success',                     
-                  	  title: '엑셀 업로드를 성공했습니다.'
-                  	});
+                        icon: 'success',
+                        title: '엑셀 업로드를 성공했습니다.'
+                    });
+                    cleanUploadExcelModal();
                     return;
                 } else {
-                	Swal.fire({
-                    	  icon: 'error',                     
-                    	  title: '엑셀 업로드를 실패했습니다.'
-                    	});
+                    Swal.fire({
+                        icon: 'error',
+                        title: '엑셀 업로드를 실패했습니다.'
+                    });
                     return;
                 }
             });
@@ -3272,14 +3273,14 @@
                 contentType: false,
                 processData: false
             })
-            .done(function(data, textStatus, jqXHR) {
-                console.log('done');
+                .done(function(data, textStatus, jqXHR) {
+                    console.log('done');
 
-                callback(data);
-            })
-            .fail(function(jqXHR, textStatus, errorThrown) {
-                console.log('fail');
-            })
+                    callback(data);
+                })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+                    console.log('fail');
+                })
         }
 
         function deleteExcel(formData, callback) {
@@ -3290,14 +3291,14 @@
                 contentType: false,
                 processData: false
             })
-            .done(function(data, textStatus, jqXHR) {
-                console.log('done');
+                .done(function(data, textStatus, jqXHR) {
+                    console.log('done');
 
-                callback(data);
-            })
-            .fail(function(jqXHR, textStatus, errorThrown) {
-                console.log('fail');
-            })
+                    callback(data);
+                })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+                    console.log('fail');
+                })
         }
 
         function getVisitorData(callback) {
@@ -3305,14 +3306,14 @@
                 type : 'GET',
                 url : '/visitor'
             })
-            .done(function(data, textStatus, jqXHR) {
-                console.log('done');
+                .done(function(data, textStatus, jqXHR) {
+                    console.log('done');
 
-                callback(data);
-            })
-            .fail(function(jqXHR, textStatus, errorThrown) {
-                console.log('fail');
-            })
+                    callback(data);
+                })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+                    console.log('fail');
+                })
         }
 
         function makePopover(data) {
@@ -3388,14 +3389,14 @@
                     'locationName' : locationName
                 }
             })
-            .done(function(data, textStatus, jqXHR) {
-                console.log('done');
-                console.log(data);
-                callback(data);
-            })
-            .fail(function(jqXHR, textStatus, errorThrown) {
-                console.log('fail');
-            })
+                .done(function(data, textStatus, jqXHR) {
+                    console.log('done');
+                    console.log(data);
+                    callback(data);
+                })
+                .fail(function(jqXHR, textStatus, errorThrown) {
+                    console.log('fail');
+                })
         }
 
         function clearSummaryAndChartData() {

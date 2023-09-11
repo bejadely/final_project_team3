@@ -13,7 +13,7 @@ public interface PackageService {
 	public PackageVO packageInfo(PackageVO packageVO);
 	
 	//패키지 리스트
-	public List<PackageVO> getPackageList(PagingVO pagingVO);
+	public List<PackageVO> getPackageList(PagingVO pagingVO, PackageVO vo);
 	
 	//패키지 등록
 	public void register(PackageVO vo);

@@ -15,18 +15,18 @@
 <script>
 $(document).ready(function(){
 function handleClick(data) {
-	
-		$('body').on('click', '.post', function(e) {
-			e.stopImmediatePropagation();
-			var post = $(this).parent().find('[type=checkbox]').data('postid');
-			var postFirst = post.substring(0, 3);
-		    if(postFirst == "SPE"){
-		    	location.href='/specialtiesInfo?postId='+post
-		    }else{
-		    	location.href='/packageInfo?postId='+post
-		    }
-		});
-		
+   
+      $('body').on('click', '.post', function(e) {
+         e.stopImmediatePropagation();
+         var post = $(this).parent().find('[type=checkbox]').data('postid');
+         var postFirst = post.substring(0, 3);
+          if(postFirst == "SPE"){
+             location.href='/specialtiesInfo?postId='+post
+          }else{
+             location.href='/packageInfo?postId='+post
+          }
+      });
+      
       
       var postId = data.postId;
        var nowPage = data.clickedPage;
@@ -77,6 +77,7 @@ function handleClick(data) {
       "<th >상품사진</th>" +
       `<th style='width:40%'>상품 명</th>` +
       "<th>상품수량</th>" +
+      "<th>상품옵션</th>" +
       "<th>상품가격</th>" +
       "<th >삭제</th>"+
       "</tr>";
@@ -86,12 +87,13 @@ function handleClick(data) {
              html += "<tr class='reportInfo'>" +
                "<td><input type='checkbox' name='chk' data-postid='" + cartItem.postId + "' /></td>" +
                "<td class='post'>"+"<input type='hidden' class='cartId' value='" + cartItem.cartId + "' />" + cartItem.cartName + "</td>" +
-               "<td class='post' style='width:40%'>"+"<input type='hidden' class='cartOption' value='" + cartItem.optionId + "' />" + cartItem.cartName + "</td>" +
+               "<td class='post' style='width:40%'>"+ cartItem.cartName + "</td>" +
                `<td>
-                <button type="button" class="quantity-btn decrement-btn">-</button>
-                <input type="text" class="quantity-input" name="productAmount" value="${cartItem.quantity}">
-                <button type="button" class="quantity-btn increment-btn">+</button>
-            </td>` +
+                   <button type="button" class="quantity-btn decrement-btn">-</button>
+                   <input type="text" class="quantity-input" name="productAmount" value="${cartItem.quantity}">
+                   <button type="button" class="quantity-btn increment-btn">+</button>
+               </td>` +
+               "<td><input type='hidden' name='option' value='" + cartItem.optionId + "' />" + (cartItem.optionId != null ? cartItem.optionId : "-") + "</td>" + // 조건에 따라 내용을 생성
                "<td>" + cartItem.price + "</td>" +
                "<td><button class='delete-btn'>삭제</button></td>" +
                "</tr>";           
@@ -122,13 +124,13 @@ function handleClick(data) {
                    input.val(currentValue - 1);
                    
                }else{
-            	   Swal.fire({
-			        	title: '수량이 최소 수량입니다.',
-					    icon: 'error',
-					    confirmButtonText: '확인',
-					    confirmButtonColor: '#3085d6',
-					    })
-					    return;
+                  Swal.fire({
+                    title: '수량이 최소 수량입니다.',
+                   icon: 'error',
+                   confirmButtonText: '확인',
+                   confirmButtonColor: '#3085d6',
+                   })
+                   return;
                }
            }
            var result = input.val();
@@ -229,7 +231,8 @@ function updateTotalAndPrice(data) {
     $("tbody input[type=checkbox]:checked").each(function() {
         var row = $(this).closest("tr");
         var quantity = row.find("input[type=text]").val();
-        var price = parseFloat(row.find("td:eq(4)").text());
+        var price = parseFloat(row.find("td:eq(5)").text());
+        console.log(price)
         var cartTotal = quantity * price;
         result += cartTotal;
     });
@@ -267,19 +270,19 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
     });
     
     function mySwal(msg, callback){
-    	Swal.fire({
+       Swal.fire({
             title: msg, 
             icon: 'question',
             showCancelButton: true,
- 	       confirmButtonColor: '#3085d6',
- 		   cancelButtonColor: '#d33',
- 		   confirmButtonText: '확인',
- 		   cancelButtonText: '취소',
+           confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: '확인',
+          cancelButtonText: '취소',
             })
             .then((result) => {
- 				if(result.value == true){
- 					callback();	
- 				}
+             if(result.value == true){
+                callback();   
+             }
             })
     }
     
@@ -288,7 +291,7 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
        e.stopImmediatePropagation();
        let th = $(this)
        mySwal("삭제하시겠습니까?", function(){
-    	   
+          
                  let row = th.closest("tr");
                  let postIdData = row.find("td:eq(0)").children().data("postid");
                  let cartId = row.find("input[type=hidden]").val();
@@ -318,55 +321,55 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
     // 삭제 버튼 클릭 시 선택된 항목 삭제
     $("#delBtn").click(function() {
     let ckb = $('tbody input[type=checkbox]:checked');
-   	if(ckb.length == 0){
-    	Swal.fire({
-        	title: '선택된 상품이 없습니다.',
-		    icon: 'warning',
-		    confirmButtonText: '확인',
-		    confirmButtonColor: '#3085d6',
-		    })
-   	}else{
+      if(ckb.length == 0){
+       Swal.fire({
+           title: '선택된 상품이 없습니다.',
+          icon: 'warning',
+          confirmButtonText: '확인',
+          confirmButtonColor: '#3085d6',
+          })
+      }else{
     mySwal("삭제하시겠습니까?", function(){
-	    ckb.each(function() {
-    		let check = $(this);
-	        let postIdData = check.data("postid");
-	        let cartId = check.closest("tr").find("input[type=hidden]").val();
-	        let url = "/common/cartDelete?cartId=" + cartId; // Use 'cartId'
-	        fetch(url)
-	            .then(response => response.text())
-	            .then(text => {
-	                check.parent().parent().remove();
-	                var page = $('#paging').find('b').text();
-	                var postId = postIdData.substring(0, 3);
-	                var tbody = $("tbody");
-	                var length = tbody.children().length
-	                if(page != 1){
-	                    if(length == 0){
-	                       page = Number(page) -1;
-	                    }
-	                }
-	                var data = { postId: postId, clickedPage: page };
-	                handleClick(data);
-	                     
-	            });
-	    });
+       ckb.each(function() {
+          let check = $(this);
+           let postIdData = check.data("postid");
+           let cartId = check.closest("tr").find("input[type=hidden]").val();
+           let url = "/common/cartDelete?cartId=" + cartId; // Use 'cartId'
+           fetch(url)
+               .then(response => response.text())
+               .then(text => {
+                   check.parent().parent().remove();
+                   var page = $('#paging').find('b').text();
+                   var postId = postIdData.substring(0, 3);
+                   var tbody = $("tbody");
+                   var length = tbody.children().length
+                   if(page != 1){
+                       if(length == 0){
+                          page = Number(page) -1;
+                       }
+                   }
+                   var data = { postId: postId, clickedPage: page };
+                   handleClick(data);
+                        
+               });
+       });
     });
-   	}
+      }
   }); 
     
     $("#buyBtn").click(function(){
-    	var payCheck = $("tbody input[type=checkbox]:checked");
-    	if(payCheck.length == 0){
-    		 Swal.fire({
-		        	title: '선택한 물품이 없습니다.',
-				    icon: 'error',
-				    confirmButtonText: '확인',
-				    confirmButtonColor: '#3085d6',
-				    })
-				    return;
-    		
-    	}else{
-    	mySwal("구매하시겠습니까?", function(){
+       var payCheck = $("tbody input[type=checkbox]:checked");
+       if(payCheck.length == 0){
+           Swal.fire({
+                 title: '선택한 물품이 없습니다.',
+                icon: 'error',
+                confirmButtonText: '확인',
+                confirmButtonColor: '#3085d6',
+                })
+                return;
+          
+       }else{
+       mySwal("구매하시겠습니까?", function(){
         var totalAmount =0;
         var quantity = 0;
         var orderName= null;
@@ -381,9 +384,9 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
             var row = $(this).closest("tr");
             postId = $(this).data("postid");
             var count = parseInt(row.find("input[type=text]").val());
-            var price = parseFloat(row.find("td:eq(4)").text());
+            var price = parseFloat(row.find("td:eq(5)").text());
             var value = row.find("input[class=cartId]").val();
-            option = row.find("input[class=cartOption]").val();
+            option = row.find("input[name=option]").val();
             var cartTotal = count * price;
             orderElements.push(row.find("td:eq(2)").text()); // 값을 배열에 추가          
             cartIdElements.push(value);
@@ -404,39 +407,27 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
           else{
              orderName = orderElements[0] + ' 외 ' + (orderElements.length - 1) + '건';
           }      
-            
-          $.ajax({
-             type:'post',
-             url:'/payment/ready',
-             data:{
-                totalAmount: totalAmount,
-                orderName : orderName,
-                quantity : quantity,
-                itemCode: cartIdElements.join(','),
-                partnerUserId: memberId,
-                specialtyType: option 
-                
-                },
-           success:function(response){
-              location.href = response.next_redirect_pc_url
-           }
-             
-       	 		}); 
-       	 	}); 
-   		 }    
+           $.ajax({
+               type:'post',
+               url:'/common/payment/ready',
+               data:{
+                  totalAmount: totalAmount,
+                  orderName : orderName,
+                  quantity : quantity,
+                  itemCode: cartIdElements.join(','),
+                  partnerUserId: memberId,
+                  specialtyType: option 
+                  
+                  },
+             success:function(response){
+                location.href = response.next_redirect_pc_url
+             }
+               
+            }); 
+
+              }); 
+          }    
       });
-	$('body').on('mouseover','.reportInfo',colorDarker)
-	 		 .on('mouseleave', '.reportInfo',colorReset)
-	function colorDarker(event) {
-		  console.log('Mouse over');
-		  $(event.currentTarget).css({background : '#f2f4f5'})
-		  						.css({cursor : 'pointer'});
-		}
-	
-		function colorReset(event) {
-		  console.log('Mouse leave');
-		  $(event.currentTarget).css({background: '#ffffff'});
-		}
 });
 </script>
 </head>
@@ -444,7 +435,7 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
  <div layout:fragment="content" id="cartAllList" style="text-align: center;">
 <input type="hidden" id="id" th:value="${session.sessionId}">
 
-	<div class="table-responsive">
+   <div class="table-responsive">
       <div class="sidebar-btn">
          <div class="bt-item">
             <input type="radio" name="s-type" id="pakage" checked>
@@ -455,14 +446,14 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
             <label for="mul">특산물</label>
          </div>
       </div>
-	      <table id="board-table" class="table">
-	         <thead>
-	
-	         </thead>
-	         <tbody>
-	
-	         </tbody>
-	      </table>
+         <table id="board-table" class="table">
+            <thead>
+   
+            </thead>
+            <tbody>
+   
+            </tbody>
+         </table>
       </div>
       <div id="price">
             

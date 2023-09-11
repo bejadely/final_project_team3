@@ -54,24 +54,20 @@ function search(event){
 					<div class="col-lg-12">
 						<div class="breadcrumb-text">
 							<h2>특산물</h2>
-							<div class="col-lg-12">
-								<div class="loadmore">								
-									<a href="./admin/specialtiesInsertForm" class="primary-btn">특산물 등록</a>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
-		<section class="blog-section blog-page spad">
-		<div class="searchDiv">
+		<div class="searchDiv" style="float:right; margin-right: 500px; margin-top: 1%; " >
 			<select id="searchBy" name="searchBy">
 				<option value="name">이름으로 검색</option>
 			</select>
-			<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
+			<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요." style="height: 40px; width: 200px;">
 			<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
 		</div>
+		<section class="blog-section blog-page spad">
+		
 			<div class="container">
 				<div class="row">
 					<div th:each="list : ${specialtiesList}" th:onclick="|location.href='@{/specialtiesInfo(postId=${list.postId})}'|"

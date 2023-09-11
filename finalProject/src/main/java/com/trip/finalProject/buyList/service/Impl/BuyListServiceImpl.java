@@ -18,13 +18,13 @@ public class BuyListServiceImpl implements BuyListService {
 	BuyListMapper buyMapper;	
 
 	@Override
-	public int pkCountInfo(String memberId) {
-		return buyMapper.pkCount(memberId);
+	public int pkCountInfo(BuyListVO buyVO) {
+		return buyMapper.pkCount(buyVO);
 	}
 
 	@Override
-	public int spCountInfo(String memberId) {
-		return buyMapper.spCount(memberId);
+	public int spCountInfo(BuyListVO buyVO) {
+		return buyMapper.spCount(buyVO);
 	}
 
 	@Override
@@ -44,6 +44,6 @@ public class BuyListServiceImpl implements BuyListService {
 	
 	@Override
 	public BuyListVO selectSpInfo(BuyListVO buyVO) {
-		return buyMapper.selectPk(buyVO);
+		return buyMapper.selectSp(buyVO);
 	}
 }

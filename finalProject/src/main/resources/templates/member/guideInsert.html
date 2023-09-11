@@ -23,6 +23,14 @@
 	color: #6A82FB;
 	display: none;
 }
+
+.h5 {
+	color: red;
+}
+
+h5 {
+	color: red;
+}
 </style>
 <body>
 	<script src="https://kit.fontawesome.com/d58c3728d1.js"
@@ -38,26 +46,30 @@
 							<div class="card-body">
 								<a href="index.html"
 									class="text-nowrap logo-img text-center d-block py-3 w-100">
-									<!-- <img src="../assets/images/logos/dark-logo.svg" width="180" alt="">	 -->
 								</a>
-								<p class="text-center">회원가입</p>
 
+								<div>
+									<h3 class="text-center">회원가입</h3>
+								</div>
 								<form name="insertForm" action="/guideInsert" method="post">
+									<h5>*는 필수입력 사항입니다.</h5>
+
 									<div class="mb-3">
-										<label for="" class="form-label">아이디</label>
-										<!-- 	<button class="btn btn-default">중복체크</button> -->
+										<label for="" class="form-label"
+											style="float: left; display: inline;"><span class=h5>*</span>아이디</label>
+										
 										<input type="text" name="memberId" placeholder="아이디"
 											class="form-control" id="id" aria-describedby="textHelp"
 											required>
 									</div>
 									<div>
-										<font id="spaceId" size="2"></font>
-										<font id="checkId" size="2"></font>
+										<font id="spaceId" size="2"></font> <font id="checkId"
+											size="2"></font>
 									</div>
 									<div class="mb-3">
 										<div class="main">
-											<label for="" class="form-label">비밀번호</label> <i
-												class="fa-solid fa-eye-slash fa-xs"></i> <input
+											<label for="" class="form-label"><span class=h5>*</span>비밀번호</label>
+											<i class="fa-solid fa-eye-slash fa-xs"></i> <input
 												type="password" name="password" placeholder="비밀번호"
 												class="form-control" id="pw1" required> <font
 												id="pw" size="2"></font>
@@ -66,21 +78,20 @@
 
 									<div class="mb-3">
 										<div class="main">
-											<label for="" class="form-label">비밀번호 확인</label> <i
-												class="fa-solid fa-eye-slash fa-xs"></i> <input
+											<label for="" class="form-label"><span class=h5>*</span>비밀번호
+												확인</label> <i class="fa-solid fa-eye-slash fa-xs"></i> <input
 												type="password" name="" placeholder="비밀번호 확인"
 												class="form-control" id="pw2" required>
 										</div>
 									</div>
-									<font id="checkPw" size="2"></font>
-									<br>
+									<font id="checkPw" size="2"></font> <br>
 
 									<!-- <div>
 											<button class="btn btn-default" type="button" name="confirmBtn" id="confirmBtn" >비밀번호 확인</button>
 										</div> -->
-									
 
-									<label>국적</label>
+
+									<label><span class=h5>*</span>국적</label>
 
 									<div class="mb-3">
 										<select class="" id="nationality" name="nationality"
@@ -100,20 +111,20 @@
 
 
 									<div class="mb-3">
-										<label for="example" class="form-label">이메일</label> <input
-											type="email" name="email" placeholder="이메일"
+										<label for="example" class="form-label"><span class=h5>*</span>이메일</label>
+										<input type="email" name="email" placeholder="이메일"
 											class="form-control" id="email" required>
 									</div>
-									
+
 									<div class="mb-3">
-										<label for="" class="form-label">이름</label> <input type="text"
-											name="memberName" placeholder="이름" class="form-control"
-											id="name" required>
+										<label for="" class="form-label"><span class=h5>*</span>이름</label>
+										<input type="text" name="memberName" placeholder="이름"
+											class="form-control" id="name" required>
 									</div>
 
 
 									<div style="float: left; width: 33%;">
-										<label>은행코드</label> <br> <select class="" id="bankCode"
+										<label><span class=h5>*</span>은행코드</label> <br> <select class="" id="bankCode"
 											name="bankCode" aria-label="Default select example">
 
 											<option value="">은행선택</option>
@@ -138,23 +149,25 @@
 									</div>
 
 									<div class="mb-3" style="float: left; width: 33%;">
-										<label for="" class="form-label">계좌번호(*본인의 계좌만 입력
-											가능합니다)</label> <input type="text" class="form-control"
+										<label for="" class="form-label"><span class=h5>*</span>계좌번호(*본인의
+											계좌만 입력 가능합니다)</label> <input type="text" class="form-control"
 											id="accountNumber" name="accountNumber"
 											placeholder="계좌번호 입력하세요">
 									</div>
 									<div class="mb-3" style="float: left; width: 33%;">
-										<label for="" class="form-label">예금주</label> <input
-											type="text" class="form-control" id="bankHolderInfo"
-											name="bankHolderInfo" placeholder="이름" readonly>
+										<label for="" class="form-label"><span class=h5>*</span>예금주</label>
+										<input type="text" class="form-control" id="bankHolderInfo"
+											name="bankHolderInfo" placeholder="이름" readonly
+											style="">
 									</div>
 									<button type="button" id="accountHolderCheck"
-										class="btn btn-default">예금주 조회</button>
+										class="btn btn-default" style="">예금주 조회</button>
 
-									<br>
+									<br> <br>
 									<div>
-										<label for="example" class="form-label">주소</label> <input
-											type="text" id="zipCode" name="zipCode" readonly="readonly"
+										<label for="example" class="form-label"
+											style="display: block;">주소</label> <input type="text"
+											id="zipCode" name="zipCode" readonly="readonly"
 											class="form-control" placeholder="우편번호" style="width: 33%;">
 									</div>
 
@@ -167,11 +180,12 @@
 									</div>
 
 									<div class="mb-3">
-										<label for="" class="form-label">전화번호 &nbsp; </label>
-										<button type="button" id="approveButton"
-											class="btn btn-default">코드 발송</button>
+										<label for="" class="form-label"><span class=h5>*</span>전화번호
+											&nbsp; </label>
+										
 										<input type="text" class="form-control" name="to"
-											id="phonenumber" placeholder="전화번호를 입력하세요" required>
+											id="phonenumber" placeholder="전화번호를 입력하세요" style="width: 50%; " required>
+											<button type="button" id="approveButton" class="btn btn-default" style="">코드 발송</button>
 									</div>
 
 									<div id="codeCheck" class="mb-3" style="display: none">
@@ -191,7 +205,7 @@
 									</div>
 
 									<div>
-										<label for="" class="form-label">성별</label> <br /> <input
+										<label for="" class="form-label"><span class=h5>*</span>성별</label> <br /> <input
 											type="radio" id="male" name="gender" value="G1">남 <input
 											type="radio" id="female" name="gender" value="G2">여
 									</div>
@@ -319,27 +333,12 @@
 		
 				
 
-		<!-- 회원가입 폼 전송 시 계좌번호와 이름 같은지 체크-->
-	
-		/* function confirmName(){
-			var inputValue = document.getElementById("bankHolderInfo").value;
-	        var number1 = $("#name").val();
-	        var number2 = $("#bankHolderInfo").val();
-
-	        if(number1 != number2){
-	        	alert("이름이 다릅니다.");
-	        	var inputValue = document.getElementById("bankHolderInfo").value;
-	        	bankHolderInfoInput.value = "";
-	        	
-	        }
-	    } */
-		
 		   
 	</script>
 
 	<!--  아이디 확인 -->
 	<script>
-$('#id').change(function(){
+$('#id').on('input', function(){
 
 	 var id = $("#id").val();
 
@@ -390,7 +389,7 @@ $('#id').change(function(){
 	<!--  비밀번호 유효성 검사 -->
 	
 	
-	$('#pw1').change(function(){
+	$('#pw1').on('input', function(){
 
 		 var pw = $("#pw1").val();
 		 var num = pw.search(/[0-9]/g);
@@ -421,57 +420,10 @@ $('#id').change(function(){
 
 		});
 	
-/* 	<!--  비밀번호 유효성 검사 -->	
-	$('#pw2').focusout(function(){
 
-		 var pw = $("#pw1").val();
-		 var num = pw.search(/[0-9]/g);
-		 var eng = pw.search(/[a-z]/ig);
-		 var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
-
-		 if(pw.length < 8 || pw.length > 20){
-
-		  //alert("8자리 ~ 20자리 이내로 입력해주세요.");
-		 	 $("#pw").html("8자리 ~ 20자리 이내로 입력해주세요.");
-			$("#pw").attr('color','red');
-		  return false;
-		 }else if(pw.search(/\s/) != -1){
-		  //alert("비밀번호는 공백 없이 입력해주세요.");
-		 	 $("#pw").html("비밀번호는 공백 없이 입력해주세요.");
-				$("#pw").attr('color','red');
-		  return false;
-		 }else if(num < 0 || eng < 0 || spe < 0 ){
-		  //alert("영문,숫자, 특수문자를 혼합하여 입력해주세요.");
-			 $("#pw").html("영문,숫자, 특수문자를 혼합하여 입력해주세요.");
-			$("#pw").attr('color','red');
-		  return false;
-		 }else {
-			 
-			 $("#pw").html("조건을 충족합니다.");
-			$("#pw").attr('color','green');
-		    return true;
-		 }
-
-		}); */
-	
-	<!--  비밀번호 확인 -->	
-	$('#pw1').focusout(function(){		
-        var number1 = $("#pw1").val();
-        var number2 = $("#pw2").val();
-
-        if(number1 == number2){
-			$("#checkPw").html('번호가 같습니다.');
-			$("#checkPw").attr('color','green');
-        }else{
-        	$("#checkPw").html('번호가 다릅니다.');
-			$("#checkPw").attr('color','red');
-        }
-    }	
-	
-);
 	
 	
-	$('#pw2').focusout(function(){
+	$('#pw2').on('input', function(){
 	        var number1 = $("#pw1").val();
 	        var number2 = $("#pw2").val();
 	
@@ -576,20 +528,6 @@ function joinform_check() {
 	  };
 
 
-  //비밀번호 영문자+숫자+특수조합(8~25자리 입력) 정규식
- /*  var pwdCheck = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/; */
-
-/*   if (!pwdCheck.test(pwd.value)) {
-    alert("비밀번호는 영문자+숫자+특수문자 조합으로 8~20자리 사용해야 합니다.");
-    pwd.focus();
-    return false;
-  }; */
-
-/*   if (repwd.value !== pwd.value) {
-    alert("비밀번호가 일치하지 않습니다..");
-    repwd.focus();
-    return false;
-  }; */
 
   if (uname.value == "") {
     alert("이름을 입력하세요.");
@@ -617,38 +555,12 @@ function joinform_check() {
     return false;
   }
 
- /*  if (!agree.checked) { //체크박스 미체크시
-    alert("약관 동의를 체크하세요.");
-    agree.focus();
-    return false;
-  } */
 
   //입력 값 전송
   document.insertForm.submit(); //유효성 검사의 포인트   
 }
 
-//아이디 중복체크 팝업창(현재 공백문서)
-/* function id_check() {
-  //window.open("팝업될 문서 경로", "팝업될 문서 이름", "옵션");
-  window.open("", "", "width=600, height=200, left=200, top=100");
-} */
 
-//이메일 옵션 선택후 주소 자동 완성
-/* function change_email() {
-  var email_add = document.getElementById("email_add");
-  var email_sel = document.getElementById("email_sel");
-
-  //지금 골라진 옵션의 순서와 값 구하기
-  var idx = email_sel.options.selectedIndex;
-  var val = email_sel.options[idx].value;
-
-  email_add.value = val;
-} */
-
-//우편번호 검색 팝업창(현재 공백문서)
-/* function search_address() {
-  window.open("", "b", "width=600, height=300, left=200, top=100");
-} */
   
   </script>
 

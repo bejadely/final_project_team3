@@ -59,6 +59,9 @@
 		.ck-editor__editable {
 			height: 50vh;
 		}
+		.table-left th, td{
+			text-align: left;
+		}
     </style>
 </head>
 <!-- Content -->
@@ -68,7 +71,6 @@
 		<br>
 		<div>
 			<select id="questionType" name="questionType">
-				<option value="">문의 분류</option>
 				<option value="Q1">일반문의</option>
 				<option value="Q3">특산물 문의</option>
 				<option value="Q4">숙박상품 문의</option>
@@ -81,7 +83,7 @@
 			<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button> -->
 		</div>
 		<div class="table-responsive">
-				<table class="table">
+				<table class="table table-left">
 					<thead>
 					</thead>
 					<th:block th:if="${!#lists.isEmpty(list)}">
@@ -89,15 +91,15 @@
 							<th:block th:each="l : ${list}">
 								<tr th:class="|questionInfo${lStat.count}|">
 									<td>
-									<button type="button" th:class="btn-success" th:text="${l.answerResult}"></button>
+									<button type="button" th:class="btn-success" th:text="${l.answerResult}"></button><br>
 									<span th:text="${l.questionTitle}"></span><br>
 									<span th:utext="|문의자ID : ${l.memberId} 문의일자 : ${#dates.format(l.questionDate, 'yyyy.MM.dd HH:mm')}"></span>
 									<p th:text="${l.questionContent}"></p>
 									<th:block th:if="${l.answerResult == '미답변'}">
-										<button type="button" th:id="|ansBtn${lStat.count}|" class="btn btn-primary btn-sm" data-visible="visible">답변하기</button>
+										<button type="button" th:id="|ansBtn${lStat.count}|" class="feature-btn" data-visible="visible">답변하기</button>
 									</th:block>
 									<th:block th:if="${l.answerResult != '미답변'}">
-										<button type="button" th:id="|ansBtn${lStat.count}|" class="btn btn-primary btn-sm" data-visible="visible">답변보기</button>
+										<button type="button" th:id="|ansBtn${lStat.count}|" class="feature-btn" data-visible="visible">답변보기</button>
 									</th:block>	
 									</td>
 								</tr>
@@ -113,7 +115,7 @@
 												<textarea name="answerContent" class="form-control" th:text="${l.answerContent}" rows="3" cols="90" readonly></textarea>
 											</th:block>
 											<th:block th:if="${l.answerResult == '미답변'}">	
-												<button class="answer-btn btn btn-primary btn-sm" type="button">답변완료</button>
+												<button class="feature-btn" type="button">답변완료</button>
 											</th:block>
 											<input type="hidden" name="questionId" th:value="${l.questionId}">
 											<input type="hidden" name="answerMemberId" th:value="${session.sessionId}">

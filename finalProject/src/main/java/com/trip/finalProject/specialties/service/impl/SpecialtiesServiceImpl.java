@@ -78,9 +78,15 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
 		// TODO Auto-generated method stub
 		
 		mapper.insertSpecialites(specialtiesVO);
+		
 		specialtiesVO.getOptionList().forEach(option->{
-		option.setPostId(specialtiesVO.getPostId());
-		mapper.insertSpecialtiesOption(option);
+			option.setPostId(specialtiesVO.getPostId());
+			mapper.insertSpecialtiesOption(option);
+			if(option.getDiscountRate() != null) {
+				specialtiesMapper.updateDiscount(specialtiesVO.getPostId());
+			}else {
+				return;
+			}
 		});
 		
 		if(specialtiesVO.getAttachList()==null || specialtiesVO.getAttachList().size()<=0) {

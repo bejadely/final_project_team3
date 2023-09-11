@@ -47,7 +47,7 @@
 			</table>
 			<th:block th:if="${#lists.isEmpty(list)}">
 				<div align="center">
-					<span>새로운 신고 접수 내역이 없습니다.</span>
+					<span>현재 판매중인 상품이 없습니다.</span>
 				</div>
 			</th:block>
 		</div>
@@ -120,7 +120,7 @@
 		
 		let value = $('#searchBy').val();
 		let keyword = $('#keyword').val();
-		location.href='/admin/searchAdminMember?searchBy='+value+'&keyword='+keyword;
+		location.href='/admin/specialtiesUpdateForm?searchBy='+value+'&keyword='+keyword;
 		
 	}
 	
@@ -135,14 +135,14 @@
 		$(event.currentTarget).css({background: '#ffffff'});
 	}
 	
-	// 클릭시 신고상세내역 조회페이지로 이동(구현중)
+	// 클릭시 판매상품 상세조회 페이지로 이동
 	function moveToReportDetail(event){
 		
-		// 상세보기 할 report의 id값 가져오기
+		// 상세보기 할 페이지의 id값 가져오기
 		let reportId = $(event.currentTarget).find('td:eq(0)').text();
 		
 		// 페이지 전환 실행
-		location.href=`seeReportDetail?reportId=${reportId}`;
+		location.href=`/specialtiesInfo?postId=${reportId}`;
 	}
 	
 	

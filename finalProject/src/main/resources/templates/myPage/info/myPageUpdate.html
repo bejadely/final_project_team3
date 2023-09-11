@@ -68,7 +68,7 @@
 			<form id="update" th:object="${memberInfo}" method="post">
 				<h5><b>회원정보 수정</b></h5>
 				<br><br>
-				<div class="table-responsive">
+				<div class="table">
 					<h6>기본정보</h6>
 					<br>
 					<table id="defaultInfo" class="table">
@@ -82,12 +82,14 @@
 							<tr>
 								<th width="150" align="center">이름</th>
 								<td width="400" align="center" id="name" th:text="*{memberName}"></td>
+								<th width="150" align="center"></th>
+								<td width="550" align="center"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">비밀번호</th>
-								<td width="400" align="center"><input type="password" name="password" id="password"></td>
+								<td width="400" align="center"><input type="password" name="password" id="password" class="form-control checkStirng"></td>
 								<th width="150" align="center">비밀번호 확인</th>
-								<td width="400" align="center"><input type="password" id="passwordInfo"></td>
+								<td width="400" align="center"><input type="password" id="passwordInfo" class="form-control checkStirng"></td>
 							</tr>
 							<tr>
 								<th width="150" align="center">성별</th>
@@ -101,21 +103,33 @@
 								<th width="150" align="center">제재횟수</th>
 								<td width="400" align="center" th:text="*{punishCount}"></td>
 							</tr>
-							<tr align="left">
+														<tr align="left">
 								<th width="150" align="center">주소</th>
 								<td colspan="3" width="400" align="center">
-								<input type="text" name="zipCode" class="zip" th:value="*{zipCode}" readonly>
-								<button type="button" id="zip" class="feature-btn">우편번호 찾기</button><br>
-								<input type="text" name="address" class="zip" th:value="*{address}" readonly><br>
-								<input type="text" name="addressDetail" class="zipDetail" th:value="*{addressDetail}" placeholder="상세주소">
+								<div class="row">
+									<div class="col-lg-5">
+										<th:block th:if="*{!#strings.isEmpty(zipCode)}">
+											<input style="margin-bottom: 3px;" type="text" name="zipCode" class="zip form-control" th:value="*{zipCode}" readonly>
+										</th:block>
+										<th:block th:if="*{#strings.isEmpty(zipCode)}">
+											<input style="margin-bottom: 3px;" type="text" name="zipCode" class="zip form-control" placeholder="우편번호" readonly>
+										</th:block>	
+										<input style="margin-bottom: 3px;" type="text" name="address" class="zip form-control" th:value="*{address}" placeholder="주소" readonly>
+										<input type="text" name="addressDetail" class="form-control" th:value="*{addressDetail}" placeholder="상세주소">
+									</div>
+									<div class="col-lg-1">
+										<button type="button" id="zip" class="feature-btn">우편번호 찾기</button><br>
+									</div>
+								</div>
 								</td>
 							</tr>
 							<tr>
 								<th width="150" align="center">이메일</th>
-								<td width="400" align="center"><input type="email" name="email" th:value="*{email}"></td>
+								<td width="400" align="center"><input type="email" name="email" th:value="*{email}" class="form-control checkStirng"></td>
 								<th width="150" align="center">연락처</th>
-								<td width="400" align="center"><input type="text" name="phoneNumber" id="phoneNumber" th:value="*{phoneNumber}" readonly="readonly"><button type='button' class='feature-btn' id='phoneChange'>변경</button>
-								
+								<td width="400" align="center">
+									<input type="text" name="phoneNumber" id="phoneNumber" th:value="*{phoneNumber}" readonly="readonly" class="form-control checkStirng">
+									<button type='button' class='feature-btn' id='phoneChange'>변경</button>
 								</td>
 							</tr>
 						</tbody>
@@ -127,16 +141,18 @@
 						<tbody>
 							<tr>
 								<th width="150" align="center">은행명</th>
-								<td id="bank" width="400" th:text="*{bankCode}"></td>	
+								<td id="bank" width="400">
+									<input type="text" id="bankCode" name="bankCode" th:value="*{bankCode}" class="form-control checkStirng" readonly>
+								</td>	
 								<th width="150" align="center">예금주</th>
 								<td width="400" align="center">
-									<input type="text" id="bankHolderName" name="bankHolderName" th:value="*{memberName}">
+									<input type="text" id="bankHolderName" name="bankHolderName" th:value="*{memberName}" class="form-control checkStirng" readonly>
 								</td>
 							</tr>
 							<tr>
 								<th width="150" align="center">계좌번호</th>
 								<td colspan="3" align="center">
-								<input type="text" id="accountNumber" name="accountNumber"  th:value="*{accountNumber}">
+								<input type="text" id="accountNumber" name="accountNumber"  th:value="*{accountNumber}" class="form-control checkStirng" readonly>
 								</td>
 							</tr>
 							<tr>
@@ -302,9 +318,7 @@
 	   })
 	   
 	   $("#phone").on("click", function(){
-		   console.log("됨");
 		    var code = $("#phoneSubmit").val();
-		    console.log(code)
 		    $("#phoneNumber").val(code);
 		    $("#phoneSubmit").val(""); // 전화번호 입력 필드 초기화
 		    $("#smsCode").val("");
@@ -348,6 +362,7 @@
     $("#accountHolderCheck").click(function() {
     	var bank_code = $("#modalType option:selected").val();
 		var bank_num = $("#accountNumberInfo").val();
+		$("#bankChange").attr("style", "display:none");
 		
 		if (bank_code =="" && bank_num == "") {
 		    Swal.fire({
@@ -402,23 +417,25 @@
 				    icon: 'success',
 				    confirmButtonText: '확인',
 				    confirmButtonColor: '#3085d6',
+				    }).then((result)=>{
+				    $("#bankChange").attr("style", "display:block");
 				    })
 				if (name1 !== name2) { 
 					Swal.fire({
-			        	title: '이름이 다릅니다. \n 본인의 계좌를 임력해주세요',
+			        	title: '이름이 다릅니다. \n 본인의 계좌를 입력해주세요',
 					    icon: 'error',
 					    confirmButtonText: '확인',
 					    confirmButtonColor: '#3085d6',
 					    })
 					$("#bankHolderNameInfo").val(""); // 이름이 다를 경우 값을 비워줍니다.
+					$("#accountNumberInfo").val(""); // 이름이 다를 경우 값을 비워줍니다.
 				} else if (data.errormsg) {
 					alert("Error: " + data.errormsg);
 				}
-				$("#bankChange").attr("style", "display:block");
+				
 			}
 		})
 		.fail(function(reject) {
-			console.log("실패")
 			
 		});
 	});

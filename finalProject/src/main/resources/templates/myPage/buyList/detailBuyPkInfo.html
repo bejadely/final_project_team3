@@ -23,65 +23,96 @@ body {
             color: #333;
         }
 
-        h1 {
-            color: #333;
-        }
+ h1 {
+     color: #333;
+ }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
+ table {
+     width: 100%;
+     border-collapse: collapse;
+     margin-bottom: 20px;
+ }
 
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
+ th, td {
+     padding: 10px;
+     border: 1px solid #ddd;
+ }
 
-        th {
-            background-color: #f5f5f5;
-        }
+ th {
+     background-color: #f5f5f5;
+ }
 </style>
 <script>
 
 //환불 버튼 클릭 이벤트 처리
 $(document).ready(function(){
-	$("button").click(function(){
-		let tid =  $(".tid").val();
-		let cancelAmount = $(".cancelAmount").val();
-		let cancelTaxFreeAmount = $(".cancelTaxFreeAmount").val();
-		let orderDetailId = $(".orderId").val();
-		
-		console.log(tid);
-		console.log(cancelAmount);
-		console.log(cancelTaxFreeAmount);
-		
-		$.ajax({
-			type:'post',
-			url:'/payment/refund',
-			data:{
-				tid: tid,
-				cancelAmount : cancelAmount,
-				cancelTaxFreeAmount : cancelTaxFreeAmount,
-				orderDetailId : orderDetailId
-			}
-		}).done(data=>{
-			console.log(data);
-		}).fail(reject => console.log(reject));
-	});
-	
+	$("#refundBtn").click(function(){
+		   Swal.fire({
+				showCancelButton: true,
+	       	title: '환불 하시겠습니까?',
+			    icon: 'question',
+				confirmButtonText: '확인',
+				cancelButtonText: '취소',
+		    }).then((firstResult) => {
+		    	if(firstResult.value == true){
+		    		let tid =  $(".tid").val();
+		    		let cancelAmount = $(".cancelAmount").val();
+		    		let cancelTaxFreeAmount = $(".cancelTaxFreeAmount").val();
+		    		let orderDetailId = $(".orderId").val();
+		    		let postId = '[[${list.postId}]]';
+		    		let quantity = '[[${list.quantity}]]'
+		    		let nowReservation = '[[${list.nowReservation}]]'-quantity;
+		    		let maxReservation = '[[${list.nowReservation}]]'
+					
+					console.log(tid);
+					console.log(cancelAmount);
+					console.log(cancelTaxFreeAmount);
+					
+					$.ajax({
+						type:'post',
+						url:'/common/payment/refund',
+						data:{
+							tid: tid,
+							cancelAmount : cancelAmount,
+							cancelTaxFreeAmount : cancelTaxFreeAmount,
+							orderDetailId : orderDetailId,
+							postId : postId,
+							quantity:quantity,
+							nowReservation: nowReservation,
+							maxReservation: maxReservation
+						}
+					}).done(data=>{
+				        Swal.fire({
+				        	title: '환불 되었습니다.',
+						    icon: 'success',
+						    confirmButtonText: '확인',
+						    showCancelButton: false,
+						    confirmButtonColor: '#3085d6',
+						    cancelButtonColor: '#d33',
+						    cancelButtonText: '확인',
+						    reverseButtons: true,
+				        }).then((firstResult) => {
+							location.href="/common/refundPkList"
+				        });
+					}).fail(reject => console.log(reject));
+			    }
+			});
+    })
 });
 </script>
 </head>
 <body>
 
-	<th:block layout:fragment="css"></th:block>
-	<th:block layout:fragment="script"></th:block>
 	<div layout:fragment="content" style="text-align: center;">
 	<div id="ls2">
 	<form>
-		<h5>주문 상세내역</h5>
+		<th:block th:if="${list.orderStatus != '환불 완료'}">
+			<h5>주문 상세내역</h5>
+		</th:block>
+		<th:block th:if="${list.orderStatus == '환불 완료'}">
+			<h5>환불 상세내역</h5>
+		</th:block>
+		<br>
 		<input type="hidden" class="orderId" th:value="${list.orderDetailId}">
 		<input type="hidden" th:value="${list.cid}">	
 		<input type="hidden" class="tid" th:value="${list.tid}">	
@@ -90,47 +121,54 @@ $(document).ready(function(){
 		<table>
 			<thead>
 				<tr>
-					<th style="width: 30%">상품사진</th>
-					<th>상품명</th>
-					<th style="width: 15%">옵션</th>
+					<th style="width: 30%; padding: 0;">상품사진</th>
+					<th colspan="2">상품명</th>
+					<th style="width: 15%" colspan="">수량</th>
 					<th style="width: 15%">상품금액</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:onclick="|location.href='@{/packageInfo(postId=${list.postId})}'|">
-					<td style="width: 30%">
-						<img alt="대표사진" src="${list.loadingImg}">
+					<td style="width: 30%" rowspan="6">
+						<img th:if="${not #strings.isEmpty(list.loadingImg)}" th:src="${list.loadingImg}" style="width:100%; height:250px;">
+                    	<img th:unless="${not #strings.isEmpty(list.loadingImg)}" th:src="@{/img/no-image.png}">
 					</td>
-					<td th:text="${list.name}"></td>
+					<td th:text="${list.name}" colspan="2"></td>
 					<td th:text="${list.quantity}" style="width: 15%"></td>
 					<td th:text="${list.pkPrice}" style="width: 15%"></td>
 				</tr>
 				<tr>
-					<td > 모집 상황 </td>
-					<td colspan="3"th:text="${list.completion}"></td>
+					<th style="width: 100px"> 모집 상황 </th>
+					<td colspan="3"  th:text="${list.completion}"></td>
 				<tr>
 				<tr>
-					<td > 마감날짜 </td>
-					<td colspan="3"th:text="${#dates.format(list.deadlineDate, 'yyyy-MM-dd')}"></td>
+					<th > 마감날짜 </th>
+					<td colspan="3" th:text="${#dates.format(list.deadlineDate, 'yyyy-MM-dd')}"></td>
 				<tr>
 				<tr>
-					<td > 총 금액 </td>
-					<td th:text="${list.puPrice}+원" colspan="3" style="text-align: right;"></td>
+					<th > 총 금액 </th>
+					<td colspan="3" th:text="${list.puPrice}+원" style="text-align: right;"></td>
 				<tr>
 			</tbody>
 		</table>
-		<h5>결제정보</h5>
-		<ul>
-			<li>
-				<label>결제 금액</label>
-				<input type="text" th:value="${list.puPrice}" readonly="readonly">
-			</li>
-			<li>
-				<label>결제 상태</label>
-				<input type="text" th:value="${list.orderStatus}" readonly="readonly">
-			</li>
-		</ul>
-		<button type="button" id="refundBtn">환불</button>
+		<br>
+		<h4>결제정보</h4>
+		<br>
+		<table>
+			<tbody>
+				<tr>
+					<th style="width: 20%">결제금액</th>
+					<td th:text="${list.puPrice}"></td>
+				</tr>
+				<tr>
+					<th style="width: 20%">결제 상태</th>
+					<td th:text="${list.orderStatus}"></td>
+				</tr>
+			
+			</tbody>
+		</table>
+		<button type="button" id="refundBtn" class="feature-btn" th:if="${list.orderStatus != '환불 완료'}">환불</button>
+		<button type="button" th:onclick="history.back()" class="feature-btn">목록으로</button>
 
 	</form>
 	</div>
