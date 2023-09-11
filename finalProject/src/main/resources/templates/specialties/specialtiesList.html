@@ -23,11 +23,15 @@
     text-align: center;
 }
 
-/* <select> 요소의 스타일 설정 */
 #searchBy {
-    /* 가로 방향으로 가운데 정렬 */
     display: block;
     margin: 0 auto;
+}
+.sb-text {
+        text-align: center; 
+    }
+ul {
+    padding: 0; 
 }
 </style>
 <script>
@@ -59,10 +63,11 @@ function search(event){
 				</div>
 			</div>
 		</section>
-		<div class="searchDiv" style="float:right; margin-right: 500px; margin-top: 1%; " >
+		<br>
+		<div class="searchDiv" style="float:right; margin-right: 150px;" >
 			<select id="searchBy" name="searchBy">
 				<option value="name">이름으로 검색</option>
-			</select>
+			</select>&nbsp;
 			<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요." style="height: 40px; width: 200px;">
 			<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
 		</div>
@@ -82,13 +87,10 @@ function search(event){
 										<i class="fa fa-user"></i>
 										<span th:text="${list.writerId}"></span>
 									</li>
-								
-									
 								</ul>
 								<h5>
 									<a th:text="${list.title}"></a>
 								</h5>
-								
 							</div>
 						</div>
 					</div>
