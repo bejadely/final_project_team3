@@ -63,6 +63,14 @@ public interface PackageMapper {
 	//패키지 수정
 	public void updatePackage(PackageVO packageVO);
 
+	public List<PackageVO> searchPackageByLocation(PackageVO packageVO, PagingVO pagingVO);
+
+	public int packageCountLocation(String keyword);
+
+	public int packageCalculate();
+
+	public int packageUpdateDeadline();
+
 	
 
 	

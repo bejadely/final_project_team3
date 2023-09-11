@@ -84,7 +84,7 @@
 						p.max_reservation,
 						l.location_name
 				from package_regist p JOIN location l ON p.area_code = l.area_code JOIN attached_file a ON p.post_id = a.post_id 
-				WHERE a.img_type = 'U2' AND delete_type = 'N' AND l.sigungu_code = #{packageVO.sigunguCode} AND l.area_code=#{packageVO.areaCode};
+				WHERE a.img_type = 'U2' AND delete_type = 'N'
 				ORDER BY reg_date DESC)b) 
 		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
 	</select>
@@ -106,8 +106,8 @@
 	<!-- 패키지 수 카운트 -->
 	<select id="getPackageCount">
 		SELECT COUNT(*)
-		FROM package_regist p JOIN attached_file a ON p.post_id = a.post_id 
-		WHERE a.img_type = 'U2' AND delete_type = 'N'
+		from package_regist p JOIN location l ON p.area_code = l.area_code JOIN attached_file a ON p.post_id = a.post_id 
+				WHERE a.img_type = 'U2' AND delete_type = 'N' 
 	</select>
 	
 	<!-- 패키지 명 검색 결과 카운트 -->
@@ -124,13 +124,50 @@
 			 FROM(select p.name, 
 						p.tour_theme, 
 						p.price, 
+						p.now_reservation,
+						p.deadline_date,
+						p.start_date,
+						p.end_date,
 						a.saved_img, 
 						p.post_id, 
 						a.loading_img,
 						code_val(p.completion) completion,
-						p.max_reservation
-				from package_regist p JOIN attached_file a ON p.post_id = a.post_id 
+						p.max_reservation,
+						l.location_name
+				from package_regist p JOIN location l ON p.area_code = l.area_code JOIN attached_file a ON p.post_id = a.post_id 
 				WHERE p.name LIKE '%${packageVO.name}%' AND a.img_type = 'U2' AND delete_type = 'N'
+				ORDER BY reg_date DESC)b) 
+		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+			 
+	
+	</select>
+	
+	<!-- 지역 검색 결과 카운트 -->
+	<select id="packageCountLocation" resultType="int" parameterType="String">
+		SELECT COUNT(*)
+		FROM package_regist p JOIN location l ON p.area_code = l.area_code JOIN attached_file a ON p.post_id = a.post_id 
+		WHERE l.location_name LIKE '%${keyword}%' AND a.img_type = 'U2' AND delete_type = 'N'
+	</select>
+	
+	<!-- 지역 검색 -->
+	<select id="searchPackageByLocation" resultType="PackageVO">
+		SELECT *
+		FROM(SELECT ROWNUM rn,b.*
+			 FROM(select p.name, 
+						p.tour_theme, 
+						p.price, 
+						p.now_reservation,
+						p.deadline_date,
+						p.start_date,
+						p.end_date,
+						a.saved_img, 
+						p.post_id, 
+						a.loading_img,
+						code_val(p.completion) completion,
+						p.max_reservation,
+						l.location_name
+				from package_regist p JOIN location l ON p.area_code = l.area_code JOIN attached_file a ON p.post_id = a.post_id 
+				WHERE l.location_name LIKE '%${packageVO.locationName}%' AND a.img_type = 'U2' AND delete_type = 'N'
 				ORDER BY reg_date DESC)b) 
 		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
 			 
@@ -179,8 +216,27 @@
         DELETE FROM review
         WHERE review_id=#{reviewId}
     </delete>
+    
+    <update id="packageUpdateDeadline">
+    	UPDATE package_regist
+    	<set>
+    		COMPLETION='D1'
+    	</set>
+    		WHERE deadlineDate = TO_CHAR(sysdate, 'YY/MM/DD')
+    </update>
 	
-	
+	<insert id="packageCalculate" parameterType ="PackageVO">
+		<selectKey keyProperty="calId" resultType="String" order="BEFORE">
+            SELECT 'CAL' || (TO_NUMBER(NVL((SUBSTR(MAX(cal_id), 4)), (TO_CHAR(SYSDATE, 'YYMMDD') || '0000'))) + 1)
+			FROM CALCULATION
+			WHERE SUBSTR(cal_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
+        </selectKey>
+		INSERT INTO CALCULATION(CAL_ID,CAL_AMOUNT,POST_ID,CAL_DATE,cal_status)
+		SELECT #{calId},SUM(p.price),r.post_id,sysdate,'V1'
+		FROM purchase p JOIN package_regist r ON p.post_id = r.post_id 
+		WHERE r.start_date=TO_CHAR(sysdate, 'YY/MM/DD') and p.post_id = r.post_id
+		group by r.post_id
+	</insert>
 	
 	
 	
