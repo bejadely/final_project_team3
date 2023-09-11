@@ -313,6 +313,13 @@ public class TripController {
     	return null;
     }
     
+    //여행 후기 등록(ajax)
+    @PostMapping("/common/reviewInsert")
+    @ResponseBody
+    public TripVO reviewInsert(TripVO tripVO) {
+    	tripService.insertTripReview(tripVO);
+    	return null;
+    }
     
     
 }
