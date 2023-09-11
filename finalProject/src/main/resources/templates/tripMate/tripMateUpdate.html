@@ -66,6 +66,22 @@ body {
 .ck-editor__editable {
 	  height: 50vh;
       }
+      
+.uploadForm {
+  background-color: #2cbdb8;
+  color: whitesmoke;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 7px;
+  padding: 5px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin: 3px;
+  height: 44px;
+}
 </style>
 </head>
 <script src ="/ckeditor5-build-classic/ckeditor.js"></script>
@@ -113,53 +129,55 @@ body {
         			<table class="table">
     					<tr>
         					<th style="text-align: left; width: 20%;">작성자</th>
-        					<td colspan="2">
-        						<label for="writerId" class="form-control" style="text-align: left;">
+        					<td colspan="2" style="text-align: left;">
+        						<label for="writerId" class="form-control" style="text-align: left; width: 370px;">
         							[[${session.sessionId}]]
         						</label>
             					<input type="hidden" id="writerId" name="writerId" size="30" class="form-control" th:value="${session.sessionId}" readonly>
         					</td>
         					<th style="text-align: left; width: 20%;">수정일자</th>
-        					<td colspan="2" id="modifyDayCell">
+        					<td colspan="2" id="modifyDayCell" style="text-align: left;">
             					<input type="hidden" id="now_date" name="modifyDate" size="30" class="form-control" readonly>
         					</td>
     					</tr>
    	 					<tr>
         					<th style="text-align: left; width: 20%;">타이틀</th>
        						<td colspan="5">
-            					<input type="text" id="mateTitle" name="mateTitle" size="70" class="form-control" th:value="${tripMateVO.mateTitle}">
+            					<input type="text" id="mateTitle" style="width: 1075px;" name="mateTitle" class="form-control" th:value="${tripMateVO.mateTitle}">
         					</td>
     					</tr>
     					<tr>
         					<th style="text-align: left; width: 20%;">여행기간</th>
         					<td colspan="2">
-            					<input type="date" id="startDay" name="startDay" size="30" class="form-control" th:value="${#dates.format(tripMateVO.startDay, 'yyyy-MM-dd')}">
+            					<input type="date" id="startDay" name="startDay" style="width: 500px;" size="30" class="form-control" th:value="${#dates.format(tripMateVO.startDay, 'yyyy-MM-dd')}">
         					</td>
         					<td colspan="2">
-            					<input type="date" id="endDay" name="endDay" size="30" class="form-control" th:value="${#dates.format(tripMateVO.endDay, 'yyyy-MM-dd')}">
+            					<input type="date" id="endDay" name="endDay" style="width: 500px; margin-left: 57px;" size="30" class="form-control" th:value="${#dates.format(tripMateVO.endDay, 'yyyy-MM-dd')}">
         					</td>
     					</tr>
     					<tr>
         					<th style="text-align: left; width: 20%;">모집 마감일</th>
        						<td colspan="5">
-            					<input type="date" id="deadline" name="deadline" size="50" class="form-control" th:value="${#dates.format(tripMateVO.deadline, 'yyyy-MM-dd')}">
+            					<input type="date" id="deadline" name="deadline" size="50" style="width: 500px;" class="form-control" th:value="${#dates.format(tripMateVO.deadline, 'yyyy-MM-dd')}">
         					</td>
     					</tr>
     					<tr>
         					<th style="text-align: left; width: 20%;">예상 경비</th>
         					<td colspan="2">
-            					 <input type="text" id="mateExpense" name="mateExpense" size="30" class="form-control" th:value="${tripMateVO.mateExpense}">
+            					 <input type="text" id="mateExpense" name="mateExpense" size="30" style="width: 370px;" class="form-control" th:value="${tripMateVO.mateExpense}">
         					</td>
         					<th style="text-align: left; width: 20%;">모집 인원</th>
         					<td colspan="2">
-            					<input type="number" id="mateMax" name="mateMax" size="30" class="form-control" th:value="${tripMateVO.mateMax}">
+            					<input type="number" id="mateMax" name="mateMax" size="30" style="width: 370px; margin-left: 4px;" class="form-control"  min="1" max="50" th:value="${tripMateVO.mateMax}">
         					</td>
     					</tr>
     					<tr>
                         	<th style="text-align: left; width: 20%;">메인 이미지</th>
                          	<td colspan="5">
-                           		<input type="file" id="mainImage" name="mainImage" size="50" class="form-control">
-                           		<input type="button" class="btn btn-secondary mt-3 mx-2" id ="uploadBtn" value="upload">
+                         	<div>
+                           		<input type="file" id="mainImage" name="mainImage" style=" float: left; width: 600px;" size="50" class="form-control">
+                           		<input type="button" class="uploadForm" id ="uploadBtn" style="margin-top:0; float: left; height: 38px;" value="upload">
+                       		</div>
                        		</td>
                    		</tr>
 					</table>
@@ -194,6 +212,7 @@ body {
 	    
 		label.setAttribute('for', 'modifyDate');
 	    label.classList.add('form-control');
+	    label.style.width = "374px";
 	    label.style.textAlign = 'left';
 	    label.textContent = nowDate;
 	    modifyDayCell.appendChild(label);

@@ -27,24 +27,36 @@
 .theme{
 	font-weight: bold;
 }
+
+/* 추가된 CSS 스타일 */
+#package-register-button {
+
+
+}
 </style>
 </head>
 <body>
 <div layout:fragment="content">
-	<form action="/searchPackage">
-		<div style="float:right; margin-right: 500px;">
-			<select id="searchBy" name="searchBy">
-				<option value="name">이름으로 검색</option>
-			</select>&nbsp;
-			<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요." style="height: 40px; width: 200px;">
-			<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+	<div class="row justify-content-end">
+	<div class="col-5">
+		<form action="/searchPackage">
+		
+				<select id="searchBy" name="searchBy">
+					<option value="name">이름으로 검색</option>
+				</select>&nbsp;
+				<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요." style="height: 40px; width: 200px;">
+				<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+					<button th:if="${session.sessionAuthority} != null and ${session.sessionAuthority} == 'A2'" type="button" class="btn btn-outline-dark" 
+				th:onclick="|location.href='@{/guide/packageInsertForm}'|">패키지 등록</button>
+		</form>
 		</div>
-	</form>
+	</div>
+
 	<!-- Property Section Begin -->
 	<section class="property-section spad">
 		<div class="container">	
 			<div class="row">
-				<div class="col-lg-9">
+				<div class="col-lg-12">
 					<h4 class="property-title">Property</h4>
 					<hr>
 					<div class="property-list">
@@ -63,7 +75,7 @@
 													</div>
 											</div>
 											<div class="property-pic">
-												<img th:src="${pck.loadingImg}" alt="">
+												<img th:src="${pck.loadingImg}" alt=""  >
 											</div>
 										</div>
 										<div class="col-md-8">
@@ -81,6 +93,8 @@
 													<p>[[${#dates.format(pck.startDate,'yy년 MM월 dd일')}]] ~ [[${#dates.format(pck.endDate,'yy년 MM월 dd일')}]]</p></li>
 												<li><span>모집 마감일</span>
 													<p>[[${#dates.format(pck.deadlineDate,'yy년 MM월 dd일')}]]</p></li>
+												<li><span>지역</span>
+													<p>[[${pck.locationName}]]</p></li>
 											</ul>
 										</div>
 									</div>
