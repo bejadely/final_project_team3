@@ -357,6 +357,11 @@ public class TripMateController {
 		List<TripMateVO> memberVO = tripMateService.getTripMateMyInfo(tripMateVO);
 		model.addAttribute("tripMateInfo", findVO);
 		model.addAttribute("member", memberVO);
+		//댓글, 대댓글 리스트 가져오기
+		model.addAttribute("commentList", tripMateService.getCommentInfo(tripMateVO.getPostId(), FIRST_PAGE));
+		
+		//댓글 갯수 가져오기
+		model.addAttribute("commentNum", tripMateService.getCommentNumInfo(tripMateVO));
 		
 		return "myPage/mate/tripMateMyInfo";
 	}
