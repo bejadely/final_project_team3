@@ -28,21 +28,7 @@
         <div class="canvas-close">
             <i class="icon_close"></i>
         </div>
-        <div class="language-bar">
-            <div class="language-option">
-                <img src="/img/flag.png" alt="">
-                <span>English</span>
-                <i class="fa fa-angle-down"></i>
-                <div class="flag-dropdown">
-                    <ul>
-                        <li><a href="#">English</a></li>
-                        <li><a href="#">Germany</a></li>
-                        <li><a href="#">China</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
+		<br>
         <nav class="main-menu">
             <ul>
                 <li><a href="/tripRecordList">여행기록</a></li>
@@ -53,48 +39,71 @@
                 <li><a href="/lodging">숙박정보</a></li>
                 <li><a href="/specialtiesList">특산물구매</a></li>
                 <li><a href="/packageList">패키지구매</a></li>
-                <li><a href="/common/cartList">장바구니</a></li>
-                <li sec:authorize="hasAnyRole('ROLE_A1', 'ROLE_A4')"><a href="/common/myPage">마이페이지</a></li>
-                <li sec:authorize="hasRole('ROLE_A2')"><a href="/guide/main">마이페이지</a></li>
-                <li sec:authorize="hasRole('ROLE_A3')"><a href="/admin/seeAllMemberList">관리자페이지</a></li>
-                <li sec:authorize="hasRole('ROLE_A3')"><a href="/admin/specialtiesInsertForm">특산물등록</a></li>
-                <li sec:authorize="hasRole('ROLE_A2')"><a href="/guide/packageInsertForm">패키지등록</a></li>
             </ul>
         </nav>
         <div class="nav-logo-right">
             <ul>
-                <th:block th:if="${session.sessionId == null}">
-                    <li onclick="window.location.href='/member/login'">
-                        <i class="fa-sharp fa-solid fa-lock" ></i>
-                        <div class="info-text">
-                            <span>login & join</span>
-                            <p>로그인</p>
-                        </div>
-                    </li>
-                </th:block>
-                <th:block th:if="${session.sessionId != null}">
-                    <li onclick="window.location.href='/logoutProc'">
-                        <i class="fa-sharp fa-solid fa-lock" ></i>
-                        <div class="info-text">
-                            <span>login & join</span>
-                            <p>로그아웃</p>
-                        </div>
-                    </li>
-                </th:block>
-                <li onclick="window.location.href='/'">
-                    <i class="fa-solid fa-bell" ></i>
-                    <div class="info-text">
-                        <span>alarm</span>
-                        <p>알림</p>
-                    </div>
-                </li>
-                <li onclick="window.location.href='/noticeList'">
-                    <i class="fa-solid fa-clipboard-check" ></i>
-                    <div class="info-text">
-                        <span>notice</span>
-                        <p>공지사항</p>
-                    </div>
-                </li>
+               <th:block th:if="${session.sessionId == null}">
+                                    <li onclick="window.location.href='/member/login'">
+                                        <i class="fa-sharp fa-solid fa-lock"></i>
+                                        <div class="info-text">
+                                            <span>login & join</span>
+                                            <p>로그인</p>
+                                        </div>
+                                    </li>
+                                </th:block>
+                                <th:block th:if="${session.sessionId != null}">
+                                    <li onclick="window.location.href='/logoutProc'">
+                                        <i class="fa-sharp fa-solid fa-lock"></i>
+                                        <div class="info-text">
+                                            <span>login & join</span>
+                                            <p>로그아웃</p>
+                                        </div>
+                                    </li>
+                                </th:block>
+                                <th:block th:if="${session.sessionId != null}" sec:authorize="hasRole('ROLE_A2')">
+                                    <li onclick="window.location.href='/guide/main'">
+                                        <i class="fa-solid fa-user"></i>
+                                        <div class="info-text">
+                                            <span>mypage</span>
+                                            <p>마이페이지</p>
+                                        </div>
+                                    </li>
+                                </th:block>
+                                <th:block th:if="${session.sessionId != null}" sec:authorize="hasAnyRole('ROLE_A1', 'ROLE_A4')">
+                                    <li onclick="window.location.href='/common/myPage'">
+                                        <i class="fa-solid fa-user"></i>
+                                        <div class="info-text">
+                                            <span>mypage</span>
+                                            <p>마이페이지</p>
+                                        </div>
+                                    </li>
+                                </th:block>
+                                <th:block th:if="${session.sessionId != null}" sec:authorize="hasRole('ROLE_A3')">
+                                    <li onclick="window.location.href='/admin/seeAllMemberList'">
+                                        <i class="fa-solid fa-user"></i>
+                                        <div class="info-text">
+                                            <span>adminpage</span>
+                                            <p>관리자페이지</p>
+                                        </div>
+                                    </li>
+                                </th:block>
+                                <th:block th:if="${session.sessionId != null}" sec:authorize="hasAnyRole('ROLE_A1', 'ROLE_A2', 'ROLE_A4')">
+	                                <li onclick="window.location.href='/common/cartList'">
+	                                <i class="fa-solid fa-cart-plus"></i>
+	                                    <div class="info-text">
+	                                        <span>cart</span>
+	                                        <p>장바구니</p>
+	                                    </div>
+	                                </li>
+                                </th:block>
+                                <li onclick="window.location.href='/noticeList'">
+                                    <i class="fa-solid fa-clipboard-check"></i>
+                                    <div class="info-text">
+                                        <span>notice</span>
+                                        <p>공지사항</p>
+                                    </div>
+                                </li>
             </ul>
         </div>
     </div>
@@ -105,7 +114,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-10">
-                        <nav class="main-menu">
+                        <nav class="main-menu" style="font-size: 16px;">
                             <ul>
                                 <li><a href="/tripRecordList">여행기록</a></li>
                                 <li><a href="/tripMateList">여행메이트</a></li>
@@ -115,34 +124,16 @@
                                 <li><a href="/lodging">숙박정보</a></li>
                                 <li><a href="/specialtiesList">특산물구매</a></li>
                                 <li><a href="/packageList">패키지구매</a></li>
-                                <li sec:authorize="!hasRole('ROLE_A3')"><a href="/">마이페이지</a></li>
-                                <li><a href="/common/cartList">장바구니</a></li>
-                                <li sec:authorize="hasAnyRole('ROLE_A1', 'ROLE_A4')"><a href="/common/myPage">마이페이지</a></li>
-                                <li sec:authorize="hasRole('ROLE_A2')"><a href="/guide/main">마이페이지</a></li>
-                                <li sec:authorize="hasRole('ROLE_A3')"><a href="/admin/seeAllMemberList">관리자페이지</a></li>
-                                <li sec:authorize="hasRole('ROLE_A3')"><a href="/admin/specialtiesInsertForm">특산물등록</a></li>
-                                <li sec:authorize="hasRole('ROLE_A2')"><a href="/guide/packageInsertForm">패키지등록</a></li>
                             </ul>
                         </nav>
                     </div>
                     <div class="col-lg-2">
                         <div class="top-right">
                             <div class="language-option">
-                                <img src="/img/flag.png" alt="">
-                                <span>English</span>
+                                <span>Languages</span>
                                 <i class="fa fa-angle-down"></i>
                                 <!-- google api 기능 추가 -->
                                 <div id="google_translate_element" class="flag-dropdown">
-                                    <ul class="translation-links">
-                                        <li><a href="javascript:void(0)" class="english" data-lang="en">English</a></li>
-                                        <li><a href="javascript:void(0)" class="spanish" data-lang="es">Spanish</a></li>
-                                        <li><a href="javascript:void(0)" class="japanese" data-lang="ja">Japanese</a></li>
-                                    </ul>
-                                    <!-- <ul>
-                                        <li><a href="#">English</a></li>
-                                        <li><a href="#">Germany</a></li>
-                                        <li><a href="#">China</a></li>
-                                    </ul> -->
                                 </div>
                             </div>
                         </div>
@@ -179,9 +170,8 @@
                                         </div>
                                     </li>
                                 </th:block>
-                                <!-- 마이페이지 이모지
-                                <th:block th:if="${session.sessionId != null}">
-                                    <li onclick="window.location.href='/'">
+                                <th:block th:if="${session.sessionId != null}" sec:authorize="hasRole('ROLE_A2')">
+                                    <li onclick="window.location.href='/guide/main'">
                                         <i class="fa-solid fa-user"></i>
                                         <div class="info-text">
                                             <span>mypage</span>
@@ -189,23 +179,33 @@
                                         </div>
                                     </li>
                                 </th:block>
-                                -->
-                                <li onclick="window.location.href='/'">
-                                    <i class="fa-solid fa-bell"></i>
-                                    <div class="info-text">
-                                        <span>alarm</span>
-                                        <p>알림</p>
-                                    </div>
-                                </li>
-                                <!-- 장바구니 이모지
-                                <li onclick="window.location.href='/'">
-                                <i class="fa-solid fa-cart-plus"></i>
-                                    <div class="info-text">
-                                        <span>cart</span>
-                                        <p>장바구니</p>
-                                    </div>
-                                </li>
-                                -->
+                                <th:block th:if="${session.sessionId != null}" sec:authorize="hasAnyRole('ROLE_A1', 'ROLE_A4')">
+                                    <li onclick="window.location.href='/common/myPage'">
+                                        <i class="fa-solid fa-user"></i>
+                                        <div class="info-text">
+                                            <span>mypage</span>
+                                            <p>마이페이지</p>
+                                        </div>
+                                    </li>
+                                </th:block>
+                                <th:block th:if="${session.sessionId != null}" sec:authorize="hasRole('ROLE_A3')">
+                                    <li onclick="window.location.href='/admin/seeAllMemberList'">
+                                        <i class="fa-solid fa-user"></i>
+                                        <div class="info-text">
+                                            <span>adminpage</span>
+                                            <p>관리자페이지</p>
+                                        </div>
+                                    </li>
+                                </th:block>
+                                <th:block th:if="${session.sessionId != null}" sec:authorize="hasAnyRole('ROLE_A1', 'ROLE_A2', 'ROLE_A4')">
+	                                <li onclick="window.location.href='/common/cartList'">
+	                                <i class="fa-solid fa-cart-plus"></i>
+	                                    <div class="info-text">
+	                                        <span>cart</span>
+	                                        <p>장바구니</p>
+	                                    </div>
+	                                </li>
+                                </th:block>
                                 <li onclick="window.location.href='/noticeList'">
                                     <i class="fa-solid fa-clipboard-check"></i>
                                     <div class="info-text">
