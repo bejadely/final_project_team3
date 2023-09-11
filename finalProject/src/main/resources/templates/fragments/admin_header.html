@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-	<head>
-	<meta charset="UTF-8">
-	<title>Insert title here</title>
-	<meta charset="UTF-8">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <meta charset="UTF-8">
     <meta name="description" content="Azenta Template">
     <meta name="keywords" content="Azenta, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Azenta | Template</title>
 
-	</head>
-
+</head>
 <body>
 <th:block th:fragment="headerFragment">
-	<!-- Page Preloder -->
+    <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
     </div>
@@ -43,7 +42,7 @@
                 </div>
             </div>
         </div>
-        
+
         <nav class="main-menu">
             <ul>
                 <li><a href="/tripRecordList">여행기록</a></li>
@@ -64,33 +63,33 @@
         </nav>
         <div class="nav-logo-right">
             <ul>
-                <th:block th:if="${session.sessionId == null}">	
-	                <li onclick="window.location.href='/member/login'">
-	                    <i class="fa-sharp fa-solid fa-lock" ></i>
-	                    <div class="info-text">
-	                        <span>login & join</span>
-	                        	<p>로그인</p>
-	                    </div>
-	                </li>
+                <th:block th:if="${session.sessionId == null}">
+                    <li onclick="window.location.href='/member/login'">
+                        <i class="fa-sharp fa-solid fa-lock" ></i>
+                        <div class="info-text">
+                            <span>login & join</span>
+                            <p>로그인</p>
+                        </div>
+                    </li>
                 </th:block>
-                <th:block th:if="${session.sessionId != null}">	
-	                <li onclick="window.location.href='/logoutProc'">
-	                    <i class="fa-sharp fa-solid fa-lock" ></i>
-	                    <div class="info-text">
-	                        <span>login & join</span>
-	                        	<p>로그아웃</p>
-	                    </div>
-	                </li>
+                <th:block th:if="${session.sessionId != null}">
+                    <li onclick="window.location.href='/logoutProc'">
+                        <i class="fa-sharp fa-solid fa-lock" ></i>
+                        <div class="info-text">
+                            <span>login & join</span>
+                            <p>로그아웃</p>
+                        </div>
+                    </li>
                 </th:block>
                 <li onclick="window.location.href='/'">
-                   <i class="fa-solid fa-bell" ></i>
+                    <i class="fa-solid fa-bell" ></i>
                     <div class="info-text">
                         <span>alarm</span>
                         <p>알림</p>
                     </div>
                 </li>
                 <li onclick="window.location.href='/noticeList'">
-                   <i class="fa-solid fa-clipboard-check" ></i>
+                    <i class="fa-solid fa-clipboard-check" ></i>
                     <div class="info-text">
                         <span>notice</span>
                         <p>공지사항</p>
@@ -135,10 +134,10 @@
                                 <!-- google api 기능 추가 -->
                                 <div id="google_translate_element" class="flag-dropdown">
                                     <ul class="translation-links">
-										<li><a href="javascript:void(0)" class="english" data-lang="en">English</a></li>
-										<li><a href="javascript:void(0)" class="spanish" data-lang="es">Spanish</a></li>
-										<li><a href="javascript:void(0)" class="japanese" data-lang="ja">Japanese</a></li>
-									</ul>
+                                        <li><a href="javascript:void(0)" class="english" data-lang="en">English</a></li>
+                                        <li><a href="javascript:void(0)" class="spanish" data-lang="es">Spanish</a></li>
+                                        <li><a href="javascript:void(0)" class="japanese" data-lang="ja">Japanese</a></li>
+                                    </ul>
                                     <!-- <ul>
                                         <li><a href="#">English</a></li>
                                         <li><a href="#">Germany</a></li>
@@ -155,44 +154,64 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-3">
-                        <div class="logo">
-                            <a href="/"><img src="/img/logo.png" alt=""></a>
+                        <div class="logo"  style="padding: 5px; padding-top:10px">
+                            <a href="/"><img src="/img/mainlogo.png" alt="" style="width: 65%;"></a>
                         </div>
                     </div>
                     <div class="col-lg-9">
-                        <div class="nav-logo-right"> 
+                        <div class="nav-logo-right">
                             <ul>
-		                        <th:block th:if="${session.sessionId == null}">	
-	                                <li onclick="window.location.href='/member/login'">
-	                                    <i class="fa-sharp fa-solid fa-lock"></i>
-	                                    <div class="info-text">
-					                        <span>login & join</span>
-					                        	<p>로그인</p>
-					                    </div>
-	                                </li>
-		                        </th:block>
-		                        <th:block th:if="${session.sessionId != null}">	
-	                                <li onclick="window.location.href='/logoutProc'">
-	                                    <i class="fa-sharp fa-solid fa-lock"></i>
-	                                    <div class="info-text">
-					                        <span>login & join</span>
-					                        	<p>로그아웃</p>
-					                    </div>
-	                                </li>
-		                        </th:block>
-                                <li onclick="window.location.href='/">
-                                    <i class="fa-solid fa-bell"><a href="/"></a></i>
+                                <th:block th:if="${session.sessionId == null}">
+                                    <li onclick="window.location.href='/member/login'">
+                                        <i class="fa-sharp fa-solid fa-lock"></i>
+                                        <div class="info-text">
+                                            <span>login & join</span>
+                                            <p>로그인</p>
+                                        </div>
+                                    </li>
+                                </th:block>
+                                <th:block th:if="${session.sessionId != null}">
+                                    <li onclick="window.location.href='/logoutProc'">
+                                        <i class="fa-sharp fa-solid fa-lock"></i>
+                                        <div class="info-text">
+                                            <span>login & join</span>
+                                            <p>로그아웃</p>
+                                        </div>
+                                    </li>
+                                </th:block>
+                                <!-- 마이페이지 이모지
+                                <th:block th:if="${session.sessionId != null}">
+                                    <li onclick="window.location.href='/'">
+                                        <i class="fa-solid fa-user"></i>
+                                        <div class="info-text">
+                                            <span>mypage</span>
+                                            <p>마이페이지</p>
+                                        </div>
+                                    </li>
+                                </th:block>
+                                -->
+                                <li onclick="window.location.href='/'">
+                                    <i class="fa-solid fa-bell"></i>
                                     <div class="info-text">
-				                      <span>alarm</span>
-				                      <p>알림</p>
-				                  	</div>
+                                        <span>alarm</span>
+                                        <p>알림</p>
+                                    </div>
                                 </li>
+                                <!-- 장바구니 이모지
+                                <li onclick="window.location.href='/'">
+                                <i class="fa-solid fa-cart-plus"></i>
+                                    <div class="info-text">
+                                        <span>cart</span>
+                                        <p>장바구니</p>
+                                    </div>
+                                </li>
+                                -->
                                 <li onclick="window.location.href='/noticeList'">
                                     <i class="fa-solid fa-clipboard-check"></i>
                                     <div class="info-text">
-				                      <span>notice</span>
-				                      <p>공지사항</p>
-				                  	</div>
+                                        <span>notice</span>
+                                        <p>공지사항</p>
+                                    </div>
                                 </li>
                             </ul>
                         </div>

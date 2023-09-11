@@ -141,7 +141,6 @@ input[type="checkbox"] {
 
 .specialtiesOption {
     white-space: nowrap; /* 옵션들을 한 줄에 나열하기 위해 줄 바꿈 금지 */
-    overflow-x: auto;   /* 옵션이 부모 컨테이너를 넘어갈 경우 스크롤 표시 */
     width: 100%;        /* 부모 컨테이너 너비에 맞게 설정 */
 }
 
@@ -155,6 +154,20 @@ text-align: center; /* 수평 가운데 정렬 */
     justify-content: center; /* 수평 가운데 정렬 */
     align-items: center; /* 수직 가운데 정렬 */
 }
+.image-frame {
+            width: 150px; /* 이미지 틀의 너비 */
+            height: 150px; /* 이미지 틀의 높이 */
+            border: 2px solid #ccc; /* 테두리 스타일 및 색상 설정 */
+            padding: 5px; /* 내부 여백 설정 */
+            text-align: center; /* 이미지 가운데 정렬 */
+            overflow: hidden; /* 내부 요소를 틀 안에 가득 차게 표시 */
+}
+.image-frame img {
+        /* max-width: 100%; */ /* 이미지의 최대 너비 설정 */
+       /*  max-height: 100%; */ /* 이미지의 최대 높이 설정 */
+        width: 100%; /* 이미지의 너비를 100%로 설정하여 틀 안에 가득 차게 함 */
+		height: 100%; /* 이미지 높이를 자동으로 조절하여 비율 유지 */
+		
 }
 
 </style>
@@ -233,7 +246,7 @@ ClassicEditor
 			
 			var pahts;
 			var resultPath;
-			$(".uploadResult ul li").each(function(i,obj){
+			$(".uploadResult div").each(function(i,obj){
 				var jobj = $(obj);
 				
 				str += "<input type ='hidden' name='attachList["+i+"].originImg' value='"+jobj.data("filename")+"'>";
@@ -339,9 +352,9 @@ ClassicEditor
 	    $(".uploadDiv").html(cloneObj.html());
 	}
 	
-	$(".uploadResult").on("click","span",function(e){
-		var targetFile = $(this).data("file");
-		var clickedSpan = $(this);
+	$(".uploadResult").on("click",".delete-image",function(e){
+		var clickedImage  = $(this).closest("div");
+		var targetFile = clickedImage.data("path");
 		$.ajax({
 			url:'/common/deleteFile',
 			data: {savedImg: targetFile},
@@ -350,17 +363,13 @@ ClassicEditor
 			success: function(result){
 				alert(result);
 				//$(this).closest("li").load();
-				var currentNode = clickedSpan.closest("li");
-				var prevNode = currentNode.prev();
-				var nextNode = currentNode.next();
 				
-				currentNode.add(prevNode).add(nextNode).remove();
-				
+				clickedImage.remove();
 			}
 		})
 	})
 	
-	var uploadResult = $(".uploadResult ul");
+	var uploadResult = $(".uploadResult");
 	
 	function showUploadedFile(uploadResultArr){
 		var str = "";
@@ -371,11 +380,11 @@ ClassicEditor
 			
 			//str += "<li><img src='display?savedImg="+fileCallPath+"'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"<li>";
 			
-			str += "<li data-path='"+obj.savedImg+"'";
+			str += "<div data-path='"+obj.savedImg+"'";
 			str +=" data-filename='"+obj.originImg+"' data-type='"+obj.imgType+"'";
-			str +=" data-loadingpath='"+obj.loadingImg+"'"+"><div style='text-align: left;'>";
+			str +=" data-loadingpath='"+obj.loadingImg+"'"+">";
 			//str +="<span> " + obj.originImg +"</span>";
-			str +="<img src='/display?savedImg="+fileCallPath+"' class='img-thumbnail'>"+"<span data-file=\'"+fileCallPath+"\'> X </span>"+"</div>"+"</li>";
+			str +="<img src='/display?savedImg="+fileCallPath+"'class='delete-image'>"+"</div>";
 		});
 		uploadResult.append(str);
 	}
@@ -478,15 +487,16 @@ ClassicEditor
 						</select>
 					</div>
 				</div>
-				<div class="uploadResult">
-					<ul>
-					
-					</ul>
-				</div>
+				
 				<table class="table">
 					<tr>
 						<th >메인 이미지</th>
-						<td colspan="4">
+						<td colspan="1">
+							<div class="image-frame uploadResult">
+								
+							</div>
+						</td>
+						<td colspan="1">
 						<div class="uploadDiv input-group">
 							<input type="file" class="form-control" name="mainImage" id="mainImage" aria-describedby="inputGroupFileAddon03" aria-label="Upload"  multiple/>
 							<button type="button" class="btn btn-outline-secondary" id ="uploadBtn">upload</button>
@@ -495,7 +505,7 @@ ClassicEditor
 					</tr>
 					<tr>
 						<th >특산물</th>
-						<td colspan="2">
+						<td colspan="3">
 							<input type="text" placeholder="특산물" class="form-control" name="title" id="title" >
 						</td>
 					</tr>
@@ -509,7 +519,7 @@ ClassicEditor
 					</tr>
 					<tr>
 					<th >옵션 추가</th>
-						<td colspan="1">
+						<td colspan="4">
 						<div >
 							<button type="button" class="optionInsert btn btn-outline-secondary" name="optionInsert" value="옵션추가">옵션추가</button>
 							<button type="button" class="optionDelete btn btn-outline-secondary" name="optionDelete" value="옵션삭제">옵션삭제</button>
