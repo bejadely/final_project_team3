@@ -1,5 +1,7 @@
 package com.trip.finalProject.login.web;
 
+import java.io.Console;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -218,6 +220,7 @@ public class MemberController {
 		public String memberInfo(MemberVO memberVO, Model model,HttpServletRequest request) {
 			memberVO.setMemberId(session.getAttribute("sessionId").toString());  //to do 
 			MemberVO findVO = memberService.memberInfo(memberVO);
+			System.out.println("third : " + findVO);
 			model.addAttribute("memberInfo", findVO);
 			return "myPage/info/myPage";
 		}
