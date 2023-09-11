@@ -8,6 +8,21 @@
 <meta charset="UTF-8">
 <title>여행 메이트 글 등록</title>
 <style>
+.uploadForm {
+  background-color: #2cbdb8;
+  color: whitesmoke;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 7px;
+  padding: 5px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin: 3px;
+  height: 44px;
+}
 body {
        background-color: #ffffff;
        color: #000000;
@@ -116,7 +131,7 @@ body {
                       <tr>
                        <th style="text-align: left; width: 20%;">타이틀</th>
                          <td colspan="5">
-                           <input type="text" id="mateTitle" name="mateTitle" style="width: 1075px;" class="form-control">
+                           <input type="text" id="mateTitle" style="width: 1075px;" name="mateTitle" class="form-control">
                        </td>
                    </tr>
                    <tr>
@@ -147,10 +162,18 @@ body {
                    <tr>
                        <th style="text-align: left; width: 20%;">메인 이미지</th>
                          <td colspan="5">
-                         <div class="input-group">
-                           <input type="file" id="mainImage" name="mainImage" style="width: 750px;" class="form-control">
-                           <input type="button" class="btn btn-secondary mt-3 mx-2" style="height: 38px;" id ="uploadBtn" value="upload">
+                         <div>
+                           <input type="file" id="mainImage" name="mainImage" style=" float: left; width: 600px;" class="form-control">
+                           <input type="button" class="uploadForm" style="margin-top:0; float: left; height: 38px;" id ="uploadBtn" value="upload">
                           </div>
+                       </td>
+                   </tr>
+                   <tr>
+                       <th style="text-align: left; width: 20%;">내용</th>
+                         <td colspan="5">
+                         <div id="editor">
+      
+                     	</div>
                        </td>
                    </tr>
                 </table>
@@ -161,12 +184,9 @@ body {
             
                      </ul>
                   </div>
-                     <div id="editor">
-      
-                     </div>
-              </div>
+              	</div>
               <div>
-               <button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>&nbsp;&nbsp;
+               <button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" style="margin-left: ">작성완료</button>&nbsp;&nbsp;
                <input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>&nbsp;&nbsp;
                <button type="button" class="btn btn-primary mt-3 mx-2" onclick="location.href='tripMateList'">목록으로</button>
               </div>
@@ -190,6 +210,7 @@ body {
 	  var label = document.createElement('label');
 	    
 	  label.classList.add('form-control');
+	  label.style.width = "374px";
 	  label.textContent = nowDate;
 	  insertCell.appendChild(label);
 
@@ -474,8 +495,6 @@ body {
             type:'POST',
             dataType:'json',
             success: function(result){
-               alert("성공");
-               
                console.log(result);
                
                showUploadedFile(result);
