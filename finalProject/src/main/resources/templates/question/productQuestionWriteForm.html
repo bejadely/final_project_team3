@@ -138,8 +138,10 @@ $(document).ready(function() {
 	function go(e){
 		e.preventDefault();
 		
-		// 빈값 예외처리
-		console.log($('#questionTitle').val());
+		// textarea의 개행처리 <br>로 변경
+		let questionContent = $('#boardContent').val();
+		questionContent = questionContent.replaceAll(/(\n|\r\n)/g, "<br>");
+		$('#boardContent').val(questionContent);
 		
 		if($('#questionTitle').val() == '' || $('#questionTitle').val() == null){
 			Swal.fire({
