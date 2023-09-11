@@ -168,6 +168,9 @@ hr {
 .search-box input{
 	height: 32px;
 }
+.question-box .nice-select {
+	margin-bottom: 1em;
+}
 
 
 /*---------------------
