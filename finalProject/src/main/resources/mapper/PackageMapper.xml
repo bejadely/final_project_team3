@@ -81,11 +81,12 @@
 						p.post_id, 
 						a.loading_img,
 						code_val(p.completion) completion,
-						p.max_reservation
-				from package_regist p JOIN attached_file a ON p.post_id = a.post_id 
-				WHERE a.img_type = 'U2' AND delete_type = 'N'
+						p.max_reservation,
+						l.location_name
+				from package_regist p JOIN location l ON p.area_code = l.area_code JOIN attached_file a ON p.post_id = a.post_id 
+				WHERE a.img_type = 'U2' AND delete_type = 'N' AND l.sigungu_code = #{packageVO.sigunguCode} AND l.area_code=#{packageVO.areaCode};
 				ORDER BY reg_date DESC)b) 
-		WHERE rn BETWEEN #{start} AND #{end}
+		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
 	</select>
 	
 	<select id="packageInfo" resultType="PackageVO">
