@@ -126,7 +126,7 @@
 				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
 					<a th:href="@{tripMateList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+				<th:block th:if="${paging.nowPage != paging.lastPage }">
 					<a th:href="@{tripMateList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
 				</th:block>
 			</div>
