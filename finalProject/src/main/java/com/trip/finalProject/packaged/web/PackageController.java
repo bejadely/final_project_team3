@@ -20,6 +20,7 @@ import com.trip.finalProject.attachedFile.service.AttachedFileService;
 import com.trip.finalProject.attachedFile.service.AttachedFileVO;
 import com.trip.finalProject.packaged.service.PackageReviewVO;
 import com.trip.finalProject.common.PagingVO;
+import com.trip.finalProject.location.service.LocationVO;
 import com.trip.finalProject.packaged.service.PackageService;
 import com.trip.finalProject.packaged.service.PackageVO;
 
@@ -67,8 +68,9 @@ public class PackageController {
 		//패키지 수 카운트
 		int total = packageService.packageCount();
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+		PackageVO vo = new PackageVO();
 		
-		List<PackageVO> packageList = packageService.getPackageList(pagingVO);
+		List<PackageVO> packageList = packageService.getPackageList(pagingVO,vo);
 		//패키지 정보 모델에 담음
 		model.addAttribute("packageList",packageList);
 		model.addAttribute("paging",pagingVO);
