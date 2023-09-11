@@ -30,10 +30,24 @@ public class PackageServiceImpl implements PackageService {
 	@Setter(onMethod_=@Autowired)
 	private AttachedFileMapper attachedFileMapper;
 	
-
-
+	
 
     private final int FIRST_PAGE = 1;
+     
+    
+ 
+    
+    @Override
+	public List<PackageVO> searchPackageByLocation(PackageVO packageVO, PagingVO pagingVO) {
+		// TODO Auto-generated method stub
+		return packageMapper.searchPackageByLocation(packageVO, pagingVO);
+	}
+	
+	@Override
+	public int packageCountLocation(String keyword) {
+		// TODO Auto-generated method stub
+		return packageMapper.packageCountLocation(keyword);
+	}
 
 	//패키지 등록
 	@Transactional
@@ -92,17 +106,7 @@ public class PackageServiceImpl implements PackageService {
 		return packageMapper.searchPackageByTitle(packageVO, pagingVO);
 	}
 	
-	@Override
-	public List<PackageVO> searchPackageByLocation(PackageVO packageVO, PagingVO pagingVO) {
-		// TODO Auto-generated method stub
-		return packageMapper.searchPackageByLocation(packageVO, pagingVO);
-	}
 	
-	@Override
-	public int packageCountLocation(String keyword) {
-		// TODO Auto-generated method stub
-		return packageMapper.packageCountLocation(keyword);
-	}
 	
 	
 	@Override

@@ -67,9 +67,11 @@ public interface PackageMapper {
 
 	public int packageCountLocation(String keyword);
 
-	public int packageCalculate();
+	public int packageCalculate(PackageVO data);
 
 	public int packageUpdateDeadline();
+
+	public List<PackageVO> getPackageCalculate();
 
 	
 

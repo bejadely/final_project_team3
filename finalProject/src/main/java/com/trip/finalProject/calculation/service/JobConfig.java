@@ -43,7 +43,7 @@ public class JobConfig {
 			scheduler.scheduleJob(tripRecordComplete, runJobTrigger("59 23 * * * ?"));
 			
 			//매일 밤 00:00분에 자동 일괄 처리
-			scheduler.scheduleJob(packageCalculate,runJobTrigger("0/10 * * * * ?"));
+			scheduler.scheduleJob(packageCalculate,runJobTrigger("0 0 * * * ?"));
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
