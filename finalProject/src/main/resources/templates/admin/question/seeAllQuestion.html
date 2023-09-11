@@ -92,11 +92,9 @@
 								<tr th:class="|questionInfo${lStat.count}|">
 									<td>
 									<button type="button" th:class="btn-success" th:text="${l.answerResult}"></button><br>
-									<span th:utext="${l.questionTitle}"></span><br>
+									<span th:text="${l.questionTitle}"></span><br>
 									<span th:utext="|문의자ID : ${l.memberId} 문의일자 : ${#dates.format(l.questionDate, 'yyyy.MM.dd HH:mm')}"></span>
-									<div>	
-										<p th:utext="${l.questionContent}"></p>
-									</div>	
+									<p th:text="${l.questionContent}"></p>
 									<th:block th:if="${l.answerResult == '미답변'}">
 										<button type="button" th:id="|ansBtn${lStat.count}|" class="feature-btn" data-visible="visible">답변하기</button>
 									</th:block>
@@ -191,7 +189,6 @@
 	<script th:inline="javascript" type="text/javascript">
 	
 	$(document).ready(function() {
-		jQuery.noConflict();
 		// 이벤트 설정
 		$('#searchButton').on('click', search);
 		$('.memberInfo').on('mouseover', colorDarker)

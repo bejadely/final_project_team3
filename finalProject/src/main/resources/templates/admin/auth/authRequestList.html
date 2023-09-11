@@ -3,7 +3,11 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="@{layouts/admin_layout}">
-	
+<head>
+	<style type="text/css">
+		
+	</style>
+</head>	
 <!-- Content -->
 <div layout:fragment="content">
 	<div class="container">
@@ -16,7 +20,6 @@
 					<tr>
 						<th width="100" align="center">신청자ID</th>
 						<th width="150" align="center">신청자명</th>
-						<th width="300" align="center">신청자 사진</th>
 						<th width="200" align="center">사기 내역 조회</th>
 						<th width="200" align="center">신청일자</th>
 						<th width="200" align="center">요청 처리</th>
@@ -28,9 +31,7 @@
 							<tr>
 								<td align="center" th:text="${l.memberId}"></td>
 								<td align="center" th:text="${l.memberName}"></td>
-								<!-- 작업중 : 사진 사이즈 정해야함 -->
-								<td align="center"><img th:src="${l.savedProfileImg}"></td>
-								<td align="center" th:text="${l.accountNumber}"></td>
+								<td align="center" class="clipBoard" th:data-clipboard-text="${l.accountNumber}">&nbsp;&nbsp;&nbsp;[[${l.accountNumber}]]&nbsp;&nbsp;&nbsp;<i class="clipBoard fa-solid fa-copy"></i></td>
 								<td align="center" th:text="|${#strings.substring(l.signUpDate,0,10)}|"></td>
 								<td align="center">
 								<button type="button" class="approveButton" name="approveButton">승인</button>  
@@ -55,15 +56,35 @@
 		</div>
 	</div>
 
-	
+	<!-- 클립보드 복사 cdn -->
+	<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
 	<script th:inline="javascript" type="text/javascript">
-	// 동적으로 버튼이 다 만들어지고 문서가 다 로드 된 후 이벤트가 정의되게 하기 위해 콜백함수 사용 
 	
+	// 동적으로 버튼이 다 만들어지고 문서가 다 로드 된 후 이벤트가 정의되게 하기 위해 콜백함수 사용 
 	$(document).ready(function() {
 		// 승인 버튼 클릭 시 발생 이벤트 설정
 		$('.approveButton').on('click', authApprove);
 		$('.rejectButton').on('click', authReject);
+	
+		// clipboard.js 복사 기능
+		var clipboard = new ClipboardJS('.clipBoard');
+
+		clipboard.on('success', function(e) {
+		    console.info('Action:', e.action);
+		    console.info('Text:', e.text);
+		    console.info('Trigger:', e.trigger);
+		
+		    e.clearSelection();
+		});
+		
+		clipboard.on('error', function(e) {
+		    console.error('Action:', e.action);
+		    console.error('Trigger:', e.trigger);
+		});
+		
 	});
+	
+	
 	
 	// 승인 버튼 클릭 시 발생 이벤트
 	function authApprove(e){
@@ -178,6 +199,7 @@
 	}
 		
 	</script>
+	
 </div>
 
 </html>

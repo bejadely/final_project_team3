@@ -263,11 +263,13 @@
 							     , a.phone_number
 							     , a.nationality
 							     , code_val(a.authority) authority
+							     , sign_up_date
 				 FROM(SELECT member_id
 					       , member_name
 					       , phone_number
 					       , nationality
 					       , authority
+					       , sign_up_date
 					    FROM member
 					   WHERE member_id LIKE '%'
 					   <if test="adminMemberVO.authority != null and !adminMemberVO.authority.equals('')">

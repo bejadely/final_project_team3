@@ -101,12 +101,15 @@ ul, ol {
 /*---------------------
   Custom - common
 -----------------------*/
-.table th, td {
+
+.table th, td{
 	text-align: center;
+	vertical-align: middle !important;
 }
 
 th, td {
 	text-align: center;
+	vertical-align: middle;
 }
 
 .custom-sidebar {
@@ -146,6 +149,24 @@ th, td {
 	font-size: 14px;
 	vertical-align: baseline;
 	margin-right: 6px;
+}
+
+.sidebar-search {
+	width: 80%
+}
+hr {
+	margin-top: 5px;
+}
+.search-box {
+	float: right;
+	margin-bottom: 1em;
+}
+.search-box .nice-select {
+	height: 40px;
+	margin-right: 7px;
+}
+.search-box input{
+	height: 32px;
 }
 
 
