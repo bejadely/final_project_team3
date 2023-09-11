@@ -102,28 +102,26 @@
   </select>
   
     <select id="selectSp" resultType="BuyListVO">
-  	  	SELECT p.order_detail_id,
-			 			 p.post_id,
-			 			 p.member_id,
-			 			 p.quantity,
-			 			 p.price pu_price,
-			 			 p.specialty_type,
-			 			 p.order_date,
-			 			 code_val(p.order_status) order_status,
-			 			 p.payment_id,
-			 			 p.tid,
-			 			 p.cid,
-			 			 p.cancel_amount,
-			 			 p.cancel_tax_free_amount, 
-			 			 r.title,
-			 			 r.type,
-			 			 o.price sp_pirce,
-			 			 o.specialty_type,
-			 			 o.price sp_price,
-			 			 f.loading_img
-				  FROM purchase p LEFT JOIN SPECIALTIES_REGIST r ON (p.post_id = r.post_id)
-				  				  LEFT JOIN SPECIALTIES_option o ON (p.post_id = o.post_id)
-				  				  LEFT JOIN attached_file f ON (p.post_id = f.post_id)
-				  WHERE f.img_type = 'U2' and p.order_detail_id = #{orderDetailId}
+	  	  SELECT p.order_detail_id,
+	 			 p.post_id,
+	 			 p.member_id,
+	 			 p.quantity,
+	 			 p.price pu_price,
+	 			 p.specialty_type,
+	 			 p.order_date,
+	 			 code_val(p.order_status) order_status,
+	 			 p.payment_id,
+	 			 p.tid,
+	 			 p.cid,
+	 			 p.cancel_amount,
+	 			 p.cancel_tax_free_amount, 
+	 			 r.title,
+	 			 r.type,
+	 			 p.specialty_type,
+	 			 p.price/p.quantity sp_price,
+	 			 f.loading_img
+		  FROM purchase p LEFT JOIN SPECIALTIES_REGIST r ON (p.post_id = r.post_id)
+		  				  LEFT JOIN attached_file f ON (p.post_id = f.post_id)
+		  WHERE f.img_type = 'U2' and p.order_detail_id = #{orderDetailId}
   </select>
   </mapper>
