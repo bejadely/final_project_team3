@@ -222,7 +222,7 @@
     	<set>
     		COMPLETION='D1'
     	</set>
-    		WHERE deadlineDate = TO_CHAR(sysdate, 'YY/MM/DD')
+    		WHERE deadline_date = TO_CHAR(sysdate, 'YY/MM/DD')
     </update>
 	
 	<insert id="packageCalculate" parameterType ="PackageVO">
@@ -232,13 +232,15 @@
 			WHERE SUBSTR(cal_id, 4, 6) = TO_CHAR(SYSDATE, 'YYMMDD')
         </selectKey>
 		INSERT INTO CALCULATION(CAL_ID,CAL_AMOUNT,POST_ID,CAL_DATE,cal_status)
-		SELECT #{calId},SUM(p.price),r.post_id,sysdate,'V1'
-		FROM purchase p JOIN package_regist r ON p.post_id = r.post_id 
-		WHERE r.start_date=TO_CHAR(sysdate, 'YY/MM/DD') and p.post_id = r.post_id
-		group by r.post_id
+		VALUES(#{calId},#{price} ,#{postId},sysdate,'V1')
 	</insert>
 	
-	
+	<select id="getPackageCalculate">
+		SELECT SUM(p.price) as price,r.post_id,'V1' as cal_status
+		FROM purchase p JOIN package_regist r ON p.post_id = r.post_id 
+		WHERE r.start_date=TO_CHAR(sysdate, 'YY/MM/DD') and p.post_id = r.post_id and r.completion='D2'
+		group by r.post_id
+	</select>
 	
 	
 	
