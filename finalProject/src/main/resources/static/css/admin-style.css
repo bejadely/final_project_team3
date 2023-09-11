@@ -187,6 +187,7 @@ hr {
   cursor: pointer;
   white-space: nowrap;
   margin: 3px;
+  vertical-align: middle !important;
 }
 
 .deletePac {
