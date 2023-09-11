@@ -333,21 +333,6 @@ h5 {
 		
 				
 
-		<!-- 회원가입 폼 전송 시 계좌번호와 이름 같은지 체크-->
-	
-		/* function confirmName(){
-			var inputValue = document.getElementById("bankHolderInfo").value;
-	        var number1 = $("#name").val();
-	        var number2 = $("#bankHolderInfo").val();
-
-	        if(number1 != number2){
-	        	alert("이름이 다릅니다.");
-	        	var inputValue = document.getElementById("bankHolderInfo").value;
-	        	bankHolderInfoInput.value = "";
-	        	
-	        }
-	    } */
-		
 		   
 	</script>
 
@@ -435,54 +420,7 @@ $('#id').on('input', function(){
 
 		});
 	
-/* 	<!--  비밀번호 유효성 검사 -->	
-	$('#pw2').focusout(function(){
 
-		 var pw = $("#pw1").val();
-		 var num = pw.search(/[0-9]/g);
-		 var eng = pw.search(/[a-z]/ig);
-		 var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
-
-		 if(pw.length < 8 || pw.length > 20){
-
-		  //alert("8자리 ~ 20자리 이내로 입력해주세요.");
-		 	 $("#pw").html("8자리 ~ 20자리 이내로 입력해주세요.");
-			$("#pw").attr('color','red');
-		  return false;
-		 }else if(pw.search(/\s/) != -1){
-		  //alert("비밀번호는 공백 없이 입력해주세요.");
-		 	 $("#pw").html("비밀번호는 공백 없이 입력해주세요.");
-				$("#pw").attr('color','red');
-		  return false;
-		 }else if(num < 0 || eng < 0 || spe < 0 ){
-		  //alert("영문,숫자, 특수문자를 혼합하여 입력해주세요.");
-			 $("#pw").html("영문,숫자, 특수문자를 혼합하여 입력해주세요.");
-			$("#pw").attr('color','red');
-		  return false;
-		 }else {
-			 
-			 $("#pw").html("조건을 충족합니다.");
-			$("#pw").attr('color','green');
-		    return true;
-		 }
-
-		}); */
-	
-	<!--  비밀번호 확인 -->	
-/* 	$('#pw1').on('input', function(){		
-        var number1 = $("#pw1").val();
-        var number2 = $("#pw2").val();
-
-        if(number1 == number2){
-			$("#checkPw").html('번호가 같습니다.');
-			$("#checkPw").attr('color','green');
-        }else{
-        	$("#checkPw").html('번호가 다릅니다.');
-			$("#checkPw").attr('color','red');
-        }
-    }	
-	
-); */
 	
 	
 	$('#pw2').on('input', function(){
@@ -590,20 +528,6 @@ function joinform_check() {
 	  };
 
 
-  //비밀번호 영문자+숫자+특수조합(8~25자리 입력) 정규식
- /*  var pwdCheck = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/; */
-
-/*   if (!pwdCheck.test(pwd.value)) {
-    alert("비밀번호는 영문자+숫자+특수문자 조합으로 8~20자리 사용해야 합니다.");
-    pwd.focus();
-    return false;
-  }; */
-
-/*   if (repwd.value !== pwd.value) {
-    alert("비밀번호가 일치하지 않습니다..");
-    repwd.focus();
-    return false;
-  }; */
 
   if (uname.value == "") {
     alert("이름을 입력하세요.");
@@ -631,38 +555,12 @@ function joinform_check() {
     return false;
   }
 
- /*  if (!agree.checked) { //체크박스 미체크시
-    alert("약관 동의를 체크하세요.");
-    agree.focus();
-    return false;
-  } */
 
   //입력 값 전송
   document.insertForm.submit(); //유효성 검사의 포인트   
 }
 
-//아이디 중복체크 팝업창(현재 공백문서)
-/* function id_check() {
-  //window.open("팝업될 문서 경로", "팝업될 문서 이름", "옵션");
-  window.open("", "", "width=600, height=200, left=200, top=100");
-} */
 
-//이메일 옵션 선택후 주소 자동 완성
-/* function change_email() {
-  var email_add = document.getElementById("email_add");
-  var email_sel = document.getElementById("email_sel");
-
-  //지금 골라진 옵션의 순서와 값 구하기
-  var idx = email_sel.options.selectedIndex;
-  var val = email_sel.options[idx].value;
-
-  email_add.value = val;
-} */
-
-//우편번호 검색 팝업창(현재 공백문서)
-/* function search_address() {
-  window.open("", "b", "width=600, height=300, left=200, top=100");
-} */
   
   </script>
 
