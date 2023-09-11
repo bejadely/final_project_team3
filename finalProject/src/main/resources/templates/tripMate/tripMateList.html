@@ -119,14 +119,14 @@
 					<th:block th:if="${p eq paging.nowPage}">
 						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
 					</th:block>
-					<th:block th:if="${p ne paging.nowPage}">
+					<th:block th:if="${p ne paging.nowPage and p > 0}">
 						<a th:href="@{tripMateList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
 					</th:block>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
 					<a th:href="@{tripMateList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage}">
+				<th:block th:if="${paging.nowPage != paging.lastPage }">
 					<a th:href="@{tripMateList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
 				</th:block>
 			</div>

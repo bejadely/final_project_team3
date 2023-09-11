@@ -146,7 +146,7 @@ body {
                    <tr>
                        <th style="text-align: left; width: 20%;">모집 마감일</th>
                          <td colspan="5">
-                           <input type="date" id="deadline" name="deadline" style="width: 1075px;" class="form-control">
+                           <input type="date" id="deadline" name="deadline" size="50" style="width: 500px;" class="form-control">
                        </td>
                    </tr>
                    <tr>
@@ -353,7 +353,7 @@ body {
          if (metTripArea.value == '') {
         	 Swal.fire({
               	icon: 'warning',                      
-          		title: '여행 지역을 입력해주세요.'
+          		title: '여행 지역을 지정해주세요.'
           	 });
         	 metTripArea.focus();
               return;
@@ -362,7 +362,7 @@ body {
          if (metStyle.value == '') {
         	 Swal.fire({
                	icon: 'warning',                      
-           		title: '여행 스타일을 입력해주세요.'
+           		title: '여행 스타일을 지정해주세요.'
            	 });
         	 metStyle.focus();
                return;
