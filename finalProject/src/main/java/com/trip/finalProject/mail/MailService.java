@@ -27,8 +27,9 @@ public class MailService {
         try {
             message.setFrom(senderEmail);
             message.setRecipients(MimeMessage.RecipientType.TO, mail);
-            message.setSubject("이메일 인증");
+            message.setSubject("[경유지]사이트에서 회원정보 비밀번호찾기 인증번호를 보내드립니다.");
             String body = "";
+            body += "<h1>" + "[경유지] " + "</h1>";
             body += "<h3>" + "요청하신 인증 번호입니다." + "</h3>";
             body += "<h1>" + number + "</h1>";
             body += "<h3>" + "감사합니다." + "</h3>";

@@ -111,7 +111,7 @@ public class SmsService {
     				.countryCode("82")
     				.from(phone)
 					//messageDto 파라미터로부터 메시지의 내용을 추출하여 SMS 요청 객체인 SmsRequestDTO에 설정
-    				.content( "[TEST] 인증번호는" + randomNumber + "입니다.")
+    				.content( "[경유지] 인증번호는" + randomNumber + "입니다.")
     				.messages(messages)
     				.build();
 			/*
