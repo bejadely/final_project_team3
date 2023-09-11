@@ -215,6 +215,7 @@
   			     , saved_profile_img
   			     , bank_code
   			     , account_number
+  			     , sign_up_date
   			  FROM member
   			 WHERE authority = 'A4'
   		  ORDER BY member_id DESC
