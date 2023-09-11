@@ -66,9 +66,9 @@ public class PackageServiceImpl implements PackageService {
 	
 	//패키지 리스트
 	@Override
-	public List<PackageVO> getPackageList(PagingVO pagingVO) {
+	public List<PackageVO> getPackageList(PagingVO pagingVO, PackageVO packageVO) {
 		// TODO Auto-generated method stub
-		return packageMapper.listPackage(pagingVO);
+		return packageMapper.listPackage(pagingVO,packageVO);
 	}
 	//패키지 수 카운트
 	@Override
@@ -168,7 +168,7 @@ public class PackageServiceImpl implements PackageService {
 	
 	
 	
-	//spotDetail 모달창
+
     @Override
     public Map<String, Object> getDetailInfoReviewList(String postId) {
 
