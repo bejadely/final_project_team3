@@ -5,7 +5,9 @@
 	layout:decorate="@{layouts/admin_layout}">
 <head>
 	<style type="text/css">
-		
+		p {
+			text-decoration: 
+		}
 	</style>
 </head>	
 <!-- Content -->
@@ -15,12 +17,15 @@
 		<br>
 		<br>
 		<div class="table-responsive">
+			<span style="float: right; margin-right: 20px;">
+				<p><a class="cheatConfirmLink" style="color: black; font-weight: bold;" href="https://cyberbureau.police.go.kr/prevention/sub7.jsp?mid=020600">금융사기 조회 바로가기  <i class="fa-solid fa-arrow-up-right-from-square"></i></a></p>
+			</span>
 			<table class="table">
 				<thead>
 					<tr>
 						<th width="100" align="center">신청자ID</th>
 						<th width="150" align="center">신청자명</th>
-						<th width="200" align="center">사기 내역 조회</th>
+						<th width="200" align="center">사기 내역 조회&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 						<th width="200" align="center">신청일자</th>
 						<th width="200" align="center">요청 처리</th>
 					</tr>
@@ -31,7 +36,7 @@
 							<tr>
 								<td align="center" th:text="${l.memberId}"></td>
 								<td align="center" th:text="${l.memberName}"></td>
-								<td align="center" class="clipBoard" th:data-clipboard-text="${l.accountNumber}">&nbsp;&nbsp;&nbsp;[[${l.accountNumber}]]&nbsp;&nbsp;&nbsp;<i class="clipBoard fa-solid fa-copy"></i></td>
+								<td align="center" class="clipBoard" th:data-clipboard-text="${l.accountNumber}">[[${l.accountNumber}]]&nbsp;&nbsp;<i class="clipBoard fa-solid fa-copy"></i></td>
 								<td align="center" th:text="|${#strings.substring(l.signUpDate,0,10)}|"></td>
 								<td align="center">
 								<button type="button" class="approveButton" name="approveButton">승인</button>  
@@ -65,6 +70,10 @@
 		// 승인 버튼 클릭 시 발생 이벤트 설정
 		$('.approveButton').on('click', authApprove);
 		$('.rejectButton').on('click', authReject);
+		$('.clipBoard').on('mouseover', underLine);
+		$('.clipBoard').on('mouseleave', removeLine);
+		$('.cheatConfirmLink').on('mouseover', underLine);
+		$('.cheatConfirmLink').on('mouseleave', removeLine);
 	
 		// clipboard.js 복사 기능
 		var clipboard = new ClipboardJS('.clipBoard');
@@ -84,7 +93,15 @@
 		
 	});
 	
+	// 마우스 오버 - 밑줄
+	function underLine(event){
+		$(this).css({cursor: 'pointer'}).css({textDecoration: 'underline'});
+	}
 	
+	// 마우스 릴리브 - 밑줄 해제
+	function removeLine(event){
+		$(this).css({cursor: 'pointer'}).css({textDecoration: 'none'});
+	}
 	
 	// 승인 버튼 클릭 시 발생 이벤트
 	function authApprove(e){
