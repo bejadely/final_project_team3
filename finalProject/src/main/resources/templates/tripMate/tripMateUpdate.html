@@ -66,6 +66,22 @@ body {
 .ck-editor__editable {
 	  height: 50vh;
       }
+      
+.uploadForm {
+  background-color: #2cbdb8;
+  color: whitesmoke;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 7px;
+  padding: 5px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin: 3px;
+  height: 44px;
+}
 </style>
 </head>
 <script src ="/ckeditor5-build-classic/ckeditor.js"></script>
@@ -80,9 +96,9 @@ body {
         	<form method="post" id="editorForm" enctype="multipart/form-data">
 				<input type="hidden" name="memberId" th:value="${session.sessionId}">
 				<input type="hidden" name="postId" th:value="${tripMateVO.postId}">
-        		<div class="mb-3" style="float: left; margin-right: 20px;">
+        		<div class="mb-3"  style="float: left; margin-right: 20px;">
         			<select class="" id="tripArea" name="tripArea" aria-label="Default select example" th:value="${tripMateVO.tripArea}" >
-						<option value="" selected="selected">여행 지역</option>
+						<option value="">여행 지역</option>
 						<option value="대구">대구</option>
 						<option value="부산">부산</option>
 						<option value="포항">포항</option>
@@ -95,88 +111,97 @@ body {
         		</div>
         		<div class="mb-3" style="float: left; margin-right: 20px;" >
         			<select class="" id="mateStyle" name="mateStyle" aria-label="Default select example" th:value="${tripMateVO.mateStyle}">
-						<option value="" selected="selected">여행 스타일</option>
+						<option value="">여행 스타일</option>
+						<th:block th:each="mStyle : ${codeList}">
+						<option th:value="${mStyle.detailCode}">[[${mStyle.value}]]</option>
+						<!-- <option value="">여행 스타일</option>
 						<option value="J1">계획적인 여행</option>
 						<option value="J2">자유로운 여행</option>
 						<option value="J3">역사 탐방</option>
 						<option value="J4">맛집 탐방</option>
 						<option value="J5">드라이브 여행</option>
 						<option value="J6">배낭 여행</option>
-						<option value="J7">기타</option>
+						<option value="J7">기타</option>  -->
+						</th:block>
 					</select>
         		</div>
         		<div> 
         			<table class="table">
     					<tr>
         					<th style="text-align: left; width: 20%;">작성자</th>
-        					<td colspan="2">
-        						<label for="writerId" class="form-control" style="text-align: left;">
+        					<td colspan="2" style="text-align: left;">
+        						<label for="writerId" class="form-control" style="text-align: left; width: 370px;">
         							[[${session.sessionId}]]
         						</label>
             					<input type="hidden" id="writerId" name="writerId" size="30" class="form-control" th:value="${session.sessionId}" readonly>
         					</td>
         					<th style="text-align: left; width: 20%;">수정일자</th>
-        					<td colspan="2" id="modifyDayCell">
+        					<td colspan="2" id="modifyDayCell" style="text-align: left;">
             					<input type="hidden" id="now_date" name="modifyDate" size="30" class="form-control" readonly>
         					</td>
     					</tr>
    	 					<tr>
         					<th style="text-align: left; width: 20%;">타이틀</th>
        						<td colspan="5">
-            					<input type="text" id="mateTitle" name="mateTitle" size="70" class="form-control" th:value="${tripMateVO.mateTitle}">
+            					<input type="text" id="mateTitle" style="width: 1075px;" name="mateTitle" class="form-control" th:value="${tripMateVO.mateTitle}">
         					</td>
     					</tr>
     					<tr>
         					<th style="text-align: left; width: 20%;">여행기간</th>
         					<td colspan="2">
-            					<input type="date" id="startDay" name="startDay" size="30" class="form-control" th:value="${#dates.format(tripMateVO.startDay, 'yyyy-MM-dd')}">
+            					<input type="date" id="startDay" name="startDay" style="width: 500px;" size="30" class="form-control" th:value="${#dates.format(tripMateVO.startDay, 'yyyy-MM-dd')}">
         					</td>
         					<td colspan="2">
-            					<input type="date" id="endDay" name="endDay" size="30" class="form-control" th:value="${#dates.format(tripMateVO.endDay, 'yyyy-MM-dd')}">
+            					<input type="date" id="endDay" name="endDay" style="width: 500px; margin-left: 57px;" size="30" class="form-control" th:value="${#dates.format(tripMateVO.endDay, 'yyyy-MM-dd')}">
         					</td>
     					</tr>
     					<tr>
         					<th style="text-align: left; width: 20%;">모집 마감일</th>
        						<td colspan="5">
-            					<input type="date" id="deadline" name="deadline" size="50" class="form-control" th:value="${#dates.format(tripMateVO.deadline, 'yyyy-MM-dd')}">
+            					<input type="date" id="deadline" name="deadline" size="50" style="width: 500px;" class="form-control" th:value="${#dates.format(tripMateVO.deadline, 'yyyy-MM-dd')}">
         					</td>
     					</tr>
     					<tr>
         					<th style="text-align: left; width: 20%;">예상 경비</th>
         					<td colspan="2">
-            					 <input type="text" id="mateExpense" name="mateExpense" size="30" class="form-control" th:value="${tripMateVO.mateExpense}">
+            					 <input type="text" id="mateExpense" name="mateExpense" size="30" style="width: 370px;" class="form-control" th:value="${#numbers.formatInteger(tripMateVO.mateExpense, 0, 'COMMA')}">
         					</td>
         					<th style="text-align: left; width: 20%;">모집 인원</th>
         					<td colspan="2">
-            					<input type="number" id="mateMax" name="mateMax" size="30" class="form-control" th:value="${tripMateVO.mateMax}">
+            					<input type="number" id="mateMax" name="mateMax" size="30" style="width: 370px; margin-left: 4px;" class="form-control"  min="1" max="50" th:value="${tripMateVO.mateMax}">
         					</td>
     					</tr>
     					<tr>
                         	<th style="text-align: left; width: 20%;">메인 이미지</th>
                          	<td colspan="5">
-                           		<input type="file" id="mainImage" name="mainImage" size="50" class="form-control">
-                           		<input type="button" class="btn btn-secondary mt-3 mx-2" id ="uploadBtn" value="upload">
+                         	<div>
+                           		<input type="file" id="mainImage" name="mainImage" style=" float: left; width: 600px;" size="50" class="form-control">
+                           		<input type="button" class="uploadForm" id ="uploadBtn" style="margin-top:0; float: left; height: 38px;" value="upload">
+                       		</div>
                        		</td>
                    		</tr>
 					</table>
 					<div class="uploadResult">
-				<ul>
+						<ul>
 					
-				</ul>
-			</div>
+						</ul>
+					</div>
+					<div align="left" style="width: 1230px;">
 					<div id="editor">
 						<th:textarea th:utext="${tripMateVO.mateContent}"></th:textarea>
 					</div>
+					</div>
         		</div>
-        		<div>
-        			<button type="submit" class="btn btn-primary mt-3 mx-2" value="수정" >수정</button>&nbsp;&nbsp;
+        		<div style="margin-bottom: 20px;">
+        			<button type="button" id="modifyMate" class="btn btn-primary mt-3 mx-2" value="수정" >수정</button>&nbsp;&nbsp;
 					<input type="button" class="btn btn-secondary mt-3 mx-2" value="취소" id="cancelBtn"/>&nbsp;&nbsp;
-					<button type="button" class="btn btn-primary mt-3 mx-2" onclick="location.href='tripMateList'">이전으로</button>
+					<button type="button" class="btn btn-primary mt-3 mx-2" onclick="history.back()">이전으로</button>
         		</div>
         	</form>
         </div>
 	</div>
 	<script>
+	$(document).ready(function() {	
 		//현재 날짜 계산
 		document.getElementById('now_date').value = new Date().toISOString().substring(0, 10);
 		
@@ -189,17 +214,54 @@ body {
 	    
 		label.setAttribute('for', 'modifyDate');
 	    label.classList.add('form-control');
+	    label.style.width = "374px";
 	    label.style.textAlign = 'left';
 	    label.textContent = nowDate;
 	    modifyDayCell.appendChild(label);
 	    
 	    var postId = '[[${tripMateVO.postId}]]'
 		
-		
-		$(document).ready(function() {	
+	    //등록했던 여행지역 default로 띄워주기	
+	    function setTripArea(){
+	    			
+	    	// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
+	    	let defaultStatus = "[[${tripMateVO.tripArea}]]";
+	    	
+	    	// 포항
+	    	console.log(defaultStatus);
+	    	
+	    	 // 우리가 실제로 만든 셀렉트 박스의 option을 selected 설정
+	        $('#tripArea').val(defaultStatus).prop("selected", true);
+	        
+	        // 우리가 실제로 만든 셀렉트 박스의 변경값을 나이스 셀렉트 박스에 업데이트
+	         $('select').niceSelect('update');
+	    	
+	    }
+	    
+	    function setMateStyle(){
+			
+	    	// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
+	    	let defaultStatus = "[[${tripMateVO.mateStyle}]]";
+	    	
+	    	// 포항
+	    	console.log(defaultStatus);
+	    	
+	    	 // 우리가 실제로 만든 셀렉트 박스의 option을 selected 설정
+	        $('#mateStyle').val(defaultStatus).prop("selected", true);
+	        
+	        // 우리가 실제로 만든 셀렉트 박스의 변경값을 나이스 셀렉트 박스에 업데이트
+	         $('select').niceSelect('update');
+	    	
+	    }
+	    
 			
 			var paths;
 			var resultPath;
+			
+			//여행 지역
+			setTripArea();
+			//여행 스타일
+			setMateStyle();
 			
 			ClassicEditor
 			.create(document.querySelector('#editor'), {
@@ -239,7 +301,7 @@ body {
 		
 		var formObj = $("#editorForm");
 		
-		$("button[type='submit']").on("click",function(event){
+		$("#modifyMate").on("click",function(event){
 				
 			event.preventDefault();
 	
@@ -292,8 +354,6 @@ body {
 				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='"+resultPath+obj+"'>";
 			});
 			
-			formObj.append(str);
-			
 			// 등록 시 필수 항목이 미작성 되어있으면 alert 후 focuse로 해당 위치로 보내줌
 			let metTitle = document.getElementsByName('mateTitle')[0];
 			let metExpense = document.getElementsByName('mateExpense')[0];
@@ -301,67 +361,114 @@ body {
 			let metEndDay = document.getElementsByName('endDay')[0];
 			let metDeadline = document.getElementsByName('deadline')[0];
 			let metMateMax = document.getElementsByName('mateMax')[0];
-			let metContent = document.getElementsByName('mateContent')[0];
+			let metContent = combinedData.mateContent;
 			let metTripArea = document.getElementsByName('tripArea')[0];
 	        let metStyle = document.getElementsByName('mateStyle')[0];
 			
-			if (metTitle.value == '') {
-				alert('타이틀을 입력해주세요.')
-				metTitle.focus();
-				return;
-			}
-			
-			if (metExpense.value == '') {
-				alert('예상 경비를 입력해주세요.')
-				metExpense.focus();
-				return;
-			}
-			
-			if (metStartDay.value == '' || metEndDay.value == '') {
-				alert('여행 일정을 입력해주세요.')
-				metStartDay.focus();
-				return;
-			}
-			
-			if (metDeadline.value == '') {
-				alert('모집 마감일을 입력해주세요.')
-				metDeadline.focus();
-				return;
-			}
-			
-			if (metMateMax.value == '' || metEndDay.value == '') {
-				alert('모집 인원을 입력해주세요.')
-				metMateMax.focus();
-				return;
-			}
-			
-			if (metContent.value == '') {
-				alert('내용을 입력해주세요.')
-				metContent.focus();
-				return;
-			}
-			
-			if (metTripArea.value == '') {
-	             alert('여행 지역을 선택 해주세요.')
-	             metTripArea.focus();
+	        if (metTripArea.value == '') {
+	        	 Swal.fire({
+	              	icon: 'warning',                      
+	          		title: '여행 지역을 지정해주세요.'
+	          	 });
+	        	 metTripArea.focus();
+	              return;
+	          }
+	        
+	        if (metStyle.value == '') {
+	        	 Swal.fire({
+	               	icon: 'warning',                      
+	           		title: '여행 스타일을 지정해주세요.'
+	           	 });
+	        	 metStyle.focus();
+	               return;
+	          }
+	        
+	        if (metTitle.value == '') {
+	        	 Swal.fire({
+	             	icon: 'warning',                      
+	         		title: '타이틀을 입력해주세요.'
+	         	 });
+	        	 metTitle.focus();
+	             return;
+	         }
+	         
+	         if (metStartDay.value == '') {
+	        	 Swal.fire({
+	              	icon: 'warning',                      
+	          		title: '여행 시작일을 입력해주세요.'
+	          	 });
+	        	 metStartDay.focus();
 	             return;
 	          }
 	         
-	        if (metStyle.value == '') {
-	             alert('여행 스타일을 지정해주세요.')
-	             metStyle.focus();
+	         if (metEndDay.value == '') {
+	        	 Swal.fire({
+	              	icon: 'warning',                      
+	          		title: '여행 종료일을 입력해주세요.'
+	          	 });
+	        	 metEndDay.focus();
 	             return;
 	          }
+	         
+	         if (metDeadline.value == '') {
+	        	 Swal.fire({
+	               	icon: 'warning',                      
+	           		title: '모집 마감일을 입력해주세요.'
+	           	 });
+	        	 metDeadline.focus();
+	             return;
+	          }
+	         
+	         if (metExpense.value == '') {
+	        	 Swal.fire({
+	                	icon: 'warning',                      
+	            		title: '여행 경비를 입력해주세요.'
+	            	 });
+	        	 metExpense.focus();
+	             return;
+	         }
+	         
+	         if (metMateMax.value == '') {
+	        	 Swal.fire({
+	             	icon: 'warning',                      
+	         		title: '모집 인원을 입력해주세요.'
+	         	 });
+	        	 metMateMax.focus();
+	          	 return;
+	         }
+	         
+	         if (metContent.value == '') {
+	        	 Swal.fire({
+	              	icon: 'warning',                      
+	          		title: '내용을 입력해주세요.'
+	          	 });
+	        	 metContent.focus();
+	           	 return;
+	         }
 			
-			//등록하기 클릭 시 등록할지 여부를 확인
-			if(confirm("수정 하시겠습니까?")){
-				document.getElementById('editorForm').action = "/common/mateRecruitUpdate";
-				document.getElementById('editorForm').submit();
-				alert("수정 되었습니다.");
-                return;
-             }else{
-                return;
-             }
+			//수정하기 클릭 시 등록할지 여부를 확인
+	         Swal.fire({
+		    	icon: 'warning',                      
+		     	title: '수정 하시겠습니까?.',
+		      	showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: '수정',
+				cancelButtonText: '취소',
+		    }).then((result) => {
+			   	if (result.isConfirmed) {
+			   		Swal.fire({
+		                icon: 'success',
+		                title: '수정 되었습니다.'
+		            }).then(() => {
+		            	formObj.append(str);
+		            	var formattedPrice = parseFloat($("#mateExpense").val().replace(/\,/g, '')); // 콤마 제거 및 숫자로 변환
+		                document.getElementById("mateExpense").value=formattedPrice;
+		            	document.getElementById('editorForm').action = "/common/tripMateRecruitInsert";
+		                document.getElementById('editorForm').submit();
+		            });
+				}
+			})
 			
 		})
 	})
@@ -465,6 +572,9 @@ body {
 			uploadResult.append(str);
 		});
 	})();
+	
+	
+	
 	
 	
 	

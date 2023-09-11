@@ -9,8 +9,8 @@
             background-color: #ffffff;
             color: #000000;
         }
-
-        .text-center {
+          
+         .text-center {
             text-align: center;
         }
 
@@ -29,9 +29,18 @@
         }
 
         .btn-primary {
-            background-color: #007bff;
-            border: none;
-            color: #ffffff;
+          background-color: #2cbdb8;
+		  color: whitesmoke;
+		  border: 0;
+		  -webkit-box-shadow: none;
+		  box-shadow: none;
+		  font-size: 16px;
+		  font-weight: 500;
+		  border-radius: 7px;
+		  padding: 5px 15px;
+		  cursor: pointer;
+		  white-space: nowrap;
+		  margin: 3px;
         }
 
         .btn-primary:hover {
@@ -40,9 +49,18 @@
         }
 
         .btn-secondary {
-            background-color: #6c757d;
-            border: none;
-            color: #ffffff;
+          background-color: #2cbdb8;
+		  color: whitesmoke;
+		  border: 0;
+		  -webkit-box-shadow: none;
+		  box-shadow: none;
+		  font-size: 16px;
+		  font-weight: 500;
+		  border-radius: 7px;
+		  padding: 5px 15px;
+		  cursor: pointer;
+		  white-space: nowrap;
+		  margin: 3px;
         }
 
         .btn-secondary:hover {
@@ -77,13 +95,13 @@
 									<td>
 									<button type="button" th:class="btn-success" th:text="${l.answerResult}"></button>
 									<span th:text="${l.questionTitle}"></span><br>
-									<span th:utext="|문의자ID : ${l.memberId} 문의일자 : ${#dates.format(l.questionDate, 'yyyy.MM.dd HH:mm')}"></span>
+									<span th:utext="'문의자 ID : ' + ${l.memberId} + ' | 문의일자 : ' + ${#dates.format(l.questionDate, 'yyyy.MM.dd HH:mm')}" ></span>
 									<p th:text="${l.questionContent}"></p>
 									<th:block th:if="${l.answerResult == '미답변'}">
-										<button type="button" th:id="|ansBtn${lStat.count}|" class="btn btn-primary btn-sm" data-visible="visible">답변하기</button>
+										<button type="button" th:id="|ansBtn${lStat.count}|" class="feature-btn" data-visible="visible">답변하기</button>
 									</th:block>
 									<th:block th:if="${l.answerResult != '미답변'}">
-										<button type="button" th:id="|ansBtn${lStat.count}|" class="btn btn-primary btn-sm" data-visible="visible">답변보기</button>
+										<button type="button" th:id="|ansBtn${lStat.count}|" class="feature-btne" data-visible="visible">답변보기</button>
 									</th:block>	
 									</td>
 								</tr>

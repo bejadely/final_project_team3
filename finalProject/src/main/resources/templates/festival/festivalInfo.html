@@ -1,101 +1,101 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="@{layouts/default_layout}">
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="@{layouts/default_layout}">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1, user-scalable=yes,initial-scale=1.0" />
-<title>지역 축제 정보</title>
-<!-- getbootstrap cdn -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
-	crossorigin="anonymous">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-	crossorigin="anonymous"></script>
-<!-- jquery cdn -->
-<script
-		src="https://code.jquery.com/jquery-3.7.0.js"
-		integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
-		crossorigin="anonymous"></script>
- <!-- fullcalendar cdn-->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-<!-- fullcalendar 언어 설정관련 script -->
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
-<!-- Flatpickr cdn -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_green.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
-<style>
- #calendar {
- 		margin: 0 auto;
-        max-width: 80%;
-      }
- .table {
- 	margin: 0 auto;
- 	max-width: 80%;
-    text-align: center; 
-}
-.bold-event {
-    font-weight: bold;  
-}
-.fc-event {
-    height: 16px; 
-    font-size: 10px; 
-}
-.fc-more-link {
-    font-size: 8px; 
-}
-.fc-day {
-    font-size: 12px; 
-    
-}
-.fc-daygrid-day {
-    height: 100px; 
-    text-align: left; 
-}
-#festivalInfo th {
-	vertical-align: middle;
-	font-size: 13px;
-	text-align: left;
-}
-#festivalInfo td {
-    font-size: 13px;
-    text-align: left;
-}
-.modalText{
-	font-size: 13px;
-}
-.table-sm td, .table-sm th {
-    font-size: 12px;
-}
-    .fc-prev-button, .fc-next-button {
-      background-color: #2cbdb8;
-      color: white;
-    }
-</style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale=1, user-scalable=yes,initial-scale=1.0" />
+	<title>지역 축제 정보</title>
+	<!-- getbootstrap cdn -->
+	<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+			crossorigin="anonymous">
+	<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+			crossorigin="anonymous"></script>
+	<!-- jquery cdn -->
+	<script
+			src="https://code.jquery.com/jquery-3.7.0.js"
+			integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+			crossorigin="anonymous"></script>
+	<!-- fullcalendar cdn-->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
+	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+	<!-- fullcalendar 언어 설정관련 script -->
+	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
+	<!-- Flatpickr cdn -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+	<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_green.css">
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
+	<style>
+		#calendar {
+			margin: 0 auto;
+			max-width: 80%;
+		}
+		.table {
+			margin: 0 auto;
+			max-width: 80%;
+			text-align: center;
+		}
+		.bold-event {
+			font-weight: bold;
+		}
+		.fc-event {
+			height: 16px;
+			font-size: 10px;
+		}
+		.fc-more-link {
+			font-size: 8px;
+		}
+		.fc-day {
+			font-size: 12px;
+
+		}
+		.fc-daygrid-day {
+			height: 100px;
+			text-align: left;
+		}
+		#festivalInfo th {
+			vertical-align: middle;
+			font-size: 13px;
+			text-align: left;
+		}
+		#festivalInfo td {
+			font-size: 13px;
+			text-align: left;
+		}
+		.modalText{
+			font-size: 13px;
+		}
+		.table-sm td, .table-sm th {
+			font-size: 12px;
+		}
+		.fc-prev-button, .fc-next-button {
+			background-color: #2cbdb8;
+			color: white;
+		}
+	</style>
 </head>
 <body>
 <div layout:fragment="content">
 	<!-- 제목란 -->
-    <section class="breadcrumb-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb-text">
-                        <h2>이번달 축제는?</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+	<section class="breadcrumb-section">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="breadcrumb-text">
+						<h2>이번달 축제는?</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 	<br>
 	<!-- 내용창 -->
 	<div class="container-lg">
@@ -104,70 +104,70 @@
 		<br>
 		<!-- 축제리스트 -->
 		<table class="table table-sm table-hover">
-		  <thead class="table">
-		  	<tr>
-		  		<th scope="col">축제이름</th>
-		  		<th scope="col">지역</th>
-		  		<th scope="col">기간</th>
-		  	</tr>
-		  </thead>
-		  <tbody class="table-group-divider contentBody">
-		    <tr th:each="festivalInfo : ${festivalList}" th:attr="data-content-id=${festivalInfo.contentId}">
-			    <th scope="row" th:text="${festivalInfo.festivalName}"></th>
-			    <td th:if="${festivalInfo.areaCode=='4'}" th:text="대구"></td>
-                <td th:if="${festivalInfo.areaCode=='6'}" th:text="부산"></td>
-                <td th:if="${festivalInfo.areaCode=='7'}" th:text="울산"></td>
-                <td th:if="${festivalInfo.areaCode =='35' and festivalInfo.sigunguCode=='2'}" th:text="경주"></td>
-                <td th:if="${festivalInfo.areaCode =='35' and festivalInfo.sigunguCode=='23'}" th:text="포항"></td>
-                <td th:if="${festivalInfo.areaCode =='35' and festivalInfo.sigunguCode=='11'}" th:text="안동"></td>
-                <td th:if="${festivalInfo.areaCode =='36' and festivalInfo.sigunguCode=='1'}" th:text="거제"></td>
-                <td th:if="${festivalInfo.areaCode =='36' and festivalInfo.sigunguCode=='17'}" th:text="통영"></td>
-			    <td th:text="|${festivalInfo.startDate} ~ ${festivalInfo.endDate}|"></td>
+			<thead class="table">
+			<tr>
+				<th scope="col">축제이름</th>
+				<th scope="col">지역</th>
+				<th scope="col">기간</th>
 			</tr>
-		  </tbody>
+			</thead>
+			<tbody class="table-group-divider contentBody">
+			<tr th:each="festivalInfo : ${festivalList}" th:attr="data-content-id=${festivalInfo.contentId}">
+				<th scope="row" th:text="${festivalInfo.festivalName}"></th>
+				<td th:if="${festivalInfo.areaCode=='4'}" th:text="대구"></td>
+				<td th:if="${festivalInfo.areaCode=='6'}" th:text="부산"></td>
+				<td th:if="${festivalInfo.areaCode=='7'}" th:text="울산"></td>
+				<td th:if="${festivalInfo.areaCode =='35' and festivalInfo.sigunguCode=='2'}" th:text="경주"></td>
+				<td th:if="${festivalInfo.areaCode =='35' and festivalInfo.sigunguCode=='23'}" th:text="포항"></td>
+				<td th:if="${festivalInfo.areaCode =='35' and festivalInfo.sigunguCode=='11'}" th:text="안동"></td>
+				<td th:if="${festivalInfo.areaCode =='36' and festivalInfo.sigunguCode=='1'}" th:text="거제"></td>
+				<td th:if="${festivalInfo.areaCode =='36' and festivalInfo.sigunguCode=='17'}" th:text="통영"></td>
+				<td th:text="|${festivalInfo.startDate} ~ ${festivalInfo.endDate}|"></td>
+			</tr>
+			</tbody>
 		</table><br>
 		<!-- 페이징 -->
 		<!-- 모달(유저) -->
 		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-		  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h1 class="modal-title fs-5" id="staticBackdropLabel">축제 정보</h1>
-		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		      </div>
-		      <div class="modal-body">
-		      	
-		        <table class="table table-sm" id="festivalInfo">
-                    <tbody>
-	                    <tr>
-	                        <td colspan="3">
-		                        <img class="modalImage" style="width: 100%;">
-	                        </td>
-	                    </tr>
-	                    <tr>
-	                        <th scope="row" style="width: 25%">축&ensp;제&ensp;명</th>
-	                        <td style="width: 100%;" class="modalText titleInput"></td>
-	                    </tr>
-	                    <tr>
-	                        <th scope="row" style="width: 25%">일&emsp;&emsp;정</th>
-							<td style="width: 100%;" class="modalText dateInput"></td>
-	                    </tr>
-	                    <tr>
-	                        <th scope="row" style="width: 25%">주&emsp;&emsp;소</th>
-							<td style="width: 100%;" class="modalText addressInput"></td>
-	                    </tr>
-	                    <tr>
-	                        <th scope="row" style="width: 25%">행사소개</th>
-							<td style="width: 100%;" class="modalText contentInput"></td>
-	                    </tr>
-                    </tbody>
-                </table>
-			  </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-		      </div>
-		    </div>
-		  </div>
+			<div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="staticBackdropLabel">축제 정보</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+
+						<table class="table table-sm" id="festivalInfo">
+							<tbody>
+							<tr>
+								<td colspan="3">
+									<img class="modalImage" style="width: 100%;">
+								</td>
+							</tr>
+							<tr>
+								<th scope="row" style="width: 25%">축&ensp;제&ensp;명</th>
+								<td style="width: 100%;" class="modalText titleInput"></td>
+							</tr>
+							<tr>
+								<th scope="row" style="width: 25%">일&emsp;&emsp;정</th>
+								<td style="width: 100%;" class="modalText dateInput"></td>
+							</tr>
+							<tr>
+								<th scope="row" style="width: 25%">주&emsp;&emsp;소</th>
+								<td style="width: 100%;" class="modalText addressInput"></td>
+							</tr>
+							<tr>
+								<th scope="row" style="width: 25%">행사소개</th>
+								<td style="width: 100%;" class="modalText contentInput"></td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<!-- 모달(관리자) -->
@@ -223,396 +223,404 @@
 			</div>
 		</div>
 	</div>
-<script th:inline="javascript">
-	const calendarData =  [[${festivalCalendar}]];
-	let event = [];  // 추가할 값을 넣을 배열 생성
+	<script th:inline="javascript">
+		const calendarData =  [[${festivalCalendar}]];
+		let event = [];  // 추가할 값을 넣을 배열 생성
 
-	const isAdminLogin = [[${isAdminLogin}]];	//	테스트용 관리자 로그인
-	console.log(isAdminLogin);
+		const isAdminLogin = [[${isAdminLogin}]];	//	테스트용 관리자 로그인
+		console.log(isAdminLogin);
 
-	for (let i = 0; i < calendarData.length; i++) {
-	    event.push({
-	        title: calendarData[i].festivalName,
-	        start: calendarData[i].startDate,
-	        end: calendarData[i].endDate,
-	        color: 'rgba(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',0.5)',
-	        textColor: '#333333',
-	        contentId : calendarData[i].contentId,
-			festivalImg: calendarData[i].festivalImg,
-			address: calendarData[i].address,
-			content: calendarData[i].content,
-	        classNames: ['bold-event']
-	    });
-	}
-	
-	document.addEventListener('DOMContentLoaded', function() {
-		var calendarEl = document.getElementById('calendar');
-		var calendar = new FullCalendar.Calendar(calendarEl, {
+		for (let i = 0; i < calendarData.length; i++) {
+			event.push({
+				title: calendarData[i].festivalName,
+				start: calendarData[i].startDate,
+				end: calendarData[i].endDate,
+				color: 'rgba(' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',' + Math.floor(Math.random() * 256) + ',0.5)',
+				textColor: '#333333',
+				contentId : calendarData[i].contentId,
+				festivalImg: calendarData[i].festivalImg,
+				address: calendarData[i].address,
+				content: calendarData[i].content,
+				classNames: ['bold-event']
+			});
+		}
+
+		document.addEventListener('DOMContentLoaded', function() {
+			var calendarEl = document.getElementById('calendar');
+			var calendar = new FullCalendar.Calendar(calendarEl, {
 				initialView : 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
 				locale: 'ko', // 한국어 설정
 				headerToolbar : { // 헤더에 표시할 툴 바
-				start : 'prev',
-				center : 'title',
-				end : 'next'
-			},
-			titleFormat : function(date) {
-				return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
-			},
-			//initialDate: '2021-07-15', // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
-			selectable : true, // 달력 일자 드래그 설정가능
-			droppable : true,
-			editable : true,
-			nowIndicator: true, // 현재 시간 마크
-			dayMaxEvents: true, //최대 이벤트 개수를 제한, 더보기링크 추가
-			moreLinkText: 'more',
-			events : event,
-			eventClick: function(arg) {
-				clearModal();
-				if(isAdminLogin) {
-					addModalInfo(arg);
-					$('#staticBackdropAdmin').modal('show');
-				} else {
-					addModalInfo(arg);
-					$('#staticBackdrop').modal('show');
-				}
-		  	}
-		});
-		calendar.render();
-		//이전달 버튼 누르면 새정보 조회
-		$('.fc-prev-button').on('click', function() {
-			let thisYear = $('#fc-dom-1').text().substr(0, 4);
-			let thisMonth = $('#fc-dom-1').text().substr(6, 8).replaceAll('월', '');
-			thisMonth = thisMonth.length == 1 ? '0' + thisMonth : thisMonth;
-			getFestivalNewList(thisYear, thisMonth, function(data) {
-				if(data != null && data.length > 0) {
-					clearTable();
-					appendFestivalNewList(data);
+					start : 'prev',
+					center : 'title',
+					end : 'next'
+				},
+				titleFormat : function(date) {
+					return date.date.year + '년 ' + (parseInt(date.date.month) + 1) + '월';
+				},
+				//initialDate: '2021-07-15', // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
+				selectable : true, // 달력 일자 드래그 설정가능
+				droppable : true,
+				editable : true,
+				nowIndicator: true, // 현재 시간 마크
+				dayMaxEvents: true, //최대 이벤트 개수를 제한, 더보기링크 추가
+				moreLinkText: 'more',
+				events : event,
+				eventClick: function(arg) {
+					clearModal();
+					if(isAdminLogin) {
+						addModalInfo(arg);
+						$('#staticBackdropAdmin').modal('show');
+					} else {
+						addModalInfo(arg);
+						$('#staticBackdrop').modal('show');
+					}
 				}
 			});
-		})
+			calendar.render();
+			//이전달 버튼 누르면 새정보 조회
+			$('.fc-prev-button').on('click', function() {
+				let thisYear = $('#fc-dom-1').text().substr(0, 4);
+				let thisMonth = $('#fc-dom-1').text().substr(6, 8).replaceAll('월', '');
+				thisMonth = thisMonth.length == 1 ? '0' + thisMonth : thisMonth;
+				getFestivalNewList(thisYear, thisMonth, function(data) {
+					if(data != null && data.length > 0) {
+						clearTable();
+						appendFestivalNewList(data);
+					}
+				});
+			})
 
-		//다음달 버튼 누르면 새정보 조회
-		$('.fc-next-button').on('click', function() {
-			let thisYear = $('#fc-dom-1').text().substr(0, 4);
-			let thisMonth = $('#fc-dom-1').text().substr(6, 8).replaceAll('월', '');
-			thisMonth = thisMonth.length == 1 ? '0' + thisMonth : thisMonth;
-			getFestivalNewList(thisYear, thisMonth, function(data) {
-				if(data != null && data.length > 0) {
-					clearTable();
-					appendFestivalNewList(data);
-				}
-			});
-		})
-	});
-
-	function getFormattedDate(dateString) {
-		let date = new Date(dateString);
-
-		// 년, 월, 일 추출
-		let year = date.getFullYear();
-		let month = (date.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더함
-		let day = date.getDate().toString().padStart(2, '0');
-
-		// 결과 출력 (yyyyMMdd 형식)
-		let formattedDate = year + '-' + month + '-' + day;
-
-		return formattedDate;
-	}
-
-	//Flatpickr로 Datepicker로 설정
-	let fp;
-	if(isAdminLogin) {
-		fp = flatpickr(document.getElementsByClassName("dateInput"), {
-			'monthSelectorType' : 'static',
-			"locale": "ko",
-			"mode" : "range"
+			//다음달 버튼 누르면 새정보 조회
+			$('.fc-next-button').on('click', function() {
+				let thisYear = $('#fc-dom-1').text().substr(0, 4);
+				let thisMonth = $('#fc-dom-1').text().substr(6, 8).replaceAll('월', '');
+				thisMonth = thisMonth.length == 1 ? '0' + thisMonth : thisMonth;
+				getFestivalNewList(thisYear, thisMonth, function(data) {
+					if(data != null && data.length > 0) {
+						clearTable();
+						appendFestivalNewList(data);
+					}
+				});
+			})
 		});
-	}
 
-	function addModalInfo(arg) {
-		//축제정보 db에서 받아 왔던 값 append 부분
-		let title = arg.event.title;
-		let start = getFormattedDate(arg.event.start);
-		let end = getFormattedDate(arg.event.end);
-		let contentId = arg.event.extendedProps.contentId;
-		let festivalImg = arg.event.extendedProps.festivalImg;
-		let address = arg.event.extendedProps.address;
-		let content = arg.event.extendedProps.content;
+		function getFormattedDate(dateString) {
+			let date = new Date(dateString);
 
-		if(content == null || content.replaceAll(' ', '') == '') {
-			content = '';
+			// 년, 월, 일 추출
+			let year = date.getFullYear();
+			let month = (date.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 1을 더함
+			let day = date.getDate().toString().padStart(2, '0');
+
+			// 결과 출력 (yyyyMMdd 형식)
+			let formattedDate = year + '-' + month + '-' + day;
+
+			return formattedDate;
 		}
 
+		//Flatpickr로 Datepicker로 설정
+		let fp;
 		if(isAdminLogin) {
-			$('.titleInput').val(title);
-			if(festivalImg == null) {
-				$('.modalImage').attr('src', '/img/no-image.png');
-			} else {
-				$('.modalImage').attr('src', festivalImg);
+			fp = flatpickr(document.getElementsByClassName("dateInput"), {
+				'monthSelectorType' : 'static',
+				"locale": "ko",
+				"mode" : "range"
+			});
+		}
+
+		function addModalInfo(arg) {
+			//축제정보 db에서 받아 왔던 값 append 부분
+			let title = arg.event.title;
+			let start = getFormattedDate(arg.event.start);
+			let end = getFormattedDate(arg.event.end);
+			let contentId = arg.event.extendedProps.contentId;
+			let festivalImg = arg.event.extendedProps.festivalImg;
+			let address = arg.event.extendedProps.address;
+			let content = arg.event.extendedProps.content;
+
+			if(content == null || content.replaceAll(' ', '') == '') {
+				content = '';
 			}
-			$('.dateInput').val(start + ' ~ ' + end);
-			$('.addressInput').val(address);
-			$('#modifyButton').data('contentId', contentId);
-			$('#deleteButton').data('contentId', contentId);
-		} else {
-			$('.titleInput').html(title);
-			if(festivalImg == null) {
-				$('.modalImage').attr('src', '/img/no-image.png');
+
+			if(isAdminLogin) {
+				$('.titleInput').val(title);
+				if(festivalImg == null) {
+					$('.modalImage').attr('src', '/img/no-image.png');
+				} else {
+					$('.modalImage').attr('src', festivalImg);
+				}
+				$('.dateInput').val(start + ' ~ ' + end);
+				$('.addressInput').val(address);
+				$('#modifyButton').data('contentId', contentId);
+				$('#deleteButton').data('contentId', contentId);
 			} else {
-				$('.modalImage').attr('src', festivalImg);
+				$('.titleInput').html(title);
+				if(festivalImg == null) {
+					$('.modalImage').attr('src', '/img/no-image.png');
+				} else {
+					$('.modalImage').attr('src', festivalImg);
+				}
+				$('.dateInput').html(start + ' ~ ' + end);
+				$('.addressInput').html(address);
 			}
-			$('.dateInput').html(start + ' ~ ' + end);
-			$('.addressInput').html(address);
+
+			//api로 소개정보 넣기
+			if(content == '') {
+				getfestivalContent(contentId, function(data) {
+					if(isAdminLogin) {
+						$('.contentInput').val(data.replaceAll('<br>', '\n'));
+					} else {
+						$('.contentInput').html(data);
+					}
+				});
+			} else {
+				if (isAdminLogin) {
+					$('.contentInput').val(content.replaceAll('<br>', '\n'));
+				} else {
+					$('.contentInput').html(content);
+				}
+
+			}
 		}
 
 		//api로 소개정보 넣기
-		if(content == '') {
-			getfestivalContent(contentId, function(data) {
-				if(isAdminLogin) {
-					$('.contentInput').val(data.replaceAll('<br>', '\n'));
-				} else {
-					$('.contentInput').html(data);
+		function getfestivalContent(contentId,callback){
+			let contentIddata = contentId;
+
+			$.ajax({
+				type: 'GET',
+				url: '/content',
+				data: {
+					contentId : contentIddata
 				}
-			});
-		} else {
-			if (isAdminLogin) {
-				$('.contentInput').val(content.replaceAll('<br>', '\n'));
-			} else {
-				$('.contentInput').html(content);
-			}
+			})
+					.done(function(data, textStatus, jqXHR){
+						console.log('done');
 
+						callback(data);
+					})
+					.fail(function(jqXHR, textStatus, errorThrown){
+						console.log('fail');
+					})
 		}
-	}
 
-	//api로 소개정보 넣기
-	function getfestivalContent(contentId,callback){
-		let contentIddata = contentId;
-		 
-		$.ajax({
-			type: 'GET',
-			url: '/content',
-			data: {
-				contentId : contentIddata
-			}
-		})
-		.done(function(data, textStatus, jqXHR){
-			console.log('done');
-			
-			callback(data);
-		})
-		.fail(function(jqXHR, textStatus, errorThrown){
-			console.log('fail');
-		})
-	}
-	
-	function clearModal() {
-		$('.modalText').val('');
-		$('.modalText').html('');
-		$('.modalImage').attr('src', '');
-		$('.adminButton').data('contentId', '');
-	}
+		function clearModal() {
+			$('.modalText').val('');
+			$('.modalText').html('');
+			$('.modalImage').attr('src', '');
+			$('.adminButton').data('contentId', '');
+		}
 
-	
-	//축제정보리스트 fc-prev-button, fc-next-button에 따라 해당 달 정보 조회
-	function getFestivalNewList(thisYear, thisMonth, callback){
-		$.ajax({
-			type: 'GET',
-			url: '/festivalList',
-			data: {
-				year : thisYear,
-				month : thisMonth
-			}
-		})
-		.done(function(data, textStatus, jqXHR){
-			console.log('done');
 
-			callback(data);
-		})
-		.fail(function(jqXHR, textStatus, errorThrown){
-			console.log('fail');
+		//축제정보리스트 fc-prev-button, fc-next-button에 따라 해당 달 정보 조회
+		function getFestivalNewList(thisYear, thisMonth, callback){
+			$.ajax({
+				type: 'GET',
+				url: '/festivalList',
+				data: {
+					year : thisYear,
+					month : thisMonth
+				}
+			})
+					.done(function(data, textStatus, jqXHR){
+						console.log('done');
 
-			callback(null);
-		})
-	}
+						callback(data);
+					})
+					.fail(function(jqXHR, textStatus, errorThrown){
+						console.log('fail');
 
-	//축제정보리스트 기존 데이터 삭제
-	function clearTable() {
-		$('.contentBody').empty();
-	}
-	//축제정보리스트 새로운 데이터 삽입
-	function appendFestivalNewList(data){
-		let node = ``;
+						callback(null);
+					})
+		}
 
-		for(let i = 0; i < data.length; i++) {
-			node += `
+		//축제정보리스트 기존 데이터 삭제
+		function clearTable() {
+			$('.contentBody').empty();
+		}
+		//축제정보리스트 새로운 데이터 삽입
+		function appendFestivalNewList(data){
+			console.log(data);
+			let node = ``;
+
+			for(let i = 0; i < data.length; i++) {
+				node += `
 				<tr data-content-id="${data[i].contentId}">
 					<th scope="row">${data[i].festivalName}</th>
 			`;
 
-			let locationName = '';
-			switch (data[i].areaCode) {
-				case 4:
-					locationName = '대구';
-					break;
-				case 6:
-					locationName = '부산';
-					break;
-				case 7:
-					locationName = '울산';
-					break;
-				case 35:
-					switch (data[i].sigunguCode) {
-						case 2:
-							locationName = '경주';
-							break;
-						case 23:
-							locationName = '포항';
-							break;
-						case 11:
-							locationName = '안동';
-							break;
-						default:
-							break;
-					}
-				case 36:
-					switch (data[i].sigunguCode) {
-						case 17:
-							locationName = '통영';
-							break;
-						case 1:
-							locationName = '거제';
-							break;
-						default:
-							break;
-					}
-				default:
-					break;
-			}
-			node += `
+				let locationName = '';
+				switch (data[i].areaCode) {
+					case '4':
+						locationName = '대구';
+						console.log('locationName = ' + locationName)
+						break;
+					case '6':
+						locationName = '부산';
+						console.log('locationName = ' + locationName)
+						break;
+					case '7':
+						locationName = '울산';
+						console.log('locationName = ' + locationName)
+						break;
+					case '35':
+						switch (data[i].sigunguCode) {
+							case '2':
+								locationName = '경주';
+								console.log('locationName = ' + locationName)
+								break;
+							case '23':
+								locationName = '포항';
+								console.log('locationName = ' + locationName)
+								break;
+							case '11':
+								locationName = '안동';
+								console.log('locationName = ' + locationName)
+								break;
+							default:
+								break;
+						}
+					case '36':
+						switch (data[i].sigunguCode) {
+							case '17':
+								locationName = '통영';
+								break;
+							case '1':
+								locationName = '거제';
+								break;
+							default:
+								break;
+						}
+					default:
+						break;
+				}
+
+				node += `
 					<td>${locationName}</td>
 					<td>${data[i].startDate} ~ ${data[i].endDate}</td>
 			`;
 
-			node += `
+				node += `
 				</tr>
 			`;
-		}
-
-		$('.contentBody').append(node);
-	}
-
-	$(document).on('click', '#modifyButton', function() {
-
-
-		let title = $('#titleInput').val();
-		let date = $('#dateInput').val();
-		let address = $('#addressInput').val();
-		let content = $('#contentInput').val();
-		let splitDate = date.split(' ~ ');
-		let startDate = splitDate[0].replaceAll('-', '');
-		let endDate = splitDate[1].replaceAll('-', '');
-		let contentId = $(this).data('contentId');
-
-		let data = {
-			'festivalName' : title,
-			'address' : address,
-			'content' : content,
-			'startDate' : startDate,
-			'endDate' : endDate,
-			'contentId' : contentId
-		}
-
-		$.ajax({
-			type : 'POST',
-			url : '/festival',
-			data : data
-		})
-		.done(function(data, textStatus, jqXHR) {
-			console.log('done');
-
-			if(data == 1) {
-				Swal.fire({
-	          		  icon: 'success',                    
-	          		  title: '수정을 성공했습니다.'
-	          		}).then(result => {
-					   if (result.isConfirmed) { 
-						   location.href = location.href;
-					   }
-	          		});
-				
-			} else {
-				Swal.fire({
-	          		  icon: 'warning',                    
-	          		  title: '수정 할 데이터가 없습니다.'
-				});
 			}
+
+			$('.contentBody').append(node);
+		}
+
+		$(document).on('click', '#modifyButton', function() {
+
+
+			let title = $('#titleInput').val();
+			let date = $('#dateInput').val();
+			let address = $('#addressInput').val();
+			let content = $('#contentInput').val();
+			let splitDate = date.split(' ~ ');
+			let startDate = splitDate[0].replaceAll('-', '');
+			let endDate = splitDate[1].replaceAll('-', '');
+			let contentId = $(this).data('contentId');
+
+			let data = {
+				'festivalName' : title,
+				'address' : address,
+				'content' : content,
+				'startDate' : startDate,
+				'endDate' : endDate,
+				'contentId' : contentId
+			}
+
+			$.ajax({
+				type : 'POST',
+				url : '/festival',
+				data : data
+			})
+					.done(function(data, textStatus, jqXHR) {
+						console.log('done');
+
+						if(data == 1) {
+							Swal.fire({
+								icon: 'success',
+								title: '수정을 성공했습니다.'
+							}).then(result => {
+								if (result.isConfirmed) {
+									location.href = location.href;
+								}
+							});
+
+						} else {
+							Swal.fire({
+								icon: 'warning',
+								title: '수정 할 데이터가 없습니다.'
+							});
+						}
+					})
+					.fail(function(jqXHR, textStatus, errorThrown) {
+						console.log('fail');
+
+						Swal.fire({
+							icon: 'error',
+							title: '수정되지 않았습니다.'
+						});
+					})
 		})
-		.fail(function(jqXHR, textStatus, errorThrown) {
-			console.log('fail');
+
+		$(document).on('click', '#deleteButton', function() {
 
 			Swal.fire({
-      		  icon: 'error',                      
-      		  title: '수정되지 않았습니다.'
-      		});
-		})
-	})
+				icon: 'info',  // 여기다가 아이콘 종류를 쓰면 됩니다.
+				title: '삭제 하시겠습니까?',
+				showCancelButton: true,
+				confirmButtonText: '네',
+				cancelButtonText: '아니요'
 
-	$(document).on('click', '#deleteButton', function() {
-		
-		Swal.fire({
-			  icon: 'info',  // 여기다가 아이콘 종류를 쓰면 됩니다.                     
-			  title: '삭제 하시겠습니까?',
-			  showCancelButton: true,
-			  confirmButtonText: '네', 
-			  cancelButtonText: '아니요'
-			   
 			}).then(result => {
-				   if (result.isConfirmed) { 
-					   let contentId = $(this).data('contentId');
+				if (result.isConfirmed) {
+					let contentId = $(this).data('contentId');
 
-						$.ajax({
-							type : 'DELETE',
-							url : '/festival',
-							data : {
-								'contentId' : contentId
-							}
-						})
-						.done(function(data, textStatus, jqXHR) {
-							console.log('done');
+					$.ajax({
+						type : 'DELETE',
+						url : '/festival',
+						data : {
+							'contentId' : contentId
+						}
+					})
+							.done(function(data, textStatus, jqXHR) {
+								console.log('done');
 
-							if(data == 1) {
-								Swal.fire({
-					          		  icon: 'success',                    
-					          		  title: '삭제를 성공했습니다.'
+								if(data == 1) {
+									Swal.fire({
+										icon: 'success',
+										title: '삭제를 성공했습니다.'
 									}).then(result => {
-									   if (result.isConfirmed) { 
-										   location.href = location.href;
-									   }
-					          		});
-							} else {
-								Swal.fire({
-				          		  icon: 'error',                      
-				          		  title: '삭제할 데이터가 없습니다.'
-				          		});
-							}
-						})
-						.fail(function(jqXHR, textStatus, errorThrown) {
-							console.log('fail');
+										if (result.isConfirmed) {
+											location.href = location.href;
+										}
+									});
+								} else {
+									Swal.fire({
+										icon: 'error',
+										title: '삭제할 데이터가 없습니다.'
+									});
+								}
+							})
+							.fail(function(jqXHR, textStatus, errorThrown) {
+								console.log('fail');
 
-							Swal.fire({
-				        		  icon: 'error',                      
-				        		  title: '삭제 실패 하였습니다.'
-				        		});
-						})
-				      
-				   }else if (result.isDismissed) { // 만약 모달창에서 cancel 버튼을 눌렀다면
-				    	return
-				    }
+								Swal.fire({
+									icon: 'error',
+									title: '삭제 실패 하였습니다.'
+								});
+							})
+
+				}else if (result.isDismissed) { // 만약 모달창에서 cancel 버튼을 눌렀다면
+					return
+				}
 			});
 
-		
-	})
-</script>	
+
+		})
+	</script>
 </div>
 </body>
 </html>

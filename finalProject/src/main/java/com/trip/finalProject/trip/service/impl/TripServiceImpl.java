@@ -116,7 +116,13 @@ public class TripServiceImpl implements TripService {
 	public List<TripVO> getTripPerCom(TripVO tripVO, PagingVO pagingVO) {
 		return tripMapper.selectPerComTrip(tripVO, pagingVO);
 	}
-
+	
+	//여행기록 게시글 조회수 카운트
+	@Override
+	public int updateTripRecordHit(TripVO tripVO) {
+		return tripMapper.updateTripRecordHit(tripVO);
+	}
+	
 	//여행기록 상세조회
 	@Override
 	public TripVO getTripInfo(TripVO tripVO) {

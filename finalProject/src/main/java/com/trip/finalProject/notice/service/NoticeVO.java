@@ -1,5 +1,9 @@
 package com.trip.finalProject.notice.service;
 
+import java.util.List;
+
+import com.trip.finalProject.attachedFile.service.AttachedFileVO;
+
 import lombok.Data;
 
 @Data
@@ -16,7 +20,11 @@ public class NoticeVO {
 	private String hit;
 	
 	private String page;
+	
+	private Integer rn;
 
+	private List<AttachedFileVO> attachList;
+	private List<AttachedFileVO> editorAttachList;
 	
 	
 	

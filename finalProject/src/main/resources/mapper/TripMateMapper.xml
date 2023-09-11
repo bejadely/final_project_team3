@@ -66,7 +66,6 @@
   	WHERE mate_style LIKE '%${keyword}%'
   	</select>
   	
-  	
   	<!-- 해당 여행타이틀 글 전체 조회  -->
 	<select id="searchMateByTripTitle" resultType="TripMateVO">
 	SELECT *
@@ -127,6 +126,7 @@
 			   hit,
 			   trip_area,
 			   write_date,
+			   code_val(mate_style) tStyle,
 			   mate_style
 		FROM mate_recruit
 		WHERE post_id = #{postId}
@@ -248,6 +248,14 @@
 							, 'P1'
 						)
 	</insert>
+	
+	<!-- 여행 메이트 신고시 해당 게시글에 신고내역이 존재하는지 확인 -->
+  	<select id="selectReportLog" parameterType="String" resultType="int">
+  	SELECT count(reporter_id)
+	FROM report
+	WHERE reporter_id = #{reporterId} 
+	  AND post_id = #{postId}
+  	</select>
 
 	<!-- 여행 메이트 신청 (등록된 게시글에 대한 여행메이트 신청) -->
 	<insert id="insertTripMateApply" parameterType="TripMateVO">
@@ -275,6 +283,14 @@
 							, 'a1'
 						)
 	</insert>
+	
+	<!-- 여행 메이트 신청시 해당 게시글에 신청내역이 존재하는지 확인 -->
+  	<select id="selectApplyLog" parameterType="String" resultType="int">
+  	SELECT count(member_id)
+	FROM mate_apply
+	WHERE member_id = #{memberId} 
+	  AND post_id = #{postId}
+  	</select>
 	
 	<!-- 여행 메이트 신청시 게시글 작성자에게 알림-->
 	<insert id="sendAlert" parameterType="TripMateVO">

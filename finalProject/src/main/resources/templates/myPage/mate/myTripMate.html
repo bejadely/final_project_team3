@@ -17,9 +17,6 @@
 	<style type="text/css">
 	</style>
 <script type="text/javascript">
-function pageChange(str){
-	   
-}
 $(document).ready(function() {
 	   //현재 페이지에 데이터가 없으면 이전 페이지로 이동하는 구문
 	   var hasContent = [[${paging.end}]]-[[${paging.start}]] ;
@@ -73,11 +70,16 @@ $(document).ready(function() {
 </head>
 <body>
 <div layout:fragment="content">
-
-	<div>
-		<button type="button" id="comButton">작성한 여행</button>
-		<button type="button" id="appButton">신청한 여행</button>
-	</div>
+     <div class="radioButton">
+         <div class="bt-item">
+            <input type="radio" name="s-type" id="comButton" checked>
+            <label for="comButton">작성한 여행</label>
+         </div>
+         <div class="bt-item">
+            <input type="radio" name="s-type" id="appButton">
+            <label for="appButton">신청한 여행</label>
+         </div>
+      </div>
 	<section>
 	<div class="table-responsive">
 		<!-- 여행기록 section-->

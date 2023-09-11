@@ -54,7 +54,12 @@
 							<tr>
 								<th width="150" align="center">주소</th>
 								<th:block th:if="*{!#strings.isEmpty(zipCode)}">
-									<td colspan="3" width="400" align="center" th:utext="|(*{zipCode}) <br> *{address} *{addressDetail}|"></td>
+									<th:block th:if="*{!#strings.isEmpty(addressDetail)}">
+										<td colspan="3" width="400" align="center" th:utext="|(*{zipCode}) <br> *{address} *{addressDetail}|"></td>
+									</th:block>
+									<th:block th:if="*{#strings.isEmpty(addressDetail)}">
+										<td colspan="3" width="400" align="center" th:utext="|(*{zipCode}) <br> *{address}|"></td>
+									</th:block>
 								</th:block>
 								<th:block th:if="*{#strings.isEmpty(zipCode)}">
 									<td colspan="3" width="400" align="center">-</td>
@@ -64,7 +69,12 @@
 								<th width="150" align="center">이메일</th>
 								<td width="400" align="center" th:text="*{email}"></td>
 								<th width="150" align="center">연락처</th>
-								<td width="400" align="center" th:text="*{phoneNumber}"></td>
+								<th:block th:if="*{!#strings.isEmpty(phoneNumber)}">
+									<td width="400" align="center" th:text="*{phoneNumber}"></td>
+								</th:block>
+								<th:block th:unless="*{!#strings.isEmpty(phoneNumber)}">
+									<td width="400" align="center">-</td>
+								</th:block>
 							</tr>
 						</tbody>
 					</table>
@@ -109,6 +119,7 @@
 						.on('mouseup', moveToMemberDetail);
 		// 작업중 : 수정해야함
 		$('button[type=button]').on('click', withdrawMember);
+		console.log([[${memberVO.phoneNumber}]]);
 	});
 	
 	// 조건검색기능
