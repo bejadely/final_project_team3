@@ -21,6 +21,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.2/jquery.modal.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.2/jquery.modal.min.css" />
 <style>
+.insertForm {
+  background-color: #2cbdb8;
+  color: whitesmoke;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 7px;
+  padding: 5px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin: 3px;
+  height: 44px;
+}
+
 .text-center {
        text-align: center;
       }
@@ -65,7 +81,7 @@
 #modalWrap {
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  padding-top: 250px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -185,9 +201,9 @@
   														</table> 
   													</div>
   													<div style ="margin-top: 30px;"> 
-  														<button type="reset" class="primary-btn">취소</button>
-  														<button type="button" id="closeBtn" class="primary-btn">닫기</button>
-  														<button type="submit" class="primary-btn" id="tripInsert">여행일정 작성</button> 
+  														<button type="reset" class="btn btn-secondary mx-2">취소</button>
+  														<button type="button" id="closeBtn" class="btn btn-secondary mx-2">닫기</button>
+  														<button type="submit" class="insertForm" id="tripInsert">여행일정 작성</button> 
 													</div>
 												</form>	
 												</div>						

@@ -9,7 +9,7 @@
 <!-- Content -->
 <div class="main-container" layout:fragment="content">
 	<div class="container text-break">
-		<h5><b>회원조회</b></h5>
+		<h5><b>회원정보관리</b></h5>
 		<br>
 		<div>
 			<table class="table">
@@ -57,7 +57,8 @@
 						<th>이름</th>
 						<th>연락처</th>
 						<th>국적</th>
-						<th>권한분류</th>
+						<th>회원분류</th>
+						<th>가입일자</th>
 					</tr>
 				</thead>
 				<th:block th:if="${!#lists.isEmpty(list)}">
@@ -74,6 +75,7 @@
 								</th:block>
 								<td th:text="${l.nationality}"></td>
 								<td th:text="${l.authority}"></td>
+								<td th:text="|${#strings.substring(l.signUpDate,0,10)}|"></td>
 							</tr>
 						</th:block>
 					</tbody>
