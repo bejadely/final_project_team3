@@ -50,6 +50,10 @@ form {
     color: #ff0000; /* 텍스트 색상 (예: 빨간색) */
     /* 원하는 다른 스타일을 여기에 추가할 수 있습니다. */
 }
+ .table th, .table td {
+        padding: 8px;
+        text-align: center; /* 텍스트 중앙 정렬 스타일 */
+    }
 </style>
 
 </head>
@@ -57,113 +61,122 @@ form {
 
 <div layout:fragment="content">
  <section class="property-details-section spad">
-        <div class="container">
+        <div class="container-md">
             <div class="row">
-                <div class="col-lg-9">
-                    <div class="pd-details-text">
-                    <h4>[[ ${info.name} ]]</h4>
-                        <div class="pd-details-social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-send"></i></a>
-                            <a href="#"><i class="fa fa-star"></i></a>
-                            <a href="#"><i class="fa fa-print"></i></a>
-                            <a href="#"><i class="fa fa-cloud-download"></i></a>
-                        </div>
-                        <div class="row">
-                        	<div class= "col-5">
-	                        <div class="property-more-pic" style="width:500px; height:500px;">
-	                            <div class="product-pic-zoom">
-	                               
-	                            </div>
-                        	</div>
-	                        <div class= "col-5 text">   
+                <div class="col-6">
+                	<div class="pd-details-text">
+	                    <h4>[[ ${info.name} ]]</h4>
+	                        <div class="pd-details-social">
+	                            <a href="#"><i class="fa fa-facebook"></i></a>
+	                            <a href="#"><i class="fa fa-send"></i></a>
+	                            <a href="#"><i class="fa fa-star"></i></a>
+	                            <a href="#"><i class="fa fa-print"></i></a>
+	                            <a href="#"><i class="fa fa-cloud-download"></i></a>
 	                        </div>
-	                        </div>
-                       </div>
-                        
-                            <div class="pd-details-tab">
+                           <div class="property-more-pic" style="width:500px; height:500px;">
+                               <div class="product-pic-zoom">
+                                  
+                               </div>
+                           </div>
+                       </div>    
+                </div>
+                <div class="col-6">
+	                <div class="property-sidebar">
+	                   <h4>구매하기</h4>
+	                      <div class="sidebar-btn">
+	                      	<div class="bt-item">
+                                <input type="radio" name="kakaoPay" id="kakaoPay" >
+                                <label for="kakaoPay">Buy</label>
+                            </div>
+                            <div class="bt-item">
+                                <input type="radio" name="cartBtn" id="cartBtn">
+                                <label for="cartBtn">Cart</label>
+                            </div>
+                         </div>
+	                     <!-- 총 금액 표시 -->
+	                     <div id="packagePrice">
+	                        가격 : <span class="price">[[${info.price}]]</span>원
+	                     </div>
+	                     <div class="form-horizontal" style="text-align: left;">
+	                        <label>구매수량  </label> 
+	                        <select class="nice-select list form-control count" id="select_count" >
+	                           
+	                        </select>
+	                     </div>
+	                     <div class="selected_option" style="text-align: right;">
+	                     </div>
+	                     
+	                    </div>
+                </div>    
+               
+             </div>
+               <div>
+                   <input type="hidden" id="sessionAuthority" th:value="${session.sessionAuthority}">
+                   <button th:if="${session.sessionAuthority} != null and ${session.sessionAuthority} == 'A2'" type="button" class="btn btn-outline-dark" 
+               th:onclick="|location.href='@{/guide/packageUpdateForm(postId=${info.postId})}'|">수정</button>&nbsp;&nbsp;
+                </div>
+            <div>
+            <div class="pd-details-tab">
                             <div class="tab-item">
-                                <ul class="nav" role="tablist">
-                                    <li>
-                                        <a class="active" data-toggle="tab" href="#tab-1" role="tab">패키지 정보</a>
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                    	<a class="nav-link active" data-toggle="tab"  role="tab" aria-current="page" href="#tab-1">패키지 정보</a>
+                                    </li >
+                                    <li class="nav-item">
+                                    	<a class="nav-link" data-toggle="tab"  role="tab" href="#tab-2">패키지 내용</a>
                                     </li>
-                                    <li>
-                                        <a data-toggle="tab" href="#tab-2" role="tab">패키지 내용</a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tab" href="#tab-3" role="tab">문의 사항</a>
+                                    <li class="nav-item">
+                                    	<a class="nav-link" data-toggle="tab"  role="tab" href="#tab-3">문의 사항</a>
                                     </li>
                                 </ul>
                             </div>
                             <div class="tab-item-content">
                                 <div class="tab-content">
                                     <div class="tab-pane fade-in active" id="tab-1" role="tabpanel">
-                                        <div class="property-more-table">
-                                            <table class="left-table">
+                                        
+                                        <br>
+                                            <table class="table">
                                                 <tbody>
                                                     <tr>
-                                                        <td class="pt-name">Price</td>
+                                                        <th scope="row" class="pt-name">Price</th>
                                                         <td class="p-value">[[ ${info.price} ]]</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="pt-name">패키지 테마</td>
+                                                        <th scope="row" class="pt-name">패키지 테마</th>
                                                         <td class="p-value">[[ ${info.tourTheme} ]]</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="pt-name">여행 시작일</td>
+                                                        <th scope="row" class="pt-name">여행 시작일</th>
                                                         <td class="p-value">[[ ${#dates.format(info.startDate, 'yyyy년 MM월 dd일')} ]]</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="pt-name">여행 종료일</td>
+                                                        <th scope="row" class="pt-name">여행 종료일</th>
                                                         <td class="p-value">[[ ${#dates.format(info.endDate, 'yyyy년 MM월 dd일')} ]]</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="pt-name">모집 마감일</td>
+                                                        <th scope="row" class="pt-name">모집 마감일</th>
                                                         <td class="p-value">[[ ${#dates.format(info.deadlineDate, 'yyyy년 MM월 dd일')} ]]</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="pt-name">모집 인원</td>
+                                                        <th scope="row" class="pt-name">모집 인원</th>
                                                         <td class="p-value">[[ ${info.maxReservation} ]]</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="pt-name">현재 신청 인원</td>
+                                                        <th scope="row" class="pt-name">현재 신청 인원</th>
                                                         <td class="p-value">[[ ${info.nowReservation} ]]</td>
                                                     </tr>
-                                                </tbody>
-                                            </table>
-                                            <table class="right-table">
-                                                <tbody>
                                                     <tr>
-                                                        <td class="pt-name">모집 상태</td>
+                                                        <th scope="row" class="pt-name">모집 상태</th>
                                                         <td class="p-value">[[ ${info.completion} ]]</td>
                                                     </tr>
                                                    <tr>
-                                                        <td class="pt-name">가이드 이름</td>
+                                                        <th scope="row" class="pt-name">가이드 이름</th>
                                                         <td class="p-value">[[ ${info.name} ]]</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="pt-name">Contract type</td>
-                                                        <td class="p-value">Sale</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="pt-name">Beds</td>
-                                                        <td class="p-value">4</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="pt-name">Garages</td>
-                                                        <td class="p-value">2</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="pt-name">Home area</td>
-                                                        <td class="p-value">1200 sqft</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="pt-name">Gara Size</td>
-                                                        <td class="p-value">200 sqft</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                        </div>
+                                            <br>
+                                            <hr>
                                     </div>
                                     <div class="tab-pane fade" id="tab-2" role="tabpanel">
                                         <div class="pd-table-desc" th:utext="${info.content }" >
@@ -172,77 +185,34 @@ form {
                                     </div>
                                     <div class="tab-pane fade" id="tab-3" role="tabpanel">
                                         <div class="pd-table-amenities">
+                                        <br>
                                             <p><b>환불 규정</b><br>
-											<b>환불 가능한 기간:</b> 예약 취소 요청은 여행 출발 3일 전까지 가능합니다.<br><br>
-											
-											<b>환불 불가 기간:</b> 여행 출발일로부터 3일 이내에 예약을 취소하는 경우, 환불이 불가능합니다.<br><br>
-											
-											<b>환불 절차</b><br>
-											
-											여행 출발 3일 전까지 예약을 취소하신 경우, 원래 결제한 방법을 통해 환불이 처리됩니다.<br>
-											환불 처리에는 최대 7일의 처리 시간이 소요될 수 있습니다.<br><br>
-											
-											<b>환불 금액</b><br> 환불 금액은 다음과 같이 계산됩니다.<br><br>
-											
-											<b>여행 출발 3일 전까지 취소:</b> 결제 금액의 100% 환불<br>
-											<b>3일 이내 취소:</b> 환불 불가<br>
-											<b>환불 문의:</b> 환불에 관한 추가 문의 사항이나 지원이 필요한 경우, 문의하기 버튼을 클릭해주세요.<br>
-											</p>
+                                 <b>환불 가능한 기간:</b> 예약 취소 요청은 여행 출발 3일 전까지 가능합니다.<br><br>
+                                 
+                                 <b>환불 불가 기간:</b> 여행 출발일로부터 3일 이내에 예약을 취소하는 경우, 환불이 불가능합니다.<br><br>
+                                 
+                                 <b>환불 절차</b><br>
+                                 
+                                 여행 출발 3일 전까지 예약을 취소하신 경우, 원래 결제한 방법을 통해 환불이 처리됩니다.<br>
+                                 환불 처리에는 최대 7일의 처리 시간이 소요될 수 있습니다.<br><br>
+                                 
+                                 <b>환불 금액</b><br> 환불 금액은 다음과 같이 계산됩니다.<br><br>
+                                 
+                                 <b>여행 출발 3일 전까지 취소:</b> 결제 금액의 100% 환불<br>
+                                 <b>3일 이내 취소:</b> 환불 불가<br>
+                                 <b>환불 문의:</b> 환불에 관한 추가 문의 사항이나 지원이 필요한 경우, 문의하기 버튼을 클릭해주세요.<br>
+                                 </p>
                                         
                                         <div class="bt-item">
-			                                 <button type="button" name="question" id="question" >
-			                                 문의하기
-			                                 </button>
-			                            </div>
+                                          <button type="button" name="question" id="question" >
+                                          문의하기
+                                          </button>
+                                     </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
-                    <!--<div class="pd-desc">
-                            <h4>패키지 설명</h4>
-                            <div th:utext="${info.content }" class="contentStyle"></div>
-                        </div>-->
-                    </div>
-                </div>
-               <div class="col-lg-3">
-                    <div class="property-sidebar">
-                        <h4>구매하기</h4>
-                            <div class="sidebar-btn">
-                             
-                                <div class="bt-item">
-                                    <input type="radio" name="kakaoPay" id="kakaoPay" >
-                                    <label for="kakaoPay">Buy</label>
-                                </div>
-                                <div class="bt-item">
-                                    <input type="radio" name="cartBtn" id="cartBtn">
-                                    <label for="cartBtn">Cart</label>
-                                </div>
-                            </div>
-                          
-							
-							<!-- 총 금액 표시 -->
-						
-							<div id="packagePrice">
-								가격 : <span class="price">[[${info.price}]]</span>원
-							</div>
-							<div class="form-horizontal" style="text-align: left;">
-								<label>구매수량  </label> 
-								<select class="nice-select list form-control count" id="select_count" >
-								   
-								</select>
-							</div>
-							<div class="selected_option" style="text-align: right;">
-							</div>
-							
-                    </div>
-                </div>
-               <div>
-                   <input type="hidden" id="sessionAuthority" th:value="${session.sessionAuthority}">
-                   <button th:if="${session.sessionAuthority} != null and ${session.sessionAuthority} == 'A2'" type="button" class="btn btn-outline-dark" 
-               th:onclick="|location.href='@{/guide/packageUpdateForm(postId=${info.postId})}'|">수정</button>&nbsp;&nbsp;
-                </div>
             </div>
             <!-- 리뷰 -->
            <div class="review">
@@ -280,9 +250,8 @@ form {
                    </button>
                </div>
                <hr>
-           </div>   
+           </div>
         </div>
-        
               
     </section>
     <!-- Property Details Section End -->
@@ -318,6 +287,7 @@ form {
         </div>
         <input type="hidden" id="id" th:value="${session.sessionId}">
     </div>
+    
     <!-- Partner Carousel Section End -->
     
    
