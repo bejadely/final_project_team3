@@ -10,6 +10,8 @@
 <title>로그인 / 회원가입 폼 템플릿</title>
     <!--    <link rel="stylesheet" href="style.css"> -->
  <style>
+ 
+
 * {
     margin: 0;
     padding: 0;
@@ -28,9 +30,13 @@
     background-size: cover;
      position: relate; 
 }
+
+
+
+
 .form-wrap {
     width: 380px;
-    height: 480px;
+    height: 520px;
     position: relative;
     
  /*    margin: 6% auto; */
@@ -38,6 +44,7 @@
     background: #fff;
     padding: 5px;
     overflow: hidden;
+     border-radius: 30px;
 }
 .button-wrap {
     width: 300px;
@@ -58,6 +65,7 @@
 }
 
 #loginButton{ border-radius: 5px;
+margin:5px;
 margin-left: 5px; 
 }
 #btn {
@@ -127,13 +135,18 @@ span {
     left: 450px;
 } 
 
-#find {
-  text-align: center;
+
+#center{
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 10px 0;
 }
 
-#find a.property-sub {
-  display: inline-block;
+#center a {
+	font-size: 14px;
 }
+
 </style> 
 </head>
     <body>
@@ -153,17 +166,20 @@ span {
                     <input type="password"  class="input-field"name="password" placeholder="비밀번호" id="pw" ><!-- required  -->
              <!--        <input type="checkbox" class="checkbox"><span>Remember Password</span> -->
                             <font id="checkId" size="2"></font>
-             
-             <div id="find">
-                <a th:href="@{/findAccount}"class="">아이디 찾기</a>
-                 <span>&nbsp;|&nbsp;</span>
-           <a th:href="@{/findPassword}"class="property-sub">비밀번호 찾기</a>
-           </div>
-                <br/>
+             <div id="center">
+	             <div class="find">            
+	                <a th:href="@{/findAccount}"class="">아이디 찾기</a>
+	                <span>&nbsp;|&nbsp;</span>
+           			<a th:href="@{/findPassword}"class="property-sub">비밀번호 찾기</a>
+           			<span>&nbsp;|&nbsp;</span>
+           			<a th:href="@{/member/memberInsert}" class="property-sub">회원가입</a>
+	          	 </div>
+          	 </div>
+               
                 <br/>
                     <button type="submit" id='loginButton' class="submit"><b>일반 로그인</b></button>
                          <!--  SNS로그인 -->
-                      <div class="sns">
+                   <div class="sns">
                          <div class="social-icons">
                             <!--  카카오 API를 사용하여 OAuth 2.0 인증을 위한 URL -->             
                          <a  th:href="@{https://kauth.kakao.com/oauth/authorize?client_id=7a2faaf15ad43d8157f12b22e12d694d&redirect_uri=http://localhost:8787/member/kakaologin&response_type=code}">
@@ -172,24 +188,25 @@ span {
                           <a  th:href="@{${url}}"><img id="naver" src="/img/login/네이버로그인.png" height="50" alt="naver"   ></a>                     
                         </div>
                    </div>
-                         <a th:href="@{/member/memberInsert}"class="property-sub">회원가입</a>
-<!--                     <button  type="submit" class="submit" onclick="location.href='memberInsert'">회원가입</button>
- -->                </form>
+               </form>
                 
             <!--  가이드 로그인 -->
                  <form id="guide" action="/loginProc" method="post" class="input-group">      
                     <input type="text" class="input-field" name="memberId" placeholder="아이디" id="id1"><!-- required -->
                     <input type="password"  class="input-field"name="password" placeholder="비밀번호" id="pw1"><!-- required  -->  
                    		 <font id="checkId1" size="2"></font>    
-		             <div id="find">
-		             		 <a th:href="@{/findAccount}"class="property-sub">아이디 찾기</a>
-		              <span>&nbsp;|&nbsp;</span>
-		           			<a th:href="@{/findPassword}"class="property-sub">비밀번호 찾기</a>
-		          	 </div>
-		                <br/>
+		                          <div id="center">
+				             <div class="find">            
+				                <a th:href="@{/findAccount}"class="">아이디 찾기</a>
+				                <span>&nbsp;|&nbsp;</span>
+			           			<a th:href="@{/findPassword}"class="property-sub">비밀번호 찾기</a>
+			           			<span>&nbsp;|&nbsp;</span>
+			           			 <a th:href="@{/member/guideInsert}"class="property-sub">회원가입</a>
+				          	 </div>
+			          	 </div>            
 		                <br/>
 		                    <button type="submit" id='loginButton' class="submit" > <b>로그인</b></button>
-		            <a th:href="@{/member/guideInsert}"class="property-sub">회원가입</a>
+		            
                 </form>
                
             </div>
