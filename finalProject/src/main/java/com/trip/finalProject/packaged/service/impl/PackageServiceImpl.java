@@ -93,6 +93,19 @@ public class PackageServiceImpl implements PackageService {
 	}
 	
 	@Override
+	public List<PackageVO> searchPackageByLocation(PackageVO packageVO, PagingVO pagingVO) {
+		// TODO Auto-generated method stub
+		return packageMapper.searchPackageByLocation(packageVO, pagingVO);
+	}
+	
+	@Override
+	public int packageCountLocation(String keyword) {
+		// TODO Auto-generated method stub
+		return packageMapper.packageCountLocation(keyword);
+	}
+	
+	
+	@Override
 	public void packageUpdate(PackageVO packageVO) {
 		// TODO Auto-generated method stub
 		attachedFileMapper.delete(packageVO.getPostId());
@@ -230,6 +243,7 @@ public class PackageServiceImpl implements PackageService {
 
         return recentReviewInfo;
     }
+	
 
 	
 

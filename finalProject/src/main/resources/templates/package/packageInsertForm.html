@@ -216,6 +216,9 @@ ClassicEditor
             // 30일을 밀리초로 계산
             var thirtyDaysInMillis = 30 * 24 * 60 * 60 * 1000;
             
+            var minDeadlineDate = new Date(selectedStartDate);
+            minDeadlineDate.setDate(selectedStartDate.getDate() - 4);
+            
             if (selectedStartDate < currentDate) {
                 alert("여행 시작일은 오늘보다 이전일 수 없습니다.");
                 return false;
@@ -235,8 +238,10 @@ ClassicEditor
                 return false; // 폼 제출 중지
             }
             
-				
-	           
+            if (selectedDeadlineDate > minDeadlineDate) {
+                alert("여행 마감일은 여행 시작일의 최소 3일 전이어야 합니다.");
+                return false;
+            }  
 	            
 			var str="";
 			const data = editor.getData();

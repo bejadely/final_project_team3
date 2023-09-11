@@ -35,6 +35,7 @@ public class PackageVO {
 	private int nowReservation;
 	private String locationName;
 	private String deleteType;
+	private String calId;
 	
 	private List<AttachedFileVO> attachList;
 	private List<AttachedFileVO> editorAttachList;

@@ -91,16 +91,33 @@ public class PackageController {
 							  , @RequestParam( name = "cntPerPage", defaultValue = "5") Integer cntPerPage
 							  , Model model
 							  ,PackageVO packageVO) {
-		//전체 조회될 패키지 수
-		int total = packageService.packageCountTitle(keyword);
+		if(searchBy.equals("name")) {
+			
+			//전체 조회될 패키지 수
+			int total = packageService.packageCountTitle(keyword);
+			
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			model.addAttribute("area",packageService.getLocationList());
+			//제목으로 검색기능 수행
+			packageVO.setName(keyword);
+			List<PackageVO> list = packageService.searchPackageByTitle(packageVO, pagingVO);
+			model.addAttribute("packageList",list);
+			model.addAttribute("paging",pagingVO);
+		}else if(searchBy.equals("location")) {
+			int total = packageService.packageCountLocation(keyword);
+			
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			model.addAttribute("area",packageService.getLocationList());
+			//제목으로 검색기능 수행
+			packageVO.setLocationName(keyword);
+			List<PackageVO> list = packageService.searchPackageByLocation(packageVO, pagingVO);
+			model.addAttribute("packageList",list);
+			model.addAttribute("paging",pagingVO);
+		}
 		
-		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-		model.addAttribute("area",packageService.getLocationList());
-		//제목으로 검색기능 수행
-		packageVO.setName(keyword);
-		List<PackageVO> list = packageService.searchPackageByTitle(packageVO, pagingVO);
-		model.addAttribute("packageList",list);
-		model.addAttribute("paging",pagingVO);
+		
+		
+		
 		// 검색결과 기억을 위해 keyword와 searchBy 담기
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("searchBy", searchBy);
