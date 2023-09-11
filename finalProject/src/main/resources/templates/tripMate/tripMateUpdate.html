@@ -164,7 +164,7 @@ body {
     					<tr>
         					<th style="text-align: left; width: 20%;">예상 경비</th>
         					<td colspan="2">
-            					 <input type="text" id="mateExpense" name="mateExpense" size="30" style="width: 370px;" class="form-control" th:value="${tripMateVO.mateExpense}">
+            					 <input type="text" id="mateExpense" name="mateExpense" size="30" style="width: 370px;" class="form-control" th:value="${#numbers.formatInteger(tripMateVO.mateExpense, 0, 'COMMA')}">
         					</td>
         					<th style="text-align: left; width: 20%;">모집 인원</th>
         					<td colspan="2">
@@ -186,8 +186,10 @@ body {
 					
 						</ul>
 					</div>
+					<div align="left" style="width: 1230px;">
 					<div id="editor">
 						<th:textarea th:utext="${tripMateVO.mateContent}"></th:textarea>
+					</div>
 					</div>
         		</div>
         		<div style="margin-bottom: 20px;">
@@ -414,6 +416,8 @@ body {
 			//등록하기 클릭 시 등록할지 여부를 확인
 			if(confirm("수정 하시겠습니까?")){
 				formObj.append(str);
+				var formattedPrice = parseFloat($("#mateExpense").val().replace(/\,/g, '')); // 콤마 제거 및 숫자로 변환
+                document.getElementById("mateExpense").value=formattedPrice;
 				document.getElementById('editorForm').action = "/common/mateRecruitUpdate";
 				document.getElementById('editorForm').submit();
 				alert("수정 되었습니다.");
