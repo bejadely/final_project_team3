@@ -74,6 +74,10 @@
 		$('.clipBoard').on('mouseleave', removeLine);
 		$('.cheatConfirmLink').on('mouseover', underLine);
 		$('.cheatConfirmLink').on('mouseleave', removeLine);
+		
+		// 권한 요청 처리 결과 표출
+		printApproveResult([[${approveResult}]]);
+		printRejectResult([[${rejectResult}]]);
 	
 		// clipboard.js 복사 기능
 		var clipboard = new ClipboardJS('.clipBoard');
@@ -179,39 +183,46 @@
 	
 	}
 	
-	// 권한 요청 처리 결과 표출
-	printApproveResult([[${approveResult}]]);
-	printRejectResult([[${rejectResult}]]);
+	
 		
 	function printApproveResult(message){
 		
 		if(message == "success"){
+			
+
 			Swal.fire({
 				  icon: 'success',
 			      title: '승인이 완료되었습니다.',
-			    })	
+			    });	
+			    
 		}
 		else if (message == "fail") {
+			
 			Swal.fire({
 				  icon: 'error',
-			      title: '권한승인 요청 승인처리에 실패했습니다.\n다시 시도해주십시오.',
-			    })	
+			    title: '권한승인 요청 승인처리에 실패했습니다.\n다시 시도해주십시오.',
+			    });	
+			    
 		}
 	}
 	
 	function printRejectResult(message){
 		
 		if(message == "success"){
+			
 			Swal.fire({
 				  icon: 'success',
 			      title: '반려처리가 완료되었습니다.',
 			    })	
+			    
 		}
 		else if (message == "fail") {
+			
 			Swal.fire({
 				  icon: 'error',
 				  title: '권한승인 요청 반려처리에 실패했습니다.\n다시 시도해주십시오.',
 			    })	
+			    
 		}
 	}
 		
