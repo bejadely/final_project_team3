@@ -6,20 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script>
-/* $(document).ready(function () {
-	var formObj = $(".sidebar-search");
-	
-	$("button[type='submit']").on("click",function(event){
-		var str='';
-		var sigunguCode = $("#location > option:selected").attr("value1");
-		var areaCode = $("#location > option:selected").attr("value2");
-		str+=`<input type='hidden' name='sigunguCode' value='${sigunguCode}'>
-			 <input type ='hidden' name = 'areaCode' value='${areaCode}'>`
-		formObj.append(str);
-	});
-}); */
-</script>
+
 <style>
 .room-features{
 	list-style: none;
@@ -40,13 +27,13 @@
 	<div class="row justify-content-end">
 	<div class="col-5">
 		<form action="/searchPackage">
-		
 				<select id="searchBy" name="searchBy">
-					<option value="name">이름으로 검색</option>
+					<option value="name">패키지 명으로 검색</option>
+					<option value="location">지역으로 검색</option>
 				</select>&nbsp;
 				<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요." style="height: 40px; width: 200px;">
 				<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-					<button th:if="${session.sessionAuthority} != null and ${session.sessionAuthority} == 'A2'" type="button" class="btn btn-outline-dark" 
+				<button th:if="${session.sessionAuthority} != null and ${session.sessionAuthority} == 'A2'" type="button" class="btn btn-outline-dark" 
 				th:onclick="|location.href='@{/guide/packageInsertForm}'|">패키지 등록</button>
 		</form>
 		</div>
@@ -125,14 +112,14 @@
 							<th:block th:if="${p eq paging.nowPage}">
 								<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
 							</th:block>
-							<th:block th:if="${p ne paging.nowPage}">
+							<th:block th:if="${p ne paging.nowPage and p>0}">
 								<a th:href="@{packageList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
 							</th:block>
 						</th:block>
 						<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
 							<a th:href="@{packageList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 						</th:block>
-						<th:block th:if="${paging.nowPage != paging.lastPage}">
+						<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
 							<a th:href="@{packageList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
 						</th:block>
 					</div>
@@ -150,14 +137,14 @@
 							<th:block th:if="${p eq paging.nowPage}">
 								<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
 							</th:block>
-							<th:block th:if="${p ne paging.nowPage}">
+							<th:block th:if="${p ne paging.nowPage and p > 0}">
 								<a th:href="@{searchPackage(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
 							</th:block>
 						</th:block>
 						<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
 							<a th:href="@{searchPackage(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
 						</th:block>
-						<th:block th:if="${paging.nowPage != paging.lastPage}">
+						<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
 							<a th:href="@{searchPackage(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
 						</th:block>
 					</div>
@@ -168,6 +155,44 @@
 </div>
 <!-- Property Section End -->
 
+<script th:inline="javascript" type="text/javascript">
+$(document).ready(function() {
+	// 이벤트 설정
+	$('#searchButton').on('click', search);
+	
+	rememberKeyword();
+
+// 조건검색기능
+function search(event){
+	let value = $('#searchBy').val();
+	let keyword = $('#keyword').val().trim();
+	
+	if(!keyword.replace(/^\s+|\s+$/g, '')){
+		Swal.fire({
+			  icon: 'warning',
+		      title: '키워드를 입력해주세요.',
+		    })
+		    return;
+	}
+	
+	location.href='/searchPackage?searchBy='+value+'&keyword='+keyword;
+	rememberKeyword();
+}
+
+// 검색 기록 기억
+function rememberKeyword(){
+	// 우리가 실제로 만든 셀렉트 박스의 option을 selected 설정
+	$('#searchBy').val([[${searchBy}]]).prop("selected", true);
+		      
+	// 우리가 실제로 만든 셀렉트 박스의 변경값을 나이스 셀렉트 박스에 업데이트
+	$('select').niceSelect('update');
+		      
+	// 검색어 입력창의 값 유지
+	$('#keyword').val([[${keyword}]]);
+}
+
+});
+</script>
 
 </body>
 </html>
