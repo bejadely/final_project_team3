@@ -12,12 +12,14 @@ import com.trip.finalProject.calculation.mapper.CalculationMapper;
 import com.trip.finalProject.calculation.service.CalculationService;
 import com.trip.finalProject.calculation.service.CalculationVO;
 import com.trip.finalProject.common.PagingVO;
-
-@Service
+import com.trip.finalProject.security.service.AesProcessor;@Service
 public class CalculationServiceImpl implements CalculationService {
 	
 	@Autowired
 	CalculationMapper calculationMapper;
+	
+	@Autowired
+	AesProcessor aesProcessor;
 	
 	// 미정산 내역 전체 조회
 	@Override
@@ -29,6 +31,20 @@ public class CalculationServiceImpl implements CalculationService {
 		
 		// 미정산 내역 전체 조회
 		List<CalculationVO> list = calculationMapper.selectNotCalList(pagingVO);
+		
+		// 복호화
+				for(CalculationVO vo : list) {
+					
+					String decodedAccountNum = "";
+					try {
+						decodedAccountNum = aesProcessor.aesCBCDecode(vo.getAccountNumber());
+						vo.setAccountNumber(decodedAccountNum); 
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+				}
+		
 		
 		// 컨트롤러에 값을 보내기 위한 Map 생성
 		Map<String, Object> map = new HashMap<String, Object>();

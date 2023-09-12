@@ -155,7 +155,7 @@
 	     									<div id="modalData">
 	     										<div class="text-center">
            											<br>
-               										<h3>여행 메이트 글 등록</h3>
+               										<h3>여행기록 글 등록</h3>
                										<br>
         										</div>
         										<div id="ls" class="text-center">
@@ -241,6 +241,7 @@
                             	<img th:unless="${not #strings.isEmpty(tripInfo.loadingImg)}" th:src="@{/img/no-image.png}">
 							</div>
 							<div class="sb-text">
+							<div align="center">
 								<ul>
 									<li>
 										<i class="fa fa-user"></i>
@@ -261,6 +262,15 @@
 									<a th:text="${tripInfo.tripTitle}"></a>
 								</h5>
 							</div>
+							<div align="center">
+								<ul>
+									<li>
+									<span class="fa" th:text="${#dates.format(tripInfo.startDay, 'yy년 MM월 dd일')}"></span>
+									~ <span class="fa" th:text="${#dates.format(tripInfo.endDay, 'yy년 MM월 dd일')}"></span>
+									<br>
+									</li>
+								</ul>
+							</div>
 						</div>
 					</div>
 					<th:block th:if="${#lists.isEmpty(tripRecordList)}">
@@ -272,6 +282,7 @@
 						</div>
 					</th:block>
 				</div>
+			</div>
 			</div>
 			<!-- 페이징 구문 -->
 			<!-- 검색키워드가 없을때 -->
@@ -424,7 +435,6 @@
 	$("#buttonWrap").click(function() {
 		//모달창 띄우기
 		modal.style.display = 'block';
-		//데이터값 가져와서 ajax 통신
 		var memberId = [[${session.sessionId}]];
 
 		if(memberId != null){
