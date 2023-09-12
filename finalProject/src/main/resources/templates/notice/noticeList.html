@@ -53,15 +53,7 @@ section.notice {
 	border-width: 1px;
 }
 
-#board-search .search-window .search-wrap .btn {
-	position: absolute;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	width: 108px;
-	padding: 0;
-	font-size: 16px;
-}
+
 
 .board-table {
 	font-size: 13px;
@@ -115,7 +107,7 @@ section.notice {
 	display: none;
 }
 
-.btn {
+/* .btn {
 	display: inline-block;
 	padding: 0 30px;
 	font-size: 15px;
@@ -141,9 +133,13 @@ section.notice {
 	-ms-transition: all 0.3s;
 	-o-transition: all 0.3s;
 	transition: all 0.3s;
+} */
+
+.btn{
+border-radius: 20px;
 }
 
-.btn-dark {
+/* .btn-dark {
 	background: #555;
 	color: #fff;
 }
@@ -163,7 +159,7 @@ section.notice {
 	background: #373737;
 	border-color: #373737;
 	color: #fff;
-}
+} */
 
 /* reset */
 * {
@@ -265,11 +261,13 @@ section.notice {
 	padding-right: 20%;
 } 
 </style>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@alphardex/aqua.css/dist/aqua.min.css">
 
 </head>
 
 
 <body>
+
 
 	<section class="notice">
 		<div class="page-title">
@@ -477,7 +475,7 @@ section.notice {
 
 
 			<div class="bt_wrap">		
-				<a href="/admin/noticeWrite" class="btn btn-primary submitButton" th:if="${session.sessionAuthority} == 'A3'">등록&nbsp;</a>
+				<a href="/admin/noticeWrite" class="btn btn-primary btn-ghost " th:if="${session.sessionAuthority} == 'A3'">등록</a>
 <!-- 				 <input type="button" th:if="${session.sessionAuthority} == 'A3'" value="등록" onclick="location.href='/noticeWrite'" class="btn btn-secondary">					
  -->			</div>
 		</div>
