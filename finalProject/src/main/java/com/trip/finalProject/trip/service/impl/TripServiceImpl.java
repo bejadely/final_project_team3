@@ -232,13 +232,17 @@ public class TripServiceImpl implements TripService {
 		return tripMapper.selectMapData(tripVO);
 	}
 
-
 	//여행경로 삭제
 	@Override
 	public int deleteTripMapping(TripVO tripVO) {
 		return tripMapper.deleteTripMapping(tripVO);
 	}
 
+	//여행후기 등록
+	@Override
+	public int insertTripReview(TripVO tripVO) {
+		return tripMapper.insertTripReview(tripVO);
+	}
 	
 
 }

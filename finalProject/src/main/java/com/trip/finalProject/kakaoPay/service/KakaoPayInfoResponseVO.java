@@ -8,6 +8,8 @@ import lombok.Data;
 @Data
 public class KakaoPayInfoResponseVO {
 	 private String paymentId;
+	 
+	 
 	 private String postId;
 	 private String memberId;
 	 private int price;
@@ -15,8 +17,8 @@ public class KakaoPayInfoResponseVO {
 	 private String orderStatus;
 	 private String orderDetailId;
 	 private String specialtyType;
-	 private String nowReservation;
-	 private String maxReservation;
+	 private int nowReservation;
+	 private int maxReservation;
 	 private String tid; // 결제 고유 번호
 	 private String cid; // 가맹점 코드
 	 private String status; // 결제 상태

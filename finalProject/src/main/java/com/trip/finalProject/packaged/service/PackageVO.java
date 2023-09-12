@@ -35,10 +35,12 @@ public class PackageVO {
 	private int nowReservation;
 	private String locationName;
 	private String deleteType;
+	private String calId;
 	
 	private List<AttachedFileVO> attachList;
 	private List<AttachedFileVO> editorAttachList;
-	
+	private List<PackageVO> calculateList;
+	private List<PackageVO> getCalculateList;
 	private String calStatus;
 	//멤버 테이블 정보
 	private String memberId;

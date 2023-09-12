@@ -345,12 +345,12 @@ ClassicEditor
  
 				
 			    //등록하기 클릭 시 등록할지 여부를 확인
-			    if(confirm("등록 하시겠습니까?")){
+			    if(confirm("수정 하시겠습니까?")){
 			    	var formattedPrice = parseFloat($("#price").val().replace(/\,/g, '')); // 콤마 제거 및 숫자로 변환
 			    	formObj.append(str);
 			       document.getElementById('editorForm').action = "/guide/packageUpdate";
 			       document.getElementById('editorForm').submit();
-			       alert("등록 되었습니다.");
+			       alert("수정 되었습니다.");
 			            return;
 			        }else{
 			        	return false;
@@ -569,8 +569,9 @@ function setDefaultTourTheme(){
 		<div id="editor">
 			<th:textarea th:utext="${info.content}"></th:textarea>
 		</div>
-		<input type="button" class="btn btn-primary mt-3 mx-2" value="작성완료" >
-		<button type="button" class="btn btn-secondary mt-3 mx-2" id="cancelBtn">작성취소</button>
+		<input type="button" class="btn btn-primary mt-3 mx-2" value="수정완료" >
+		<button type="button" class="btn btn-secondary mt-3 mx-2" id="cancelBtn">설명글 삭제</button>
+		<button type="button" class="btn btn-secondary mt-3 mx-2" onclick="location.href='/packageInfo?postId=${info.postId}'">목록으로</button>
 	</form>
 </div>
 
