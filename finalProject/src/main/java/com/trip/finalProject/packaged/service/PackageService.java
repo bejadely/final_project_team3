@@ -57,6 +57,10 @@ public interface PackageService {
 
 	public void packageUpdate(PackageVO packageVO);
 
+	public List<PackageVO> searchPackageByLocation(PackageVO packageVO, PagingVO pagingVO);
+
+	public int packageCountLocation(String keyword);
+
 	
 
 	
