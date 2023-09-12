@@ -158,7 +158,9 @@
 			   end_day,
 			   regist_day,
 			   post_id,
-			   hit
+			   hit,
+			   trip_save,
+			   trip_review_post
 		FROM trip_record
 		WHERE post_id = #{postId}
 	</select>
@@ -339,6 +341,15 @@
 			<if test="tripDisclose != null and !tripDisclose.equals('')">
 				trip_disclose = #{tripDisclose},
 			</if>
+		</set>
+		WHERE post_id = #{postId}
+	</update>
+	
+	<!--여행후기 등록 -->
+	<update id="insertTripReview" parameterType="TripVO">
+		UPDATE trip_record
+		<set>
+			trip_review_post = #{tripReviewPost}
 		</set>
 		WHERE post_id = #{postId}
 	</update>

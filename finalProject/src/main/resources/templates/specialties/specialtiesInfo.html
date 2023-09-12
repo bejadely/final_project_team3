@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="@{layouts/default_layout}">
+   xmlns:th="http://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="@{layouts/default_layout}">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
 <style>
 form {
-	text-align: center;
+   text-align: center;
 }
 
 .contentStyle{
-	width:400px;
-	height:400px;
-	margin: 0 auto;
+   width:400px;
+   height:400px;
+   margin: 0 auto;
 }
 .pt img{
-	width:200px;
-	height:200px;
+   width:200px;
+   height:200px;
 }
 </style>
 
@@ -220,17 +220,16 @@ form {
             </div>
             <hr>
            
-        </div>	
-        		
-             </div>
+        </div>   
              <input type="hidden" id="id" th:value="${session.sessionId}">
         </div>
-        		
+              
     </section>
     <!-- Property Details Section End -->
 
 
 <script>
+
 
 
 	var content = '[[${info.content }]]';
@@ -248,7 +247,9 @@ form {
 					}
 					else{
 						str2+=`<div class="pt" data-imgbigurl="${attach.loadingImg}"><img
+
                             src="${attach.loadingImg}" alt=""></div>`
+
 					}
 				});
 				$(".product-pic-zoom").html(str);
@@ -287,6 +288,8 @@ form {
 			}else{
 				finalPrice = price * count;
 			}
+
+
 
 			str += '<p><label>수량 : </label><span class="count">&nbsp;' + count + '</span>&nbsp;&nbsp;&nbsp;<br>';	
 	
@@ -348,6 +351,8 @@ form {
 	        }); 
 	    });
 
+
+
 	    document.getElementById('cartBtn').addEventListener('click',function(){
 	    	let totalAmount = parseInt($("span.finalPrice").text());
 	        let orderName = "[[ ${info.title} ]]";
@@ -400,194 +405,194 @@ form {
                 callback(null);
             })
         }
-	    
-	    function appendPackageDetailInfoReview(data, postId) {
-	        $('#reviewCount').text(data.totalCount + '개의 리뷰');
-	        $('#reviewCount').data('totalCount', data.totalCount);
-	        if(data.totalCount == 0) {
-	            $('#moreReview').addClass('disabled');
-	        }
-	        $('#moreReview').data('postId', postId);
-	
-	        if(data.packageDetailReviewVoList.length > 0) {
-	            appendReview(data.packageDetailReviewVoList, postId);
-	        }
-	    }
-	
-	    //모달창 리뷰 페이징
-	    $(document).on('click', '#moreReview', function () {
-	        let page = $(this).data('page');
-	
-	        page = Number(page)+1;
-	
-	        $.ajax({
-	            type: 'GET',
-	            url: '/packageReview',
-	            data: {
-	                'postId' : postId,
-	                'page' : page
-	            }
-	        })
-	        .done(function(data, textStatus, jqXHR) {
-	            console.log('done');
-	
-	            appendReview(data, postId);
-	            changeInfoMoreReviewButton(page);
-	        })
-	        .fail(function(jqXHR, textStatus, errorThrown) {
-	            console.log('fail');
-	
-	        })
-	    });
-	
-	    function appendReview(data, postId) {
-	        let node = ``;
-	        for(let i = 0; i < data.length; i++) {
-	            let stars = '';
-	            for(let j = 1; j <= 5; j++) {
-	                if(j <= data[i].grade) {
-	                    stars += '★';
-	                } else {
-	                    stars += '☆';
-	                }
-	            }
-	
-	            let date = data[i].writeDate.substring(0,10);
-	
-	            node += `
-	                <div class="review-content">
-	                    <p>
-	                        <span class="writerId">${data[i].writerId}</span>
-	                        <span class="grade">${stars}</span>
-	                        <span class="writeDate" style="float: right;">${date}&emsp;
-	                            <button type="button" class="btn btn-secondary btn-sm deleteReview" data-content-id="${postId}" data-review-id="${data[i].reviewId}">삭제</button>
-	                        </span>
-	                        <br>
-	                        <span class="content">${data[i].content}</span>
-	                    </p>
-	                </div>
-	            `;
-	        }
-	        $('#afterReview').before(node);
-	    }
-	
-	    function changeInfoMoreReviewButton(page) {
-	        $('#moreReview').data('page', page);
-	
-	        let totalCount = $('#reviewCount').data('totalCount');
-	        let reviewCount = $('.review-content').length;
-	
-	        if(totalCount == reviewCount) {
-	            $('#moreReview').addClass('disabled');
-	        }
-	    }
-	
-	    //리뷰 등록
-	    $(document).on('click', '#addReview', function() {
-	        let contentId = $('#moreReview').data('postId');
-	
-	        let checkedgrade = $('input[name=inlineRadioOptions]:checked').val();
-	        if(checkedgrade == null) {
-	            alert("점수를 체크해주세요.");
-	            return;
-	        }
-	
-	        let reviewContent = $('#reviewInput').val();
-	        if(reviewContent == null|| reviewContent.replaceAll(' ', '') == '') {
-	            alert("내용을 입력해주세요.");
-	            return;
-	        }
-	        //  ajax 들어가서 로그인 되어있는지 먼저 확인 - 안되면 바로 fail throw new Exception(); 예외 일부러 발생시켜주기
-	        $.ajax({
-	            type: 'POST',
-	            url: '/common/packageReview',
-	            data : {
-	                'grade' : checkedgrade,
-	                'content' : reviewContent,
-	                'originPostId' : postId
-	            }
-	        })
-	        .done(function (data, textStatus, jqXHR){
-	            console.log('done');
-	
-	            //  data는 totalCount이고, x개의 리뷰를 바꿔야함
-	            $('#reviewCount').text(data.totalCount + '개의 리뷰');
-	            $('#reviewCount').data('totalCount', data.totalCount);
-	
-	            $('.review-content').remove();
-	            appendReview(data.recentReviewList, postId);
-	
-	            changeInfoMoreReviewButton(1);
-	            clearInput();
-	
-	            alert('리뷰가 등록되었습니다.');
-	        })
-	        .fail(function (jqXHR, textStatus, errorThrown) {
-	            console.log('fail');
-	
-	            let errorMessage = JSON.parse(jqXHR.responseText).message;
-	            if(errorMessage == 'no login') {
-	                alert('로그인을 해주세요.');
-	            } else if(errorMessage == 'not insert') {
-	                alert('리뷰가 등록되지 않았습니다.');
-	            }
-	        })
-	
-	    })
-	
-	    //리뷰 삭제
-	    $(document).on('click', '.deleteReview', function() {
-	
-	        let writerId = $(this).parent().siblings('.writerId').text();
-	        let reviewId = $(this).data('reviewId');
-	        //  ajax로 가서 session에 저장된 아이디랑 writerId랑 같은지 확인 - 같지 않다면 fail 
-	        $.ajax({
-	            type: 'DELETE',
-	            url: "/common/packageReview",
-	            data: {
-	                'postId' : postId,
-	                'writerId' : writerId,
-	                'reviewId' : reviewId
-	            }
-	        })
-	        .done(function (data, textStatus, jqXHR){
-	            console.log('done');
-	
-	            $('#reviewCount').text(data.totalCount + '개의 리뷰');
-	            $('#reviewCount').data('totalCount', data.totalCount);
-	
-	            $('.review-content').remove();
-	            appendReview(data.recentReviewList, postId);
-	
-	            changeInfoMoreReviewButton(1);
-	
-	            alert('리뷰가 삭제되었습니다.');
-	        })
-	        .fail(function (data, textStatus, jqXHR) {
-	            console.log('fail');
-	
-	            let errorMessage = JSON.parse(jqXHR.responseText).message;
-	            if(errorMessage == 'no login') {
-	                alert('로그인을 해주세요.');
-	            } else if(errorMessage == 'not same') {
-	                alert('본인의 리뷰만 삭제할 수 있습니다.');
-	            } else if(errorMessage == 'not delete') {
-	                alert('리뷰가 삭제되지 않았습니다.');
-	            }
-	        })
-	
-	    })
-	
-	    function clearInput() {
-	        $('#reviewInput').val('');
-	        $('#inlineRadio5').prop('checked', true);
-	    }
-	    
-	    document.getElementById('question').addEventListener('click',function(){
-			 console.log("asdsad");
-			 location.href="/common/memberQueForm?productId="+'[[${info.postId}]]'
-		 })
-		 
+       
+       function appendPackageDetailInfoReview(data, postId) {
+           $('#reviewCount').text(data.totalCount + '개의 리뷰');
+           $('#reviewCount').data('totalCount', data.totalCount);
+           if(data.totalCount == 0) {
+               $('#moreReview').addClass('disabled');
+           }
+           $('#moreReview').data('postId', postId);
+   
+           if(data.packageDetailReviewVoList.length > 0) {
+               appendReview(data.packageDetailReviewVoList, postId);
+           }
+       }
+   
+       //모달창 리뷰 페이징
+       $(document).on('click', '#moreReview', function () {
+           let page = $(this).data('page');
+   
+           page = Number(page)+1;
+   
+           $.ajax({
+               type: 'GET',
+               url: '/packageReview',
+               data: {
+                   'postId' : postId,
+                   'page' : page
+               }
+           })
+           .done(function(data, textStatus, jqXHR) {
+               console.log('done');
+   
+               appendReview(data, postId);
+               changeInfoMoreReviewButton(page);
+           })
+           .fail(function(jqXHR, textStatus, errorThrown) {
+               console.log('fail');
+   
+           })
+       });
+   
+       function appendReview(data, postId) {
+           let node = ``;
+           for(let i = 0; i < data.length; i++) {
+               let stars = '';
+               for(let j = 1; j <= 5; j++) {
+                   if(j <= data[i].grade) {
+                       stars += '★';
+                   } else {
+                       stars += '☆';
+                   }
+               }
+   
+               let date = data[i].writeDate.substring(0,10);
+   
+               node += `
+                   <div class="review-content">
+                       <p>
+                           <span class="writerId">${data[i].writerId}</span>
+                           <span class="grade">${stars}</span>
+                           <span class="writeDate" style="float: right;">${date}&emsp;
+                               <button type="button" class="btn btn-secondary btn-sm deleteReview" data-content-id="${postId}" data-review-id="${data[i].reviewId}">삭제</button>
+                           </span>
+                           <br>
+                           <span class="content">${data[i].content}</span>
+                       </p>
+                   </div>
+               `;
+           }
+           $('#afterReview').before(node);
+       }
+   
+       function changeInfoMoreReviewButton(page) {
+           $('#moreReview').data('page', page);
+   
+           let totalCount = $('#reviewCount').data('totalCount');
+           let reviewCount = $('.review-content').length;
+   
+           if(totalCount == reviewCount) {
+               $('#moreReview').addClass('disabled');
+           }
+       }
+   
+       //리뷰 등록
+       $(document).on('click', '#addReview', function() {
+           let contentId = $('#moreReview').data('postId');
+   
+           let checkedgrade = $('input[name=inlineRadioOptions]:checked').val();
+           if(checkedgrade == null) {
+               alert("점수를 체크해주세요.");
+               return;
+           }
+   
+           let reviewContent = $('#reviewInput').val();
+           if(reviewContent == null|| reviewContent.replaceAll(' ', '') == '') {
+               alert("내용을 입력해주세요.");
+               return;
+           }
+           //  ajax 들어가서 로그인 되어있는지 먼저 확인 - 안되면 바로 fail throw new Exception(); 예외 일부러 발생시켜주기
+           $.ajax({
+               type: 'POST',
+               url: '/common/packageReview',
+               data : {
+                   'grade' : checkedgrade,
+                   'content' : reviewContent,
+                   'originPostId' : postId
+               }
+           })
+           .done(function (data, textStatus, jqXHR){
+               console.log('done');
+   
+               //  data는 totalCount이고, x개의 리뷰를 바꿔야함
+               $('#reviewCount').text(data.totalCount + '개의 리뷰');
+               $('#reviewCount').data('totalCount', data.totalCount);
+   
+               $('.review-content').remove();
+               appendReview(data.recentReviewList, postId);
+   
+               changeInfoMoreReviewButton(1);
+               clearInput();
+   
+               alert('리뷰가 등록되었습니다.');
+           })
+           .fail(function (jqXHR, textStatus, errorThrown) {
+               console.log('fail');
+   
+               let errorMessage = JSON.parse(jqXHR.responseText).message;
+               if(errorMessage == 'no login') {
+                   alert('로그인을 해주세요.');
+               } else if(errorMessage == 'not insert') {
+                   alert('리뷰가 등록되지 않았습니다.');
+               }
+           })
+   
+       })
+   
+       //리뷰 삭제
+       $(document).on('click', '.deleteReview', function() {
+   
+           let writerId = $(this).parent().siblings('.writerId').text();
+           let reviewId = $(this).data('reviewId');
+           //  ajax로 가서 session에 저장된 아이디랑 writerId랑 같은지 확인 - 같지 않다면 fail 
+           $.ajax({
+               type: 'DELETE',
+               url: "/common/packageReview",
+               data: {
+                   'postId' : postId,
+                   'writerId' : writerId,
+                   'reviewId' : reviewId
+               }
+           })
+           .done(function (data, textStatus, jqXHR){
+               console.log('done');
+   
+               $('#reviewCount').text(data.totalCount + '개의 리뷰');
+               $('#reviewCount').data('totalCount', data.totalCount);
+   
+               $('.review-content').remove();
+               appendReview(data.recentReviewList, postId);
+   
+               changeInfoMoreReviewButton(1);
+   
+               alert('리뷰가 삭제되었습니다.');
+           })
+           .fail(function (data, textStatus, jqXHR) {
+               console.log('fail');
+   
+               let errorMessage = JSON.parse(jqXHR.responseText).message;
+               if(errorMessage == 'no login') {
+                   alert('로그인을 해주세요.');
+               } else if(errorMessage == 'not same') {
+                   alert('본인의 리뷰만 삭제할 수 있습니다.');
+               } else if(errorMessage == 'not delete') {
+                   alert('리뷰가 삭제되지 않았습니다.');
+               }
+           })
+   
+       })
+   
+       function clearInput() {
+           $('#reviewInput').val('');
+           $('#inlineRadio5').prop('checked', true);
+       }
+       
+       document.getElementById('question').addEventListener('click',function(){
+          console.log("asdsad");
+          location.href="/common/memberQueForm?productId="+'[[${info.postId}]]'
+       })
+       
 </script>
 </div>
 </body>

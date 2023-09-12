@@ -90,4 +90,7 @@ public interface TripService {
 	//여행경로 데이터 조회
 	public List<TripVO> getMapData(TripVO tripVO);
 	
+	//여행후기 등록
+	public int insertTripReview(TripVO tripVO);
+	
 }
