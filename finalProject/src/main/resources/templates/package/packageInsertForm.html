@@ -271,10 +271,9 @@ ClassicEditor
 				pahts = jobj.data("path").split("/upload");
 				resultPath = pahts[0];
 			});
-			str +="<input type='text' name='content' value='"+combinedData.content+"'>";
+			str +="<input type='hidden' name='content' value='"+combinedData.content+"'>";
 			
 			const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));
-			console.log(combinedData.content);
 			
 			
 			const filenames = imgTags.map(img=> {
