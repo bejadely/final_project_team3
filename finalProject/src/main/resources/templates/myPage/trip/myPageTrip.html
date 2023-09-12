@@ -14,64 +14,52 @@
 	<link
 		href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900&display=swap"
 		rel="stylesheet">
-	<style type="text/css">
-	.toggle {
-	    position: relative;
-	    display: inline-block;
-	    width: 48px;
-	    height: 24px;
-	}
-	
-	.toggle input {
-	    display: none;
-	}
-	
-	.toggle label {
-	    display: block;
-	    width: 100%;
-	    height: 100%;
-	    position: relative;
-	    cursor: pointer;
-	    background-color: #dedede;
-	    border-radius: 1em;
-	    transition: background-color 0.25s ease;
-	}
-	
-	.toggle label::before,
-	.toggle label::after {
-	    content: "";
-	    display: block;
-	    position: absolute;
-	    cursor: pointer;
-	}
-	
-	.toggle label::before {
-	    width: 100%;
-	    height: 100%;
-	    background-color: inherit;
-	    border-radius: inherit;
-	}
-	
-	.toggle label::after {
-	    content: "";
-	    top: 0;
-	    left: 0;
-	    width: 20px;
-	    height: 20px;
-	    border-radius: 50%;
-	    background-color: #fff;
-	    box-shadow: 0 0 4px rgba(0, 0, 0, 0.45);
-	    transition: left 0.25s ease;
-	}
-	
-	.toggle input:checked + label::before {
-	    background-color: skyblue;
-	}
-	
-	.toggle input:checked + label::after {
-	    left: 24px;
-	}
-	
+<style type="text/css">
+.center-toggle {
+    display: flex;
+    justify-content: center;
+}
+
+.toggleSwitch {
+    width: 60px;
+    height: 30px;
+    display: block;
+    position: relative;
+    border-radius: 15px;
+    background-color: #fff;
+    box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+}
+
+.toggleSwitch .toggleButton {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 50%;
+    left: 3px;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    background: #2cbdb8;
+    transition: left 0.2s ease-in, background 0.2s ease-in;
+}
+
+
+/* 나머지 스타일은 그대로 유지됩니다 */
+
+
+input[type="checkbox"] {
+  display: none;
+}
+
+input[type="checkbox"]:checked + .toggleSwitch .toggleButton {
+  left: calc(100% - 45%);
+  background: #fff;
+}
+
+input[type="checkbox"]:checked + .toggleSwitch {
+  background: #2cbdb8;
+}
+
 	</style>
 	<script type="text/javascript">
 	function pageChange(str){
@@ -98,37 +86,55 @@
 		       window.location.href = prevPageUrl; // 자동으로 이동
 		   }
 		   
-		   $('.toggle input[type="checkbox"]').on('click', function() {
-		        var isChecked = $(this).prop('checked'); // 클릭한 토글의 체크 상태 가져오기
+		    $('.center-toggle input[type="checkbox"]').on('click', function() {
+		        var isChecked = $(this).prop('checked'); 
 		        var postId = $(this).val();
+		        console.log(postId)
+		        
 		        var tripDisclose = '';
-		        if(isChecked == true){
-		        	tripDisclose = 'O1';
-		        }else if(isChecked == false){
-		        	tripDisclose = 'O2';
-		        }
-		        console.log(tripDisclose) ;
-		        
-		        let obj={
-		        		postId : postId,
-		        		tripDisclose : tripDisclose
-		        }
-		        
-		        $.ajax({
-		        	url:'/common/discloseUpdate',
-		        	type: 'post',
-		        	data : obj
-		        	}).done(data => {
-		        		
-		            }).fail(reject => console.log(reject));
-		        
-		        var row = $(this).closest('tr'); // 클릭한 토글이 속한 행 선택
 		        if (isChecked) {
-		            row.addClass('checked'); // 체크되었을 경우 해당 행에 클래스 추가
+		            tripDisclose = 'O1';
 		        } else {
-		            row.removeClass('checked'); // 체크 해제되었을 경우 해당 행에서 클래스 제거
+		            tripDisclose = 'O2';
+		        }
+		        console.log(tripDisclose);
+
+		        let obj = {
+		            postId: postId,
+		            tripDisclose: tripDisclose
+		        };
+
+		        $.ajax({
+		            url: '/common/discloseUpdate',
+		            type: 'post',
+		            data: obj
+		        }).done(data => {
+
+		        }).fail(reject => console.log(reject));
+
+		        var row = $(this).closest('tr');
+		        if (isChecked) {
+		            row.addClass('checked');
+		        } else {
+		            row.removeClass('checked');
 		        }
 		    });
+		   
+		   $("#delete").click(function(){
+			   var postId = $(this).closest('tr').find('input[name="toggle1"]').val();
+		        console.log('postId: ' + postId);		   
+   				Swal.fire({
+				showCancelButton: true,
+		       	title: '삭제 하시겠습니까?',
+				    icon: 'question',
+					confirmButtonText: '확인',
+					cancelButtonText: '취소',
+			    }).then((firstResult) => {
+			    	if(firstResult.value == true){
+				     	location.href="/common/tripRecordDelete?postId=" + postId;
+			    	}
+				})
+		   })
 		   		   
 		    $('.reportInfo').on('mouseover', colorDarker)
 			.on('mouseleave', colorReset)
@@ -186,12 +192,13 @@
 								[[${#dates.format(trip.startDay, 'yy년 MM월 dd일')}]] ~ [[${#dates.format(trip.endDay, 'yy년 MM월 dd일')}]]
 							</td>
 							<td style="width: 15%;"><button type="button" class="feature-btn" th:onclick="|location.href='@{/common/tripRecordModifyForm(postId=${trip.postId})}'|">수정</button></td>
-							<td style="width: 15%;"><button type="button" class="feature-btn" th:onclick="|location.href=">삭제</button></td>
-	    					<td class="toggle" style="width: 15%;">
-				                <input type="checkbox" th:id="'toggle_' + ${trip.postId}" name="toggle1" th:value="${trip.postId}" 
-	                   					th:checked="${trip.tripDisclose == 'O1'}">
-				                <label th:for="'toggle_' + ${trip.postId}"></label>
-				            </td>	
+							<td style="width: 15%;"><button type="button" class="feature-btn" id = "delete">삭제</button></td>
+							<td class="center-toggle">
+							    <input type="checkbox" th:id="'toggle_' + ${trip.postId}" name="toggle1" th:value="${trip.postId}" th:checked="${trip.tripDisclose == 'O1'}">
+							    <label th:for="'toggle_' + ${trip.postId}" class="toggleSwitch">
+							        <span class="toggleButton"></span>
+							    </label>
+							</td>
 						</tr>
 					</th:block>
 				</tbody>
