@@ -164,7 +164,7 @@ body {
     					<tr>
         					<th style="text-align: left; width: 20%;">예상 경비</th>
         					<td colspan="2">
-            					 <input type="text" id="mateExpense" name="mateExpense" size="30" style="width: 370px;" class="form-control" th:value="${tripMateVO.mateExpense}">
+            					 <input type="text" id="mateExpense" name="mateExpense" size="30" style="width: 370px;" class="form-control" th:value="${#numbers.formatInteger(tripMateVO.mateExpense, 0, 'COMMA')}">
         					</td>
         					<th style="text-align: left; width: 20%;">모집 인원</th>
         					<td colspan="2">
@@ -186,8 +186,10 @@ body {
 					
 						</ul>
 					</div>
+					<div align="left" style="width: 1230px;">
 					<div id="editor">
 						<th:textarea th:utext="${tripMateVO.mateContent}"></th:textarea>
+					</div>
 					</div>
         		</div>
         		<div style="margin-bottom: 20px;">
@@ -326,6 +328,36 @@ body {
 			};
 			console.log(combinedData);
 			
+			var startDate2 = document.getElementById("startDay").value;
+	         var endDate2 = document.getElementById("endDay").value;
+	         var deadlineDate2 = document.getElementById("deadline").value;
+	         // 현재 날짜 가져오기
+	         var currentDate = new Date();
+
+	         // 입력한 패키지 시작일을 Date 객체로 변환
+	         var selectedStartDate = new Date(startDate2);
+	         var selectedEndDate = new Date(endDate2);
+	         var selectedDeadlineDate = new Date(deadlineDate2);
+	         // 날짜 차이 계산 (밀리초 단위)
+	         var timeDifference = selectedStartDate - currentDate;
+
+	         // 30일을 밀리초로 계산
+	         var thirtyDaysInMillis = 24 * 60 * 60 * 1000;
+	         
+	         if (selectedStartDate < currentDate) {
+	             alert("여행 시작일은 오늘보다 이전일 수 없습니다.");
+	             return false;
+	         }
+
+	         if (selectedEndDate < selectedStartDate) {
+	             alert("여행 종료일은 여행 시작일 이후여야 합니다.");
+	             return false;
+	         }
+	         if (selectedDeadlineDate > selectedStartDate) {
+	             alert("여행 마감일은 여행 시작일 이전이여야 합니다.");
+	             return false;
+	         }
+			
 			var str="";
 			$(".uploadResult ul li").each(function(i,obj){
 				var jobj = $(obj);
@@ -363,64 +395,110 @@ body {
 			let metTripArea = document.getElementsByName('tripArea')[0];
 	        let metStyle = document.getElementsByName('mateStyle')[0];
 			
-			if (metTitle.value == '') {
-				alert('타이틀을 입력해주세요.')
-				metTitle.focus();
-				return;
-			}
-			
-			if (metExpense.value == '') {
-				alert('예상 경비를 입력해주세요.')
-				metExpense.focus();
-				return;
-			}
-			
-			if (metStartDay.value == '' || metEndDay.value == '') {
-				alert('여행 일정을 입력해주세요.')
-				metStartDay.focus();
-				return;
-			}
-			
-			if (metDeadline.value == '') {
-				alert('모집 마감일을 입력해주세요.')
-				metDeadline.focus();
-				return;
-			}
-			
-			if (metMateMax.value == '' || metEndDay.value == '') {
-				alert('모집 인원을 입력해주세요.')
-				metMateMax.focus();
-				return;
-			}
-			
-			if (metContent.value == '') {
-				alert('내용을 입력해주세요.')
-				metContent.focus();
-				return;
-			}
-			
-			if (metTripArea.value == '') {
-	             alert('여행 지역을 선택 해주세요.')
-	             metTripArea.focus();
+	        if (metTripArea.value == '') {
+	        	 Swal.fire({
+	              	icon: 'warning',                      
+	          		title: '여행 지역을 지정해주세요.'
+	          	 });
+	        	 metTripArea.focus();
+	              return;
+	          }
+	        
+	        if (metStyle.value == '') {
+	        	 Swal.fire({
+	               	icon: 'warning',                      
+	           		title: '여행 스타일을 지정해주세요.'
+	           	 });
+	        	 metStyle.focus();
+	               return;
+	          }
+	        
+	        if (metTitle.value == '') {
+	        	 Swal.fire({
+	             	icon: 'warning',                      
+	         		title: '타이틀을 입력해주세요.'
+	         	 });
+	        	 metTitle.focus();
+	             return;
+	         }
+	         
+	         if (metStartDay.value == '') {
+	        	 Swal.fire({
+	              	icon: 'warning',                      
+	          		title: '여행 시작일을 입력해주세요.'
+	          	 });
+	        	 metStartDay.focus();
 	             return;
 	          }
 	         
-	        if (metStyle.value == '') {
-	             alert('여행 스타일을 지정해주세요.')
-	             metStyle.focus();
+	         if (metEndDay.value == '') {
+	        	 Swal.fire({
+	              	icon: 'warning',                      
+	          		title: '여행 종료일을 입력해주세요.'
+	          	 });
+	        	 metEndDay.focus();
 	             return;
 	          }
+	         
+	         if (metDeadline.value == '') {
+	        	 Swal.fire({
+	               	icon: 'warning',                      
+	           		title: '모집 마감일을 입력해주세요.'
+	           	 });
+	        	 metDeadline.focus();
+	             return;
+	          }
+	         
+	         if (metExpense.value == '') {
+	        	 Swal.fire({
+	                	icon: 'warning',                      
+	            		title: '여행 경비를 입력해주세요.'
+	            	 });
+	        	 metExpense.focus();
+	             return;
+	         }
+	         
+	         if (metMateMax.value == '') {
+	        	 Swal.fire({
+	             	icon: 'warning',                      
+	         		title: '모집 인원을 입력해주세요.'
+	         	 });
+	        	 metMateMax.focus();
+	          	 return;
+	         }
+	         
+	         if (metContent == '') {
+	        	 Swal.fire({
+	              	icon: 'warning',                      
+	          		title: '내용을 입력해주세요.'
+	          	 });
+	        	 metContent.focus();
+	           	 return;
+	         }
 			
-			//등록하기 클릭 시 등록할지 여부를 확인
-			if(confirm("수정 하시겠습니까?")){
-				formObj.append(str);
-				document.getElementById('editorForm').action = "/common/mateRecruitUpdate";
-				document.getElementById('editorForm').submit();
-				alert("수정 되었습니다.");
-                return;
-             }else{
-                return;
-             }
+			//수정하기 클릭 시 등록할지 여부를 확인
+	         Swal.fire({
+		    	icon: 'warning',                      
+		     	title: '수정 하시겠습니까?.',
+		      	showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: '수정',
+				cancelButtonText: '취소',
+		    }).then((result) => {
+			   	if (result.isConfirmed) {
+			   		Swal.fire({
+		                icon: 'success',
+		                title: '수정 되었습니다.'
+		            }).then(() => {
+		            	formObj.append(str);
+		            	var formattedPrice = parseFloat($("#mateExpense").val().replace(/\,/g, '')); // 콤마 제거 및 숫자로 변환
+		                document.getElementById("mateExpense").value=formattedPrice;
+		            	document.getElementById('editorForm').action = "/common/mateRecruitUpdate";
+		                document.getElementById('editorForm').submit();
+		            });
+				}
+			})
 			
 		})
 	})

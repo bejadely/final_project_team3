@@ -4,7 +4,11 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="@{layouts/admin_layout}">
 <head>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@alphardex/aqua.css/dist/aqua.min.css">
+	<style type="text/css">
+		.left-table th, td{
+			text-align: left !important;
+		}
+	</style>
 </head>
 <!-- Content -->
 <div layout:fragment="content">
@@ -12,10 +16,9 @@
 			<form action="/admin/modifyMemberInfoForm" th:object="${memberVO}" method="post">
 				<h5><b>회원정보 상세 조회</b></h5>
 				<br><br>
+				<p><b>기본정보</b></p>
 				<div class="table-responsive">
-					<h6>기본정보</h6>
-					<br>
-					<table id="defaultInfo" class="table">
+					<table id="defaultInfo" class="table left-table">
 						<tbody>
 							<tr>
 								<th width="150" align="center">아이디</th>
@@ -80,10 +83,9 @@
 					</table>
 				</div>
 				<br><br>
+				<p><b>계좌정보</b><p>
 				<div class="table-responsive">
-					<h6>계좌정보</h6>
-					<br>
-					<table id="accountInfo" class="table">
+					<table id="accountInfo" class="table left-table">
 						<tbody>
 							<tr>
 								<th width="150" align="center">은행명</th>
@@ -102,7 +104,7 @@
 					<input type="hidden" name="memberId" th:value="*{memberId}">
 				</div>
 				<div align="center">
-					<button type="submit" class="btn btn-primary btn-ghost">수정하기</button>
+					<button type="submit" class="feature-btn">수정하기</button>
 					<button type="button" class="feature-btn">탈퇴처리</button>
 				</div>
 			</form>

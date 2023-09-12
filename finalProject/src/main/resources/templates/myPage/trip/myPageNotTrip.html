@@ -97,6 +97,23 @@ $(document).ready(function() {
 	       var prevPageUrl = location.href = 'cartList?nowPage=' + prevPage + '&cntPerPage=' + selected;
 	       window.location.href = prevPageUrl; // 자동으로 이동
 	   }
+	   //삭제
+	   $("#delete").click(function(){
+		   var postId = $(this).val();
+	        console.log('postId: ' + postId);		   
+				Swal.fire({
+			showCancelButton: true,
+	       	title: '삭제 하시겠습니까?',
+			    icon: 'question',
+				confirmButtonText: '확인',
+				cancelButtonText: '취소',
+		    }).then((firstResult) => {
+		    	if(firstResult.value == true){
+			     	location.href="/common/tripRecordDelete?postId=" + postId;
+		    	}
+			})
+	   })
+	   
 	    $('.reportInfo').on('mouseover', colorDarker)
 		.on('mouseleave', colorReset)
 	});
@@ -152,7 +169,7 @@ $(document).ready(function() {
 							[[${#dates.format(trip.startDay, 'yy년 MM월 dd일')}]] ~ [[${#dates.format(trip.endDay, 'yy년 MM월 dd일')}]]
 						</td>	
 						<td style="width: 15%;"><button type="button" class="feature-btn">수정</button></td>
-						<td style="width: 15%;"><button type="button" class="feature-btn">삭제</button></td>
+						<td style="width: 15%;"><button type="button" class="feature-btn" id="delete" th:value="${trip.postId}">삭제</button></td>
 					</tr>
 				</th:block>
 			</tbody>
