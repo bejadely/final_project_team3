@@ -104,6 +104,7 @@
 					       , QUESTION_CONTENT
 					       , QUESTION_TYPE
 					       , ANSWER_RESULT
+					       , ANSWER_MEMBER_ID
 							 ) 
 			 VALUES(
 					#{questionId}
@@ -113,6 +114,7 @@
 					, #{questionContent}
 					, #{questionType}
 					, 'K1'
+					, #{answerMemberId}
 					)
  	</insert>
  	
