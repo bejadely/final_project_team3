@@ -94,7 +94,7 @@
 									<button type="button" th:class="status-btn" th:text="${l.answerResult}"></button><br>
 									<span th:text="${l.questionTitle}" style="color: #1c1c1c;"></span><br>
 									<span style="color: #707079;" th:utext="|문의자ID : ${l.memberId} 문의일자 : ${#dates.format(l.questionDate, 'yyyy.MM.dd HH:mm')}"></span>
-									<p style="color: #1c1c1c; margin-top: 1em;" th:text="${l.questionContent}"></p>
+										<p style="color: #1c1c1c; margin-top: 1em;" th:utext="${l.questionContent}"></p>
 									<th:block th:if="${l.answerResult == '미답변'}">
 										<button type="button" th:id="|ansBtn${lStat.count}|" class="feature-btn" data-visible="visible">답변하기</button>
 									</th:block>
@@ -108,7 +108,7 @@
 										<form method="post" th:id="|form${lStat.count}|">
 											<th:block th:if="${l.answerResult == '미답변'}">
 												<span>ㄴ답변하기</span><br>
-												<textarea name="answerContent" class="form-control" rows="7" cols="90"></textarea>
+												<textarea id="answerContent" name="answerContent" class="form-control" rows="7" cols="90"></textarea>
 											</th:block>
 											<th:block th:if="${l.answerResult != '미답변'}">
 												<p th:text="|답변일자 : ${#dates.format(l.answerDate, 'yyyy.MM.dd HH:mm')}|"></p>
@@ -233,6 +233,11 @@
 	
 	// 답변하기 버튼 누를 시 답변 입력사항 바로 반영
 	function ajaxSubmitAnswer(event){
+		
+		// textarea의 개행처리 <br>로 변경
+		let answerContent = $('#answerContent').val();
+		answerContent = answerContent.replaceAll(/(\n|\r\n)/g, "<br>");
+		$('#answerContent').val(answerContent);
 		
 		let serializedForm = $(this).closest('form').serialize();
 		
