@@ -49,7 +49,7 @@ public class TripVO {
 	private String tripSave;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date registDay;
-	private String tripReview;
+	private String tripReviewPost;
 	private String tripShare;
 	private int hit;
 	
