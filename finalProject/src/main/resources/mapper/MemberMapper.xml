@@ -174,12 +174,14 @@
 			<if test="password != null and !password.equals('')">
 				password = #{password},			
 			</if>
+			<if test="bankCode != null and !bankCode.equals('')">
+				bank_code=#{bankCode},			
+			</if>
 			zip_code = #{zipCode},
 			address = #{address},
 			address_detail=#{addressDetail},
 			email = #{email},
 			phone_number = #{phoneNumber},
-			bank_code=#{bankCode},
 			account_number = #{accountNumber}
 		</set>
 		WHERE member_id = #{memberId}	
