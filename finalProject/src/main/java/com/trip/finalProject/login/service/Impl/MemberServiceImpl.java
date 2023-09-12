@@ -142,8 +142,7 @@ public class MemberServiceImpl implements MemberService {
 		public MemberVO memberInfo(MemberVO memberVO) {
 			// 회원 상세 조회
 			String decodedAccountNum = "";
-			String memberId = "";
-			
+			System.out.println("first : " + memberVO.getAccountNumber());
 			//계좌번호 복호화
 			try {
 				memberVO = memberMapper.memebrInfo(memberVO);
@@ -152,7 +151,7 @@ public class MemberServiceImpl implements MemberService {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+			System.out.println("second : " + memberVO.getAccountNumber());
 			
 			return memberVO;
 		}
@@ -160,10 +159,13 @@ public class MemberServiceImpl implements MemberService {
 		//회원정보 수정
 		@Override
 		public String updateMember(MemberVO memberVO) {
-			
+			System.out.println("memberPas1 : " + memberVO.getPassword());
 			try {
-				memberVO.setAccountNumber(aesProcessor.aesCBCEncode(memberVO.getAccountNumber())); 
-				memberVO.setAccountNumber(aesProcessor.aesCBCEncode(memberVO.getPassword())); 
+				memberVO.setAccountNumber(aesProcessor.aesCBCEncode(memberVO.getAccountNumber()));
+				if (memberVO.getPassword() != null && !memberVO.getPassword().equals("")) {
+					memberVO.setPassword(aesProcessor.aesCBCEncode(memberVO.getPassword()));
+					System.out.println("memberPas2 : " + memberVO.getPassword());
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

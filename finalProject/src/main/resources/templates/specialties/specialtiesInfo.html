@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="@{layouts/default_layout}">
+   xmlns:th="http://www.thymeleaf.org"
+   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+   layout:decorate="@{layouts/default_layout}">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
 <style>
 form {
-	text-align: center;
+   text-align: center;
 }
 
 .contentStyle{
-	width:400px;
-	height:400px;
-	margin: 0 auto;
+   width:400px;
+   height:400px;
+   margin: 0 auto;
 }
 .pt img{
-	width:200px;
-	height:200px;
+   width:200px;
+   height:200px;
 }
 </style>
 
@@ -40,14 +40,9 @@ form {
                             <a href="#"><i class="fa fa-print"></i></a>
                             <a href="#"><i class="fa fa-cloud-download"></i></a>
                         </div>
-                        <div class="property-more-pic">
+                        <div class="property-more-pic" style="width:500px; height:500px;">
                             <div class="product-pic-zoom">
                                
-                            </div>
-                            <div class="product-thumbs">
-                                <div class="product-thumbs-track ps-slider owl-carousel">
-                                    
-                                </div>
                             </div>
                         </div>
                        
@@ -56,13 +51,13 @@ form {
                             <div class="tab-item">
                                 <ul class="nav" role="tablist">
                                     <li>
-                                        <a class="active" data-toggle="tab" href="#tab-1" role="tab">패키지 정보</a>
+                                        <a class="active" data-toggle="tab" href="#tab-1" role="tab">특산물 정보</a>
                                     </li>
                                     <li>
-                                        <a data-toggle="tab" href="#tab-2" role="tab">패키지 내용</a>
+                                        <a data-toggle="tab" href="#tab-2" role="tab">특산물 상세내용</a>
                                     </li>
                                     <li>
-                                        <a data-toggle="tab" href="#tab-3" role="tab">Amenities</a>
+                                        <a data-toggle="tab" href="#tab-3" role="tab">문의 사항</a>
                                     </li>
                                 </ul>
                             </div>
@@ -72,10 +67,7 @@ form {
                                         <div class="property-more-table">
                                             <table class="left-table">
                                                 <tbody>
-                                                    <tr>
-                                                        <td class="pt-name">Price</td>
-                                                        <td class="p-value">[[ ${info.price} ]]</td>
-                                                    </tr>
+                                                   
                                                     <tr>
                                                         <td class="pt-name">특산물 종류</td>
                                                         <td class="p-value">[[ ${info.type} ]]</td>
@@ -83,54 +75,21 @@ form {
                                                     <tr>
                                                         <td class="pt-name">작성자</td>
                                                         <td class="p-value">[[ ${info.writerId} ]]</td>
-                                                    <tr>
-                                                        <td class="pt-name">여행 종료일</td>
-                                                        <td class="p-value"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="pt-name">모집 마감일</td>
-                                                        <td class="p-value"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="pt-name">모집 인원</td>
-                                                        <td class="p-value"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="pt-name">Lot area</td>
-                                                        <td class="p-value">200 spft</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                             <table class="right-table">
                                                 <tbody>
+                                                   
                                                     <tr>
-                                                        <td class="pt-name">Agent</td>
-                                                        <td class="p-value">Adam Smith</td>
-                                                    </tr>
-                                                   <tr>
-                                                        <td class="pt-name">Reference</td>
-                                                        <td class="p-value">#2019</td>
+                                                        <td class="pt-name">할인 여부</td>
+                                                        <td class="p-value">[[ ${info.discount} ]]</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="pt-name">Contract type</td>
-                                                        <td class="p-value">Sale</td>
+                                                        <td class="pt-name">지역</td>
+                                                        <td class="p-value">[[ ${info.writerId} ]]</td>
                                                     </tr>
-                                                    <tr>
-                                                        <td class="pt-name">Beds</td>
-                                                        <td class="p-value">4</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="pt-name">Garages</td>
-                                                        <td class="p-value">2</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="pt-name">Home area</td>
-                                                        <td class="p-value">1200 sqft</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="pt-name">Gara Size</td>
-                                                        <td class="p-value">200 sqft</td>
-                                                    </tr>
+                                                  
                                                 </tbody>
                                             </table>
                                         </div>
@@ -142,20 +101,28 @@ form {
                                     </div>
                                     <div class="tab-pane fade" id="tab-3" role="tabpanel">
                                         <div class="pd-table-amenities">
-                                            <p>Learn how to improve your playing quality and even overall understanding
-                                                of online gaming and how you perform while playing online. Gaming online
-                                                is a huge business nowadays and that means that there are millions of
-                                                people worldwide at online game sites all the time. Many are people just
-                                                like you and me that like to play online and have fun doing it. Some of
-                                                these people enjoy it so much, that they often do not even care about
-                                                improving their skill and raising their chances of winning.</p>
-                                            <p>Learn how to improve your playing quality and even overall understanding
-                                                of online gaming and how you perform while playing online. Gaming online
-                                                is a huge business nowadays and that means that there are millions of
-                                                people worldwide at online game sites all the time. Many are people just
-                                                like you and me that like to play online and have fun doing it. Some of
-                                                these people enjoy it so much, that they often do not even care about
-                                                improving their skill and raising their chances of winning.</p>
+                                             <p><b>환불 규정</b><br>
+												<b>환불 가능한 기간:</b> 특산물 환불 요청은 구매 3일 내로 가능합니다.<br><br>
+												<b>환불 불가 기간:</b> 특산물 구매 후 3일 이내에 환불을 요청하는 경우, 환불이 불가능합니다.<br><br>
+												
+												<b>환불 절차</b><br>
+												
+												특산물을 구매한 후 3일 이내에 환불을 신청한 경우, 원래 결제한 방법을 통해 환불이 처리됩니다.<br>
+												환불 처리에는 최대 7일의 처리 시간이 소요될 수 있습니다.<br><br>
+												
+												<b>환불 금액</b><br> 환불 금액은 다음과 같이 계산됩니다.<br><br>
+												
+												<b>특산물 구매 후 3일 이내 환불 요청:</b> 결제 금액의 100% 환불<br>
+												<b>3일 이내 환불 요청:</b> 환불 불가<br>
+												<b>환불 문의:</b> 환불에 관한 추가 문의 사항이나 지원이 필요한 경우, 문의하기 버튼을 클릭해주세요.<br>
+												
+												</p>
+                                        
+                                        <div class="bt-item">
+			                                 <button type="button" name="question" id="question" class="feature-btn">
+			                                 문의하기
+			                                 </button>
+			                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -175,6 +142,7 @@ form {
 							<div class="form-horizontal" style="text-align: left;">
 								<label>옵션  </label> 
 								<select class="form-control opt_select" name="selectedOpt">
+									<option value="">선택</option>
 									<option th:each ="op : ${option}" 
 											th:if="${op.discountRate == null}"
 											th:value1="${op.specialtyType}" th:value2 ="${op.price}" th:text="${op.specialtyType + ' / ' + op.price }" >
@@ -205,13 +173,6 @@ form {
                                     <label for="cartBtn">Cart</label>
                                 </div>
                             </div>
-                            <div class="bt-item">
-                                    <button type="button" name="question" id="question" >
-                                    문의하기
-                                    </button>
-                                    
-                                </div>
-							
                     </div>
                 </div>
                 <div>
@@ -259,17 +220,16 @@ form {
             </div>
             <hr>
            
-        </div>	
-        		
-             </div>
+        </div>   
              <input type="hidden" id="id" th:value="${session.sessionId}">
         </div>
-        		
+              
     </section>
     <!-- Property Details Section End -->
 
 
 <script>
+
 
 
 	var content = '[[${info.content }]]';
@@ -283,11 +243,13 @@ form {
 				var str2="";
 				$(arr).each(function(i, attach){
 					if(i==0){
-						str+=`<img src="${attach.loadingImg}" class="product-big-img"  alt="">`	
+						str+=`<img src="${attach.loadingImg}" class="product-big-img" style="width:500px; height:500px;"  alt="">`	
 					}
 					else{
 						str2+=`<div class="pt" data-imgbigurl="${attach.loadingImg}"><img
+
                             src="${attach.loadingImg}" alt=""></div>`
+
 					}
 				});
 				$(".product-pic-zoom").html(str);
@@ -295,7 +257,18 @@ form {
 			});
 		})();
 		   
-		
+	    
+	    var sessionId =  '[[${session.sessionId}]]'
+	    document.getElementById('question').addEventListener('click',function(){
+	    	if(sessionId == null || sessionId ===("")){
+	    		alert("로그인 해주세요");
+	    		return;
+	    	}else{
+	       		location.href="/common/memberQueForm?productId="+'[[${info.postId}]]'
+	    	}
+	    })
+	    
+	    
 		
 		
 		$(document).on('click', '.nice-select.form-control', function() {
@@ -315,6 +288,8 @@ form {
 			}else{
 				finalPrice = price * count;
 			}
+
+
 
 			str += '<p><label>수량 : </label><span class="count">&nbsp;' + count + '</span>&nbsp;&nbsp;&nbsp;<br>';	
 	
@@ -362,10 +337,21 @@ form {
 	        	},
 	        	success:function(response){
 	        		location.href = response.next_redirect_pc_url
-	        	}
+	        	},
+	               error: function(jqXHR, textStatus, errorThrown) {
+	                      // 오류 응답을 처리하는 코드
+	                      let errorMessage = JSON.parse(jqXHR.responseText).message;
+	                      if(errorMessage == 'no login') {
+	                          alert('로그인을 해주세요.');
+	                      } else {
+	                          alert('신청할 인원 수를 선택해주세요');
+	                      }   
+	              }
 	        	
 	        }); 
 	    });
+
+
 
 	    document.getElementById('cartBtn').addEventListener('click',function(){
 	    	let totalAmount = parseInt($("span.finalPrice").text());
@@ -386,7 +372,16 @@ form {
 	    		},
 	    		success:function(message){
 	    			alert(message);
-	    		}
+	    		},
+	             error: function(jqXHR, textStatus, errorThrown) {
+	                   // 오류 응답을 처리하는 코드
+	                let errorMessage = JSON.parse(jqXHR.responseText).message;
+	                   if(errorMessage == 'no login') {
+	                       alert('로그인을 해주세요.');
+	                   } else {
+	                       alert('신청할 인원 수를 선택해주세요');
+	                   }                  
+	           }
 	    	});
 	    });
 	    
@@ -410,194 +405,194 @@ form {
                 callback(null);
             })
         }
-	    
-	    function appendPackageDetailInfoReview(data, postId) {
-	        $('#reviewCount').text(data.totalCount + '개의 리뷰');
-	        $('#reviewCount').data('totalCount', data.totalCount);
-	        if(data.totalCount == 0) {
-	            $('#moreReview').addClass('disabled');
-	        }
-	        $('#moreReview').data('postId', postId);
-	
-	        if(data.packageDetailReviewVoList.length > 0) {
-	            appendReview(data.packageDetailReviewVoList, postId);
-	        }
-	    }
-	
-	    //모달창 리뷰 페이징
-	    $(document).on('click', '#moreReview', function () {
-	        let page = $(this).data('page');
-	
-	        page = Number(page)+1;
-	
-	        $.ajax({
-	            type: 'GET',
-	            url: '/packageReview',
-	            data: {
-	                'postId' : postId,
-	                'page' : page
-	            }
-	        })
-	        .done(function(data, textStatus, jqXHR) {
-	            console.log('done');
-	
-	            appendReview(data, postId);
-	            changeInfoMoreReviewButton(page);
-	        })
-	        .fail(function(jqXHR, textStatus, errorThrown) {
-	            console.log('fail');
-	
-	        })
-	    });
-	
-	    function appendReview(data, postId) {
-	        let node = ``;
-	        for(let i = 0; i < data.length; i++) {
-	            let stars = '';
-	            for(let j = 1; j <= 5; j++) {
-	                if(j <= data[i].grade) {
-	                    stars += '★';
-	                } else {
-	                    stars += '☆';
-	                }
-	            }
-	
-	            let date = data[i].writeDate.substring(0,10);
-	
-	            node += `
-	                <div class="review-content">
-	                    <p>
-	                        <span class="writerId">${data[i].writerId}</span>
-	                        <span class="grade">${stars}</span>
-	                        <span class="writeDate" style="float: right;">${date}&emsp;
-	                            <button type="button" class="btn btn-secondary btn-sm deleteReview" data-content-id="${postId}" data-review-id="${data[i].reviewId}">삭제</button>
-	                        </span>
-	                        <br>
-	                        <span class="content">${data[i].content}</span>
-	                    </p>
-	                </div>
-	            `;
-	        }
-	        $('#afterReview').before(node);
-	    }
-	
-	    function changeInfoMoreReviewButton(page) {
-	        $('#moreReview').data('page', page);
-	
-	        let totalCount = $('#reviewCount').data('totalCount');
-	        let reviewCount = $('.review-content').length;
-	
-	        if(totalCount == reviewCount) {
-	            $('#moreReview').addClass('disabled');
-	        }
-	    }
-	
-	    //리뷰 등록
-	    $(document).on('click', '#addReview', function() {
-	        let contentId = $('#moreReview').data('postId');
-	
-	        let checkedgrade = $('input[name=inlineRadioOptions]:checked').val();
-	        if(checkedgrade == null) {
-	            alert("점수를 체크해주세요.");
-	            return;
-	        }
-	
-	        let reviewContent = $('#reviewInput').val();
-	        if(reviewContent == null|| reviewContent.replaceAll(' ', '') == '') {
-	            alert("내용을 입력해주세요.");
-	            return;
-	        }
-	        //  ajax 들어가서 로그인 되어있는지 먼저 확인 - 안되면 바로 fail throw new Exception(); 예외 일부러 발생시켜주기
-	        $.ajax({
-	            type: 'POST',
-	            url: '/common/packageReview',
-	            data : {
-	                'grade' : checkedgrade,
-	                'content' : reviewContent,
-	                'originPostId' : postId
-	            }
-	        })
-	        .done(function (data, textStatus, jqXHR){
-	            console.log('done');
-	
-	            //  data는 totalCount이고, x개의 리뷰를 바꿔야함
-	            $('#reviewCount').text(data.totalCount + '개의 리뷰');
-	            $('#reviewCount').data('totalCount', data.totalCount);
-	
-	            $('.review-content').remove();
-	            appendReview(data.recentReviewList, postId);
-	
-	            changeInfoMoreReviewButton(1);
-	            clearInput();
-	
-	            alert('리뷰가 등록되었습니다.');
-	        })
-	        .fail(function (jqXHR, textStatus, errorThrown) {
-	            console.log('fail');
-	
-	            let errorMessage = JSON.parse(jqXHR.responseText).message;
-	            if(errorMessage == 'no login') {
-	                alert('로그인을 해주세요.');
-	            } else if(errorMessage == 'not insert') {
-	                alert('리뷰가 등록되지 않았습니다.');
-	            }
-	        })
-	
-	    })
-	
-	    //리뷰 삭제
-	    $(document).on('click', '.deleteReview', function() {
-	
-	        let writerId = $(this).parent().siblings('.writerId').text();
-	        let reviewId = $(this).data('reviewId');
-	        //  ajax로 가서 session에 저장된 아이디랑 writerId랑 같은지 확인 - 같지 않다면 fail 
-	        $.ajax({
-	            type: 'DELETE',
-	            url: "/common/packageReview",
-	            data: {
-	                'postId' : postId,
-	                'writerId' : writerId,
-	                'reviewId' : reviewId
-	            }
-	        })
-	        .done(function (data, textStatus, jqXHR){
-	            console.log('done');
-	
-	            $('#reviewCount').text(data.totalCount + '개의 리뷰');
-	            $('#reviewCount').data('totalCount', data.totalCount);
-	
-	            $('.review-content').remove();
-	            appendReview(data.recentReviewList, postId);
-	
-	            changeInfoMoreReviewButton(1);
-	
-	            alert('리뷰가 삭제되었습니다.');
-	        })
-	        .fail(function (data, textStatus, jqXHR) {
-	            console.log('fail');
-	
-	            let errorMessage = JSON.parse(jqXHR.responseText).message;
-	            if(errorMessage == 'no login') {
-	                alert('로그인을 해주세요.');
-	            } else if(errorMessage == 'not same') {
-	                alert('본인의 리뷰만 삭제할 수 있습니다.');
-	            } else if(errorMessage == 'not delete') {
-	                alert('리뷰가 삭제되지 않았습니다.');
-	            }
-	        })
-	
-	    })
-	
-	    function clearInput() {
-	        $('#reviewInput').val('');
-	        $('#inlineRadio5').prop('checked', true);
-	    }
-	    
-	    document.getElementById('question').addEventListener('click',function(){
-			 console.log("asdsad");
-			 location.href="/common/memberQueForm?productId="+'[[${info.postId}]]'
-		 })
-		 
+       
+       function appendPackageDetailInfoReview(data, postId) {
+           $('#reviewCount').text(data.totalCount + '개의 리뷰');
+           $('#reviewCount').data('totalCount', data.totalCount);
+           if(data.totalCount == 0) {
+               $('#moreReview').addClass('disabled');
+           }
+           $('#moreReview').data('postId', postId);
+   
+           if(data.packageDetailReviewVoList.length > 0) {
+               appendReview(data.packageDetailReviewVoList, postId);
+           }
+       }
+   
+       //모달창 리뷰 페이징
+       $(document).on('click', '#moreReview', function () {
+           let page = $(this).data('page');
+   
+           page = Number(page)+1;
+   
+           $.ajax({
+               type: 'GET',
+               url: '/packageReview',
+               data: {
+                   'postId' : postId,
+                   'page' : page
+               }
+           })
+           .done(function(data, textStatus, jqXHR) {
+               console.log('done');
+   
+               appendReview(data, postId);
+               changeInfoMoreReviewButton(page);
+           })
+           .fail(function(jqXHR, textStatus, errorThrown) {
+               console.log('fail');
+   
+           })
+       });
+   
+       function appendReview(data, postId) {
+           let node = ``;
+           for(let i = 0; i < data.length; i++) {
+               let stars = '';
+               for(let j = 1; j <= 5; j++) {
+                   if(j <= data[i].grade) {
+                       stars += '★';
+                   } else {
+                       stars += '☆';
+                   }
+               }
+   
+               let date = data[i].writeDate.substring(0,10);
+   
+               node += `
+                   <div class="review-content">
+                       <p>
+                           <span class="writerId">${data[i].writerId}</span>
+                           <span class="grade">${stars}</span>
+                           <span class="writeDate" style="float: right;">${date}&emsp;
+                               <button type="button" class="btn btn-secondary btn-sm deleteReview" data-content-id="${postId}" data-review-id="${data[i].reviewId}">삭제</button>
+                           </span>
+                           <br>
+                           <span class="content">${data[i].content}</span>
+                       </p>
+                   </div>
+               `;
+           }
+           $('#afterReview').before(node);
+       }
+   
+       function changeInfoMoreReviewButton(page) {
+           $('#moreReview').data('page', page);
+   
+           let totalCount = $('#reviewCount').data('totalCount');
+           let reviewCount = $('.review-content').length;
+   
+           if(totalCount == reviewCount) {
+               $('#moreReview').addClass('disabled');
+           }
+       }
+   
+       //리뷰 등록
+       $(document).on('click', '#addReview', function() {
+           let contentId = $('#moreReview').data('postId');
+   
+           let checkedgrade = $('input[name=inlineRadioOptions]:checked').val();
+           if(checkedgrade == null) {
+               alert("점수를 체크해주세요.");
+               return;
+           }
+   
+           let reviewContent = $('#reviewInput').val();
+           if(reviewContent == null|| reviewContent.replaceAll(' ', '') == '') {
+               alert("내용을 입력해주세요.");
+               return;
+           }
+           //  ajax 들어가서 로그인 되어있는지 먼저 확인 - 안되면 바로 fail throw new Exception(); 예외 일부러 발생시켜주기
+           $.ajax({
+               type: 'POST',
+               url: '/common/packageReview',
+               data : {
+                   'grade' : checkedgrade,
+                   'content' : reviewContent,
+                   'originPostId' : postId
+               }
+           })
+           .done(function (data, textStatus, jqXHR){
+               console.log('done');
+   
+               //  data는 totalCount이고, x개의 리뷰를 바꿔야함
+               $('#reviewCount').text(data.totalCount + '개의 리뷰');
+               $('#reviewCount').data('totalCount', data.totalCount);
+   
+               $('.review-content').remove();
+               appendReview(data.recentReviewList, postId);
+   
+               changeInfoMoreReviewButton(1);
+               clearInput();
+   
+               alert('리뷰가 등록되었습니다.');
+           })
+           .fail(function (jqXHR, textStatus, errorThrown) {
+               console.log('fail');
+   
+               let errorMessage = JSON.parse(jqXHR.responseText).message;
+               if(errorMessage == 'no login') {
+                   alert('로그인을 해주세요.');
+               } else if(errorMessage == 'not insert') {
+                   alert('리뷰가 등록되지 않았습니다.');
+               }
+           })
+   
+       })
+   
+       //리뷰 삭제
+       $(document).on('click', '.deleteReview', function() {
+   
+           let writerId = $(this).parent().siblings('.writerId').text();
+           let reviewId = $(this).data('reviewId');
+           //  ajax로 가서 session에 저장된 아이디랑 writerId랑 같은지 확인 - 같지 않다면 fail 
+           $.ajax({
+               type: 'DELETE',
+               url: "/common/packageReview",
+               data: {
+                   'postId' : postId,
+                   'writerId' : writerId,
+                   'reviewId' : reviewId
+               }
+           })
+           .done(function (data, textStatus, jqXHR){
+               console.log('done');
+   
+               $('#reviewCount').text(data.totalCount + '개의 리뷰');
+               $('#reviewCount').data('totalCount', data.totalCount);
+   
+               $('.review-content').remove();
+               appendReview(data.recentReviewList, postId);
+   
+               changeInfoMoreReviewButton(1);
+   
+               alert('리뷰가 삭제되었습니다.');
+           })
+           .fail(function (data, textStatus, jqXHR) {
+               console.log('fail');
+   
+               let errorMessage = JSON.parse(jqXHR.responseText).message;
+               if(errorMessage == 'no login') {
+                   alert('로그인을 해주세요.');
+               } else if(errorMessage == 'not same') {
+                   alert('본인의 리뷰만 삭제할 수 있습니다.');
+               } else if(errorMessage == 'not delete') {
+                   alert('리뷰가 삭제되지 않았습니다.');
+               }
+           })
+   
+       })
+   
+       function clearInput() {
+           $('#reviewInput').val('');
+           $('#inlineRadio5').prop('checked', true);
+       }
+       
+       document.getElementById('question').addEventListener('click',function(){
+          console.log("asdsad");
+          location.href="/common/memberQueForm?productId="+'[[${info.postId}]]'
+       })
+       
 </script>
 </div>
 </body>
