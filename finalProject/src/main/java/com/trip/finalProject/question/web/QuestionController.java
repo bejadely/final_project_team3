@@ -86,7 +86,7 @@ public class QuestionController {
 	// 0903 창민 start
 	// 문의 작성 폼 호출
 	@GetMapping("/common/memberQueForm")
-	public String realMemberQueForm(HttpServletRequest request, QuestionVO questionVO ,Model model){
+	public String realMemberQueForm(HttpServletRequest request, QuestionVO questionVO , String writerId, Model model){
 		
 		String prevUrl = request.getHeader("referer");
 		
@@ -100,6 +100,7 @@ public class QuestionController {
 		switch (productHead) {
 		case "PKG":
 			questionVO.setQuestionType("패키지 문의");
+			questionVO.setAnswerMemberId(writerId);
 			break;
 		case "SPE":
 			questionVO.setQuestionType("특산물 문의");
