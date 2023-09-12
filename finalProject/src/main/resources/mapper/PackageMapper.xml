@@ -90,7 +90,7 @@
 	</select>
 	
 	<select id="packageInfo" resultType="PackageVO">
-		SELECT content, name, price, start_date, end_date, deadline_date, max_reservation, tour_theme,post_id,now_reservation,code_val(completion) completion
+		SELECT content, name, price, start_date, end_date, deadline_date, max_reservation, tour_theme,post_id,now_reservation,code_val(completion) completion,writer_id
 		FROM package_regist
 		WHERE post_id=#{postId}
 	</select>

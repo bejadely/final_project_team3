@@ -29,7 +29,9 @@
     display: block;
     margin: 0 auto;
 }
+
 </style>
+
 <script>
 $(document).ready(function() {
 	// 이벤트 설정
@@ -54,6 +56,10 @@ function search(event){
 					<div class="col-lg-12">
 						<div class="breadcrumb-text">
 							<h2>특산물</h2>
+						</div>
+						<div style="text-align: center;">
+							<button th:if="${session.sessionAuthority} != null and ${session.sessionAuthority} == 'A3'" type="button" class="primary-btn" 
+							th:onclick="|location.href='@{/admin/specialtiesInsertForm}'|">특산물 등록</button>
 						</div>
 					</div>
 				</div>

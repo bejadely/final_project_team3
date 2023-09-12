@@ -30,7 +30,6 @@ public class PackageQuartzJob extends QuartzJobBean{
 
 	            // 데이터를 리스트에 저장
 	            for (PackageVO data : dataList) {
-	                // 필요한 가공 또는 조작을 수행하고 리스트에 추가
 	                dataToInsert.add(data);
 	            }
 	            

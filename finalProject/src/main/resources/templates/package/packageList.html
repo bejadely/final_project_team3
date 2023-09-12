@@ -33,7 +33,7 @@
 				</select>&nbsp;
 				<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요." style="height: 40px; width: 200px;">
 				<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-					<button th:if="${session.sessionAuthority} != null and ${session.sessionAuthority} == 'A2'" type="button" class="btn btn-outline-dark" 
+				<button th:if="${session.sessionAuthority} != null and ${session.sessionAuthority} == 'A2'" type="button" class="btn btn-outline-dark" 
 				th:onclick="|location.href='@{/guide/packageInsertForm}'|">패키지 등록</button>
 		</form>
 		</div>

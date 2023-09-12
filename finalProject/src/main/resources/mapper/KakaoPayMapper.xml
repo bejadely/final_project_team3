@@ -127,11 +127,11 @@
  		now_reservation = now_reservation+#{quantity},
  		completion = 
         <choose>
-            <when test="maxReservation == nowReservation">
-                'D1',
+            <when test="maxReservation == nowReservation+#{quantity}">
+                'D2',
             </when>
             <otherwise>
-                'D2',
+                'D1',
             </otherwise>
         </choose>
  			
