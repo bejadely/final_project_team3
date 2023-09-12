@@ -22,6 +22,10 @@ import com.trip.finalProject.kakaoPay.service.KakaoPayInfoVO;
 import com.trip.finalProject.kakaoPay.service.KakaoPayResponseVO;
 import com.trip.finalProject.kakaoPay.service.KakaoPayService;
 import com.trip.finalProject.kakaoPay.service.PaymentVO;
+import com.trip.finalProject.packaged.service.PackageService;
+import com.trip.finalProject.packaged.service.PackageVO;
+import com.trip.finalProject.specialties.service.SpecialtiesService;
+import com.trip.finalProject.specialties.service.SpecialtiesVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,6 +33,9 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/common/payment")
 @RequiredArgsConstructor
 public class KakaoPayController {
+	
+	@Autowired
+	PackageService packageService;
 	
 	@Autowired
 	CartService cartService;
@@ -71,23 +78,27 @@ public class KakaoPayController {
 	public ModelAndView info(@ModelAttribute KakaoApproveResponseVO  approveResponse) {
 	    KakaoPayInfoResponseVO kakaoPayInfoResponseVO = kakaoPayService.infoResponse(approveResponse.getTid());
 	    //int totalAmount = kakaoPayInfoResponseVO.getAmount().getTotal();
-	    KakaoPayInfoVO vo = new KakaoPayInfoVO();
-		vo.setApprovedAt(kakaoPayInfoResponseVO.getApproved_at().replace("T", " "));
-		vo.setCalculateStatus("N2");
-		vo.setCid(kakaoPayInfoResponseVO.getCid());
-		vo.setOrderName(kakaoPayInfoResponseVO.getItem_name());
-		vo.setPartnerOrderId(kakaoPayInfoResponseVO.getPartner_order_id());
-		vo.setPartnerUserId(kakaoPayInfoResponseVO.getPartner_user_id());
-		vo.setStatus(kakaoPayInfoResponseVO.getStatus());
-		vo.setTid(kakaoPayInfoResponseVO.getTid());
-		vo.setTotalAmount(kakaoPayInfoResponseVO.getAmount().getTotal());
+	    KakaoPayInfoVO vo2 = new KakaoPayInfoVO();
+		vo2.setApprovedAt(kakaoPayInfoResponseVO.getApproved_at().replace("T", " "));
+		vo2.setCalculateStatus("N2");
+		vo2.setCid(kakaoPayInfoResponseVO.getCid());
+		vo2.setOrderName(kakaoPayInfoResponseVO.getItem_name());
+		vo2.setPartnerOrderId(kakaoPayInfoResponseVO.getPartner_order_id());
+		vo2.setPartnerUserId(kakaoPayInfoResponseVO.getPartner_user_id());
+		vo2.setStatus(kakaoPayInfoResponseVO.getStatus());
+		vo2.setTid(kakaoPayInfoResponseVO.getTid());
+		vo2.setTotalAmount(kakaoPayInfoResponseVO.getAmount().getTotal());
 		
-		kakaoPayService.insertPayment(vo);
+		kakaoPayService.insertPayment(vo2);
 		if(approveResponse.getPostId().substring(0,3).equals("PKG")) {
 			KakaoPayInfoResponseVO kakaoVO = new KakaoPayInfoResponseVO();
 			kakaoVO.setQuantity(kakaoPayInfoResponseVO.getQuantity());
 			kakaoVO.setPostId(approveResponse.getPostId());
-			System.out.println(approveResponse.getPostId());
+			PackageVO packageVO = new PackageVO();
+			packageVO.setPostId(approveResponse.getPostId());
+			PackageVO findVO = packageService.packageInfo(packageVO);
+			kakaoVO.setNowReservation(findVO.getNowReservation());
+			kakaoVO.setMaxReservation(findVO.getMaxReservation());
 			kakaoPayService.updatePackageQuantity(kakaoVO);
 			
 		}
@@ -95,7 +106,7 @@ public class KakaoPayController {
 		if(kakaoPayInfoResponseVO.getItem_code() == null || kakaoPayInfoResponseVO.getItem_code().equals("")) {
 			
 			kakaoPayInfoResponseVO.setSpecialtyType(approveResponse.getSpecialtyType());
-			kakaoPayInfoResponseVO.setPaymentId(vo.getPaymentId());
+			kakaoPayInfoResponseVO.setPaymentId(vo2.getPaymentId());
 			kakaoPayInfoResponseVO.setPrice(kakaoPayInfoResponseVO.getAmount().getTotal());
 			kakaoPayInfoResponseVO.setPostId(approveResponse.getPostId());
 			kakaoPayInfoResponseVO.setItem_code(kakaoPayInfoResponseVO.getItem_code());
@@ -128,7 +139,7 @@ public class KakaoPayController {
 				 kakaoPayInfoResponseVO.setCid(kakaoPayInfoResponseVO.getCid());
 				 kakaoPayInfoResponseVO.setOrderStatus(kakaoPayInfoResponseVO.getStatus());
 				 kakaoPayInfoResponseVO.setOrderDate(kakaoPayInfoResponseVO.getApproved_at().replace("T", " "));
-				 kakaoPayInfoResponseVO.setPaymentId(vo.getPaymentId());
+				 kakaoPayInfoResponseVO.setPaymentId(vo2.getPaymentId());
 				 kakaoPayInfoResponseVO.setSpecialtyType(cartProduct.get(i).getOptionId());
 				 kakaoPayInfoResponseVO.setCancelAmount(cartProduct.get(i).getPrice()*cartProduct.get(i).getQuantity());
 				 kakaoPayInfoResponseVO.setCancelTaxFreeAmount(cartProduct.get(i).getPrice()*cartProduct.get(i).getQuantity());
@@ -150,6 +161,11 @@ public class KakaoPayController {
 		if(vo.getPostId().substring(0,3).equals("PKG")) {
 			kakaoPayService.updatePurchase(vo);
 			vo.setQuantity(-vo.getQuantity());  
+			PackageVO packageVO = new PackageVO();
+			packageVO.setPostId(vo.getPostId());
+			PackageVO findVO = packageService.packageInfo(packageVO);
+			vo.setNowReservation(findVO.getNowReservation());
+			vo.setMaxReservation(findVO.getMaxReservation());
 			kakaoPayService.updatePackageQuantity(vo);
 		}else {
 			kakaoPayService.updatePurchase(vo);
