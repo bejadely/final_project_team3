@@ -12,6 +12,23 @@
 <!-- index.html 고유 스크립트 추가 -->
 <th:block layout:fragment="script"></th:block>
 <style>
+
+.insertForm {
+  background-color: #2cbdb8;
+  color: whitesmoke;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 7px;
+  padding: 5px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin: 3px;
+  height: 38px;
+}
+
 body {
 	background-color: #fff;
 	font-family: 'Roboto', sans-serif;
@@ -71,8 +88,79 @@ table {
 	margin: 10px;
 	padding: 10px;
 }
+
+#modalWrap {
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 90px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  display: none;
+}
+
+#modalBody {
+  width: 900px;
+  height: 900px;
+  padding: 30px 30px;
+  margin: 0 auto;
+  border: 1px solid #777;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+#modalBody textarea {
+  width: 100%;
+  height: 100px; /* 원하는 높이로 조절하세요 */
+  padding: 10px;
+  border: 1px solid #ddd;
+  resize: none;
+  margin-bottom: 10px;
+}
+
+/* 모달 내부의 table 스타일 */
+#modalBody table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  margin: 0;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+#modalBody th, #modalBody td {
+  padding: 10px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+#modalBody th {
+  background-color: #f5f5f5;
+  width: 30%;
+  text-align: center;
+}
+
+#modalBody td a {
+  text-decoration: none;
+}
+
+.ck.ck-editor {
+	width: 100%;
+	max-width: 1500px;
+	margin: 0 auto;
+}
+		
+.ck-editor__editable {
+	height: 50vh;
+}
+
 </style>
 </head>
+<script src ="/ckeditor5-build-classic/ckeditor.js"></script>
 <body>
 <div class="container">
     <div class="text-center">
@@ -109,7 +197,7 @@ table {
         </div>
         <!-- 여행 경로, 메모 영역 -->
        <div style="width: 50%; margin-left: 20px; overflow-y: auto; max-height: 800px;">
-           <div style="text-align: center;">
+           <div align="center">
                <form>
                   <br>
                   <!-- iterStat는 타임리프 내장변수로 반복하는 아이템의 인덱스, 카운트 정보를 제공해줌 -->
@@ -127,6 +215,58 @@ table {
            </div>
        </div>
     </div>
+ 	<!-- 여행후기 동적으로 불러오게 추가 -->
+    <div >
+    </div>
+    
+    <!-- 여행후기 등록 모달 -->
+    <div id="modalWrap">
+		<div id="modalContent">
+	    	<div id="modalBody">
+	        	<div id="modalData">
+	     	    	<div class="text-center">
+           		    	<br>
+               			<h3>여행 후기 작성</h3>
+               			<br>
+        			</div>
+        			<div id="ls" class="text-center">
+						<form id="reviewInsert" method="post">
+							<input type="hidden" name="postId" th:value="${tripInfo.postId}">
+  							<div>
+  								<table class="table">
+  									<tr>
+  										<th style="text-align: left; width: 20%;">작성자</th>
+  										<td colspan="5">
+  											<input type="text" name="writerId" th:value="${session.sessionId}" class="form-control">
+  										</td>
+  									</tr>
+  									<tr>
+  										<th style="text-align: left; width: 20%;">여행 후기</th>
+  										<td colspan="5">
+  											<textarea  id="editor" placeholder="내용을 입력해주세요." ></textarea>
+  										</td>
+  									</tr>
+  								</table> 
+  							</div>
+  							<div style ="margin-top: 10px;"> 
+  								<button type="reset" class="btn btn-secondary mx-2">취소</button>
+  								<button type="button" id="closeBtn" class="btn btn-secondary mx-2">닫기</button>
+  								<button type="submit" class="insertForm" id="tripInsert">등록</button> 
+							</div>
+						</form>	
+					</div>						
+	     		</div>
+	    	</div>
+	  	</div>
+	</div>
+	<div align="center" style="margin-top: 10px;">
+		<!-- href 속성값을 사용하여 modal을 띄워주는 링크 -->
+		<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripInfo.writerId} and ${tripInfo.tripSave} == 'T3' and ${tripInfo.tripReviewPost} == null" 
+		id="buttonWrap" class="insertForm">여행후기 등록</button>
+		<button th:if="${session.sessionId} != null and ${tripInfo.tripSave} == 'T3' and ${tripInfo.tripReviewPost} != null" 
+		id="tripReview" class="insertForm">여행후기 보기</button>
+	</div>
+    <!-- 여행 후기 등록 모달 끝 -->
     <hr>
     <div align="center" style="margin-bottom: 20px;">
     	<input type="hidden" name="postId" th:value="${tripInfo.postId}">
@@ -134,11 +274,110 @@ table {
         th:onclick="|location.href='@{/common/tripRecordModifyForm(postId=${tripInfo.postId})}'|">수정</button>&nbsp;&nbsp;
         <button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripInfo.writerId}" id="tripDelbtn" type="button" class="btn btn-secondary mt-3 mx-2">삭제
         </button>&nbsp;&nbsp;
-        <button type="button" onclick="location.href='/tripRecordList'" class="btn btn-primary mt-3 mx-2">목록으로</button>
+        <button type="button" onclick="history.back()" class="btn btn-primary mt-3 mx-2">목록으로</button>
     </div>
 </div>
 	<script th:inline="javascript">
 	$(document).ready(function(){
+		
+		//모달 부분에서 로그인 페이지로 이동할때 약간 이상
+		//modal 창 띄우는 구문
+		var btn = $("#btnWrap");
+		const modal = document.getElementById('modalWrap');
+		const closeBtn = document.getElementById('closeBtn');
+		
+		$("#buttonWrap").click(function() {
+			//모달창 띄우기
+			modal.style.display = 'block';
+		
+		})
+		
+		closeBtn.onclick = function() {
+			modal.style.display = 'none';
+		}
+			  
+		window.onclick = function(event) {
+			if (event.target == modal) {
+		   		modal.style.display = "none";
+		    }
+		}
+		
+		
+		//에디터 관련
+		ClassicEditor
+		.create(document.querySelector('#editor'), {
+			/* htmlEncodeOutput: false, */
+			ckfinder: {
+				uploadUrl : '/common/upload'	
+			}	
+		})
+		.then(editor => {
+
+			var formObj = $("#reviewInsert");
+			var str="";
+
+			$("button[type='submit']").on("click",function(event){
+				event.preventDefault();		
+				const data = editor.getData();
+				var pId = [[tripInfo.postId]];
+				let objData = serializeObject();
+				var combinedData={
+						 tripReviewPost: data
+				};
+				//console.log(combinedData.content);	
+				str +="<input type='hidden' name='tripReviewPost' value='"+combinedData.tripReviewPost+"'>";			
+				const imgTags = Array.from(new DOMParser().parseFromString(data, 'text/html').querySelectorAll('img'));	
+				const filenames = imgTags.map(img=> {
+					const src = img.getAttribute('src');
+					return src;
+				});		
+				$.each(filenames,function(i,obj){
+					str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
+				});	
+			formObj.append(str);
+			    	
+			if (data == '' || data == null) {
+                alert("후기 내용을 작성하세요");
+                return;
+            } else {
+                // Ajax를 사용하여 데이터 전송
+                $.ajax({
+                    type: "POST",
+                    url: "/common/reviewInsert", // 서버 엔드포인트 URL을 설정하세요.
+                    data: formObj.serialize(), // 폼 데이터를 직렬화하여 전송합니다.
+                    success: function (response) {
+                    	Swal.fire({
+      	        		  icon: 'success',                      
+      	        		  title: '등록되었습니다.'
+      	        		  
+      	        		});
+                    	modal.style.display = 'none';
+                    },
+                    error: function (error) {
+                    }
+                });
+            }
+        })
+    })
+    .catch(error => {
+        console.error(error);
+    });
+			
+			function serializeObject(){
+				let formData = $('#reviewInsert').serializeArray();
+				let formObject={};
+				$.each(formData, function(idx,obj){
+					//let field = obj.name;
+					//let val= obj.value;
+					formObject[obj.name] = obj.value;
+					//formObject[field] = val;
+				});
+				
+				return formObject;
+			}
+		
+		
+		
 	   //페이지 호출시 기본으로 보여줄 지도
 		
     	// 지도를 표시할 div
@@ -314,6 +553,9 @@ table {
 				}
 			})
 		});
+		
+		//여행기간이 지나면 스케줄러를 통해 자동으로 여행완료 상태로 업데이트
+		//여행 완료상태에서는 본인의 게시글에 여행후기 등록 버튼 활성화
 		
 	})
 	</script>	

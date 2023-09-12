@@ -98,6 +98,81 @@ ul, ol {
   Custom kyunghwan
 -----------------------*/
 
+.table th, td{
+   text-align: center;
+   vertical-align: middle !important;
+}
+
+th, td {
+   text-align: center;
+   vertical-align: middle;
+}
+
+.custom-sidebar {
+   width: 100%;
+   text-align: left;
+   color: whitesmoke;
+   overflow: hidden;
+    text-overflow: ellipsis;
+    height: 100%;
+    background-color: #ffffff;
+}
+.custom-sidebar h5, h6 {
+   /*margin-bottom: 10%; */
+   padding-top: 5%;
+   padding-bottom: 5%;
+   padding-left: 20px;
+}
+
+.custom-top-margin{
+   margin-top: 100px;
+}
+
+.custom-sidebar i{
+   font-size: 24px;
+   color: #2cbdb8;
+   text-align:right;
+   margin-right: 10px;
+}
+
+/* 사이드바 상위 선택요소 및 하위 선택요소 */
+.main-menu{
+   font-weight: bold;   
+}
+
+.detail-menu i{
+   padding-left: 10px;
+   font-size: 14px;
+   vertical-align: baseline;
+   margin-right: 6px;
+}
+
+.sidebar-search {
+   width: 80%
+}
+hr {
+   margin-top: 5px;
+}
+.search-box {
+   float: right;
+   margin-bottom: 1em;
+}
+.search-box .nice-select {
+   height: 40px;
+   margin-right: 7px;
+}
+.search-box input{
+   height: 32px;
+}
+.question-box .nice-select {
+   margin-bottom: 1em;
+}
+
+
+/*---------------------
+  Custom - sweetalert2
+-----------------------*/
+
 .feature-btn {
   background-color: #2cbdb8;
   color: whitesmoke;
@@ -111,7 +186,67 @@ ul, ol {
   cursor: pointer;
   white-space: nowrap;
   margin: 3px;
+  vertical-align: middle !important;
 }
+
+.deletePac {
+  background-color: #2cbdb8;
+  color: whitesmoke;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 7px;
+  padding: 5px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin: 3px;
+}
+
+.delete-btn {
+  background-color: #2cbdb8;
+  color: whitesmoke;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 7px;
+  padding: 5px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin: 3px;
+}
+.approveButton {
+  background-color: #2cbdb8;
+  color: whitesmoke;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 7px;
+  padding: 5px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin: 3px;
+}
+.rejectButton {
+  background-color: #2cbdb8;
+  color: whitesmoke;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 7px;
+  padding: 5px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin: 3px;
+}
+
 
 .service-city{
 	color: #aaaab3;
