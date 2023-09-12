@@ -71,6 +71,7 @@
         </div>
         <div id="ls" class="text-center">
             <form id="frm" action="/common/insertQueProc" method="post">
+            <input type="hidden" name="answerMemberId" th:value="${questionVO.answerMemberId}">
                 <div>
                     <table class="table">
 	                    <tr>
