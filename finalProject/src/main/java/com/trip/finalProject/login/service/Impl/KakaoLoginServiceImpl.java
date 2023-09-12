@@ -52,7 +52,8 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
          sb.append("grant_type=authorization_code");        
          sb.append("&client_id=7a2faaf15ad43d8157f12b22e12d694d"); //본인이 발급받은 key
          sb.append("&redirect_uri=http://localhost:8787/member/kakaologin"); // 본인이 설정한 주소
-            
+         //sb.append("&redirect_uri=http://13.209.46.24:8888/member/kakaologin"); // 본인이 설정한 주소
+
          sb.append("&code=" + authorize_code);
          bw.write(sb.toString());
          
