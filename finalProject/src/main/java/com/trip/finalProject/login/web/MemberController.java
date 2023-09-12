@@ -216,7 +216,8 @@ public class MemberController {
 		public String EditPassword(MemberVO memberVO){
 			System.out.println(memberVO);
 			memberService.editPassword(memberVO);
-			return "member/login";
+			/* return "member/login"; */
+			return "redirect:/goToHome";
 		}
 		
 		
