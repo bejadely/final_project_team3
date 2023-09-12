@@ -1,234 +1,228 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-   xmlns:th="http://www.thymeleaf.org"
-   xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-   layout:decorate="@{layouts/default_layout}">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="@{layouts/default_layout}">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
 <style>
 form {
-   text-align: center;
+	text-align: center;
 }
 
-.contentStyle{
-   width:400px;
-   height:400px;
-   margin: 0 auto;
+.contentStyle {
+	width: 400px;
+	height: 400px;
+	margin: 0 auto;
 }
-.pt img{
-   width:200px;
-   height:200px;
+
+.pt img {
+	width: 200px;
+	height: 200px;
 }
 </style>
 
 </head>
 <body>
 
-<div layout:fragment="content">
- <section class="property-details-section spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-9">
-                    <div class="pd-details-text">
-                    <h4>[[ ${info.title} ]]</h4>
-                        <div class="pd-details-social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-send"></i></a>
-                            <a href="#"><i class="fa fa-star"></i></a>
-                            <a href="#"><i class="fa fa-print"></i></a>
-                            <a href="#"><i class="fa fa-cloud-download"></i></a>
-                        </div>
-                        <div class="property-more-pic" style="width:500px; height:500px;">
-                            <div class="product-pic-zoom">
-                               
-                            </div>
-                        </div>
-                       
-                        
-                            <div class="pd-details-tab">
-                            <div class="tab-item">
-                                <ul class="nav" role="tablist">
-                                    <li>
-                                        <a class="active" data-toggle="tab" href="#tab-1" role="tab">특산물 정보</a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tab" href="#tab-2" role="tab">특산물 상세내용</a>
-                                    </li>
-                                    <li>
-                                        <a data-toggle="tab" href="#tab-3" role="tab">문의 사항</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="tab-item-content">
-                                <div class="tab-content">
-                                    <div class="tab-pane fade-in active" id="tab-1" role="tabpanel">
-                                        <div class="property-more-table">
-                                            <table class="left-table">
-                                                <tbody>
-                                                   
-                                                    <tr>
-                                                        <td class="pt-name">특산물 종류</td>
-                                                        <td class="p-value">[[ ${info.type} ]]</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="pt-name">작성자</td>
-                                                        <td class="p-value">[[ ${info.writerId} ]]</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <table class="right-table">
-                                                <tbody>
-                                                   
-                                                    <tr>
-                                                        <td class="pt-name">할인 여부</td>
-                                                        <td class="p-value">[[ ${info.discount} ]]</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td class="pt-name">지역</td>
-                                                        <td class="p-value">[[ ${info.writerId} ]]</td>
-                                                    </tr>
-                                                  
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="tab-2" role="tabpanel">
-                                        <div class="pd-table-desc" th:utext="${info.content }" >
-                                           
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="tab-3" role="tabpanel">
-                                        <div class="pd-table-amenities">
-                                             <p><b>환불 규정</b><br>
-												<b>환불 가능한 기간:</b> 특산물 환불 요청은 구매 3일 내로 가능합니다.<br><br>
-												<b>환불 불가 기간:</b> 특산물 구매 후 3일 이내에 환불을 요청하는 경우, 환불이 불가능합니다.<br><br>
-												
-												<b>환불 절차</b><br>
-												
-												특산물을 구매한 후 3일 이내에 환불을 신청한 경우, 원래 결제한 방법을 통해 환불이 처리됩니다.<br>
-												환불 처리에는 최대 7일의 처리 시간이 소요될 수 있습니다.<br><br>
-												
-												<b>환불 금액</b><br> 환불 금액은 다음과 같이 계산됩니다.<br><br>
-												
-												<b>특산물 구매 후 3일 이내 환불 요청:</b> 결제 금액의 100% 환불<br>
-												<b>3일 이내 환불 요청:</b> 환불 불가<br>
-												<b>환불 문의:</b> 환불에 관한 추가 문의 사항이나 지원이 필요한 경우, 문의하기 버튼을 클릭해주세요.<br>
-												
-												</p>
-                                        
-                                        <div class="bt-item">
-			                                 <button type="button" name="question" id="question" class="feature-btn">
-			                                 문의하기
-			                                 </button>
-			                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    <!--<div class="pd-desc">
+	<div layout:fragment="content">
+		<section class="property-details-section spad">
+			<div class="container -md">
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="pd-details-text">
+							<h4>[[ ${info.title} ]]</h4>
+							<div class="pd-details-social">
+								<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
+									class="fa fa-send"></i></a> <a href="#"><i class="fa fa-star"></i></a>
+								<a href="#"><i class="fa fa-print"></i></a> <a href="#"><i
+									class="fa fa-cloud-download"></i></a>
+							</div>
+							<div class="property-more-pic"
+								style="width: 500px; height: 500px;">
+								<div class="product-pic-zoom"></div>
+							</div>
+
+							<!--<div class="pd-desc">
                             <h4>패키지 설명</h4>
                             <div th:utext="${info.content }" class="contentStyle"></div>
                         </div>-->
-                    </div>
-                </div>
-               <div class="col-lg-3">
-                    <div class="property-sidebar">
-                        <h4>구매하기</h4>     
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="property-sidebar">
+							<h4>구매하기</h4>
 							<!-- 옵션 정보 -->
 							<div class="form-horizontal" style="text-align: left;">
-								<label>옵션  </label> 
-								<select class="form-control opt_select" name="selectedOpt">
+								<label>옵션 </label> <select class="form-control opt_select"
+									name="selectedOpt">
 									<option value="">선택</option>
-									<option th:each ="op : ${option}" 
-											th:if="${op.discountRate == null}"
-											th:value1="${op.specialtyType}" th:value2 ="${op.price}" th:text="${op.specialtyType + ' / ' + op.price }" >
-									</option>
-									<option th:each ="op : ${option}"
-											th:unless="${op.discountRate == null}"
-											th:value1="${op.specialtyType}" th:value2 ="${op.price}" th:value3="${op.discountRate}" th:text="${op.specialtyType + ' / ' + op.price + '/ 할인율' + op.discountRate}"  >
+									<option th:each="op : ${option}"
+										th:if="${op.discountRate == null}"
+										th:value1="${op.specialtyType}" th:value2="${op.price}"
+										th:text="${op.specialtyType + ' / ' + op.price }"></option>
+									<option th:each="op : ${option}"
+										th:unless="${op.discountRate == null}"
+										th:value1="${op.specialtyType}" th:value2="${op.price}"
+										th:value3="${op.discountRate}"
+										th:text="${op.specialtyType + ' / ' + op.price + '/ 할인율' + op.discountRate}">
 									</option>
 								</select>
 							</div>
 							<div class="form-horizontal" style="text-align: left;">
-								<label>구매수량  </label> 
-								<select class="form-control count" id="select_count">
-								    <th:block th:each="count : ${#numbers.sequence(0, 20)}">
-								        <option th:value="${count}" th:text="${count}"></option>
-								    </th:block> 
+								<label>구매수량 </label> <select class="form-control count"
+									id="select_count">
+									<th:block th:each="count : ${#numbers.sequence(0, 20)}">
+										<option th:value="${count}" th:text="${count}"></option>
+									</th:block>
 								</select>
-							</div>	
-							<div class="selected_option" style="text-align: right;">
 							</div>
+							<div class="selected_option" style="text-align: right;"></div>
 							<div class="sidebar-btn">
-                                <div class="bt-item">
-                                    <input type="radio" name="kakaoPay" id="kakaoPay" >
-                                    <label for="kakaoPay">Buy</label>
-                                </div>
-                                <div class="bt-item">
-                                    <input type="radio" name="cartBtn" id="cartBtn">
-                                    <label for="cartBtn">Cart</label>
-                                </div>
-                            </div>
-                    </div>
-                </div>
-                <div>
-	                <input type="hidden" id="sessionAuthority" th:value="${session.sessionAuthority}">
-	                <button th:if="${session.sessionAuthority} != null and ${session.sessionAuthority} == 'A3'" type="button" class="btn btn-outline-dark" 
-					th:onclick="|location.href='@{/admin/specialtiesUpdateForm(postId=${info.postId})}'|">수정</button>&nbsp;&nbsp;
-                </div>
-				
-               
-                
-                <!-- 리뷰 -->
-        <div class="review">
-            <h7 id="reviewCount"></h7>
-            <hr>
-             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="1">
-                <label class="form-check-label" for="inlineRadio1">1점</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="2">
-                <label class="form-check-label" for="inlineRadio2">2점</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="3">
-                <label class="form-check-label" for="inlineRadio3">3점</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="4">
-                <label class="form-check-label" for="inlineRadio4">4점</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="5" th:checked="true">
-                <label class="form-check-label" for="inlineRadio5">5점</label>
-            </div>
-            <div class="input-group mb-3">
-                <input id="reviewInput" type="text" class="form-control" placeholder="리뷰 작성" aria-label="추억을 남겨보세요!" aria-describedby="button-addon2">
-                <button class="btn btn-outline-secondary" type="button" id="addReview">리뷰 등록</button>
-            </div>
-            <hr id="afterReview">
-            <div class="d-grid gap-2 col-6 mx-auto">
-                <button class="btn btn-outline-info justify-content-center" id="moreReview" type="button"
-                        data-page="1" >
-                    더보기
-                </button>
-            </div>
-            <hr>
-           
-        </div>   
-             <input type="hidden" id="id" th:value="${session.sessionId}">
-        </div>
-              
-    </section>
-    <!-- Property Details Section End -->
+								<div class="bt-item">
+									<input type="radio" name="kakaoPay" id="kakaoPay"> <label
+										for="kakaoPay">Buy</label>
+								</div>
+								<div class="bt-item">
+									<input type="radio" name="cartBtn" id="cartBtn"> <label
+										for="cartBtn">Cart</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div>
+						<input type="hidden" id="sessionAuthority"
+							th:value="${session.sessionAuthority}">
+						<button
+							th:if="${session.sessionAuthority} != null and ${session.sessionAuthority} == 'A3'"
+							type="button" class="btn btn-outline-dark"
+							th:onclick="|location.href='@{/admin/specialtiesUpdateForm(postId=${info.postId})}'|">수정</button>
+						&nbsp;&nbsp;
+					</div>
+					<div class="pd-details-tab">
+						<div class="tab-item">
+							<ul class="nav nav-tabs" role="tablist">
+								<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab-1"
+									role="tab">특산물 정보</a></li>
+								<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-2" role="tab">특산물
+										상세내용</a></li>
+								<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab-3" role="tab">문의 사항</a>
+								</li>
+							</ul>
+						</div>
+						<div class="tab-item-content">
+							<div class="tab-content">
+								<div class="tab-pane fade-in active" id="tab-1" role="tabpanel">
+										<table class="table">
+											<tbody>
+
+												<tr>
+													<th scope="row" class="pt-name">특산물 종류</th>
+													<td class="p-value">[[ ${info.type} ]]</td>
+												</tr>
+												<tr>
+													<th scope="row" class="pt-name">작성자</th>
+													<td class="p-value">[[ ${info.writerId} ]]</td>
+												</tr>
+
+												<tr>
+													<th scope="row" class="pt-name">할인 여부</th>
+													<td class="p-value">[[ ${info.discount} ]]</td>
+												</tr>
+												<tr>
+													<th scope="row" class="pt-name">지역</th>
+													<td class="p-value">[[ ${info.writerId} ]]</td>
+												</tr>
+
+											</tbody>
+										</table>
+								</div>
+								<div class="tab-pane fade" id="tab-2" role="tabpanel">
+									<div class="pd-table-desc" th:utext="${info.content }">
+
+									</div>
+								</div>
+								<div class="tab-pane fade" id="tab-3" role="tabpanel">
+									<div class="pd-table-amenities">
+										<p>
+											<b>환불 규정</b><br> <b>환불 가능한 기간:</b> 특산물 환불 요청은 구매 3일 내로
+											가능합니다.<br>
+											<br> <b>환불 불가 기간:</b> 특산물 구매 후 3일 이내에 환불을 요청하는 경우, 환불이
+											불가능합니다.<br>
+											<br> <b>환불 절차</b><br> 특산물을 구매한 후 3일 이내에 환불을 신청한 경우,
+											원래 결제한 방법을 통해 환불이 처리됩니다.<br> 환불 처리에는 최대 7일의 처리 시간이 소요될 수
+											있습니다.<br>
+											<br> <b>환불 금액</b><br> 환불 금액은 다음과 같이 계산됩니다.<br>
+											<br> <b>특산물 구매 후 3일 이내 환불 요청:</b> 결제 금액의 100% 환불<br>
+											<b>3일 이내 환불 요청:</b> 환불 불가<br> <b>환불 문의:</b> 환불에 관한 추가 문의
+											사항이나 지원이 필요한 경우, 문의하기 버튼을 클릭해주세요.<br>
+
+										</p>
+
+										<div class="bt-item">
+											<button type="button" name="question" id="question"
+												class="feature-btn">문의하기</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 리뷰 -->
+					<div class="review">
+						<h7 id="reviewCount"></h7>
+						<hr>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio"
+								name="inlineRadioOptions" id="inlineRadio1" value="1"> <label
+								class="form-check-label" for="inlineRadio1">1점</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio"
+								name="inlineRadioOptions" id="inlineRadio2" value="2"> <label
+								class="form-check-label" for="inlineRadio2">2점</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio"
+								name="inlineRadioOptions" id="inlineRadio3" value="3"> <label
+								class="form-check-label" for="inlineRadio3">3점</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio"
+								name="inlineRadioOptions" id="inlineRadio4" value="4"> <label
+								class="form-check-label" for="inlineRadio4">4점</label>
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio"
+								name="inlineRadioOptions" id="inlineRadio5" value="5"
+								th:checked="true"> <label class="form-check-label"
+								for="inlineRadio5">5점</label>
+						</div>
+						<div class="input-group mb-3">
+							<input id="reviewInput" type="text" class="form-control"
+								placeholder="리뷰 작성" aria-label="추억을 남겨보세요!"
+								aria-describedby="button-addon2">
+							<button class="btn btn-outline-secondary" type="button"
+								id="addReview">리뷰 등록</button>
+						</div>
+						<hr id="afterReview">
+						<div class="d-grid gap-2 col-6 mx-auto">
+							<button class="btn btn-outline-info justify-content-center"
+								id="moreReview" type="button" data-page="1">더보기</button>
+						</div>
+						<hr>
+
+					</div>
+					<input type="hidden" id="id" th:value="${session.sessionId}">
+				</div>
+			</div>
+		</section>
+		<!-- Property Details Section End -->
 
 
-<script>
+		<script>
 
 
 
@@ -594,6 +588,6 @@ form {
        })
        
 </script>
-</div>
+	</div>
 </body>
 </html>
