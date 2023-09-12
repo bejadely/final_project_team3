@@ -15,6 +15,7 @@ section.notice {
 	padding: 80px 0;
 }
 
+
 .page-title {
 	margin-bottom: 60px;
 }
@@ -67,7 +68,7 @@ section.notice {
 	display: inline-block;
 	line-height: 1.4;
 	word-break: break-all;
-	vertical-align: middle;
+ vertical-align: middle; 
 }
 
 .board-table a:hover {
@@ -203,7 +204,7 @@ border-radius: 20px;
 	vertical-align: middle;
 	border: 1px solid #ddd;
 	border-left: 0;
-	line-height: 100%;
+	/* line-height: 100%; */
 	text-decoration: none;
 	color: inherit;
 }
@@ -260,6 +261,10 @@ border-radius: 20px;
 	text-align: right;
 	padding-right: 20%;
 } 
+
+#keyword {
+    height: 32px;
+}
 </style>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@alphardex/aqua.css/dist/aqua.min.css">
 
@@ -283,7 +288,7 @@ border-radius: 20px;
 		<!--  관리자(A3)인 경우 검색 div  -->
 		<div th:if="${session.sessionAuthority} == 'A3'">
 			<div id="noticeType" class="mb-3"
-				style="float: left; margin-left: 17%; margin-right: 20px">
+				style="float: left; margin-left:20%; margin-right: 20px;">
 
 				<select id="searchByNoticeType" class="" name="noticeType"
 					aria-label="Default select example">
@@ -310,18 +315,18 @@ border-radius: 20px;
 				</select>
 			</div>
 			<div>
-				<input type="text" id="keyword" name="keyword" style="margin-left: 20px;"
+				<input type="text" id="keyword" name="keyword" style="margin-left: 20px;   margin-top:5px; height: 32px;" 
 					placeholder="검색어를 입력해주세요.">
 				<button id="searchButton" class="feature-btn">
 					<i class="fa-solid fa-magnifying-glass"></i>
 				</button>
+				<button type="button"    class="feature-btn submitButton" style=" margin-left: 500px; color: white;" th:if="${session.sessionAuthority} == 'A3'">등록</button>		
 			</div>
 		</div>
 
 		<!--  가이드(A2)인 경우 검색 div  -->
 		<div th:if="${session.sessionAuthority} == 'A2'">
-			<div id="noticeType" class="mb-3"
-				style="float: left; margin-left: 15%; margin-right: 20px">
+			<div id="noticeType" class="mb-3" style="float: left; margin-left:20%; margin-right: 20px;">
 				<select class="" name="noticeType"
 					aria-label="Default select example">
 					<option value="">공지사항 종류</option>
@@ -341,7 +346,7 @@ border-radius: 20px;
 
 
 			<div>
-				<input type="text" id="keyword" name="keyword"
+				<input type="text" id="keyword" name="keyword" style="margin-left: 20px;   margin-top:5px; height: 32px;" 
 					placeholder="검색어를 입력해주세요.">
 				<button id="searchButton" class="feature-btn">
 					<i class="fa-solid fa-magnifying-glass"></i>
@@ -354,7 +359,7 @@ border-radius: 20px;
 		<div th:if="${session.sessionAuthority == 'A1' or session.sessionAuthority == 'A4' or session.sessionAuthority == null}">
 
 			<div id="noticeType" class="mb-3"
-				style="float: left; margin-left: 15%; margin-right: 20px">
+				 style="float: left; margin-left:20%; margin-right: 20px;">
 
 				<select id="searchByNoticeType" class="" name="noticeType"
 					aria-label="Default select example">
@@ -366,16 +371,18 @@ border-radius: 20px;
 
 
 			<div>
-				<input type="text" id="keyword" name="keyword"
+				<input type="text" id="keyword" name="keyword" style="margin-left: 20px;   margin-top:5px; height: 32px;" 
 					placeholder="검색어를 입력해주세요.">
 				<button id="searchButton" class="feature-btn">
 					<i class="fa-solid fa-magnifying-glass"></i>
-				</button>
+				</button>	
+					
 			</div>
+			
 		</div>
 
 		<!-- notice list area -->
-
+	
 		<div class="container">
 			<table class="board-table">
 				<thead>
@@ -474,8 +481,8 @@ border-radius: 20px;
 			</div>
 
 
-			<div class="bt_wrap">		
-				<a href="/admin/noticeWrite" class="btn btn-primary btn-ghost " th:if="${session.sessionAuthority} == 'A3'">등록</a>
+			<div>		
+				
 <!-- 				 <input type="button" th:if="${session.sessionAuthority} == 'A3'" value="등록" onclick="location.href='/noticeWrite'" class="btn btn-secondary">					
  -->			</div>
 		</div>
@@ -485,11 +492,14 @@ border-radius: 20px;
 
 
 
-
 	<script th:inline="javascript" type="text/javascript">
 	
 	
-	
+
+	$('.submitButton').on("click",function(event){
+		location.href="/admin/noticeWrite" ;	
+		
+	});
 	
 	$(document).ready(function() {
 		// 이벤트 설정
