@@ -67,7 +67,7 @@
 		SELECT sum(p.price) as "price", r.name
 		  FROM package_regist r join purchase p on r.post_id = p.post_id
 		 WHERE writer_id=#{guideId} AND delete_type = 'N'
-		   AND extract(month from r.start_date) = extract(month from sysdate)
+		   AND extract(month from p.order_date) = extract(month from sysdate)
 	  GROUP BY r.name
 	</select>
   </mapper>

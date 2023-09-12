@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import com.trip.finalProject.calculation.service.impl.CalculationQuartzJob;
+import com.trip.finalProject.packaged.service.impl.PackageQuartzJob;
 import com.trip.finalProject.trip.service.impl.TripQuartzJob;
 
 // 스케줄러 설정파일
@@ -31,6 +32,7 @@ public class JobConfig {
 	public void run() {
 		JobDetail jobDetail = runJobDetail(CalculationQuartzJob.class, new HashMap<>());
 		JobDetail tripRecordComplete = runJobDetail(TripQuartzJob.class, new HashMap<>());
+		JobDetail packageCalculate = runJobDetail(PackageQuartzJob.class, new HashMap<>());
 		
 		try {
 	        // 크론형식 지정 후 스케줄 시작
@@ -40,6 +42,8 @@ public class JobConfig {
 			//매일 밤 23:59분에 자동 일괄 처리
 			scheduler.scheduleJob(tripRecordComplete, runJobTrigger("59 23 * * * ?"));
 			
+			//매일 밤 00:00분에 자동 일괄 처리
+			scheduler.scheduleJob(packageCalculate,runJobTrigger("0 0 * * * ?"));
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}

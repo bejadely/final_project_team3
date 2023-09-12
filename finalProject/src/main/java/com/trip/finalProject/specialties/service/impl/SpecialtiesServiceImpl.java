@@ -78,7 +78,7 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
 		// TODO Auto-generated method stub
 		
 		mapper.insertSpecialites(specialtiesVO);
-		
+		System.out.println(specialtiesVO.getPostId());
 		specialtiesVO.getOptionList().forEach(option->{
 			option.setPostId(specialtiesVO.getPostId());
 			mapper.insertSpecialtiesOption(option);
