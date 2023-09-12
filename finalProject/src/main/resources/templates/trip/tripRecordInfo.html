@@ -104,7 +104,7 @@ table {
 
 #modalBody {
   width: 900px;
-  height: 800px;
+  height: 900px;
   padding: 30px 30px;
   margin: 0 auto;
   border: 1px solid #777;
@@ -197,7 +197,7 @@ table {
         </div>
         <!-- 여행 경로, 메모 영역 -->
        <div style="width: 50%; margin-left: 20px; overflow-y: auto; max-height: 800px;">
-           <div C>
+           <div align="center">
                <form>
                   <br>
                   <!-- iterStat는 타임리프 내장변수로 반복하는 아이템의 인덱스, 카운트 정보를 제공해줌 -->
@@ -215,8 +215,8 @@ table {
            </div>
        </div>
     </div>
+ 	<!-- 여행후기 동적으로 불러오게 추가 -->
     <div >
-    
     </div>
     
     <!-- 여행후기 등록 모달 -->
@@ -261,9 +261,9 @@ table {
 	</div>
 	<div align="center" style="margin-top: 10px;">
 		<!-- href 속성값을 사용하여 modal을 띄워주는 링크 -->
-		<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripInfo.writerId} and ${tripInfo.tripSave} == 'T2' and ${tripInfo.tripReviewPost} == null" 
+		<button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripInfo.writerId} and ${tripInfo.tripSave} == 'T3' and ${tripInfo.tripReviewPost} == null" 
 		id="buttonWrap" class="insertForm">여행후기 등록</button>
-		<button th:if="${session.sessionId} != null and ${tripInfo.tripSave} == 'T2' and ${tripInfo.tripReviewPost} != null" 
+		<button th:if="${session.sessionId} != null and ${tripInfo.tripSave} == 'T3' and ${tripInfo.tripReviewPost} != null" 
 		id="tripReview" class="insertForm">여행후기 보기</button>
 	</div>
     <!-- 여행 후기 등록 모달 끝 -->
