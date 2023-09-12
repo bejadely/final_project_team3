@@ -1,7 +1,5 @@
 package com.trip.finalProject.login.web;
 
-import java.io.Console;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -44,6 +42,12 @@ public class MemberController {
     AdminMemberService adminMemberService;
 //	private String apiResult = null;
 	
+    @GetMapping("goToHome")
+    public String goToHome() {
+    	return "index";
+    }
+    
+    
 	//회원가입
 	//넘겨주고 받을게 없어서 매개변수 x 
 	//그냥 등록페이지의 뷰를 반환함.(Get방식)(return: 실제 경로)
@@ -58,7 +62,7 @@ public class MemberController {
 	public String memberInsertProcess(MemberVO memberVO) { 
 		
 		memberService.insertMemberInfo(memberVO);
-		return "redirect:/";
+		return "redirect:/goToHome";
 	}
 
 	//가이드 회원가입 폼 호출
@@ -71,7 +75,7 @@ public class MemberController {
 	@PostMapping("/member/guideInsert")
 	public String guideInsertForm(MemberVO memberVO) { 		
 		 memberService.insertGuide(memberVO);
-		return "redirect:/";
+		return "redirect:/goToHome";
 	}
 	
 
