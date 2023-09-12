@@ -42,6 +42,8 @@ public class MemberController {
     AdminMemberService adminMemberService;
 //	private String apiResult = null;
 	
+    
+    //홈화면으로 가기
     @GetMapping("goToHome")
     public String goToHome() {
     	return "index";
