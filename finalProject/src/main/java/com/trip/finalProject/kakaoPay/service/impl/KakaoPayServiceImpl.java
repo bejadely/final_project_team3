@@ -49,6 +49,7 @@ public class KakaoPayServiceImpl implements KakaoPayService {
 	@Override
 	public KakaoPayResponseVO kakoPayReady(PaymentVO vo, int quantity,String postId,String specialtyType) {
 		// TODO Auto-generated method stub
+		String kakaoUrl = "http://13.209.46.24:8888/";
 		String partner_order_id = UUID.randomUUID() + vo.getPartnerUserId();
 		//서버로 요청할 Body
 		MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
@@ -60,12 +61,9 @@ public class KakaoPayServiceImpl implements KakaoPayService {
         parameters.add("quantity", String.valueOf(quantity));
         parameters.add("total_amount", String.valueOf(vo.getTotalAmount()));
         parameters.add("tax_free_amount", String.valueOf(vo.getTotalAmount()));
-        parameters.add("approval_url", "http://localhost:8787/common/payment/success?specialtyType=" + specialtyType + "&partner_user_id=" + vo.getPartnerUserId() +"&partner_order_id="+ partner_order_id +"&postId="+postId); // 성공 시 redirect url
-        parameters.add("cancel_url", "http://localhost:8787/common/payment/cancel"); // 취소 시 redirect url
-        parameters.add("fail_url", "http://localhost:8787/common/payment/fail"); // 실패 시 redirect url
-        parameters.add("approval_url", "http://3.39.21.112:8888/common/payment/success?specialtyType=" + specialtyType + "&partner_user_id=" + vo.getPartnerUserId() +"&partner_order_id="+ partner_order_id +"&postId="+postId); // 성공 시 redirect url
-        parameters.add("cancel_url", "http://3.39.21.112:8888/common/payment/cancel"); // 취소 시 redirect url
-        parameters.add("fail_url", "http://3.39.21.112:8888/common/payment/fail"); // 실패 시 redirect url
+        parameters.add("approval_url", kakaoUrl+"common/payment/success?specialtyType=" + specialtyType + "&partner_user_id=" + vo.getPartnerUserId() +"&partner_order_id="+ partner_order_id +"&postId="+postId); // 성공 시 redirect url
+        parameters.add("cancel_url", kakaoUrl+"common/payment/cancel"); // 취소 시 redirect url
+        parameters.add("fail_url", kakaoUrl+"common/payment/fail"); // 실패 시 redirect url
 		
         //파라미터, 헤더
 		HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters,this.getHeaders());
