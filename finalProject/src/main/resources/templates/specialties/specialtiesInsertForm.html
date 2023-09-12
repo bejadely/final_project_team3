@@ -341,7 +341,7 @@ ClassicEditor
 			if(confirm("등록 하시겠습니까?")){
 		    	//var formattedPrice = parseFloat($("#price").val().replace(/\,/g, '')); // 콤마 제거 및 숫자로 변환
 		    	formObj.append(str);
-		        document.getElementById('editorForm').action = "/guide/packageUpdate";
+		        document.getElementById('editorForm').action = "/admin/specialtiesInsert";
 		        document.getElementById('editorForm').submit();
 		        alert("등록 되었습니다.");
 		            return;
