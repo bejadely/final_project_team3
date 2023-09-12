@@ -124,10 +124,6 @@
             display: flex;
             justify-content: flex-end;
         }
-        
-		.comment-div {
-		    border: 1px solid #000; /* 원하는 스타일과 색상을 지정하세요 */
-		  }
     </style>
 </head>
 <body>
@@ -197,7 +193,7 @@
         <button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripMateInfo.writerId}" type="button"
                 class="primary-btn" id="mateDelbtn">삭제
         </button>&nbsp;&nbsp;
-        <button type="button" class="primary-btn" onclick="location.href='/tripMateList'">목록으로</button>
+        <button type="button" class="primary-btn" onclick="history.back()">목록으로</button>
     </form>
 </div>
 <br>

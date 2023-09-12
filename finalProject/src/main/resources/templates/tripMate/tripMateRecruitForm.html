@@ -346,7 +346,7 @@ body {
          let metEndDay = document.getElementsByName('endDay')[0];
          let metDeadline = document.getElementsByName('deadline')[0];
          let metMateMax = document.getElementsByName('mateMax')[0];
-         let metContent = document.getElementsByName('mateContent')[0];
+         let metContent = combinedData.mateContent;
          let metTripArea = document.getElementsByName('tripArea')[0];
          let metStyle = document.getElementsByName('mateStyle')[0];
          
@@ -424,7 +424,7 @@ body {
           	 return;
          }
          
-         if (metContent.value == '') {
+         if (metContent == '') {
         	 Swal.fire({
               	icon: 'warning',                      
           		title: '내용을 입력해주세요.'

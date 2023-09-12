@@ -93,4 +93,7 @@ public interface TripMapper {
 	//여행기록 기간 완료시 자동으로 여행완료로 업데이트 처리
 	public int completeTripRecord();
 	
+	//여행후기 등록
+	public int insertTripReview(TripVO tripVO);
+	
 }
