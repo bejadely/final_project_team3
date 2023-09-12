@@ -122,7 +122,11 @@ public class QuestionController {
 	
 	// 문의 작성
 	@PostMapping("/common/insertQueProc")
-	public String insertQueProc(QuestionVO questionVO, RedirectAttributes rtt) {
+	public String insertQueProc(QuestionVO questionVO, String writerId, RedirectAttributes rtt) {
+		
+		if(writerId != null) {
+			questionVO.setAnswerMemberId(writerId);
+		}
 		
 		// 문의글 등록
 		String message = queService.insertQuestion(questionVO);
