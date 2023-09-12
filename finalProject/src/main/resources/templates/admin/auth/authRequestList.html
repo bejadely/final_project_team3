@@ -9,6 +9,7 @@
 			text-decoration: 
 		}
 	</style>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.3/tippy.css" />
 </head>	
 <!-- Content -->
 <div layout:fragment="content">
@@ -36,7 +37,7 @@
 							<tr>
 								<td align="center" th:text="${l.memberId}"></td>
 								<td align="center" th:text="${l.memberName}"></td>
-								<td align="center" class="clipBoard" th:data-clipboard-text="${l.accountNumber}">[[${l.accountNumber}]]&nbsp;&nbsp;<i class="clipBoard fa-solid fa-copy"></i></td>
+								<td align="center" class="clipBoard" th:data-clipboard-text="${l.accountNumber}"><div>[[${l.accountNumber}]]&nbsp;&nbsp;<i class="clipBoard fa-solid fa-copy"></i></div></td>
 								<td align="center" th:text="|${#strings.substring(l.signUpDate,0,10)}|"></td>
 								<td align="center">
 								<button type="button" class="approveButton" name="approveButton">승인</button>  
@@ -63,9 +64,17 @@
 
 	<!-- 클립보드 복사 cdn -->
 	<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
+	
+	<!-- tippy 사용을 위한 연결 -->
+	<script src="https://unpkg.com/@popperjs/core@2"></script><!-- tippy 사용 위한 연결-->
+    <script src="https://unpkg.com/tippy.js@6"></script><!-- tippy 사용 위한 연결-->
 	<script th:inline="javascript" type="text/javascript">
 	
 	// 동적으로 버튼이 다 만들어지고 문서가 다 로드 된 후 이벤트가 정의되게 하기 위해 콜백함수 사용 
+	window.onload = function () {
+		
+	};
+	
 	$(document).ready(function() {
 		// 승인 버튼 클릭 시 발생 이벤트 설정
 		$('.approveButton').on('click', authApprove);
@@ -94,6 +103,15 @@
 		    console.error('Action:', e.action);
 		    console.error('Trigger:', e.trigger);
 		});
+		
+		// 복사 완료시 실행되는 구문
+		tippy('.clipBoard', {
+            content: 'Copied!',
+            placement: 'bottom',
+            trigger: 'click',
+            hideOnClick : 'toggle',
+            animation: 'shift-away'
+        });
 		
 	});
 	
@@ -182,8 +200,6 @@
 	    })		 
 	
 	}
-	
-	
 		
 	function printApproveResult(message){
 		
@@ -225,9 +241,8 @@
 			    
 		}
 	}
-		
+	
 	</script>
 	
 </div>
-
 </html>
