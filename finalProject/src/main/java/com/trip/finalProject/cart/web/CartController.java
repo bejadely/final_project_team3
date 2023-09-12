@@ -46,7 +46,6 @@ public class CartController {
 			  ,@RequestParam(value = "nowPage", defaultValue = "1") Integer nowPage
 			  ) {
 		cartVO.setMemberId(session.getAttribute("sessionId").toString());
-		System.out.println("cartcart:" + cartVO);
 		//처리중
 		int total = cartService.postIdCount(cartVO);
 		
@@ -55,6 +54,8 @@ public class CartController {
 		List<CartVO> cartList = cartService.getAjaxCart(cartVO, pagingVO);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
+		System.out.println("cartcart:" + cartList);
+		System.out.println();
 		
 		map.put("paging", pagingVO);
 		map.put("cartList", cartList);
