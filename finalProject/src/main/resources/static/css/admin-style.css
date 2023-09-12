@@ -101,12 +101,15 @@ ul, ol {
 /*---------------------
   Custom - common
 -----------------------*/
-.table th, td {
+
+.table th, td{
 	text-align: center;
+	vertical-align: middle !important;
 }
 
 th, td {
 	text-align: center;
+	vertical-align: middle;
 }
 
 .custom-sidebar {
@@ -148,6 +151,27 @@ th, td {
 	margin-right: 6px;
 }
 
+.sidebar-search {
+	width: 80%
+}
+hr {
+	margin-top: 5px;
+}
+.search-box {
+	float: right;
+	margin-bottom: 1em;
+}
+.search-box .nice-select {
+	height: 40px;
+	margin-right: 7px;
+}
+.search-box input{
+	height: 32px;
+}
+.question-box .nice-select {
+	margin-bottom: 1em;
+}
+
 
 /*---------------------
   Custom - sweetalert2
@@ -166,6 +190,7 @@ th, td {
   cursor: pointer;
   white-space: nowrap;
   margin: 3px;
+  vertical-align: middle !important;
 }
 
 .deletePac {
