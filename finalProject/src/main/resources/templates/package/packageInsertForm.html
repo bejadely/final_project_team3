@@ -133,8 +133,8 @@ table {
     }
     
     .image-frame {
-            width: 150px; /* 이미지 틀의 너비 */
-            height: 150px; /* 이미지 틀의 높이 */
+            width: 200px; /* 이미지 틀의 너비 */
+            height: 200px; /* 이미지 틀의 높이 */
             border: 2px solid #ccc; /* 테두리 스타일 및 색상 설정 */
             padding: 5px; /* 내부 여백 설정 */
             text-align: center; /* 이미지 가운데 정렬 */
@@ -216,6 +216,9 @@ ClassicEditor
             // 30일을 밀리초로 계산
             var thirtyDaysInMillis = 30 * 24 * 60 * 60 * 1000;
             
+            var minDeadlineDate = new Date(selectedStartDate);
+            minDeadlineDate.setDate(selectedStartDate.getDate() - 4);
+            
             if (selectedStartDate < currentDate) {
                 alert("여행 시작일은 오늘보다 이전일 수 없습니다.");
                 return false;
@@ -235,8 +238,10 @@ ClassicEditor
                 return false; // 폼 제출 중지
             }
             
-				
-	           
+            if (selectedDeadlineDate > minDeadlineDate) {
+                alert("여행 마감일은 여행 시작일의 최소 3일 전이어야 합니다.");
+                return false;
+            }  
 	            
 			var str="";
 			const data = editor.getData();

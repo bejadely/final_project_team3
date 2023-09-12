@@ -62,6 +62,12 @@
 		.table-left th, td{
 			text-align: left;
 		}
+		.status-btn{
+			cursor: default;
+			border: none;
+			background: #2DB400;
+			margin-bottom: 0.7em;
+		}
     </style>
 </head>
 <!-- Content -->
@@ -69,18 +75,12 @@
 	<div class="container">
 		<h5><b>문의 내역 조회</b></h5>
 		<br>
-		<div>
+		<div class="question-box">
 			<select id="questionType" name="questionType">
 				<option value="Q1">일반문의</option>
 				<option value="Q3">특산물 문의</option>
 				<option value="Q4">숙박상품 문의</option>
 			</select>
-			<!-- <select id="searchBy" name="searchBy">
-				<option value="name">이름으로 검색</option>
-				<option value="id">아이디로 검색</option>
-			</select>
-			<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
-			<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button> -->
 		</div>
 		<div class="table-responsive">
 				<table class="table table-left">
@@ -91,10 +91,10 @@
 							<th:block th:each="l : ${list}">
 								<tr th:class="|questionInfo${lStat.count}|">
 									<td>
-									<button type="button" th:class="btn-success" th:text="${l.answerResult}"></button><br>
-									<span th:text="${l.questionTitle}"></span><br>
-									<span th:utext="|문의자ID : ${l.memberId} 문의일자 : ${#dates.format(l.questionDate, 'yyyy.MM.dd HH:mm')}"></span>
-									<p th:text="${l.questionContent}"></p>
+									<button type="button" th:class="status-btn" th:text="${l.answerResult}"></button><br>
+									<span th:text="${l.questionTitle}" style="color: #1c1c1c;"></span><br>
+									<span style="color: #707079;" th:utext="|문의자ID : ${l.memberId} 문의일자 : ${#dates.format(l.questionDate, 'yyyy.MM.dd HH:mm')}"></span>
+										<p style="color: #1c1c1c; margin-top: 1em;" th:utext="${l.questionContent}"></p>
 									<th:block th:if="${l.answerResult == '미답변'}">
 										<button type="button" th:id="|ansBtn${lStat.count}|" class="feature-btn" data-visible="visible">답변하기</button>
 									</th:block>
@@ -108,14 +108,15 @@
 										<form method="post" th:id="|form${lStat.count}|">
 											<th:block th:if="${l.answerResult == '미답변'}">
 												<span>ㄴ답변하기</span><br>
-												<textarea name="answerContent" class="form-control" rows="3" cols="90"></textarea>
+												<textarea id="answerContent" name="answerContent" class="form-control" rows="7" cols="90"></textarea>
 											</th:block>
 											<th:block th:if="${l.answerResult != '미답변'}">
 												<p th:text="|답변일자 : ${#dates.format(l.answerDate, 'yyyy.MM.dd HH:mm')}|"></p>
-												<textarea name="answerContent" class="form-control" th:text="${l.answerContent}" rows="3" cols="90" readonly></textarea>
+												<p th:utext="${l.answerContent}"></p>
+												<!-- <textarea name="answerContent" class="form-control" th:text="${l.answerContent}" rows="7" cols="90" readonly></textarea> -->
 											</th:block>
 											<th:block th:if="${l.answerResult == '미답변'}">	
-												<button class="feature-btn" type="button">답변완료</button>
+												<button class="answer-btn feature-btn" type="button">답변완료</button>
 											</th:block>
 											<input type="hidden" name="questionId" th:value="${l.questionId}">
 											<input type="hidden" name="answerMemberId" th:value="${session.sessionId}">
@@ -227,8 +228,16 @@
 		
 	}
 	
+	// 임시로 남기기
+	// <textarea name="answerContent" class="form-control" rows="3" cols="90" readonly>${data.answerContent}</textarea>
+	
 	// 답변하기 버튼 누를 시 답변 입력사항 바로 반영
 	function ajaxSubmitAnswer(event){
+		
+		// textarea의 개행처리 <br>로 변경
+		let answerContent = $('#answerContent').val();
+		answerContent = answerContent.replaceAll(/(\n|\r\n)/g, "<br>");
+		$('#answerContent').val(answerContent);
 		
 		let serializedForm = $(this).closest('form').serialize();
 		
@@ -245,7 +254,7 @@
 			let form = $(this).closest('form');
 			let html = `
 				<p>답변일자 : ${answerDate}</p>
-				<textarea name="answerContent" class="form-control" rows="3" cols="90" readonly>${data.answerContent}</textarea>
+				<p>${data.answerContent}</p>
 			`
 			$(this).closest('tr').prev().find('button').eq(0).text('답변완료');
 			$(this).closest('tr').prev().find('button').eq(1).text('답변보기');
