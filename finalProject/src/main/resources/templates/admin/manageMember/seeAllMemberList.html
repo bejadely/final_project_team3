@@ -4,7 +4,11 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="@{layouts/admin_layout}">
 <head>
-	<!-- <link rel="stylesheet" th:href="@{/css/bluetable.css}" > -->
+	<style type="text/css">
+		#filter td a{
+			padding: 7px 11px;
+		}
+	</style>	
 </head>
 <!-- Content -->
 <div class="main-container" layout:fragment="content">
@@ -12,9 +16,16 @@
 		<h5><b>회원정보관리</b></h5>
 		<br>
 		<div>
-			<table class="table">
-				<p>조건 검색</p>
+			<table id="filter" class="table">
 				<tbody>
+					<tr>
+						<th>회원분류</th>
+						<td class="filterAuthority" style="text-align: left;">
+							<th:block th:each="a : ${authCodeList}">
+								<a role="button" th:data-auth="${a.detailCode}">[[${a.value}]]</a>							
+							</th:block>
+						</td>					
+					</tr>
 					<tr>
 						<th>국적</th>
 						<td class="filterNationality" style="text-align: left;">
@@ -31,23 +42,17 @@
 							<a role="button">독일</a>
 							<a role="button">기타</a>
 						</td>					
-					</tr>
-					<tr>
-						<th>회원분류</th>
-						<td class="filterAuthority" style="text-align: left;">
-							<th:block th:each="a : ${authCodeList}">
-								<a role="button" th:data-auth="${a.detailCode}">[[${a.value}]]</a>							
-							</th:block>
-						</td>					
-					</tr>
+					
 				</tbody>			
 			</table>
-			<select id="searchBy" name="searchBy">
-				<option value="name">이름으로 검색</option>
-				<option value="id">아이디로 검색</option>
-			</select>
-			<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
-			<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+			<div class="search-box">
+				<select id="searchBy" name="searchBy">
+					<option value="name">이름으로 검색</option>
+					<option value="id">아이디로 검색</option>
+				</select>
+				<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요.">
+				<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+			</div>	
 		</div>
 		<div class="table-responsive">
 			<table class="table">
@@ -198,6 +203,9 @@
 				let newElement ='';
 				
 				$(data).each(function (index, m) {
+						// 날짜 substring
+						let signUpDate = (m.signUpDate).substring(0,10);
+					
 						newElement = `
 							<tr class="memberInfo">
 				                <td>${m.memberId}</td>
@@ -205,6 +213,7 @@
 				                <td>${m.phoneNumber != null ? m.phoneNumber : '-'}</td>
 				                <td>${m.nationality}</td>
 				                <td>${m.authority}</td>
+				                <td>${signUpDate}</td>
 				            </tr>
 						`
 						
@@ -227,13 +236,10 @@
 			
 			if($(this).closest('td').prop('class') == 'filterNationality'){
 				nationality = $(this).text();
-				console.log(nationality);
-				console.log(authority);
 			}
 			// 확장성을 고려 / else 사용하지 않음
 			if($(this).closest('td').prop('class') == 'filterAuthority'){
 				authority = $(this).attr('data-auth');
-				console.log(authority);
 			}
 			
 			// ajax 실행
@@ -252,6 +258,9 @@
 				let newElement ='';
 				
 				$(data).each(function (index, m) {
+						// 날짜 substring
+						let signUpDate = (m.signUpDate).substring(0,10);	
+					
 						newElement = `
 							<tr class="memberInfo">
 				                <td>${m.memberId}</td>
@@ -259,6 +268,7 @@
 				                <td>${m.phoneNumber != null ? m.phoneNumber : '-'}</td>
 				                <td>${m.nationality}</td>
 				                <td>${m.authority}</td>
+				                <td>${signUpDate}</td>
 				            </tr>
 						`
 						

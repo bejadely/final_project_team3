@@ -3,7 +3,44 @@
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="@{layouts/admin_layout}">
-	
+	<head>
+		<style type="text/css">
+			/*radio 버튼*/
+			.sidebar-btn {
+				margin-bottom: 10px;
+				overflow: hidden;
+			}
+			.sidebar-btn .bt-item {
+				width: 120px;
+				height: 30px;
+				float: left;
+				vertical-align: middle;
+			}
+			.sidebar-btn .bt-item input[type=radio] {
+				display: none;
+			}
+			.sidebar-btn .bt-item input[type=radio]:checked+label {
+				background: #2cbdb8;
+				color: #ffffff;
+			}
+			.sidebar-btn label {
+				display: block;
+				font-size: 16px;
+				margin-bottom: 0;
+				font-weight: 600;
+				background: #EBEBEB;
+				color: #707079;
+				text-align: center;
+				cursor: pointer;
+				padding: 4px 0 6px;	
+				vertical-align: middle;
+			}
+			.sidebar-btn label a{
+				font-size: 16px;
+				color: #707079;
+			}
+		</style>
+	</head>	
 <!-- Content -->
 <!-- 기본 : 판매중인 상품 -->
 <!-- 기간에 따라 정산내역 조회 다르게 할 수 있게 필터 걸어주자 -->
@@ -11,10 +48,19 @@
 	<div class="container">
 		<h5><b>정산 관리</b></h5>
 		<br>
-		<p style="color: red;">* 이전월의 미정산 내용은 매월 1일 01:00에 일괄적으로 자동정산처리됩니다.</p>
+		<p style="color: red;">* 이전월의 미정산 내용은 매월 1일 01:00에 일괄적으로 자동정산처리됩니다.</p><br>
 		<form id="frm" action="/admin/calAtOnce" method="post">
-			<a href="/admin/selectNotCalList">정산대기중</a> / <a href="/admin/selectCompCalList">정산완료내역</a>
-			
+			<!-- 전환버튼 -->
+			<div class="sidebar-btn">
+				<div class="bt-item">
+					<input type="radio" name="s-type" id="pakage" checked onclick="return(false)"> <label
+						for="pakage"><a href="/admin/selectNotCalList" style="color: #ffffff;">정산대기중</a></label>
+				</div>
+				<div class="bt-item">
+					<input type="radio" name="s-type" id="mul" onclick="location.href='/admin/selectNotCalList'"> <label
+						for="mul"><a href="/admin/selectCompCalList">정산완료내역</a></label>
+				</div>
+			</div>
 			<div class="table-responsive">
 				<table class="table">
 					<thead>
