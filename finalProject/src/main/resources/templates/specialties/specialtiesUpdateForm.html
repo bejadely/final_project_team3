@@ -177,7 +177,7 @@ text-align: center; /* 수평 가운데 정렬 */
 var postId = '[[${info.postId}]]';
 $(document).ready(function() {	
 	setDefaultType();
-
+	var isIfExecuted = false;
 var paths;
 var resultPath;
 ClassicEditor
@@ -288,9 +288,70 @@ ClassicEditor
 				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='"+resultPath+obj+"'>";
 			});
 			
-			formObj.append(str);
-			document.getElementById('editorForm').action = "/admin/specialtiesUpdate";
-			document.getElementById('editorForm').submit();
+		    let specialtiesTitle = document.getElementsByName('title')[0];
+		    let specialtiesContent = combinedData.content;
+		    let specialtiesType = document.getElementsByName('type')[0];
+		    let specialtiesLocation = document.getElementById('location').value;
+		    let specialtiesImage = document.getElementsByName('mainImage')[0];
+		   
+		     if (!isIfExecuted) {
+			    if (specialtiesImage.value == '') {
+				       alert('이미지를 업로드해주세요.')
+				       specialtiesImage.focus();
+				       return;
+				    }
+		    } 
+		    if (specialtiesTitle.value == '') {
+		       alert('타이틀을 입력해주세요.')
+		       specialtiesTitle.focus();
+		       return;
+		    }
+		    
+		    
+		    if (specialtiesContent == '') {
+		      	alert('내용을 입력해주세요.')
+		      	$(".ck .ck-content").focus();
+		      	return;
+		 	 } 
+		   
+		    if (specialtiesLocation =='') {
+		       alert('특산물 지역을 선택 해주세요.')
+		       specialtiesLocation.focus();
+		       return;
+		    } 
+		   
+		    if (specialtiesType.value == '') {
+		    	Swal.fire({
+		            title: '알림',
+		            text: '특산물 타입을 설정해야 합니다.',
+		            icon: 'warning',
+		        });
+		       specialtiesType.focus();
+		       return;
+		    } 
+		    var specialtiesOption = $(".specialtiesOption");
+		    var options = specialtiesOption.find('.option');
+
+		    // 옵션이 없을 때 알림 창을 띄우기
+		    if (options.length === 0) {
+		        Swal.fire({
+		            title: '알림',
+		            text: '옵션을 추가해야 합니다.',
+		            icon: 'warning',
+		        });
+		        return;
+		    }
+		
+		if(confirm("수정 하시겠습니까?")){
+	    	//var formattedPrice = parseFloat($("#price").val().replace(/\,/g, '')); // 콤마 제거 및 숫자로 변환
+	    	formObj.append(str);
+	        document.getElementById('editorForm').action = "/admin/specialtiesUpdate";
+	        document.getElementById('editorForm').submit();
+	        alert("수정 되었습니다.");
+	            return;
+	        }else{
+	        	return false;
+	        }
 			
 			
 			
@@ -320,7 +381,7 @@ ClassicEditor
 		$("#uploadBtn").on('click',function(e){
 			e.preventDefault();
 			let imageData = new FormData();
-			
+			isIfExecuted=true;
 			let inputTag = document.querySelector('input[name="mainImage"]');
 			
 			let files = inputTag.files;
@@ -353,7 +414,7 @@ ClassicEditor
 	$(".uploadResult").on("click",".delete-image",function(e){
 		var clickedImage  = $(this).closest("div");
 		var targetFile = clickedImage.data("path");
-		
+		isIfExecuted=false;
 		if(confirm("이미지 삭제 하시겠습니까?")){
 			clickedImage.remove();
 		
@@ -385,6 +446,7 @@ ClassicEditor
 	(function(){
 		$.getJSON("/getAttachList",{postId:postId},function(arr){
 			var str="";
+			isIfExecuted=true;
 			$(arr).each(function(i, obj){
 				var fileCallPath = encodeURIComponent(`${obj.savedImg}`);
 			
@@ -607,8 +669,8 @@ function setDefaultType(){
 			<div id="editor">
 				<th:textarea th:utext="${info.content}"></th:textarea>
 			</div>
-			<button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >작성완료</button>
-			<input type="button" class="btn btn-secondary mt-3 mx-2" value="작성취소" id="cancelBtn"/>
+			<button type="submit" class="btn btn-primary mt-3 mx-2" value="작성완료" >수정완료</button>
+			<input type="button" class="btn btn-secondary mt-3 mx-2" value="설명글 삭제" id="cancelBtn"/>
 		</form>
 	</div>
 </div>
