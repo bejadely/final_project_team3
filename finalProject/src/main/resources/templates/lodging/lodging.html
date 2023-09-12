@@ -131,7 +131,6 @@ $(document).on('click', '.single-property-item', function() {
     let addr1 = $(this).data('address');
     let title = $(this).find('.r-title').text();
     let firstimage = $(this).find('img').attr('src');
-    console.log(contentid);
 
     getLodgingDetailInfo(contentid, function(data) {
         if(data) {
@@ -143,13 +142,18 @@ $(document).on('click', '.single-property-item', function() {
 })
 
 function clearModal() {
-    $('.modalText').text('');
-    $('#modalImage').attr('src', '');
+    //$('.modalText').text('');
+   // $('#modalImage').attr('src', '');
     //$('#reviewCount').text('');
     //$('.review-content').remove();
    // $('#moreReview').removeClass('disabled');
    // $('#moreReview').data('contentid', '');
     //$('#moreReview').data('page', '1');
+    $('#exampleModalLabel').text('');
+    $('#modalImage').attr('src', '');
+    $('#modalAddress').text('');
+    $('#subfacility').text('');
+    $('#modalHomepage').text('');
 }
 
 function getLodgingDetailInfo(contentid, callback) {
@@ -197,6 +201,7 @@ function appendLodgingDetailInfo(data, addr1, title, firstimage, contentid) {
    /*  if(data.spotDetailReviewVoList.length > 0) {
         appendReview(data.spotDetailReviewVoList, contentid);
     } */
+    $('#spotDetailInfoModal').modal('show');
 }
 
 
