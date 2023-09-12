@@ -26,6 +26,7 @@ public class CartVO {
 	private Date regDate;
 	private String cartName;
 	private String specialtyType;
+	private String loadingImg;
 
 	
 }

@@ -6,18 +6,26 @@
  	 <!-- 페이징 -->
  	<select id="getPostIdCount" resultType="int">
 	    SELECT COUNT(*)
-	    FROM cart
-	    WHERE post_id LIKE '${postId}%' AND member_id = #{memberId} AND delete_type='N'
+	    FROM cart c JOIN attached_file a ON c.post_id = a.post_id
+				  WHERE a.img_type='U2' AND c.post_id LIKE '${postId}%' AND c.member_id = #{memberId} AND c.delete_type='N'
 	</select>
  	
  	 <!-- 버튼조회 -->
  	<select id="ajaxCart" resultType="CartVO">
  		SELECT *
 		FROM(SELECT ROWNUM rn, a.*
-			 FROM(SELECT *
-				  FROM cart
-				  WHERE post_id LIKE '${cartVO.postId}%' AND member_id = #{cartVO.memberId} AND delete_type='N'
-				  ORDER BY reg_date DESC) a)
+			 FROM(SELECT c.cart_id,
+			 			 c.post_id,
+			 			 c.option_id,
+			 			 c.quantity,
+			 			 c.price,
+			 			 c.member_id,
+			 			 c.reg_date,
+			 			 c.cart_name,
+			 			 a.loading_img
+				  FROM cart c JOIN attached_file a ON c.post_id = a.post_id
+				  WHERE a.img_type='U2' AND c.post_id LIKE '${cartVO.postId}%' AND c.member_id = #{cartVO.memberId} AND c.delete_type='N'
+				  ORDER BY c.reg_date) a)
 		WHERE rn BETWEEN #{pagingVO.start } AND #{pagingVO.end }
  	</select>
  	
