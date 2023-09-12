@@ -41,7 +41,7 @@
  	 <select id="getPerCount" resultType="int">
  		SELECT COUNT(*)
  		FROM trip_record
- 		WHERE trip_save='T1'AND writer_id = #{writerId}
+ 		WHERE trip_save='T2'AND writer_id = #{writerId}
  	</select>
  	
  	<!-- 마이페이지 페이징 - 임시저장-->

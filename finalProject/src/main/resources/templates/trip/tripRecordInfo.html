@@ -134,7 +134,7 @@ table {
         th:onclick="|location.href='@{/common/tripRecordModifyForm(postId=${tripInfo.postId})}'|">수정</button>&nbsp;&nbsp;
         <button th:if="${session.sessionId} != null and ${session.sessionId} == ${tripInfo.writerId}" id="tripDelbtn" type="button" class="btn btn-secondary mt-3 mx-2">삭제
         </button>&nbsp;&nbsp;
-        <button type="button" onclick="location.href='/tripRecordList'" class="btn btn-primary mt-3 mx-2">목록으로</button>
+        <button type="button" onclick="history.back()" class="btn btn-primary mt-3 mx-2">목록으로</button>
     </div>
 </div>
 	<script th:inline="javascript">
