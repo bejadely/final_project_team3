@@ -47,12 +47,12 @@ public class MemberController {
 	//그냥 등록페이지의 뷰를 반환함.(Get방식)(return: 실제 경로)
 	@GetMapping("/member/memberInsert") 
 	public String memberInsertForm() {
-		return"/member/memberInsert";
+		return"member/memberInsert";
 	}
 	
 	//form의 action에 따른 회원등록처리:URI RETURN- 홈화면
 	 //memberVO빈값x(input에 타이핑한게 request객체에 담겨서 이쪽으로 옴. controller에서 MemberVO에 담김)
-	@PostMapping("member/memberInsert")
+	@PostMapping("/member/memberInsert")
 	public String memberInsertProcess(MemberVO memberVO) { 
 		
 		memberService.insertMemberInfo(memberVO);
@@ -66,7 +66,7 @@ public class MemberController {
 	}
 	
 	//가이드 회원가입 처리
-	@PostMapping("/guideInsert")
+	@PostMapping("/member/guideInsert")
 	public String guideInsertForm(MemberVO memberVO) { 		
 		 memberService.insertGuide(memberVO);
 		return "redirect:/";
