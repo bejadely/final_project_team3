@@ -155,7 +155,7 @@
 	     									<div id="modalData">
 	     										<div class="text-center">
            											<br>
-               										<h3>여행 메이트 글 등록</h3>
+               										<h3>여행기록 글 등록</h3>
                										<br>
         										</div>
         										<div id="ls" class="text-center">
@@ -241,6 +241,7 @@
                             	<img th:unless="${not #strings.isEmpty(tripInfo.loadingImg)}" th:src="@{/img/no-image.png}">
 							</div>
 							<div class="sb-text">
+							<div align="center">
 								<ul>
 									<li>
 										<i class="fa fa-user"></i>
@@ -261,6 +262,15 @@
 									<a th:text="${tripInfo.tripTitle}"></a>
 								</h5>
 							</div>
+							<div align="center">
+								<ul>
+									<li>
+									<span class="fa" th:text="${#dates.format(tripInfo.startDay, 'yy년 MM월 dd일')}"></span>
+									~ <span class="fa" th:text="${#dates.format(tripInfo.endDay, 'yy년 MM월 dd일')}"></span>
+									<br>
+									</li>
+								</ul>
+							</div>
 						</div>
 					</div>
 					<th:block th:if="${#lists.isEmpty(tripRecordList)}">
@@ -272,6 +282,7 @@
 						</div>
 					</th:block>
 				</div>
+			</div>
 			</div>
 			<!-- 페이징 구문 -->
 			<!-- 검색키워드가 없을때 -->
@@ -287,14 +298,14 @@
 					<th:block th:if="${p eq paging.nowPage}">
 						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
 					</th:block>
-					<th:block th:if="${p ne paging.nowPage}">
+					<th:block th:if="${p ne paging.nowPage and p > 0}">
 						<a th:href="@{tripRecordList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
 					</th:block>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
 					<a th:href="@{tripRecordList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage}">
+				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
 					<a th:href="@{tripRecordList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
 				</th:block>
 			</div>
@@ -365,9 +376,30 @@
 	document.querySelector('form[name="sendData"]').addEventListener('submit', function(e) {
 		e.preventDefault();
 		
+		let tArea = document.getElementsByName('tripArea')[0];
+		let tDisclose = document.getElementsByName('tripDisclose')[0];
 		let title = document.getElementsByName('tripTitle')[0];
-		let date1 = document.getElementsByName('startDay')[0];
-		let date2 = document.getElementsByName('endDay')[0];
+		let sDay = document.getElementsByName('startDay')[0];
+		let eDay = document.getElementsByName('endDay')[0];
+		
+		if (tArea.value == '') {
+			Swal.fire({
+      		  icon: 'warning',                    
+      		  title: '여행 지역을 선택해주세요.'
+      		});
+			tArea.focus();
+			return;
+	    }
+		
+		if (tDisclose.value == '') {
+			Swal.fire({
+      		  icon: 'warning',                    
+      		  title: '게시글 공개여부를 선택해주세요.'
+      		});
+			tDisclose.focus();
+			return;
+	    }
+		
 		if (title.value == '') {
 			Swal.fire({
       		  icon: 'warning',                    
@@ -377,14 +409,14 @@
 			return;
 	    }
 		
-		if (date1.value == '') {
+		if (sDay.value == '') {
 			Swal.fire({
 	      	   icon: 'warning',                    
 	      	   title: '여행 시작일을 입력해주세요.'
 	      	});
 			return;
 		}
-		if (date2.value == '') {
+		if (eDay.value == '') {
 			Swal.fire({
 		       icon: 'warning',                    
 		       title: '여행 종료일을 입력해주세요.'
@@ -403,61 +435,32 @@
 	$("#buttonWrap").click(function() {
 		//모달창 띄우기
 		modal.style.display = 'block';
-		//데이터값 가져와서 ajax 통신
-		var memberId = $(this).find("td:eq(0)").text();
-		var postId = $(this).find("td:eq(0)").attr('value');
-		$.ajax({
-			type : 'get',
-			url: '/common/ajaxMember',
-			data: { memberId : memberId, 
-					postId : postId }
-		}).done(data => {
-			modalInfo(data)
-		}).fail(reject => console.log(reject));
-		  });
-	  closeBtn.onclick = function() {
-	    modal.style.display = 'none';
-	  }
-		  
-	  window.onclick = function(event) {
-	    if (event.target == modal) {
-	      modal.style.display = "none";
-	    }
-	  }
-	  //ajax 통신으로 모달창 데이터 띄우기
-	function modalInfo(data){
-		var modal = $("#modalData")
-		var modalInfo = "";
-		var birthDate = data.birthDate.substr(0, 10);
-		modalInfo = `
-			<input type="hidden" id="dataPostId" value="${data.postId}">
-			<input type="hidden" id="dataApplyId" value="${data.applyId}">
-			<input type="hidden" id="dataMemberId" value="${data.memberId}">
-			<table>
-				<tr>
-					<th>이름</th>
-					<td>${data.memberName}</td>
-				</tr>
-				<tr>
-					<th>성별</th>
-					<td>${data.gender}</td>
-				</tr>
-				<tr>
-					<th>성별</th>
-					<td>${data.nationality}</td>
-				</tr>
-				<tr>
-					<th>생년월일</th>
-					<td>${birthDate}</td>
-				</tr>
-			</table>
-			<label>신청 내용</label>
-			<textarea>${data.applyInfo}</textarea>
-		`
-		modal.html(modalInfo);
-	}
+		var memberId = [[${session.sessionId}]];
+
+		if(memberId != null){
+			modalInfo(data);
+		}else{
+		 	Swal.fire({
+	        	icon: 'warning',
+	            title: '로그인이 필요한 작업입니다.'
+	        }).then(() => {
+	            location.href = `/member/login`;
+	        });
+		}
 	
-	});
+	})
+	
+	closeBtn.onclick = function() {
+		modal.style.display = 'none';
+	}
+		  
+	window.onclick = function(event) {
+		if (event.target == modal) {
+	   		modal.style.display = "none";
+	    }
+	}
+});
+	
 	</script>
 	</div>
 </body>

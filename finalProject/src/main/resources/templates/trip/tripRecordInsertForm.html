@@ -295,9 +295,26 @@ table {
                str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='c:/"+obj+"'>";
             });
             
-            formObj.append(str);
-            $("#tripData").attr("action", "/common/tripRecordInsertUp").submit();
-            sendMemoData(memoDataArry);
+            Swal.fire({
+    	    	icon: 'warning',                      
+    	     	title: '등록 하시겠습니까?.',
+    	      	showCancelButton: true,
+    			confirmButtonColor: '#3085d6',
+    			cancelButtonColor: '#d33',
+    			confirmButtonText: '등록',
+    			cancelButtonText: '취소',
+    	    }).then((result) => {
+    		   	if (result.isConfirmed) {
+    		   		Swal.fire({
+    	                icon: 'success',
+    	                title: '등록 되었습니다.'
+    	            }).then(() => {
+    	            	formObj.append(str);
+    	                $("#tripData").attr("action", "/common/tripRecordInsertUp").submit();
+    	                sendMemoData(memoDataArry);
+    	            });
+    			}
+    		})
             
          })
       })
