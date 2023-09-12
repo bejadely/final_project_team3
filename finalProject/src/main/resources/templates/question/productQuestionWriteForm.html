@@ -138,25 +138,44 @@ $(document).ready(function() {
 	function go(e){
 		e.preventDefault();
 		
-		Swal.fire({
-			
-		      title: '문의글을 등록하시겠습니까?',
-		      icon: 'question',
-		      showCancelButton: true,
-		      confirmButtonColor: '#3085d6',
-		      cancelButtonColor: '#d33',
-		      confirmButtonText: '등록하기',
-		      cancelButtonText: '취소',
-		    
-	    }).then((result) => {
-	    	
-		      if (result.isConfirmed) {
-		          
-		    	  //post방식으로 페이지 전환
-				  document.getElementById('frm').submit();
+		// textarea의 개행처리 <br>로 변경
+		let questionContent = $('#boardContent').val();
+		questionContent = questionContent.replaceAll(/(\n|\r\n)/g, "<br>");
+		$('#boardContent').val(questionContent);
+		
+		if($('#questionTitle').val() == '' || $('#questionTitle').val() == null){
+			Swal.fire({
+				  icon: 'warning',
+			      title: '제목을 입력해주십시오.',
+			    });
+		} else if($('#boardContent').val() == '' || $('#boardContent').val() == null){
+			Swal.fire({
+				  icon: 'warning',
+			      title: '내용을 입력해주십시오.',
+			    });
+		} else {
+			Swal.fire({
 				
-		      }
-		    });
+			      title: '문의글을 등록하시겠습니까?',
+			      icon: 'question',
+			      showCancelButton: true,
+			      confirmButtonColor: '#3085d6',
+			      cancelButtonColor: '#d33',
+			      confirmButtonText: '등록하기',
+			      cancelButtonText: '취소',
+			    
+		    }).then((result) => {
+		    	
+			      if (result.isConfirmed) {
+			          
+			    	  //post방식으로 페이지 전환
+					  document.getElementById('frm').submit();
+					
+			      }
+			    });
+		}
+		
+		
 	} 	
 </script>
 
