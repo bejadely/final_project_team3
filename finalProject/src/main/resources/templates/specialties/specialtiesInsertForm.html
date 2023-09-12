@@ -155,8 +155,8 @@ text-align: center; /* 수평 가운데 정렬 */
     align-items: center; /* 수직 가운데 정렬 */
 }
 .image-frame {
-            width: 150px; /* 이미지 틀의 너비 */
-            height: 150px; /* 이미지 틀의 높이 */
+            width: 200px; /* 이미지 틀의 너비 */
+            height: 200px; /* 이미지 틀의 높이 */
             border: 2px solid #ccc; /* 테두리 스타일 및 색상 설정 */
             padding: 5px; /* 내부 여백 설정 */
             text-align: center; /* 이미지 가운데 정렬 */
@@ -283,10 +283,65 @@ ClassicEditor
 				str += "<input type ='hidden' name='editorAttachList["+i+"].savedImg' value='"+resultPath+obj+"'>";
 			});
 			
+			
+			    let specialtiesTitle = document.getElementsByName('title')[0];
+			    let specialtiesContent = combinedData.content;
+			    let specialtiesType = document.getElementsByName('type')[0];
+			    let specialtiesLocation = document.getElementById('location').value;
+			    let specialtiesImage = document.getElementsByName('mainImage')[0];
+			   
+			     if (!isIfExecuted) {
+				    if (specialtiesImage.value == '') {
+					       alert('이미지를 업로드해주세요.')
+					       specialtiesImage.focus();
+					       return;
+					    }
+			    } 
+			    if (specialtiesTitle.value == '') {
+			       alert('타이틀을 입력해주세요.')
+			       specialtiesTitle.focus();
+			       return;
+			    }
+			    
+			    
+			    if (specialtiesContent == '') {
+			      	alert('내용을 입력해주세요.')
+			      	$(".ck .ck-content").focus();
+			      	return;
+			 	 } 
+			   
+			    if (specialtiesLocation =='') {
+			       alert('특산물 지역을 선택 해주세요.')
+			       specialtiesLocation.focus();
+			       return;
+			    } 
+			   
+			    if (specialtiesType.value == '') {
+			    	Swal.fire({
+			            title: '알림',
+			            text: '특산물 타입을 설정해야 합니다.',
+			            icon: 'warning',
+			        });
+			       specialtiesType.focus();
+			       return;
+			    } 
+			    var specialtiesOption = $(".specialtiesOption");
+			    var options = specialtiesOption.find('.option');
+
+			    // 옵션이 없을 때 알림 창을 띄우기
+			    if (options.length === 0) {
+			        Swal.fire({
+			            title: '알림',
+			            text: '옵션을 추가해야 합니다.',
+			            icon: 'warning',
+			        });
+			        return;
+			    }
+			
 			if(confirm("등록 하시겠습니까?")){
 		    	//var formattedPrice = parseFloat($("#price").val().replace(/\,/g, '')); // 콤마 제거 및 숫자로 변환
 		    	formObj.append(str);
-		        document.getElementById('editorForm').action = "/guide/packageUpdate";
+		        document.getElementById('editorForm').action = "/admin/specialtiesInsert";
 		        document.getElementById('editorForm').submit();
 		        alert("등록 되었습니다.");
 		            return;
@@ -320,6 +375,7 @@ ClassicEditor
 	$(function(){
 		$("#uploadBtn").on('click',function(e){
 			e.preventDefault();
+			isIfExecuted=true;
 			let imageData = new FormData();
 			
 			let inputTag = document.querySelector('input[name="mainImage"]');
@@ -355,6 +411,7 @@ ClassicEditor
 	$(".uploadResult").on("click",".delete-image",function(e){
 		var clickedImage  = $(this).closest("div");
 		var targetFile = clickedImage.data("path");
+		isIfExecuted = false;
 		$.ajax({
 			url:'/common/deleteFile',
 			data: {savedImg: targetFile},
@@ -419,9 +476,15 @@ ClassicEditor
 		      confirmButtonText: '추가',
 		      cancelButtonText: '취소',
 		      reverseButtons: true,
-		      
+		      preConfirm: () => {
+		          const optionType = document.getElementById('optionType').value;
+		          const optionPrice = document.getElementById('optionPrice').value;
+		          
+		          if (!optionType || !optionPrice) {
+		              Swal.showValidationMessage('옵션명과 가격을 모두 입력해야 합니다.');
+		          }
+		      }
 		
-		      
 	    }).then((result) => {
 	      if (result.isConfirmed) {
 	    	  var specialtiesOption = $(".specialtiesOption");  

@@ -25,8 +25,8 @@
 						<div class="breadcrumb-text">
 							<h2>여행 메이트 글</h2>
 							<div class="col-lg-12">
-								<div class="loadmore">								
-									<a href="./common/tripMateRecruitForm" class="primary-btn">여행메이트 글 작성</a>
+								<div class="loadmore">
+									<button type="button" id="locationInsert" class="primary-btn">여행메이트 글 작성</button>								
 								</div>
 							</div>
 						</div>
@@ -119,14 +119,14 @@
 					<th:block th:if="${p eq paging.nowPage}">
 						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
 					</th:block>
-					<th:block th:if="${p ne paging.nowPage}">
+					<th:block th:if="${p ne paging.nowPage and p > 0}">
 						<a th:href="@{tripMateList(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
 					</th:block>
 				</th:block>
 				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
 					<a th:href="@{tripMateList(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
 				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage}">
+				<th:block th:if="${paging.nowPage != paging.lastPage }">
 					<a th:href="@{tripMateList(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
 				</th:block>
 			</div>
@@ -160,6 +160,22 @@
 		<!-- 여행메이트 글 section end -->
 	<script th:inline="javascript" type="text/javascript">
 		$(document).ready(function() {
+			
+			//로그인 여부 확인 후 메이트 글 작성폼으로 이동
+			$("#locationInsert").click(function() {
+				var memberId = [[${session.sessionId}]];
+				if(memberId != null){
+					location.href = `/common/tripMateRecruitForm`;
+				}else{
+				 	Swal.fire({
+			        	icon: 'warning',
+			            title: '로그인이 필요한 작업입니다.'
+			        }).then(() => {
+			            location.href = `/member/login`;
+			        });
+				}
+			})
+			
 			// 이벤트 설정
 			$('#searchButton').on('click', search);
 			

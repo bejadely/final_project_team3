@@ -64,15 +64,15 @@ form {
         <div class="container-md">
             <div class="row">
                 <div class="col-6">
-                	<div class="pd-details-text">
-	                    <h4>[[ ${info.name} ]]</h4>
-	                        <div class="pd-details-social">
-	                            <a href="#"><i class="fa fa-facebook"></i></a>
-	                            <a href="#"><i class="fa fa-send"></i></a>
-	                            <a href="#"><i class="fa fa-star"></i></a>
-	                            <a href="#"><i class="fa fa-print"></i></a>
-	                            <a href="#"><i class="fa fa-cloud-download"></i></a>
-	                        </div>
+                   <div class="pd-details-text">
+                       <h4>[[ ${info.name} ]]</h4>
+                           <div class="pd-details-social">
+                               <a href="#"><i class="fa fa-facebook"></i></a>
+                               <a href="#"><i class="fa fa-send"></i></a>
+                               <a href="#"><i class="fa fa-star"></i></a>
+                               <a href="#"><i class="fa fa-print"></i></a>
+                               <a href="#"><i class="fa fa-cloud-download"></i></a>
+                           </div>
                            <div class="property-more-pic" style="width:500px; height:500px;">
                                <div class="product-pic-zoom">
                                   
@@ -80,11 +80,16 @@ form {
                            </div>
                        </div>    
                 </div>
+                <div class=" col-3 text">
+                      
+                </div>
                 <div class="col-6">
-	                <div class="property-sidebar">
-	                   <h4>구매하기</h4>
-	                      <div class="sidebar-btn">
-	                      	<div class="bt-item">
+                 
+                   <div class="property-sidebar">
+                      <h4>구매하기</h4>
+                     
+                         <div class="sidebar-btn">
+                            <div class="bt-item">
                                 <input type="radio" name="kakaoPay" id="kakaoPay" >
                                 <label for="kakaoPay">Buy</label>
                             </div>
@@ -93,20 +98,20 @@ form {
                                 <label for="cartBtn">Cart</label>
                             </div>
                          </div>
-	                     <!-- 총 금액 표시 -->
-	                     <div id="packagePrice">
-	                        가격 : <span class="price">[[${info.price}]]</span>원
-	                     </div>
-	                     <div class="form-horizontal" style="text-align: left;">
-	                        <label>구매수량  </label> 
-	                        <select class="nice-select list form-control count" id="select_count" >
-	                           
-	                        </select>
-	                     </div>
-	                     <div class="selected_option" style="text-align: right;">
-	                     </div>
-	                     
-	                    </div>
+                        <!-- 총 금액 표시 -->
+                        <div id="packagePrice">
+                           가격 : <span class="price">[[${info.price}]]</span>원
+                        </div>
+                        <div class="form-horizontal" style="text-align: left;">
+                           <label>구매수량  </label> 
+                           <select class="nice-select list form-control count" id="select_count" >
+                              
+                           </select>
+                        </div>
+                        <div class="selected_option" style="text-align: right;">
+                        </div>
+                        
+                       </div>
                 </div>    
                
              </div>
@@ -120,13 +125,13 @@ form {
                             <div class="tab-item">
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li class="nav-item">
-                                    	<a class="nav-link active" data-toggle="tab"  role="tab" aria-current="page" href="#tab-1">패키지 정보</a>
+                                       <a class="nav-link active" data-toggle="tab"  role="tab" aria-current="page" href="#tab-1">패키지 정보</a>
                                     </li >
                                     <li class="nav-item">
-                                    	<a class="nav-link" data-toggle="tab"  role="tab" href="#tab-2">패키지 내용</a>
+                                       <a class="nav-link" data-toggle="tab"  role="tab" href="#tab-2">패키지 내용</a>
                                     </li>
                                     <li class="nav-item">
-                                    	<a class="nav-link" data-toggle="tab"  role="tab" href="#tab-3">문의 사항</a>
+                                       <a class="nav-link" data-toggle="tab"  role="tab" href="#tab-3">문의 사항</a>
                                     </li>
                                 </ul>
                             </div>
@@ -299,7 +304,7 @@ form {
  
    
    $(document).ready(function(){
-	
+   
       (function(){
          $.getJSON("getAttachList",{postId:postId},function(arr){
             var str="";
@@ -659,37 +664,40 @@ form {
        }
        
        document.addEventListener("DOMContentLoaded", function () {
-    	    // info.completion 값을 가져와서 모집 완료 여부를 확인합니다.
-    	   
-    	    var isRecruitmentComplete = booleanType();
+           // info.completion 값을 가져와서 모집 완료 여부를 확인합니다.
+          
+           var isRecruitmentComplete = booleanType();
 
-    	    // "구매하기" 섹션과 "모집완료" 텍스트를 참조합니다.
-    	    var propertySidebar = document.querySelector(".property-sidebar");
-    	    var recruitmentCompleteText = document.createElement("h3");
-    	    recruitmentCompleteText.textContent = "모집완료";
+           // "구매하기" 섹션과 "모집완료" 텍스트를 참조합니다.
+           var propertySidebar = document.querySelector(".property-sidebar");
+           var recruitmentCompleteText = document.createElement("h3");
+           recruitmentCompleteText.textContent = "모집완료";
 
-    	    // 모집 완료 상태에 따라 표시 여부를 조절합니다.
-    	    if (isRecruitmentComplete) {
-    	        // 모집 완료 상태일 때 "구매하기" 섹션을 숨깁니다.
-    	        propertySidebar.style.display = "none";
-	
-    	        recruitmentCompleteText.classList.add("recruitment-complete-text");
-    	        
-    	        // "모집완료" 텍스트를 페이지에 추가합니다.
-    	        var parentDiv = document.querySelector(".text");
-    	        parentDiv.appendChild(recruitmentCompleteText);
-    	    }
-    	});
+           // 모집 완료 상태에 따라 표시 여부를 조절합니다.
+           if (isRecruitmentComplete) {
+               // 모집 완료 상태일 때 "구매하기" 섹션을 숨깁니다.
+               propertySidebar.style.display = "none";
+   
+               recruitmentCompleteText.classList.add("recruitment-complete-text");
+               
+               // "모집완료" 텍스트를 페이지에 추가합니다.
+               var parentDiv = document.querySelector(".text");
+               parentDiv.appendChild(recruitmentCompleteText);
+           }
+       });
        
        function booleanType(){
-		   if('[[${info.completion}]]'=='모집완료'){
-   	    	return true;
-   	    }else{
-   	    	return false;
-   	    }
-		   
-	   }
-      
+         if('[[${info.completion}]]'=='모집완료'){
+             return true;
+          }else{
+             return false;
+          }
+         
+      }
+       document.getElementById('question').addEventListener('click',function(){
+           console.log("asdsad");
+           location.href="/common/memberQueForm?productId="+'[[${info.postId}]]'+ "&writerId=" + '[[${info.writerId}]]'
+        })
     
 </script>
 </div>
