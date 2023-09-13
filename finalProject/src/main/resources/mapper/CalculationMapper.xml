@@ -93,8 +93,8 @@
 							   FROM calculation c JOIN package_regist p ON c.post_id = p.post_id
 							                      JOIN member m ON p.writer_id = m.member_id
 							   WHERE c.cal_status = 'V2' 
-							     AND SUBSTR(c.cal_date, 1, 2) = '${searchYear}'
-							     AND SUBSTR(c.cal_date, 4, 2) = '${searchMonth}'
+							     AND SUBSTR(c.cal_date, 1, 2) = #{searchYear}
+							     AND SUBSTR(c.cal_date, 4, 2) = #{searchMonth}
 							ORDER BY c.cal_id DESC) a )
 			  WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}  		
   		</select>

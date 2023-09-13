@@ -143,6 +143,19 @@ public class KakaoPayController {
 				 kakaoPayInfoResponseVO.setSpecialtyType(cartProduct.get(i).getOptionId());
 				 kakaoPayInfoResponseVO.setCancelAmount(cartProduct.get(i).getPrice()*cartProduct.get(i).getQuantity());
 				 kakaoPayInfoResponseVO.setCancelTaxFreeAmount(cartProduct.get(i).getPrice()*cartProduct.get(i).getQuantity());
+				 if(cartProduct.get(i).getPostId().substring(0,3).equals("PKG")) {
+						KakaoPayInfoResponseVO kakaoVO = new KakaoPayInfoResponseVO();
+						kakaoVO.setQuantity(cartProduct.get(i).getQuantity());
+						kakaoVO.setPostId(cartProduct.get(i).getPostId());
+						PackageVO packageVO = new PackageVO();
+						packageVO.setPostId(cartProduct.get(i).getPostId());
+						PackageVO findVO = packageService.packageInfo(packageVO);
+						kakaoVO.setNowReservation(findVO.getNowReservation());
+						kakaoVO.setMaxReservation(findVO.getMaxReservation());
+						kakaoPayService.updatePackageQuantity(kakaoVO);
+						
+					}
+				 
 				 kakaoPayService.insertPurchase(kakaoPayInfoResponseVO);
 				 kakaoPayService.deleteCart(cartProduct.get(i).getCartId());
 			  }
@@ -180,13 +193,13 @@ public class KakaoPayController {
 	
 	@GetMapping("/cancel")
 	public ModelAndView cancel() {
-		ModelAndView mv = new ModelAndView("/package/packageList");
+		ModelAndView mv = new ModelAndView("redirect:/packageList");
 		return mv;
 	}
 	
 	@GetMapping("/fail")
     public ModelAndView fail() {
-		ModelAndView mv = new ModelAndView("/package/packageList");
+		ModelAndView mv = new ModelAndView("redirect:/packageList");
 		return mv;
     }
 	
