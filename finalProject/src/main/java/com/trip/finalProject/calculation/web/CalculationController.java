@@ -68,6 +68,8 @@ public class CalculationController {
 			if(searchMonth == null || searchMonth.equals("")) {
 				int getMonth = LocalDate.now().getMonthValue();
 				searchMonth = String.format("%02d", getMonth); 
+			} else {
+				searchMonth = String.format("%02d", Integer.valueOf(searchMonth));
 			}
 			
 			System.out.println("searchYear : " + searchYear);
@@ -79,8 +81,8 @@ public class CalculationController {
 			// 처리결과 담기
 			model.addAttribute("list", map.get("list"));
 			model.addAttribute("paging", map.get("PagingVO"));
-			model.addAttribute("searchMonth", searchMonth);
-			model.addAttribute("searchYear", searchYear);
+			model.addAttribute("searchMonth", Integer.valueOf(searchMonth));
+			model.addAttribute("searchYear", Integer.valueOf(searchYear));
 			
 			
 			return "admin/calculation/completeCalList";
