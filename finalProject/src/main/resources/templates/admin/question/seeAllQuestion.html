@@ -4,71 +4,72 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="@{layouts/admin_layout}">
 <head>
-   <style>
-        body {
-            background-color: #ffffff;
-            color: #000000;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 4px;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-            color: #ffffff;
-        }
-
-        .btn-primary:hover {
-            background-color: #0069d9;
-            color: #ffffff;
-        }
-
-        .btn-secondary {
-            background-color: #6c757d;
-            border: none;
-            color: #ffffff;
-        }
-
-        .btn-secondary:hover {
-            background-color: #5a6268;
-            color: #ffffff;
-        }
-        
-        .ck.ck-editor {
-		width: 100%;
-		max-width: 1500px;
-		margin: 0 auto;
-		}
-		
-		.ck-editor__editable {
-			height: 50vh;
-		}
-		.table-left th, td{
-			text-align: left;
-		}
-		.status-btn{
-			cursor: default;
-			border: none;
-			background: #2DB400;
-			margin-bottom: 0.7em;
-		}
-    </style>
+    <title>관리자 페이지 - 문의 내역 조회</title>
+    <style>
+         body {
+             background-color: #ffffff;
+             color: #000000;
+         }
+         
+         .text-center {
+             text-align: center;
+         }
+         
+         .form-control {
+             width: 100%;
+             padding: 10px;
+             border: 1px solid #ced4da;
+             border-radius: 4px;
+             box-sizing: border-box;
+         }
+         
+         .btn {
+             padding: 10px 20px;
+             font-size: 16px;
+             border-radius: 4px;
+         }
+         
+         .btn-primary {
+             background-color: #007bff;
+             border: none;
+             color: #ffffff;
+         }
+         
+         .btn-primary:hover {
+             background-color: #0069d9;
+             color: #ffffff;
+         }
+         
+         .btn-secondary {
+             background-color: #6c757d;
+             border: none;
+             color: #ffffff;
+         }
+         
+         .btn-secondary:hover {
+             background-color: #5a6268;
+             color: #ffffff;
+         }
+         
+         .ck.ck-editor {
+		 width: 100%;
+		 max-width: 1500px;
+		 margin: 0 auto;
+		 }
+		 
+		 .ck-editor__editable {
+		 	height: 50vh;
+		 }
+		 .table-left th, td{
+		 	text-align: left;
+		 }
+		 .status-btn{
+		 	cursor: default;
+		 	border: none;
+		 	background: #2DB400;
+		 	margin-bottom: 0.7em;
+		 }
+     </style>
 </head>
 <!-- Content -->
 <div layout:fragment="content">
