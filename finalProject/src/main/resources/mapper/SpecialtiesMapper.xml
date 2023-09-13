@@ -123,15 +123,16 @@
 	</select>
 	
 	<select id="sepcialtiesInfo" resultType="SpecialtiesVO">
-		SELECT post_id, 
-				title, 
-				content, 
-				code_val(type) type, 
-				writer_id,
-				area_code,
-				sigungu_code,
-				code_val(discount) discount
-		FROM specialties_regist 
+		SELECT s.post_id, 
+				s.title, 
+				s.content, 
+				code_val(s.type) type, 
+				s.writer_id,
+				s.area_code,
+				s.sigungu_code,
+				code_val(s.discount) discount,
+				l.location_name
+		FROM specialties_regist s JOIN location l ON s.area_code = l.area_code and s.sigungu_code = l.sigungu_code
 		WHERE post_id =#{postId}
 	
 	</select>
