@@ -424,8 +424,7 @@ $("tbody input[type=checkbox], input[type=text]").on("change input", updateTotal
                   quantity : quantity,
                   itemCode: cartIdElements.join(','),
                   partnerUserId: memberId,
-                  specialtyType: option 
-                  
+                  specialtyType: option
                   },
              success:function(response){
                 location.href = response.next_redirect_pc_url

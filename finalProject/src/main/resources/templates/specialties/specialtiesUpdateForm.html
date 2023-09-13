@@ -586,7 +586,7 @@ ClassicEditor
 	
 });
 
-function setDefaultType(){
+   function setDefaultType(){
     
     // 기본으로 설정할 국적 설정(컨트롤러에서 불러온 회원의 기본 국적 설정값)
     let defaultType = '[[ ${info.type} ]]';
@@ -599,9 +599,20 @@ function setDefaultType(){
     
     // 불러온 국적값에 해당하는 option을 selected 및 focus 처리
     $('.option[data-value="'+defaultType+'"]').attr("class", "option selected focus");
-} 
+    //$('select').niceSelect('update');
+}    
 
-
+/*  function setDefaultType(){
+    
+	var op = '[[${info.type}]]';
+    // 우리가 실제로 만든 셀렉트 박스의 option을 selected 설정
+    console.log('[[${info.type}]]')
+    $('#type option').val('[[${info.type}]]').prop("selected", true);
+    // 우리가 실제로 만든 셀렉트 박스의 변경값을 나이스 셀렉트 박스에 업데이트
+     $('select').niceSelect('update');
+    
+    
+ }  */ 
 </script>
 </head>
 <body>
