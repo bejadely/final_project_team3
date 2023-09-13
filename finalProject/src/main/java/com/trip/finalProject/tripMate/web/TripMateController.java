@@ -419,4 +419,5 @@ public class TripMateController {
 		return tripMateService.memberInfo(tripVO);
 	}
 	
+	
 }
