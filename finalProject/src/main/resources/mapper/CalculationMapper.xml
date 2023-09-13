@@ -65,8 +65,8 @@
   			SELECT COUNT(*)
   			  FROM calculation
   			 WHERE cal_status = 'V2'
-  			   AND SUBSTR(cal_date, 1, 2) = #{searchYear}
-  			   AND SUBSTR(cal_date, 4, 2) = #{searchMonth}
+  			   AND TO_NUMBER(SUBSTR(cal_date, 1, 2)) = #{searchYear}
+  			   AND TO_NUMBER(SUBSTR(cal_date, 4, 2)) = #{searchMonth}
    		</select>
   		
   		<!-- 특정월 정산 내역 조회 -->
