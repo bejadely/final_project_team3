@@ -35,16 +35,12 @@ public class NoticeServiceImpl implements NoticeService {
     		//기본 게시글 카운트.(A1, A4, nul, T2:공개 N1:전체l)    	
     		return	noticeMapper.getAllNoticeCount();    		
     		//가이드일 때 게시글 카운트 
-    	}else if(sessionAuthority=="A2"){
-    	
+    	}else if(sessionAuthority=="A2"){    	
     		return	noticeMapper.getGuideNoticeCount(); 
     		//관리자일때
-    	}else {
-		
+    	}else {		
     		return noticeMapper.getAdminNoticeCount(); 
-    	}
-	
-    
+    	}	    
 	}
     
     //게시글 전체 조회
@@ -52,18 +48,16 @@ public class NoticeServiceImpl implements NoticeService {
 	public List<NoticeVO> SelectAllNoticeList(String sessionAuthority,PagingVO pagingVO) {
 	
 		if (sessionAuthority=="A1"|| sessionAuthority=="A4"||sessionAuthority==null) {
-    		//기본 게시글 카운트.(A1, A4, null, T2:공개 N1:전체l)    	
+    		//기본 게시글 전체조회.(A1, A4, null, T2:공개 N1:전체l)    	
     		return noticeMapper.SelectAllNoticeList( pagingVO);  		
-    		//가이드일 때 게시글 카운트 
-    	}else if(sessionAuthority=="A2"){
-    	
+    		//기본 게시글 전체조회(가이드는 일반회원과 같이 전체 조회도 가능 + 검색시 가이드용 공지만 따로 확인 가능)
+    	}else if(sessionAuthority=="A2"){	
     		return noticeMapper.SelectAllNoticeList( pagingVO);  
+    		
     	}else {
     		//관리자일때
     		return noticeMapper.SelectByAdminNoticeList( pagingVO);  
-    	}
-	
-    
+    	}	 
 	}
 		
 	

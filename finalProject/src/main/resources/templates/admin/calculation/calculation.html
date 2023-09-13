@@ -57,7 +57,7 @@
 						for="pakage"><a href="/admin/selectNotCalList" style="color: #ffffff;">정산대기중</a></label>
 				</div>
 				<div class="bt-item">
-					<input type="radio" name="s-type" id="mul" onclick="location.href='/admin/selectNotCalList'"> <label
+					<input type="radio" name="s-type" id="mul" onclick="location.href='/admin/selectCompCalList'"> <label
 						for="mul"><a href="/admin/selectCompCalList">정산완료내역</a></label>
 				</div>
 			</div>
@@ -170,6 +170,8 @@
 						.on('mouseleave', colorReset);
 		$('#allCheck').on('click', selectToggle);
 		$('#submit-btn').on('click', calAtOnce);
+		// 메시지 프린트
+		printMessage([[${message}]]);
 	});
 	
 	// 셀렉트박스 toggle
@@ -210,10 +212,6 @@
 		$(event.currentTarget).css({background: '#ffffff'});
 	}
 	
-	// 메시지 프린트
-	
-	printMessage([[${message}]]);
-		
 	function printMessage(message){
 		
 		console.log(message);

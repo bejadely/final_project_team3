@@ -105,7 +105,9 @@
 		$('.reportInfo').on('mouseover', colorDarker)
 						.on('mouseleave', colorReset)
 						.on('click')
-						.on('mouseup', moveToReportDetail)
+						.on('mouseup', moveToReportDetail);
+		// 메시지 프린트
+		printMessage([[${message}]]);
 	});
 	
 	// 조건검색기능
@@ -138,11 +140,6 @@
 		location.href=`seeReportDetail?reportId=${reportId}`;
 	}
 	
-	
-	// 메시지 프린트
-	
-	printMessage([[${message}]]);
-		
 	function printMessage(message){
 		
 		if(message != null && message != ""){
