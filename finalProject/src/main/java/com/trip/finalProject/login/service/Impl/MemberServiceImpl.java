@@ -126,10 +126,11 @@ public class MemberServiceImpl implements MemberService {
 	} 
 	 
 	 //비밀번호 찾기 중 비밀번호 수정하기
-	 
 	 @Override
 	 public int editPassword(MemberVO vo) {
-		
+		 	
+		 	// 새로 변경된 비밀번호 암호화
+		 	vo.setPassword(passwordEncoder.encode(vo.getPassword()));	 
 			int result = memberMapper.editPassword(vo);
 			return result;
 		 
