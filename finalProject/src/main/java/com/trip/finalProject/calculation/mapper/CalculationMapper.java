@@ -17,10 +17,10 @@ public interface CalculationMapper {
 	public int calProc(String calId);
 	
 	// 특정월 정산 내역 카운트
-	public int countCompCalList(Integer searchYear, Integer searchMonth);
+	public int countCompCalList(String searchYear, String searchMonth);
 
 	// 특정월 정산 내역 전체 조회
-	public List<CalculationVO> selectCompCalList(PagingVO pagingVO, Integer searchYear, Integer searchMonth);
+	public List<CalculationVO> selectCompCalList(PagingVO pagingVO, String searchYear, String searchMonth);
 	
 	// quartz scheduler : 매월 일괄 정산
 	public int quartzCalMonthlyProc();
