@@ -126,7 +126,7 @@ margin-top:50%;
 					<input type="hidden" id="sessionAuthority"
 						th:value="${session.sessionAuthority}">
 					<button
-						th:if="${session.sessionAuthority} != null and ${session.sessionAuthority} == 'A2'"
+						th:if="${session.sessionAuthority} != null and ${session.sessionAuthority} == 'A2' and ${session.sessionId} == ${info.writerId}"
 						type="button" class="btn btn-outline-dark"
 						th:onclick="|location.href='@{/guide/packageUpdateForm(postId=${info.postId})}'|">수정</button>
 					&nbsp;&nbsp;
@@ -340,7 +340,6 @@ margin-top:50%;
        appendPackageDetailInfoReview(data, postId);   
      });
     var maxReservation =parseInt('[[${info.maxReservation}]]') - parseInt('[[${info.nowReservation}]]');
-    console.log(maxReservation)
     var countSelect = document.getElementById("select_count");
     for (var i = 0; i <= maxReservation; i++) {
        var option = document.createElement('option');
