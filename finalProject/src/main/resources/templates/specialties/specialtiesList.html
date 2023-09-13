@@ -27,7 +27,15 @@
     display: block;
     margin: 0 auto;
 }
-
+.title-text {
+    font-size: 18px; /* 제목 폰트 크기 조정 */
+    color: #333; /* 제목 텍스트 색상 변경 */
+    font-weight: bold; /* 굵게 표시 */
+    /* 다른 스타일 속성도 추가로 지정 가능 */
+}
+.sb-text h5 {
+    margin-bottom: 10px; /* 아래쪽 간격을 10px로 설정 */
+}
 </style>
 
 <script>
@@ -90,15 +98,13 @@ function search(event){
 										<span th:text="${list.writerId}"></span>
 									</li>
 								</ul>
-								<h5>
+								<h5 class="title-text">
 									<a th:text="${list.title}"></a>
 								</h5>
 								<h5>
-									<a th:text="${list.type}"></a>
+									<a th:text="${list.type+'/'+list.locationName}"></a>
 								</h5>
-								<h5>
-									<a th:text="${list.locationName}"></a>
-								</h5>
+								
 							</div>
 						</div>
 					</div>
