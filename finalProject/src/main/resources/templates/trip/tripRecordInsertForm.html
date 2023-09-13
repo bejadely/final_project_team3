@@ -316,6 +316,10 @@ table {
     			}
     		})
             
+            formObj.append(str);
+            $("#tripData").attr("action", "/common/tripRecordInsertUp").submit();
+            sendMemoData(memoDataArry);
+            
          })
       })
       .catch(error => {
