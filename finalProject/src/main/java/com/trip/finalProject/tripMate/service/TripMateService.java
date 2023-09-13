@@ -116,4 +116,6 @@ public interface TripMateService {
 
 	public int getCommentNumInfo(TripMateVO tripMateVO);
 
+	public void getChatingToken();
+
 }

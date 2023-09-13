@@ -95,5 +95,7 @@ public interface TripMapper {
 	
 	//여행후기 등록
 	public int insertTripReview(TripVO tripVO);
+
+	
 	
 }
