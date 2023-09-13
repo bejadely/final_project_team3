@@ -9,6 +9,7 @@
 			text-decoration: 
 		}
 	</style>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tippy.js/6.3.3/tippy.css" />
 </head>	
 <!-- Content -->
 <div layout:fragment="content">
@@ -36,7 +37,7 @@
 							<tr>
 								<td align="center" th:text="${l.memberId}"></td>
 								<td align="center" th:text="${l.memberName}"></td>
-								<td align="center" class="clipBoard" th:data-clipboard-text="${l.accountNumber}">[[${l.accountNumber}]]&nbsp;&nbsp;<i class="clipBoard fa-solid fa-copy"></i></td>
+								<td align="center"><div class="clipBoard" th:data-clipboard-text="${l.accountNumber}">[[${l.accountNumber}]]&nbsp;&nbsp;<i class="fa-solid fa-copy"></i></div></td>
 								<td align="center" th:text="|${#strings.substring(l.signUpDate,0,10)}|"></td>
 								<td align="center">
 								<button type="button" class="approveButton" name="approveButton">승인</button>  
@@ -63,17 +64,26 @@
 
 	<!-- 클립보드 복사 cdn -->
 	<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
+	
+	<!-- tippy 사용을 위한 연결 -->
+	<script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    
 	<script th:inline="javascript" type="text/javascript">
 	
-	// 동적으로 버튼이 다 만들어지고 문서가 다 로드 된 후 이벤트가 정의되게 하기 위해 콜백함수 사용 
 	$(document).ready(function() {
 		// 승인 버튼 클릭 시 발생 이벤트 설정
 		$('.approveButton').on('click', authApprove);
 		$('.rejectButton').on('click', authReject);
+		// 복사 버튼 클릭 시 발생 이벤트
 		$('.clipBoard').on('mouseover', underLine);
 		$('.clipBoard').on('mouseleave', removeLine);
 		$('.cheatConfirmLink').on('mouseover', underLine);
 		$('.cheatConfirmLink').on('mouseleave', removeLine);
+		
+		// 권한 요청 처리 결과 표출
+		printApproveResult([[${approveResult}]]);
+		printRejectResult([[${rejectResult}]]);
 	
 		// clipboard.js 복사 기능
 		var clipboard = new ClipboardJS('.clipBoard');
@@ -90,6 +100,16 @@
 		    console.error('Action:', e.action);
 		    console.error('Trigger:', e.trigger);
 		});
+		
+		// 복사 완료시 실행되는 구문
+		tippy('.clipBoard', {
+            content: 'Copied!',
+            placement: 'bottom',
+            trigger: 'click',
+            hideOnClick: true,
+            duration: 2000, 
+            animation: 'shift-away'
+        });
 		
 	});
 	
@@ -122,7 +142,7 @@
 	      if (result.isConfirmed) {
 			let form = document.getElementById("form");
 			form.memberId.value = e.currentTarget.closest('tr').firstElementChild.textContent;
-			form.action = "approveAuthRequest";
+			form.action = "/admin/approveAuthRequest";
 			form.submit();
 	      }
 	    })
@@ -169,7 +189,7 @@
 	        		let form = document.getElementById("form");
 					form.memberId.value = e.currentTarget.closest('tr').firstElementChild.textContent;
 					form.rejectReasonDetail.value = firstResult.value;
-					form.action = "rejectAuthRequest";
+					form.action = "/admin/rejectAuthRequest";
 					form.submit();
 	        	}
 	        })
@@ -178,45 +198,49 @@
 	    })		 
 	
 	}
-	
-	// 권한 요청 처리 결과 표출
-	printApproveResult([[${approveResult}]]);
-	printRejectResult([[${rejectResult}]]);
 		
 	function printApproveResult(message){
 		
 		if(message == "success"){
+			
+
 			Swal.fire({
 				  icon: 'success',
 			      title: '승인이 완료되었습니다.',
-			    })	
+			    });	
+			    
 		}
 		else if (message == "fail") {
+			
 			Swal.fire({
 				  icon: 'error',
-			      title: '권한승인 요청 승인처리에 실패했습니다.\n다시 시도해주십시오.',
-			    })	
+			    title: '권한승인 요청 승인처리에 실패했습니다.\n다시 시도해주십시오.',
+			    });	
+			    
 		}
 	}
 	
 	function printRejectResult(message){
 		
 		if(message == "success"){
+			
 			Swal.fire({
 				  icon: 'success',
 			      title: '반려처리가 완료되었습니다.',
 			    })	
+			    
 		}
 		else if (message == "fail") {
+			
 			Swal.fire({
 				  icon: 'error',
 				  title: '권한승인 요청 반려처리에 실패했습니다.\n다시 시도해주십시오.',
 			    })	
+			    
 		}
 	}
-		
+	
 	</script>
 	
 </div>
-
 </html>

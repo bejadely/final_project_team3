@@ -73,8 +73,10 @@
 			 FROM(select s.title, 
 						 s.writer_id, 
 						 s.post_id, 
-						 a.loading_img
-				  FROM specialties_regist s JOIN attached_file a ON s.post_id = a.post_id
+						 a.loading_img,
+						 code_val(s.type) type,
+						 l.location_name
+				  FROM specialties_regist s JOIN location l ON s.area_code = l.area_code and s.sigungu_code = l.sigungu_code JOIN attached_file a ON s.post_id = a.post_id
 				  WHERE a.img_type='U2'
 				  ORDER BY regist_date DESC)b) 
 		WHERE rn BETWEEN #{start} AND #{end}
@@ -110,8 +112,10 @@
 			 FROM(select s.title, 
 						 s.writer_id, 
 						 s.post_id, 
-						 a.loading_img
-				  FROM specialties_regist s JOIN attached_file a ON s.post_id = a.post_id
+						 a.loading_img,
+						 code_val(s.type) type,
+						 l.location_name
+				  FROM specialties_regist s JOIN location l ON s.area_code = l.area_code and s.sigungu_code = l.sigungu_code JOIN attached_file a ON s.post_id = a.post_id
 				  WHERE s.title LIKE '%${specialtiesVO.title}%' AND a.img_type='U2'
 				  ORDER BY regist_date DESC)b) 
 		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end} 
