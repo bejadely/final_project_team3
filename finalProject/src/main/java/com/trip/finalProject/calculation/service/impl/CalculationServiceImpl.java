@@ -80,7 +80,7 @@ public class CalculationServiceImpl implements CalculationService {
 	
 	
 	@Override
-	public Map<String, Object> selectCompCalList(Integer nowPage, Integer cntPerPage, Integer searchYear, Integer searchMonth) {
+	public Map<String, Object> selectCompCalList(Integer nowPage, Integer cntPerPage, String searchYear, String searchMonth) {
 		
 		// 특정월 정산내역 전체 조회
 		
