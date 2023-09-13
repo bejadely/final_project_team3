@@ -68,6 +68,9 @@ public class CalculationController {
 				searchMonth = LocalDate.now().getMonthValue(); 
 			}
 			
+			System.out.println("searchYear : " + searchYear);
+			System.out.println("searchYear : " + searchMonth);
+			
 			// 정산 내역 전체 조회
 			Map<String, Object> map = calculationService.selectCompCalList(nowPage, cntPerPage, searchYear, searchMonth);
 			
