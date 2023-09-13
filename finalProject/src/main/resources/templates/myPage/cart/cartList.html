@@ -42,7 +42,8 @@ function handleClick(data) {
             
         }).done(data => {
            paging(data.paging);
-            displayData(data.cartList);
+           displayData(data.cartList);
+           console.log(data);
         }).fail(reject => console.log(reject));
     }
 
@@ -84,20 +85,27 @@ function handleClick(data) {
    
        // 가져온 데이터를 순회하면서 처리   
        $.each(data, (index, cartItem) => {
-             html += "<tr class='reportInfo'>" +
-               "<td><input type='checkbox' name='chk' data-postid='" + cartItem.postId + "' /></td>" +
-               "<td class='post'>"+"<input type='hidden' class='cartId' value='" + cartItem.cartId + "' />" + cartItem.cartName + "</td>" +
-               "<td class='post' style='width:40%'>"+ cartItem.cartName + "</td>" +
-               `<td>
+    	   html += `
+    	        <tr class='reportInfo'>
+               <td><input type='checkbox' name='chk' data-postid='${cartItem.postId}' /></td>
+               <td class='post'>
+                   <input type='hidden' class='cartId' value='${cartItem.cartId}' />
+                   ${cartItem.loadingImg ? `<img src='${cartItem.loadingImg}' style='width:70px; height:70px;'/>` : `<img src='@{/img/no-image.png}'/>`}
+               </td>
+               <td class='post' style='width:40%'>${cartItem.cartName}</td>
+               <td>
                    <button type="button" class="quantity-btn decrement-btn">-</button>
-                   <input type="text" class="quantity-input" name="productAmount" value="${cartItem.quantity}">
+                   <input type="text" class="quantity-input" name="productAmount" value='${cartItem.quantity}'/>
                    <button type="button" class="quantity-btn increment-btn">+</button>
-               </td>` +
-               "<td><input type='hidden' name='option' value='" + cartItem.optionId + "' />" + (cartItem.optionId != null ? cartItem.optionId : "-") + "</td>" + // 조건에 따라 내용을 생성
-               "<td>" + cartItem.price + "</td>" +
-               "<td><button class='delete-btn'>삭제</button></td>" +
-               "</tr>";           
-       });
+               </td>
+               <td>
+                   <input type='hidden' name='option' value='${cartItem.optionId != null ? cartItem.optionId : "-"}'/>
+                   ${cartItem.optionId != null ? cartItem.optionId : "-"}
+               </td>
+               <td>${cartItem.price}</td>
+               <td><button class='delete-btn'>삭제</button></td>
+           </tr>`;
+    	});
        
        price = `<label>총 주문 금액 : </label>
                 <input type="text" id="result" readonly="readonly" value="0">원`

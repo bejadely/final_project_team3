@@ -46,7 +46,7 @@ body {
 </style>
 <script>
 	$(document).ready(function(){
-		$("button").click(function(){
+		$("#refundBtn").click(function(){
 			   Swal.fire({
 					showCancelButton: true,
 		       	title: '환불 하시겠습니까?',
@@ -157,6 +157,8 @@ body {
 			
 			</tbody>
 		</table>
+		<button type="button" id="refundBtn" class="feature-btn" th:if="${list.orderStatus != '환불 완료'}">환불</button>
+		<button type="button" th:onclick="history.back()" class="feature-btn">목록으로</button>
    </form>
    </div>
 </body>
