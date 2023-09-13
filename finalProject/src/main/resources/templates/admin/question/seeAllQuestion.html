@@ -4,71 +4,72 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="@{layouts/admin_layout}">
 <head>
-   <style>
-        body {
-            background-color: #ffffff;
-            color: #000000;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 4px;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-            color: #ffffff;
-        }
-
-        .btn-primary:hover {
-            background-color: #0069d9;
-            color: #ffffff;
-        }
-
-        .btn-secondary {
-            background-color: #6c757d;
-            border: none;
-            color: #ffffff;
-        }
-
-        .btn-secondary:hover {
-            background-color: #5a6268;
-            color: #ffffff;
-        }
-        
-        .ck.ck-editor {
-		width: 100%;
-		max-width: 1500px;
-		margin: 0 auto;
-		}
-		
-		.ck-editor__editable {
-			height: 50vh;
-		}
-		.table-left th, td{
-			text-align: left;
-		}
-		.status-btn{
-			cursor: default;
-			border: none;
-			background: #2DB400;
-			margin-bottom: 0.7em;
-		}
-    </style>
+    <title>관리자 페이지 - 문의 내역 조회</title>
+    <style>
+         body {
+             background-color: #ffffff;
+             color: #000000;
+         }
+         
+         .text-center {
+             text-align: center;
+         }
+         
+         .form-control {
+             width: 100%;
+             padding: 10px;
+             border: 1px solid #ced4da;
+             border-radius: 4px;
+             box-sizing: border-box;
+         }
+         
+         .btn {
+             padding: 10px 20px;
+             font-size: 16px;
+             border-radius: 4px;
+         }
+         
+         .btn-primary {
+             background-color: #007bff;
+             border: none;
+             color: #ffffff;
+         }
+         
+         .btn-primary:hover {
+             background-color: #0069d9;
+             color: #ffffff;
+         }
+         
+         .btn-secondary {
+             background-color: #6c757d;
+             border: none;
+             color: #ffffff;
+         }
+         
+         .btn-secondary:hover {
+             background-color: #5a6268;
+             color: #ffffff;
+         }
+         
+         .ck.ck-editor {
+		 width: 100%;
+		 max-width: 1500px;
+		 margin: 0 auto;
+		 }
+		 
+		 .ck-editor__editable {
+		 	height: 50vh;
+		 }
+		 .table-left th, td{
+		 	text-align: left;
+		 }
+		 .status-btn{
+		 	cursor: default;
+		 	border: none;
+		 	background: #2DB400;
+		 	margin-bottom: 0.7em;
+		 }
+     </style>
 </head>
 <!-- Content -->
 <div layout:fragment="content">
@@ -135,56 +136,57 @@
 		</div>
 		<!-- 페이징 구문 -->
 		<!-- 검색키워드가 없을때 -->
-		<th:block th:if="${#strings.isEmpty(keyword)}">
-			<div style="text-align : center;" class="property-pagination">
-				<th:block th:if="${paging.nowPage != 1}">
-					<a th:href="@{/admin/seeAllQuestion(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
-				</th:block>
-				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
-				</th:block>
-				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
-					<th:block th:if="${p eq paging.nowPage}">
-						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+		<th:block th:if ="${paging.totalData > 0}">
+			<th:block th:if="${#strings.isEmpty(keyword)}">
+				<div style="text-align : center;" class="property-pagination">
+					<th:block th:if="${paging.nowPage != 1}">
+						<a th:href="@{/admin/seeAllQuestion(nowPage=1, cntPerPage=${paging.cntPerPage})}">&lt;&lt;</a>
 					</th:block>
-					<th:block th:if="${p ne paging.nowPage}">
-						<a th:href="@{/admin/seeAllQuestion(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+					<th:block th:if="${paging.startPage != 1}">
+						<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage})}">&lt;</a>
 					</th:block>
-				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
-				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage}">
-					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
-				</th:block>
-			</div>
+					<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+						<th:block th:if="${p eq paging.nowPage}">
+							<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+						</th:block>
+						<th:block th:if="${p ne paging.nowPage}">
+							<a th:href="@{/admin/seeAllQuestion(nowPage=${p}, cntPerPage=${paging.cntPerPage})}"	th:text="${p}"></a>
+						</th:block>
+					</th:block>
+					<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+						<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage})}">&gt;</a>
+					</th:block>
+					<th:block th:if="${paging.nowPage != paging.lastPage}">
+						<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage})}">&gt;&gt;</a>
+					</th:block>
+				</div>
+			</th:block>
+			<!-- 검색키워드가 있을때 -->
+			<th:block th:if="${!#strings.isEmpty(keyword)}">
+				<div style="text-align : center;" class="property-pagination">
+					<th:block th:if="${paging.nowPage != 1}">
+						<a th:href="@{/admin/seeAllQuestion(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
+					</th:block>
+					<th:block th:if="${paging.startPage != 1}">
+						<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;</a>
+					</th:block>
+					<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+						<th:block th:if="${p eq paging.nowPage}">
+							<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
+						</th:block>
+						<th:block th:if="${p ne paging.nowPage}">
+							<a th:href="@{/admin/seeAllQuestion(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
+						</th:block>
+					</th:block>
+					<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
+						<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
+					</th:block>
+					<th:block th:if="${paging.nowPage != paging.lastPage}">
+						<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
+					</th:block>
+				</div>
+			</th:block>
 		</th:block>
-		<!-- 검색키워드가 있을때 -->
-		<th:block th:if="${!#strings.isEmpty(keyword)}">
-			<div style="text-align : center;" class="property-pagination">
-				<th:block th:if="${paging.nowPage != 1}">
-					<a th:href="@{/admin/seeAllQuestion(nowPage=1, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;&lt;</a>
-				</th:block>
-				<th:block th:if="${paging.startPage != 1}">
-					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.startPage - 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&lt;</a>
-				</th:block>
-				<th:block th:each="p : ${#numbers.sequence(paging.startPage, paging.endPage)}">
-					<th:block th:if="${p eq paging.nowPage}">
-						<a th:text="${p}" style="background-color : #2cbdb8; color: white;"></a>
-					</th:block>
-					<th:block th:if="${p ne paging.nowPage}">
-						<a th:href="@{/admin/seeAllQuestion(nowPage=${p}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}" th:text="${p}"></a>
-					</th:block>
-				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage and paging.lastPage > 5}">
-					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.endPage + 1}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;</a>
-				</th:block>
-				<th:block th:if="${paging.nowPage != paging.lastPage}">
-					<a th:href="@{/admin/seeAllQuestion(nowPage=${paging.lastPage}, cntPerPage=${paging.cntPerPage}, keyword=${keyword}, searchBy=${searchBy})}">&gt;&gt;</a>
-				</th:block>
-			</div>
-		</th:block>
-		
 	</div>
 	
 	<script th:inline="javascript" type="text/javascript">
