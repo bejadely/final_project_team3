@@ -238,7 +238,7 @@
 	<select id="getPackageCalculate">
 		SELECT SUM(p.price) as price,r.post_id,'V1' as cal_status
 		FROM purchase p JOIN package_regist r ON p.post_id = r.post_id 
-		WHERE r.start_date=TO_CHAR(sysdate, 'YY/MM/DD') and p.post_id = r.post_id and r.completion='D2'
+		WHERE r.start_date=TO_CHAR(sysdate, 'YY/MM/DD') and p.post_id = r.post_id and r.completion='D1'
 		group by r.post_id
 	</select>
 	

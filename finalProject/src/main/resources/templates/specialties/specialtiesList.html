@@ -66,8 +66,10 @@ function search(event){
 		<br>
 		<div class="searchDiv" style="float:right; margin-right: 150px;" >
 			<select id="searchBy" name="searchBy">
-				<option value="name">이름으로 검색</option>
-			</select>&nbsp;
+				<option value="name">특산물 검색</option>
+				<option value="location">지역 검색</option>
+				<option value="type">특산물 종류 검색</option>
+			</select>
 			<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요." style="height: 40px; width: 200px;">
 			<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
 		</div>
@@ -90,6 +92,12 @@ function search(event){
 								</ul>
 								<h5>
 									<a th:text="${list.title}"></a>
+								</h5>
+								<h5>
+									<a th:text="${list.type}"></a>
+								</h5>
+								<h5>
+									<a th:text="${list.locationName}"></a>
 								</h5>
 							</div>
 						</div>

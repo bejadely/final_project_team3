@@ -221,16 +221,13 @@ body {
 	    
 	    var postId = '[[${tripMateVO.postId}]]'
 		
-	    //등록했던 여행지역 default로 띄워주기	
+	    //등록했던 여행지역 default로 선택	
 	    function setTripArea(){
 	    			
 	    	// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
 	    	let defaultStatus = "[[${tripMateVO.tripArea}]]";
 	    	
-	    	// 포항
-	    	console.log(defaultStatus);
-	    	
-	    	 // 우리가 실제로 만든 셀렉트 박스의 option을 selected 설정
+	    	// 등록 시 선택했던 여행 지역 selected 설정
 	        $('#tripArea').val(defaultStatus).prop("selected", true);
 	        
 	        // 우리가 실제로 만든 셀렉트 박스의 변경값을 나이스 셀렉트 박스에 업데이트
@@ -238,15 +235,13 @@ body {
 	    	
 	    }
 	    
+	  //등록했던 여행스타일 default로 선택	
 	    function setMateStyle(){
 			
 	    	// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
 	    	let defaultStatus = "[[${tripMateVO.mateStyle}]]";
 	    	
-	    	// 포항
-	    	console.log(defaultStatus);
-	    	
-	    	 // 우리가 실제로 만든 셀렉트 박스의 option을 selected 설정
+	    	// 등록 시 선택했던 여행 스타일 selected 설정
 	        $('#mateStyle').val(defaultStatus).prop("selected", true);
 	        
 	        // 우리가 실제로 만든 셀렉트 박스의 변경값을 나이스 셀렉트 박스에 업데이트
