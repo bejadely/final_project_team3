@@ -272,6 +272,7 @@
 							, apply_day
 							, apply_info
 							, approve_status
+							, room_number
 						)
 					VALUES
 						(
@@ -281,6 +282,7 @@
 							, sysdate
 							, #{applyInfo}
 							, 'a1'
+							, #{roomNumber}
 						)
 	</insert>
 	
@@ -387,7 +389,7 @@
 			 			 r.writer_id,
 			 			 r.trip_area,
                          a.apply_id,
-                         r.room_number
+                         a.room_number
 				 FROM mate_recruit r left OUTER JOIN mate_apply a on r.post_id = a.post_id
      			 WHERE a.member_id = #{trVO.memberId}
 				 ORDER BY r.post_id DESC) a)
@@ -508,4 +510,21 @@
         SET content=#{content}
         WHERE comment_id=#{commentId}
 	</update>
+	
+	<insert id="getChatToken" parameterType="String">
+        	INSERT INTO chat_token (token, save_date)
+			VALUES (#{token}, SYSDATE)
+	</insert>
+	
+	<select id="getTodayToken" resultType="String">
+		SELECT token
+        FROM chat_token
+        WHERE TO_DATE(save_date, 'YYYY-MM-DD') = TO_DATE(SYSDATE, 'YYYY-MM-DD')
+	</select>
+	
+	<select id="getMateApplyRoomNumber" resultType="String">
+		SELECT room_number
+        FROM mate_recruit
+        WHERE post_id=#{postId}
+	</select>
 </mapper>
