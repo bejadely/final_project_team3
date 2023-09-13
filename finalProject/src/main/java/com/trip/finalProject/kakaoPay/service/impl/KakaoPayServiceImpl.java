@@ -64,6 +64,7 @@ public class KakaoPayServiceImpl implements KakaoPayService {
         parameters.add("approval_url", kakaoUrl+"common/payment/success?specialtyType=" + specialtyType + "&partner_user_id=" + vo.getPartnerUserId() +"&partner_order_id="+ partner_order_id +"&postId="+postId); // 성공 시 redirect url
         parameters.add("cancel_url", kakaoUrl+"common/payment/cancel"); // 취소 시 redirect url
         parameters.add("fail_url", kakaoUrl+"common/payment/fail"); // 실패 시 redirect url
+        
 		
         //파라미터, 헤더
 		HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters,this.getHeaders());
