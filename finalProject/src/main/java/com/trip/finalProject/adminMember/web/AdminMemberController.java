@@ -177,7 +177,7 @@ public class AdminMemberController {
 	}
 	
 	// 권한 승인 요청 전체 조회
-	@GetMapping("authRequestList")
+	@GetMapping("/admin/authRequestList")
 	public String authRequestList(Model model) {
 		
 		// 권한승인 요청한 모든 내역 조회
@@ -193,7 +193,7 @@ public class AdminMemberController {
 	
 	// 권한 승인 + 승인 내역 저장
 	@Transactional
-	@PostMapping("/approveAuthRequest")
+	@PostMapping("/admin/approveAuthRequest")
 	public String approveAuthRequest(AdminMemberVO memberVO, AuthConfirmVO authVO, AlertVO alertVO, RedirectAttributes rtt) {
 		
 		// 권한승인 처리
@@ -216,7 +216,7 @@ public class AdminMemberController {
 	
 	// 권한 승인 신청 반려 + 반려 내역 저장
 	@Transactional
-	@PostMapping("/rejectAuthRequest")
+	@PostMapping("/admin/rejectAuthRequest")
 	public String rejectAuthRequest(AdminMemberVO memberVO, AuthConfirmVO authVO, AlertVO alertVO, RedirectAttributes rtt) {
 		
 		// 권한승인요청 반려 처리
