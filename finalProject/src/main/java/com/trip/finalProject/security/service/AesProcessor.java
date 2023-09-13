@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class AesProcessor {
 	
 	// AES256 암호화 기법을 사용하기 위한 클래스
-	// AES/CBC/PKCS5 Padding 사용예정
+	// AES/CBC/PKCS5 Padding 사용
 	
 	private SecretKeySpec secretKey;
 	private IvParameterSpec IV;
@@ -28,11 +28,10 @@ public class AesProcessor {
 		
 		//바이트 배열로부터 SecretKey를 구축
 		this.secretKey = new SecretKeySpec(reqSecretKey.getBytes("UTF-8"), "AES");
-		//this.IV = new IvParameterSpec(reqSecretKey.substring(0,16).getBytes());
 		this.IV = new IvParameterSpec(iv.getBytes());
 	}
 	
-    //AES CBC PKCS5Padding 암호화(Hex | Base64)
+    //AES CBC PKCS5Padding 암호화(Hex)
 	public String aesCBCEncode(String plainText) throws Exception {
 		
 		//Cipher 객체 인스턴스화(Java에서는 PKCS#5 = PKCS#7이랑 동일)
@@ -47,11 +46,9 @@ public class AesProcessor {
 		//Hex Encode
 		return Hex.encodeHexString(encrpytionByte);
 		
-		//Base64 Encode
-//		return Base64.encodeBase64String(encrpytionByte);
 	}
 
-	//AES CBC PKCS5Padding 복호화(Hex | Base64)
+	//AES CBC PKCS5Padding 복호화(Hex)
 	public String aesCBCDecode(String encodeText) throws Exception {
 
 		//Cipher 객체 인스턴스화(Java에서는 PKCS#5 = PKCS#7이랑 동일)
@@ -62,9 +59,6 @@ public class AesProcessor {
 		
 		//Decode Hex
 		byte[] decodeByte = Hex.decodeHex(encodeText.toCharArray());
-		
-		//Decode Base64
-//		byte[] decodeByte = Base64.decodeBase64(encodeText);
 		
 		//Encrpytion/Decryption
 		return new String(c.doFinal(decodeByte), "UTF-8");
