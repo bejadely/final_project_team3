@@ -76,7 +76,6 @@ public class SpecialtiesServiceImpl implements SpecialtiesService {
 	@Override
 	public void insertSepcialties(SpecialtiesVO specialtiesVO) {
 		// TODO Auto-generated method stub
-		
 		mapper.insertSpecialites(specialtiesVO);
 		System.out.println(specialtiesVO.getPostId());
 		specialtiesVO.getOptionList().forEach(option->{
