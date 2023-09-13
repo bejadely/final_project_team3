@@ -22,7 +22,7 @@ public class PackageQuartzJob extends QuartzJobBean{
 
 	        try {
 	            // 스케줄러 코드 작성
-	        	
+	        	packageMapper.packageUpdateDeadline();
 
 	            List<PackageVO> dataList = packageMapper.getPackageCalculate();
 	            // 데이터를 저장할 리스트 생성
@@ -37,7 +37,7 @@ public class PackageQuartzJob extends QuartzJobBean{
 	                packageMapper.packageCalculate(data);
 	            }
 
-	            packageMapper.packageUpdateDeadline();
+	            
 	        } catch (Exception e) {
 	            System.out.println("스케줄러 작업 중 오류 발생: " + e.getMessage());
 	        }

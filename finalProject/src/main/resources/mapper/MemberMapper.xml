@@ -36,7 +36,7 @@
 			        ,#{to}	
 			        , 'A1'	
 			        , 'L1'
-			        ,#{birthDate}		            			        
+			        ,To_date(#{birthDate},'YYYY-mm-dd')		            			        
 			        ,#{gender}			     
 			        , sysdate
 			        )
@@ -78,7 +78,7 @@
         			,#{accountNumber}
 			        , 'A4'	
 			        , 'L1'
-			        ,#{birthDate}		            			        
+			        ,To_date(#{birthDate},'YYYY-mm-dd')			            			        
 			        ,#{gender}			     
 			        ,sysdate)
 			      
@@ -158,7 +158,7 @@
 		 , login_type
 		 , access_token
 		 , refresh_token
-		 , birth_date
+		 ,To_date(#{birthDate},'YYYY-mm-dd')		
 		 , code_val(gender) gender
 		 , punish_count
 		 , sign_up_date
@@ -174,12 +174,14 @@
 			<if test="password != null and !password.equals('')">
 				password = #{password},			
 			</if>
+			<if test="bankCode != null and !bankCode.equals('')">
+				bank_code=#{bankCode},			
+			</if>
 			zip_code = #{zipCode},
 			address = #{address},
 			address_detail=#{addressDetail},
 			email = #{email},
 			phone_number = #{phoneNumber},
-			bank_code=#{bankCode},
 			account_number = #{accountNumber}
 		</set>
 		WHERE member_id = #{memberId}	
