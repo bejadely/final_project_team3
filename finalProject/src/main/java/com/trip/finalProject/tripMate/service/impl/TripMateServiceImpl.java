@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.servlet.http.HttpSession;
+
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.trip.finalProject.attachedFile.mapper.AttachedFileMapper;
 import com.trip.finalProject.common.PagingVO;
+import com.trip.finalProject.trip.mapper.TripMapper;
 import com.trip.finalProject.tripMate.mapper.TripMateMapper;
 import com.trip.finalProject.tripMate.service.PostCommentVO;
 import com.trip.finalProject.tripMate.service.TripMateService;
@@ -40,8 +44,7 @@ public class TripMateServiceImpl implements TripMateService {
 	@Value("${vChatApi.key}")
 	private String API_KEY;
 	
-	@Value("${vChatApi.token}")
-	private String X_AUTH_TOKEN;
+
 	
 	private final int DEFAULT_USER_MAX_NUM = 10;
 	
@@ -127,7 +130,6 @@ public class TripMateServiceImpl implements TripMateService {
 		//채팅방 개설 채팅방번호 가져와서 넣기
 		tripMateVO.setRoomNumber(roomNumberString);
 		
-		System.out.println("다녀와서" + roomNumberString);
 		
 		mapper.insertEditor(tripMateVO);
 		
@@ -210,15 +212,28 @@ public class TripMateServiceImpl implements TripMateService {
 	//여행 메이트 신청 (등록된 게시글에 대한 여행메이트 신청)
 	@Override
 	public TripMateVO InsertTripMateApply(TripMateVO tripMateVO) {
+		
+		String postId=tripMateVO.getPostId();
+		tripMateVO.setRoomNumber(getMateApplyRoomNumber(postId));
+		
 		tripMateMapper.insertTripMateApply(tripMateVO);
 		return tripMateVO;
 	}
+	
+	//메이트 신청 시 채팅방 번호 넣기
+	public String getMateApplyRoomNumber(String postId) {
+		
+		return tripMateMapper.getMateApplyRoomNumber(postId);
+	}
+	
 	
 	//여행 메이트 신청시 작성자에게 알림
 	@Override
 	public int sendAlert(TripMateVO tripMateVO) {
 		return tripMateMapper.sendAlert(tripMateVO);
 	}
+	
+	
 	
 	//여행 메이트신청시 해당 게시글에 신청 내역이 존재하는지 체크
 	@Override
@@ -398,7 +413,7 @@ public class TripMateServiceImpl implements TripMateService {
              HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
              httpURLConnection.setRequestMethod("POST");
              httpURLConnection.setRequestProperty("API_KEY", API_KEY);
-             httpURLConnection.setRequestProperty("X-AUTH-TOKEN", X_AUTH_TOKEN);
+             httpURLConnection.setRequestProperty("X-AUTH-TOKEN", getTodayToken());
              httpURLConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
              BufferedReader bufferedReader;
              bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
@@ -446,6 +461,57 @@ public class TripMateServiceImpl implements TripMateService {
 	        
 	        return roomName;
 	 }
+
+	 
+	 
+	 //채팅방 인증토큰 받기
+	@Override
+	public void getChatingToken() {
+		String token="";
+		
+		StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("https://vchatcloud.com/openapi/token");
+
+        String apiUrl = stringBuilder.toString();
+		
+        try {
+        	 URL url = new URL(apiUrl);
+             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+             httpURLConnection.setRequestMethod("GET");
+             httpURLConnection.setRequestProperty("API_KEY", API_KEY);
+             BufferedReader bufferedReader;
+             bufferedReader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
+             String inputLine;
+             stringBuilder.setLength(0); //  위에서 쓴 StringBuilder를 초기화 시킨 후 다시 쓰기 위한 코드
+             while ((inputLine = bufferedReader.readLine()) != null) {
+                 stringBuilder.append(inputLine);
+             }
+             bufferedReader.close();
+
+             String jsonString = stringBuilder.toString();
+
+             Gson gson = new Gson();
+             
+             JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+
+	         token = jsonObject.getAsJsonObject("data").get("X-AUTH-TOKEN").getAsString();
+	          
+             tripMateMapper.getChatToken(token);
+        	 
+        }catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		
+        
+	}
+	
+	//토큰 가져오기
+	public String getTodayToken() {
+    	
+    	return tripMateMapper.getTodayToken();
+    }
 
 	 
 	 
