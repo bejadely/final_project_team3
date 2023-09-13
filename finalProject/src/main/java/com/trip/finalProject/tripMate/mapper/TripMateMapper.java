@@ -115,4 +115,10 @@ public interface TripMateMapper {
 
 	public int modifyCommentInfo(PostCommentVO postCommentVO);
 
+	public void getChatToken(String token);
+
+	public String getTodayToken();
+
+	public String getMateApplyRoomNumber(String postId);
+
 }

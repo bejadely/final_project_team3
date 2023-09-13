@@ -18,5 +18,6 @@
             join attached_file a on r.post_id=a.post_id
 		WHERE r.discount = 'I2'
         AND img_type='U2'
+        AND o.discount_rate IS NOT NULL
   	</select>
   </mapper>
