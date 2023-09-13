@@ -52,7 +52,7 @@ public class FestivalServiceImpl implements FestivalService {
 		for(int i = 0; i < locationArray.length; i++) {
 			List<FestivalInfoVO> tempInfoList = new ArrayList<>();
 
-			//	getFestivalDataRecursive() : 재귀 API 요청이 담긴 메서드
+			//	getFestivalDataRecursive() : API 요청이 담긴 메서드
 			tempInfoList = getFestivalDataRecursive(locationArray[i]);
 
 			//	현재 날짜를 기준으로 축제 데이터를 받아오므로 축제 정보가 없는 지역이 있을 수도 있어서 축제 정보가 1개 이상일 때만 insert 하기 위한 List에 addAll 해줌
