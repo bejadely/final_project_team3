@@ -221,16 +221,13 @@ body {
 	    
 	    var postId = '[[${tripMateVO.postId}]]'
 		
-	    //등록했던 여행지역 default로 띄워주기	
+	    //등록했던 여행지역 default로 선택	
 	    function setTripArea(){
 	    			
 	    	// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
 	    	let defaultStatus = "[[${tripMateVO.tripArea}]]";
 	    	
-	    	// 포항
-	    	console.log(defaultStatus);
-	    	
-	    	 // 우리가 실제로 만든 셀렉트 박스의 option을 selected 설정
+	    	// 등록 시 선택했던 여행 지역 selected 설정
 	        $('#tripArea').val(defaultStatus).prop("selected", true);
 	        
 	        // 우리가 실제로 만든 셀렉트 박스의 변경값을 나이스 셀렉트 박스에 업데이트
@@ -238,15 +235,13 @@ body {
 	    	
 	    }
 	    
+	  //등록했던 여행스타일 default로 선택	
 	    function setMateStyle(){
 			
 	    	// 기본으로 설정할 저장상태 설정(컨트롤러에서 불러온 회원의 기본 저장상태 설정값)
 	    	let defaultStatus = "[[${tripMateVO.mateStyle}]]";
 	    	
-	    	// 포항
-	    	console.log(defaultStatus);
-	    	
-	    	 // 우리가 실제로 만든 셀렉트 박스의 option을 selected 설정
+	    	// 등록 시 선택했던 여행 스타일 selected 설정
 	        $('#mateStyle').val(defaultStatus).prop("selected", true);
 	        
 	        // 우리가 실제로 만든 셀렉트 박스의 변경값을 나이스 셀렉트 박스에 업데이트
@@ -327,6 +322,36 @@ body {
 				mateContent: data
 			};
 			console.log(combinedData);
+			
+			var startDate2 = document.getElementById("startDay").value;
+	         var endDate2 = document.getElementById("endDay").value;
+	         var deadlineDate2 = document.getElementById("deadline").value;
+	         // 현재 날짜 가져오기
+	         var currentDate = new Date();
+
+	         // 입력한 패키지 시작일을 Date 객체로 변환
+	         var selectedStartDate = new Date(startDate2);
+	         var selectedEndDate = new Date(endDate2);
+	         var selectedDeadlineDate = new Date(deadlineDate2);
+	         // 날짜 차이 계산 (밀리초 단위)
+	         var timeDifference = selectedStartDate - currentDate;
+
+	         // 30일을 밀리초로 계산
+	         var thirtyDaysInMillis = 24 * 60 * 60 * 1000;
+	         
+	         if (selectedStartDate < currentDate) {
+	             alert("여행 시작일은 오늘보다 이전일 수 없습니다.");
+	             return false;
+	         }
+
+	         if (selectedEndDate < selectedStartDate) {
+	             alert("여행 종료일은 여행 시작일 이후여야 합니다.");
+	             return false;
+	         }
+	         if (selectedDeadlineDate > selectedStartDate) {
+	             alert("여행 마감일은 여행 시작일 이전이여야 합니다.");
+	             return false;
+	         }
 			
 			var str="";
 			$(".uploadResult ul li").each(function(i,obj){
@@ -437,7 +462,7 @@ body {
 	          	 return;
 	         }
 	         
-	         if (metContent.value == '') {
+	         if (metContent == '') {
 	        	 Swal.fire({
 	              	icon: 'warning',                      
 	          		title: '내용을 입력해주세요.'
@@ -464,7 +489,7 @@ body {
 		            	formObj.append(str);
 		            	var formattedPrice = parseFloat($("#mateExpense").val().replace(/\,/g, '')); // 콤마 제거 및 숫자로 변환
 		                document.getElementById("mateExpense").value=formattedPrice;
-		            	document.getElementById('editorForm').action = "/common/tripMateRecruitInsert";
+		            	document.getElementById('editorForm').action = "/common/mateRecruitUpdate";
 		                document.getElementById('editorForm').submit();
 		            });
 				}

@@ -21,7 +21,6 @@ import com.trip.finalProject.calculation.service.impl.CalculationQuartzJob;
 import com.trip.finalProject.packaged.service.impl.PackageQuartzJob;
 import com.trip.finalProject.trip.service.impl.TripQuartzJob;
 
-// 스케줄러 설정파일
 @Configuration
 public class JobConfig {
 	
@@ -35,14 +34,13 @@ public class JobConfig {
 		JobDetail packageCalculate = runJobDetail(PackageQuartzJob.class, new HashMap<>());
 		
 		try {
-	        // 크론형식 지정 후 스케줄 시작
 			// 매월 1일 1:00에 직전월 미정산내역 자동 일괄 정산 처리
 			scheduler.scheduleJob(jobDetail, runJobTrigger("0 1 1 * * ?"));
 			
-			//매일 밤 23:59분에 자동 일괄 처리
+			// 매일 밤 23:59분에 자동 일괄 처리
 			scheduler.scheduleJob(tripRecordComplete, runJobTrigger("59 23 * * * ?"));
 			
-			//매일 밤 00:00분에 자동 일괄 처리
+			// 매일 밤 00:00분에 자동 일괄 처리
 			scheduler.scheduleJob(packageCalculate,runJobTrigger("0 0 * * * ?"));
 		} catch (SchedulerException e) {
 			e.printStackTrace();

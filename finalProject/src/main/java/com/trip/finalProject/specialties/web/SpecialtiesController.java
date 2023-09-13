@@ -73,15 +73,18 @@ public class SpecialtiesController {
 								  , @RequestParam( name = "cntPerPage", defaultValue = "6") Integer cntPerPage
 								  , Model model
 								  ,SpecialtiesVO specialtiesVO) {
+		if(searchBy.equals("name")) {
 		//전체 조회될 패키지 수
-		int total = specialtiesService.specialtiesCountTitle(keyword);
+			int total = specialtiesService.specialtiesCountTitle(keyword);
+			
+			PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
+			//제목으로 검색기능 수행
+			specialtiesVO.setTitle(keyword);
+			List<SpecialtiesVO> list = specialtiesService.searchspecialtiesByTitle(specialtiesVO, pagingVO);
+			model.addAttribute("specialtiesList",list);
+			model.addAttribute("paging",pagingVO);
+		}
 		
-		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
-		//제목으로 검색기능 수행
-		specialtiesVO.setTitle(keyword);
-		List<SpecialtiesVO> list = specialtiesService.searchspecialtiesByTitle(specialtiesVO, pagingVO);
-		model.addAttribute("specialtiesList",list);
-		model.addAttribute("paging",pagingVO);
 		// 검색결과 기억을 위해 keyword와 searchBy 담기
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("searchBy", searchBy);

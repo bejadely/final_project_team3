@@ -83,9 +83,9 @@
 						code_val(p.completion) completion,
 						p.max_reservation,
 						l.location_name
-				from package_regist p JOIN location l ON p.area_code = l.area_code JOIN attached_file a ON p.post_id = a.post_id 
+				from package_regist p JOIN location l ON p.area_code = l.area_code AND p.sigungu_code = l.sigungu_code JOIN attached_file a ON p.post_id = a.post_id 
 				WHERE a.img_type = 'U2' AND delete_type = 'N'
-				ORDER BY reg_date DESC)b) 
+				ORDER BY start_date )b) 
 		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
 	</select>
 	
@@ -106,7 +106,7 @@
 	<!-- 패키지 수 카운트 -->
 	<select id="getPackageCount">
 		SELECT COUNT(*)
-		from package_regist p JOIN location l ON p.area_code = l.area_code JOIN attached_file a ON p.post_id = a.post_id 
+		from package_regist p JOIN location l ON p.area_code = l.area_code AND p.sigungu_code = l.sigungu_code JOIN attached_file a ON p.post_id = a.post_id 
 				WHERE a.img_type = 'U2' AND delete_type = 'N' 
 	</select>
 	
@@ -134,9 +134,9 @@
 						code_val(p.completion) completion,
 						p.max_reservation,
 						l.location_name
-				from package_regist p JOIN location l ON p.area_code = l.area_code JOIN attached_file a ON p.post_id = a.post_id 
+				from package_regist p JOIN location l ON p.area_code = l.area_code AND p.sigungu_code = l.sigungu_code JOIN attached_file a ON p.post_id = a.post_id 
 				WHERE p.name LIKE '%${packageVO.name}%' AND a.img_type = 'U2' AND delete_type = 'N'
-				ORDER BY reg_date DESC)b) 
+				ORDER BY start_date)b) 
 		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
 			 
 	
@@ -145,7 +145,7 @@
 	<!-- 지역 검색 결과 카운트 -->
 	<select id="packageCountLocation" resultType="int" parameterType="String">
 		SELECT COUNT(*)
-		FROM package_regist p JOIN location l ON p.area_code = l.area_code JOIN attached_file a ON p.post_id = a.post_id 
+		FROM package_regist p JOIN location l ON p.area_code = l.area_code AND p.sigungu_code = l.sigungu_code JOIN attached_file a ON p.post_id = a.post_id 
 		WHERE l.location_name LIKE '%${keyword}%' AND a.img_type = 'U2' AND delete_type = 'N'
 	</select>
 	
@@ -166,9 +166,9 @@
 						code_val(p.completion) completion,
 						p.max_reservation,
 						l.location_name
-				from package_regist p JOIN location l ON p.area_code = l.area_code JOIN attached_file a ON p.post_id = a.post_id 
+				from package_regist p JOIN location l ON p.area_code = l.area_code AND p.sigungu_code = l.sigungu_code JOIN attached_file a ON p.post_id = a.post_id 
 				WHERE l.location_name LIKE '%${packageVO.locationName}%' AND a.img_type = 'U2' AND delete_type = 'N'
-				ORDER BY reg_date DESC)b) 
+				ORDER BY start_date )b) 
 		WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
 			 
 	
@@ -238,7 +238,7 @@
 	<select id="getPackageCalculate">
 		SELECT SUM(p.price) as price,r.post_id,'V1' as cal_status
 		FROM purchase p JOIN package_regist r ON p.post_id = r.post_id 
-		WHERE r.start_date=TO_CHAR(sysdate, 'YY/MM/DD') and p.post_id = r.post_id and r.completion='D2'
+		WHERE r.start_date=TO_CHAR(sysdate, 'YY/MM/DD') and p.post_id = r.post_id and r.completion='D1'
 		group by r.post_id
 	</select>
 	

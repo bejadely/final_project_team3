@@ -90,21 +90,21 @@ body {
 		<br>
 		<th:block>
 		<table>
-			<th:block th:each="m : ${member}">
-				<th:block th:if="${m.orderStatus != '환불완료'}">
 					<thead>
-					 <tr>
-					 	<th>이름</th>
-					 	<th>국적</th>
-					 	<th>성별</th>
-					 	<th>생년월일</th>
-					 	<th>구매갯수</th>
-					 	<th>구매가격</th>
-					 	<th>구매 날짜</th>
-					 	<th>주문상태</th> 
-					 </tr>
+						 <tr>
+						 	<th>이름</th>
+						 	<th>국적</th>
+						 	<th>성별</th>
+						 	<th>생년월일</th>
+						 	<th>구매갯수</th>
+						 	<th>구매가격</th>
+						 	<th>구매 날짜</th>
+						 	<th>주문상태</th> 
+						 </tr>
 					</thead>
 					<tbody>
+					<th:block th:each="m : ${member}">
+						<th:block th:if="${m.orderStatus != '환불완료'}">
 						<tr>
 							<td th:text="${m.memberName}"></td>
 							<td th:text="${m.nationality}"></td>
@@ -115,9 +115,9 @@ body {
 							<td th:text="${#dates.format(m.orderDate, 'yyyy-MM-dd')}"></td>
 							<td th:text="${m.orderStatus}"></td>
 						</tr>
-					</tbody>
+					</th:block>
 				</th:block>
-			</th:block>
+				</tbody>
 		</table>
 		<button type="button" class="feature-btn">목록으로</button>
 	</div>

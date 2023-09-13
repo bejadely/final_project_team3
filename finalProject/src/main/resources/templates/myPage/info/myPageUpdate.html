@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="@{layouts/admin_layout}">
+	layout:decorate="@{layouts/myPage_layout}">
 <head>
 <style type="text/css">
 * {
@@ -27,15 +27,15 @@
 
 #modalWrap,
 #modalWrapBank {
-  position: fixed;
-  z-index: 1;
-  padding-top: 100px;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 250px; /* Location of the box */
   left: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
   display: none;
 }
 
@@ -47,16 +47,20 @@
   margin: 0 auto;
   border: 1px solid #777;
   background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
 }
 
 /* 계좌번호 확인 모달 스타일 */
 #modalBodyBank {
   width: 500px;
-  height: 350px;
+  height: 370px;
   padding: 10px;
   margin: 0 auto;
   border: 1px solid #777;
   background-color: #fff;
+    border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
 }
 
 </style>
@@ -69,7 +73,7 @@
 				<h5><b>회원정보 수정</b></h5>
 				<br><br>
 				<div class="table">
-					<h6>기본정보</h6>
+					<p><b>기본정보</b></p>
 					<br>
 					<table id="defaultInfo" class="table">
 						<tbody>
@@ -127,8 +131,8 @@
 								<th width="150" align="center">이메일</th>
 								<td width="400" align="center"><input type="email" name="email" th:value="*{email}" class="form-control checkStirng"></td>
 								<th width="150" align="center">연락처</th>
-								<td width="400" align="center">
-									<input type="text" name="phoneNumber" id="phoneNumber" th:value="*{phoneNumber}" readonly="readonly" class="form-control checkStirng">
+								<td width="400" align="center" class="row justify-content-end">
+									<input type="text" name="phoneNumber" id="phoneNumber" th:value="*{phoneNumber}" readonly="readonly" class="form-control checkStirng" style="width: 300px">
 									<button type='button' class='feature-btn' id='phoneChange'>변경</button>
 								</td>
 							</tr>
@@ -136,13 +140,19 @@
 					</table>
 				</div>
 				<div class="table-responsive" th:if="${session.sessionAuthority == 'A2'}">
-					<h6>계좌정보</h6>
+					<p><b>계좌 정보</b></p>
 						<table id="accountInfo" class="table">
 						<tbody>
 							<tr>
+								<td style="border-top: none; text-align: right;">
+									<button type="button" id="bankCodeSelect" class="feature-btn" style="float: right;">계좌변경</button>
+								</td>
+							</tr>
+							<tr>
 								<th width="150" align="center">은행명</th>
 								<td id="bank" width="400">
-									<input type="text" id="bankCode" name="bankCode" th:value="*{bankCode}" class="form-control checkStirng" readonly>
+									<input type="text" th:value="*{bankCode}" class="form-control checkStirng" readonly>
+									<input type="hidden" id="bankCode" name="bankCode">
 								</td>	
 								<th width="150" align="center">예금주</th>
 								<td width="400" align="center">
@@ -152,15 +162,13 @@
 							<tr>
 								<th width="150" align="center">계좌번호</th>
 								<td colspan="3" align="center">
-								<input type="text" id="accountNumber" name="accountNumber"  th:value="*{accountNumber}" class="form-control checkStirng" readonly>
+									<input type="text" id="accountNumber" name="accountNumber"  th:value="*{accountNumber}" class="form-control checkStirng" readonly>
 								</td>
-							</tr>
-							<tr>
-   								<td align="right"><button type="button" id="bankCodeSelect">계좌변경</button></td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
+			</form>
 				<!-- 계좌번호 확인 모달 -->
 				<div id="modalWrapBank">
 				  <div id="modalContentBank">
@@ -168,8 +176,8 @@
 					    <div id="modalDataBank">
 							<div>
 							<br>
-							    <label for="type">은행명</label>
-							    <select class="type" id="modalType" name="bankCode">
+							    <label for="type"></label>
+							    <select class="type" id="modalType" name="bankCodeInfo">
 							        <option value="">선택</option>
 							        <option th:each="b : ${B}" th:value="${b.detailCode}" th:text="${b.value}">옵션 텍스트</option>
 							    </select>
@@ -184,12 +192,11 @@
 							    <button type="button" id="accountHolderCheck" class="btn btn-default">예금주 조회</button>
 							</div>
 					     </div>
-				     <button type="button" id="closeBtnBank" class="feature-btn">취소</button>
-				     <button type="button" id="bankChange" class="feature-btn" style="display:none;">변경</button>	
+				     <button type="button" id="closeBtnBank" class="feature-btn" style="margin-top:20px; text-align: right;">취소</button>
+				     <button type="button" id="bankChange" class="feature-btn" style="display:none; margin-top:20px;">변경</button>	
 				    </div>
 				  </div>
 				</div>
-			</form>
 				<div align="center">
 					<button type="button" id="submit" class="feature-btn">수정완료</button>
 					<button id="returnPage" type="button" class="feature-btn">이전으로</button>
@@ -254,8 +261,8 @@
 		    $("#accountNumberInfo").val("")
 		    $("#modalType option:selected").text("");
 		    $("#modalType option:selected").val("");
-			
 			modalBank.style.display = 'block';
+			$("#bankChange").attr("style", "display:none");
 			closeBtnBank.onclick = function() {
 		    modalBank.style.display = 'none';
 		  }
@@ -444,13 +451,15 @@
     $("#bankChange").on("click", function(){
 		    var name = $("#bankHolderNameInfo").val();
 		    var account = $("#accountNumberInfo").val()
-		    var bankName = $("#modalType option:selected").text();
+		    var bankName = $("#modalType option:selected").val();
 		    $("#bankHolderName").val(name)
 		    $("#accountNumber").val(account)
-		    $("#bank").text(bankName);
+		    $("#bankCode").val(bankName)
+		    
 		    modalBank.style.display = 'none';
 	   })
-
+	   
+	   
 	});
 	
 	// daum 주소 api 호출
@@ -483,7 +492,6 @@
 	function returnToBeforePage(){
 		location.href='/common/myPage?memberId='+[[${memberInfo.memberId}]];
 	}	
-	
 	</script>
 	
 </div>

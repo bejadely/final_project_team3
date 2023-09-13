@@ -27,7 +27,15 @@
     display: block;
     margin: 0 auto;
 }
-
+.title-text {
+    font-size: 18px; /* 제목 폰트 크기 조정 */
+    color: #333; /* 제목 텍스트 색상 변경 */
+    font-weight: bold; /* 굵게 표시 */
+    /* 다른 스타일 속성도 추가로 지정 가능 */
+}
+.sb-text h5 {
+    margin-bottom: 10px; /* 아래쪽 간격을 10px로 설정 */
+}
 </style>
 
 <script>
@@ -66,8 +74,10 @@ function search(event){
 		<br>
 		<div class="searchDiv" style="float:right; margin-right: 150px;" >
 			<select id="searchBy" name="searchBy">
-				<option value="name">이름으로 검색</option>
-			</select>&nbsp;
+				<option value="name">특산물 검색</option>
+				<option value="location">지역 검색</option>
+				<option value="type">특산물 종류 검색</option>
+			</select>
 			<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요." style="height: 40px; width: 200px;">
 			<button id="searchButton" class="feature-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
 		</div>
@@ -88,9 +98,13 @@ function search(event){
 										<span th:text="${list.writerId}"></span>
 									</li>
 								</ul>
-								<h5>
+								<h5 class="title-text">
 									<a th:text="${list.title}"></a>
 								</h5>
+								<h5>
+									<a th:text="${list.type+'/'+list.locationName}"></a>
+								</h5>
+								
 							</div>
 						</div>
 					</div>
