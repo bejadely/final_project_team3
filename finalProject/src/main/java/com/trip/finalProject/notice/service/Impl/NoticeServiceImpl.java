@@ -32,7 +32,7 @@ public class NoticeServiceImpl implements NoticeService {
     	//일반회원, 권한신청중, 로그아웃상태
     	
     	if (sessionAuthority=="A1"|| sessionAuthority=="A4"||sessionAuthority==null) {
-    		//기본 게시글 카운트.(A1, A4, nul, T2:공개 N1:전체l)    	
+    		//기본 게시글 카운트.(A1, A4, null, T2:공개 N1:전체l)    	
     		return	noticeMapper.getAllNoticeCount();    		
     		//가이드일 때 게시글 카운트 
     	}else if(sessionAuthority=="A2"){    	
