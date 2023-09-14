@@ -193,13 +193,13 @@ public class KakaoPayController {
 	
 	@GetMapping("/cancel")
 	public ModelAndView cancel() {
-		ModelAndView mv = new ModelAndView("redirect:/packageList");
+		ModelAndView mv = new ModelAndView("redirect:/specialtiesList");
 		return mv;
 	}
 	
 	@GetMapping("/fail")
     public ModelAndView fail() {
-		ModelAndView mv = new ModelAndView("redirect:/packageList");
+		ModelAndView mv = new ModelAndView("redirect:/specialtiesList");
 		return mv;
     }
 	

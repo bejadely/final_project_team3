@@ -590,16 +590,22 @@ ClassicEditor
     
     // 기본으로 설정할 국적 설정(컨트롤러에서 불러온 회원의 기본 국적 설정값)
     let defaultType = '[[ ${info.type} ]]';
-    console.log(defaultType);
     // select 태그에 기본적으로 표출되는 부분 원하는값으로 변경 
     $('#type').find('span').text(defaultType);
     
     // selected 처리되어있던 option을 일반 옵션으로 변경
     $('#type').find('.option.selected').attr("class", "option");
-    
     // 불러온 국적값에 해당하는 option을 selected 및 focus 처리
     $('.option[data-value="'+defaultType+'"]').attr("class", "option selected focus");
     //$('select').niceSelect('update');
+    
+    let defaultLocation = '[[${info.locationName}]]'
+	 $('#location2').find('span').text(defaultLocation);
+    
+    // selected 처리되어있던 option을 일반 옵션으로 변경
+    $('#location2').find('.option selected').attr("class", "option");
+    
+    $('.option[data-value="'+defaultLocation+'"]').attr("class", "option selected focus");
 }    
 
 /*  function setDefaultType(){
@@ -628,7 +634,7 @@ ClassicEditor
 							<option th:each = "s : ${S}"  th:value="${s.detailCode}" th:text="${s.value}"></option>		
 						</select>	
 					</div>
-					<div class="mb-3" >
+					<div id="location2" class="mb-3" >
 						<select id="location" aria-label="Default select example">
 							<option value="">지역</option>
 							<option th:each = "a : ${area}"  th:value1="${a.sigunguCode}" th:value2="${a.areaCode}" th:text="${a.locationName}"></option>	
