@@ -81,14 +81,6 @@ public class LodgingServiceImpl implements LodgingService {
         detailInfoMap.putAll(getIntroApiMap(Integer.parseInt(contentid)));
         detailInfoReviewMap.put("detailInfoMap", detailInfoMap);
 
-//        //  리뷰 정보
-//        List<SpotDetailReviewVO> spotDetailReviewVoList = lodgingMapper.selectSpotDetailReview(contentId, FIRST_PAGE);
-//        detailInfoReviewMap.put("spotDetailReviewVoList", spotDetailReviewVoList);
-//
-//        //  리뷰 총 개수 정보
-//        int totalCount = lodgingMapper.selectSpotDetailReviewTotalCount(contentid);
-//        detailInfoReviewMap.put("totalCount", totalCount);
-
         return detailInfoReviewMap;
     }
 
@@ -174,7 +166,6 @@ public class LodgingServiceImpl implements LodgingService {
         stringBuilder.append("&contentId=" + contentid);
         stringBuilder.append("&contentTypeId=" + 32);
         stringBuilder.append("&_type=" + "json");
-
         String apiUrl = stringBuilder.toString();
 
         try {
@@ -191,30 +182,23 @@ public class LodgingServiceImpl implements LodgingService {
             bufferedReader.close();
 
             String jsonString = stringBuilder.toString();
-
             // Gson 객체 생성
             Gson gson = new Gson();
-
             // JSON 문자열을 JsonObject로 파싱
             JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
-
             // 필요한 데이터 추출
             JsonObject responseBody = jsonObject.getAsJsonObject("response").getAsJsonObject("body");
             JsonArray itemsArray = responseBody.getAsJsonObject("items").getAsJsonArray("item");
-
             //  각 데이터를 담을 맵 생성
             Map<String, String> itemMap = new HashMap<>();
-
             // 아이템별로 데이터 추출
             JsonObject itemObject = itemsArray.get(0).getAsJsonObject();
             String subfacility = "";
-
-            
+            String foodplace="";
+            foodplace=itemObject.get("foodplace").getAsString();
             subfacility = itemObject.get("subfacility").getAsString();
-               
-            
-
             itemMap.put("subfacility", subfacility);
+            itemMap.put("foodplace", foodplace);
 
             return itemMap;
 
