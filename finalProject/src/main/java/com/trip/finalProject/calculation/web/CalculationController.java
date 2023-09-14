@@ -54,19 +54,26 @@ public class CalculationController {
 		public String selectNotCalList(Model model
 						            , @RequestParam( name = "nowPage", defaultValue = "1") Integer nowPage
 						            , @RequestParam( name = "cntPerPage", defaultValue = "10")Integer cntPerPage
-						            , @RequestParam( name = "searchYear", required = false)Integer searchYear
-						            , @RequestParam( name = "searchMonth", required = false)Integer searchMonth) {
+						            , @RequestParam( name = "searchYear", required = false)String searchYear
+						            , @RequestParam( name = "searchMonth", required = false)String searchMonth) {
 			
 			// 불러온 변수에 값이 없을 시 이번년도와 이번달을 입력
-			if(searchYear == null || searchYear == 0) {
-				searchYear = Integer.valueOf(String.valueOf(LocalDate.now().getYear()).substring(2, 4));
+			if(searchYear == null || searchYear.equals("")) {
+				
+				searchYear = String.valueOf(LocalDate.now().getYear()).substring(2, 4);
 				
 				System.out.println("년 : " + searchYear);
 			}
 			
-			if(searchMonth == null || searchMonth == 0) {
-				searchMonth = LocalDate.now().getMonthValue(); 
+			if(searchMonth == null || searchMonth.equals("")) {
+				int getMonth = LocalDate.now().getMonthValue();
+				searchMonth = String.format("%02d", getMonth); 
+			} else {
+				searchMonth = String.format("%02d", Integer.valueOf(searchMonth));
 			}
+			
+			System.out.println("searchYear : " + searchYear);
+			System.out.println("searchMonth : " + searchMonth);
 			
 			// 정산 내역 전체 조회
 			Map<String, Object> map = calculationService.selectCompCalList(nowPage, cntPerPage, searchYear, searchMonth);
@@ -74,8 +81,8 @@ public class CalculationController {
 			// 처리결과 담기
 			model.addAttribute("list", map.get("list"));
 			model.addAttribute("paging", map.get("PagingVO"));
-			model.addAttribute("searchMonth", searchMonth);
-			model.addAttribute("searchYear", searchYear);
+			model.addAttribute("searchMonth", Integer.valueOf(searchMonth));
+			model.addAttribute("searchYear", Integer.valueOf(searchYear));
 			
 			
 			return "admin/calculation/completeCalList";
