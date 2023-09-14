@@ -54,9 +54,6 @@ public class UploadController {
 	@PostMapping("/common/upload")
 	public ModelAndView image(MultipartHttpServletRequest request)
 			throws Exception {
-		//String uploadPathUrl = null;
-		//System.out.println("^^^^^^^&&&&&&&&&&&&&&&$###############");
-		//System.out.println(map.get("mainImage"));
 		String saveName = null;
 		String loadingPathUrl = null;
 		String originalFileName = null;
@@ -73,11 +70,8 @@ public class UploadController {
 			}
 			if (mf.getSize() > 0) {
 				originalFileName = mf.getOriginalFilename();
-				//System.out.println(originalFileName);
 				String ext = originalFileName.substring(originalFileName.indexOf("."));
-				//System.out.println(ext);
 				String newFileName = UUID.randomUUID() + ext;
-				//System.out.println(newFileName);
 
 				// 날짜 폴더 생성
 				String folderPath = makeFolder();
@@ -85,15 +79,8 @@ public class UploadController {
 				String savePath = folderPath + "/" + newFileName;
 				// 파일을 저장할 경로
 				saveName = uploadPath + "/" + setImagePath(savePath);
-				
 	
 				loadingPathUrl = "/upload/" + setImagePath(savePath);
-				
-				//System.out.println(loadingPathUrl);
-
-				//System.out.println("savePath: " + savePath);
-
-				//System.out.println("saveName: " + saveName);
 
 				// 업로드된 파일을 실제 경로로 복사
 				File file = new File(saveName);
@@ -108,7 +95,6 @@ public class UploadController {
 
 			}
 		}
-		//mav.addObject("path",saveName);
 		mav.addObject("uploaded", true);
 		mav.addObject("url",loadingPathUrl);
 		mav.addObject("filename",originalFileName);
@@ -134,16 +120,11 @@ public class UploadController {
 			}
 			if (mf.getSize() > 0) {
 				String originalFileName = mf.getOriginalFilename();
-				//System.out.println(originalFileName);
 				String ext = originalFileName.substring(originalFileName.indexOf("."));
-				//System.out.println(ext);
 				String newFileName = UUID.randomUUID() + ext;
-				//System.out.println(newFileName);
 
 				// 날짜 폴더 생성
 				String folderPath = makeFolder();
-				
-				
 				
 				String savePath = folderPath + "/" + newFileName;
 				// 파일을 저장할 경로
@@ -152,9 +133,6 @@ public class UploadController {
 				loadingPathUrl = "/upload/" + setImagePath(savePath);
 				
 				String imgType = "U2";
-				//System.out.println("savePath: " + savePath);
-
-				//System.out.println("saveName: " + saveName);
 
 				// 업로드된 파일을 실제 경로로 복사
 				File file = new File(saveName);
@@ -173,12 +151,6 @@ public class UploadController {
 				//실제 화면에 이미지 뿌려주는 url
 				attachedFileVO.setLoadingImg(loadingPathUrl);
 				imageList.add(attachedFileVO);
-				//imageList.add(setImagePath(savePath));
-				
-				//packageVO.set
-				
-				//imageList.add(originalFileName);
-				//imageList.add(saveName);
 			}
 		}
 		
