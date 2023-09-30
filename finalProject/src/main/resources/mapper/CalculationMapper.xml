@@ -49,7 +49,7 @@
   			 WHERE cal_id = #{calId}
   		</update>
   		
-  		<!-- 매월 정산 처리(직전월 정산 대기 내용 모두 정산처리) -->
+  		<!-- 매월 자동 정산 처리(직전월 정산 대기 내용 모두 정산처리) -->
   		<update id="quartzCalMonthlyProc" parameterType="String">
   			UPDATE calculation
   			<set>
