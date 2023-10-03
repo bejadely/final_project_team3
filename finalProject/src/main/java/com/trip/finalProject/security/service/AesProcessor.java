@@ -9,14 +9,12 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Hex;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AesProcessor {
 	
-	// AES256 암호화 기법을 사용하기 위한 클래스
 	// AES/CBC/PKCS5 Padding 사용
 	
 	@Value("${aes256.secret.key}")
@@ -29,8 +27,9 @@ public class AesProcessor {
 	private IvParameterSpec IV;
 	
 	@PostConstruct
-    public void createReqKeys() throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        // properites 에서 받은 secretKey와 iv를 바이트 배열로 변환하여 초기화
+    public void initKeys() throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        
+		// properites 에서 받은 secretKey와 iv를 바이트 배열로 변환하여 초기화
         this.secretKey = new SecretKeySpec(projectSecretKey.getBytes("UTF-8"), "AES");
         this.IV = new IvParameterSpec(projectIv.getBytes());
     }
@@ -55,7 +54,7 @@ public class AesProcessor {
 	// AES CBC PKCS5Padding 복호화(Hex)
 	public String aesCBCDecode(String encodeText) throws Exception {
 
-		// Cipher 객체 인스턴스화(Java에서는 PKCS#5 = PKCS#7이랑 동일)
+		// Cipher 객체 인스턴스화
 		Cipher cypher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		
 		// Cipher 객체 초기화

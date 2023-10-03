@@ -87,8 +87,6 @@ public class UploadController {
 
 				try {
 					mf.transferTo(file);
-					// tarsferTo 메소드가 알아서 업로드 해줌 / 문제는 경로
-					// uploadFile에 파일을 업로드 하는 메서드 transferTo(file)
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
