@@ -3,7 +3,6 @@ package com.trip.finalProject.login.service.Impl;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,6 +36,7 @@ public class MemberServiceImpl implements MemberService {
 		// 암호화된 키를 memberVO에 재저장
 		memberVO.setPassword(encodePassword);
 		
+		// 회원가입 프로세스 실행
 		int result = memberMapper.insertMember(memberVO);
 		if(result ==1) {
 			return memberVO.getMemberId();
