@@ -33,17 +33,17 @@ public class CalculationServiceImpl implements CalculationService {
 		List<CalculationVO> list = calculationMapper.selectNotCalList(pagingVO);
 		
 		// 복호화
-				for(CalculationVO vo : list) {
-					
-					String decodedAccountNum = "";
-					try {
-						decodedAccountNum = aesProcessor.aesCBCDecode(vo.getAccountNumber());
-						vo.setAccountNumber(decodedAccountNum); 
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					
-				}
+		for(CalculationVO vo : list) {
+			
+			String decodedAccountNum = "";
+			try {
+				decodedAccountNum = aesProcessor.aesCBCDecode(vo.getAccountNumber());
+				vo.setAccountNumber(decodedAccountNum); 
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
 		
 		
 		// 컨트롤러에 값을 보내기 위한 Map 생성

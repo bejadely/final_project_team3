@@ -258,27 +258,28 @@
   		<!-- 필터 검색으로 검색된 모든 회원 조회 -->
   		<select id="selectFilterSearch">
   			SELECT *
-			FROM(SELECT ROWNUM rn, a.member_id
-							     , a.member_name
-							     , a.phone_number
-							     , a.nationality
-							     , code_val(a.authority) authority
-							     , sign_up_date
-				 FROM(SELECT member_id
-					       , member_name
-					       , phone_number
-					       , nationality
-					       , authority
-					       , sign_up_date
-					    FROM member
-					   WHERE member_id LIKE '%'
-					   <if test="adminMemberVO.authority != null and !adminMemberVO.authority.equals('')">
-					       AND AUTHORITY = #{adminMemberVO.authority}
-					   </if>
-					   <if test="adminMemberVO.nationality != null and !adminMemberVO.nationality.equals('')">
-						   AND nationality = #{adminMemberVO.nationality}
-					   </if>
-					ORDER BY sign_up_date DESC) a)
-			WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
+			  FROM (SELECT ROWNUM rn
+			             , a.member_id
+			  		     , a.member_name
+			  			 , a.phone_number
+			  			 , a.nationality
+			  			 , code_val(a.authority) authority
+			  		     , sign_up_date
+			   	      FROM (SELECT member_id
+			   		             , member_name
+			   		             , phone_number
+			   		             , nationality
+			   		             , authority
+			   		             , sign_up_date
+			   		          FROM member
+			   		         WHERE member_id LIKE '%'
+			   		         <if test="adminMemberVO.authority != null and !adminMemberVO.authority.equals('')">
+			   		             AND authority = #{adminMemberVO.authority}
+			   		         </if>
+			   		         <if test="adminMemberVO.nationality != null and !adminMemberVO.nationality.equals('')">
+			   		 	        AND nationality = #{adminMemberVO.nationality}
+			   		         </if>
+			   		      ORDER BY sign_up_date DESC) a)
+			 WHERE rn BETWEEN #{pagingVO.start} AND #{pagingVO.end}
   		</select>
   </mapper>

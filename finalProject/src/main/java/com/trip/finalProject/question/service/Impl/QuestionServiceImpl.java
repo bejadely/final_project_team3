@@ -80,12 +80,7 @@ public class QuestionServiceImpl implements QuestionService {
 			questionVO.setQuestionType("Q1");
 			break;
 		}
-		
-//		// textarea 입력값 개행처리
-//		String questionContent = questionVO.getQuestionContent();
-//		questionContent.replaceAll("\n", "<br>");
-//		questionVO.setQuestionContent(questionContent);
-		
+
 		// 문의글 등록
 		int result = queMapper.insertQuestion(questionVO);
 		
