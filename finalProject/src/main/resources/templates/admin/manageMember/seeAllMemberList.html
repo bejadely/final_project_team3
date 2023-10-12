@@ -174,7 +174,7 @@
 		// 토글 형성 - 볼드 처리 및 data-selected 속성 true/false 전환
 		if($(this).attr("data-selected") == "true"){
 			
-			// 선택되어 있던 경우 - 본인 볼드처리 해제 / data-selected >> false
+			// 선택되어 있던 경우 - 선택된 항목 볼드처리 해제 / data-selected >> false
 			$(this).css({fontWeight: 'normal'});
 			$(this).css({background: '#ffffff'});
 			$(this).attr("data-selected", "false");
@@ -287,11 +287,14 @@
 		
 	}
 	
-	// 조건검색기능
+	// 키워드 검색 기능
 	function search(event){
 		
+		// 검색 조건과 사용자가 입력한 키워드 추출
 		let value = $('#searchBy').val();
 		let keyword = $('#keyword').val();
+		
+		// 페이지 호출
 		location.href='/admin/searchAdminMember?searchBy='+value+'&keyword='+keyword;
 		
 	}
@@ -299,10 +302,10 @@
 	// 검색 기록 기억
 	function rememberKeyword(){
 		
-		// 우리가 실제로 만든 셀렉트 박스의 option을 selected 설정
+		// 셀렉트 박스의 option을 selected 설정
 		$('#searchBy').val([[${searchBy}]]).prop("selected", true);
 		
-		// 우리가 실제로 만든 셀렉트 박스의 변경값을 나이스 셀렉트 박스에 업데이트
+		// 셀렉트 박스의 변경값을 나이스 셀렉트 박스에 업데이트
 	    $('select').niceSelect('update');
 		
 		// 검색어 입력창의 값 유지
