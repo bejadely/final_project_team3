@@ -253,14 +253,16 @@
 		// 찾을 문자열 검색
 		var str = $(this).val();
 		
-		//var blank_pattern = /^\s+|\s+$/g;(/\s/g
+		// 공백 입력 확인
 		var blank_pattern = /[\s]/g;
+		
 		if(blank_pattern.test(str) == true){
 		$("#nameMessage").empty();
 		$("#nameMessage").append(`<p style="color: red">공백은 입력하실 수 없습니다.</p>`);
 		return false;
 		}
 		
+		// 특수문자 입력 확인
 		var special_pattern = /[\+\=\-`~!@#$%^&*)(|\\\'\";:\/?]/gi;
 
 		if(special_pattern.test(str) == true ){

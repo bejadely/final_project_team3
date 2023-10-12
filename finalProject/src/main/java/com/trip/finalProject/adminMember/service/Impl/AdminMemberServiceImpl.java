@@ -18,7 +18,7 @@ import com.trip.finalProject.security.service.AesProcessor;
 public class AdminMemberServiceImpl implements AdminMemberService {
 	
 	@Autowired
-	AdminMemberMapper amm;
+	AdminMemberMapper adminMemberMapper;
 	
 	@Autowired
 	AesProcessor aesProcessor;
@@ -26,13 +26,13 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	@Override
 	public List<AdminMemberVO> selectAllMember(PagingVO pagingVO) {
 		// 회원 전체 조회
-		return amm.selectAllMemeber(pagingVO);
+		return adminMemberMapper.selectAllMemeber(pagingVO);
 	}
 	
 	@Override
 	public int memberCount() {
 		// 전체 회원 수 카운트
-		return amm.getAllMemberCount();
+		return adminMemberMapper.getAllMemberCount();
 	}
 	
 	@Override
@@ -42,7 +42,7 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		
 		//계좌번호 복호화
 		try {
-			vo = amm.getMemberDetail(vo);
+			vo = adminMemberMapper.getMemberDetail(vo);
 			decodedAccountNum = aesProcessor.aesCBCDecode(vo.getAccountNumber());
 			vo.setAccountNumber(decodedAccountNum);
 		} catch (Exception e) {
@@ -63,7 +63,7 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		}
 		
 		// 회원 정보 수정
-		int result = amm.modifyMemberInfo(vo);
+		int result = adminMemberMapper.modifyMemberInfo(vo);
 		
 		if(result > 1) {
 			return "success";
@@ -75,7 +75,7 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	@Override
 	public String withdrawMember(AdminMemberVO vo) {
 		// 회원 삭제
-		int result = amm.withdrawMember(vo);
+		int result = adminMemberMapper.withdrawMember(vo);
 		
 		if(result > 1) {
 			return "success";
@@ -87,31 +87,31 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	@Override
 	public int countName(String keyword) {
 		// 이름 검색의 총 결과값 카운트
-		return amm.countName(keyword);
+		return adminMemberMapper.countName(keyword);
 	}
 
 	@Override
 	public int countId(String keyword) {
 		// 아이디 검색의 총 결과값 카운트
-		return amm.countId(keyword);
+		return adminMemberMapper.countId(keyword);
 	}
 	
 	@Override
 	public List<AdminMemberVO> searchMemberByName(AdminMemberVO adminVO, PagingVO pagingVO) {
 		// 이름으로 회원 검색
-		return amm.searchMemberByName(adminVO, pagingVO);
+		return adminMemberMapper.searchMemberByName(adminVO, pagingVO);
 	}
 	
 	@Override
 	public List<AdminMemberVO> searchMemberById(AdminMemberVO adminVO, PagingVO pagingVO) {
 		// 아이디로 회원 검색
-		return amm.searchMemberById(adminVO, pagingVO);
+		return adminMemberMapper.searchMemberById(adminVO, pagingVO);
 	}
 	
 	@Override
 	public List<AdminMemberVO> selectAllAuthRequest() {
 		// 권한 승인 요청 내역 전체 조회
-		List<AdminMemberVO> list = amm.selectAllAuthRequest();
+		List<AdminMemberVO> list = adminMemberMapper.selectAllAuthRequest();
 		
 		// 복호화
 		for(AdminMemberVO vo : list) {
@@ -136,7 +136,7 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		
 		map.put("memberId", memberId);
 		
-		int result = amm.approveAuthRequest(memberId);
+		int result = adminMemberMapper.approveAuthRequest(memberId);
 		if(result > 0) {
 			map.put("result", "success");
 		} else {
@@ -153,7 +153,7 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		
 		map.put("memberId", memberId);
 		
-		int result = amm.rejectAuthRequest(memberId);
+		int result = adminMemberMapper.rejectAuthRequest(memberId);
 		if(result > 0) {
 			map.put("result", "success");
 		} else {
@@ -167,11 +167,11 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	public Map<String, Object> selectFilterSearch(Integer nowPage, Integer cntPerPage, AdminMemberVO adminMemberVO) {
 		
 		// 필터검색할 회원 수 카운트
-		int total = amm.countFilterSearch(adminMemberVO);
+		int total = adminMemberMapper.countFilterSearch(adminMemberVO);
 		PagingVO pagingVO = new PagingVO(total, nowPage, cntPerPage);
 		
 		// 필터검색 회원 전체 조회
-		List<AdminMemberVO> list = amm.selectFilterSearch(adminMemberVO, pagingVO);
+		List<AdminMemberVO> list = adminMemberMapper.selectFilterSearch(adminMemberVO, pagingVO);
 		
 		// 컨트롤러에 값을 보내기 위한 Map 생성
 		Map<String, Object> map = new HashMap<String, Object>();
