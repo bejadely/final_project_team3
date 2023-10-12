@@ -34,7 +34,7 @@ public class JobConfig {
 		JobDetail packageCalculate = runJobDetail(PackageQuartzJob.class, new HashMap<>());
 		
 		try {
-			// 매월 1일 1:00에 직전월 미정산내역 자동 일괄 정산 처리
+			// 매월 1일 01:00에 직전월 미정산내역 자동 일괄 정산 처리
 			scheduler.scheduleJob(jobDetail, runJobTrigger("0 1 1 * * ?"));
 			
 			// 매일 밤 23:59분에 자동 일괄 처리
